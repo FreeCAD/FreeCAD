@@ -883,6 +883,8 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.decInd();
     writer.Stream() << writer.ind() << "</CLPoints>" << std::endl ;
 
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << std::endl;
@@ -907,6 +909,9 @@ void CenterLine::Save(Base::Writer &writer) const
     } else {
         Base::Console().Message("CL::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
+
+    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << std::endl;
+
 }
 
 void CenterLine::Restore(Base::XMLReader &reader)
@@ -976,6 +981,8 @@ void CenterLine::Restore(Base::XMLReader &reader)
     }
     reader.readEndElement("CLPoints");
 
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
     reader.readElement("Style");
     m_format.m_style = reader.getAttributeAsInteger("value");
     reader.readElement("Weight");
@@ -1006,6 +1013,22 @@ void CenterLine::Restore(Base::XMLReader &reader)
         m_geometry = aoc;
     } else {
         Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+    }
+
+    // older documents may not have the LineNumber element, so we need to check the
+    // next entry.  if it is a start element, then we check if it is a start element
+    // for LineNumber.
+    // test for ISOLineNumber can be removed after testing.  It is a left over for the earlier
+    // ISO only line handling.
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"LineNumber") == 0 ||
+           strcmp(reader.localName(),"ISOLineNumber") == 0 ) {
+            // this centerline has an LineNumber attribute
+            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+        } else {
+            // LineNumber not found.
+            m_format.setLineNumber(LineFormat::InvalidLine);
+        }
     }
 }
 

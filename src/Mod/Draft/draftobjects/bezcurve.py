@@ -30,8 +30,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-
+from draftutils import params
 from draftobjects.base import DraftObject
 
 
@@ -69,7 +68,7 @@ class BezCurve(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = utils.get_param("fillmode", True)
+        obj.MakeFace = params.get_param("fillmode")
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []

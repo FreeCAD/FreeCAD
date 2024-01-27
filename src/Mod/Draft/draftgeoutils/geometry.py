@@ -253,9 +253,11 @@ def get_normal(shape, tol=-1):
 
     # Check the 3D view to flip the normal if the GUI is available
     if App.GuiUp:
-        v_dir = gui_utils.get_3d_view().getViewDirection()
-        if normal.getAngle(v_dir) < 0.78:
-            normal = normal.negative()
+        view = gui_utils.get_3d_view()
+        if view is not None:
+            v_dir = view.getViewDirection()
+            if normal.getAngle(v_dir) < 0.78:
+                normal = normal.negative()
 
     return normal
 

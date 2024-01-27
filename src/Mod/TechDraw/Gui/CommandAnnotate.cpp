@@ -340,13 +340,14 @@ void execMidpoints(Gui::Command* cmd)
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
-    double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeomPtr geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
+        // invert the point so the math works correctly
         mid = DrawUtil::invertY(mid);
-        dvp->addCosmeticVertex(mid / scale);
+        mid = CosmeticVertex::makeCanonicalPoint(dvp, mid);
+        dvp->addCosmeticVertex(mid);
     }
 
     Gui::Command::commitCommand();
@@ -366,15 +367,16 @@ void execQuadrants(Gui::Command* cmd)
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
-    double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeomPtr geom = edges.at(GeoId);
-            std::vector<Base::Vector3d> quads = geom->getQuads();
-            for (auto& q: quads) {
-                Base::Vector3d iq = DrawUtil::invertY(q);
-                dvp->addCosmeticVertex(iq / scale);
-            }
+        std::vector<Base::Vector3d> quads = geom->getQuads();
+        for (auto& q: quads) {
+            // invert the point so the math works correctly
+            Base::Vector3d iq = DrawUtil::invertY(q);
+            iq = CosmeticVertex::makeCanonicalPoint(dvp, iq);
+            dvp->addCosmeticVertex(iq);
+        }
     }
 
     Gui::Command::commitCommand();

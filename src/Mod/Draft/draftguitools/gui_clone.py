@@ -1,7 +1,8 @@
 # ***************************************************************************
-# *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
-# *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
-# *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -48,7 +49,7 @@ import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftutils.todo as todo
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -65,10 +66,10 @@ class Clone(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Clone',
-                'Accel': "C,L",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects.\nThe resulting clone can be scaled in each of its three directions.")}
+        return {"Pixmap": "Draft_Clone",
+                "Accel": "C, L",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects.\nThe resulting clone can be scaled in each of its three directions.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -84,30 +85,31 @@ class Clone(gui_base_original.Modifier):
             self.proceed()
 
     def proceed(self):
-        """Proceed with the command if one object was selected."""
-        if Gui.Selection.getSelection():
-            sels = len(Gui.Selection.getSelection())
-            Gui.addModule("Draft")
-            App.ActiveDocument.openTransaction(translate("Draft", "Clone"))
-            nonRepeatList = []
-            n = 0
-            for obj in Gui.Selection.getSelection():
-                if obj not in nonRepeatList:
-                    _cmd = "Draft.make_clone"
-                    _cmd += "("
-                    _cmd += "FreeCAD.ActiveDocument."
-                    _cmd += 'getObject("' + obj.Name + '")'
-                    _cmd += ")"
-                    Gui.doCommand("c" + str(n) + " = " + _cmd)
-                    nonRepeatList.append(obj)
-                    n += 1
-            App.ActiveDocument.commitTransaction()
-            App.ActiveDocument.recompute()
-            Gui.Selection.clearSelection()
+        """Proceed with the command if objects were selected."""
+        objs = Gui.Selection.getSelection()
+        if not objs:
+            self.finish()
+            return
+        objs_shape = [obj for obj in objs if hasattr(obj, "Shape")]
+        if not objs_shape:
+            _wrn(translate("draft", "Cannot clone object(s) without a Shape, aborting"))
+            self.finish()
+            return
+        elif len(objs_shape) < len(objs):
+            _wrn(translate("draft", "Cannot clone object(s) without a Shape, skipping them"))
 
-            objects = App.ActiveDocument.Objects
-            for i in range(sels):
-                Gui.Selection.addSelection(objects[-(1 + i)])
+        Gui.addModule("Draft")
+        App.ActiveDocument.openTransaction(translate("Draft", "Clone"))
+        for idx, obj in enumerate(objs_shape):
+            cmd = "Draft.make_clone(FreeCAD.ActiveDocument." + obj.Name + ")"
+            Gui.doCommand("clone" + str(idx) + " = " + cmd)
+        App.ActiveDocument.commitTransaction()
+        App.ActiveDocument.recompute()
+
+        Gui.Selection.clearSelection()
+        objs = App.ActiveDocument.Objects
+        for i in range(len(objs_shape)):
+            Gui.Selection.addSelection(objs[-(1 + i)])
         self.finish()
 
     def finish(self):

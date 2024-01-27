@@ -29,6 +29,7 @@ import FreeCAD
 import ArchComponent
 import ArchCommands
 import DraftVecUtils
+from draftutils import params
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -167,13 +168,12 @@ class CurtainWall(ArchComponent.Component):
         pl = obj.PropertiesList
         vsize = 50
         hsize = 50
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         if not "Host" in pl:
             obj.addProperty("App::PropertyLink","Host","CurtainWall",QT_TRANSLATE_NOOP("App::Property","An optional host object for this curtain wall"))
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The height of the curtain wall, if based on an edge"))
-            obj.Height = p.GetFloat("WallHeight",3000)
+            obj.Height = params.get_param_arch("WallHeight")
         if not "VerticalMullionNumber" in pl:
             obj.addProperty("App::PropertyInteger","VerticalMullionNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of vertical mullions"))

@@ -35,6 +35,8 @@ import FreeCAD
 import ArchCommands
 import ArchIFC
 import Draft
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -213,10 +215,10 @@ class Component(ArchIFC.IfcProduct):
             FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "MoveBase" in pl:
             obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
-            obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
+            obj.MoveBase = params.get_param_arch("MoveBase")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
-            obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
+            obj.MoveWithHost = params.get_param_arch("MoveWithHost")
         if not "VerticalArea" in pl:
             obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
             obj.setEditorMode("VerticalArea",1)
@@ -992,7 +994,7 @@ class Component(ArchIFC.IfcProduct):
 
         import Part
         import TechDraw
-        fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
+        fmax = params.get_param_arch("MaxComputeAreas")
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
             obj.HorizontalArea = 0
@@ -1174,7 +1176,7 @@ class ViewProviderComponent:
 
         if not "UseMaterialColor" in vobj.PropertiesList:
             vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
-            vobj.UseMaterialColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("UseMaterialColor",True)
+            vobj.UseMaterialColor = params.get_param_arch("UseMaterialColor")
 
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
@@ -1456,7 +1458,7 @@ class ViewProviderComponent:
                     objlink = getattr(self.Object,link)
                     if objlink:
                         c.append(objlink)
-            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ClaimHosted",True):
+            if params.get_param_arch("ClaimHosted"):
                 for link in self.Object.Proxy.getHosts(self.Object):
                     c.append(link)
 
@@ -2294,7 +2296,7 @@ if FreeCAD.GuiUp:
                     editor = QtGui.QSpinBox(parent)
                 elif "Real" in ptype:
                     editor = QtGui.QDoubleSpinBox(parent)
-                    editor.setDecimals(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2))
+                    editor.setDecimals(params.get_param("Decimals",path="Units"))
                 elif ("Boolean" in ptype) or ("Logical" in ptype):
                     editor = QtGui.QComboBox(parent)
                     editor.addItems(["True","False"])

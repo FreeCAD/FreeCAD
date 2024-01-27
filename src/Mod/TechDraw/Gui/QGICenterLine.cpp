@@ -135,3 +135,8 @@ void QGICenterLine::setTools()
     m_pen.setColor(m_colCurrent);
     m_line->setPen(m_pen);
 }
+
+void QGICenterLine::setLinePen(QPen isoPen)
+{
+    m_pen = isoPen;
+}

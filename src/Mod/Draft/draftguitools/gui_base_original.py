@@ -37,13 +37,13 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
 import WorkingPlane
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftutils.todo as todo
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_tool_utils as gui_tool_utils
-
-from draftutils.messages import _msg, _log, _toolmsg
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import todo
+from draftutils import utils
+from draftutils.messages import _log, _msg, _toolmsg
 
 
 class DraftTool:
@@ -130,7 +130,7 @@ class DraftTool:
         self.wp = WorkingPlane.get_working_plane()
 
         self.planetrack = None
-        if utils.get_param("showPlaneTracker", False):
+        if params.get_param("showPlaneTracker"):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
@@ -220,9 +220,7 @@ class DraftTool:
         qr = "({0}, {1}, {2}, {3})".format(qr[0], qr[1], qr[2], qr[3])
 
         # Support object
-        _params = "User parameter:BaseApp/Preferences/Mod/Draft"
-        _params_group = App.ParamGet(_params)
-        if self.support and _params_group.GetBool("useSupport", False):
+        if self.support and params.get_param("useSupport"):
             sup = 'FreeCAD.ActiveDocument.getObject'
             sup += '("{}")'.format(self.support.Name)
         else:

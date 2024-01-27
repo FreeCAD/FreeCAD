@@ -54,7 +54,7 @@ class Draft2Sketch(gui_base_original.Modifier):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_Draft2Sketch',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to sketch"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Convert bidirectionally between Draft objects and Sketches.\nMany Draft objects will be converted into a single non-constrained Sketch.\nHowever, a single sketch with disconnected traces will be converted into several individual Draft objects.")}
 
     def Activated(self):

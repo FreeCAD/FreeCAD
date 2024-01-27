@@ -174,7 +174,7 @@ if HAVE_QTNETWORK:
         def _setup_proxy(self):
             """Set up the proxy based on user preferences or prompts on command line"""
 
-            # Set up the proxy, if necesssary:
+            # Set up the proxy, if necessary:
             if HAVE_FREECAD:
                 (
                     noProxyCheck,
@@ -531,7 +531,7 @@ if HAVE_QTNETWORK:
             any notifications have been called."""
             reply = self.sender()
             if not reply:
-                print("Network Manager Error: __reply_finished not called by a Qt signal")
+                # This can happen during a cancellation operation: silently do nothing
                 return
 
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:

@@ -31,6 +31,8 @@ import uuid
 import time
 
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -346,7 +348,6 @@ def getSVG(source,
             windows.append(o)
     objs = nonspaces
 
-    archUserParameters = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaledLineWidth = linewidth/scale
     if renderMode in ["Coin",2,"Coin mono",3]:
         # don't scale linewidths in coin mode
@@ -357,11 +358,11 @@ def getSVG(source,
         scaledCutLineWidth = cutlinewidth/scale
         svgCutLineWidth = str(scaledCutLineWidth) + 'px'
     else:
-        st = archUserParameters.GetFloat("CutLineThickness",2)
+        st = params.get_param_arch("CutLineThickness")
         svgCutLineWidth = str(scaledLineWidth * st) + 'px'
-    yt = archUserParameters.GetFloat("SymbolLineThickness",0.6)
+    yt = params.get_param_arch("SymbolLineThickness")
     svgSymbolLineWidth = str(linewidth * yt)
-    hiddenPattern = archUserParameters.GetString("archHiddenPattern","30,10")
+    hiddenPattern = params.get_param_arch("archHiddenPattern")
     svgHiddenPattern = hiddenPattern.replace(" ","")
     #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
     #fillpattern += ' x="0" y="0" width="10" height="10">'
@@ -967,10 +968,10 @@ class _ViewProviderSectionPlane:
             vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"))
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
-            vobj.FontName = Draft.getParam("textfont","")
+            vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
-            vobj.FontSize = Draft.getParam("textheight",10)
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
 
 
     def onDocumentRestored(self,vobj):

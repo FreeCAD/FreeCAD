@@ -164,7 +164,7 @@ class PathLinkArray(PathArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PathLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Path Link array"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Path link array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Like the PathArray tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
 
     def Activated(self):

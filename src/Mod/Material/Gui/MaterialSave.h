@@ -42,7 +42,8 @@ class MaterialSave: public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialSave(std::shared_ptr<Materials::Material> material, QWidget* parent = nullptr);
+    explicit MaterialSave(const std::shared_ptr<Materials::Material>& material,
+                          QWidget* parent = nullptr);
     ~MaterialSave() override;
 
     void setLibraries();

@@ -29,6 +29,7 @@
 #include <QString>
 
 #include <App/Application.h>
+#include <src/App/InitApplication.h>
 
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Model.h>
@@ -40,10 +41,7 @@ class TestModel : public ::testing::Test {
  protected:
   static void SetUpTestSuite() {
     if (App::Application::GetARGC() == 0) {
-        constexpr int argc = 1;
-        std::array<char*, argc> argv {"FreeCAD"};
-        App::Application::Config()["ExeName"] = "FreeCAD";
-        App::Application::init(argc, argv.data());
+        tests::initApplication();
     }
   }
 
@@ -75,7 +73,7 @@ TEST_F(TestModel, TestResources)
 
 TEST_F(TestModel, TestInstallation)
 {
-    EXPECT_NE(_modelManager, nullptr);
+    ASSERT_NE(_modelManager, nullptr);
 
     // We should have loaded at least the system library
     auto libraries = _modelManager->getModelLibraries();
@@ -88,7 +86,7 @@ TEST_F(TestModel, TestInstallation)
 
 TEST_F(TestModel, TestModelLoad)
 {
-    EXPECT_NE(_modelManager, nullptr);
+    ASSERT_NE(_modelManager, nullptr);
 
     auto density = _modelManager->getModel(QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af"));
     EXPECT_EQ(density->getName(), QString::fromStdString("Density"));
@@ -100,6 +98,8 @@ TEST_F(TestModel, TestModelLoad)
 
 TEST_F(TestModel, TestModelByPath)
 {
+    ASSERT_NE(_modelManager, nullptr);
+
     auto linearElastic = _modelManager->getModelByPath(
         QString::fromStdString("Mechanical/LinearElastic.yml"),
         QString::fromStdString("System"));

@@ -63,8 +63,6 @@ public:
     App::PropertyColor   FaceColor;
     App::PropertyPercent FaceTransparency;
 
-    static const char* LineStyleEnums[];
-
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel(void) const override {return false;}
     bool onDelete(const std::vector<std::string> &) override;

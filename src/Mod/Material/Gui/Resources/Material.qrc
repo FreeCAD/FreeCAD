@@ -8,5 +8,6 @@
         <file>icons/preview-rendered.svg</file>
         <file>icons/preview-vector.svg</file>
         <file>icons/table.svg</file>
+        <file>images/default_image.png</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@
 """ Contains the classes to manage Addon removal: intended as a stable API, safe for
 external code to call and to rely upon existing. See classes AddonUninstaller and
 MacroUninstaller for details."""
-
+import json
 import os
 from typing import List
 
@@ -228,7 +228,10 @@ class MacroUninstaller(QObject):
         directories = set()
         for f in self._get_files_to_remove():
             normed = os.path.normpath(f)
-            full_path = os.path.join(self.installation_location, normed)
+            if os.path.isabs(normed):
+                full_path = normed
+            else:
+                full_path = os.path.join(self.installation_location, normed)
             if "/" in f:
                 directories.add(os.path.dirname(full_path))
             try:
@@ -246,6 +249,10 @@ class MacroUninstaller(QObject):
                     + str(e)
                 )
                 success = False
+            except Exception:
+                # Generic catch-all, just in case (because failure to catch an exception
+                # here can break things pretty badly)
+                success = False
 
         self._cleanup_directories(directories)
 
@@ -256,8 +263,17 @@ class MacroUninstaller(QObject):
         self.addon_to_remove.set_status(Addon.Status.NOT_INSTALLED)
         self.finished.emit()
 
-    def _get_files_to_remove(self) -> List[os.PathLike]:
+    def _get_files_to_remove(self) -> List[str]:
         """Get the list of files that should be removed"""
+        manifest_file = os.path.join(
+            self.installation_location, self.addon_to_remove.macro.filename + ".manifest"
+        )
+        if os.path.exists(manifest_file):
+            with open(manifest_file, "r", encoding="utf-8") as f:
+                manifest_data = f.read()
+                manifest = json.loads(manifest_data)
+                manifest.append(manifest_file)  # Remove the manifest itself as well
+                return manifest
         files_to_remove = [self.addon_to_remove.macro.filename]
         if self.addon_to_remove.macro.icon:
             files_to_remove.append(self.addon_to_remove.macro.icon)

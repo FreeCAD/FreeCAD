@@ -29,7 +29,9 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief constraint self weight object
 
+import FreeCAD
 from . import base_fempythonobject
+from femtools import constants
 
 
 class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
@@ -42,33 +44,52 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
     def __init__(self, obj):
         super(ConstraintSelfWeight, self).__init__(obj)
 
-        obj.addProperty(
-            "App::PropertyFloat",
-            "Gravity_x",
-            "Gravity",
-            "Gravity direction: set the x-component of the normalized gravity vector"
-        )
-
-        obj.addProperty(
-            "App::PropertyFloat",
-            "Gravity_y",
-            "Gravity",
-            "Gravity direction: set the y-component of the normalized gravity vector"
-        )
-
-        obj.addProperty(
-            "App::PropertyFloat",
-            "Gravity_z",
-            "Gravity",
-            "Gravity direction: set the z-component of the normalized gravity vector"
-        )
-
-        obj.Gravity_x = 0.0
-        obj.Gravity_y = 0.0
-        obj.Gravity_z = -1.0
+        self.addProperty(obj)
 
         # https://wiki.freecad.org/Scripted_objects#Property_Type
         # https://forum.freecad.org/viewtopic.php?f=18&t=13460&start=20#p109709
         # https://forum.freecad.org/viewtopic.php?t=25524
         # obj.setEditorMode("References", 1)  # read only in PropertyEditor, but writeable by Python
         obj.setEditorMode("References", 2)  # do not show in Editor
+
+    def addProperty(self, obj):
+        obj.addProperty("App::PropertyAcceleration",
+                        "GravityAcceleration",
+                        "Gravity",
+                        "Gravity acceleration")
+        obj.GravityAcceleration = constants.gravity()
+
+        obj.addProperty("App::PropertyVector",
+                        "GravityDirection",
+                        "Gravity",
+                        "Normalized gravity direction")
+        obj.GravityDirection = FreeCAD.Vector(0, 0, -1)
+
+        obj.setPropertyStatus("NormalDirection", "Hidden")
+
+    def onDocumentRestored(self, obj):
+        # migrate old App::PropertyFloat "Gravity_*" if exists
+        try:
+            grav_x = obj.getPropertyByName("Gravity_x")
+            grav_y = obj.getPropertyByName("Gravity_y")
+            grav_z = obj.getPropertyByName("Gravity_z")
+            grav = FreeCAD.Vector(grav_x, grav_y, grav_z)
+
+            self.addProperty(obj)
+            obj.GravityAcceleration = constants.gravity()
+            obj.GravityAcceleration *= grav.Length
+            obj.GravityDirection = grav.normalize()
+
+            obj.removeProperty("Gravity_x")
+            obj.removeProperty("Gravity_y")
+            obj.removeProperty("Gravity_z")
+
+            return
+
+        except:
+            return
+
+    def execute(self, obj):
+        obj.GravityDirection.normalize()
+
+        return False

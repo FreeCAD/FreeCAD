@@ -62,7 +62,7 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
     }
@@ -174,7 +174,7 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
     }
@@ -262,7 +262,7 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     bool recursive = Base::asBoolean(recursivePy);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
         return nullptr;
     }

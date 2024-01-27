@@ -1639,7 +1639,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="184"/>
       <source>Selection</source>
-      <translation>seçim</translation>
+      <translation>Seçim</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="192"/>
@@ -1959,7 +1959,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>seçim</translation>
+      <translation>Seçim</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>

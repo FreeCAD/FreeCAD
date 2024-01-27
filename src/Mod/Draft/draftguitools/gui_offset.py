@@ -40,12 +40,12 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
-from draftutils.messages import _msg, _wrn, _err, _toolmsg
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _msg, _toolmsg, _wrn
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -54,9 +54,6 @@ True if Draft_rc.__name__ else False
 
 class Offset(gui_base_original.Modifier):
     """Gui Command for the Offset tool."""
-
-    def __init__(self):
-        self.param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -101,7 +98,7 @@ class Offset(gui_base_original.Modifier):
             self.constrainSeg = None
 
             self.ui.offsetUi()
-            occmode = self.param.GetBool("Offset_OCC", False)
+            occmode = params.get_param("Offset_OCC")
             self.ui.occOffset.setChecked(occmode)
 
             self.linetrack = trackers.lineTracker()
@@ -185,7 +182,7 @@ class Offset(gui_base_original.Modifier):
                     a = -DraftVecUtils.angle(v1, v2, self.wp.axis)
                     self.dvec = DraftVecUtils.rotate(d, a, self.wp.axis)
                     occmode = self.ui.occOffset.isChecked()
-                    self.param.SetBool("Offset_OCC", occmode)
+                    params.set_param("Offset_OCC", occmode)
                     _wire = DraftGeomUtils.offsetWire(self.shape,
                                                       self.dvec,
                                                       occ=occmode)
@@ -226,7 +223,7 @@ class Offset(gui_base_original.Modifier):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
-                self.param.SetBool("Offset_OCC", occmode)
+                params.set_param("Offset_OCC", occmode)
                 if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
                         or self.ui.isCopy.isChecked()):
                     copymode = True
@@ -308,7 +305,7 @@ class Offset(gui_base_original.Modifier):
                 delta = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
-            self.param.SetBool("Offset_OCC", occmode)
+            params.set_param("Offset_OCC", occmode)
 
             if self.ui.isCopy.isChecked():
                 copymode = True

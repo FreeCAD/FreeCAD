@@ -430,11 +430,12 @@ void Action::setMenuRole(QAction::MenuRole menuRole)
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
  * to the command object.
  */
-ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
-  : Action(pcCmd, parent)
-  , _group(nullptr)
-  , _dropDown(false)
-  , _isMode(false)
+ActionGroup::ActionGroup(Command* pcCmd, QObject* parent)
+    : Action(pcCmd, parent)
+    , _group(nullptr)
+    , _dropDown(false)
+    , _isMode(false)
+    , _rememberLast(true)
 {
     _group = new QActionGroup(this);
     connect(_group, &QActionGroup::triggered, this, qOverload<QAction*>(&ActionGroup::onActivated));
@@ -526,6 +527,16 @@ void ActionGroup::setVisible( bool check )
     groupAction()->setVisible(check);
 }
 
+void ActionGroup::setRememberLast(bool remember)
+{
+    _rememberLast = remember;
+}
+
+bool ActionGroup::doesRememberLast() const
+{
+    return _rememberLast;
+}
+
 QAction* ActionGroup::addAction(QAction* action)
 {
     int index = groupAction()->actions().size();
@@ -585,14 +596,16 @@ void ActionGroup::onToggled(bool check)
  */
 void ActionGroup::onActivated (QAction* act)
 {
-    int index = groupAction()->actions().indexOf(act);
+    if (_rememberLast) {
+        int index = groupAction()->actions().indexOf(act);
 
-    this->setIcon(act->icon());
-    if (!this->_isMode) {
-        this->setToolTip(act->toolTip(), act->text());
+        this->setIcon(act->icon());
+        if (!this->_isMode) {
+            this->setToolTip(act->toolTip(), act->text());
+        }
+        this->setProperty("defaultAction", QVariant(index));
+        command()->invoke(index, Command::TriggerChildAction);
     }
-    this->setProperty("defaultAction", QVariant(index));
-    command()->invoke(index, Command::TriggerChildAction);
 }
 
 void ActionGroup::onHovered (QAction *act)

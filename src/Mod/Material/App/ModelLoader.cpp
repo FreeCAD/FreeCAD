@@ -22,13 +22,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QString>
+#include <QDirIterator>
+#include <QFileInfo>
 #endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 
-#include <QDirIterator>
-#include <QFileInfo>
 
 #include "Model.h"
 #include "ModelLoader.h"

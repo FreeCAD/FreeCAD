@@ -29,7 +29,8 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace Gui::Dialog {
+namespace Gui{
+namespace Dialog {
 class Ui_DlgSettingsWorkbenches;
 
 /**
@@ -47,6 +48,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     static QStringList getEnabledWorkbenches();
     static QStringList getDisabledWorkbenches();
@@ -78,6 +80,7 @@ private:
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
 };
 
-} // namespace Gui::Dialog
+} // namespace Dialog
+} // namespace Gui
 
 #endif // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

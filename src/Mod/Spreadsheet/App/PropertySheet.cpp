@@ -1668,7 +1668,7 @@ void PropertySheet::recomputeDependencies(CellAddress key)
 
 void PropertySheet::hasSetValue()
 {
-    if (updateCount == 0 || !owner || !owner->getNameInDocument() || owner->isRestoring()
+    if (updateCount == 0 || !owner || !owner->isAttachedToDocument() || owner->isRestoring()
         || this != &owner->cells || testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
         return;

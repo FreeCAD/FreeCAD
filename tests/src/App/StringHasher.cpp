@@ -1006,6 +1006,7 @@ TEST_F(StringIDRefTest, toBytes)  // NOLINT
 
 TEST_F(StringIDRefTest, getPyObject)  // NOLINT
 {
+    Py_Initialize();
     // Arrange
     auto ref = App::StringIDRef(createStringID());
     auto empty = App::StringIDRef();

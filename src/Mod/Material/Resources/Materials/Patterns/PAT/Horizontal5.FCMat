@@ -1,0 +1,16 @@
+﻿---
+# File created by FreeCAD 0.22.0 Revision: 35279 +19 (Git)
+General:
+  UUID: "0902d885-ac66-441e-9c3f-e0086a4817fc"
+  Name: "Horizontal5"
+  Author: "David Carter"
+  License: "All rights reserved"
+AppearanceModels:
+  PAT:
+    UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"
+    Hatch Color: "(0,0,0,1)"
+    Hatch Pattern: |2
+      *Horizontal5, horizontal lines, Solid 5.0 separation
+      0,0,0,0,5.0
+    Hatch Scale: "1"
+    Hatch Weight: "1"

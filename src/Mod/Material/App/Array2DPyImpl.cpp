@@ -21,7 +21,16 @@
 
 #include "PreCompiled.h"
 
+#include <QList>
+#include <QMetaType>
+
+#include <Base/Quantity.h>
+#include <Base/QuantityPy.h>
+#include <CXX/Objects.hxx>
+#include <Gui/MetaTypes.h>
+
 #include "Array2DPy.h"
+#include "Exceptions.h"
 #include "Model.h"
 #include "ModelLibrary.h"
 #include "ModelPropertyPy.h"
@@ -52,6 +61,25 @@ int Array2DPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+Py::List Array2DPy::getArray() const
+{
+    Py::List list;
+    auto array = getMaterial2DArrayPtr()->getArray();
+
+    for (auto& row : array) {
+        Py::List* rowList = new Py::List();
+        for (auto& column : *row) {
+            auto quantity =
+                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
+            rowList->append(Py::Object(quantity));
+        }
+
+        list.append(*rowList);
+    }
+
+    return list;
+}
+
 Py::Int Array2DPy::getRows() const
 {
     return Py::Int(getMaterial2DArrayPtr()->rows());
@@ -62,15 +90,48 @@ Py::Int Array2DPy::getColumns() const
     return Py::Int(getMaterial2DArrayPtr()->columns());
 }
 
-PyObject* Array2DPy::getDefaultValue(PyObject* args)
+PyObject* Array2DPy::getRow(PyObject* args)
 {
-    char* name;
-    if (!PyArg_ParseTuple(args, "s", &name)) {
+    int row;
+    if (!PyArg_ParseTuple(args, "i", &row)) {
         return nullptr;
     }
 
-    // QVariant value = getMaterial2DArrayPtr()->getPhysicalValue(QString::fromStdString(name));
-    // return _pyObjectFromVariant(value);
+    try {
+        Py::List list;
+
+        auto arrayRow = getMaterial2DArrayPtr()->getRow(row);
+        for (auto& column : *arrayRow) {
+            auto quantity =
+                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
+            list.append(Py::Object(quantity));
+        }
+
+        return Py::new_reference_to(list);
+    }
+    catch (const InvalidIndex&) {
+    }
+
+    PyErr_SetString(PyExc_IndexError, "Invalid array index");
+    return nullptr;
+}
+
+PyObject* Array2DPy::getValue(PyObject* args)
+{
+    int row;
+    int column;
+    if (!PyArg_ParseTuple(args, "ii", &row, &column)) {
+        return nullptr;
+    }
+
+    try {
+        auto value = getMaterial2DArrayPtr()->getValue(row, column);
+        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
+    }
+    catch (const InvalidIndex&) {
+    }
+
+    PyErr_SetString(PyExc_IndexError, "Invalid array index");
     return nullptr;
 }
 

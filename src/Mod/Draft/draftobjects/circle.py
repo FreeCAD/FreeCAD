@@ -30,9 +30,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-
 from draftobjects.base import DraftObject
+from draftutils import params
 
 
 class Circle(DraftObject):
@@ -62,7 +61,7 @@ class Circle(DraftObject):
         obj.addProperty("App::PropertyArea", "Area",
                         "Draft", _tip)
 
-        obj.MakeFace = utils.get_param("fillmode", True)
+        obj.MakeFace = params.get_param("fillmode")
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""

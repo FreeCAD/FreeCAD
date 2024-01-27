@@ -28,6 +28,7 @@ import ArchCommands
 import DraftVecUtils
 import DraftGeomUtils
 import Part
+from draftutils import params
 
 ## @package ArchVRM
 #  \ingroup ARCH
@@ -43,7 +44,7 @@ MAXLOOP = 10 # the max number of loop before abort
 # WARNING: in this module, faces are lists whose first item is the actual OCC face, the
 # other items being additional information such as color, etc.
 
-DEBUG = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ShowVRMDebug")
+DEBUG = params.get_param_arch("ShowVRMDebug")
 
 class Renderer:
     "A renderer object"

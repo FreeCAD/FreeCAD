@@ -3,6 +3,6 @@ channels:
 - conda-forge
 dependencies:
 - conda-devenv
-- mamba==1.4.9  # NOTE: Pin to highest version supported by the devenv
-- python==3.11  # dependencies. If a higher version is installed, a crash
-                # occurs during the downgrade process.
+- mamba==1.4.9    # NOTE: Pin to highest version supported by the devenv
+- python==3.11.*  # dependencies. If a higher version is installed, a crash
+                  # occurs during the downgrade process.

@@ -56,7 +56,7 @@ class MenuCreateCases(unittest.TestCase):
         for i in list:
             if i == "TestMenu":
                 self.b = True
-        self.failUnless(self.b, "Test menu not found")
+        self.assertTrue(self.b, "Test menu not found")
 
     def tearDown(self):
         if self.b:
@@ -81,7 +81,7 @@ class MenuDeleteCases(unittest.TestCase):
         for i in list:
             if i == "TestMenu":
                 self.b = False
-        self.failUnless(self.b == True, "Test menu still added")
+        self.assertTrue(self.b == True, "Test menu still added")
 
     def tearDown(self):
         if self.b:

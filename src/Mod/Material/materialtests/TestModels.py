@@ -20,26 +20,32 @@
 #   USA                                                                   *
 #**************************************************************************
 
-# import FreeCAD
-from os import walk
+"""
+Test module for FreeCAD material models
+"""
+
 import unittest
 import FreeCAD
 import Material
 
 parseQuantity = FreeCAD.Units.parseQuantity
-# import locale
-# locale.setpreferredencoding("UTF8")
 
 class ModelTestCases(unittest.TestCase):
+    """
+    Test class for FreeCAD material models
+    """
     def setUp(self):
+        """ Setup function to initialize test data """
         self.ModelManager = Material.ModelManager()
         self.uuids = Material.UUIDs()
 
     def testModelManager(self):
+        """ Ensure we can access ModelManager member functions """
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 
     def testUUIDs(self):
+        """ Verify the common UUIDs are defined and correct """
         self.assertTrue(self.uuids.Father, "9cdda8b6-b606-4778-8f13-3934d8668e67")
         self.assertTrue(self.uuids.MaterialStandard, "1e2c0088-904a-4537-925f-64064c07d700")
 
@@ -56,6 +62,7 @@ class ModelTestCases(unittest.TestCase):
         self.assertTrue(self.uuids.Electromagnetic, "b2eb5f48-74b3-4193-9fbb-948674f427f3")
 
         self.assertTrue(self.uuids.Architectural, "32439c3b-262f-4b7b-99a8-f7f44e5894c8")
+        self.assertTrue(self.uuids.ArchitecturalRendering, "27e48ac9-54e1-4a1f-aa49-d5d690242705")
 
         self.assertTrue(self.uuids.Costs, "881df808-8726-4c2e-be38-688bb6cce466")
 
@@ -64,7 +71,27 @@ class ModelTestCases(unittest.TestCase):
         self.assertTrue(self.uuids.AdvancedRendering, "c880f092-cdae-43d6-a24b-55e884aacbbf")
         self.assertTrue(self.uuids.VectorRendering, "fdf5a80e-de50-4157-b2e5-b6e5f88b680e")
 
+        self.assertTrue(self.uuids.RenderAppleseed, "b0a10f70-13bf-4598-ab63-bcfbbcd813e3")
+        self.assertTrue(self.uuids.RenderCarpaint, "4d2cc163-0707-40e2-a9f7-14288c4b97bd")
+        self.assertTrue(self.uuids.RenderCycles, "a6da1b66-929c-48bf-ae80-3b0495c7b50b")
+        self.assertTrue(self.uuids.RenderDiffuse, "c19b2d30-c55b-48aa-a938-df9e2f7779cf")
+        self.assertTrue(self.uuids.RenderDisney, "f8723572-4470-4c39-a749-6d3b71358a5b")
+        self.assertTrue(self.uuids.RenderEmission, "9f6cb588-c89d-4a74-9d0f-2786a8568cec")
+        self.assertTrue(self.uuids.RenderGlass, "d76a56f5-7250-4efb-bb89-8ea0a9ccaa6b")
+        self.assertTrue(self.uuids.RenderLuxcore, "6b992304-33e0-490b-a391-e9d0af79bb69")
+        self.assertTrue(self.uuids.RenderLuxrender, "67ac6a63-e173-4e05-898b-af743f1f9563")
+        self.assertTrue(self.uuids.RenderMixed, "84bab333-984f-47fe-a512-d17c7cb2daa9")
+        self.assertTrue(self.uuids.RenderOspray, "a4792c23-0be9-47c2-b16d-47b2d2d5efd6")
+        self.assertTrue(self.uuids.RenderPbrt, "35b34b82-4325-4d27-97bd-d10bb2c56586")
+        self.assertTrue(self.uuids.RenderPovray, "6ec8b415-4c7b-4206-a80b-2ea64101f34b")
+        self.assertTrue(self.uuids.RenderSubstancePBR, "f212b643-db96-452e-8428-376a4534e5ab")
+        self.assertTrue(self.uuids.RenderTexture, "fc9b6135-95cd-4ba8-ad9a-0972caeebad2")
+        self.assertTrue(self.uuids.RenderWB, "344008be-a837-43af-90bc-f795f277b309")
+
+        self.assertTrue(self.uuids.TestModel, "34d0583d-f999-49ba-99e6-aa40bd5c3a6b")
+
     def testModelLoad(self):
+        """ Test that the Density model has been loaded correctly """
         density = self.ModelManager.getModel(self.uuids.Density)
         self.assertIsNotNone(density)
         self.assertEqual(density.Name, "Density")

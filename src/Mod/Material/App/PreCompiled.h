@@ -47,14 +47,26 @@
 
 // STL
 #include <algorithm>
+#include <fstream>
 #include <map>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
 
 // Qt
 #include <QtGlobal>
+#include <QDirIterator>
+#include <QFileInfo>
+#include <QIODevice>
+#include <QList>
+#include <QMetaType>
+#include <QMetaType>
 #include <QRegularExpression>
+#include <QString>
+#include <QTextStream>
+#include <QUuid>
+#include <QVector>
 
 #endif  //_PreComp_
 

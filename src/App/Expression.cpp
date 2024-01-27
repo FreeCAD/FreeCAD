@@ -37,6 +37,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <regex>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -517,6 +518,29 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     }
 }
 
+static const std::regex REGEX_QUANTITY(
+    R"(\s*)"
+    R"(([-+]?[0-9]*[.]?[0-9]+([eE][-+]?[0-9]+)?))" // value
+    R"(\s*)"
+    R"(([^\s]+)?)" // unit
+    R"(\s*)"
+);
+
+// https://github.com/FreeCAD/FreeCAD/issues/11825
+Quantity parseQuantityFromText(std::string text) {
+    std::smatch match;
+    if (std::regex_match(text, match, REGEX_QUANTITY)) {
+        std::string value_text = match[1];
+        std::string unit_text = match[3];
+        double value = std::stod(value_text);
+        Unit unit = Unit(QString::fromStdString(unit_text));
+        return Quantity(value, unit);
+    } else {
+        std::string error_message = "Failed to parse to Quantity: text='" + text + "'";
+        PARSER_THROW(error_message);
+    }
+}
+
 Quantity anyToQuantity(const App::any &value, const char *msg) {
     if (is_type(value,typeid(Quantity))) {
         return cast<Quantity>(value);
@@ -530,6 +554,10 @@ Quantity anyToQuantity(const App::any &value, const char *msg) {
         return Quantity(cast<float>(value));
     } else if (is_type(value,typeid(double))) {
         return Quantity(cast<double>(value));
+    } else if (is_type(value,typeid(const char*))) {
+        return parseQuantityFromText(std::string(cast<const char*>(value)));
+    } else if (is_type(value,typeid(std::string))) {
+        return parseQuantityFromText(cast<std::string>(value));
     }
     if(!msg)
         msg = "Failed to convert to Quantity";

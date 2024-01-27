@@ -43,6 +43,8 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool isActivePart();
+    void toggleActivePart();
 
     /// deliver the icon shown in the tree view
     /// override from ViewProvider.h

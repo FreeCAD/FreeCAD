@@ -113,36 +113,6 @@ class ToggleConstructionMode(BaseMode):
 Gui.addCommand('Draft_ToggleConstructionMode', ToggleConstructionMode())
 
 
-class ToggleContinueMode(BaseMode):
-    """GuiCommand for the Draft_ToggleContinueMode tool.
-
-    When continue mode is active, any drawing tool that is terminated
-    will automatically start again. This can be used to draw several
-    objects one after the other in succession.
-    """
-
-    def __init__(self):
-        super(ToggleContinueMode, self).__init__(name=translate("draft","Continue mode"))
-
-    def GetResources(self):
-        """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_Continue',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleContinueMode","Toggle continue mode"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleContinueMode","Toggles the Continue mode.\nWhen this is active, any drawing tool that is terminated will automatically start again.\nThis can be used to draw several objects one after the other in succession.")}
-        return d
-
-    def Activated(self):
-        """Execute when the command is called.
-
-        It calls the `toggleContinue()` method of the `DraftToolbar` class.
-        """
-        super(ToggleContinueMode, self).Activated(mode="continue")
-
-
-Gui.addCommand('Draft_ToggleContinueMode', ToggleContinueMode())
-
-
 class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
     """GuiCommand for the Draft_ToggleDisplayMode tool.
 

@@ -97,7 +97,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
 {
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return nullptr;
     if(!subname)
         subname = "";

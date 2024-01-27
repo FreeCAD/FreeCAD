@@ -21,18 +21,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMenu>
 #include <QMessageBox>
 #endif
-
-#include <QMenu>
 
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/Materials.h>
 
-#include "ArrayDelegate.h"
 #include "ArrayModel.h"
+#include "ListDelegate.h"
 #include "ListEdit.h"
 #include "ListModel.h"
 #include "ui_ListEdit.h"
@@ -43,7 +42,7 @@ using namespace MatGui;
 /* TRANSLATOR MatGui::ListEdit */
 
 ListEdit::ListEdit(const QString& propertyName,
-                   std::shared_ptr<Materials::Material> material,
+                   const std::shared_ptr<Materials::Material>& material,
                    QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_ListEdit)
@@ -62,40 +61,28 @@ ListEdit::ListEdit(const QString& propertyName,
         _property = nullptr;
     }
     if (_property) {
-        Base::Console().Log("Value type %d\n",
-                            static_cast<int>(_property->getMaterialValue()->getType()));
         _value = _property->getList();
     }
     else {
         Base::Console().Log("No value loaded\n");
     }
-    // if (_value) {
-    //     Base::Console().Log("Value type %d\n", static_cast<int>(_value->getType()));
-    // }
 
     setupListView();
-
-    // ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
-    // connect(ui->listView, &QWidget::customContextMenuRequested, this, &ListEdit::onContextMenu);
-
-    // _deleteAction.setText(tr("Delete row"));
-    // _deleteAction.setShortcut(Qt::Key_Delete);
-    // connect(&_deleteAction, &QAction::triggered, this, &ListEdit::onDelete);
-    // ui->listView->addAction(&_deleteAction);
+    setDelegates(ui->listView);
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &ListEdit::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &ListEdit::reject);
+
+    QItemSelectionModel* selectionModel = ui->listView->selectionModel();
+    connect(selectionModel,
+            &QItemSelectionModel::selectionChanged,
+            this,
+            &ListEdit::onSelectionChanged);
 }
 
-void ListEdit::setColumnDelegates(QListView* list)
+void ListEdit::setDelegates(QListView* list)
 {
-    int length = _property->columns();
-    for (int i = 0; i < length; i++) {
-        const Materials::MaterialProperty& column = _property->getColumn(i);
-        list->setItemDelegateForColumn(
-            i,
-            new ArrayDelegate(column.getType(), column.getUnits(), this));
-    }
+    list->setItemDelegate(new ListDelegate(_property->getType(), _property->getUnits(), this));
 }
 
 void ListEdit::setupListView()
@@ -107,11 +94,9 @@ void ListEdit::setupListView()
     auto list = ui->listView;
     auto model = new ListModel(_property, _value, this);
     list->setModel(model);
-    // table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    list->setEditTriggers(QAbstractItemView::AllEditTriggers);
     list->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    // setColumnWidths(list);
-    // setColumnDelegates(list);
     connect(model, &QAbstractItemModel::dataChanged, this, &ListEdit::onDataChanged);
 }
 
@@ -128,7 +113,7 @@ void ListEdit::onDataChanged(const QModelIndex& topLeft,
 
 bool ListEdit::newRow(const QModelIndex& index)
 {
-    ListModel* model = static_cast<ListModel*>(ui->listView->model());
+    auto model = dynamic_cast<ListModel*>(ui->listView->model());
     return model->newRow(index);
 }
 
@@ -136,10 +121,8 @@ void ListEdit::onDelete(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("ListEdit::onDelete()\n");
     QItemSelectionModel* selectionModel = ui->listView->selectionModel();
     if (!selectionModel->hasSelection() || newRow(selectionModel->currentIndex())) {
-        Base::Console().Log("\tNothing selected\n");
         return;
     }
 
@@ -176,7 +159,7 @@ int ListEdit::confirmDelete()
 
 void ListEdit::deleteSelected()
 {
-    ListModel* model = static_cast<ListModel*>(ui->listView->model());
+    auto model = dynamic_cast<ListModel*>(ui->listView->model());
     QItemSelectionModel* selectionModel = ui->listView->selectionModel();
     auto index = selectionModel->currentIndex();
     model->deleteRow(index);
@@ -191,6 +174,22 @@ void ListEdit::accept()
 void ListEdit::reject()
 {
     QDialog::reject();
+}
+
+void ListEdit::onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    Q_UNUSED(selected)
+    Q_UNUSED(deselected)
+
+    // auto indexList = selected.indexes();
+    // if (indexList.size() > 0) {
+    //     auto index = indexList[0];
+    //     auto listModel = dynamic_cast<const ListModel*>(index.model());
+    //     if (listModel->newRow(index)) {
+    //         Base::Console().Log("*** New Row ***\n");
+    //         const_cast<ListModel*>(listModel)->insertRows(index.row(), 1);
+    //     }
+    // }
 }
 
 #include "moc_ListEdit.cpp"

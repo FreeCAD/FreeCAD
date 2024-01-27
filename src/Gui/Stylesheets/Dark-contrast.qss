@@ -2343,3 +2343,27 @@ Gui--UrlLabel {
     color : rgba(0,91,255,255); /* Deep sky blue */
     text-decoration : underline;
 }
+
+/*==================================================================================================
+Settings menu #groupsTreeView:
+==================================================================================================*/
+
+QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
+   border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
+    border-image: none 0;
+  }

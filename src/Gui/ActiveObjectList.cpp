@@ -46,7 +46,7 @@ App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool re
     if (subname)
         *subname = info.subname;
     auto obj = info.obj;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return nullptr;
     if (!info.subname.empty()) {
         obj = obj->getSubObject(info.subname.c_str());
@@ -78,7 +78,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
 {
     ObjectInfo info;
     info.obj = nullptr;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return info;
 
     if (subname) {
@@ -111,10 +111,34 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
             if (info.obj)
                 break;
         }
+        if(!info.obj) {
+            // No selection is found, try to obtain the object hierarchy using
+            // DocumentObject::getParents()
+            unsigned long count = 0xffffffff;
+            for(auto &v : obj->getParents()) {
+                if(v.first->getDocument() != _Doc->getDocument())
+                    continue;
 
-        if (!info.obj && obj->getDocument()==_Doc->getDocument())
-            info.obj = obj;
+                // We prioritize on non-linked group object having the least
+                // hierarchies.
+                unsigned long cnt = v.first->getSubObjectList(v.second.c_str()).size();
+                if(v.first->getLinkedObject(false) != v.first)
+                    cnt &= 0x8000000;
+                if(cnt < count) {
+                    count = cnt;
+                    info.obj = v.first;
+                    info.subname = v.second;
+                }
+            }
+
+            if(!info.obj) {
+                if (obj->getDocument()!=_Doc->getDocument())
+                    return info;
+                info.obj = obj;
+            }
+        }
     }
+
     return info;
 }
 

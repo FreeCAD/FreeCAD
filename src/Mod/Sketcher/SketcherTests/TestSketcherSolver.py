@@ -240,10 +240,10 @@ class TestSketcherSolver(unittest.TestCase):
         CreateSlotPlateSet(self.Slot)
         self.Doc.recompute()
         # test if all edges created
-        self.failUnless(len(self.Slot.Shape.Edges) == 4)
+        self.assertTrue(len(self.Slot.Shape.Edges) == 4)
         CreateSlotPlateInnerSet(self.Slot)
         self.Doc.recompute()
-        self.failUnless(len(self.Slot.Shape.Edges) == 9)
+        self.assertTrue(len(self.Slot.Shape.Edges) == 9)
 
     def testIssue3245(self):
         self.Doc2 = FreeCAD.newDocument("Issue3245")
@@ -286,8 +286,8 @@ class TestSketcherSolver(unittest.TestCase):
         self.Doc2.recompute()
         self.Doc2.Sketch.delGeometry(2)
         values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
-        self.failUnless(values["Constraints[4]"] == "60")
-        self.failUnless(values["Constraints[5]"] == "65")
+        self.assertTrue(values["Constraints[4]"] == "60")
+        self.assertTrue(values["Constraints[5]"] == "65")
         FreeCAD.closeDocument("Issue3245")
 
     def testIssue3245_2(self):
@@ -341,7 +341,7 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.delConstraint(8)
         values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
         self.Doc2.recompute()
-        self.failUnless(len(values) == 0)
+        self.assertTrue(len(values) == 0)
         FreeCAD.closeDocument("Issue3245")
 
     def testBlockConstraintEllipse(self):
@@ -370,7 +370,7 @@ class TestSketcherSolver(unittest.TestCase):
             Sketcher.Constraint("Block", 1)
         )  # Block the major axis in place (on purpose)
         status = ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         ActiveSketch.addConstraint(
             Sketcher.Constraint("Distance", 1, 27.277350)
         )  # Length of major axis
@@ -379,21 +379,21 @@ class TestSketcherSolver(unittest.TestCase):
         )  # ensure length is driving (because pre-existing block constraint on major axis)
         ActiveSketch.setDatum(6, App.Units.Quantity("28.000000 mm"))
         status = ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         ActiveSketch.addConstraint(
             Sketcher.Constraint("Distance", 2, 11.747233)
         )  # Length of minor axis
         ActiveSketch.setDatum(7, App.Units.Quantity("15.000000 mm"))
         ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         ActiveSketch.addConstraint(Sketcher.Constraint("Block", 2))
         ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         ActiveSketch.addConstraint(
             Sketcher.Constraint("Horizontal", 1)
         )  # Make major axis horizontal (together with horizontal and length driving constraints)
         ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         ActiveSketch.addConstraint(
             Sketcher.Constraint("DistanceX", 0, 3, -1, 1, 27.655024)
         )  # Locate Ellipse center
@@ -401,7 +401,7 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.setDatum(10, App.Units.Quantity("25.000000 mm"))
         ActiveSketch.setDatum(11, App.Units.Quantity("-20.000000 mm"))
         ActiveSketch.solve()
-        self.failUnless(status == 0)  # no redundants/conflicts/convergence issues
+        self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         FreeCAD.closeDocument(self.Doc3.Name)
 
     def testThreeLinesWithCoincidences_1(self):
@@ -483,7 +483,7 @@ class TestSketcherSolver(unittest.TestCase):
     def assertSuccessfulSolve(self, sketch, msg=None):
         status = sketch.solve()
         # TODO: can we get the solver's messages somehow to improve the message?
-        self.failUnless(status == 0, msg=msg or "solver didn't converge")
+        self.assertTrue(status == 0, msg=msg or "solver didn't converge")
 
     def assertShapeDistance(self, shape1, shape2, expected_distance, msg=None):
         distance, _, _ = shape1.distToShape(shape2)

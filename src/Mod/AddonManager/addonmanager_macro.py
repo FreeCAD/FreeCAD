@@ -69,6 +69,7 @@ class Macro:
         self.version = ""
         self.date = ""
         self.src_filename = ""
+        self.filename_from_url = ""
         self.author = ""
         self.icon = ""
         self.icon_source = None
@@ -104,6 +105,8 @@ class Macro:
         """The filename of this macro"""
         if self.on_git:
             return os.path.basename(self.src_filename)
+        elif self.filename_from_url:
+            return self.filename_from_url
         return (self.name + ".FCMacro").replace(" ", "_")
 
     def is_installed(self):
@@ -211,7 +214,13 @@ class Macro:
                 )
                 return None
             code = u2.decode("utf8")
+            self._set_filename_from_url(self.raw_code_url)
         return code
+
+    def _set_filename_from_url(self, url: str):
+        lhs, slash, rhs = url.rpartition("/")
+        if rhs.endswith(".py") or rhs.lower().endswith(".fcmacro"):
+            self.filename_from_url = rhs
 
     @staticmethod
     def _read_code_from_wiki(p: str) -> Optional[str]:

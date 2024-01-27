@@ -32,12 +32,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftguitools.gui_base as gui_base
-
-from draftutils.translate import translate
+from draftguitools import gui_base
+from draftutils import params
 from draftutils import utils
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+from draftutils.translate import translate
 
 
 class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
@@ -94,8 +92,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form = Gui.PySideUic.loadUi(ui_file)
 
         # restore stored size
-        w = param.GetInt("AnnotationStyleEditorWidth", 450)
-        h = param.GetInt("AnnotationStyleEditorHeight", 450)
+        w = params.get_param("AnnotationStyleEditorWidth")
+        h = params.get_param("AnnotationStyleEditorHeight")
         self.form.resize(w, h)
 
         # center the dialog over FreeCAD window
@@ -135,8 +133,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.save_meta(self.styles)
 
         # store dialog size
-        param.SetInt("AnnotationStyleEditorWidth", self.form.width())
-        param.SetInt("AnnotationStyleEditorHeight", self.form.height())
+        params.set_param("AnnotationStyleEditorWidth", self.form.width())
+        params.set_param("AnnotationStyleEditorHeight", self.form.height())
 
     def read_meta(self):
         """Read the document Meta attribute and return a dict."""

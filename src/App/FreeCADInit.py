@@ -303,7 +303,7 @@ Crt = FreeCAD.Console.PrintCritical
 Ntf = FreeCAD.Console.PrintNotification
 Tnf = FreeCAD.Console.PrintTranslatedNotification
 
-#store the cmake variales
+#store the cmake variables
 App.__cmake__ = cmake;
 
 #store unit test names

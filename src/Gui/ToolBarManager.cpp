@@ -408,11 +408,7 @@ void ToolBarManager::restoreState() const
         }
     }
 
-
-    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-        ->GetGroup("Preferences")->GetGroup("General");
-    bool lockToolBars = hPref->GetBool("LockToolBars", false);
-    setMovable(!lockToolBars);
+    setMovable(!areToolBarsLocked());
 }
 
 void ToolBarManager::retranslate() const
@@ -424,6 +420,30 @@ void ToolBarManager::retranslate() const
             QApplication::translate("Workbench",
                                     (const char*)toolbarName));
     }
+}
+
+bool Gui::ToolBarManager::areToolBarsLocked() const
+{
+    auto hPref = App::GetApplication()
+                     .GetUserParameter()
+                     .GetGroup("BaseApp")
+                     ->GetGroup("Preferences")
+                     ->GetGroup("General");
+
+    return hPref->GetBool("LockToolBars", false);
+}
+
+void Gui::ToolBarManager::setToolBarsLocked(bool locked) const
+{
+    auto hPref = App::GetApplication()
+                     .GetUserParameter()
+                     .GetGroup("BaseApp")
+                     ->GetGroup("Preferences")
+                     ->GetGroup("General");
+
+    hPref->SetBool("LockToolBars", locked);
+
+    setMovable(!locked);
 }
 
 void Gui::ToolBarManager::setMovable(bool moveable) const

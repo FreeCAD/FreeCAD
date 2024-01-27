@@ -29,14 +29,15 @@
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepClass_FaceClassifier.hxx>
-#include <Mod/Part/App/BRepOffsetAPI_MakeOffsetFix.h>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepOffsetAPI_MakeOffset.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <gp_Pln.hxx>
 
 #include <Base/Exception.h>
 
@@ -118,6 +119,7 @@ public:
         , deleteOriginal(false)
         , offsetLengthSet(false)
         , offsetConstraint(false)
+        , onlySingleLines(true)
         , offsetLength(1.)
     {}
 
@@ -203,7 +205,7 @@ private:
     Base::Vector2d endpoint, pointOnSourceWire;
     std::vector<TopoDS_Wire> sourceWires;
 
-    bool deleteOriginal, offsetLengthSet, offsetConstraint;
+    bool deleteOriginal, offsetLengthSet, offsetConstraint, onlySingleLines;
     double offsetLength;
     int firstCurveCreated;
 
@@ -213,7 +215,18 @@ private:
         short joinType =
             constructionMethod() == DrawSketchHandlerOffset::ConstructionMethod::Arc ? 0 : 2;
 
-        Part::BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
+        // Offset will fail for single lines if we don't set a plane in ctor.
+        // But if we set a plane, then the direction of offset is forced...
+        // so we set a plane if and only if there are not a single sourceWires with more than single
+        // line.
+        BRepOffsetAPI_MakeOffset mkOffset;
+
+        if (onlySingleLines) {
+            TopoDS_Face workingPlane = BRepBuilderAPI_MakeFace(gp_Pln(gp::Origin(), gp::DZ()));
+            mkOffset = BRepOffsetAPI_MakeOffset(workingPlane);
+        }
+        mkOffset.Init(GeomAbs_JoinType(joinType), allowOpenResult);
+
         for (TopoDS_Wire& wire : sourceWires) {
             mkOffset.AddWire(wire);
         }
@@ -905,7 +918,15 @@ private:
             for (auto& curve : CC) {
                 mkWire.Add(TopoDS::Edge(Obj->getGeometry(curve)->toShape()));
             }
-            sourceWires.push_back(mkWire.Wire());
+
+            // Here we make sure that if possible the first wire is not a single line.
+            if (CC.size() == 1 && isLineSegment(*Obj->getGeometry(CC[0]))) {
+                sourceWires.push_back(mkWire.Wire());
+            }
+            else {
+                sourceWires.insert(sourceWires.begin(), mkWire.Wire());
+                onlySingleLines = false;
+            }
         }
     }
 

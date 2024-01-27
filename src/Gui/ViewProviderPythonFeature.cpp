@@ -1136,8 +1136,8 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::replaceObject(
         App::DocumentObject *oldObj, App::DocumentObject *newObj)
 {
-    if(!oldObj || !oldObj->getNameInDocument()
-            || !newObj || !newObj->getNameInDocument())
+    if(!oldObj || !oldObj->isAttachedToDocument()
+            || !newObj || !newObj->isAttachedToDocument())
         return NotImplemented;
 
     FC_PY_CALL_CHECK(replaceObject);

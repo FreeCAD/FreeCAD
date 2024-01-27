@@ -65,6 +65,7 @@ void DlgPrefsTechDrawColorsImp::saveSettings()
     ui->pcbLightOnDark->onSave();
     ui->pcbMonochrome->onSave();
     ui->pcbLightTextColor->onSave();
+    ui->pcbUnderline->onSave();
 }
 
 void DlgPrefsTechDrawColorsImp::loadSettings()
@@ -90,6 +91,7 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcbLightOnDark->onRestore();
     ui->pcbMonochrome->onRestore();
     ui->pcbLightTextColor->onRestore();
+    ui->pcbUnderline->onRestore();
 }
 
 /**

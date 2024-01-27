@@ -2,7 +2,7 @@ macro(ConfigureCMakeVariables)
     # ================================================================================
     # Output directories for install target
 
-    if(WIN32)
+    if(MSVC)
         set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root directory")
         set(CMAKE_INSTALL_BINDIR bin CACHE PATH "Output directory for executables")
         set(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")

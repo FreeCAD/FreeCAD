@@ -32,17 +32,17 @@ import re
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftfunctions.draftify as ext_draftify
-import draftfunctions.fuse as fuse
-import draftmake.make_line as make_line
-import draftmake.make_wire as make_wire
-import draftmake.make_block as make_block
-
+from draftfunctions import draftify
+from draftfunctions import fuse
+from draftgeoutils.geometry import is_straight_line
+from draftmake import make_block
+from draftmake import make_line
+from draftmake import make_wire
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
-from draftgeoutils.geometry import is_straight_line
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -216,9 +216,8 @@ def upgrade(objects, delete=False, force=None):
 
     def makeShell(objectslist):
         """Make a shell or compound with the given objects."""
-        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        preserveFaceColor = params.GetBool("preserveFaceColor")  # True
-        preserveFaceNames = params.GetBool("preserveFaceNames")  # True
+        preserveFaceColor = params.get_param("preserveFaceColor")
+        preserveFaceNames = params.get_param("preserveFaceNames")
         faces = []
         facecolors = [[], []] if preserveFaceColor else None
         for obj in objectslist:
@@ -424,7 +423,7 @@ def upgrade(objects, delete=False, force=None):
                     "makeFusion" : makeFusion,
                     "makeShell" : makeShell,
                     "makeFaces" : makeFaces,
-                    "draftify" : ext_draftify.draftify,
+                    "draftify" : draftify.draftify,
                     "joinFaces" : joinFaces,
                     "makeSketchFace" : makeSketchFace,
                     "makeWires" : makeWires,
@@ -484,7 +483,7 @@ def upgrade(objects, delete=False, force=None):
             # only one object: if not parametric, we "draftify" it
             elif (len(objects) == 1
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-                result = ext_draftify.draftify(objects[0])
+                result = draftify.draftify(objects[0])
                 if result:
                     add_list.append(result)
                     _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
@@ -523,7 +522,7 @@ def upgrade(objects, delete=False, force=None):
             # only one object: if not parametric, we "draftify" it
             # elif (len(objects) == 1
             #       and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-            #     result = ext_draftify.draftify(objects[0])
+            #     result = draftify.draftify(objects[0])
             #     if result:
             #         _msg(translate("draft","Found 1 non-parametric objects: draftifying it"))
             elif (len(objects) == 1 and len(edges) == 1
@@ -532,7 +531,7 @@ def upgrade(objects, delete=False, force=None):
                 edge_type = DraftGeomUtils.geomType(e)
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
-                    result = ext_draftify.draftify(objects[0])
+                    result = draftify.draftify(objects[0])
                     if result:
                         add_list.append(result)
                         _msg(translate("draft","Found 1 object: draftifying it"))

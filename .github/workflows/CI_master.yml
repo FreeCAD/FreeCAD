@@ -39,23 +39,42 @@ jobs:
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
+  # GA in Jan-Mar 2024 Timeframe: https://github.com/actions/runner-images/issues/8439#issuecomment-1755601587
+  # MacOS_13_Conda_Apple:
+  #   needs: [Prepare]
+  #   uses: ./.github/workflows/sub_buildMacOSCondaApple.yml
+  #   with:
+  #     artifactBasename: MacOS_13_Conda_Apple-${{ github.run_id }}
+
+  MacOS_13_Conda_Intel:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildMacOSCondaIntel.yml
+    with:
+      artifactBasename: MacOS_13_Conda_Intel-${{ github.run_id }}
+
   Ubuntu_20-04:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2004.yml
     with:
       artifactBasename: Ubuntu_20-04-${{ github.run_id }}
 
-  Ubuntu_22-04:
+  Ubuntu_22-04_Conda:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204.yml
+    uses: ./.github/workflows/sub_buildUbuntu2204Conda.yml
     with:
-      artifactBasename: Ubuntu_22-04-${{ github.run_id }}
+      artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
+
+  Windows_Conda:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildWindowsConda.yml
+    with:
+      artifactBasename: Windows_Conda-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
@@ -67,7 +86,16 @@ jobs:
       changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
 
   WrapUp:
-    needs: [Prepare, Ubuntu_20-04, Ubuntu_22-04, Windows, Lint]
+    needs: [
+        Prepare,
+        # MacOS_13_Conda_Apple,
+        MacOS_13_Conda_Intel,
+        Ubuntu_20-04,
+        Ubuntu_22-04_Conda,
+        Windows,
+        Windows_Conda,
+        Lint
+      ]
     if: always()
     uses: ./.github/workflows/sub_wrapup.yml
     with:

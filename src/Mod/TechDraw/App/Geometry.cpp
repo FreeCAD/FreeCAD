@@ -30,6 +30,7 @@
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRepAlgoAPI_Section.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -545,169 +546,66 @@ bool BaseGeom::validateEdge(TopoDS_Edge edge)
     return !DrawUtil::isCrazy(edge);
 }
 
+TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
+    // Extend given edge so we can get intersections even outside its boundaries
+    try {
+        BRepAdaptor_Curve curve(edge);
+        switch (curve.GetType()) {
+            case GeomAbs_Line:
+                // Edge longer than 10m is considered "crazy", thus limit intersection(s) to this perimeter
+                return BRepBuilderAPI_MakeEdge(curve.Line(), -10000.0, +10000.0);
+            case GeomAbs_Circle:
+                // If an arc of circle was provided, return full circle
+                return BRepBuilderAPI_MakeEdge(curve.Circle());
+            case GeomAbs_Ellipse:
+                // If an arc of ellipse was provided, return full ellipse
+                return BRepBuilderAPI_MakeEdge(curve.Ellipse());
+            default:
+                // Currently we are not extrapolating BSplines, though it is technically possible
+                return BRepBuilderAPI_MakeEdge(curve.Curve().Curve());
+        }
+    }
+    catch (Standard_Failure &e) {
+        Base::Console().Error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
+    }
+
+    return TopoDS_Edge();
+}
+
 std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 {
     // find intersection vertex(es) between two edges
-    // permitted are: line, circle or arc of circle
     // call: interPoints = line1.intersection(line2);
-    # define unknown 0
-    # define isGeneric 1
-    # define isArcOrCircle 2
-    // we check the type of the two objects
-    int edge1(unknown), edge2(unknown);
-    if (this->getGeomType() == TechDraw::CIRCLE ||
-        this->getGeomType() == TechDraw::ARCOFCIRCLE)
-        edge1 = isArcOrCircle;
-    else if (this->getGeomType() == TechDraw::GENERIC)
-        edge1 = isGeneric;
-    if (geom2->getGeomType() == TechDraw::CIRCLE ||
-        geom2->getGeomType() == TechDraw::ARCOFCIRCLE)
-        edge2 = isArcOrCircle;
-    else if (geom2->getGeomType() == TechDraw::GENERIC)
-        edge2 = isGeneric;
-    // we calculate the intersections
     std::vector<Base::Vector3d> interPoints;
-    if (edge1 == isGeneric && edge2 == isGeneric)
-        intersectionLL(shared_from_this(), geom2, interPoints);
-    else if (edge1 == isArcOrCircle && edge2 == isGeneric)
-        intersectionCL(shared_from_this(), geom2, interPoints);
-    else if (edge1 == isGeneric && edge2 == isArcOrCircle)
-        intersectionCL(geom2, shared_from_this(), interPoints);
-    else if (edge1 == isArcOrCircle && edge2 == isArcOrCircle)
-        intersectionCC(shared_from_this(), geom2, interPoints);
+
+    TopoDS_Edge edge1 = completeEdge(this->getOCCEdge());
+    if (edge1.IsNull()) {
+        return interPoints;
+    }
+
+    TopoDS_Edge edge2 = completeEdge(geom2->getOCCEdge());
+    if (edge2.IsNull()) {
+        return interPoints;
+    }
+
+    BRepAlgoAPI_Section sectionOp(edge1, edge2);
+    sectionOp.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
+    sectionOp.SetNonDestructive(true);
+
+    sectionOp.Build();
+    if (!sectionOp.HasErrors()) {
+        TopoDS_Shape sectionShape = sectionOp.Shape();
+        if (!sectionShape.IsNull()) {
+            TopExp_Explorer explorer(sectionShape, TopAbs_VERTEX);
+            while (explorer.More()) {
+                Base::Vector3d pt(DrawUtil::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
+                interPoints.push_back(DrawUtil::invertY(pt));
+                explorer.Next();
+            }
+        }
+    }
+
     return interPoints;
-}
-
-void BaseGeom::intersectionLL(TechDraw::BaseGeomPtr geom1,
-                              TechDraw::BaseGeomPtr geom2,
-                              std::vector<Base::Vector3d>& interPoints)
-{
-    // find intersection vertex of two lines
-    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-    // we calculate vectors to start points and direction vectors
-    Base::Vector3d startPnt1 = gen1->points.at(0);
-    Base::Vector3d endPnt1 = gen1->points.at(1);
-    Base::Vector3d startPnt2 = gen2->points.at(0);
-    Base::Vector3d endPnt2 = gen2->points.at(1);
-    Base::Vector3d dir1 = endPnt1 - startPnt1;
-    Base::Vector3d dir2 = endPnt2 - startPnt2;
-    // we create equations a*x+b*y+c=0 for both lines
-    float a1 = -dir1.y;
-    float b1 = dir1.x;
-    float c1 = -startPnt1.x * dir1.y + startPnt1.y * dir1.x;
-    float a2 = -dir2.y;
-    float b2 = dir2.x;
-    float c2 = -startPnt2.x * dir2.y + startPnt2.y * dir2.x;
-    float denom = a1 * b2 - a2 * b1;
-    if (abs(denom) >= 0.01)
-    // lines not (nearly) parallel, we calculate intersections
-    {
-        float xIntersect = (c1 * b2 - c2 * b1) / denom;
-        float yIntersect = (a1 * c2 - a2 * c1) / denom;
-        yIntersect = -yIntersect;
-        Base::Vector3d interPoint(xIntersect, yIntersect, 0.0);
-        interPoints.push_back(interPoint);
-    }
-}
-
-void BaseGeom::intersectionCL(TechDraw::BaseGeomPtr geom1,
-                              TechDraw::BaseGeomPtr geom2,
-                              std::vector<Base::Vector3d>& interPoints)
-{
-    // find intersection vertex(es) between one circle and one line
-    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
-    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-    // we calculate vectors to circle center, start point and direction vector
-    Base::Vector3d cirleCenter = gen1->center;
-    Base::Vector3d startPnt = gen2->points.at(0);
-    Base::Vector3d endPnt = gen2->points.at(1);
-    Base::Vector3d dir = endPnt - startPnt;
-    // we create equations of the circle: (x-x0)^2+(y-y0)^2=r^2
-    // and the line: a*x+b*y+c=0
-    float r0 = gen1->radius;
-    float x0 = cirleCenter.x;
-    float y0 = cirleCenter.y;
-    float a = -dir.y;
-    float b = dir.x;
-    float c = -startPnt.x * dir.y + startPnt.y * dir.x;
-    // we shift line and circle so that the circle center is in the origin
-    // and calculate constant d of new line equation
-    float d = c - a * x0 - b * y0;
-    float ab = a * a + b * b;
-    float rootArg = r0 * r0 * ab - d * d;
-    if (rootArg > 0)
-    // line and circle have common points
-    {
-        if (rootArg < 0.01)
-        // line is the tangent line, one intersection point
-        {
-            float x1 = x0 + a * d / ab;
-            float y1 = -y0 + b * d / ab;
-            Base::Vector3d interPoint1(x1, y1, 0.0);
-            interPoints.push_back(interPoint1);
-        }
-        else
-        // line is crossing the circle, two intersection points
-        {
-            float root = sqrt(rootArg);
-            float x1 = x0 + (a * d + b * root) / ab;
-            float y1 = -y0 - (b * d - a * root) / ab;
-            float x2 = x0 + (a * d - b * root) / ab;
-            float y2 = -y0 - (b * d + a * root) / ab;
-            Base::Vector3d interPoint1(x1, y1, 0.0);
-            interPoints.push_back(interPoint1);
-            Base::Vector3d interPoint2(x2, y2, 0.0);
-            interPoints.push_back(interPoint2);
-        }
-    }
-}
-
-void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
-                            TechDraw::BaseGeomPtr geom2,
-                            std::vector<Base::Vector3d>& interPoints)
-{
-    // find intersection vertex(es) between two circles
-    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
-    TechDraw::CirclePtr gen2 = std::static_pointer_cast<TechDraw::Circle>(geom2);
-    Base::Vector3d Center1 = gen1->center;
-    Base::Vector3d Center2 = gen2->center;
-    float r1 = gen1->radius;
-    float r2 = gen2->radius;
-    // we calculate the distance d12 of the centers, and the
-    // two orthonormal vectors m and n
-    float d12 = (Center2 - Center1).Length();
-    Base::Vector3d m = (Center2 - Center1).Normalize();
-    Base::Vector3d n(-m.y, m.x, 0.0);
-    // we calculate d0, the distance from center1 to the tie line
-    // and rootArg, the square of the distance of the intersection points
-    float d0 = (r1 * r1 - r2 * r2 + d12 * d12) / (2 * d12);
-    float rootArg = r1 * r1 - d0 * d0;
-    if (rootArg > 0)
-    // the circles have intersection points
-    {
-        if (rootArg < 0.1)
-        // the circles touch, one intersection point
-        {
-            Base::Vector3d interPoint1 = -Center1 + m * d0;
-            interPoint1.y = -interPoint1.y;
-            interPoints.push_back(interPoint1);
-        }
-        else
-        // the circles have two intersection points
-        {
-            float e0 = sqrt(rootArg);
-            Base::Vector3d interPoint1 = Center1 + m * d0 + n * e0;
-            interPoint1.y = -interPoint1.y;
-            interPoints.push_back(interPoint1);
-            Base::Vector3d interPoint2 = Center1 + m * d0 - n * e0;
-            interPoint2.y = -interPoint2.y;
-            interPoints.push_back(interPoint2);
-        }
-    }
 }
 
 TopoShape BaseGeom::asTopoShape(double scale)

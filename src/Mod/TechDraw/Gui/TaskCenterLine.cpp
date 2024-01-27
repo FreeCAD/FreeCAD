@@ -42,6 +42,7 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace Gui;
@@ -177,7 +178,11 @@ void TaskCenterLine::setUiPrimary()
     }
     ui->cpLineColor->setColor(getCenterColor());
     ui->dsbWeight->setValue(getCenterWidth());
-    ui->cboxStyle->setCurrentIndex(getCenterStyle() - 1);
+
+    DrawGuiUtil::loadLineStyleChoices(ui->cboxStyle);
+    if (ui->cboxStyle->count() >= Preferences::CenterLineStyle() ) {
+        ui->cboxStyle->setCurrentIndex(Preferences::CenterLineStyle() - 1);
+    }
 
     ui->qsbVertShift->setUnit(Base::Unit::Length);
     ui->qsbHorizShift->setUnit(Base::Unit::Length);
@@ -213,7 +218,11 @@ void TaskCenterLine::setUiEdit()
     }
     ui->cpLineColor->setColor(m_cl->m_format.m_color.asValue<QColor>());
     ui->dsbWeight->setValue(m_cl->m_format.m_weight);
-    ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style - 1);
+
+    DrawGuiUtil::loadLineStyleChoices(ui->cboxStyle);
+    if (ui->cboxStyle->count() >= m_cl->m_format.m_style ) {
+        ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style - 1);
+    }
 
     ui->rbVertical->setChecked(false);
     ui->rbHorizontal->setChecked(false);
@@ -329,7 +338,7 @@ void TaskCenterLine::onStyleChanged()
         return;
     }
 
-    m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
+    m_cl->m_format.setLineNumber(ui->cboxStyle->currentIndex() + 1);
     m_partFeat->recomputeFeature();
 }
 
@@ -424,7 +433,7 @@ void TaskCenterLine::createCenterLine()
     ac.setValue<QColor>(ui->cpLineColor->color());
     cl->m_format.m_color = ac;
     cl->m_format.m_weight = ui->dsbWeight->value().getValue();
-    cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
+    cl->m_format.setLineNumber(ui->cboxStyle->currentIndex() + 1);
     cl->m_format.m_visible = true;
     m_partFeat->addCenterLine(cl);
 
@@ -510,12 +519,6 @@ double TaskCenterLine::getCenterWidth()
     return partVP->IsoWidth.getValue();
 }
 
-Qt::PenStyle TaskCenterLine::getCenterStyle()
-{
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLine", 2));
-    return centerStyle;
-}
-
 QColor TaskCenterLine::getCenterColor()
 {
     return PreferencesGui::centerQColor();
@@ -555,7 +558,7 @@ bool TaskCenterLine::reject()
         // restore the initial centerline
         m_cl->m_format.m_color = (&orig_cl)->m_format.m_color;
         m_cl->m_format.m_weight = (&orig_cl)->m_format.m_weight;
-        m_cl->m_format.m_style = (&orig_cl)->m_format.m_style;
+        m_cl->m_format.setLineNumber((&orig_cl)->m_format.getLineNumber());
         m_cl->m_format.m_visible = (&orig_cl)->m_format.m_visible;
         m_cl->m_mode = (&orig_cl)->m_mode;
         m_cl->m_rotate = (&orig_cl)->m_rotate;

@@ -1165,7 +1165,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
-      <translation>Adsız</translation>
+      <translation>İsimsiz</translation>
     </message>
   </context>
 </TS>

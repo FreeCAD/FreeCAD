@@ -489,7 +489,7 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
 
 bool GeoFeatureGroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
     for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument() && !obj->testStatus(ObjectStatus::GeoExcluded))
+        if(obj && obj->isAttachedToDocument() && !obj->testStatus(ObjectStatus::GeoExcluded))
             ret.push_back(std::string(obj->getNameInDocument())+'.');
     }
     return true;

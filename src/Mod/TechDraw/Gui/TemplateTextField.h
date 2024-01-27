@@ -25,7 +25,9 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <QGraphicsItemGroup>
 #include <QGraphicsRectItem>
+#include <QGraphicsPathItem>
 
 namespace TechDraw {
 class DrawTemplate;
@@ -33,12 +35,12 @@ class DrawTemplate;
 
 namespace TechDrawGui
 {
-    /// QGraphicsRectItem-derived class for the text fields in title blocks
+    /// QGraphicsItemGroupm-derived class for the text fields in title blocks
     /*!
      * Makes an area on the drawing that's clickable, so appropriate
      * Properties of the template can be modified.
      */
-class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
+class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
 {
     public:
         TemplateTextField(QGraphicsItem *parent,
@@ -53,6 +55,10 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
 
+        void setRectangle(QRectF rect);
+        void setLine(QPointF from, QPointF to);
+        void setLineColor(QColor color);
+
     protected:
         TechDraw::DrawTemplate *tmplte;
         std::string fieldNameStr;
@@ -62,6 +68,9 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
 
         /// Trigger the dialog for editing template text
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+        QGraphicsRectItem* m_rect;
+        QGraphicsPathItem* m_line;
 };
 }   // namespace TechDrawGui
 

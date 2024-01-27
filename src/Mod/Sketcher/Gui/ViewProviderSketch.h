@@ -549,6 +549,7 @@ public:
         STATUS_SELECT_Edge,            /**< enum value an edge was selected. */
         STATUS_SELECT_Constraint,      /**< enum value a constraint was selected. */
         STATUS_SELECT_Cross,           /**< enum value the base coordinate system was selected. */
+        STATUS_SELECT_Wire,            /**< enum value and edge was double clicked. */
         STATUS_SKETCH_DragPoint,       /**< enum value while dragging a point. */
         STATUS_SKETCH_DragCurve,       /**< enum value while dragging a curve. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
@@ -567,6 +568,10 @@ public:
     {
         return Mode;
     }
+
+    // create right click context menu based on selection in the 3D view
+    void generateContextMenu();
+
     //@}
 
     /** @name Drawing functions */
@@ -667,6 +672,7 @@ public:
                          const Gui::View3DInventorViewer* viewer) override;
     //@}
 
+    void deleteSelected();
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
@@ -697,7 +703,6 @@ public:
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
-    friend class ViewProviderSketchShortcutListenerAttorney;
     //@}
 protected:
     /** @name enter/exit edit mode */
@@ -716,6 +721,8 @@ protected:
     void deactivateHandler();
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
+    /// get called when an edge is double clicked to select/unselect the whole wire
+    void toggleWireSelelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -859,9 +866,6 @@ private:
     bool isCurveSelected(int curveId) const;
 
     bool isConstraintSelected(int constraintId) const;
-
-    //********* ViewProviderSketchShortcutListenerAttorney ***********//
-    void deleteSelected();
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);

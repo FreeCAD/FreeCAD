@@ -55,27 +55,30 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     arcGeoIds.clear();
 
     // end information layer
-    Coords.clear();
     Points.clear();
+    Coords.clear();
     Index.clear();
 
     coinMapping.clear();
 
     pointCounter.clear();
-    curveCounter.clear();
 
     for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
-        Coords.emplace_back();
         Points.emplace_back();
+        Coords.emplace_back();
         Index.emplace_back();
 
         coinMapping.CurvIdToGeoId.emplace_back();
+        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+            Coords[l].emplace_back();
+            Index[l].emplace_back();
+            coinMapping.CurvIdToGeoId[l].emplace_back();
+        }
         coinMapping.PointIdToGeoId.emplace_back();
         coinMapping.PointIdToVertexId.emplace_back();
     }
 
     pointCounter.resize(geometryLayerParameters.getCoinLayerCount(), 0);
-    curveCounter.resize(geometryLayerParameters.getCoinLayerCount(), 0);
 
     // RootPoint
     // TODO: RootPoint is here added in layer0. However, this layer may be hidden. The point should,
@@ -83,8 +86,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     // empty layer.
     Points[0].emplace_back(0., 0., 0.);
     coinMapping.PointIdToGeoId[0].push_back(-1);  // root point
-    coinMapping.PointIdToVertexId[0].push_back(
-        -1);  // VertexId is the reference used for point selection/preselection
+    coinMapping.PointIdToVertexId[0].push_back(-1);
+    // VertexId is the reference used for point selection/preselection
 
     coinMapping.GeoElementId2SetId.emplace(std::piecewise_construct,
                                            std::forward_as_tuple(Sketcher::GeoElementId::RtPnt),
@@ -93,7 +96,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     auto setTracking = [this](int geoId,
                               int coinLayer,
                               EditModeGeometryCoinConverter::PointsMode pointmode,
-                              int numberCurves) {
+                              int numberCurves,
+                              int sublayer) {
         int numberPoints = 0;
 
         if (pointmode == PointsMode::InsertSingle) {
@@ -153,12 +157,14 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             coinMapping.GeoElementId2SetId.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(geoId, Sketcher::PointPos::none),
-                std::forward_as_tuple(static_cast<int>(coinMapping.CurvIdToGeoId[coinLayer].size()),
-                                      coinLayer));
+                std::forward_as_tuple(
+                    static_cast<int>(coinMapping.CurvIdToGeoId[coinLayer][sublayer].size()),
+                    coinLayer,
+                    sublayer));
         }
 
         for (int i = 0; i < numberCurves; i++) {
-            coinMapping.CurvIdToGeoId[coinLayer].push_back(geoId);
+            coinMapping.CurvIdToGeoId[coinLayer][sublayer].push_back(geoId);
         }
     };
 
@@ -168,7 +174,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         const auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         const auto type = geom->getGeometry()->getTypeId();
 
-        auto layerId = getSafeGeomLayerId(geom);
+        int layerId = getSafeGeomLayerId(geom);
+        int subLayerId = geometryLayerParameters.getSubLayerIndex(GeoId, geom);
 
         auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
@@ -176,43 +183,55 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             convert<Part::GeomPoint,
                     EditModeGeometryCoinConverter::PointsMode::InsertSingle,
                     EditModeGeometryCoinConverter::CurveMode::NoCurve,
-                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId);
+                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom,
+                                                                                      GeoId,
+                                                                                      subLayerId);
             setTracking(GeoId,
                         coinLayer,
                         EditModeGeometryCoinConverter::PointsMode::InsertSingle,
-                        0);
+                        0,
+                        subLayerId);
         }
         else if (type == Part::GeomLineSegment::getClassTypeId()) {  // add a line
             convert<Part::GeomLineSegment,
                     EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
                     EditModeGeometryCoinConverter::CurveMode::StartEndPointsOnly,
-                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId);
+                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom,
+                                                                                      GeoId,
+                                                                                      subLayerId);
             setTracking(GeoId,
                         coinLayer,
                         EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
-                        1);
+                        1,
+                        subLayerId);
         }
         else if (type.isDerivedFrom(
                      Part::GeomConic::getClassTypeId())) {  // add a closed curve conic
             convert<Part::GeomConic,
                     EditModeGeometryCoinConverter::PointsMode::InsertMidOnly,
                     EditModeGeometryCoinConverter::CurveMode::ClosedCurve,
-                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId);
+                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom,
+                                                                                      GeoId,
+                                                                                      subLayerId);
             setTracking(GeoId,
                         coinLayer,
                         EditModeGeometryCoinConverter::PointsMode::InsertMidOnly,
-                        1);
+                        1,
+                        subLayerId);
         }
         else if (type.isDerivedFrom(
                      Part::GeomArcOfConic::getClassTypeId())) {  // add an arc of conic
             convert<Part::GeomArcOfConic,
                     EditModeGeometryCoinConverter::PointsMode::InsertStartEndMid,
                     EditModeGeometryCoinConverter::CurveMode::OpenCurve,
-                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId);
+                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom,
+                                                                                      GeoId,
+                                                                                      subLayerId);
             setTracking(GeoId,
                         coinLayer,
                         EditModeGeometryCoinConverter::PointsMode::InsertStartEndMid,
-                        1);
+                        1,
+                        subLayerId);
             arcGeoIds.push_back(GeoId);
         }
         else if (type == Part::GeomBSplineCurve::getClassTypeId()) {  // add a bspline (a bounded
@@ -221,58 +240,53 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                     EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
                     EditModeGeometryCoinConverter::CurveMode::OpenCurve,
                     EditModeGeometryCoinConverter::AnalyseMode::
-                        BoundingBoxMagnitudeAndBSplineCurvature>(geom, GeoId);
+                        BoundingBoxMagnitudeAndBSplineCurvature>(geom, GeoId, subLayerId);
             setTracking(GeoId,
                         coinLayer,
                         EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
-                        1);
+                        1,
+                        subLayerId);
             bsplineGeoIds.push_back(GeoId);
         }
     }
 
-    for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
+    // Coin Nodes Editing
+    int vOrFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
+    double linez = vOrFactor * drawingParameters.zLowLines;  // NOLINT
+    double pointz = vOrFactor * drawingParameters.zLowPoints;
 
-        // Coin Nodes Editing
-        geometryLayerNodes.CurvesCoordinate[l]->point.setNum(Coords[l].size());
-        geometryLayerNodes.CurveSet[l]->numVertices.setNum(Index[l].size());
-        geometryLayerNodes.CurvesMaterials[l]->diffuseColor.setNum(Index[l].size());
+    for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         geometryLayerNodes.PointsCoordinate[l]->point.setNum(Points[l].size());
         geometryLayerNodes.PointsMaterials[l]->diffuseColor.setNum(Points[l].size());
-
-        SbVec3f* verts = geometryLayerNodes.CurvesCoordinate[l]->point.startEditing();
-        int32_t* index = geometryLayerNodes.CurveSet[l]->numVertices.startEditing();
         SbVec3f* pverts = geometryLayerNodes.PointsCoordinate[l]->point.startEditing();
 
-        int i = 0;  // setting up the line set
-        for (std::vector<Base::Vector3d>::const_iterator it = Coords[l].begin();
-             it != Coords[l].end();
-             ++it, i++) {
-            verts[i].setValue(it->x,
-                              it->y,
-                              ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
-                                  * drawingParameters.zLowLines);
+        int i = 0;  // setting up the point set
+        for (auto& point : Points[l]) {
+            pverts[i++].setValue(point.x, point.y, pointz);
         }
-
-        i = 0;  // setting up the indexes of the line set
-        for (std::vector<unsigned int>::const_iterator it = Index[l].begin(); it != Index[l].end();
-             ++it, i++) {
-            index[i] = *it;
-        }
-
-        i = 0;  // setting up the point set
-        for (std::vector<Base::Vector3d>::const_iterator it = Points[l].begin();
-             it != Points[l].end();
-             ++it, i++) {
-            pverts[i].setValue(
-                it->x,
-                it->y,
-                ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
-                    * drawingParameters.zLowPoints);
-        }
-
-        geometryLayerNodes.CurvesCoordinate[l]->point.finishEditing();
-        geometryLayerNodes.CurveSet[l]->numVertices.finishEditing();
         geometryLayerNodes.PointsCoordinate[l]->point.finishEditing();
+
+        for (auto t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+            geometryLayerNodes.CurvesCoordinate[l][t]->point.setNum(Coords[l][t].size());
+            geometryLayerNodes.CurveSet[l][t]->numVertices.setNum(Index[l][t].size());
+            geometryLayerNodes.CurvesMaterials[l][t]->diffuseColor.setNum(Index[l][t].size());
+
+            SbVec3f* verts = geometryLayerNodes.CurvesCoordinate[l][t]->point.startEditing();
+            int32_t* index = geometryLayerNodes.CurveSet[l][t]->numVertices.startEditing();
+
+            i = 0;  // setting up the line set
+            for (auto& coord : Coords[l][t]) {
+                verts[i++].setValue(coord.x, coord.y, linez);  // NOLINT
+            }
+
+            i = 0;  // setting up the indexes of the line set
+            for (auto it : Index[l][t]) {
+                index[i++] = it;
+            }
+
+            geometryLayerNodes.CurvesCoordinate[l][t]->point.finishEditing();
+            geometryLayerNodes.CurveSet[l][t]->numVertices.finishEditing();
+        }
     }
 }
 
@@ -281,7 +295,8 @@ template<typename GeoType,
          EditModeGeometryCoinConverter::CurveMode curvemode,
          EditModeGeometryCoinConverter::AnalyseMode analysemode>
 void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geometryfacade,
-                                            [[maybe_unused]] int geoid)
+                                            [[maybe_unused]] int geoid,
+                                            int subLayer)
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
     auto layerId = getSafeGeomLayerId(geometryfacade);
@@ -317,9 +332,9 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
 
     // Curves
     if constexpr (curvemode == CurveMode::StartEndPointsOnly) {
-        addPoint(Coords[coinLayer], geo->getStartPoint());
-        addPoint(Coords[coinLayer], geo->getEndPoint());
-        Index[coinLayer].push_back(2);
+        addPoint(Coords[coinLayer][subLayer], geo->getStartPoint());
+        addPoint(Coords[coinLayer][subLayer], geo->getEndPoint());
+        Index[coinLayer][subLayer].push_back(2);
     }
     else if constexpr (curvemode == CurveMode::ClosedCurve) {
         int numSegments = drawingParameters.curvedEdgeCountSegments;
@@ -331,13 +346,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
 
         for (int i = 0; i < numSegments; i++) {
             Base::Vector3d pnt = geo->value(i * segment);
-            addPoint(Coords[coinLayer], pnt);
+            addPoint(Coords[coinLayer][subLayer], pnt);
         }
 
         Base::Vector3d pnt = geo->value(0);
-        addPoint(Coords[coinLayer], pnt);
+        addPoint(Coords[coinLayer][subLayer], pnt);
 
-        Index[coinLayer].push_back(numSegments + 1);
+        Index[coinLayer][subLayer].push_back(numSegments + 1);
     }
     else if constexpr (curvemode == CurveMode::OpenCurve) {
         int numSegments = drawingParameters.curvedEdgeCountSegments;
@@ -349,13 +364,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
 
         for (int i = 0; i < numSegments; i++) {
             Base::Vector3d pnt = geo->value(geo->getFirstParameter() + i * segment);
-            addPoint(Coords[coinLayer], pnt);
+            addPoint(Coords[coinLayer][subLayer], pnt);
         }
 
         Base::Vector3d pnt = geo->value(geo->getLastParameter());
-        addPoint(Coords[coinLayer], pnt);
+        addPoint(Coords[coinLayer][subLayer], pnt);
 
-        Index[coinLayer].push_back(numSegments + 1);
+        Index[coinLayer][subLayer].push_back(numSegments + 1);
 
         if constexpr (analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature) {
             //***************************************************************************************************************

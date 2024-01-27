@@ -90,7 +90,7 @@ public:
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_POINTS) {
 
-            drawControlPolygonToPosition(onSketchPos);
+            drawBSplineToPosition(onSketchPos);
 
             drawCursorToPosition(onSketchPos);
 
@@ -311,7 +311,7 @@ public:
 
 
                 // run this in the end to draw lines and position text
-                drawControlPolygonToPosition(prevCursorPosition);
+                drawBSplineToPosition(prevCursorPosition);
                 drawCursorToPosition(prevCursorPosition);
             }
             catch (const Base::Exception&) {
@@ -392,7 +392,12 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+        if (SketcherGui::DrawSketchHandlerBSplineByInterpolation::ConstrMethod == 1) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
+        }
+        else {
+            return QString::fromLatin1("Sketcher_Pointer_Create_BSplineByInterpolation");
+        }
     }
 
     void addSugConstraint()
@@ -404,11 +409,30 @@ private:
     // NOTE: In this context, it is not a control polygon, but a 1-degree interpolation
     void drawControlPolygonToPosition(Base::Vector2d position)
     {
-
         std::vector<Base::Vector2d> editcurve(BSplineKnots);
         editcurve.push_back(position);
 
         drawEdit(editcurve);
+    }
+
+    void drawBSplineToPosition(Base::Vector2d position)
+    {
+        std::vector<Base::Vector2d> editcurve(BSplineKnots);
+        editcurve.push_back(position);
+
+        std::vector<gp_Pnt> editCurveForOCCT;
+        for (auto& p : editcurve) {
+            editCurveForOCCT.emplace_back(p.x, p.y, 0.0);
+        }
+
+        // TODO: This maybe optimized by storing the spline as an attribute.
+        Part::GeomBSplineCurve editBSpline;
+        editBSpline.interpolate(editCurveForOCCT, ConstrMethod != 0);
+
+        std::vector<Part::Geometry*> editBSplines;
+        editBSplines.push_back(&editBSpline);
+
+        drawEdit(editBSplines);
     }
 
     void drawCursorToPosition(Base::Vector2d position)

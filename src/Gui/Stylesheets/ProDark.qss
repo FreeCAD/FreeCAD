@@ -2557,3 +2557,27 @@ PREFERENCES PACKS
 Gui--Dialog--DlgSettingsGeneral > QGroupBox > QGroupBox > QTableWidget > QWidget > QPushButton {
     margin: 0px;
 }
+
+/*==================================================================================================
+Settings menu #groupsTreeView:
+==================================================================================================*/
+
+QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
+   border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
+    border-image: none 0;
+  }
+
+  QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
+    border-image: none 0;
+  }

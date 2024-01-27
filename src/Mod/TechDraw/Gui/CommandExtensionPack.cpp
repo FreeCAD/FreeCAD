@@ -74,10 +74,10 @@ using DU = DrawUtil;
 
 namespace TechDrawGui
 {
-//LineAttributes activeAttributes; // container holding global line attributes
+//TechDraw::LineFormat activeAttributes; // container holding global line attributes
 
 //internal helper functions
-lineAttributes& _getActiveLineAttributes();
+TechDraw::LineFormat& _getActiveLineAttributes();
 Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
 void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
 void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
@@ -123,24 +123,39 @@ void execHoleCircle(Gui::Command* cmd)
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bolt Circle Centerlines"));
-    double scale = objFeat->getScale();
+
+    // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
         _circleCenter(Circles[0]->center, Circles[1]->center, Circles[2]->center);
-    float bigRadius = (Circles[0]->center - bigCenter).Length();
+    double bigRadius = (Circles[0]->center - bigCenter).Length();
+    // now convert the center & radius to canonical form
+    bigCenter = DU::invertY(bigCenter);
+    bigCenter = CosmeticVertex::makeCanonicalPoint(objFeat, bigCenter);
+    bigCenter = DU::invertY(bigCenter);
+    bigRadius = bigRadius / objFeat->getScale();
     TechDraw::BaseGeomPtr bigCircle =
-        std::make_shared<TechDraw::Circle>(bigCenter / scale, bigRadius / scale);
+        std::make_shared<TechDraw::Circle>(bigCenter, bigRadius);
     std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
     TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
     _setLineAttributes(ceCircle);
+
+    // make the center lines for the individual bolt holes
+    constexpr double ExtendFactor{1.1};
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
-        Base::Vector3d oneCircleCenter = oneCircle->center;
-        float oneRadius = oneCircle->radius;
-        Base::Vector3d delta = (oneCircle->center - bigCenter).Normalize() * (oneRadius + 2);
+        // convert the center to canonical form
+        Base::Vector3d oneCircleCenter = DU::invertY(oneCircle->center);
+        oneCircleCenter = CosmeticVertex::makeCanonicalPoint(objFeat, oneCircleCenter);
+        oneCircleCenter = DU::invertY(oneCircleCenter);
+        // oneCircle->radius is scaled.
+        float oneRadius = oneCircle->radius / objFeat->getScale();
+        // what is magic number 2 (now ExtendFactor)?  just a fudge factor to extend the line beyond the bolt
+        // hole circle?  should it be a function of hole diameter? maybe 110% of oneRadius?
+        Base::Vector3d delta = (oneCircleCenter - bigCenter).Normalize() * (oneRadius * ExtendFactor);
         Base::Vector3d startPt = oneCircleCenter + delta;
         Base::Vector3d endPt = oneCircleCenter - delta;
-        startPt.y = -startPt.y;
-        endPt.y = -endPt.y;
-        std::string oneLineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
+        startPt = DU::invertY(startPt);
+        endPt = DU::invertY(endPt);
+        std::string oneLineTag = objFeat->addCosmeticEdge(startPt, endPt);
         TechDraw::CosmeticEdge* ceLine = objFeat->getCosmeticEdge(oneLineTag);
         _setLineAttributes(ceLine);
     }
@@ -194,7 +209,6 @@ void execCircleCenterLines(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines")))
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
-    double scale = objFeat->getScale();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
@@ -203,15 +217,19 @@ void execCircleCenterLines(Gui::Command* cmd)
         if (GeoType == "Edge") {
             if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
+                // center is a scaled and rotated point
                 Base::Vector3d center = cgen->center;
                 center.y = -center.y;
-                float radius = cgen->radius;
+                center = CosmeticVertex::makeCanonicalPoint(objFeat, center);
+                double radius = cgen->radius / objFeat->getScale();
+                // right, left, top, bottom are formed from a canonical point (center)
+                // so they do not need to be changed to canonical form.
                 Base::Vector3d right(center.x + radius + 2.0, center.y, 0.0);
                 Base::Vector3d top(center.x, center.y + radius + 2.0, 0.0);
                 Base::Vector3d left(center.x - radius - 2.0, center.y, 0.0);
                 Base::Vector3d bottom(center.x, center.y - radius - 2.0, 0.0);
-                std::string line1tag = objFeat->addCosmeticEdge(right / scale, left / scale);
-                std::string line2tag = objFeat->addCosmeticEdge(top / scale, bottom / scale);
+                std::string line1tag = objFeat->addCosmeticEdge(right, left);
+                std::string line2tag = objFeat->addCosmeticEdge(top, bottom);
                 TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
                 _setLineAttributes(horiz);
                 TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);
@@ -817,7 +835,7 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
     sMenuText = QT_TR_NOOP("Add Cosmetic Intersection Vertex(es)");
     sToolTipText =
         QT_TR_NOOP("Add cosmetic vertex(es) at the intersection(s) of selected edges:<br>\
-- Select two edges (lines, circles and/or arcs)<br>\
+- Select two edges<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionVertexAtIntersection";
     sStatusTip = sMenuText;
@@ -834,7 +852,6 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    std::vector<Base::Vector3d> interPoints;
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
@@ -843,20 +860,20 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
-            interPoints = geom1->intersection(geom2);
-            if (!interPoints.empty()) {
-                double scale = objFeat->getScale();
-                std::string id1 = objFeat->addCosmeticVertex(interPoints[0] / scale);
-                objFeat->add1CVToGV(id1);
-                if (interPoints.size() >= 2) {
-                    std::string id2 = objFeat->addCosmeticVertex(interPoints[1] / scale);
-                    objFeat->add1CVToGV(id2);
-                }
+
+            // double scale = objFeat->getScale();
+            std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
+            for (auto pt : interPoints) {
+                // std::string ptId = objFeat->addCosmeticVertex(pt/scale);
+                // objFeat->add1CVToGV(ptId);
+                // invert the point so the math works correctly
+                Base::Vector3d temp = CosmeticVertex::makeCanonicalPoint(objFeat, pt);
+                objFeat->addCosmeticVertex(temp);
             }
         }
     }
     getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
+    objFeat->refreshCVGeoms();
     objFeat->requestPaint();
     Gui::Command::commitCommand();
 }
@@ -1197,33 +1214,41 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
+        int EdgeId;
+        int VertId;
         if (GeoType1 == "Edge" && GeoType2 == "Vertex") {
-            double scale = objFeat->getScale();
-            int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-            int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
-            Base::Vector3d lineStart = lineGen->points.at(0);
-            Base::Vector3d lineEnd = lineGen->points.at(1);
-            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId2);
-            Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
-            Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
-            if (!isParallel) {
-                float dummy = halfVector.x;
-                halfVector.x = -halfVector.y;
-                halfVector.y = dummy;
-            }
-            Base::Vector3d startPoint = vertexPoint + halfVector;
-            Base::Vector3d endPoint = vertexPoint - halfVector;
-            startPoint.y = -startPoint.y;
-            endPoint.y = -endPoint.y;
-            std::string lineTag = objFeat->addCosmeticEdge(startPoint / scale, endPoint / scale);
-            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
-            _setLineAttributes(lineEdge);
-            objFeat->refreshCEGeoms();
-            objFeat->requestPaint();
-            cmd->getSelection().clearSelection();
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+        } else if (GeoType2 == "Edge" && GeoType1 == "Vertex") {
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+        } else {
+            // we don't have an edge + vertex as selection
+            return;
         }
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
+        TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        Base::Vector3d lineStart = lineGen->points.at(0);
+        Base::Vector3d lineEnd = lineGen->points.at(1);
+        TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
+        Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
+        Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
+        if (!isParallel) {
+            float dummy = halfVector.x;
+            halfVector.x = -halfVector.y;
+            halfVector.y = dummy;
+        }
+        Base::Vector3d startPoint = vertexPoint + halfVector;
+        Base::Vector3d endPoint = vertexPoint - halfVector;
+        startPoint.y = -startPoint.y;
+        endPoint.y = -endPoint.y;
+        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeCanonicalLine(objFeat, startPoint, endPoint);
+        std::string lineTag = objFeat->addCosmeticEdge(cLine);
+        TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+        _setLineAttributes(lineEdge);
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
     }
     Gui::Command::commitCommand();
 }
@@ -1445,83 +1470,6 @@ bool CmdTechDrawExtensionLockUnlockView::isActive()
 }
 
 //===========================================================================
-// TechDraw_ExtensionPositionSectionView
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawExtensionPositionSectionView)
-
-CmdTechDrawExtensionPositionSectionView::CmdTechDrawExtensionPositionSectionView()
-    : Command("TechDraw_ExtensionPositionSectionView")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Position Section View");
-    sToolTipText = QT_TR_NOOP("Orthogonally align a section view with its source view:<br>\
-- Select a single section view<br>\
-- Click this tool");
-    sWhatsThis = "TechDraw_ExtensionPositionSectionView";
-    sStatusTip = sMenuText;
-    sPixmap = "TechDraw_ExtensionPositionSectionView";
-}
-
-void CmdTechDrawExtensionPositionSectionView::activated(int iMsg)
-{
-    // position a section view
-    Q_UNUSED(iMsg);
-    //Base::Console().Message("PositionSectionView started\n");
-    auto selection = getSelection().getSelectionEx();
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Position Section View"),
-                             QObject::tr("Selection is empty"));
-        return;
-    }
-
-    double xPos = 0.0, yPos = 0.0;
-    TechDraw::DrawViewPart* baseView;
-    auto objFeat = selection[0].getObject();
-    if (objFeat && objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
-        baseView = sectionView->getBaseDVP();
-        if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            std::vector<App::DocumentObject*> parentViews = baseView->getInList();
-            if (!parentViews.empty()) {
-                TechDraw::DrawProjGroup* groupBase =
-                    dynamic_cast<TechDraw::DrawProjGroup*>(parentViews[0]);
-                if (groupBase) {
-                    xPos = groupBase->X.getValue();
-                    yPos = groupBase->Y.getValue();
-                }
-            }
-        }
-        else if (baseView) {
-            xPos = baseView->X.getValue();
-            yPos = baseView->Y.getValue();
-        }
-        std::string direction = sectionView->SectionDirection.getValueAsString();
-        if ((direction == "Right") || (direction == "Left"))
-            sectionView->Y.setValue(yPos);
-        else if ((direction == "Up") || (direction == "Down"))
-            sectionView->X.setValue(xPos);
-        else if (direction == "Aligned")
-        {
-            Base::Vector3d pBase(xPos,yPos,0.0);
-            Base::Vector3d dirView(sectionView->Direction.getValue());
-            Base::Vector3d pSection(sectionView->X.getValue(),sectionView->Y.getValue(),0.0);
-            Base::Vector3d newPos = DrawUtil::getTrianglePoint(pBase, dirView, pSection);
-            sectionView->X.setValue(newPos.x);
-            sectionView->Y.setValue(newPos.y);
-        }
-    }
-}
-
-bool CmdTechDrawExtensionPositionSectionView::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
-}
-
-//===========================================================================
 // TechDraw_ExtensionExtendLine
 //===========================================================================
 
@@ -1542,10 +1490,16 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
             TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
             if (baseGeo) {
                 if (baseGeo->getGeomType() == TechDraw::GENERIC) {
-                    TechDraw::GenericPtr genLine =
-                        std::static_pointer_cast<TechDraw::Generic>(baseGeo);
-                    Base::Vector3d P0 = genLine->points.at(0);
-                    Base::Vector3d P1 = genLine->points.at(1);
+                    // start and end points are scaled and rotated. invert the points
+                    // so the canonicalPoint math works correctly.
+                    Base::Vector3d P0 = DU::invertY(baseGeo->getStartPoint());
+                    Base::Vector3d P1 = DU::invertY(baseGeo->getEndPoint());
+                    // convert start and end to unscaled, unrotated.
+                    P0 = CosmeticVertex::makeCanonicalPoint(objFeat, P0);
+                    P1 = CosmeticVertex::makeCanonicalPoint(objFeat, P1);
+                    // put the points back into weird Qt coord system.
+                    P0 = DU::invertY(P0);
+                    P1 = DU::invertY(P1);
                     bool isCenterLine = false;
                     TechDraw::CenterLine* centerEdge = nullptr;
                     if (baseGeo->getCosmetic()) {
@@ -1557,7 +1511,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == 1) {
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
-                            oldStyle = cosEdge->m_format.m_style;
+                            oldStyle = cosEdge->m_format.m_lineNumber;
                             oldWeight = cosEdge->m_format.m_weight;
                             oldColor = cosEdge->m_format.m_color;
                             objFeat->removeCosmeticEdge(toDelete);
@@ -1566,7 +1520,6 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                             isCenterLine = true;
                             centerEdge = objFeat->getCenterLine(uniTag);
                         }
-                        double scale = objFeat->getScale();
                         Base::Vector3d direction = (P1 - P0).Normalize();
                         Base::Vector3d delta = direction * activeDimAttributes.getLineStretch();
                         Base::Vector3d startPt, endPt;
@@ -1586,7 +1539,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         }
                         else {
                             std::string lineTag =
-                                objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
+                                objFeat->addCosmeticEdge(startPt, endPt);
                             TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
                             _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
                             objFeat->refreshCEGeoms();
@@ -2043,9 +1996,9 @@ bool CmdTechDrawExtensionArcLengthAnnotation::isActive()
 namespace TechDrawGui
 {
 
-lineAttributes& _getActiveLineAttributes()
+LineFormat& _getActiveLineAttributes()
 {
-    static lineAttributes attributes;
+    static TechDraw::LineFormat attributes;
     return attributes;
 }
 
@@ -2154,7 +2107,6 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
                         float factor)
 {
     // create symbolizing lines of a thread from the side seen
-    double scale = objFeat->getScale();
     std::string GeoType0 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
     std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
     if ((GeoType0 == "Edge") && (GeoType1 == "Edge")) {
@@ -2170,10 +2122,22 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 
         TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-        Base::Vector3d start0 = line0->points.at(0);
-        Base::Vector3d end0 = line0->points.at(1);
-        Base::Vector3d start1 = line1->points.at(0);
-        Base::Vector3d end1 = line1->points.at(1);
+        // start and end points are scaled and rotated. invert the points
+        // so the canonicalPoint math works correctly.
+        Base::Vector3d start0 = DU::invertY(line0->getStartPoint());
+        Base::Vector3d end0 = DU::invertY(line0->getEndPoint());
+        Base::Vector3d start1 = DU::invertY(line1->getStartPoint());
+        Base::Vector3d end1 = DU::invertY(line1->getEndPoint());
+        // convert start and end to unscaled, unrotated.
+        start0 = CosmeticVertex::makeCanonicalPoint(objFeat, start0);
+        start1 = CosmeticVertex::makeCanonicalPoint(objFeat, start1);
+        end0 = CosmeticVertex::makeCanonicalPoint(objFeat, end0);
+        end1 = CosmeticVertex::makeCanonicalPoint(objFeat, end1);
+        // put the points back into weird Qt coord system.
+        start0 = DU::invertY(start0);
+        start1 = DU::invertY(start1);
+        end0 = DU::invertY(end0);
+        end1 = DU::invertY(end1);
         if (DrawUtil::circulation(start0, end0, start1)
             != DrawUtil::circulation(end0, end1, start1)) {
             Base::Vector3d help1 = start1;
@@ -2181,17 +2145,13 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
             start1 = help2;
             end1 = help1;
         }
-        start0.y = -start0.y;
-        end0.y = -end0.y;
-        start1.y = -start1.y;
-        end1.y = -end1.y;
         float kernelDiam = (start1 - start0).Length();
         float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
         Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
         std::string line0Tag =
-            objFeat->addCosmeticEdge((start0 - delta) / scale, (end0 - delta) / scale);
+            objFeat->addCosmeticEdge(start0 - delta, end0 - delta);
         std::string line1Tag =
-            objFeat->addCosmeticEdge((start1 + delta) / scale, (end1 + delta) / scale);
+            objFeat->addCosmeticEdge(start1 + delta, end1 + delta);
         TechDraw::CosmeticEdge* cosTag0 = objFeat->getCosmeticEdge(line0Tag);
         TechDraw::CosmeticEdge* cosTag1 = objFeat->getCosmeticEdge(line1Tag);
         _setLineAttributes(cosTag0);
@@ -2202,33 +2162,37 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
+    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
+    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
     cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidth();
+    cosEdge->m_format.m_color = _getActiveLineAttributes().getColor();
+    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+    cosEdge->m_format.setLineNumber(style);
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+    cosEdge->m_format.setLineNumber(style);
 }
 }// namespace TechDrawGui
 
@@ -2242,7 +2206,6 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionExtendLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionShortenLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLockUnlockView());
-    rcCmdMgr.addCommand(new CmdTechDrawExtensionPositionSectionView());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionChangeLineAttributes());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLinesGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLines());

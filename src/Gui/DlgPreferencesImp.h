@@ -163,6 +163,7 @@ protected Q_SLOTS:
 private:
     /** @name for internal use only */
     //@{
+    void setupConnections();
     void setupPages();
     void reloadPages();
 
@@ -177,7 +178,7 @@ private:
     void restorePageDefaults(PreferencesPageItem* item);
     void restartIfRequired();
 
-    void updatePageDependentLabels();
+    void updatePageDependentWidgets();
 
     QPixmap loadIconForGroup(const std::string& name) const;
     //@}

@@ -672,7 +672,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Alle (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -1010,7 +1010,7 @@ waarbij:
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Voeg %n afzonderlijke rijen in</numerusform>
+        <numerusform>%n Afzonderlijke rijen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
@@ -1042,7 +1042,7 @@ waarbij:
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Voeg %n afzonderlijke kolommen in</numerusform>
+        <numerusform>%n Afzonderlijke kolommen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
     </message>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, degree)</source>
-      <translation>Стандард (mm, kg,, s, степени)</translation>
+      <translation>Cтандард (мм, кг, с, степени)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Метар децимални (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

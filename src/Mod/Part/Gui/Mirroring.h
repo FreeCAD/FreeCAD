@@ -67,6 +67,7 @@ public:
 
 public:
     bool accept() override;
+    bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }

@@ -31,6 +31,7 @@ import DraftGeomUtils
 import Mesh
 import MeshPart
 import Part
+from draftutils import params
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -80,8 +81,7 @@ def getIndices(obj,shape,offsetv,offsetvn):
             except Exception: # unimplemented curve type
                 hascurve = True
             if hascurve:
-                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Mesh")
-                tol = param.GetFloat("MaxDeviationExport",0.1)
+                tol = params.get_param("MaxDeviationExport",path="Mod/Mesh")
                 mesh = Mesh.Mesh()
                 mesh.addFacets(shape.getFaces(tol))
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")

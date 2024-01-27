@@ -33,6 +33,8 @@ import ArchCommands
 import ArchIFC
 import Draft
 import DraftVecUtils
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -135,8 +137,7 @@ class _CommandFloor:
         """
 
         sel = FreeCADGui.Selection.getSelection()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        link = p.GetBool("FreeLinking",False)
+        link = params.get_param_arch("FreeLinking")
         floorobj = []
         warning = False
         for obj in sel :

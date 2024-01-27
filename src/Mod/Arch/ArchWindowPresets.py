@@ -501,7 +501,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = ArchWindow.makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
-            obj.Frame = h1
+            obj.Frame = w2
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:

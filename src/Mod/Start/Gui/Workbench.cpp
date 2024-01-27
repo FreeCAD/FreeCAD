@@ -76,7 +76,7 @@ void StartGui::Workbench::loadStartPage()
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
         std::stringstream str;
         str << "import WebGui,sys,Start\n"
-            << "from PySide import QtCore\n"
+            << "from PySide import QtCore, QtGui\n"
             << "from StartPage import StartPage\n\n"
             << "class WebPage(object):\n"
             << "    def __init__(self):\n"
@@ -95,14 +95,25 @@ void StartGui::Workbench::loadStartPage()
             << "        except RuntimeError as e:\n"
             << "            pass\n"
             << "    def reload(self):\n"
+            << "        startOpen = False\n"
+            << "        title = QtGui.QApplication.translate('Workbench', 'Start page')\n"
+            << "        mw = FreeCADGui.getMainWindow()\n"
+            << "        if mw:\n"
+            << "            mdi = mw.findChild(QtGui.QMdiArea)\n"
+            << "            if mdi:\n"
+            << "                for mdichild in mdi.children():\n"
+            << "                    for subw in mdichild.findChildren(QtGui.QMdiSubWindow):\n"
+            << "                        if subw.windowTitle() == title:\n"
+            << "                            startOpen = True\n"
+            << "        if startOpen:\n"  // if the user has closeStart set to True a Runtime Error
+                                          // is raised if a simple Preferences change is made
 #if defined(FC_OS_WIN32)
-            << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
+            << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
                "'Mod/Start/StartPage/')\n\n"
 #else
-            << "        self.browser.setHtml(StartPage.handle(), 'file://' + "
+            << "            self.browser.setHtml(StartPage.handle(), 'file://' + "
                "App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #endif
-
             << "class WebView(object):\n"
             << "    def __init__(self):\n"
             << "        self.pargrp = FreeCAD.ParamGet('User "

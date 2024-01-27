@@ -28,6 +28,8 @@ import Draft
 import DraftVecUtils
 import Part
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -142,10 +144,9 @@ class CommandPanel:
 
     def Activated(self):
 
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.Length = p.GetFloat("PanelLength",1000)
-        self.Width = p.GetFloat("PanelWidth",1000)
-        self.Thickness = p.GetFloat("PanelThickness",10)
+        self.Length = params.get_param_arch("PanelLength")
+        self.Width = params.get_param_arch("PanelWidth")
+        self.Thickness = params.get_param_arch("PanelThickness")
         self.Profile = None
         self.continueCmd = False
         self.rotated = False
@@ -167,7 +168,7 @@ class CommandPanel:
         # interactive mode
         import WorkingPlane
         WorkingPlane.get_working_plane()
-            
+
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -282,17 +283,17 @@ class CommandPanel:
     def setWidth(self,d):
 
         self.Width = d
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelWidth",d)
+        params.set_param_arch("PanelWidth",d)
 
     def setThickness(self,d):
 
         self.Thickness = d
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelThickness",d)
+        params.set_param_arch("PanelThickness",d)
 
     def setLength(self,d):
 
         self.Length = d
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PanelLength",d)
+        params.set_param_arch("PanelLength",d)
 
     def setContinue(self,i):
 
@@ -832,7 +833,7 @@ class PanelCut(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
+            obj.FontFile = params.get_param("FontFile")
         if not "MakeFace" in pl:
             obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."))
         if not "AllowedAngles" in pl:
@@ -1099,7 +1100,6 @@ class PanelSheet(Draft.DraftObject):
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         if not "Group" in pl:
             obj.addProperty("App::PropertyLinkList","Group","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"))
         if not "TagText" in pl:
@@ -1113,13 +1113,13 @@ class PanelSheet(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
-            obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile",QT_TRANSLATE_NOOP("App::Property","The font file"))
+            obj.FontFile = params.get_param("FontFile")
         if not "Width" in pl:
             obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
-            obj.Width = p.GetFloat("PanelLength",1000)
+            obj.Width = params.get_param_arch("PanelLength")
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
-            obj.Height = p.GetFloat("PanelWidth",1000)
+            obj.Height = params.get_param_arch("PanelWidth")
         if not "FillRatio" in pl:
             obj.addProperty("App::PropertyPercent","FillRatio","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
             obj.setEditorMode("FillRatio",2)

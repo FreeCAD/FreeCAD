@@ -304,7 +304,7 @@ void SketcherToolDefaultWidget::parameterTen_valueChanged(double val)
     }
 }
 
-void SketcherToolDefaultWidget::initNParameters(int nparameters)
+void SketcherToolDefaultWidget::initNParameters(int nparameters, QObject* filteringObject)
 {
     Base::StateLocker lock(blockParameterSlots, true);
 
@@ -315,6 +315,7 @@ void SketcherToolDefaultWidget::initNParameters(int nparameters)
     for (int i = 0; i < nParameters; i++) {
         setParameterVisible(i, (i < nparameters));
         setParameter(i, 0.F);
+        setParameterFilteringObject(i, filteringObject);
         setParameterFontStyle(i, FontStyle::Italic);
     }
 
@@ -327,6 +328,19 @@ void SketcherToolDefaultWidget::setParameterVisible(int parameterindex, bool vis
         getParameterLabel(parameterindex)->setVisible(visible);
         getParameterSpinBox(parameterindex)->setVisible(visible);
     }
+}
+
+void SketcherToolDefaultWidget::setParameterFilteringObject(int parameterindex,
+                                                            QObject* filteringObject)
+{
+    if (parameterindex < nParameters) {
+        getParameterSpinBox(parameterindex)->installEventFilter(filteringObject);
+
+        return;
+    }
+
+    THROWM(Base::IndexError,
+           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterLabel(int parameterindex, const QString& string)

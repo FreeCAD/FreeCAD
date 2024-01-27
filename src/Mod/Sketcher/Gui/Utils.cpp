@@ -88,10 +88,38 @@ bool Sketcher::isBSplineCurve(const Part::Geometry& geom)
     return geom.is<Part::GeomBSplineCurve>();
 }
 
+bool Sketcher::isPeriodicBSplineCurve(const Part::Geometry& geom)
+{
+    if (geom.is<Part::GeomBSplineCurve>()) {
+        auto* spline = static_cast<const Part::GeomBSplineCurve*>(&geom);
+        return spline->isPeriodic();
+    }
+    return false;
+}
+
 bool Sketcher::isPoint(const Part::Geometry& geom)
 {
     return geom.is<Part::GeomPoint>();
 }
+
+bool Sketcher::isCircleOrArc(const Part::Geometry& geo)
+{
+    return isCircle(geo) || isArcOfCircle(geo);
+};
+
+std::tuple<double, Base::Vector3d> Sketcher::getRadiusCenterCircleArc(const Part::Geometry* geo)
+{
+    if (isArcOfCircle(*geo)) {
+        auto arc = static_cast<const Part::GeomArcOfCircle*>(geo);  // NOLINT
+        return std::tuple<double, Base::Vector3d>(arc->getRadius(), arc->getCenter());
+    }
+    else if (isCircle(*geo)) {
+        auto circ = static_cast<const Part::GeomCircle*>(geo);  // NOLINT
+        return std::tuple<double, Base::Vector3d>(circ->getRadius(), circ->getCenter());
+    }
+
+    THROWM(Base::TypeError, "getRadiusCenterCircleArc - Neither an arc nor a circle")
+};
 
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
 {
@@ -410,16 +438,17 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 
 // Set the two points on circles at minimal distance
 // in concentric case set points on relative X axis
-void SketcherGui::GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
-                                            const Part::GeomCircle* circle2,
+void SketcherGui::GetCirclesMinimalDistance(const Part::Geometry* geom1,
+                                            const Part::Geometry* geom2,
                                             Base::Vector3d& point1,
                                             Base::Vector3d& point2)
 {
-    double radius1 = circle1->getRadius();
-    double radius2 = circle2->getRadius();
+    // This will throw if geom1 or geom2 are not circles or arcs
+    auto [radius1, center1] = getRadiusCenterCircleArc(geom1);
+    auto [radius2, center2] = getRadiusCenterCircleArc(geom2);
 
-    point1 = circle1->getCenter();
-    point2 = circle2->getCenter();
+    point1 = center1;
+    point2 = center2;
 
     Base::Vector3d v = point2 - point1;
     double length = v.Length();

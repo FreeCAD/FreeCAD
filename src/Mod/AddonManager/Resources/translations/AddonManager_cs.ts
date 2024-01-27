@@ -1236,18 +1236,18 @@ nainstalované doplňky budou zkontrolovány pro dostupné aktualizace
       <translation>Provedení makra selhalo. Podrobnosti o selhání viz konzola.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="386"/>
       <source>Maintainer</source>
       <translation>Správce</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="423"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1463,8 +1463,8 @@ nainstalované doplňky budou zkontrolovány pro dostupné aktualizace
       <translation>QtWebEngine bindings Python není nainstalován -- používá záložní README displej.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Úspěšně</translation>
@@ -1596,9 +1596,9 @@ nainstalované doplňky budou zkontrolovány pro dostupné aktualizace
       <translation>Vyberte soubor ikony pro tuto položku obsahu</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} není podadresář {}</translation>
     </message>

@@ -68,20 +68,24 @@ def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
 def write_constraint(f, femobj, contact_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
+    adjust = ""
+    if contact_obj.Adjust.Value > 0:
+        adjust = ", ADJUST={:.13G}".format(
+            contact_obj.Adjust.getValueAs("mm").Value)
 
     f.write(
-        "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
-        .format(contact_obj.Name)
+        "*CONTACT PAIR, INTERACTION=INT{}, TYPE=SURFACE TO SURFACE{}\n"
+        .format(contact_obj.Name, adjust)
     )
     ind_surf = "IND" + contact_obj.Name
     dep_surf = "DEP" + contact_obj.Name
-    f.write("{},{}\n".format(dep_surf, ind_surf))
+    f.write("{}, {}\n".format(dep_surf, ind_surf))
     f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
-    f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
-    slope = contact_obj.Slope
+    f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n")
+    slope = contact_obj.Slope.getValueAs("MPa/mm").Value
     f.write("{:.13G}\n".format(slope))
-    friction = contact_obj.Friction
-    if friction > 0:
-        f.write("*FRICTION \n")
-        stick = (slope / 10.0)
+    if contact_obj.Friction:
+        f.write("*FRICTION\n")
+        friction = contact_obj.FrictionCoefficient
+        stick = contact_obj.StickSlope.getValueAs("MPa/mm").Value
         f.write("{:.13G}, {:.13G}\n".format(friction, stick))

@@ -66,6 +66,7 @@ void DlgPrefsTechDrawDimensionsImp::saveSettings()
     ui->leFormatSpec->onSave();
     ui->pdsbGapISO->onSave();
     ui->pdsbGapASME->onSave();
+    ui->pdsbLineSpacingFactorISO->onSave();
 }
 
 void DlgPrefsTechDrawDimensionsImp::loadSettings()
@@ -98,6 +99,8 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
 
     ui->pdsbGapISO->onRestore();
     ui->pdsbGapASME->onRestore();
+    ui->pdsbLineSpacingFactorISO->onRestore();
+
 }
 
 /**

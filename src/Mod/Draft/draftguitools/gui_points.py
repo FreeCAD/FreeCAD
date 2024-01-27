@@ -41,11 +41,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftguitools.gui_base_original as gui_base_original
-import draftutils.todo as todo
-
+from draftguitools import gui_base_original
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import todo
+from draftutils import utils
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -114,7 +114,7 @@ class Point(gui_base_original.Creator):
                 # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
                 Gui.addModule("Draft")
-                if utils.getParam("UsePartPrimitives", False):
+                if params.get_param("UsePartPrimitives"):
                     # Insert a Part::Primitive object
                     _cmd = 'FreeCAD.ActiveDocument.'
                     _cmd += 'addObject("Part::Vertex", "Point")'

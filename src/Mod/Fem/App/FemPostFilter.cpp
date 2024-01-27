@@ -217,6 +217,9 @@ void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& read
         Point2Property.Restore(reader);
         Point2.setValue(Point2Property.getValue());
     }
+    else {
+        FemPostFilter::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void FemPostDataAlongLineFilter::onChanged(const Property* prop)

@@ -264,9 +264,24 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 Path.Log.debug("discretize value: {}".format(obj.Discretize))
                 pts = wire.discretize(QuasiDeflection=obj.Discretize)
                 ptv = [FreeCAD.Vector(p.x, p.y) for p in pts]
+                # Check over the last point before just closing the polygon
+                # by adding the start again.  If the discretizer was aiming
+                # for the last point and missed by a little bit, closing the
+                # polygon as is could result in OpenVoronoi truncating the
+                # coordinates to a self-intersecting polygon which is invalid.
+                # Instead, if the last point is close to the first, remove it
+                # and let the final append close the polygon.
+                # See issue 8064
+                if len(ptv) > 0:
+                    dist = ptv[-1].distanceToPoint(ptv[0])
+                    if dist < FreeCAD.Base.Precision.confusion():
+                        Path.Log.debug(
+                            "Removing bad carve point: {} from polygon origin"
+                            .format(dist))
+                        del ptv[-1]
                 ptv.append(ptv[0])
 
-                for i in range(len(pts)):
+                for i in range(len(ptv)-1):
                     vd.addSegment(ptv[i], ptv[i + 1])
 
         def cutWire(edges):

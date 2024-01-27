@@ -42,6 +42,7 @@ import ArchIFCSchema
 import importIFCHelper
 import importIFCmulticore
 
+from draftutils import params
 from draftutils.messages import _msg, _err
 
 if FreeCAD.GuiUp:
@@ -379,7 +380,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     if preferences['DEBUG']: print(" no layer found", ptype,end="")
 
         # checking for full FreeCAD parametric definition, overriding everything else
-        if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
+        if psets and params.get_param_arch("IfcImportFreeCADProperties"):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in psets.keys()]:
                 if preferences['DEBUG']: print(" restoring from parametric definition...",end="")
                 obj,parametrics = importIFCHelper.createFromProperties(psets,ifcfile,parametrics)

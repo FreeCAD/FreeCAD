@@ -44,6 +44,7 @@
 // standard
 #include <cfloat>
 #include <cmath>
+#include <limits>
 
 // STL
 #include <algorithm>

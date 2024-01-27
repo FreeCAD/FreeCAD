@@ -216,7 +216,7 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
             dd = self.display_data[row]
             if column == 3 or column == 4:
                 if dd[column] is not None:
-                    qdate = QtCore.QDateTime.fromTime_t(dd[column])
+                    qdate = QtCore.QDateTime.fromSecsSinceEpoch(dd[column])
                     return QtCore.QLocale().toString(qdate, QtCore.QLocale.ShortFormat)
             elif column < len(dd):
                 return dd[column]

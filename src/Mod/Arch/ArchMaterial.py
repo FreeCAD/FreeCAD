@@ -20,6 +20,8 @@
 #***************************************************************************
 
 import FreeCAD
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui, os
     import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
@@ -887,9 +889,8 @@ class _ArchMultiMaterialTaskPanel:
             self.model.clear()
             self.model.setHorizontalHeaderLabels([translate("Arch","Name"),translate("Arch","Material"),translate("Arch","Thickness")])
             # restore widths
-            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-            self.form.tree.setColumnWidth(0,p.GetInt("MultiMaterialColumnWidth0",60))
-            self.form.tree.setColumnWidth(1,p.GetInt("MultiMaterialColumnWidth1",60))
+            self.form.tree.setColumnWidth(0,params.get_param_arch("MultiMaterialColumnWidth0"))
+            self.form.tree.setColumnWidth(1,params.get_param_arch("MultiMaterialColumnWidth1"))
             for i in range(len(obj.Names)):
                 item1 = QtGui.QStandardItem(obj.Names[i])
                 item2 = QtGui.QStandardItem(obj.Materials[i].Label)
@@ -974,9 +975,8 @@ class _ArchMultiMaterialTaskPanel:
 
     def accept(self):
         # store widths
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        p.SetInt("MultiMaterialColumnWidth0",self.form.tree.columnWidth(0))
-        p.SetInt("MultiMaterialColumnWidth1",self.form.tree.columnWidth(1))
+        params.set_param_arch("MultiMaterialColumnWidth0",self.form.tree.columnWidth(0))
+        params.set_param_arch("MultiMaterialColumnWidth1",self.form.tree.columnWidth(1))
         if self.obj:
             mats = []
             for m in FreeCAD.ActiveDocument.Objects:

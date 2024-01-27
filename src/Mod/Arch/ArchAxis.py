@@ -26,6 +26,8 @@ import ArchCommands
 import Draft
 import Part
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui, re
     from PySide import QtCore, QtGui
@@ -224,11 +226,11 @@ class _ViewProviderAxis:
 
     def setProperties(self,vobj):
 
-        ts = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("textheight",350)
+        ts = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
             vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
-            vobj.BubbleSize = ts*1.42
+            vobj.BubbleSize = ts * 1.42
         if not "NumberingStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
@@ -251,7 +253,7 @@ class _ViewProviderAxis:
             vobj.StartNumber = 1
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont","FontName","Axis",QT_TRANSLATE_NOOP("App::Property","The font to use for texts"))
-            vobj.FontName = Draft.getParam("textfont","Arial,Sans")
+            vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"))
             vobj.FontSize = ts
@@ -476,7 +478,7 @@ class _ViewProviderAxis:
                                 txpos = FreeCAD.Vector(center.x,center.y-fs/2.5,center.z)
                                 tr.translation.setValue(tuple(txpos))
                                 fo = coin.SoFont()
-                                fn = Draft.getParam("textfont","Arial,Sans")
+                                fn = params.get_param("textfont")
                                 if hasattr(vobj,"FontName"):
                                     if vobj.FontName:
                                         try:
@@ -545,7 +547,7 @@ class _ViewProviderAxis:
                                     fs = vobj.BubbleSize*0.75
                                 tr.translation.setValue(tuple(pl.Base))
                                 tr.rotation.setValue(pl.Rotation.Q)
-                                fn = Draft.getParam("textfont","Arial,Sans")
+                                fn = params.get_param("textfont")
                                 if hasattr(vobj,"FontName"):
                                     if vobj.FontName:
                                         try:

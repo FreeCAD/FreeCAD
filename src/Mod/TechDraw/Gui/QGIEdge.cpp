@@ -37,10 +37,9 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIEdge.h"
-#include "QGIViewPart.h"
 #include "PreferencesGui.h"
 #include "TaskLineDecor.h"
-
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -96,6 +95,7 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
 {
     //Qt::PenStyle - NoPen, Solid, Dashed, ...
     //Preferences::General - Solid, Dashed
+    // Dashed lines should use ISO Line #2 instead of Qt::DashedLine
     Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1);
     return hidStyle;
 }
@@ -130,4 +130,11 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
         Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
     }
+}
+
+
+
+void QGIEdge::setLinePen(QPen linePen)
+{
+    m_pen = linePen;
 }

@@ -46,12 +46,13 @@ runs:
   steps:
     - name: Build
       id: build
-      shell: bash
+      shell: bash -l {0}
       run: |
+        set -o pipefail
         (stdbuf -oL -eL cmake --build ${{ inputs.builddir }} -j$(nproc) ${{ inputs.extraParameters }}) \
         2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
     - name: Write report
-      shell: bash
+      shell: bash -l {0}
       if: always()
       run: |
         if [ ${{ steps.build.outcome }} == 'success' ]

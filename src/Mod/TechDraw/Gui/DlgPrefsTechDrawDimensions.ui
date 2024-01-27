@@ -587,7 +587,7 @@ Normally, no gap is used. If a gap is used, the recommended value is 6.</string>
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>0.000000000000000</double>
+           <double>2.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineSpacingFactorISO</cstring>

@@ -28,6 +28,7 @@ SET(AddonManager_SRCS
     addonmanager_macro_parser.py
     addonmanager_metadata.py
     addonmanager_pyside_interface.py
+    addonmanager_readme_viewer.py
     addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
     addonmanager_uninstaller_gui.py

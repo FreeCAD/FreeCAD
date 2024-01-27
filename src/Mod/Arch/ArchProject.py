@@ -200,5 +200,24 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
         import Arch_rc
         return ":/icons/Arch_Project_Tree.svg"
 
+    def removeDisplaymodeChildNodes(self,vobj):
+        """Remove all child nodes from the 4 default display modes.
+
+        This avoids 'ghosts' of the objects in the Group property.
+        See:
+        ArchSite.py
+        https://forum.freecad.org/viewtopic.php?f=10&t=74731
+        """
+
+        if not hasattr(self, "displaymodes_cleaned"):
+            main_switch = vobj.RootNode.getChild(2)  # The display mode switch.
+            if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
+                for node in tuple(main_switch.getChildren()):
+                    node.removeAllChildren()
+                self.displaymodes_cleaned = True
+
+    def onChanged(self,vobj,prop):
+        self.removeDisplaymodeChildNodes(vobj)
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Project', _CommandProject())

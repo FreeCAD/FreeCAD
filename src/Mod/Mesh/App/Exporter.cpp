@@ -107,7 +107,7 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
     for (std::string& sub : expandSubObjectNames(obj, subObjectNameCache, 0)) {
         Base::Matrix4D matrix;
         auto sobj = obj->getSubObject(sub.c_str(), nullptr, &matrix);
-        auto linked = sobj->getLinkedObject(true, &matrix, true);
+        auto linked = sobj->getLinkedObject(true, &matrix, false);
         auto it = meshCache.find(linked);
         if (it == meshCache.end()) {
             if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {

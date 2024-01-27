@@ -683,7 +683,7 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Összes (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>

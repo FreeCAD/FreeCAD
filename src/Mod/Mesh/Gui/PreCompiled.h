@@ -44,6 +44,7 @@
 
 // standard
 #include <ios>
+#include <cfloat>
 
 // STL
 #include <algorithm>

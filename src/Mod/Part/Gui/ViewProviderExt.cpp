@@ -982,7 +982,11 @@ void ViewProviderPartExt::updateVisual()
 
             TopExp_Explorer xp;
             for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next())
+#if OCC_VERSION_HEX >= 0x070800
+                faceEdges.insert(std::hash<TopoDS_Shape>{}(xp.Current()));
+#else
                 faceEdges.insert(xp.Current().HashCode(INT_MAX));
+#endif
             numFaces++;
         }
 
@@ -1010,7 +1014,11 @@ void ViewProviderPartExt::updateVisual()
             // So, we have to store the hashes of the edges associated to a face.
             // If the hash of a given edge is not in this list we know it's really
             // a free edge.
+#if OCC_VERSION_HEX >= 0x070800
+            int hash = std::hash<TopoDS_Shape>{}(aEdge);
+#else
             int hash = aEdge.HashCode(INT_MAX);
+#endif
             if (faceEdges.find(hash) == faceEdges.end()) {
                 Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
@@ -1209,7 +1217,11 @@ void ViewProviderPartExt::updateVisual()
             TopLoc_Location aLoc;
 
             // handling of the free edge that are not associated to a face
+#if OCC_VERSION_HEX >= 0x070800
+            int hash = std::hash<TopoDS_Shape>{}(aEdge);
+#else
             int hash = aEdge.HashCode(INT_MAX);
+#endif
             if (faceEdges.find(hash) == faceEdges.end()) {
                 Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
                 if (!aPoly.IsNull()) {

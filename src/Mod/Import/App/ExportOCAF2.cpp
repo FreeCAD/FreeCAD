@@ -611,7 +611,7 @@ bool ExportOCAF2::canFallback(std::vector<App::DocumentObject*> objs)
 {
     for (size_t i = 0; i < objs.size(); ++i) {
         auto obj = objs[i];
-        if (!obj || !obj->getNameInDocument()) {
+        if (!obj || !obj->isAttachedToDocument()) {
             continue;
         }
         if (obj->getExtensionByType<App::LinkBaseExtension>(true)) {

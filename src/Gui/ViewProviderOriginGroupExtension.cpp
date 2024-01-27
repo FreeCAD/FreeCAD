@@ -139,7 +139,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     auto owner = getExtendedViewProvider()->getObject();
 
-    if(!owner->getNameInDocument() ||
+    if(!owner->isAttachedToDocument() ||
        owner->isRemoving() ||
        owner->getDocument()->testStatus(App::Document::Restoring))
         return;

@@ -1427,7 +1427,7 @@ class CommandPathSanity:
             data["items"] = []
             for op in obj.Operations.Group:
                 oplabel = op.Label
-                ctime = op.CycleTime if hasattr(op, "CycleTime") else 0.0
+                ctime = op.CycleTime if hasattr(op, "CycleTime") else "00:00:00"
                 cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
 
                 o = op
@@ -1440,7 +1440,7 @@ class CommandPathSanity:
 
                 if hasattr(op, "Active") and not op.Active:
                     oplabel = "{} (INACTIVE)".format(oplabel)
-                    ctime = 0.0
+                    ctime = "00:00:00"
 
                 if op.Path.BoundBox.isValid():
                     zmin = FreeCAD.Units.Quantity(

@@ -26,10 +26,11 @@ import FreeCAD
 import Arch
 import ArchIFC
 
+from draftutils import params
+from draftutils.messages import _msg, _wrn
+
 if FreeCAD.GuiUp:
     import FreeCADGui as Gui
-
-from draftutils.messages import _msg, _wrn
 
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
@@ -82,29 +83,27 @@ def getPreferences():
         2 = Part shapes
         3 = One compound per storey
     """
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+    if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
         Gui.showPreferences("Import-Export", 0)
 
     preferences = {
-        'DEBUG': p.GetBool("ifcDebug", False),
-        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers", False),
-        'SKIP': p.GetString("ifcSkip", "").split(","),
-        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings", False),
-        'ROOT_ELEMENT': p.GetString("ifcRootElement", "IfcProduct"),
-        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions", False),
-        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials", False),
-        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch", 0),
-        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct", 1),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
-        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties", False),
-        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers", False),  # wall layer, not layer for visual props
-        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport", False),
-        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid", False),
-        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject", False),
-        'MULTICORE': p.GetInt("ifcMulticore", 0),
-        'IMPORT_LAYER': p.GetBool("ifcImportLayer", True)
+        'DEBUG': params.get_param_arch("ifcDebug"),
+        'PREFIX_NUMBERS': params.get_param_arch("ifcPrefixNumbers"),
+        'SKIP': params.get_param_arch("ifcSkip").split(","),
+        'SEPARATE_OPENINGS': params.get_param_arch("ifcSeparateOpenings"),
+        'ROOT_ELEMENT': params.get_param_arch("ifcRootElement"),
+        'GET_EXTRUSIONS': params.get_param_arch("ifcGetExtrusions"),
+        'MERGE_MATERIALS': params.get_param_arch("ifcMergeMaterials"),
+        'MERGE_MODE_ARCH': params.get_param_arch("ifcImportModeArch"),
+        'MERGE_MODE_STRUCT': params.get_param_arch("ifcImportModeStruct"),
+        'CREATE_CLONES': params.get_param_arch("ifcCreateClones"),
+        'IMPORT_PROPERTIES': params.get_param_arch("ifcImportProperties"),
+        'SPLIT_LAYERS': params.get_param_arch("ifcSplitLayers"),  # wall layer, not layer for visual props
+        'FITVIEW_ONIMPORT': params.get_param_arch("ifcFitViewOnImport"),
+        'ALLOW_INVALID': params.get_param_arch("ifcAllowInvalid"),
+        'REPLACE_PROJECT': params.get_param_arch("ifcReplaceProject"),
+        'MULTICORE': params.get_param_arch("ifcMulticore"),
+        'IMPORT_LAYER': params.get_param_arch("ifcImportLayer")
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:

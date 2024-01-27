@@ -38,11 +38,13 @@
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
 #include "LineGroup.h"
+#include "LineGenerator.h"
 #include "Preferences.h"
 
 
 using namespace TechDraw;
 using namespace std;
+using DU = DrawUtil;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -54,6 +56,7 @@ LineFormat::LineFormat()
     m_weight = getDefEdgeWidth();
     m_color= getDefEdgeColor();
     m_visible = true;
+    m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
 }
 
 LineFormat::LineFormat(const int style,
@@ -63,7 +66,8 @@ LineFormat::LineFormat(const int style,
     m_style(style),
     m_weight(weight),
     m_color(color),
-    m_visible(visible)
+    m_visible(visible),
+    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
 {
 }
 
@@ -96,7 +100,7 @@ App::Color LineFormat::getDefEdgeColor()
 
 int LineFormat::getDefEdgeStyle()
 {
-    return Preferences::getPreferenceGroup("Decorations")->GetInt("CosmoCLStyle", 2);   //dashed
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLineStyle", 2);   //dashed
 }
 
 //******************************************
@@ -212,6 +216,19 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     return newGeom;
 }
 
+//! makes an unscaled, unrotated line from two scaled & rotated end points.  If points is Gui space coordinates,
+//! they should be inverted (DU::invertY) before calling this method.
+//! the result of this method should be used in addCosmeticEdge().
+TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end)
+{
+    Base::Vector3d cStart = CosmeticVertex::makeCanonicalPoint(dvp, start);
+    Base::Vector3d cEnd   = CosmeticVertex::makeCanonicalPoint(dvp, end);
+    gp_Pnt gStart  = DU::togp_Pnt(cStart);
+    gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
+    return TechDraw::BaseGeom::baseFactory(edge)->inverted();
+}
+
 std::string CosmeticEdge::toString() const
 {
     std::stringstream ss;
@@ -240,6 +257,8 @@ unsigned int CosmeticEdge::getMemSize () const
 
 void CosmeticEdge::Save(Base::Writer &writer) const
 {
+    // TODO: this should be using m_format->Save(writer) instead of saving the individual
+    // fields.
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
@@ -259,6 +278,9 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     } else {
         Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
+
+    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
+
 }
 
 void CosmeticEdge::Restore(Base::XMLReader &reader)
@@ -276,6 +298,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.m_color.fromHexString(temp);
     reader.readElement("Visible");
     m_format.m_visible = reader.getAttributeAsInteger("value") != 0;
+
     reader.readElement("GeometryType");
     TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
 
@@ -304,6 +327,19 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaRadius = aoc->radius;
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+    }
+    // older documents may not have the LineNumber element, so we need to check the
+    // next entry.  if it is a start element, then we check if it is a start element
+    // for LineNumber.
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"LineNumber") == 0 ) {
+            // this CosmeticEdge has an LineNumber attribute
+            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+        } else {
+            // LineNumber not found.
+            // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style)
+            m_format.setLineNumber(LineFormat::InvalidLine);
+        }
     }
 }
 
@@ -378,6 +414,7 @@ GeomFormat::GeomFormat() :
     m_format.m_weight = LineFormat::getDefEdgeWidth();
     m_format.m_color = LineFormat::getDefEdgeColor();
     m_format.m_visible = true;
+    m_format.setLineNumber(LineFormat::InvalidLine);
 
     createNewTag();
 }
@@ -389,6 +426,7 @@ GeomFormat::GeomFormat(const GeomFormat* gf)
     m_format.m_weight = gf->m_format.m_weight;
     m_format.m_color = gf->m_format.m_color;
     m_format.m_visible = gf->m_format.m_visible;
+    m_format.setLineNumber(gf->m_format.getLineNumber());
 
     createNewTag();
 }
@@ -401,6 +439,7 @@ GeomFormat::GeomFormat(const int idx,
     m_format.m_weight = fmt.m_weight;
     m_format.m_color = fmt.m_color;
     m_format.m_visible = fmt.m_visible;
+    m_format.setLineNumber(fmt.getLineNumber());
 
     createNewTag();
 }
@@ -433,10 +472,13 @@ void GeomFormat::Save(Base::Writer &writer) const
 {
     const char v = m_format.m_visible?'1':'0';
     writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
 }
 
 void GeomFormat::Restore(Base::XMLReader &reader)
@@ -449,6 +491,8 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     m_geomIndex = reader.getAttributeAsInteger("value");
 
+    // style is deprecated in favour of line number, but we still save and restore it
+    // to avoid problems with old documents.
     reader.readElement("Style");
     m_format.m_style = reader.getAttributeAsInteger("value");
     reader.readElement("Weight");
@@ -458,6 +502,22 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     m_format.m_color.fromHexString(temp);
     reader.readElement("Visible");
     m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    // older documents may not have the LineNumber element, so we need to check the
+    // next entry.  if it is a start element, then we check if it is a start element
+    // for LineNumber.
+    // test for ISOLineNumber can be removed after testing.  It is a left over for the earlier
+    // ISO only line handling.
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"LineNumber") == 0 ||
+           strcmp(reader.localName(),"ISOLineNumber") == 0 ) {            // this GeomFormat has an LineNumber attribute
+            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+        } else {
+            // LineNumber not found.
+            // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style),
+            // but DashedLineGenerator lives on the gui side, and is not accessible here.
+            m_format.setLineNumber(LineFormat::InvalidLine);
+        }
+    }
 }
 
 boost::uuids::uuid GeomFormat::getTag() const
@@ -508,6 +568,7 @@ GeomFormat* GeomFormat::copy() const
     newFmt->m_format.m_weight = m_format.m_weight;
     newFmt->m_format.m_color = m_format.m_color;
     newFmt->m_format.m_visible = m_format.m_visible;
+    newFmt->m_format.setLineNumber(m_format.getLineNumber());
     return newFmt;
 }
 

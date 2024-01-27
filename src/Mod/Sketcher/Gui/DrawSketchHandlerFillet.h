@@ -333,7 +333,12 @@ private:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
+        if (filletType == SimpleFillet) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
+        }
+        else {
+            return QString::fromLatin1("Sketcher_Pointer_Create_PointFillet");
+        }
     }
 
 protected:

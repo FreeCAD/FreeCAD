@@ -29,11 +29,14 @@
 # include <QGraphicsSvgItem>
 # include <QPen>
 # include <QSvgRenderer>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif// #ifndef _PreComp_
 
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -165,13 +168,10 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    double editClickBoxSize = Rez::guiX(Preferences::getPreferenceGroup("General")->GetFloat("TemplateDotSize", 3.0));
+    double editClickBoxSize = Rez::guiX(PreferencesGui::templateClickBoxSize());
+    QColor editClickBoxColor = PreferencesGui::templateClickBoxColor();
 
-    QColor editClickBoxColor = Qt::green;
-    editClickBoxColor.setAlpha(128);//semi-transparent
-
-    double width = editClickBoxSize;
-    double height = editClickBoxSize;
+    auto textMap = svgTemplate->EditableTexts.getValues();
 
     TechDraw::XMLQuery query(templateDocument);
 
@@ -185,27 +185,47 @@ void QGISVGTemplate::createClickHandles()
             textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
         double y = Rez::guiX(
             textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
-
         if (name.isEmpty()) {
             Base::Console().Warning(
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
+        std::string itemText = textMap[Base::Tools::toStdString(name)];
 
+        // default box size
+        double textHeight = editClickBoxSize;
+        double charWidth = textHeight * 0.6;
+        QString style = textElement.attribute(QString::fromUtf8("style"));
+        if (!style.isEmpty()) {
+            QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*\\.?[0-9]*)px;"));
+            QRegularExpression rxAnchor(QString::fromUtf8("text-anchor:(middle);"));
+            QRegularExpressionMatch match;
+
+            int pos{0};
+            pos = style.indexOf(rxFontSize, pos, &match);
+            if (pos != -1) {
+                textHeight = match.captured(1).toDouble() * 10.0;
+            }
+            charWidth = textHeight * 0.6;
+            pos = 0;
+            pos = style.indexOf(rxAnchor, pos, &match);
+            if (pos != -1) {
+                x = x - itemText.length() * charWidth / 2;
+            }
+        }
+        double textLength = itemText.length() * charWidth;
+        textLength = std::max(charWidth, textLength);
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
 
         double pad = 1.0;
-        item->setRect(x - pad, Rez::guiX(-svgTemplate->getHeight()) + y - height - pad,
-                      width + 2.0 * pad, height + 2.0 * pad);
-
-        QPen myPen;
-        myPen.setStyle(Qt::SolidLine);
-        myPen.setColor(editClickBoxColor);
-        myPen.setWidth(0);// 0 means "cosmetic pen" - always 1px
-        item->setPen(myPen);
-
-        QBrush myBrush(editClickBoxColor, Qt::SolidPattern);
-        item->setBrush(myBrush);
+        double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;
+        double bottom = top + textHeight + 2.0 * pad;
+        double left = x - pad;
+        item->setRectangle(QRectF(left, top,
+                      textLength + 2.0 * pad, textHeight + 2.0 * pad));
+        item->setLine(QPointF( left, bottom),
+                      QPointF(left + textLength + 2.0 * pad, bottom));
+        item->setLineColor(editClickBoxColor);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
         addToGroup(item);

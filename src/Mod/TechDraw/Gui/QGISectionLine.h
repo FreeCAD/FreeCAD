@@ -70,6 +70,9 @@ public:
     void clearChangePoints();
     void draw() override;
 
+    void setLinePen(QPen isoPen);
+
+
 protected:
     QColor getSectionColor();
     Qt::PenStyle getSectionStyle();

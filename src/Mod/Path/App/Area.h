@@ -242,7 +242,7 @@ public:
         const std::vector<double>& heights = std::vector<double>(),
         const TopoDS_Shape& plane = TopoDS_Shape());
 
-    std::shared_ptr<Area> getClearedArea(double tipDiameter, double diameter);
+    std::shared_ptr<Area> getClearedArea(const Toolpath *path, double diameter, double zmax, Base::BoundBox3d bbox);
     std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter);
     TopoDS_Shape toTopoShape();
 

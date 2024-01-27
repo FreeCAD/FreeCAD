@@ -37,4 +37,5 @@
  #define SMESH_EXPORT
 #endif
 
+#include <Standard_Version.hxx>
 #endif

@@ -172,7 +172,7 @@ private:
     using DiGraph = boost::adjacency_list< boost::listS, boost::vecS, boost::directedS >;
     using Edge = std::pair<int, int>;
     // Note: use std::map instead of unordered_map to keep the binding order stable
-    #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(_LIBCPP_VERSION)
     using ExpressionMap = std::map<App::ObjectIdentifier, ExpressionInfo>;
     #else
     using ExpressionMap = std::map<const App::ObjectIdentifier, ExpressionInfo>;

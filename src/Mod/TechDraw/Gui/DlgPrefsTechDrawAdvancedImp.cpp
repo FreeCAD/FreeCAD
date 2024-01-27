@@ -50,10 +50,8 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->cbDebugDetail->onSave();
     ui->cbCrazyEdges->onSave();
     ui->cbFuseBeforeSection->onSave();
-    ui->cbShowLoose->onSave();
     ui->pdsbEdgeFuzz->onSave();
     ui->pdsbMarkFuzz->onSave();
-    ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
     ui->cbReportProgress->onSave();
@@ -70,10 +68,8 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbDebugDetail->onRestore();
     ui->cbCrazyEdges->onRestore();
     ui->cbFuseBeforeSection->onRestore();
-    ui->cbShowLoose->onRestore();
     ui->pdsbEdgeFuzz->onRestore();
     ui->pdsbMarkFuzz->onRestore();
-    ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
     ui->cbReportProgress->onRestore();

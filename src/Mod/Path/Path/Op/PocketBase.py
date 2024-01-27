@@ -194,16 +194,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
-        obj.addProperty(
-            "Part::PropertyPartShape",
-            "RestMachiningRegions",
-            "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
-            ),
-        )
-        obj.setEditorMode("RestMachiningRegions", 2)  # hide
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -277,29 +267,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
 
-        if not hasattr(obj, "RestMachiningRegions"):
-            obj.addProperty(
-                "Part::PropertyPartShape",
-                "RestMachiningRegions",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                "The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.",
-                ),
-            )
-            obj.setEditorMode("RestMachiningRegions", 2)  # hide
-
-            obj.addProperty(
-                "App::PropertyBool",
-                "RestMachiningRegionsNeedRecompute",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.",
-                ),
-            )
-            obj.setEditorMode("RestMachiningRegionsNeedRecompute", 2)  # hide
-            obj.RestMachiningRegionsNeedRecompute = True
+        if hasattr(obj, "RestMachiningRegions"):
+            obj.removeProperty("RestMachiningRegions")
+        if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
+            obj.removeProperty("RestMachiningRegionsNeedRecompute")
 
         Path.Log.track()
 

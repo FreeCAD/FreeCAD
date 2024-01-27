@@ -91,14 +91,36 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    double slope = pcConstraint->Slope.getValue();
-    double friction = pcConstraint->Friction.getValue();
+
+    bool friction = pcConstraint->Friction.getValue();
 
     // Fill data into dialog elements
-    ui->spSlope->setMinimum(1.0);
-    ui->spSlope->setValue(slope);
-    ui->spFriction->setValue(friction);
+    ui->spbSlope->setUnit(pcConstraint->Slope.getUnit());
+    ui->spbSlope->setMinimum(0);
+    ui->spbSlope->setMaximum(FLOAT_MAX);
+    ui->spbSlope->setValue(pcConstraint->Slope.getQuantityValue());
+    ui->spbSlope->bind(pcConstraint->Slope);
 
+    ui->spbAdjust->setUnit(pcConstraint->Adjust.getUnit());
+    ui->spbAdjust->setMinimum(0);
+    ui->spbAdjust->setMaximum(FLOAT_MAX);
+    ui->spbAdjust->setValue(pcConstraint->Adjust.getQuantityValue());
+    ui->spbAdjust->bind(pcConstraint->Adjust);
+
+    ui->ckbFriction->setChecked(friction);
+
+    ui->spbFrictionCoeff->setMinimum(0);
+    ui->spbFrictionCoeff->setMaximum(FLOAT_MAX);
+    ui->spbFrictionCoeff->setValue(pcConstraint->FrictionCoefficient.getValue());
+    ui->spbFrictionCoeff->setEnabled(friction);
+    ui->spbFrictionCoeff->bind(pcConstraint->FrictionCoefficient);
+
+    ui->spbStickSlope->setUnit(pcConstraint->StickSlope.getUnit());
+    ui->spbStickSlope->setMinimum(0);
+    ui->spbStickSlope->setMaximum(FLOAT_MAX);
+    ui->spbStickSlope->setValue(pcConstraint->StickSlope.getQuantityValue());
+    ui->spbStickSlope->setEnabled(friction);
+    ui->spbStickSlope->bind(pcConstraint->StickSlope);
     /* */
 
     ui->lw_referencesMaster->clear();
@@ -135,6 +157,11 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
             &QToolButton::clicked,
             this,
             &TaskFemConstraintContact::removeFromSelectionMaster);
+
+    connect(ui->ckbFriction,
+            &QCheckBox::toggled,
+            this,
+            &TaskFemConstraintContact::onFrictionChanged);
 
     updateUI();
 }
@@ -428,6 +455,12 @@ void TaskFemConstraintContact::onReferenceDeletedMaster()
     TaskFemConstraintContact::removeFromSelectionMaster();
 }
 
+void TaskFemConstraintContact::onFrictionChanged(bool state)
+{
+    ui->spbFrictionCoeff->setEnabled(state);
+    ui->spbStickSlope->setEnabled(state);
+}
+
 const std::string TaskFemConstraintContact::getReferences() const
 {
     int rowsSlave = ui->lw_referencesSlave->model()->rowCount();
@@ -443,15 +476,29 @@ const std::string TaskFemConstraintContact::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-/* Note: */
-double TaskFemConstraintContact::get_Slope() const
+const std::string TaskFemConstraintContact::getSlope() const
 {
-    return ui->spSlope->rawValue();
+    return ui->spbSlope->value().getSafeUserString().toStdString();
 }
 
-double TaskFemConstraintContact::get_Friction() const
+const std::string TaskFemConstraintContact::getAdjust() const
 {
-    return ui->spFriction->value();
+    return ui->spbAdjust->value().getSafeUserString().toStdString();
+}
+
+bool TaskFemConstraintContact::getFriction() const
+{
+    return ui->ckbFriction->isChecked();
+}
+
+double TaskFemConstraintContact::getFrictionCoeff() const
+{
+    return ui->spbFrictionCoeff->value();
+}
+
+const std::string TaskFemConstraintContact::getStickSlope() const
+{
+    return ui->spbStickSlope->value().getSafeUserString().toStdString();
 }
 
 void TaskFemConstraintContact::changeEvent(QEvent*)
@@ -478,7 +525,7 @@ void TaskDlgFemConstraintContact::open()
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Contact constraint");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
+        Gui::Command::openCommand(static_cast<const char*>(msg.toUtf8()));
         ConstraintView->setVisible(true);
         Gui::Command::runCommand(
             Gui::Command::Doc,
@@ -497,13 +544,25 @@ bool TaskDlgFemConstraintContact::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Slope = %f",
+                                "App.ActiveDocument.%s.Slope = \"%s\"",
                                 name.c_str(),
-                                parameterContact->get_Slope());
+                                parameterContact->getSlope().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Friction = %f",
+                                "App.ActiveDocument.%s.Adjust = \"%s\"",
                                 name.c_str(),
-                                parameterContact->get_Friction());
+                                parameterContact->getAdjust().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Friction = %s",
+                                name.c_str(),
+                                parameterContact->getFriction() ? "True" : "False");
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.FrictionCoefficient = %f",
+                                name.c_str(),
+                                parameterContact->getFrictionCoeff());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.StickSlope = \"%s\"",
+                                name.c_str(),
+                                parameterContact->getStickSlope().c_str());
         std::string scale = parameterContact->getScale();  // OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",

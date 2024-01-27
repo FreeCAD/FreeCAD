@@ -38,13 +38,12 @@ import math
 
 import FreeCAD
 from FreeCAD import Vector
-import draftutils.messages as messages
+from draftutils import params
+from draftutils import messages
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = "https://www.freecad.org"
-
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 ## \addtogroup DRAFTVECUTILS
 #  @{
@@ -59,7 +58,7 @@ def precision():
         Return the number of decimal places set up in the preferences,
         or a standard value (6), if the parameter is missing.
     """
-    return params.GetInt("precision", 6)
+    return params.get_param("precision")
 
 
 def typecheck(args_and_types, name="?"):

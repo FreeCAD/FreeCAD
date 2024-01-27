@@ -49,4 +49,47 @@ TEST(Expression, test_e_rad)
     EXPECT_EQ(op->toString(), "e rad");
     op.release();
 }
+
+TEST(Expression, parseQuantityFromText)
+{
+    EXPECT_ANY_THROW(App::parseQuantityFromText("")) << "should not parse empty";
+    EXPECT_ANY_THROW(App::parseQuantityFromText("mm")) << "should not parse missing value";
+    EXPECT_NO_THROW(App::parseQuantityFromText("2")) << "ok to parse missing unit";
+    EXPECT_NO_THROW(App::parseQuantityFromText("2mm"));
+    EXPECT_NO_THROW(App::parseQuantityFromText("2 mm"));
+    EXPECT_NO_THROW(App::parseQuantityFromText("\t \n .5e-3kg/m^3 \t"));
+    EXPECT_NO_THROW(App::parseQuantityFromText("\n \t -6.7E3 \t A/m^2 \t"));
+    EXPECT_EQ(App::parseQuantityFromText("2mm"), Base::Quantity(2.0, QString::fromStdString("mm"))); // exact ULP form
+    EXPECT_EQ(App::parseQuantityFromText("2 mm"), Base::Quantity(2.0, QString::fromStdString("mm"))); // exact ULP form
+    auto quant_one = App::parseQuantityFromText("\t \n.5e-3kg/m^3 \t");
+    EXPECT_DOUBLE_EQ(quant_one.getValue(), 0.5e-3); // approximately equal, to within 4 ULPs
+    EXPECT_EQ(quant_one.getUnit(), Base::Unit(QString::fromStdString("kg/m^3")));
+    auto quant_two = App::parseQuantityFromText("\n \t -6.7E3 \t A/m^2 \t");
+    EXPECT_DOUBLE_EQ(quant_two.getValue(), -6.7e+3); // approximately equal, to within 4 ULPs
+    EXPECT_EQ(quant_two.getUnit(), Base::Unit(QString::fromStdString("A/m^2")));
+}
+
+TEST(Expression, anyToQuantity)
+{
+    EXPECT_EQ(App::anyToQuantity(Base::Quantity()), Base::Quantity());
+    EXPECT_EQ(App::anyToQuantity(true), Base::Quantity(1.0));
+    EXPECT_EQ(App::anyToQuantity(false), Base::Quantity(0.0));
+    EXPECT_EQ(App::anyToQuantity(123), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity(123L), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity(123.0F), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity(123.0), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity("123"), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity(std::string("123")), Base::Quantity(123.0));
+    EXPECT_EQ(App::anyToQuantity("123 mm"), Base::Quantity(123.0, QString::fromStdString("mm")));
+    EXPECT_EQ(App::anyToQuantity(std::string("123 mm")), Base::Quantity(123.0, QString::fromStdString("mm")));
+    EXPECT_ANY_THROW(App::anyToQuantity(""));
+    EXPECT_ANY_THROW(App::anyToQuantity("mm"));
+}
+
+TEST(Expression, isAnyEqual)
+{
+    EXPECT_TRUE(App::isAnyEqual("123 mm", "123 mm"));
+    EXPECT_TRUE(App::isAnyEqual("123 mm", Base::Quantity(123.0, QString::fromStdString("mm"))));
+    EXPECT_TRUE(App::isAnyEqual(Base::Quantity(123.0, QString::fromStdString("mm")), "123 mm"));
+}
 // clang-format on

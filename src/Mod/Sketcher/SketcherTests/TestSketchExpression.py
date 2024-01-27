@@ -57,11 +57,25 @@ class TestSketchExpression(unittest.TestCase):
         sketch.addConstraint(conList)
         del geoList, conList
 
+        # Check that circular references get detected
         length = sketch.addConstraint(Sketcher.Constraint("Distance", 0, 6.0))
         height = sketch.addConstraint(Sketcher.Constraint("Distance", 3, 5.0))
-
         sketch.renameConstraint(length, "Length")
+        sketch.renameConstraint(height, "Height")
+
         sketch.setExpression("Constraints[{}]".format(height), ".Constraints.Length")
+
+        with self.assertRaises(RuntimeError) as context:
+            sketch.setExpression("Constraints.Length", ".Constraints.Length * 2")
+        assert ".Constraints.Length reference creates a cyclic dependency." in str(
+            context.exception
+        )
+
+        with self.assertRaises(RuntimeError) as context:
+            sketch.setExpression("Constraints.Length", ".Constraints.Height * 2")
+        assert ".Constraints.Length reference creates a cyclic dependency." in str(
+            context.exception
+        )
 
     def tearDown(self):
         # comment out to omit closing document for debugging

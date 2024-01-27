@@ -933,19 +933,19 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
             }
         }
-        
-        //Set Unit System.
-        int projectUnitSystemIndex = doc->second->getProjectUnitSystem();
-        int ignore = doc->second->getProjectUnitSystemIgnore();
-        if( projectUnitSystemIndex >= 0 && !ignore ){//is valid
-        	Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(projectUnitSystemIndex));
+
+        // Update the application to show the unit change
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Units");
+        if( Doc.FileName.getValue()[0] != '\0' &&  ! hGrp->GetBool("IgnoreProjectSchema")) {
+            int userSchema = Doc.UnitSystem.getValue();
+            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            getMainWindow()->setUserSchema(userSchema);
+            Application::Instance->onUpdate();
         }else{// set up Unit system default
-			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-			   ("User parameter:BaseApp/Preferences/Units");
 			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
 			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
-        
         signalActiveDocument(*doc->second);
         updateActions();
     }

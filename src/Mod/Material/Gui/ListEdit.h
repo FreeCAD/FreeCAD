@@ -47,7 +47,7 @@ class ListEdit: public QDialog
 
 public:
     ListEdit(const QString& propertyName,
-             std::shared_ptr<Materials::Material> material,
+             const std::shared_ptr<Materials::Material>& material,
              QWidget* parent = nullptr);
     ~ListEdit() override = default;
 
@@ -69,12 +69,13 @@ private:
 
     QAction _deleteAction;
 
-    void setColumnDelegates(QListView* list);
+    void setDelegates(QListView* list);
     void setupListView();
 
     bool newRow(const QModelIndex& index);
     int confirmDelete();
     void deleteSelected();
+    void onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 };
 
 }  // namespace MatGui

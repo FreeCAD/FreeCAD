@@ -36,7 +36,7 @@ from typing import Optional, Any
 from urllib.parse import urlparse
 
 try:
-    from PySide import QtCore, QtWidgets
+    from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
     QtCore = None
     QtWidgets = None
@@ -245,7 +245,7 @@ def get_readme_html_url(repo):
 def is_darkmode() -> bool:
     """Heuristics to determine if we are in a darkmode stylesheet"""
     pl = fci.FreeCADGui.getMainWindow().palette()
-    return pl.color(pl.Background).lightness() < 128
+    return pl.color(QtGui.QPalette.Window).lightness() < 128
 
 
 def warning_color_string() -> str:

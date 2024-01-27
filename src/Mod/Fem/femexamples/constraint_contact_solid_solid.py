@@ -177,8 +177,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (geom_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
         (geom_obj, "Face3"),  # second seams master face, TODO proof in writer code!
     ]
-    con_contact.Friction = 0.0
-    con_contact.Slope = 1000000.0  # contact stiffness 1000000.0 kg/(mm*s^2)
+    con_contact.Friction = False
+    con_contact.Slope = "1000000.0 GPa/m"
     analysis.addObject(con_contact)
 
     # mesh

@@ -57,18 +57,18 @@ dependencies:
 - sed                                  # [unix]
 - boost
 - boost-cpp
+- ccache
 - cmake
 - coin3d==4.0.0
 - compilers
 - conda
-- conda-build
 - conda-devenv
-- conda-smithy
 - debugpy
 - doxygen
 - eigen
 - fmt
 - freetype
+- git
 - gmsh
 - graphviz
 - hdf5

@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="122"/>
       <location filename="../../Command.cpp" line="124"/>
       <source>Exports a point cloud</source>
-      <translation>Exporte un nuage de points</translation>
+      <translation>Exporter un nuage de points</translation>
     </message>
   </context>
   <context>
@@ -55,7 +55,7 @@
       <location filename="../../Command.cpp" line="69"/>
       <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
-      <translation>Importe un nuage de points</translation>
+      <translation>Importer un nuage de points</translation>
     </message>
   </context>
   <context>
@@ -93,7 +93,7 @@
       <location filename="../../Command.cpp" line="296"/>
       <location filename="../../Command.cpp" line="298"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Coupe un nuage de points à l'aide d'un polygone sélectionné</translation>
+      <translation>Couper un nuage de points à l'aide d'un polygone sélectionné</translation>
     </message>
   </context>
   <context>

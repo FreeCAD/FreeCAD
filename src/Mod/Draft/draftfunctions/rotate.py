@@ -31,12 +31,13 @@ import math
 
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftutils.groups as groups
-import draftfunctions.join as join
-import draftmake.make_line as make_line
-import draftmake.make_copy as make_copy
+from draftfunctions import join
+from draftmake import make_copy
+from draftmake import make_line
+from draftutils import groups
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 
 
 def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
@@ -154,7 +155,7 @@ def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
                     if utils.get_type(parent) == "Layer":
                         parent.Proxy.addObject(parent ,newobj)
 
-    if copy and utils.get_param("selectBaseObjects", False):
+    if copy and params.get_param("selectBaseObjects"):
         gui_utils.select(objectslist)
     else:
         gui_utils.select(newobjlist)

@@ -48,6 +48,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
 private Q_SLOTS:
     void onAliasingChanged(int);

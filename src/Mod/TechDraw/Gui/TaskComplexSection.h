@@ -146,6 +146,8 @@ private:
     bool m_directionIsSet;
     bool m_modelIsDirty;
 
+    bool m_scaleEdited;
+
 };
 
 class TaskDlgComplexSection : public Gui::TaskView::TaskDialog

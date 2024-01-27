@@ -25,6 +25,7 @@ import math
 import FreeCAD
 # import Draft
 import ifcopenshell
+from draftutils import params
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
@@ -204,8 +205,8 @@ class recycler:
     def __init__(self,ifcfile,template=True):
 
         self.ifcfile = ifcfile
-        self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
-        self.mergeProfiles = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcMergeProfiles",False)
+        self.compress = params.get_param_arch("ifcCompress")
+        self.mergeProfiles = params.get_param_arch("ifcMergeProfiles")
         self.cartesianpoints = {}
         self.directions = {}
         self.axis2placement3ds = {}

@@ -36,7 +36,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="76"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Touche clavier Page haut ou Page bas.</translation>
+      <translation>touche du clavier Page haut ou Page bas.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="77"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="78"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Roulette de la souris ou touche H.</translation>
+      <translation>molette de la souris ou touche H.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="80"/>

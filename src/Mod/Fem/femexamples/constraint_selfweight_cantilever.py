@@ -124,7 +124,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint selfweight
     con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
-    con_selfweight.Gravity_z = -1.00
+    con_selfweight.GravityDirection = (0, 0, -1)
     analysis.addObject(con_selfweight)
 
     # mesh

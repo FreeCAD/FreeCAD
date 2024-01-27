@@ -25,9 +25,10 @@
 
 import os
 import FreeCAD
-import draftguitools.gui_base as gui_base
+from draftguitools import gui_base
+from draftutils import params
+from draftutils.translate import QT_TRANSLATE_NOOP, translate
 
-from draftutils.translate import translate, QT_TRANSLATE_NOOP
 
 class Draft_Hatch(gui_base.GuiCommandSimplest):
 
@@ -62,23 +63,21 @@ class Draft_Hatch_TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogHatch.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Hatch.svg"))
         self.form.File.fileNameChanged.connect(self.onFileChanged)
-        self.p1 = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/PAT")
-        self.p2 = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.form.File.setFileName(self.p1.GetString("FilePattern",""))
-        pat = self.p1.GetString("NamePattern","")
+        self.form.File.setFileName(params.get_param("FilePattern", path="Mod/TechDraw/PAT"))
+        pat = params.get_param("NamePattern", path="Mod/TechDraw/PAT")
         if pat in [self.form.Pattern.itemText(i) for i in range(self.form.Pattern.count())]:
             self.form.Pattern.setCurrentText(pat)
-        self.form.Scale.setValue(self.p2.GetFloat("HatchPatternScale",1000.0))
-        self.form.Rotation.setValue(self.p2.GetFloat("HatchPatternRotation",0.0))
+        self.form.Scale.setValue(params.get_param("HatchPatternScale"))
+        self.form.Rotation.setValue(params.get_param("HatchPatternRotation"))
 
     def accept(self):
 
         import FreeCADGui
 
-        self.p1.SetString("FilePattern",self.form.File.property("fileName"))
-        self.p1.SetString("NamePattern",self.form.Pattern.currentText())
-        self.p2.SetFloat("HatchPatternScale",self.form.Scale.value())
-        self.p2.SetFloat("HatchPatternRotation",self.form.Rotation.value())
+        params.set_param("FilePattern", self.form.File.property("fileName"), path="Mod/TechDraw/PAT")
+        params.set_param("NamePattern", self.form.Pattern.currentText(), path="Mod/TechDraw/PAT")
+        params.set_param("HatchPatternScale", self.form.Scale.value())
+        params.set_param("HatchPatternRotation", self.form.Rotation.value())
         if hasattr(self.baseobj,"File") and hasattr(self.baseobj,"Pattern"):
             # modify existing hatch object
             o = "FreeCAD.ActiveDocument.getObject(\""+self.baseobj.Name+"\")"

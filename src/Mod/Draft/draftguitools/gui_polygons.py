@@ -37,11 +37,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
@@ -214,7 +214,7 @@ class Polygon(gui_base_original.Creator):
         """Draw the actual object."""
         rot, sup, pts, fil = self.getStrings()
         Gui.addModule("Draft")
-        if utils.getParam("UsePartPrimitives", False):
+        if params.get_param("UsePartPrimitives"):
             # Insert a Part::Primitive object
             Gui.addModule("Part")
             _cmd = 'FreeCAD.ActiveDocument.'

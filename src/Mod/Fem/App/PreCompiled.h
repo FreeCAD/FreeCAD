@@ -78,7 +78,9 @@
 #include <StdMeshers_LayerDistribution.hxx>
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -107,6 +109,7 @@
 
 // Opencascade
 #include <Adaptor3d_IsoCurve.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
@@ -134,6 +137,7 @@
 #include <Geom_Plane.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
+#include <ShapeAnalysis_Surface.hxx>
 #include <Standard_Real.hxx>
 #include <Standard_Version.hxx>
 #include <TColgp_Array2OfPnt.hxx>

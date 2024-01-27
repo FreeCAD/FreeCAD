@@ -128,6 +128,8 @@ private:
     VectorEditWidget* m_viewDirectionWidget;
     bool m_directionIsSet;
     bool m_modelIsDirty;
+
+    bool m_scaleEdited;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

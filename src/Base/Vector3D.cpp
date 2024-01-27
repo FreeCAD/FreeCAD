@@ -228,6 +228,25 @@ bool Vector3<float_type>::IsEqual(const Vector3<float_type>& rclPnt, float_type 
 }
 
 template<class float_type>
+bool Vector3<float_type>::IsParallel(const Vector3<float_type>& rclPnt, float_type tol) const
+{
+    Vector3<float_type> v1 = *this;
+    Vector3<float_type> v2 = rclPnt;
+    double dot = abs(v1 * v2);
+    double mag = v1.Length() * v2.Length();
+    return (abs(dot - mag) < tol);
+}
+
+template<class float_type>
+bool Vector3<float_type>::IsNormal(const Vector3<float_type>& rclPnt, float_type tol) const
+{
+    Vector3<float_type> v1 = *this;
+    Vector3<float_type> v2 = rclPnt;
+    double dot = abs(v1 * v2);
+    return (dot < tol);
+}
+
+template<class float_type>
 Vector3<float_type>& Vector3<float_type>::ProjectToPlane(const Vector3<float_type>& rclBase,
                                                          const Vector3<float_type>& rclNorm)
 {

@@ -28,6 +28,8 @@
 
 #include "DrawSketchController.h"
 
+#include "DrawSketchKeyboardManager.h"
+
 namespace SketcherGui
 {
 
@@ -89,7 +91,7 @@ public:
                                                 ConstructionMethodT>;
     //@}
 
-protected:
+private:
     int nParameter = WidgetParametersT::defaultMethodSize();
     int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
     int nCombobox = WidgetComboboxesT::defaultMethodSize();
@@ -115,7 +117,13 @@ protected:
 public:
     explicit DrawSketchDefaultWidgetController(HandlerT* dshandler)
         : ControllerBase(dshandler)
+        , toolWidget(nullptr)
     {}
+
+    DrawSketchDefaultWidgetController(const DrawSketchDefaultWidgetController&) = delete;
+    DrawSketchDefaultWidgetController(DrawSketchDefaultWidgetController&&) = delete;
+    DrawSketchDefaultWidgetController& operator=(const DrawSketchDefaultWidgetController&) = delete;
+    DrawSketchDefaultWidgetController& operator=(DrawSketchDefaultWidgetController&&) = delete;
 
     ~DrawSketchDefaultWidgetController() override
     {
@@ -260,7 +268,7 @@ private:
     /// Initialisation of the widget
     void initDefaultWidget(QWidget* widget)
     {
-        toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);
+        toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);  // NOLINT
 
         connectionParameterValueChanged = toolWidget->registerParameterValueChanged(
             std::bind(&DrawSketchDefaultWidgetController::parameterValueChanged,
@@ -292,7 +300,7 @@ private:
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
         nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
 
-        toolWidget->initNParameters(nParameter);
+        toolWidget->initNParameters(nParameter, ControllerBase::getKeyManager());
         toolWidget->initNCheckboxes(nCheckbox);
         toolWidget->initNComboboxes(nCombobox);
 

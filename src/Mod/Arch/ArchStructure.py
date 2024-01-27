@@ -23,6 +23,7 @@
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 import ArchProfile
+from draftutils import params
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -71,7 +72,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Structure")
     _Structure(obj)
     if FreeCAD.GuiUp:
@@ -83,19 +83,19 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
     if width:
         obj.Width = width
     else:
-        obj.Width = p.GetFloat("StructureWidth",100)
+        obj.Width = params.get_param_arch("StructureWidth")
     if height:
         obj.Height = height
     else:
         if not length:
-            obj.Height = p.GetFloat("StructureHeight",1000)
+            obj.Height = params.get_param_arch("StructureHeight")
     if length:
         obj.Length = length
     else:
         if not baseobj:
             # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
-            obj.Length = p.GetFloat("StructureLength",100)
+            obj.Length = params.get_param_arch("StructureLength")
     if baseobj:
         w = 0
         h = 0
@@ -276,14 +276,13 @@ class _CommandStructure:
 
     def Activated(self):
 
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.Width = p.GetFloat("StructureWidth",100)
+        self.Width = params.get_param_arch("StructureWidth")
         if self.beammode:
-            self.Height = p.GetFloat("StructureLength",100)
-            self.Length = p.GetFloat("StructureHeight",1000)
+            self.Height = params.get_param_arch("StructureLength")
+            self.Length = params.get_param_arch("StructureHeight")
         else:
-            self.Length = p.GetFloat("StructureLength",100)
-            self.Height = p.GetFloat("StructureHeight",1000)
+            self.Length = params.get_param_arch("StructureLength")
+            self.Height = params.get_param_arch("StructureHeight")
         self.Profile = None
         self.continueCmd = False
         self.bpoint = None
@@ -413,7 +412,7 @@ class _CommandStructure:
         ilist=[]
         for p in baselist:
             f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
-            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+            d = params.get_param("Decimals",path="Units")
             s1 = str(round(p[4]/f[1],d))
             s2 = str(round(p[5]/f[1],d))
             s3 = str(f[2])
@@ -514,7 +513,7 @@ class _CommandStructure:
         QtCore.QObject.connect(self.modeb,QtCore.SIGNAL("toggled(bool)"),self.switchLH)
 
         # restore preset
-        stored = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("StructurePreset","")
+        stored = params.get_param_arch("StructurePreset")
         if stored:
             if stored.lower().startswith("precast_"):
                 self.valuec.setCurrentIndex(1)
@@ -563,25 +562,25 @@ class _CommandStructure:
 
         self.Width = d
         self.tracker.width(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureWidth",d)
+        params.set_param_arch("StructureWidth",d)
 
     def setHeight(self,d):
 
         self.Height = d
         self.tracker.height(d)
         if self.modeb.isChecked():
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+            params.set_param_arch("StructureLength",d)
         else:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+            params.set_param_arch("StructureHeight",d)
 
     def setLength(self,d):
 
         self.Length = d
         self.tracker.length(d)
         if self.modeb.isChecked():
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureHeight",d)
+            params.set_param_arch("StructureHeight",d)
         else:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("StructureLength",d)
+            params.set_param_arch("StructureLength",d)
 
     def setContinue(self,i):
 
@@ -609,7 +608,7 @@ class _CommandStructure:
             self.pSelect = [None]
             fpresets = [" "]
             self.vPresets.addItems(fpresets)
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset","")
+            params.set_param_arch("StructurePreset","")
 
     def setPreset(self,i):
 
@@ -623,13 +622,13 @@ class _CommandStructure:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",self.Profile)
+                params.set_param_arch("StructurePreset",self.Profile)
             else:
                 p=elt[0]-1 # Presets indexes are 1-based
                 self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",";".join([str(i) for i in self.Profile]))
+                params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
     def switchLH(self,bmode):
 

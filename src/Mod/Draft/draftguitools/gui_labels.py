@@ -41,11 +41,10 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-import draftutils.utils as utils
-
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
@@ -68,7 +67,7 @@ class Label(gui_base_original.Creator):
         """Execute when the command is called."""
         super().Activated(name="Label")
         self.ghost = None
-        self.labeltype = utils.getParam("labeltype", "Custom")
+        self.labeltype = params.get_param("labeltype")
         self.sel = Gui.Selection.getSelectionEx()
         if self.sel:
             self.sel = self.sel[0]
@@ -84,7 +83,7 @@ class Label(gui_base_original.Creator):
         """Set the type of label, if it is associated to an object."""
         from draftobjects.label import get_label_types
         self.labeltype = get_label_types()[i]
-        utils.setParam("labeltype", self.labeltype)
+        params.set_param("labeltype", self.labeltype)
 
     def finish(self, cont=False):
         """Finish the command."""

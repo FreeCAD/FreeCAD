@@ -359,7 +359,7 @@ void PointsGrid::CalculateGridLength(unsigned long ulCtGrid, unsigned long ulMax
     }
 
     double fVol = fVolElem * float(ulCtGrid);
-    double fGridLen = float(pow((float)fVol, (float)1.0f / 3.0f));
+    double fGridLen = float(pow((float)fVol, 1.0f / 3.0f));
 
     if (fGridLen > 0) {
         _ulCtGridsX =
@@ -444,7 +444,7 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
                 fVolumenGrid = fVolumen / (float)iMaxGrids;
             }
 
-            double fLengthGrid = float(pow((float)fVolumenGrid, (float)1.0f / 3.0f));
+            double fLengthGrid = float(pow((float)fVolumenGrid, 1.0f / 3.0f));
 
             _ulCtGridsX = std::max<unsigned long>((unsigned long)(fLenghtX / fLengthGrid), 1);
             _ulCtGridsY = std::max<unsigned long>((unsigned long)(fLenghtY / fLengthGrid), 1);
@@ -531,7 +531,6 @@ void PointsGrid::SearchNearestFromPoint(const Base::Vector3d& rclPt,
     if (clBB.IsInBox(rclPt)) {  // Point lies within
         unsigned long ulX, ulY, ulZ;
         Position(rclPt, ulX, ulY, ulZ);
-        // int nX = ulX, nY = ulY, nZ = ulZ;
         unsigned long ulLevel = 0;
         while (raclInd.empty()) {
             GetHull(ulX, ulY, ulZ, ulLevel++, raclInd);

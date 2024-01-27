@@ -141,6 +141,9 @@ void ConstraintDisplacement::handleChangedPropertyType(Base::XMLReader& reader,
         zRotationProperty.Restore(reader);
         zRotation.setValue(zRotationProperty.getValue());
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintDisplacement::onChanged(const App::Property* prop)

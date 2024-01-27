@@ -59,7 +59,7 @@ private Q_SLOTS:
         auto val1 = qsb->value();
         QCOMPARE(val1.getFormat().precision, 7);
 
-        // format shoudn't change after setting a double
+        // format shouldn't change after setting a double
         qsb->setValue(3.5);
         auto val2 = qsb->value();
         QCOMPARE(val2.getFormat().precision, 7);

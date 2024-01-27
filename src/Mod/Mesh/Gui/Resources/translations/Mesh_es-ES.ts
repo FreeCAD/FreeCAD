@@ -272,7 +272,7 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create mesh from shape...</source>
-      <translation>Crear malla de forma ...</translation>
+      <translation>Crear malla desde forma...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>

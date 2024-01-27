@@ -322,6 +322,9 @@ class GitManager:
             if "Windows" in platform.system():
                 git_exe += ".exe"
 
+        if platform.system() == "Darwin" and not self._xcode_command_line_tools_are_installed():
+            return
+
         if not git_exe or not os.path.exists(git_exe):
             git_exe = shutil.which("git")
 
@@ -330,6 +333,18 @@ class GitManager:
 
         prefs.SetString("GitExecutable", git_exe)
         self.git_exe = git_exe
+
+    def _xcode_command_line_tools_are_installed(self) -> bool:
+        """On Macs, there is *always* an executable called "git", but sometimes it's just a
+        script that tells the user to install XCode's Command Line tools. So the existence of git
+        on the Mac actually requires us to check for that installation."""
+        try:
+            subprocess.check_output(["xcode-select", "-p"])
+            fci.Console.PrintMessage("XCode command line tools are installed: git is available\n")
+            return True
+        except subprocess.CalledProcessError:
+            fci.Console.PrintMessage("XCode command line tools are not installed: not using git\n")
+            return False
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""

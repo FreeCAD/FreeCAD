@@ -102,13 +102,13 @@ void PropertyGreyValueList::setPyObject(PyObject* value)
                 throw Py::TypeError(error);
             }
 
-            values[i] = (float)PyFloat_AsDouble(item);
+            values[i] = PyFloat_AsDouble(item);
         }
 
         setValues(values);
     }
     else if (PyFloat_Check(value)) {
-        setValue((float)PyFloat_AsDouble(value));
+        setValue(PyFloat_AsDouble(value));
     }
     else {
         std::string error = std::string("type must be float or list of float, not ");

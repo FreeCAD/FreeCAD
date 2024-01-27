@@ -761,7 +761,7 @@ jobs:
           [ $clazyQT6Errors -eq 0 ]
       - name: Upload logs and fixes
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -769,7 +769,7 @@ jobs:
             ${{ env.fixesdir }}
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

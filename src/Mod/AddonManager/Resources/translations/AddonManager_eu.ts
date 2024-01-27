@@ -1236,18 +1236,18 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Makroaren exekuzioak huts egin du. Begiratu kontsola xehetasun gehiagorako.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="386"/>
       <source>Maintainer</source>
       <translation>Mantentzailea</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="423"/>
       <source>Author</source>
       <translation>Egilea</translation>
     </message>
@@ -1463,8 +1463,8 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>QtWebEngine Python loturak ez daude instalatuta -- ordezko README bistaratzea erabiliko da.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Eginda</translation>
@@ -1596,9 +1596,9 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Hautatu ikono-fitxategi bat eduki-elementu honetarako</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} ez da {} direktorioaren azpidirektorio bat</translation>
     </message>

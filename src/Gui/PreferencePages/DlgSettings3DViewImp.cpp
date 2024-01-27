@@ -135,6 +135,21 @@ void DlgSettings3DViewImp::loadSettings()
     ui->boxMarkerSize->setCurrentIndex(index);
 }
 
+void DlgSettings3DViewImp::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    //reset "AntiAliasing" parameter
+    hGrp->RemoveInt("AntiAliasing");
+    //reset "RenderCache" parameter
+    hGrp->RemoveInt("RenderCache");
+    //reset "MarkerSize" parameter
+    hGrp->RemoveInt("MarkerSize");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 /**
  * Sets the strings of the subwidgets using the current language.
  */

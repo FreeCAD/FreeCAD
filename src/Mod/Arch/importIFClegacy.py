@@ -27,6 +27,7 @@
 
 
 import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
+from draftutils import params
 from draftutils.translate import translate
 
 __title__="FreeCAD IFC importer"
@@ -82,19 +83,18 @@ def getConfig():
     global SKIP, CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS, AGGREGATE_WINDOWS
     IMPORT_IFC_FURNITURE = False
     ASMESH = ["IfcFurnishingElement"]
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    CREATE_IFC_GROUPS = p.GetBool("createIfcGroups",False)
-    FORCE_PYTHON_PARSER = p.GetBool("forceIfcPythonParser",False)
-    DEBUG = p.GetBool("ifcDebug",False)
-    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
-    SEPARATE_PLACEMENTS = p.GetBool("ifcSeparatePlacements",False)
-    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
-    JOINSOLIDS = p.GetBool("ifcJoinSolids",False)
-    AGGREGATE_WINDOWS = p.GetBool("ifcAggregateWindows",False)
-    skiplist = p.GetString("ifcSkip","")
+    CREATE_IFC_GROUPS = params.get_param_arch("createIfcGroups")
+    FORCE_PYTHON_PARSER = params.get_param_arch("forceIfcPythonParser")
+    DEBUG = params.get_param_arch("ifcDebug")
+    SEPARATE_OPENINGS = params.get_param_arch("ifcSeparateOpenings")
+    SEPARATE_PLACEMENTS = params.get_param_arch("ifcSeparatePlacements")
+    PREFIX_NUMBERS = params.get_param_arch("ifcPrefixNumbers")
+    JOINSOLIDS = params.get_param_arch("ifcJoinSolids")
+    AGGREGATE_WINDOWS = params.get_param_arch("ifcAggregateWindows")
+    skiplist = params.get_param_arch("ifcSkip")
     if skiplist:
         SKIP = skiplist.split(",")
-    asmeshlist = p.GetString("ifcAsMesh","")
+    asmeshlist = params.get_param_arch("ifcAsMesh")
     if asmeshlist:
         ASMESH = asmeshlist.split(",")
 
@@ -811,7 +811,7 @@ def getVector(entity):
 
 def getSchema():
     "retrieves the express schema"
-    custom = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("CustomIfcSchema","")
+    custom = params.get_param_arch("CustomIfcSchema")
     if custom:
         if os.path.exists(custom):
             if DEBUG: print("Using custom schema: ",custom.split(os.sep)[-1])
@@ -943,10 +943,9 @@ def export(exportList,filename):
 
     # creating base IFC project
     getConfig()
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    scaling = p.GetFloat("IfcScalingFactor",1.0)
-    exporttxt = p.GetBool("IfcExportList",False)
-    forcebrep = p.GetBool("ifcExportAsBrep",False)
+    scaling = params.get_param_arch("IfcScalingFactor")
+    exporttxt = params.get_param_arch("IfcExportList")
+    forcebrep = params.get_param_arch("ifcExportAsBrep")
     application = "FreeCAD"
     ver = FreeCAD.Version()
     version = ver[0]+"."+ver[1]+" build"+ver[2]
@@ -1394,9 +1393,7 @@ class IfcSchema:
     def __init__(self, filename):
         self.filename = filename
         if not os.path.exists(filename):
-            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-            p = p.GetString("MacroPath","")
-            filename = p + os.sep + filename
+            filename = FreeCAD.getUserMacroDir(True) + os.sep + filename
             if not os.path.exists(filename):
                 raise ImportError("no IFCSchema file found!")
 

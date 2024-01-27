@@ -77,16 +77,16 @@ class WorkbenchTestCase(unittest.TestCase):
 
         FreeCADGui.addWorkbench(UnitWorkbench())
         wbs = FreeCADGui.listWorkbenches()
-        self.failUnless("UnitWorkbench" in wbs, "Test on adding workbench handler failed")
+        self.assertTrue("UnitWorkbench" in wbs, "Test on adding workbench handler failed")
         FreeCADGui.activateWorkbench("UnitWorkbench")
         FreeCADGui.updateGui()
-        self.failUnless(
+        self.assertTrue(
             FreeCADGui.activeWorkbench().name() == "UnitWorkbench",
             "Test on loading workbench 'Unittest' failed",
         )
         FreeCADGui.removeWorkbench("UnitWorkbench")
         wbs = FreeCADGui.listWorkbenches()
-        self.failUnless(not "UnitWorkbench" in wbs, "Test on removing workbench handler failed")
+        self.assertTrue(not "UnitWorkbench" in wbs, "Test on removing workbench handler failed")
 
     def testInvalidType(self):
         class MyExtWorkbench(FreeCADGui.Workbench):

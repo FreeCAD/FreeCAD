@@ -64,6 +64,7 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawViewDetail
@@ -82,6 +83,13 @@ DrawViewDetail::DrawViewDetail() : m_waitingForDetail(false), m_saveDvp(nullptr)
                       "Location of detail in BaseView");
     ADD_PROPERTY_TYPE(Radius, (10.0), dgroup, App::Prop_None, "Size of detail area");
     ADD_PROPERTY_TYPE(Reference, ("1"), dgroup, App::Prop_None, "An identifier for this detail");
+
+    static const char* agroup{"Appearance"};
+    ADD_PROPERTY_TYPE(ShowMatting, (Preferences::showDetailMatting()), agroup, App::Prop_None,
+             "Show or hide the matting around the detail view");
+    ADD_PROPERTY_TYPE(ShowHighlight, (Preferences::showDetailHighlight()), agroup, App::Prop_None,
+             "Show or hide the detail highlight in the source view");
+
 
     getParameters();
     m_fudge = 1.01;
@@ -147,13 +155,13 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
-    TopoDS_Shape shape = dvp->getShapeForDetail();
+    TopoDS_Shape shape3d = dvp->getShapeForDetail();
     DrawViewSection* dvs = nullptr;
     if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection*>(dvp);
     }
 
-    if (shape.IsNull()) {
+    if (shape3d.IsNull()) {
         return DrawView::execute();
     }
 
@@ -166,8 +174,8 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
         //unblock
     }
 
-    detailExec(shape, dvp, dvs);
-    addShapes2d();
+    detailExec(shape3d, dvp, dvs);
+    addPoints();
 
     dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();
@@ -201,7 +209,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
 //this runs in a separate thread since it can sometimes take a long time
 //make a common of the input shape and a cylinder (or prism depending on
 //the matting style)
-void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
+void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* dvp, DrawViewSection* dvs)
 {
     showProgressMessage(getNameInDocument(), "is making detail shape");
 
@@ -209,7 +217,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
     double radius = getFudgeRadius();
 
     //make a copy of the input shape so we don't inadvertently change it
-    BRepBuilderAPI_Copy BuilderCopy(shape);
+    BRepBuilderAPI_Copy BuilderCopy(shape3d);
     TopoDS_Shape copyShape = BuilderCopy.Shape();
     m_saveShape = copyShape;
     m_saveDvp = dvp;
@@ -277,15 +285,72 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape, DrawViewPart* dv
         }
     }
 
-    BRepAlgoAPI_Common mkCommon(copyShape, tool);
-    if (!mkCommon.IsDone() || mkCommon.Shape().IsNull()) {
-        Base::Console().Warning("DVD::detailExec - %s - failed to create detail shape\n",
-                            getNameInDocument());
-        return;
+    //for each solid and shell in the input shape, make a common with the tool and
+    //add the result to a compound.  This avoids issues with some geometry errors in the
+    //input shape.
+    BRep_Builder builder;
+    TopoDS_Compound pieces;
+    builder.MakeCompound(pieces);
+    TopExp_Explorer expl1(copyShape, TopAbs_SOLID);
+    for (; expl1.More(); expl1.Next()) {
+        const TopoDS_Solid& s = TopoDS::Solid(expl1.Current());
+        BRepAlgoAPI_Common mkCommon(s, tool);
+        if (!mkCommon.IsDone()) {
+            continue;
+        }
+        if (mkCommon.Shape().IsNull()) {
+            continue;
+        }
+        //Did we get a result?
+        TopExp_Explorer xp;
+        xp.Init(mkCommon.Shape(), TopAbs_SOLID);
+        if (xp.More() != Standard_True) {
+            continue;
+        }
+        builder.Add(pieces, mkCommon.Shape());
+    }
+
+    TopExp_Explorer expl2(copyShape, TopAbs_SHELL, TopAbs_SOLID);
+    for (; expl2.More(); expl2.Next()) {
+        const TopoDS_Shell& s = TopoDS::Shell(expl2.Current());
+        BRepAlgoAPI_Common mkCommon(s, tool);
+        if (!mkCommon.IsDone()) {
+            continue;
+        }
+        if (mkCommon.Shape().IsNull()) {
+            continue;
+        }
+        //Did we get a result?
+        TopExp_Explorer xp;
+        xp.Init(mkCommon.Shape(), TopAbs_SHELL);
+        if (xp.More() != Standard_True) {
+            continue;
+        }
+        builder.Add(pieces, mkCommon.Shape());
+    }
+
+    // now get any loose edges in the input
+    TopExp_Explorer expl3(copyShape, TopAbs_EDGE, TopAbs_FACE);
+    for (; expl3.More(); expl3.Next()) {
+        const TopoDS_Edge& e = TopoDS::Edge(expl3.Current());
+        BRepAlgoAPI_Common mkCommon(e, tool);
+        if (!mkCommon.IsDone()) {
+            continue;
+        }
+        if (mkCommon.Shape().IsNull()) {
+            continue;
+        }
+        //Did we get a result?
+        TopExp_Explorer xp;
+        xp.Init(mkCommon.Shape(), TopAbs_EDGE);
+        if (xp.More() != Standard_True) {
+            continue;
+        }
+        builder.Add(pieces, mkCommon.Shape());
     }
 
     // save the detail shape for further processing
-    m_detailShape = mkCommon.Shape();
+    m_detailShape = pieces;
 
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");     //debug

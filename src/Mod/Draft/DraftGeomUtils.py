@@ -44,7 +44,6 @@ from draftgeoutils.linear_algebra import (linearFromPoints,
                                           determinant)
 
 # Needs math, Part, and vector tools
-from draftgeoutils.general import PARAMGRP as params
 from draftgeoutils.general import NORM
 
 from draftgeoutils.general import (precision,

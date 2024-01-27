@@ -26,15 +26,21 @@
 
 #include <QDialog>
 #include <QDir>
+#include <QIcon>
 #include <QPoint>
 #include <QStandardItem>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
 #include <QTreeView>
 
+#include <Base/Handle.h>
+#include <Base/Parameter.h>
+
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
+
+#include "AppearancePreview.h"
 
 namespace MatGui
 {
@@ -80,7 +86,7 @@ public:
         return _modelManager;
     }
 
-    QString libraryPath(std::shared_ptr<Materials::Material> material) const;
+    static QString libraryPath(const std::shared_ptr<Materials::Material>& material);
 
     void updateMaterialAppearance();
     void updateMaterialProperties();
@@ -99,14 +105,21 @@ private:
     Materials::MaterialManager _materialManager;
     Materials::ModelManager _modelManager;
     std::shared_ptr<Materials::Material> _material;
-    QSvgWidget* _rendered;
-    QSvgWidget* _vectored;
+    AppearancePreview* _rendered;
     bool _edited;
     std::list<QString> _favorites;
     std::list<QString> _recents;
     int _recentMax;
+    QIcon _warningIcon;
 
     void saveWindow();
+    void saveMaterialTreeChildren(const Base::Reference<ParameterGrp>& param,
+                                  QTreeView* tree,
+                                  QStandardItemModel* model,
+                                  QStandardItem* item);
+    void saveMaterialTree(const Base::Reference<ParameterGrp>& param);
+
+    void oldFormatError();
 
     void getFavorites();
     void saveFavorites();
@@ -124,10 +137,18 @@ private:
 
     void setMaterialDefaults();
     void updatePreview() const;
-    QString getColorHash(const QString& colorString, int colorRange = 255) const;
+    static QString getColorHash(const QString& colorString, int colorRange = 255);
 
-    void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
-    void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    static void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
+    static void addExpanded(QTreeView* tree,
+                            QStandardItem* parent,
+                            QStandardItem* child,
+                            const Base::Reference<ParameterGrp>& param);
+    static void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
+    static void addExpanded(QTreeView* tree,
+                            QStandardItemModel* parent,
+                            QStandardItem* child,
+                            const Base::Reference<ParameterGrp>& param);
     void addRecents(QStandardItem* parent);
     void addFavorites(QStandardItem* parent);
     void createPreviews();
@@ -141,7 +162,8 @@ private:
         const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>
             modelTree,
         const QIcon& folderIcon,
-        const QIcon& icon);
+        const QIcon& icon,
+        const Base::Reference<ParameterGrp>& param);
 };
 
 }  // namespace MatGui

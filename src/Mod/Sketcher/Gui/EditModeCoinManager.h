@@ -141,6 +141,8 @@ class SketcherGuiExport EditModeCoinManager
         void updateLineRenderingOrderParameters(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
         void updateElementSizeParameters(const std::string& parametername);
+        void updateWidth(int& width, const std::string& parametername, int def);
+        void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
         void updateColor(SbColor& sbcolor, const std::string& parametername);
         void updateUnit(const std::string& parametername);
 
@@ -281,6 +283,10 @@ private:
     void updateInventorNodeSizes();
 
     void updateInventorColors();
+
+    void updateInventorPatterns();
+
+    void updateInventorWidths();
 
     /** @name coin nodes creation*/
     void createEditModeInventorNodes();

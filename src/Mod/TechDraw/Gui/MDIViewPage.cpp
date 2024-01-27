@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
@@ -641,7 +642,6 @@ void MDIViewPage::blockSceneSelection(const bool isBlocked) { isSelectionBlocked
 void MDIViewPage::clearSceneSelection()
 {
     //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    blockSceneSelection(true);
     m_qgSceneSelected.clear();
 
     std::vector<QGIView*> views = m_scene->getViews();
@@ -649,71 +649,52 @@ void MDIViewPage::clearSceneSelection()
     // Iterate through all views and unselect all
     for (std::vector<QGIView*>::iterator it = views.begin(); it != views.end(); ++it) {
         QGIView* item = *it;
-        bool state = item->isSelected();
-
-        //handle oddballs
-        QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(*it);
-        if (dim) {
-            state = dim->getDatumLabel()->isSelected();
-        }
-        else {
-            QGIViewBalloon* bal = dynamic_cast<QGIViewBalloon*>(*it);
-            if (bal) {
-                state = bal->getBalloonLabel()->isSelected();
-            }
-        }
-
-        if (state) {
+        if (item->getGroupSelection()) {
             item->setGroupSelection(false);
             item->updateView();
         }
     }
-
-    blockSceneSelection(false);
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
-void MDIViewPage::selectQGIView(App::DocumentObject* obj, const bool isSelected)
+void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
+                                const std::vector<std::string> &subNames)
 {
     QGIView* view = m_scene->findQViewForDocObj(obj);
-
-    blockSceneSelection(true);
     if (view) {
-        view->setGroupSelection(isSelected);
+        view->setGroupSelection(isSelected, subNames);
         view->updateView();
     }
-    blockSceneSelection(false);
 }
 
 //! invoked by selection change made in Tree via father MDIView
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    //    Base::Console().Message("MDIVP::onSelectionChanged()\n");
-    std::vector<Gui::SelectionSingleton::SelObj> selObjs =
-        Gui::Selection().getSelection(msg.pDocName);
-    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+    blockSceneSelection(true);
+
+    if (msg.Type == Gui::SelectionChanges::ClrSelection || msg.Type == Gui::SelectionChanges::SetSelection) {
         clearSceneSelection();
-    }
-    else if (msg.Type == Gui::SelectionChanges::SetSelection) {//replace entire selection set
-        clearSceneSelection();
-        blockSceneSelection(true);
-        for (auto& so : selObjs) {
-            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                selectQGIView(so.pObject, true);
+
+        if (msg.Type == Gui::SelectionChanges::SetSelection) {
+            std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
+            for (auto &so : selObjs) {
+                App::DocumentObject *docObj = so.getObject();
+                if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                    selectQGIView(docObj, true, so.getSubNames());
+                }
             }
         }
-        blockSceneSelection(false);
     }
-    else if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        blockSceneSelection(true);
-        for (auto& so : selObjs) {
-            if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                selectQGIView(so.pObject, true);
-            }
+    else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
+        App::DocumentObject *docObj = msg.Object.getSubObject();
+        if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
+            selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
         }
-        blockSceneSelection(false);
     }
+
+    blockSceneSelection(false);
 }
 
 //! maintain QGScene selected items in selection order

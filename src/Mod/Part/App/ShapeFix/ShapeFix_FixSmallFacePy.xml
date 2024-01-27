@@ -62,7 +62,8 @@
     </Methode>-->
     <Methode Name="fixSplitFace">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Fixes cases related to split faces within the given shape.
+            It may return a modified shape after fixing the issues.</UserDocu>
       </Documentation>
     </Methode>
     <!--<Methode Name="splitOneFace">
@@ -72,17 +73,18 @@
     </Methode>-->
     <Methode Name="fixFace">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Fixes issues related to the specified face and returns the modified face.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixShape">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Fixes issues in the overall geometric shape. 
+            This function likely encapsulates higher-level fixes that involve multiple faces or elements.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="shape">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Returns the current state of the geometric shape after potential modifications.</UserDocu>
       </Documentation>
     </Methode>
     <!--<Methode Name="fixPinFace">

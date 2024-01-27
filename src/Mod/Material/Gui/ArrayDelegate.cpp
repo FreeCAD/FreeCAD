@@ -30,9 +30,8 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVariant>
-#endif
-
 #include <limits>
+#endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -57,7 +56,7 @@
 using namespace MatGui;
 
 ArrayDelegate::ArrayDelegate(Materials::MaterialValue::ValueType type,
-                             QString units,
+                             const QString& units,
                              QObject* parent)
     : QStyledItemDelegate(parent)
     , _type(type)
@@ -70,8 +69,7 @@ void ArrayDelegate::paint(QPainter* painter,
 {
 
     if (_type == Materials::MaterialValue::Quantity) {
-        const AbstractArrayModel* tableModel =
-            reinterpret_cast<const AbstractArrayModel*>(index.model());
+        auto* tableModel = dynamic_cast<const AbstractArrayModel*>(index.model());
         painter->save();
 
         if (tableModel->newRow(index)) {
@@ -79,7 +77,7 @@ void ArrayDelegate::paint(QPainter* painter,
         }
         else {
             QVariant item = tableModel->data(index);
-            Base::Quantity quantity = item.value<Base::Quantity>();
+            auto quantity = item.value<Base::Quantity>();
             QString text = quantity.getUserString();
             painter->drawText(option.rect, 0, text);
         }
@@ -93,15 +91,11 @@ void ArrayDelegate::paint(QPainter* painter,
 
 void ArrayDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
-    Base::Console().Log("ArrayDelegate::setEditorData()\n");
-
     if (_type == Materials::MaterialValue::Quantity) {
-        QAbstractItemModel* tableModel = const_cast<QAbstractItemModel*>(index.model());
+        auto tableModel = dynamic_cast<const QAbstractItemModel*>(index.model());
         auto item = tableModel->data(index);
 
-        // Gui::InputField* input = static_cast<Gui::InputField*>(editor);
-        // input->setText(item.toString());
-        Gui::QuantitySpinBox* input = static_cast<Gui::QuantitySpinBox*>(editor);
+        auto input = static_cast<Gui::QuantitySpinBox*>(editor);
         input->setValue(item.value<Base::Quantity>());
     }
     else {
@@ -110,12 +104,12 @@ void ArrayDelegate::setEditorData(QWidget* editor, const QModelIndex& index) con
 }
 
 QWidget* ArrayDelegate::createEditor(QWidget* parent,
-                                     const QStyleOptionViewItem&,
+                                     const QStyleOptionViewItem& styleOption,
                                      const QModelIndex& index) const
 {
-    Base::Console().Log("ArrayDelegate::createEditor()\n");
+    Q_UNUSED(styleOption)
 
-    const QAbstractTableModel* tableModel = static_cast<const QAbstractTableModel*>(index.model());
+    auto tableModel = dynamic_cast<const QAbstractTableModel*>(index.model());
     auto item = tableModel->data(index);
 
     QWidget* editor = createWidget(parent, item);
@@ -139,7 +133,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
         widget = spinner;
     }
     else if (_type == Materials::MaterialValue::Float) {
-        Gui::DoubleSpinBox* spinner = new Gui::DoubleSpinBox(parent);
+        auto spinner = new Gui::DoubleSpinBox(parent);
 
         // the magnetic permeability is the parameter for which many decimals matter
         // the most however, even for this, 6 digits are sufficient
@@ -154,7 +148,7 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
         widget = spinner;
     }
     else if (_type == Materials::MaterialValue::Boolean) {
-        Gui::PrefComboBox* combo = new Gui::PrefComboBox(parent);
+        auto combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
@@ -162,13 +156,22 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
         widget = combo;
     }
     else if (_type == Materials::MaterialValue::Quantity) {
-        Gui::QuantitySpinBox* input = new Gui::QuantitySpinBox();
+        auto input = new Gui::QuantitySpinBox();
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(_units);
         input->setValue(item.value<Base::Quantity>());
 
         widget = input;
+    }
+    else if (_type == Materials::MaterialValue::FileList) {
+        auto chooser = new Gui::FileChooser();
+        auto propertyValue = item.toString();
+        if (!propertyValue.isEmpty()) {
+            chooser->setFileName(propertyValue);
+        }
+
+        widget = chooser;
     }
     else {
         // Default editor
@@ -179,5 +182,3 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
 
     return widget;
 }
-
-#include "moc_ArrayDelegate.cpp"

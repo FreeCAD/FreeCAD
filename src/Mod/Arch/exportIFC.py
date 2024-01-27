@@ -44,6 +44,7 @@ import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
+from draftutils import params
 from draftutils.messages import _msg, _err
 
 if FreeCAD.GuiUp:
@@ -107,12 +108,10 @@ END-ISO-10303-21;
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+    if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
         FreeCADGui.showPreferences("Import-Export", 1)
 
-    ifcunit = p.GetInt("ifcUnit", 0)
+    ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
     # mm x 0.001 = metre
@@ -142,20 +141,20 @@ def getPreferences():
     # some objects may be "unreferenced" and won't belong to the `IfcProject`.
     # Some applications may fail at importing these unreferenced objects.
     preferences = {
-        'DEBUG': p.GetBool("ifcDebug", False),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
-        'FORCE_BREP': p.GetBool("ifcExportAsBrep", False),
-        'STORE_UID': p.GetBool("ifcStoreUid", True),
-        'SERIALIZE': p.GetBool("ifcSerialize", False),
-        'EXPORT_2D': p.GetBool("ifcExport2D", True),
-        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties", False),
-        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite", True),
-        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding", True),
-        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey", True),
+        'DEBUG': params.get_param_arch("ifcDebug"),
+        'CREATE_CLONES': params.get_param_arch("ifcCreateClones"),
+        'FORCE_BREP': params.get_param_arch("ifcExportAsBrep"),
+        'STORE_UID': params.get_param_arch("ifcStoreUid"),
+        'SERIALIZE': params.get_param_arch("ifcSerialize"),
+        'EXPORT_2D': params.get_param_arch("ifcExport2D"),
+        'FULL_PARAMETRIC': params.get_param_arch("IfcExportFreeCADProperties"),
+        'ADD_DEFAULT_SITE': params.get_param_arch("IfcAddDefaultSite"),
+        'ADD_DEFAULT_BUILDING': params.get_param_arch("IfcAddDefaultBuilding"),
+        'ADD_DEFAULT_STOREY': params.get_param_arch("IfcAddDefaultStorey"),
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
-        'GET_STANDARD': p.GetBool("getStandardType", False),
-        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][p.GetInt("ifcExportModel", 0)]
+        'GET_STANDARD': params.get_param_arch("getStandardType"),
+        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][params.get_param_arch("ifcExportModel")]
     }
 
     # get ifcopenshell version
@@ -175,7 +174,7 @@ def getPreferences():
         schema = ifcopenshell.schema_identifier
     elif ifcos_version >= 0.6:
         # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][p.GetInt("IfcVersion", 0)]
+        schema = ["IFC4", "IFC2X3"][params.get_param_arch("IfcVersion")]
     else:
         schema = "IFC2X3"
 
@@ -1869,7 +1868,7 @@ def checkRectangle(edges):
        or not. It will return True when edges form a rectangular shape or return False
        when edges do not form a rectangular shape."""
 
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("DisableIfcRectangleProfileDef",False):
+    if params.get_param_arch("DisableIfcRectangleProfileDef"):
         return False
     if len(edges) != 4:
         return False
@@ -2226,8 +2225,8 @@ def getRepresentation(
                                         except Base.FreeCADError:
                                             pass
                             if curves:
-                                joinfacets = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcJoinCoplanarFacets",False)
-                                usedae = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcUseDaeOptions",False)
+                                joinfacets = params.get_param_arch("ifcJoinCoplanarFacets")
+                                usedae = params.get_param_arch("ifcUseDaeOptions")
                                 if joinfacets:
                                     result = Arch.removeCurves(fcsolid,dae=usedae)
                                     if result:

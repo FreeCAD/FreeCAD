@@ -21,9 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
+#include <QList>
 #include <QMetaType>
+#endif
 
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>
@@ -46,8 +46,8 @@ AbstractArrayModel::AbstractArrayModel(QObject* parent)
 //===
 
 
-Array2DModel::Array2DModel(std::shared_ptr<Materials::MaterialProperty> property,
-                           std::shared_ptr<Materials::Material2DArray> value,
+Array2DModel::Array2DModel(const std::shared_ptr<Materials::MaterialProperty>& property,
+                           const std::shared_ptr<Materials::Material2DArray>& value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -93,17 +93,17 @@ QVariant Array2DModel::data(const QModelIndex& index, int role) const
         try {
             auto column = _property->getColumnType(index.column());
             if (column == Materials::MaterialValue::Quantity) {
-                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
-                return QVariant::fromValue(q);
+                Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column()));
+                return QVariant::fromValue(qq);
             }
         }
-        catch (const Materials::InvalidColumn&) {
+        catch (const Materials::InvalidIndex&) {
         }
 
         return QString();
     }
 
-    return QVariant();
+    return {};
 }
 
 QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -111,14 +111,14 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int 
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section);
-            return QVariant(column.getName());
+            return column.getName();
         }
         else if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QVariant(QString::fromStdString("*"));
+                return QString::fromStdString("*");
             }
-            return QVariant(section + 1);
+            return {section + 1};
         }
     }
 
@@ -151,7 +151,7 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        auto rowPtr = std::make_shared<std::vector<QVariant>>();
+        auto rowPtr = std::make_shared<QList<QVariant>>();
         for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j));
         }
@@ -197,8 +197,8 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
 //===
 
-Array3DDepthModel::Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property,
-                                     std::shared_ptr<Materials::Material3DArray> value,
+Array3DDepthModel::Array3DDepthModel(const std::shared_ptr<Materials::MaterialProperty>& property,
+                                     const std::shared_ptr<Materials::Material3DArray>& value,
                                      QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -229,27 +229,21 @@ QVariant Array3DDepthModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
         try {
-            Base::Quantity q = _value->getDepthValue(index.row());
-            return QVariant::fromValue(q);
-        }
-        catch (const Materials::InvalidDepth&) {
-        }
-        catch (const Materials::InvalidRow&) {
-        }
-        catch (const Materials::InvalidColumn&) {
+            Base::Quantity qq = _value->getDepthValue(index.row());
+            return QVariant::fromValue(qq);
         }
         catch (const Materials::InvalidIndex&) {
         }
 
         try {
-            Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(0));
-            return QVariant::fromValue(q);
+            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(0));
+            return QVariant::fromValue(qq);
         }
-        catch (const Materials::InvalidColumn&) {
+        catch (const Materials::InvalidIndex&) {
         }
     }
 
-    return QVariant();
+    return {};
 }
 
 QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -257,14 +251,14 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section);
-            return QVariant(column.getName());
+            return column.getName();
         }
-        else if (orientation == Qt::Vertical) {
+        if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QVariant(QString::fromStdString("*"));
+                return QString::fromStdString("*");
             }
-            return QVariant(section + 1);
+            return {section + 1};
         }
     }
 
@@ -338,8 +332,8 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 
 //===
 
-Array3DModel::Array3DModel(std::shared_ptr<Materials::MaterialProperty> property,
-                           std::shared_ptr<Materials::Material3DArray> value,
+Array3DModel::Array3DModel(const std::shared_ptr<Materials::MaterialProperty>& property,
+                           const std::shared_ptr<Materials::Material3DArray>& value,
                            QObject* parent)
     : AbstractArrayModel(parent)
     , _property(property)
@@ -355,10 +349,7 @@ int Array3DModel::rowCount(const QModelIndex& parent) const
     try {
         return _value->rows() + 1;  // Will always have 1 empty row
     }
-    catch (const Materials::InvalidDepth&) {
-        return 1;
-    }
-    catch (const Materials::InvalidRow&) {
+    catch (const Materials::InvalidIndex&) {
         return 1;
     }
 }
@@ -375,10 +366,7 @@ bool Array3DModel::newRow(const QModelIndex& index) const
     try {
         return (index.row() == _value->rows());
     }
-    catch (const Materials::InvalidDepth&) {
-        return true;
-    }
-    catch (const Materials::InvalidRow&) {
+    catch (const Materials::InvalidIndex&) {
         return true;
     }
 }
@@ -392,16 +380,9 @@ void Array3DModel::deleteRow(const QModelIndex& index)
 QVariant Array3DModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
-        // Base::Console().Log("Row %d, column %d\n", index.row(), index.column());
         try {
-            Base::Quantity q = _value->getValue(index.row(), index.column());
-            return QVariant::fromValue(q);
-        }
-        catch (const Materials::InvalidDepth&) {
-        }
-        catch (const Materials::InvalidRow&) {
-        }
-        catch (const Materials::InvalidColumn&) {
+            Base::Quantity qq = _value->getValue(index.row(), index.column());
+            return QVariant::fromValue(qq);
         }
         catch (const Materials::InvalidIndex&) {
         }
@@ -410,14 +391,14 @@ QVariant Array3DModel::data(const QModelIndex& index, int role) const
         }
 
         try {
-            Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column() + 1));
-            return QVariant::fromValue(q);
+            Base::Quantity qq = Base::Quantity(0, _property->getColumnUnits(index.column() + 1));
+            return QVariant::fromValue(qq);
         }
-        catch (const Materials::InvalidColumn&) {
+        catch (const Materials::InvalidIndex&) {
         }
     }
 
-    return QVariant();
+    return {};
 }
 
 QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -425,14 +406,14 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int 
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section + 1);
-            return QVariant(column.getName());
+            return column.getName();
         }
-        else if (orientation == Qt::Vertical) {
+        if (orientation == Qt::Vertical) {
             // Vertical header
             if (section == (rowCount() - 1)) {
-                return QVariant(QString::fromStdString("*"));
+                return QString::fromStdString("*");
             }
-            return QVariant(section + 1);
+            return {section + 1};
         }
     }
 
@@ -442,11 +423,6 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int 
 bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     Q_UNUSED(role);
-
-    Base::Console().Log("Array3DModel::setData at (%d, %d, %d)\n",
-                        _value->currentDepth(),
-                        index.row(),
-                        index.column());
 
     if (_value->depth() == 0) {
         // Create the first row
@@ -460,14 +436,8 @@ bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int 
     try {
         _value->setValue(index.row(), index.column(), value.value<Base::Quantity>());
     }
-    catch (const Materials::InvalidDepth&) {
-        Base::Console().Error("Array3DModel::setData - InvalidDepth");
-    }
-    catch (const Materials::InvalidRow&) {
-        Base::Console().Error("Array3DModel::setData - invalidRow");
-    }
-    catch (const Materials::InvalidColumn&) {
-        Base::Console().Error("Array3DModel::setData - InvalidColumn");
+    catch (const Materials::InvalidIndex&) {
+        Base::Console().Error("Array3DModel::setData - InvalidIndex");
     }
 
     Q_EMIT dataChanged(index, index);
@@ -487,7 +457,7 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        auto rowPtr = std::make_shared<std::vector<Base::Quantity>>();
+        auto rowPtr = std::make_shared<QList<Base::Quantity>>();
         for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j).value<Base::Quantity>());
         }

@@ -26,6 +26,7 @@
 #include "IndexedName.h"
 #include "MappedName.h"
 
+
 namespace App
 {
 class DocumentObject;
@@ -96,6 +97,22 @@ struct AppExport MappedElement
         }
         return this->name < other.name;
     }
+};
+
+struct AppExport ElementNameComparator {
+    /** Comparison function to make topo name more stable
+     *
+     * The sorting decomposes the name into either of the following two forms
+     *      '#' + hex_digits + tail
+     *      non_digits + digits + tail
+     *
+     * The non-digits part is compared lexically, while the digits part is
+     * compared by its integer value.
+     *
+     * The reason for this is to prevent names with bigger digits (which usually means
+     * they come later in history) from coming earlier when sorting.
+     */
+    bool operator()(const MappedName & leftName, const MappedName & rightName) const;
 };
 
 }// namespace Data

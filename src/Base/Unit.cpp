@@ -575,6 +575,9 @@ QString Unit::getTypeString() const
     if (*this == Unit::Stiffness) {
         return QString::fromLatin1("Stiffness");
     }
+    if (*this == Unit::StiffnessDensity) {
+        return QString::fromLatin1("StiffnessDensity");
+    }
     if (*this == Unit::Stress) {
         return QString::fromLatin1("Stress");
     }
@@ -667,6 +670,7 @@ const Unit Unit::ShearModulus               (-1,1,-2);
 const Unit Unit::SpecificEnergy             (2, 0, -2);
 const Unit Unit::SpecificHeat               (2, 0, -2, 0, -1);
 const Unit Unit::Stiffness                  (0, 1, -2);
+const Unit Unit::StiffnessDensity           (-2, 1, -2);
 const Unit Unit::Stress                     (-1,1,-2);
 const Unit Unit::ThermalConductivity        (1, 1, -3, 0, -1);
 const Unit Unit::ThermalExpansionCoefficient(0, 0, 0, 0, -1);

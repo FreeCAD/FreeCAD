@@ -126,12 +126,22 @@ If prec is -1 then maxTolerance() is taken.</UserDocu>
     </Methode>
     <Methode Name="fixSelfIntersection">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Applies FixSelfIntersectingEdge(num) and
+ FixIntersectingEdges(num) to all edges in the wire and
+ FixIntersectingEdges(num1, num2) for all pairs num1 and num2
+ and removes wrong edges if any</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixLacking">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Applies FixLacking(num) to all edges in the wire
+  Connection between first and last edges is treated only if
+  flag ClosedMode is True
+  If 'force' is False (default), test for connectness is done with
+  precision of vertex between edges, else it is done with minimal
+  value of vertex tolerance and Analyzer.Precision().
+  Hence, 'force' will lead to inserting lacking edges in replacement
+  of vertices which have big tolerances.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixClosed">
@@ -162,7 +172,7 @@ range on the closed surface</UserDocu>
     </Methode>
     <Methode Name="fixNotchedEdges">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Fixes Notch edges.Check if there are notch edges in 2d and fix it</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fixGap3d">
@@ -177,7 +187,9 @@ range on the closed surface</UserDocu>
     </Methode>
     <Methode Name="fixTails">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Fixes issues related to 'tails' in the geometry.
+      Tails are typically small, undesired protrusions or deviations in the curves or edges that need correction.
+      This method examines the geometry and applies corrective actions to eliminate or reduce the presence of tails.</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="ModifyTopologyMode" ReadOnly="false">
@@ -208,9 +220,9 @@ and fixConnected() for last and first edges)</UserDocu>
     </Attribute>
     <Attribute Name="PreferencePCurveMode" ReadOnly="false">
       <Documentation>
-        <UserDocu>Mode which defines whether the 2d (True)
-representation of the wire is preferable over 3d one (in the
-case of ambiguity in FixEdgeCurves)</UserDocu>
+        <UserDocu>Mode which defines whether the 2d 'True'
+representation of the wire is preferable over 3d one in the
+case of ambiguity in FixEdgeCurves</UserDocu>
       </Documentation>
       <Parameter Name="PreferencePCurveMode" Type="Boolean"/>
     </Attribute>
@@ -224,139 +236,166 @@ using intersection, extrema, projections) or not</UserDocu>
     </Attribute>
     <Attribute Name="FixReorderMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Mode which performs an analysis and reorders edges in the wire using class WireOrder.
+Flag 'theModeBoth' determines the use of miscible mode if necessary.</UserDocu>
       </Documentation>
       <Parameter Name="FixReorderMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixSmallMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu> Mode which applies FixSmall(num) to all edges in the wire</UserDocu>
       </Documentation>
       <Parameter Name="FixSmallMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixConnectedMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which applies FixConnected(num) to all edges in the wire
+ Connection between first and last edges is treated only if
+ flag ClosedMode is True
+ If 'prec' is -1 then MaxTolerance() is taken.</UserDocu>
       </Documentation>
       <Parameter Name="FixConnectedMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixEdgeCurvesMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which groups the fixes dealing with 3d and pcurves of the edges.
+  The order of the fixes and the default behaviour are:
+  ShapeFix_Edge::FixReversed2d
+  ShapeFix_Edge::FixRemovePCurve (only if forced)
+  ShapeFix_Edge::FixAddPCurve
+  ShapeFix_Edge::FixRemoveCurve3d (only if forced)
+  ShapeFix_Edge::FixAddCurve3d
+  FixSeam,
+  FixShifted,
+  ShapeFix_Edge::FixSameParameter</UserDocu>
       </Documentation>
       <Parameter Name="FixEdgeCurvesMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixDegeneratedMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which applies FixDegenerated(num) to all edges in the wire
+  Connection between first and last edges is treated only if
+  flag ClosedMode is True</UserDocu>
       </Documentation>
       <Parameter Name="FixDegeneratedMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixSelfIntersectionMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which applies FixSelfIntersectingEdge(num) and
+  FixIntersectingEdges(num) to all edges in the wire and
+  FixIntersectingEdges(num1, num2) for all pairs num1 and num2
+  and removes wrong edges if any</UserDocu>
       </Documentation>
       <Parameter Name="FixSelfIntersectionMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixLackingMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which applies FixLacking(num) to all edges in the wire
+  Connection between first and last edges is treated only if
+  flag ClosedMode is True
+  If 'force' is False (default), test for connectness is done with
+  precision of vertex between edges, else it is done with minimal
+  value of vertex tolerance and Analyzer.Precision().
+  Hence, 'force' will lead to inserting lacking edges in replacement
+  of vertices which have big tolerances.</UserDocu>
       </Documentation>
       <Parameter Name="FixLackingMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixGaps3dMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes gaps between ends of 3d curves on adjacent edges
+  myPrecision is used to detect the gaps.</UserDocu>
       </Documentation>
       <Parameter Name="FixGaps3dMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixGaps2dMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode whixh fixes gaps between ends of pcurves on adjacent edges
+  myPrecision is used to detect the gaps.</UserDocu>
       </Documentation>
       <Parameter Name="FixGaps2dMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixReversed2dMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes the reversed in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixReversed2dMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixRemovePCurveMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which removePCurve in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixRemovePCurveMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixAddPCurveMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes addCurve in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixAddPCurveMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixRemoveCurve3dMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes removeCurve in 3d </UserDocu>
       </Documentation>
       <Parameter Name="FixRemoveCurve3dMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixAddCurve3dMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes addCurve in 3d</UserDocu>
       </Documentation>
       <Parameter Name="FixAddCurve3dMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixSeamMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes Seam </UserDocu>
       </Documentation>
       <Parameter Name="FixSeamMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixShiftedMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes Shifted</UserDocu>
       </Documentation>
       <Parameter Name="FixShiftedMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixSameParameterMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes sameParameter in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixSameParameterMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixVertexToleranceMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes VertexTolerence in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixVertexToleranceMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixNotchedEdgesMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes NotchedEdges in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixNotchedEdgesMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixSelfIntersectingEdgeMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes SelfIntersectionEdge in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixSelfIntersectingEdgeMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixIntersectingEdgesMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes IntersectingEdges in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixIntersectingEdgesMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixNonAdjacentIntersectingEdgesMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes NonAdjacentIntersectingEdges in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixNonAdjacentIntersectingEdgesMode" Type="Boolean"/>
     </Attribute>
     <Attribute Name="FixTailMode" ReadOnly="false">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Mode which fixes Tails in 2d</UserDocu>
       </Documentation>
       <Parameter Name="FixTailMode" Type="Boolean"/>
     </Attribute>

@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "type": "shell",
+      "type": "process",
       "label": "FreeCAD: setup conda environment",
       "linux": {
         "command": "conda/setup-environment.sh",

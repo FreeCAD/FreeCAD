@@ -33,9 +33,31 @@ PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint)
 ConstraintContact::ConstraintContact()
 {
     /*Note: Initialise parameters here*/
-    ADD_PROPERTY(Slope, (0.0));
-    ADD_PROPERTY(Friction, (0.0));
-    /* */
+    ADD_PROPERTY_TYPE(Slope,
+                      (0.0),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Contact stiffness");
+    ADD_PROPERTY_TYPE(Adjust,
+                      (0.0),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Node clearance adjustment limit");
+    ADD_PROPERTY_TYPE(Friction,
+                      (false),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Enable friction interaction");
+    ADD_PROPERTY_TYPE(FrictionCoefficient,
+                      (0.0),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Friction coefficient");
+    ADD_PROPERTY_TYPE(StickSlope,
+                      (0.0),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Stick slope");
 
     ADD_PROPERTY_TYPE(Points,
                       (Base::Vector3d()),
@@ -47,6 +69,7 @@ ConstraintContact::ConstraintContact()
                       "ConstraintContact",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Normals where symbols are drawn");
+    /* */
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
@@ -75,5 +98,30 @@ void ConstraintContact::onChanged(const App::Property* prop)
             Scale.setValue(scale);  // OvG: Scale
             Points.touch();         // This triggers ViewProvider::updateData()
         }
+    }
+}
+
+void ConstraintContact::handleChangedPropertyType(Base::XMLReader& reader,
+                                                  const char* typeName,
+                                                  App::Property* prop)
+{
+    if (prop == &Slope && strcmp(typeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat oldSlope;
+        oldSlope.Restore(reader);
+        // old slope value stored as MPa/mm equivalent to 1e3 kg/(mm^2*s^2)
+        Slope.setValue(oldSlope.getValue() * 1000);
+
+        // stick slope internally generated as slope/10
+        StickSlope.setValue(Slope.getValue() / 10);
+    }
+    else if (prop == &Friction && strcmp(typeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat oldFriction;
+        oldFriction.Restore(reader);
+        FrictionCoefficient.setValue(oldFriction.getValue());
+
+        Friction.setValue(oldFriction.getValue() > 0 ? true : false);
+    }
+    else {
+        Constraint::handleChangedPropertyType(reader, typeName, prop);
     }
 }

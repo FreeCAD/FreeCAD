@@ -75,7 +75,7 @@ macro(SetupSalomeSMESH)
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(MEDFile REQUIRED)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
-            if (WIN32)
+            if (MSVC)
                 find_package(HDF5 COMPONENTS NO_MODULE REQUIRED static)
             else()
                 find_package(PkgConfig)

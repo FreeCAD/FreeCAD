@@ -73,6 +73,7 @@
 #include <stack>
 #include <queue>
 #include <memory>
+#include <mutex>
 #include <bitset>
 
 // streams
@@ -130,8 +131,6 @@
 #include <QWriteLocker>
 #include <QReadLocker>
 #include <QReadWriteLock>
-#include <QMutex>
-#include <QMutexLocker>
 #include <QTime>
 #include <QUuid>
 

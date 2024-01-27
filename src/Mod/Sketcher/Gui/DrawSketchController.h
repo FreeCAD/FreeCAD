@@ -118,16 +118,12 @@ public:
     //@}
 
 protected:
-    HandlerT* handler;           // real derived type
-    bool init = false;           // true if the controls have been initialised.
-    bool firstMoveInit = false;  // true if first mouse movement not yet performed (resets)
+    // NOLINTBEGIN
+    HandlerT* handler;  // real derived type
+    std::vector<std::unique_ptr<Gui::EditableDatumLabel>> onViewParameters;
+    // NOLINTEND
 
-    Base::Vector2d prevCursorPosition;
-    Base::Vector2d lastControlEnforcedPosition;
-
-    int onViewIndexWithFocus = 0;  // track the index of the on-view parameter having the focus
-    int nOnViewParameter = OnViewParametersT::defaultMethodSize();
-
+    bool init = false;  // true if the controls have been initialised.
 
     /** @name Named indices for controlling on-view controls */
     //@{
@@ -147,7 +143,12 @@ protected:
     };
     //@}
 
-    std::vector<std::unique_ptr<Gui::EditableDatumLabel>> onViewParameters;
+private:
+    Base::Vector2d prevCursorPosition;
+    Base::Vector2d lastControlEnforcedPosition;
+
+    int onViewIndexWithFocus = 0;  // track the index of the on-view parameter having the focus
+    int nOnViewParameter = OnViewParametersT::defaultMethodSize();
 
     /// Class to keep track of colors used by the on-view parameters
     class ColorManager
@@ -260,8 +261,8 @@ public:
 
     DrawSketchController(const DrawSketchController&) = delete;
     DrawSketchController(DrawSketchController&&) = delete;
-    bool operator=(const DrawSketchController&) = delete;
-    bool operator=(DrawSketchController&&) = delete;
+    DrawSketchController& operator=(const DrawSketchController&) = delete;
+    DrawSketchController& operator=(DrawSketchController&&) = delete;
 
     virtual ~DrawSketchController()
     {}
@@ -723,6 +724,13 @@ protected:
     }
     //@}
 
+    // makes keymanager available to derived classes so that they install it as event handler
+    // where necessary, without allowing them to manage resource ownership
+    DrawSketchKeyboardManager* getKeyManager()
+    {
+        return keymanager.get();
+    }
+
 private:
     /** @name helper functions */
     //@{
@@ -743,6 +751,8 @@ private:
     OnViewParameterVisibilityManager ovpVisibilityManager;
     ColorManager colorManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
+
+    bool firstMoveInit = false;  // true if first mouse movement not yet performed (resets)
 };
 
 

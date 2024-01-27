@@ -36,7 +36,9 @@
 #include <StdMeshers_LayerDistribution.hxx>
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -1161,7 +1163,7 @@ Py::Object StdMeshers_NumberOfLayersPy::getNumLayers(const Py::Tuple& args)
 }
 
 // ---------------------------------------------------------------------------
-
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 void StdMeshers_MEFISTO_2DPy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_MEFISTO_2D");
@@ -1178,7 +1180,7 @@ StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_G
     : SMESH_HypothesisPyBase(new StdMeshers_MEFISTO_2D(hypId, studyId, gen))
 {}
 #endif
-
+#endif
 StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy() = default;
 
 // ---------------------------------------------------------------------------

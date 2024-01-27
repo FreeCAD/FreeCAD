@@ -193,9 +193,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (lower_tube, "Face1"),
         (upper_tube, "Face1"),
     ]
-    con_contact.Friction = 0.0
-    # con_contact.Slope = "1000000.0 kg/(mm*s^2)"  # contact stiffness
-    con_contact.Slope = 1000000.0  # should be 1000000.0 kg/(mm*s^2)
+    con_contact.Friction = False
+    con_contact.Slope = "1000000.0 GPa/m"
     analysis.addObject(con_contact)
 
     # mesh

@@ -28,6 +28,8 @@ Beams, pillars, slabs and panels"""
 
 import ArchCommands,ArchComponent,FreeCAD
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -897,21 +899,20 @@ class _PrecastTaskPanel:
         QtCore.QObject.connect(self.valueTread,QtCore.SIGNAL("valueChanged(double)"),self.setTread)
 
         # restore presets
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.restoreValue(self.valueChamfer, param.GetFloat("PrecastChamfer", 0.0))
-        self.restoreValue(self.valueDentLength, param.GetFloat("PrecastDentLength", 0.0))
-        self.restoreValue(self.valueDentWidth, param.GetFloat("PrecastDentWidth", 0.0))
-        self.restoreValue(self.valueDentHeight, param.GetFloat("PrecastDentHeight", 0.0))
-        self.restoreValue(self.valueBase, param.GetFloat("PrecastBase", 0.0))
-        self.restoreValue(self.valueHoleMajor, param.GetFloat("PrecastHoleMajor", 0.0))
-        self.restoreValue(self.valueHoleMinor, param.GetFloat("PrecastHoleMinor", 0.0))
-        self.restoreValue(self.valueHoleSpacing, param.GetFloat("PrecastHoleSpacing", 0.0))
-        self.restoreValue(self.valueGrooveDepth, param.GetFloat("PrecastGrooveDepth", 0.0))
-        self.restoreValue(self.valueGrooveHeight, param.GetFloat("PrecastGrooveHeight", 0.0))
-        self.restoreValue(self.valueGrooveSpacing, param.GetFloat("PrecastGrooveSpacing", 0.0))
-        self.restoreValue(self.valueDownLength, param.GetFloat("PrecastDownLength", 0.0))
-        self.restoreValue(self.valueRiser, param.GetFloat("PrecastRiser", 0.0))
-        self.restoreValue(self.valueTread, param.GetFloat("PrecastTread", 0.0))
+        self.restoreValue(self.valueChamfer, params.get_param_arch("PrecastChamfer"))
+        self.restoreValue(self.valueDentLength, params.get_param_arch("PrecastDentLength"))
+        self.restoreValue(self.valueDentWidth, params.get_param_arch("PrecastDentWidth"))
+        self.restoreValue(self.valueDentHeight, params.get_param_arch("PrecastDentHeight"))
+        self.restoreValue(self.valueBase, params.get_param_arch("PrecastBase"))
+        self.restoreValue(self.valueHoleMajor, params.get_param_arch("PrecastHoleMajor"))
+        self.restoreValue(self.valueHoleMinor, params.get_param_arch("PrecastHoleMinor"))
+        self.restoreValue(self.valueHoleSpacing, params.get_param_arch("PrecastHoleSpacing"))
+        self.restoreValue(self.valueGrooveDepth, params.get_param_arch("PrecastGrooveDepth"))
+        self.restoreValue(self.valueGrooveHeight, params.get_param_arch("PrecastGrooveHeight"))
+        self.restoreValue(self.valueGrooveSpacing, params.get_param_arch("PrecastGrooveSpacing"))
+        self.restoreValue(self.valueDownLength, params.get_param_arch("PrecastDownLength"))
+        self.restoreValue(self.valueRiser, params.get_param_arch("PrecastRiser"))
+        self.restoreValue(self.valueTread, params.get_param_arch("PrecastTread"))
 
         self.retranslateUi(self.form)
         self.form.hide()
@@ -945,59 +946,59 @@ class _PrecastTaskPanel:
 
     def setChamfer(self,value):
         self.Chamfer = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastChamfer",value)
+        params.set_param_arch("PrecastChamfer",value)
 
     def setDentLength(self,value):
         self.DentLength = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentLength",value)
+        params.set_param_arch("PrecastDentLength",value)
 
     def setDentWidth(self,value):
         self.DentWidth = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentWidth",value)
+        params.set_param_arch("PrecastDentWidth",value)
 
     def setDentHeight(self,value):
         self.DentHeight = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDentHeight",value)
+        params.set_param_arch("PrecastDentHeight",value)
 
     def setBase(self,value):
         self.Base = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastBase",value)
+        params.set_param_arch("PrecastBase",value)
 
     def setHoleMajor(self,value):
         self.HoleMajor = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleMajor",value)
+        params.set_param_arch("PrecastHoleMajor",value)
 
     def setHoleMinor(self,value):
         self.HoleMinor = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleMinor",value)
+        params.set_param_arch("PrecastHoleMinor",value)
 
     def setHoleSpacing(self,value):
         self.HoleSpacing = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastHoleSpacing",value)
+        params.set_param_arch("PrecastHoleSpacing",value)
 
     def setGrooveDepth(self,value):
         self.GrooveDepth = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveDepth",value)
+        params.set_param_arch("PrecastGrooveDepth",value)
 
     def setGrooveHeight(self,value):
         self.GrooveHeight = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveHeight",value)
+        params.set_param_arch("PrecastGrooveHeight",value)
 
     def setGrooveSpacing(self,value):
         self.GrooveSpacing = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastGrooveSpacing",value)
+        params.set_param_arch("PrecastGrooveSpacing",value)
 
     def setDownLength(self,value):
         self.DownLength = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastDownLength",value)
+        params.set_param_arch("PrecastDownLength",value)
 
     def setRiser(self,value):
         self.Riser = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastRiser",value)
+        params.set_param_arch("PrecastRiser",value)
 
     def setTread(self,value):
         self.Tread = value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("PrecastTread",value)
+        params.set_param_arch("PrecastTread",value)
 
     def retranslateUi(self, dialog):
         from PySide import QtGui

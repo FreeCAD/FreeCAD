@@ -80,6 +80,9 @@ void ConstraintForce::handleChangedPropertyType(Base::XMLReader& reader,
         // e.g. "2.5" must become 2500 to result in 2.5 N
         Force.setValue(ForceProperty.getValue() * 1000);
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintForce::onChanged(const App::Property* prop)

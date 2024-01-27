@@ -28,7 +28,6 @@
 # include <QKeyEvent>
 
 # include <BRep_Builder.hxx>
-# include <Standard_math.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 

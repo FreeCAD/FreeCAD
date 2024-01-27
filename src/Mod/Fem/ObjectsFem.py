@@ -579,7 +579,7 @@ def makeMeshGroup(
     name="MeshGroup"
 ):
     """makeMeshGroup(document, base_mesh, [use_label], [name]):
-    creates a FEM mesh region object to define properties for a region of a FEM mesh"""
+    creates a FEM mesh refinement object to define properties for a region of a FEM mesh"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import mesh_group
     mesh_group.MeshGroup(obj)
@@ -613,7 +613,7 @@ def makeMeshRegion(
     name="MeshRegion"
 ):
     """makeMeshRegion(document, base_mesh, [element_length], [name]):
-    creates a FEM mesh region object to define properties for a region of a FEM mesh"""
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh"""
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import mesh_region
     mesh_region.MeshRegion(obj)

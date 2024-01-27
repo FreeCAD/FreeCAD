@@ -365,7 +365,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
     }
-    else if (!static_cast<PyObjectBase*>(obj)->isValid()){
+    if (!static_cast<PyObjectBase*>(obj)->isValid()){
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
         return -1;
     }
@@ -404,36 +404,32 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
-    else if (streq(attr, "__members__")) {
+    if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
         return nullptr;
     }
-    else if (streq(attr,"__dict__")) {
+    if (streq(attr,"__dict__")) {
         // Return the default dict
         PyTypeObject *tp = Py_TYPE(this);
         Py_XINCREF(tp->tp_dict);
         return tp->tp_dict;
     }
-    else if (streq(attr,"softspace")) {
+    if (streq(attr,"softspace")) {
         // Internal Python stuff
         return nullptr;
     }
-    else {
-        // As fallback solution use Python's default method to get generic attributes
-        PyObject *w{};
-        PyObject *res{};
-        w = PyUnicode_InternFromString(attr);
-        if (w) {
-            res = PyObject_GenericGetAttr(this, w);
-            Py_XDECREF(w);
-            return res;
-        } else {
-            // Throw an exception for unknown attributes
-            PyTypeObject *tp = Py_TYPE(this);
-            PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
-            return nullptr;
-        }
+    // As fallback solution use Python's default method to get generic attributes
+    PyObject *w{}, *res{};
+    w = PyUnicode_InternFromString(attr);
+    if (w) {
+        res = PyObject_GenericGetAttr(this, w);
+        Py_XDECREF(w);
+        return res;
     }
+    // Throw an exception for unknown attributes
+    PyTypeObject *tp = Py_TYPE(this);
+    PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
+    return nullptr;
 }
 
 int PyObjectBase::_setattr(const char *attr, PyObject *value)
@@ -449,12 +445,11 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
         int res = PyObject_GenericSetAttr(this, w, value);
         Py_DECREF(w);
         return res;
-    } else {
-        // Throw an exception for unknown attributes
-        PyTypeObject *tp = Py_TYPE(this);
-        PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
-        return -1;
     }
+    // Throw an exception for unknown attributes
+    PyTypeObject *tp = Py_TYPE(this);
+    PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
+    return -1;
 }
 
 /*------------------------------

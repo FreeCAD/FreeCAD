@@ -55,6 +55,7 @@ public:
     Base::Vector3d scaled(const double factor);
     Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees);
 
+    static Base::Vector3d makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale = true);
     static bool restoreCosmetic();
 
     // Persistence implementer ---------------------

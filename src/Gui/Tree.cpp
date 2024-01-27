@@ -253,7 +253,7 @@ public:
             auto childVp = docItem->getViewProvider(child);
             if (!childVp)
                 continue;
-            if (child && child->getNameInDocument()) {
+            if (child && child->isAttachedToDocument()) {
                 if (!newSet.insert(child).second) {
                     TREE_WARN("duplicate child item " << obj->getFullName()
                         << '.' << child->getNameInDocument());
@@ -659,7 +659,7 @@ void TreeWidget::selectAll() {
 }
 
 bool TreeWidget::isObjectShowable(App::DocumentObject* obj) {
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return true;
     Gui::Document* doc = Application::Instance->getDocument(obj->getDocument());
     if (!doc)
@@ -678,7 +678,7 @@ static bool _DisableCheckTopParent;
 void TreeWidget::checkTopParent(App::DocumentObject*& obj, std::string& subname) {
     if (_DisableCheckTopParent)
         return;
-    if (!Instances.empty() && obj && obj->getNameInDocument()) {
+    if (!Instances.empty() && obj && obj->isAttachedToDocument()) {
         auto tree = *Instances.begin();
         auto it = tree->DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
         if (it != tree->DocumentMap.end()) {
@@ -881,7 +881,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("Tree", &view);
 
-    view << "Std_Expressions";
+    view << "Std_Properties" << "Separator" << "Std_Expressions";
     Workbench::createLinkMenu(&view);
 
     QMenu contextMenu;
@@ -1092,7 +1092,7 @@ void TreeWidget::onStartEditing()
             int edit = action->data().toInt();
 
             App::DocumentObject* obj = objitem->object()->getObject();
-            if (!obj || !obj->getNameInDocument())
+            if (!obj || !obj->isAttachedToDocument())
                 return;
             auto doc = const_cast<Document*>(objitem->getOwnerDocument()->document());
             MDIView* view = doc->getActiveView();
@@ -1373,7 +1373,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
         auto item = static_cast<DocumentObjectItem*>(ti);
         auto vp = item->object();
         auto obj = vp->getObject();
-        if (!obj || !obj->getNameInDocument()) {
+        if (!obj || !obj->isAttachedToDocument()) {
             FC_WARN("skip invalid object");
             continue;
         }
@@ -1385,7 +1385,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
         auto parent = item->getParentItem();
         if (parent) {
             parentVp = parent->object();
-            if (!parentVp->getObject()->getNameInDocument()) {
+            if (!parentVp->getObject()->isAttachedToDocument()) {
                 FC_WARN("skip '" << obj->getFullName() << "' with invalid parent");
                 continue;
             }
@@ -1410,7 +1410,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
     if (!isSelectionAttached())
         return;
 
-    if (!obj || !obj->getNameInDocument()) {
+    if (!obj || !obj->isAttachedToDocument()) {
         TREE_ERR("invalid object");
         return;
     }
@@ -1422,7 +1422,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
 
     for (auto link : App::GetApplication().getLinksTo(obj, App::GetLinkRecursive))
     {
-        if (!link || !link->getNameInDocument()) {
+        if (!link || !link->isAttachedToDocument()) {
             TREE_ERR("invalid linked object");
             continue;
         }
@@ -1747,7 +1747,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
 
                 // let the view provider decide to accept the object or ignore it
                 if (da != Qt::LinkAction && !vp->canDropObjectEx(obj, owner, subname.c_str(), item->mySubs)) {
-                    if (event->possibleActions() & Qt::LinkAction) {
+                    // Cause unexpected bugs : https://github.com/FreeCAD/FreeCAD/issues/11676
+                    /*if (event->possibleActions() & Qt::LinkAction) {
                         if (items.size() > 1) {
                             TREE_TRACE("Cannot replace with more than one object");
                             event->ignore();
@@ -1760,7 +1761,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
                         }
                         event->setDropAction(Qt::LinkAction);
                         return;
-                    }
+                    }*/
 
                     TREE_TRACE("cannot drop " << obj->getFullName() << ' '
                         << (owner ? owner->getFullName() : "<No Owner>") << '.' << subname);
@@ -1916,7 +1917,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
         thisDoc = targetItemObj->getOwnerDocument()->document()->getDocument();
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
-        if (!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) {
+        if (!vp || !vp->getObject() || !vp->getObject()->isAttachedToDocument()) {
             TREE_TRACE("invalid object");
             return;
         }
@@ -2098,7 +2099,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
                     ss.str("");
 
                     obj = doc->getObject(info.obj.c_str());
-                    if (!obj || !obj->getNameInDocument()) {
+                    if (!obj || !obj->isAttachedToDocument()) {
                         FC_WARN("Dropping object deleted: " << info.doc << '#' << info.obj);
                         continue;
                     }
@@ -2385,7 +2386,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
 
                     // check if the object has been deleted
                     obj = doc->getObject(info.obj.c_str());
-                    if (!obj || !obj->getNameInDocument())
+                    if (!obj || !obj->isAttachedToDocument())
                         continue;
                     droppedObjs.push_back(obj);
                     if (propPlacement)
@@ -3427,7 +3428,7 @@ const char* DocumentItem::getTreeName() const {
 
 #define FOREACH_ITEM(_item, _obj) \
     auto _it = ObjectMap.end();\
-    if(_obj.getObject() && _obj.getObject()->getNameInDocument())\
+    if(_obj.getObject() && _obj.getObject()->isAttachedToDocument())\
         _it = ObjectMap.find(_obj.getObject());\
     if(_it != ObjectMap.end()) {\
         for(auto _item : _it->second->items) {
@@ -3487,7 +3488,7 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 }
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
-    if (!obj.getObject() || !obj.getObject()->getNameInDocument()) {
+    if (!obj.getObject() || !obj.getObject()->isAttachedToDocument()) {
         FC_ERR("view provider not attached");
         return;
     }
@@ -3498,9 +3499,8 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
 bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     QTreeWidgetItem* parent, int index, DocumentObjectDataPtr data)
 {
-    const char* name;
     if (!obj.getObject() ||
-        !(name = obj.getObject()->getNameInDocument()) ||
+        !obj.getObject()->isAttachedToDocument() ||
         obj.getObject()->testStatus(App::PartialObject))
         return false;
 
@@ -3827,7 +3827,7 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
 }
 
 int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
-    if (!TreeParams::getKeepRootOrder() || !childObj || !childObj->getNameInDocument())
+    if (!TreeParams::getKeepRootOrder() || !childObj || !childObj->isAttachedToDocument())
         return -1;
 
     // object id is monotonically increasing, so use this as a hint to insert
@@ -3893,7 +3893,7 @@ void TreeWidget::slotChangeObject(
     const Gui::ViewProviderDocumentObject& view, const App::Property& prop) {
 
     auto obj = view.getObject();
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return;
 
     auto itEntry = ObjectTable.find(obj);
@@ -4044,7 +4044,7 @@ static unsigned int countExpandedItem(const QTreeWidgetItem* item) {
         if (citem->type() != TreeWidget::ObjectType || !citem->isExpanded())
             continue;
         auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
-        if (obj->getNameInDocument())
+        if (obj->isAttachedToDocument())
             size += strlen(obj->getNameInDocument()) + countExpandedItem(citem);
     }
     return size;
@@ -4061,7 +4061,7 @@ static void saveExpandedItem(Base::Writer& writer, const QTreeWidgetItem* item) 
         if (citem->type() != TreeWidget::ObjectType || !citem->isExpanded())
             continue;
         auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
-        if (obj->getNameInDocument())
+        if (obj->isAttachedToDocument())
             ++itemCount;
     }
 
@@ -4077,7 +4077,7 @@ static void saveExpandedItem(Base::Writer& writer, const QTreeWidgetItem* item) 
         if (citem->type() != TreeWidget::ObjectType || !citem->isExpanded())
             continue;
         auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
-        if (obj->getNameInDocument()) {
+        if (obj->isAttachedToDocument()) {
             writer.Stream() << writer.ind() << "<Expand name=\""
                 << obj->getNameInDocument() << "\"";
             saveExpandedItem(writer, static_cast<const DocumentObjectItem*>(citem));
@@ -4116,7 +4116,7 @@ void DocumentItem::restoreItemExpansion(const ExpandInfoPtr& info, DocumentObjec
         if (citem->type() != TreeWidget::ObjectType)
             continue;
         auto obj = static_cast<DocumentObjectItem*>(citem)->object()->getObject();
-        if (!obj->getNameInDocument())
+        if (!obj->isAttachedToDocument())
             continue;
         auto it = info->find(obj->getNameInDocument());
         if (it != info->end())
@@ -4204,7 +4204,7 @@ void DocumentItem::slotExpandObject(const Gui::ViewProviderDocumentObject& obj,
 
 void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    if (!obj.getObject() || !obj.getObject()->getNameInDocument())
+    if (!obj.getObject() || !obj.getObject()->isAttachedToDocument())
         return;
     auto it = ObjectMap.find(obj.getObject());
     if (it == ObjectMap.end() || it->second->items.empty())
@@ -4333,7 +4333,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
     item->selected = selected;
 
     auto obj = item->object()->getObject();
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return;
 
     std::ostringstream str;
@@ -5256,7 +5256,7 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
     }
 
     auto obj = parent->object()->getObject();
-    if (!obj || !obj->getNameInDocument()) {
+    if (!obj || !obj->isAttachedToDocument()) {
         topParent = nullptr;
         str.str("");
         return NotGroup;

@@ -168,7 +168,6 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    std::string dvpName = dvp->getNameInDocument();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     std::string id = dvp->addCosmeticVertex(pnt1);
     //int link =
@@ -190,7 +189,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
     Base::Vector3d centroid = dvp->getOriginalCentroid();
     pnt1 = pnt1 - centroid;
     Base::Vector3d projected = DrawUtil::invertY(dvp->projectPoint(pnt1));
-
+    projected = CosmeticVertex::makeCanonicalPoint(dvp, projected);
     std::string id = dvp->addCosmeticVertex(projected);
     //int link =
     dvp->add1CVToGV(id);

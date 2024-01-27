@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -40,7 +41,7 @@ class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
 class DrawView;
-
+class LineGenerator;
 }
 
 namespace TechDrawGui
@@ -108,6 +109,12 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    bool getGroupSelection() override;
+    void setGroupSelection(bool isSelected) override;
+    void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
+
+    virtual QGraphicsItem *getQGISubItemByName(const std::string &subName) const;
+
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
@@ -132,6 +139,8 @@ protected:
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;
+    TechDraw::LineGenerator* m_dashedLineGenerator;
+
 };
 
 } // namespace

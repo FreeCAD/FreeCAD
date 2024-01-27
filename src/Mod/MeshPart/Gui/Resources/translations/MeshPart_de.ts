@@ -578,7 +578,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Netz abwickeln</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -591,7 +591,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Fläche abwickeln</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

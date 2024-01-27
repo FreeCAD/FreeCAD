@@ -149,6 +149,7 @@ import FreeCAD
 import ArchComponent
 import ArchCommands
 import Draft
+from draftutils import params
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -497,12 +498,11 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         self.setProperties(vobj)
-        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        vobj.Transparency = prefs.GetInt("defaultSpaceTransparency",85)
-        vobj.LineWidth = Draft.getParam("linewidth")
+        vobj.Transparency = params.get_param_arch("defaultSpaceTransparency")
+        vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         vobj.LineColor = ArchCommands.getDefaultColor("Space")
-        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][prefs.GetInt("defaultSpaceStyle",2)]
-        if prefs.GetInt("defaultSpaceTransparency",85) == 100:
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][params.get_param_arch("defaultSpaceStyle")]
+        if vobj.Transparency == 100:
             vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
@@ -513,16 +513,16 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             vobj.Text = ["$label","$area"]
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
-            vobj.FontName = Draft.getParam("textfont","")
+            vobj.FontName = params.get_param("textfont")
         if not "TextColor" in pl:
             vobj.addProperty("App::PropertyColor",         "TextColor",   "Space",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
             vobj.TextColor = (0.0,0.0,0.0,1.0)
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength",        "FontSize",    "Space",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
-            vobj.FontSize = Draft.getParam("textheight",10)
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "FirstLine" in pl:
             vobj.addProperty("App::PropertyLength",        "FirstLine",   "Space",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
-            vobj.FirstLine = Draft.getParam("textheight",10)
+            vobj.FirstLine = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "LineSpacing" in pl:
             vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Space",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"))
             vobj.LineSpacing = 1.0
@@ -534,10 +534,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             vobj.TextAlign = "Center"
         if not "Decimals" in pl:
             vobj.addProperty("App::PropertyInteger",       "Decimals",    "Space",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"))
-            vobj.Decimals = Draft.getParam("dimPrecision",2)
+            vobj.Decimals = params.get_param("dimPrecision")
         if not "ShowUnit" in pl:
             vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Space",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
-            vobj.ShowUnit = Draft.getParam("showUnit",True)
+            vobj.ShowUnit = params.get_param("showUnit")
 
     def onDocumentRestored(self,vobj):
 

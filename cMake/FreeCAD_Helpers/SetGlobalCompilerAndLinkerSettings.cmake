@@ -42,6 +42,13 @@ macro(SetGlobalCompilerAndLinkerSettings)
                 set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
             endif()
         endif(FREECAD_RELEASE_SEH)
+        if(CCACHE_PROGRAM)
+            # By default Visual Studio generators will use /Zi which is not compatible
+            # with ccache, so tell Visual Studio to use /Z7 instead.
+            string(REGEX REPLACE "/Z[iI]" "/Z7" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+            string(REGEX REPLACE "/Z[iI]" "/Z7" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+            string(REGEX REPLACE "/Z[iI]" "/Z7" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+        endif(CCACHE_PROGRAM)
 
 	option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" ON)
         if(FREECAD_USE_MP_COMPILE_FLAG)

@@ -140,13 +140,8 @@ void check2DArray(Materials::MaterialProperty& prop)
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array2D);
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Material2DArray>(prop.getMaterialValue());
-    EXPECT_FALSE(array->defaultSet());
     EXPECT_EQ(array->rows(), 0);
     auto variant = prop.getValue();  // Throw an error?
-    // Getting a default value is not yet defined or implemented
-    // EXPECT_TRUE(variant.canConvert<Base::Quantity>());
-    // EXPECT_TRUE(variant.isNull());
-    // EXPECT_FALSE(variant.value<Base::Quantity>().isValid()); -- the variant is null
     EXPECT_FALSE(variant.canConvert<QString>());
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
@@ -183,13 +178,8 @@ void check3DArray(Materials::MaterialProperty& prop)
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array3D);
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Material3DArray>(prop.getMaterialValue());
-    EXPECT_FALSE(array->defaultSet());
     EXPECT_EQ(array->depth(), 0);
     auto variant = prop.getValue();  // Throw an error?
-    // Getting a default value is not yet defined or implemented
-    // EXPECT_TRUE(variant.canConvert<Base::Quantity>());
-    // EXPECT_TRUE(variant.isNull());
-    // EXPECT_FALSE(variant.value<Base::Quantity>().isValid()); -- the variant is null
     EXPECT_FALSE(variant.canConvert<QString>());
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());

@@ -28,6 +28,8 @@
 #include <Base/PyObjectBase.h>
 
 // #include "Model.h"
+#include "MaterialFilter.h"
+
 #include "MaterialManagerPy.h"
 #include "MaterialPy.h"
 #include "ModelManagerPy.h"
@@ -70,6 +72,28 @@ PyMOD_INIT_FUNC(Material)
     Base::Interpreter().addType(&Materials::ModelPropertyPy ::Type, module, "ModelProperty");
     Base::Interpreter().addType(&Materials::ModelPy ::Type, module, "Model");
     Base::Interpreter().addType(&Materials::UUIDsPy ::Type, module, "UUIDs");
+
+
+    // Initialize types
+
+    Materials::Material                 ::init();
+    Materials::MaterialFilter           ::init();
+    Materials::MaterialManager          ::init();
+    Materials::Model                    ::init();
+    Materials::ModelManager             ::init();
+    Materials::ModelUUIDs               ::init();
+
+    Materials::LibraryBase              ::init();
+    Materials::MaterialLibrary          ::init();
+    Materials::ModelLibrary             ::init();
+    Materials::MaterialExternalLibrary  ::init();
+
+    Materials::ModelProperty            ::init();
+    Materials::MaterialProperty         ::init();
+
+    Materials::MaterialValue            ::init();
+    Materials::Material2DArray          ::init();
+    Materials::Material3DArray          ::init();
 
     PyMOD_Return(module);
 }

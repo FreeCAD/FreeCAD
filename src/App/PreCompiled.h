@@ -49,6 +49,7 @@
 #include <csignal>
 #include <cstdio>
 #include <ctime>
+#include <cfloat>
 
 #ifdef FC_OS_WIN32
 # include <crtdbg.h>

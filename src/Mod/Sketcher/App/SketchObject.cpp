@@ -445,8 +445,11 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     if (!vals[ConstrId]->isDimensional() && type != Tangent && type != Perpendicular)
         return -1;
 
-    if ((type == Distance || type == Radius || type == Diameter || type == Weight) && Datum <= 0)
+    if ((type == Radius || type == Diameter || type == Weight) && Datum <= 0)
         return (Datum == 0) ? -5 : -4;
+
+    if (type == Distance && Datum == 0)
+            return -5;
 
     // copy the list
     std::vector<Constraint*> newVals(vals);
@@ -664,7 +667,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 {
     std::swap(constr->First, constr->Second);
     std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    if (constr->FirstPos == constr->SecondPos) {
+        constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
+    else {
+        constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -675,6 +683,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
         double actAngle = constr->getValue();
         constr->setValue(M_PI - actAngle);
     }
+}
+
+void SketchObject::inverseAngleConstraint(Constraint* constr)
+{
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 bool SketchObject::constraintHasExpression(int constNum) const

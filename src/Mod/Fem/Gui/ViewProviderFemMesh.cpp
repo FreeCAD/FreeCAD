@@ -197,6 +197,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     LineWidth.setConstraints(&floatRange);
 
     ShapeColor.setValue(App::Color(1.0f, 0.7f, 0.0f));
+    Transparency.setValue(0);
     ADD_PROPERTY(BackfaceCulling, (true));
     ADD_PROPERTY(ShowInner, (false));
     ADD_PROPERTY(MaxFacesShowInner, (50000));

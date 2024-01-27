@@ -53,6 +53,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     void saveThemes();
     void loadThemes();
@@ -72,7 +73,6 @@ protected Q_SLOTS:
 
 public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
-    void on_checkBox_projectUnitSystemIgnore_stateChanged(int state);
 
 private:
     void saveDockWindowVisibility();

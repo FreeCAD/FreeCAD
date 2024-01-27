@@ -1450,13 +1450,13 @@ class SpreadsheetCases(unittest.TestCase):
         for i, cell in enumerate(test_cells):
             sheet.set(cell, str(i))
         used_range = sheet.getUsedRange()
-        self.assertEquals(used_range, ("C3", "Z20"))
+        self.assertEqual(used_range, ("C3", "Z20"))
 
         for i, cell in enumerate(test_cells):
             sheet.set(cell, "")
             sheet.setAlignment(cell, "center")
         used_range = sheet.getUsedRange()
-        self.assertEquals(used_range, ("C3", "Z20"))
+        self.assertEqual(used_range, ("C3", "Z20"))
 
     def testGetNonEmptyCells(self):
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
@@ -1481,7 +1481,7 @@ class SpreadsheetCases(unittest.TestCase):
         for i, cell in enumerate(test_cells):
             sheet.set(cell, str(i))
         non_empty_range = sheet.getNonEmptyRange()
-        self.assertEquals(non_empty_range, ("C3", "Z20"))
+        self.assertEqual(non_empty_range, ("C3", "Z20"))
 
         for i, cell in enumerate(test_cells):
             sheet.set(cell, "")
@@ -1490,7 +1490,7 @@ class SpreadsheetCases(unittest.TestCase):
         for i, cell in enumerate(more_cells):
             sheet.set(cell, str(i))
         non_empty_range = sheet.getNonEmptyRange()
-        self.assertEquals(non_empty_range, ("D5", "X15"))
+        self.assertEqual(non_empty_range, ("D5", "X15"))
 
     def testAliasEmptyCell(self):
         # https://github.com/FreeCAD/FreeCAD/issues/7841

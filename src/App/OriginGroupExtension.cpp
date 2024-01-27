@@ -71,7 +71,7 @@ bool OriginGroupExtension::extensionGetSubObject(DocumentObject *&ret, const cha
 {
     App::DocumentObject *originObj = Origin.getValue ();
     const char *dot;
-    if(originObj && originObj->getNameInDocument() &&
+    if(originObj && originObj->isAttachedToDocument() &&
        subname && (dot=strchr(subname,'.')))
     {
         bool found;

@@ -5,6 +5,7 @@ if(MSVC)
         gtest_force_shared_crt
         "Use shared (DLL) run-time lib even when Google Test is built as static lib."
         ON)
+    option(gtest_disable_pthreads "Disable uses of pthreads in gtest." ON)
 
     set(Google_Tests_LIBS
         oldnames.lib

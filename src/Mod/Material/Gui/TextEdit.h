@@ -47,7 +47,7 @@ class TextEdit: public QDialog
 
 public:
     TextEdit(const QString& propertyName,
-             std::shared_ptr<Materials::Material> material,
+             const std::shared_ptr<Materials::Material>& material,
              QWidget* parent = nullptr);
     ~TextEdit() override = default;
 

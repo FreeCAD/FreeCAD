@@ -111,7 +111,6 @@ class ArchWorkbench(FreeCADGui.Workbench):
                               list(pipe_group.GetCommands(pipe_group))),
                           ("Arch_PipeTools", ),
                           "Arch_CutPlane",
-                          "Arch_CutLine",
                           "Arch_Add",
                           "Arch_Remove",
                           "Arch_Survey"]

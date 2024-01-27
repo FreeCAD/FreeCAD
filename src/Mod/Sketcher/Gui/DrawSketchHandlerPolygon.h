@@ -302,8 +302,9 @@ template<>
 void DSHPolygonController::configureToolWidget()
 {
 
-    toolWidget->setParameterLabel(OnViewParameter::First,
-                                  QApplication::translate("ToolWidgetManager_p4", "Sides 'U'/'J'"));
+    toolWidget->setParameterLabel(
+        OnViewParameter::First,
+        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')"));
     toolWidget->setParameter(OnViewParameter::First,
                              handler->numberOfCorners);  // unconditionally set
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());

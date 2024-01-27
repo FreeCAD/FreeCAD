@@ -92,7 +92,7 @@ protected:
 
 private:
     void connectSignals();
-    void updateUI(int index=0); // TODO: Implement for index and remove default
+    void updateUI(int index);
     void translateModeList(int index);
     // TODO: This is common with extrude. Maybe send to superclass.
     void translateFaceName();

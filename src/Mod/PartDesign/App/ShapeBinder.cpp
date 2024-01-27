@@ -396,11 +396,11 @@ App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject*
     std::string name(subname, dot - subname);
     for (auto& l : Support.getSubListValues()) {
         auto obj = l.getValue();
-        if (!obj || !obj->getNameInDocument())
+        if (!obj || !obj->isAttachedToDocument())
             continue;
         for (auto& sub : l.getSubValues()) {
             auto sobj = obj->getSubObject(sub.c_str());
-            if (!sobj || !sobj->getNameInDocument())
+            if (!sobj || !sobj->isAttachedToDocument())
                 continue;
             if (subname[0] == '$') {
                 if (sobj->Label.getStrValue() != name.c_str() + 1)
@@ -512,7 +512,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
     for (auto& l : Support.getSubListValues()) {
         auto obj = l.getValue();
-        if (!obj || !obj->getNameInDocument())
+        if (!obj || !obj->isAttachedToDocument())
             continue;
         auto res = mats.emplace(obj, Base::Matrix4D());
         if (parent && res.second) {
@@ -891,7 +891,7 @@ void SubShapeBinder::checkPropertyStatus() {
 
     // Make Shape transient can reduce some file size, and maybe reduce file
     // loading time as well. But there maybe complication arise when doing
-    // TopoShape version upgrade. So we DO NOT set trasient at the moment.
+    // TopoShape version upgrade. So we DO NOT set transient at the moment.
     //
     // Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
 }
@@ -909,7 +909,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
     inSet.insert(this);
 
     for (auto& v : values) {
-        if (!v.first || !v.first->getNameInDocument())
+        if (!v.first || !v.first->isAttachedToDocument())
             FC_THROWM(Base::ValueError, "Invalid document object");
         if (inSet.find(v.first) != inSet.end())
             FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullName());

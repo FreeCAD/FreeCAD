@@ -521,7 +521,6 @@ bool TaskPipeParameters::accept()
         for (auto obj : copies) {
             pcActiveBody->addObject(obj);
         }
-        pcActiveBody->execute();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));

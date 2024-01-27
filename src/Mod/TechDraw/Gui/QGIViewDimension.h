@@ -176,6 +176,7 @@ public:
     void setPrettySel();
     void setPrettyNormal();
 
+    bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
 
