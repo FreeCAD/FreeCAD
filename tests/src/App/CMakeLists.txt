@@ -16,4 +16,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Property.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PropertyExpressionEngine.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/StringHasher.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/VarSet.cpp
 )
