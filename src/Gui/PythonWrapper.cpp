@@ -672,7 +672,12 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
     throw Py::RuntimeError("Failed to wrap object");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<QObject*>(object, className, "QtCore", "wrapInstance");
+    std::string typeName;
+    if (className)
+        typeName = className;
+    else
+        typeName = object->metaObject()->className();
+    return qt_wrapInstance<QObject*>(object, typeName, "QtCore", "wrapInstance");
 #endif
 }
 
@@ -694,7 +699,12 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     throw Py::RuntimeError("Failed to wrap widget");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<QWidget*>(widget, className, "QtWidgets", "wrapInstance");
+    std::string typeName;
+    if (className)
+        typeName = className;
+    else
+        typeName = widget->metaObject()->className();
+    return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets", "wrapInstance");
 #endif
 }
 
