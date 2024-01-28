@@ -41,6 +41,8 @@
 
 #include "Namespace.h"
 #include "Selection.h"
+
+#include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
@@ -414,6 +416,7 @@ public:
                                     const SbColor& midColor);
     void setNavigationType(Base::Type);
 
+    void setAxisLetterColor(const SbColor& color);
     void setAxisCross(bool on);
     bool hasAxisCross();
 
@@ -536,7 +539,11 @@ private:
 
     ViewerEventFilter* viewerEventFilter;
 
-    PyObject *_viewerPy;
+    PyObject* _viewerPy;
+
+    static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1];
 
     // friends
     friend class NavigationStyle;
