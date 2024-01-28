@@ -73,6 +73,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
     OnChange(*hGrp,"CornerCoordSystemSize");
+    OnChange(*hGrp,"AxisLetterColor");
     OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseNavigationAnimations");
     OnChange(*hGrp,"UseSpinningAnimations");
@@ -288,6 +289,15 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 10));
+        }
+    }
+    else if (strcmp(Reason,"AxisLetterColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("AxisLetterColor", 0x00000000); // default color (black)
+        float transparency;
+        SbColor color;
+        color.setPackedValue((uint32_t)backlight, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->setAxisLetterColor(color);
         }
     }
     else if (strcmp(Reason,"ShowAxisCross") == 0) {
