@@ -429,6 +429,14 @@ public:
     DeriVector2 CalculateNormal(const double* param,
                                 const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+    // Returns value in homogenous coordinates (x*w, y*w, w) at given parameter u
+    void valueHomogenous(const double u,
+                         double* xw,
+                         double* yw,
+                         double* w,
+                         double* dxwdu,
+                         double* dywdu,
+                         double* dwdu) const;
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
     BSpline* Copy() override;
