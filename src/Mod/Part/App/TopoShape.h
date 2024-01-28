@@ -40,14 +40,6 @@
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
 
-// FIXME?
-// including <BRepPrimAPI_MakeHalfSpace.hxx> instead of the incomplete class declaration
-// below results in a broken link on Windows but builds on other platforms.  I suspect
-// that's why these class declarations appear in the RT branch.
-// Something about how that compiler is mangling the names?  Maybe we're missing a
-// magic windows specific qualifier on the declarations.
-
-class BRepPrimAPI_MakeHalfSpace;
 class gp_Ax1;
 class gp_Ax2;
 class gp_Pln;
@@ -62,7 +54,6 @@ namespace Part
 {
 
 class TopoShapeCache;
-class TopoShape;
 
 /* A special sub-class to indicate null shapes
  */
@@ -731,9 +722,9 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-     // TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
-     //                               bool silent = true,
-     //                               const char* op = nullptr);
+    TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
+                                         bool silent = true,
+                                         const char* op = nullptr);
     /* Make a shell with input wires
      *
      * @param wires: input wires
@@ -743,10 +734,10 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-     // TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
-     // {
-     //     return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
-     // }
+    TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
+    {
+        return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
+    }
 
     TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
                                const char* op = nullptr,
@@ -1195,11 +1186,11 @@ private:
 struct PartExport MapperMaker: TopoShape::Mapper
 {
     BRepBuilderAPI_MakeShape& maker;
-    MapperMaker(BRepBuilderAPI_MakeShape& maker)
+    explicit MapperMaker(BRepBuilderAPI_MakeShape& maker)
         : maker(maker)
     {}
-    virtual const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
-    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
 };
 
 }  // namespace Part
