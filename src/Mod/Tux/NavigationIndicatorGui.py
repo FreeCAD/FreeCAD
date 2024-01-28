@@ -424,14 +424,18 @@ def retranslateUi():
         + text03
         + """</small></th>
       <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
         + text04
         + """</small></th>
      </tr>
      <tr>
       <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
-      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
       <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
      </tr>
     </table>"""
