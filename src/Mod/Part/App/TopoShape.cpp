@@ -3911,7 +3911,9 @@ TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
 
 TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix, double tol)
 {
-    _Shape.Nullify();
+    if (!_Shape.IsNull()) {
+        _Shape.Nullify();
+    }
 
     if(shape.isNull())
         HANDLE_NULL_INPUT;
@@ -3983,7 +3985,9 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
 TopoShape &TopoShape::makeCompound(const std::vector<TopoShape> &shapes, const char *op, bool force)
 {
     (void)op;
-    _Shape.Nullify();
+    if (!_Shape.IsNull()) {
+        _Shape.Nullify();
+    }
 
     if(shapes.empty())
         HANDLE_NULL_INPUT;
@@ -4025,7 +4029,9 @@ TopoShape &TopoShape::makeFace(const TopoShape &shape, const char *op, const cha
 TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char *op, const char *maker)
 {
     (void)op;
-    _Shape.Nullify();
+    if (!_Shape.IsNull()) {
+        _Shape.Nullify();
+    }
 
     if(!maker || !maker[0])
         maker = "Part::FaceMakerBullseye";
@@ -4042,9 +4048,13 @@ TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
-TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail) {
+TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail)
+{
     (void)op;
-    _Shape.Nullify();
+    if (!_Shape.IsNull()) {
+        _Shape.Nullify();
+    }
+
     if(shape.isNull()) {
         if(!no_fail)
             HANDLE_NULL_SHAPE;
