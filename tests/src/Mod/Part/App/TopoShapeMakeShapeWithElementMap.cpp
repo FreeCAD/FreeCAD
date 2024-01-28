@@ -340,3 +340,48 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, findMakerOpInElementMap)
         }
     }
 }
+
+std::string composeTagInfo(const MappedElement& element, const TopoShape& shape)
+{
+    std::string elementNameStr {element.name.constPostfix()};
+    std::string tagInfo = POSTFIX_TAG + std::to_string(shape.Tag);
+    tagInfo +=
+        ":" + std::to_string(elementNameStr.substr(0, elementNameStr.find(tagInfo)).length());
+
+    return tagInfo;
+}
+
+TEST_F(TopoShapeMakeShapeWithElementMapTests, findTagInfoInMappedName)
+{
+    // Arrange
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
+    std::vector<Part::TopoShape> sources {cube1, cube2};
+    sources[0].Tag = 1;  // setting Tag explicitly otherwise it is likely that this test will be
+                         // more or less the same of nonMappableSources
+    sources[1].Tag = 2;  // setting Tag explicitly otherwise it is likely that this test will be
+                         // more or less the same of nonMappableSources
+
+    // Act and assert
+    // Testing with all the source TopoShapes
+    for (const auto& source : sources) {
+        Part::TopoShape tmpShape {source.getShape()};
+        tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), sources);
+
+        // Make sure that there's at least 1 mapped element
+        ASSERT_GE(tmpShape.getElementMap().size(), 1);
+
+        // For all the mappedElements ...
+        for (const auto& mappedElement : tmpShape.getElementMap()) {
+
+            std::string tagInfo = composeTagInfo(mappedElement, source);
+
+            EXPECT_NE(mappedElement.name.find(tagInfo),
+                      -1);  // ... we check that in the name postfix there's the source tag
+                            // preceded by the POSTFIX_TAG, followed by a semicolon and the
+                            // number of characters, in Hex, from the beginning of the name
+                            // postfix to the beginning of the POSTFIX_TAG of the given
+                            // source's tag. VALID ONLY FOR SINGLE SHAPES!!! For complex
+                            // shapes the number of characters is calculated differently
+        }
+    }
+}
