@@ -652,7 +652,6 @@ public:
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     bool hasPendingElementMap() const;
 
-
     /** Helper class to return the generated and modified shape given an input shape
      *
      * Shape history information is extracted using OCCT APIs
@@ -674,6 +673,24 @@ public:
         }
     };
 
+    /** Core function to generate mapped element names from shape history
+     *
+     * @param shape: the new shape
+     * @param mapper: for mapping input shapes to generated/modified shapes
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the given new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeShapeWithElementMap(const TopoDS_Shape &shape,
+                                       const Mapper &mapper,
+                                       const std::vector<TopoShape> &sources,
+                                       const char *op=nullptr);
+
     /** Make a compound shape
      *
      * @param shapes: input shapes
@@ -689,6 +706,47 @@ public:
      *         the same shape in the same line of code.
      */
     TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
+
+    /* Make a shell using this shape
+     * @param silent: whether to throw exception on failure
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementShell(bool silent = true, const char* op = nullptr);
+
+    /* Make a shell with input wires
+     *
+     * @param wires: input wires
+     * @param silent: whether to throw exception on failure
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+     // TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
+     //                               bool silent = true,
+     //                               const char* op = nullptr);
+    /* Make a shell with input wires
+     *
+     * @param wires: input wires
+     * @param silent: whether to throw exception on failure
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+     // TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
+     // {
+     //     return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
+     // }
 
     TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
                                const char* op = nullptr,
