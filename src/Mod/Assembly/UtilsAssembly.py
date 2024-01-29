@@ -133,7 +133,7 @@ def getObject(full_name):
             if linked_obj.TypeId == "PartDesign::Body":
                 if i + 1 < len(names):
                     obj2 = None
-                    for obji in obj.OutList:
+                    for obji in linked_obj.OutList:
                         if obji.Name == names[i + 1]:
                             obj2 = obji
                             break

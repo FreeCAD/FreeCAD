@@ -1255,14 +1255,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.current_selection.append(selection_dict1)
         self.current_selection.append(selection_dict2)
 
-        elName = self.getObjSubNameFromObj(obj1, self.joint.Element1)
-        if obj1 != self.joint.Part1:
-            elName = obj1.Name + "." + elName
+        # Add the elements to the selection. Note we cannot do :
+        # Gui.Selection.addSelection(self.doc.Name, obj1.Name, elName)
+        # Because obj1 can be external in which case addSelection will fail. And
+        # Gui.Selection.addSelection(obj1.Document.Name, obj1.Name, elName)
+        # will not select in the assembly doc.
+        elName = self.getSubnameForSelection(obj1, self.joint.Part1, self.joint.Element1)
         Gui.Selection.addSelection(self.doc.Name, self.joint.Part1.Name, elName)
 
-        elName = self.getObjSubNameFromObj(obj2, self.joint.Element2)
-        if obj2 != self.joint.Part2:
-            elName = obj2.Name + "." + elName
+        elName = self.getSubnameForSelection(obj2, self.joint.Part2, self.joint.Element2)
         Gui.Selection.addSelection(self.doc.Name, self.joint.Part2.Name, elName)
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
@@ -1272,20 +1273,48 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
 
-    def getObjSubNameFromObj(self, obj, elName):
-        if obj is None:
+    def getSubnameForSelection(self, obj, part, elName):
+        # We need the subname starting from the part.
+        # Example for : Assembly.Part1.LinkToPart2.Part3.Body.Tip.Face1
+        # part is Part1 and obj is Body
+        # we should get : LinkToPart2.Part3.Body.Tip.Face1
+
+        if obj is None or part is None:
             return elName
 
         if obj.TypeId == "PartDesign::Body":
-            return obj.Tip.Name + "." + elName
+            elName = obj.Tip.Name + "." + elName
         elif obj.TypeId == "App::Link":
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
-                return linked_obj.Tip.Name + "." + elName
-            else:
-                return elName
-        else:
-            return elName
+                elName = linked_obj.Tip.Name + "." + elName
+
+        if obj != part and obj in part.OutListRecursive:
+            bSub = ""
+            currentObj = part
+
+            limit = 0
+            while limit < 1000:
+                limit = limit + 1
+
+                if currentObj != part:
+                    if bSub != "":
+                        bSub = bSub + "."
+                    bSub = bSub + currentObj.Name
+
+                if currentObj == obj:
+                    break
+
+                if currentObj.TypeId == "App::Link":
+                    currentObj = currentObj.getLinkedObject()
+
+                for obji in currentObj.OutList:
+                    if obji == obj or obj in obji.OutListRecursive:
+                        currentObj = obji
+                        break
+
+            elName = bSub + "." + elName
+        return elName
 
     def updateJoint(self):
         # First we build the listwidget
