@@ -113,7 +113,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }
-
+#ifndef FC_USE_TNP_FIX
         std::vector<ShapeHistory> history;
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
         history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
@@ -135,6 +135,14 @@ App::DocumentObjectExecReturn *Boolean::execute()
         this->Shape.setValue(resShape);
         this->History.setValues(history);
         return App::DocumentObject::StdReturn;
+#else
+        TopoShape res(0,getDocument()->getStringHasher());
+        res.makeElementShape(*mkBool,shapes,opCode());
+        if (this->Refine.getValue())
+            res = res.makeElementRefine();
+        this->Shape.setValue(res);
+        return Part::Feature::execute();
+#endif
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when running boolean operation");
