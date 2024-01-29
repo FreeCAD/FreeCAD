@@ -3406,7 +3406,7 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
     if (duration < 0) {
         duration = App::GetApplication()
                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                       ->GetInt("AnimationDuration", 250);
+                       ->GetInt("AnimationDuration", 500);
     }
 
     auto animation = std::make_shared<FixedTimeAnimation>(
