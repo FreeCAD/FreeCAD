@@ -156,7 +156,7 @@ private:
 
     QString str(const char* str);
     QMenu* createNaviCubeMenu();
-    void drawNaviCube(bool picking);
+    void drawNaviCube(bool picking, float opacity);
 
     SbRotation getNearestOrientation(PickId pickId);
 
@@ -176,6 +176,7 @@ public:
     std::string m_TextFont;
     int m_FontWeight = 0;
     int m_FontStretch = 0;
+    float m_InactiveOpacity = 0.5;
     SbVec2s m_PosOffset = SbVec2s(0,0);
 
     bool m_Prepared = false;
@@ -187,6 +188,7 @@ private:
     bool m_MouseDown = false;
     bool m_Dragging = false;
     bool m_MightDrag = false;
+    bool m_Hovering = false;
 
     SbVec2f m_RelPos = SbVec2f(1.0f,1.0f);
     SbVec2s m_PosAreaBase = SbVec2s(0,0);
@@ -321,6 +323,11 @@ void NaviCube::setShowCS(bool showCS)
 void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 {
     m_NaviCubeImplementation->setLabels(labels);
+}
+
+void NaviCube::setInactiveOpacity(float opacity)
+{
+    m_NaviCubeImplementation->m_InactiveOpacity = opacity;
 }
 
 void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
@@ -701,7 +708,7 @@ void NaviCubeImplementation::drawNaviCube() {
     int posX = (int)(m_RelPos[0] * m_PosAreaSize[0]) + m_PosAreaBase[0] - m_CubeWidgetSize / 2;
     int posY = (int)(m_RelPos[1] * m_PosAreaSize[1]) + m_PosAreaBase[1] - m_CubeWidgetSize / 2;
     glViewport(posX, posY, m_CubeWidgetSize, m_CubeWidgetSize);
-    drawNaviCube(false);
+    drawNaviCube(false, m_Hovering ? 1.f : m_InactiveOpacity);
 }
 
 void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& cmd) {
@@ -726,7 +733,7 @@ void NaviCubeImplementation::handleResize() {
     }
 }
 
-void NaviCubeImplementation::drawNaviCube(bool pickMode)
+void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
 {
     if (!m_Prepared) {
         if (!m_View3DInventorViewer->viewport())
@@ -821,13 +828,13 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
             a, a, a  // 0
         };
         glVertexPointer(3, GL_FLOAT, 0, pointData);
-        glColor3f(1, 0, 0);
+        glColor4f(1, 0, 0, opacity);
         glDrawArrays(GL_LINES, 0, 2);
         glDrawArrays(GL_POINTS, 0, 2);
-        glColor3f(0, 1, 0);
+        glColor4f(0, 1, 0, opacity);
         glDrawArrays(GL_LINES, 2, 2);
         glDrawArrays(GL_POINTS, 2, 2);
-        glColor3f(0, 0, 1);
+        glColor4f(0, 0, 1, opacity);
         glDrawArrays(GL_LINES, 4, 2);
         glDrawArrays(GL_POINTS, 4, 2);
     }
@@ -843,7 +850,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         }
         else {
             QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
-            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
         }
         glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
         glDrawArrays(GL_TRIANGLE_FAN, 0, f.vertexArray.size());
@@ -855,7 +862,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
             auto f = pair.second;
             if (f.type == ShapeId::Button)
                 continue;
-            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF());
+            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF() * opacity);
             glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
             glDrawArrays(GL_LINES, 0, f.vertexArray.size());
         }
@@ -867,7 +874,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         float texCoords[] = {0.f,0.f,1.f,0.f,1.f,1.f,0.f,1.f};
         glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
         QColor& c = m_EmphaseColor;
-        glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+        glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
         for (const auto& pair : m_LabelTextures) {
             auto f = pair.second;
             PickId pickId = pair.first;
@@ -898,12 +905,12 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
         }
         else {
             QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
-            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
         }
         glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
         glDrawArrays(GL_TRIANGLE_FAN, 0, f.vertexArray.size());
         if (!pickMode) {
-            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF());
+            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF() * opacity);
             glDrawArrays(GL_LINE_LOOP, 0, f.vertexArray.size());
         }
     }
@@ -923,7 +930,7 @@ NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y
 
         glViewport(0, 0, m_CubeWidgetSize * 2, m_CubeWidgetSize * 2);
 
-        drawNaviCube(true);
+        drawNaviCube(true, 1.f);
 
         glFinish();
         glReadPixels(2 * x + m_CubeWidgetSize, 2 * y + m_CubeWidgetSize, 1, 1,
@@ -1106,6 +1113,14 @@ bool NaviCubeImplementation::inDragZone(short x, short y) {
 }
 
 bool NaviCubeImplementation::mouseMoved(short x, short y) {
+    bool hovering = std::abs(x) <= m_CubeWidgetSize / 2 &&
+            std::abs(y) <= m_CubeWidgetSize / 2;
+
+    if (hovering != m_Hovering) {
+        m_Hovering = hovering;
+        m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+    }
+
     if (!m_Dragging)
         setHilite(pickFace(x, y));
 
