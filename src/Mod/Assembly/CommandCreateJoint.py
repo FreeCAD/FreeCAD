@@ -225,6 +225,20 @@ class CommandCreateJointDistance:
         activateJoint(5)
 
 
+def createGroundedJoint(obj):
+    assembly = UtilsAssembly.activeAssembly()
+    if not assembly:
+        return
+
+    joint_group = UtilsAssembly.getJointGroup(assembly)
+
+    obj.Label = obj.Label + " 🔒"
+    ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
+    JointObject.GroundedJoint(ground, obj)
+    JointObject.ViewProviderGroundedJoint(ground.ViewObject)
+    return ground
+
+
 class CommandToggleGrounded:
     def __init__(self):
         pass
@@ -294,10 +308,7 @@ class CommandToggleGrounded:
                     continue
 
                 # Create groundedJoint.
-                part_containing_obj.Label = part_containing_obj.Label + " 🔒"
-                ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
-                JointObject.GroundedJoint(ground, part_containing_obj)
-                JointObject.ViewProviderGroundedJoint(ground.ViewObject)
+                createGroundedJoint(part_containing_obj)
         App.closeActiveTransaction()
 
 

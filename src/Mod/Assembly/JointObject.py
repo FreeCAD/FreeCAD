@@ -941,7 +941,7 @@ class ViewProviderGroundedJoint:
         # Remove grounded tag.
         if hasattr(feature.Object, "ObjectToGround"):
             obj = feature.Object.ObjectToGround
-            if obj.Label.endswith(" 🔒"):
+            if obj is not None and obj.Label.endswith(" 🔒"):
                 obj.Label = obj.Label[:-2]
 
         return True  # If False is returned the object won't be deleted

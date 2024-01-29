@@ -33,6 +33,7 @@ if App.GuiUp:
 
 import UtilsAssembly
 import Preferences
+import CommandCreateJoint
 
 # translate = App.Qt.translate
 
@@ -106,6 +107,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.translation = 0
         self.partMoving = False
         self.totalTranslation = App.Vector()
+        self.groundedObj = None
 
         self.insertionStack = []  # used to handle cancellation of insertions.
 
@@ -261,6 +263,49 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.form.partList.setItemSelected(item, False)
 
+        if len(self.insertionStack) == 1 and not UtilsAssembly.isAssemblyGrounded():
+            self.handleFirstInsertion()
+
+    def handleFirstInsertion(self):
+        pref = Preferences.preferences()
+        fixPart = False
+        fixPartPref = pref.GetInt("GroundFirstPart", 0)
+        if fixPartPref == 0:  # unset
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setWindowTitle("Ground Part?")
+            msgBox.setText(
+                "Do you want to ground the first inserted part automatically?\nYou need at least one grounded part in your assembly."
+            )
+            msgBox.setIcon(QtWidgets.QMessageBox.Question)
+
+            yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)
+            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.NoRole)
+            yesAlwaysButton = msgBox.addButton("Always", QtWidgets.QMessageBox.YesRole)
+            noAlwaysButton = msgBox.addButton("Never", QtWidgets.QMessageBox.NoRole)
+
+            msgBox.exec_()
+
+            clickedButton = msgBox.clickedButton()
+            if clickedButton == yesButton:
+                fixPart = True
+            elif clickedButton == yesAlwaysButton:
+                fixPart = True
+                pref.SetInt("GroundFirstPart", 1)
+            elif clickedButton == noAlwaysButton:
+                pref.SetInt("GroundFirstPart", 2)
+
+        elif fixPartPref == 1:  # Yes always
+            fixPart = True
+
+        if fixPart:
+            # Create groundedJoint.
+            if len(self.insertionStack) != 1:
+                return
+
+            self.groundedObj = self.insertionStack[0]["addedObject"]
+            self.groundedJoint = CommandCreateJoint.createGroundedJoint(self.groundedObj)
+            self.endMove()
+
     def increment_counter(self, item):
         text = item.text()
         match = re.search(r"(\d+) inserted$", text)
@@ -373,7 +418,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                             self.endMove()
 
                         self.totalTranslation -= stack_item["translation"]
-                        UtilsAssembly.removeObjAndChilds(stack_item["addedObject"])
+                        obj = stack_item["addedObject"]
+                        if self.groundedObj == obj:
+                            self.groundedJoint.Document.removeObject(self.groundedJoint.Name)
+                        UtilsAssembly.removeObjAndChilds(obj)
+
                         self.decrement_counter(item)
                         del self.insertionStack[i]
                         self.form.partList.setItemSelected(item, False)
