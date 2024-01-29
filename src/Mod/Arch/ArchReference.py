@@ -28,6 +28,8 @@ import FreeCAD
 import os
 import zipfile
 import re
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -404,7 +406,7 @@ class ViewProviderArchReference:
         # Check for file change every minute
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.checkChanges)
-        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
+        s = params.get_param_arch("ReferenceCheckInterval")
         self.timer.start(1000*s)
 
     def dumps(self):

@@ -33,6 +33,7 @@ import addonmanager_freecad_interface as fci
 import addonmanager_utilities as utils
 from addonmanager_metadata import Version, UrlType, get_first_supported_freecad_version
 from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
+from addonmanager_readme_viewer import ReadmeViewer
 from Addon import Addon
 from change_branch import ChangeBranchDialog
 
@@ -47,22 +48,6 @@ except ImportError:
 
 
 translate = fci.translate
-
-show_javascript_console_output = False
-
-try:
-    from PySide import QtWebEngineWidgets
-
-    HAS_QTWEBENGINE = True
-except ImportError:
-    fci.Console.PrintWarning(
-        translate(
-            "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only",
-        )
-        + "\n"
-    )
-    HAS_QTWEBENGINE = False
 
 
 class PackageDetails(QtWidgets.QWidget):
@@ -95,17 +80,6 @@ class PackageDetails(QtWidgets.QWidget):
         self.ui.buttonChangeBranch.clicked.connect(self.change_branch_clicked)
         self.ui.buttonEnable.clicked.connect(self.enable_clicked)
         self.ui.buttonDisable.clicked.connect(self.disable_clicked)
-        if HAS_QTWEBENGINE:
-            self.ui.webView.loadStarted.connect(self.load_started)
-            self.ui.webView.loadProgress.connect(self.load_progress)
-            self.ui.webView.loadFinished.connect(self.load_finished)
-
-            loading_html_file = os.path.join(os.path.dirname(__file__), "loading.html")
-            with open(loading_html_file, "r", errors="ignore", encoding="utf-8") as f:
-                html = f.read()
-                self.ui.loadingLabel.setHtml(html)
-                self.ui.loadingLabel.show()
-                self.ui.webView.hide()
 
     def show_repo(self, repo: Addon, reload: bool = False) -> None:
         """The main entry point for this class, shows the package details and related buttons
@@ -114,18 +88,8 @@ class PackageDetails(QtWidgets.QWidget):
 
         # If this is the same repo we were already showing, we do not have to do the
         # expensive refetch unless reload is true
-        if self.repo != repo or reload:
+        if True or self.repo != repo or reload:
             self.repo = repo
-
-            if HAS_QTWEBENGINE:
-                self.ui.loadingLabel.show()
-                self.ui.slowLoadLabel.hide()
-                self.ui.webView.setHtml("<html><body>Loading...</body></html>")
-                self.ui.webView.hide()
-                self.ui.progressBar.show()
-                self.timeout = QtCore.QTimer.singleShot(6000, self.long_load_running)  # Six seconds
-            else:
-                self.ui.missingWebViewLabel.setStyleSheet("color:" + utils.warning_color_string())
 
             if self.worker is not None:
                 if not self.worker.isFinished():
@@ -167,10 +131,9 @@ class PackageDetails(QtWidgets.QWidget):
             date = ""
             installed_version_string = "<h3>"
             if repo.updated_timestamp:
-                date = (
-                    QtCore.QDateTime.fromTime_t(repo.updated_timestamp)
-                    .date()
-                    .toString(QtCore.Qt.SystemLocaleShortDate)
+                date = QtCore.QLocale().toString(
+                    QtCore.QDateTime.fromSecsSinceEpoch(int(round(repo.updated_timestamp, 0))),
+                    QtCore.QLocale.ShortFormat,
                 )
             if version and date:
                 installed_version_string += (
@@ -420,33 +383,13 @@ class PackageDetails(QtWidgets.QWidget):
 
     def show_workbench(self, repo: Addon) -> None:
         """loads information of a given workbench"""
-        url = utils.get_readme_html_url(repo)
-        if HAS_QTWEBENGINE:
-            self.ui.webView.load(QtCore.QUrl(url))
-            self.ui.urlBar.setText(url)
-        else:
-            readme_data = utils.blocking_get(url)
-            text = readme_data.decode("utf8")
-            self.ui.textBrowserReadMe.setHtml(text)
+
+        self.ui.textBrowserReadMe.set_addon(repo)
 
     def show_package(self, repo: Addon) -> None:
         """Show the details for a package (a repo with a package.xml metadata file)"""
 
-        readme_url = None
-        if repo.metadata:
-            for url in repo.metadata.url:
-                if url.type == UrlType.readme:
-                    readme_url = url.location
-                    break
-        if not readme_url:
-            readme_url = utils.get_readme_html_url(repo)
-        if HAS_QTWEBENGINE:
-            self.ui.webView.load(QtCore.QUrl(readme_url))
-            self.ui.urlBar.setText(readme_url)
-        else:
-            readme_data = utils.blocking_get(readme_url)
-            text = readme_data.decode("utf8")
-            self.ui.textBrowserReadMe.setHtml(text)
+        self.ui.textBrowserReadMe.set_addon(repo)
 
     def show_macro(self, repo: Addon) -> None:
         """loads information of a given macro"""
@@ -461,136 +404,8 @@ class PackageDetails(QtWidgets.QWidget):
 
     def macro_readme_updated(self):
         """Update the display of a Macro's README data."""
-        url = self.repo.macro.wiki
-        if not url:
-            url = self.repo.macro.url
 
-        if HAS_QTWEBENGINE:
-            if url:
-                self.ui.webView.load(QtCore.QUrl(url))
-                self.ui.urlBar.setText(url)
-            else:
-                self.ui.urlBar.setText(
-                    "("
-                    + translate("AddonsInstaller", "No URL or wiki page provided by this macro")
-                    + ")"
-                )
-        else:
-            if url:
-                readme_data = utils.blocking_get(url)
-                text = readme_data.decode("utf8")
-                self.ui.textBrowserReadMe.setHtml(text)
-            else:
-                self.ui.textBrowserReadMe.setHtml(
-                    "("
-                    + translate("AddonsInstaller", "No URL or wiki page provided by this macro")
-                    + ")"
-                )
-
-    def run_javascript(self):
-        """Modify the page for a README to optimize for viewing in a smaller window"""
-
-        s = """
-( function() {
-    const url = new URL (window.location);
-    const body = document.getElementsByTagName("body")[0];
-    if (url.hostname === "github.com") {
-        const articles = document.getElementsByTagName("article");
-        if (articles.length > 0) {
-            const article = articles[0];
-            body.appendChild (article);
-            body.style.padding = "1em";
-            let sibling = article.previousSibling;
-            while (sibling) {
-                sibling.remove();
-                sibling = article.previousSibling;
-            }
-        }
-    } else if (url.hostname === "gitlab.com" ||
-               url.hostname === "framagit.org" ||
-               url.hostname === "salsa.debian.org") {
-        // These all use the GitLab page display...
-        const articles = document.getElementsByTagName("article");
-        if (articles.length > 0) {
-            const article = articles[0];
-            body.appendChild (article);
-            body.style.padding = "1em";
-            let sibling = article.previousSibling;
-            while (sibling) {
-                sibling.remove();
-                sibling = article.previousSibling;
-            }
-        }
-    } else if (url.hostname === "wiki.freecad.org" ||
-               url.hostname === "wiki.freecad.org") {
-        const first_heading = document.getElementById('firstHeading');
-        const body_content = document.getElementById('bodyContent');
-        const new_node = document.createElement("div");
-        new_node.appendChild(first_heading);
-        new_node.appendChild(body_content);
-        body.appendChild(new_node);
-        let sibling = new_node.previousSibling;
-        while (sibling) {
-            sibling.remove();
-            sibling = new_node.previousSibling;
-        }
-    }
-}
-) ()
-"""
-        self.ui.webView.page().runJavaScript(s)
-
-    def load_started(self):
-        """Called when loading is started: sets up the progress bar"""
-        self.ui.progressBar.show()
-        self.ui.progressBar.setValue(0)
-
-    def load_progress(self, progress: int):
-        """Called during load to update the progress bar"""
-        self.ui.progressBar.setValue(progress)
-
-    def load_finished(self, load_succeeded: bool):
-        """Once loading is complete, update the display of the progress bar and loading widget."""
-        self.ui.loadingLabel.hide()
-        self.ui.slowLoadLabel.hide()
-        self.ui.webView.show()
-        self.ui.progressBar.hide()
-        url = self.ui.webView.url()
-        if (
-            hasattr(self, "timeout")
-            and hasattr(self.timeout, "isActive")
-            and self.timeout.isActive()
-        ):
-            self.timeout.stop()
-        if load_succeeded:
-            # It says it succeeded, but it might have only succeeded in loading a
-            # "Page not found" page!
-            title = self.ui.webView.title()
-            path_components = url.path().split("/")
-            expected_content = path_components[-1]
-            if url.host() == "github.com" and expected_content not in title:
-                self.show_error_for(url)
-            elif title == "":
-                self.show_error_for(url)
-            else:
-                self.run_javascript()
-        else:
-            self.show_error_for(url)
-
-    def long_load_running(self):
-        """Displays a message about loading taking a long time."""
-        if hasattr(self.ui, "webView") and self.ui.webView.isHidden():
-            self.ui.slowLoadLabel.show()
-            self.ui.loadingLabel.hide()
-            self.ui.webView.show()
-
-    def show_error_for(self, url: QtCore.QUrl) -> None:
-        """Displays error information."""
-        m = translate("AddonsInstaller", "Could not load README data from URL {}").format(
-            url.toString()
-        )
-        html = f"<html><body><p>{m}</p></body></html>"
-        self.ui.webView.setHtml(html)
+        self.ui.textBrowserReadMe.set_addon(self.repo)
 
     def change_branch_clicked(self) -> None:
         """Loads the branch-switching dialog"""
@@ -669,57 +484,6 @@ class PackageDetails(QtWidgets.QWidget):
         self.ui.labelPackageDetails.setText(installed_version_string)
         self.ui.labelPackageDetails.setStyleSheet("color:" + utils.attention_color_string())
         self.update_status.emit(self.repo)
-
-
-if HAS_QTWEBENGINE:
-
-    class RestrictedWebPage(QtWebEngineWidgets.QWebEnginePage):
-        """A class that follows links to FreeCAD wiki pages, but opens all other
-        clicked links in the system web browser"""
-
-        def __init__(self, parent):
-            super().__init__(parent)
-            self.settings().setAttribute(
-                QtWebEngineWidgets.QWebEngineSettings.ErrorPageEnabled, False
-            )
-            self.stored_url = None
-
-        def acceptNavigationRequest(self, requested_url, _type, isMainFrame):
-            """A callback for navigation requests: this widget will only display
-            navigation requests to the FreeCAD Wiki (for translation purposes) --
-            anything else will open in a new window.
-            """
-            if _type == QtWebEngineWidgets.QWebEnginePage.NavigationTypeLinkClicked:
-                # See if the link is to a FreeCAD Wiki page -- if so, follow it,
-                # otherwise ask the OS to open it
-                if (
-                    requested_url.host() == "wiki.freecad.org"
-                    or requested_url.host() == "wiki.freecad.org"
-                ):
-                    return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
-                QtGui.QDesktopServices.openUrl(requested_url)
-                self.stored_url = self.url()
-                QtCore.QTimer.singleShot(0, self._reload_stored_url)
-                return False
-            return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
-
-        def javaScriptConsoleMessage(self, level, message, lineNumber, _):
-            """Handle JavaScript console messages by optionally outputting them to
-            the FreeCAD Console. This must be manually enabled in this Python file by
-            setting the global show_javascript_console_output to true."""
-            global show_javascript_console_output
-            if show_javascript_console_output:
-                tag = translate("AddonsInstaller", "Page JavaScript reported")
-                if level == QtWebEngineWidgets.QWebEnginePage.InfoMessageLevel:
-                    fci.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
-                elif level == QtWebEngineWidgets.QWebEnginePage.WarningMessageLevel:
-                    fci.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
-                elif level == QtWebEngineWidgets.QWebEnginePage.ErrorMessageLevel:
-                    fci.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
-
-        def _reload_stored_url(self):
-            if self.stored_url:
-                self.load(self.stored_url)
 
 
 class Ui_PackageDetails(object):
@@ -810,48 +574,10 @@ class Ui_PackageDetails(object):
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
 
-        if HAS_QTWEBENGINE:
-            self.webView = QtWebEngineWidgets.QWebEngineView(PackageDetails)
-            self.webView.setObjectName("webView")
-            self.webView.setSizePolicy(sizePolicy1)
-            self.webView.setPage(RestrictedWebPage(PackageDetails))
+        self.textBrowserReadMe = ReadmeViewer(PackageDetails)
+        self.textBrowserReadMe.setObjectName("textBrowserReadMe")
 
-            self.verticalLayout_2.addWidget(self.webView)
-
-            self.loadingLabel = QtWebEngineWidgets.QWebEngineView(PackageDetails)
-            self.loadingLabel.setObjectName("loadingLabel")
-            self.loadingLabel.setSizePolicy(sizePolicy1)
-
-            self.verticalLayout_2.addWidget(self.loadingLabel)
-
-            self.slowLoadLabel = QtWidgets.QLabel(PackageDetails)
-            self.slowLoadLabel.setObjectName("slowLoadLabel")
-
-            self.verticalLayout_2.addWidget(self.slowLoadLabel)
-
-            self.progressBar = QtWidgets.QProgressBar(PackageDetails)
-            self.progressBar.setObjectName("progressBar")
-            self.progressBar.setTextVisible(False)
-
-            self.verticalLayout_2.addWidget(self.progressBar)
-
-            self.urlBar = QtWidgets.QLineEdit(PackageDetails)
-            self.urlBar.setObjectName("urlBar")
-            self.urlBar.setReadOnly(True)
-
-            self.verticalLayout_2.addWidget(self.urlBar)
-        else:
-            self.missingWebViewLabel = QtWidgets.QLabel(PackageDetails)
-            self.missingWebViewLabel.setObjectName("missingWebViewLabel")
-            self.missingWebViewLabel.setWordWrap(True)
-            self.verticalLayout_2.addWidget(self.missingWebViewLabel)
-
-            self.textBrowserReadMe = QtWidgets.QTextBrowser(PackageDetails)
-            self.textBrowserReadMe.setObjectName("textBrowserReadMe")
-            self.textBrowserReadMe.setOpenExternalLinks(True)
-            self.textBrowserReadMe.setOpenLinks(True)
-
-            self.verticalLayout_2.addWidget(self.textBrowserReadMe)
+        self.verticalLayout_2.addWidget(self.textBrowserReadMe)
 
         self.retranslateUi(PackageDetails)
 
@@ -888,22 +614,5 @@ class Ui_PackageDetails(object):
         self.buttonBack.setToolTip(
             QtCore.QCoreApplication.translate("AddonsInstaller", "Return to package list", None)
         )
-        if not HAS_QTWEBENGINE:
-            self.missingWebViewLabel.setText(
-                "<h3>"
-                + QtCore.QCoreApplication.translate(
-                    "AddonsInstaller",
-                    "QtWebEngine Python bindings not installed -- using fallback README display.",
-                    None,
-                )
-                + "</h3>"
-            )
-        else:
-            self.slowLoadLabel.setText(
-                QtCore.QCoreApplication.translate(
-                    "AddonsInstaller",
-                    "The page is taking a long time to load... showing the data we have so far...",
-                )
-            )
 
     # retranslateUi

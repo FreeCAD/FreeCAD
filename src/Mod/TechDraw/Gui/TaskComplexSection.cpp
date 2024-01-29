@@ -138,7 +138,7 @@ void TaskComplexSection::setUiPrimary()
     setWindowTitle(QObject::tr("New Complex Section"));
     if (m_baseView) {
         ui->sbScale->setValue(m_baseView->getScale());
-        ui->cmbScaleType->setCurrentIndex(m_baseView->ScaleType.getValue());
+        ui->cmbScaleType->setCurrentIndex(m_baseView->getScaleType());
     }
     else {
         ui->sbScale->setValue(Preferences::scale());
@@ -184,7 +184,7 @@ void TaskComplexSection::setUiEdit()
     ui->cmbStrategy->setCurrentIndex(m_section->ProjectionStrategy.getValue());
     ui->leSymbol->setText(Base::Tools::fromStdString(m_section->SectionSymbol.getValue()));
     ui->sbScale->setValue(m_section->Scale.getValue());
-    ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
+    ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
 
     setUiCommon();
 
@@ -246,7 +246,7 @@ void TaskComplexSection::saveSectionState()
     if (m_section) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
         m_saveScale = m_section->getScale();
-        m_saveScaleType = m_section->ScaleType.getValue();
+        m_saveScaleType = m_section->getScaleType();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_saveDirection = m_section->Direction.getValue();
         m_saveXDir = m_section->XDirection.getValue();
@@ -582,17 +582,9 @@ void TaskComplexSection::createComplexSection()
                            m_sectionName.c_str(), ui->sbScale->value());
 
         std::string baseName = m_baseView->getNameInDocument();
-        if (m_scaleEdited) {
-            // user has changed the scale
-            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
-        } else {
-            // scale is untouched, use value from base view
-            Command::doCommand(Command::Doc,
-            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
-                           m_sectionName.c_str(),
-                           baseName.c_str());
-        }
 
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
@@ -672,18 +664,9 @@ void TaskComplexSection::updateComplexSection()
               m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
 
         std::string baseName = m_baseView->getNameInDocument();
-        if (m_scaleEdited) {
-            // user has changed the scale
-            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
-                           m_sectionName.c_str(), ui->sbScale->value());
-        } else {
-            // scale is untouched, use value from base view
-            Command::doCommand(Command::Doc,
-            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
-                           m_sectionName.c_str(),
-                           baseName.c_str());
-        }
 
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
 
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",

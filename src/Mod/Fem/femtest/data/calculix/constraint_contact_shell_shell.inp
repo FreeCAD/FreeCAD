@@ -38365,10 +38365,10 @@ Efaces
 ***********************************************************
 ** Contact Constraints
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
-DEPConstraintContact,INDConstraintContact
+*CONTACT PAIR, INTERACTION=INTConstraintContact, TYPE=SURFACE TO SURFACE
+DEPConstraintContact, INDConstraintContact
 *SURFACE INTERACTION, NAME=INTConstraintContact
-*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
+*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR
 1000000
 
 ***********************************************************

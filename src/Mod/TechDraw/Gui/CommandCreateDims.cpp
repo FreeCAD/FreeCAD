@@ -177,7 +177,7 @@ void execRadius(Gui::Command* cmd)
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle});
+        {isCircle, isEllipse, isBSplineCircle, isBSpline});
 
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(
@@ -299,7 +299,7 @@ void execDiameter(Gui::Command* cmd)
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle});
+        {isCircle, isEllipse, isBSplineCircle, isBSpline});
 
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(

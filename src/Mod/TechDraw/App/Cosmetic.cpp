@@ -257,6 +257,8 @@ unsigned int CosmeticEdge::getMemSize () const
 
 void CosmeticEdge::Save(Base::Writer &writer) const
 {
+    // TODO: this should be using m_format->Save(writer) instead of saving the individual
+    // fields.
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
@@ -276,6 +278,9 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     } else {
         Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
+
+    writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
+
 }
 
 void CosmeticEdge::Restore(Base::XMLReader &reader)
@@ -293,6 +298,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     m_format.m_color.fromHexString(temp);
     reader.readElement("Visible");
     m_format.m_visible = reader.getAttributeAsInteger("value") != 0;
+
     reader.readElement("GeometryType");
     TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
 
@@ -321,6 +327,19 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaRadius = aoc->radius;
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+    }
+    // older documents may not have the LineNumber element, so we need to check the
+    // next entry.  if it is a start element, then we check if it is a start element
+    // for LineNumber.
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"LineNumber") == 0 ) {
+            // this CosmeticEdge has an LineNumber attribute
+            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+        } else {
+            // LineNumber not found.
+            // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style)
+            m_format.setLineNumber(LineFormat::InvalidLine);
+        }
     }
 }
 

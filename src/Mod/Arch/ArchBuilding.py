@@ -24,6 +24,8 @@ import FreeCAD
 import ArchCommands
 import ArchFloor
 import Draft
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
@@ -227,8 +229,7 @@ class _CommandBuilding:
     def Activated(self):
 
         sel = FreeCADGui.Selection.getSelection()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        link = p.GetBool("FreeLinking",False)
+        link = params.get_param_arch("FreeLinking")
         buildingobj = []
         warning = False
         for obj in sel :

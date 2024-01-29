@@ -71,6 +71,9 @@ void ConstraintPressure::handleChangedPropertyType(Base::XMLReader& reader,
         // therefore we must convert the value with a factor 1000
         Pressure.setValue(PressureProperty.getValue() * 1000.0);
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintPressure::onChanged(const App::Property* prop)

@@ -393,8 +393,91 @@ def _get_param_dictionary():
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
+        "ClaimHosted":                 ("bool",      True),
+        "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
+        "createIfcGroups":             ("bool",      False),  # importIFClegacy.py
+        "DoorHeight":                  ("float",     2100.0),
+        "DoorPreset":                  ("int",       5),
+        "DoorSill":                    ("float",     0.0),
+        "DoorWidth":                   ("float",     1000.0),
+        "FreeLinking":                 ("bool",      False),
+        "forceIfcPythonParser":        ("bool",      False),  # importIFClegacy.py
+        "getStandardType":             ("bool",      False),
+        "ifcAggregateWindows":         ("bool",      False),  # importIFClegacy.py
+        "ifcAsMesh":                   ("string",    ""),     # importIFClegacy.py
+        "IfcExportList":               ("bool",      False),  # importIFClegacy.py
+        "ifcImportLayer":              ("bool",      True),
+        "ifcJoinSolids":               ("bool",      False),  # importIFClegacy.py
+        "ifcMergeProfiles":            ("bool",      False),
+        "IfcScalingFactor":            ("float",     1.0),    # importIFClegacy.py
+        "ifcSeparatePlacements":       ("bool",      False),  # importIFClegacy.py
+        "MultiMaterialColumnWidth0":   ("int",       60),
+        "MultiMaterialColumnWidth1":   ("int",       60),
+        "PanelLength":                 ("float",     1000.0),
+        "PanelThickness":              ("float",     10.0),
+        "PanelWidth":                  ("float",     1000.0),
+        "PrecastBase":                 ("float",     0.0),
+        "PrecastChamfer":              ("float",     0.0),
+        "PrecastDentHeight":           ("float",     0.0),
+        "PrecastDentLength":           ("float",     0.0),
+        "PrecastDentWidth":            ("float",     0.0),
+        "PrecastDownLength":           ("float",     0.0),
+        "PrecastGrooveDepth":          ("float",     0.0),
+        "PrecastGrooveHeight":         ("float",     0.0),
+        "PrecastGrooveSpacing":        ("float",     0.0),
+        "PrecastHoleMajor":            ("float",     0.0),
+        "PrecastHoleMinor":            ("float",     0.0),
+        "PrecastHoleSpacing":          ("float",     0.0),
+        "PrecastRiser":                ("float",     0.0),
+        "PrecastTread":                ("float",     0.0),
+        "ScheduleColumnWidth0":        ("int",       100),
+        "ScheduleColumnWidth1":        ("int",       100),
+        "ScheduleColumnWidth2":        ("int",       50),
+        "ScheduleColumnWidth3":        ("int",       100),
+        "ScheduleDialogHeight":        ("int",       200),
+        "ScheduleDialogWidth":         ("int",       300),
+        "StructureHeight":             ("float",     1000.0),
+        "StructureLength":             ("float",     100.0),
+        "StructurePreset":             ("string",    ""),
+        "StructureWidth":              ("float",     100.0),
+        "swallowAdditions":            ("bool",      True),
+        "swallowSubtractions":         ("bool",      True),
+        "WallAlignment":               ("int",       0),
+        "WallHeight":                  ("float",     3000.0),
+        "WallWidth":                   ("float",     200.0),
+        "WindowH1":                    ("float",     50.0),
+        "WindowH2":                    ("float",     50.0),
+        "WindowH3":                    ("float",     50.0),
+        "WindowHeight":                ("float",     1000.0),
+        "WindowO1":                    ("float",     0.0),
+        "WindowO2":                    ("float",     50.0),
+        "WindowPreset":                ("int",       0),
+        "WindowSill":                  ("float",     0.0),
+        "WindowW1":                    ("float",     100.0),
+        "WindowW2":                    ("float",     50.0),
+        "WindowWidth":                 ("float",     1000.0),
+    }
 
+    # For the Mod/Mesh parameters we do not check the preferences:
+    param_dict["Mod/Mesh"] = {
+        "MaxDeviationExport":          ("float",     0.1),
+    }
 
+    # For the Mod/TechDraw/PAT parameters we do not check the preferences:
+    param_dict["Mod/TechDraw/PAT"] = {
+        "FilePattern":                 ("string",    ""),
+        "NamePattern":                 ("string",    "Diamant"),
+    }
+
+    # For the General parameters we do not check the preferences:
+    param_dict["General"] = {
+        "ToolbarIconSize":             ("int",       24),
+    }
+
+    # For the Units parameters we do not check the preferences:
+    param_dict["Units"] = {
+        "Decimals":                    ("int",       2),
+        "UserSchema":                  ("int",       0),
     }
 
     # For the View parameters we do not check the preferences:
@@ -412,23 +495,6 @@ def _get_param_dictionary():
         "Gradient":                    ("bool",      True),
         "MarkerSize":                  ("int",       9),
         "NewDocumentCameraScale":      ("float",     100.0),
-    }
-
-    # For the General parameters we do not check the preferences:
-    param_dict["General"] = {
-        "ToolbarIconSize":             ("int",       24),
-    }
-
-    # For the Units parameters we do not check the preferences:
-    param_dict["Units"] = {
-        "Decimals":                    ("int",       2),
-        "UserSchema":                  ("int",       0),
-    }
-
-    # For the Mod/TechDraw/PAT parameters we do not check the preferences:
-    param_dict["Mod/TechDraw/PAT"] = {
-        "FilePattern":                 ("string",    ""),
-        "NamePattern":                 ("string",    "Diamant"),
     }
 
 

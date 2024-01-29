@@ -90,7 +90,7 @@ public:
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
 
-            drawControlPolygonToPosition(onSketchPos);
+            drawBSplineToPosition(onSketchPos);
 
             drawCursorToPosition(onSketchPos);
 
@@ -313,7 +313,7 @@ public:
 
 
                 // run this in the end to draw lines and position text
-                drawControlPolygonToPosition(prevCursorPosition);
+                drawBSplineToPosition(prevCursorPosition);
                 drawCursorToPosition(prevCursorPosition);
             }
             catch (const Base::Exception&) {
@@ -331,6 +331,9 @@ public:
         }
         // TODO: On pressing, say, W, modify last pole's weight
         // TODO: On pressing, say, M, modify next knot's multiplicity
+        else {
+            DrawSketchHandler::registerPressedKey(pressed, key);
+        }
 
         return;
     }
@@ -411,11 +414,48 @@ private:
 
     void drawControlPolygonToPosition(Base::Vector2d position)
     {
-
         std::vector<Base::Vector2d> editcurve(BSplinePoles);
         editcurve.push_back(position);
 
         drawEdit(editcurve);
+    }
+
+    void drawBSplineToPosition(Base::Vector2d position)
+    {
+        std::vector<Base::Vector3d> editcurve;
+        for (auto& pole : BSplinePoles) {
+            editcurve.emplace_back(pole.x, pole.y, 0.0);
+        }
+        editcurve.emplace_back(position.x, position.y, 0.0);
+        size_t degree = std::min(editcurve.size() - 1, static_cast<size_t>(SplineDegree));
+        bool periodic = (ConstrMethod != 0);
+
+        std::vector<double> weights(editcurve.size(), 1.0);
+        std::vector<double> knots;
+        std::vector<int> mults;
+        if (!periodic) {
+            for (size_t i = 0; i < editcurve.size() - degree + 1; ++i) {
+                knots.push_back(i);
+            }
+            mults.resize(editcurve.size() - degree + 1, 1);
+            mults.front() = degree + 1;
+            mults.back() = degree + 1;
+        }
+        else {
+            for (size_t i = 0; i < editcurve.size() + 1; ++i) {
+                knots.push_back(i);
+            }
+            mults.resize(editcurve.size() + 1, 1);
+        }
+
+        // TODO: This maybe optimized by storing the spline as an attribute.
+        Part::GeomBSplineCurve editBSpline(editcurve, weights, knots, mults, degree, periodic);
+        editBSpline.setPoles(editcurve);
+
+        std::vector<Part::Geometry*> editBSplines;
+        editBSplines.push_back(&editBSpline);
+
+        drawEdit(editBSplines);
     }
 
     void drawCursorToPosition(Base::Vector2d position)

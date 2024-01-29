@@ -16,6 +16,17 @@
   <defs
      id="defs2871">
     <linearGradient
+       id="linearGradient4">
+      <stop
+         style="stop-color:#3f6fab;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1;"
+         offset="1"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient62">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1;"
@@ -417,7 +428,7 @@
        x2="-22"
        y2="5" />
     <linearGradient
-       xlink:href="#linearGradient3836-9-3"
+       xlink:href="#linearGradient4"
        id="linearGradient97"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.82607043,0,0,0.82533448,-4.0098079,1.346708)"
@@ -425,6 +436,15 @@
        y1="18"
        x2="-22"
        y2="5" />
+    <linearGradient
+       y2="131.22015"
+       x2="154.4444"
+       y1="161.22015"
+       x1="164.4444"
+       gradientTransform="translate(-188.44439,-101.22016)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3112"
+       xlink:href="#linearGradient3815" />
   </defs>
   <metadata
      id="metadata2874">
@@ -464,7 +484,8 @@
        transform="matrix(0.1460346,0,0,0.1460346,-220.10298,-55.131225)">
       <g
          transform="translate(-451.94762,54.987483)"
-         id="g4428-3-2">
+         id="g4428-3-2"
+         style="display:inline">
         <path
            style="fill:none;stroke:#151819;stroke-width:8.27355;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:8.27355, 16.5471;stroke-dashoffset:8.27355;stroke-opacity:1"
            id="path3044-28"
@@ -519,7 +540,7 @@
            d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
       </g>
       <g
-         transform="matrix(5.3322609,0,0,5.33226,1983.4426,601.87102)"
+         transform="matrix(5.3322609,0,0,5.33226,1983.4426,588.17564)"
          id="g95"
          style="stroke-width:1.2842">
         <path
@@ -536,11 +557,11 @@
          id="g97"
          style="stroke-width:1.2842">
         <path
-           style="fill:none;stroke:#2e0000;stroke-width:2.56841;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:none;stroke:#0b1521;stroke-width:2.56841;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="path96"
            d="M -26.310778,5.3580033 A 8.3519646,8.3515832 0.02039876 1 1 -13.623399,16.222662 8.3519646,8.3515832 0.02039876 1 1 -26.310778,5.3580033 Z" />
         <path
-           style="fill:url(#linearGradient97);fill-opacity:1;stroke:#ef2929;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:url(#linearGradient97);fill-opacity:1;stroke:#729fcf;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="path97"
            d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
       </g>

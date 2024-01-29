@@ -132,6 +132,8 @@ public:
     DocumentObject();
     ~DocumentObject() override;
 
+    /// returns a value that uniquely identifies this DocumentObject.
+    const char* getDagKey() const;
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument() const;
     /// Return the object ID that is unique within its owner document

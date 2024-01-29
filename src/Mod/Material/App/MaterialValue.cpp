@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMetaType>
 #include <QRegularExpression>
 #endif
-
-#include <QMetaType>
 
 #include <App/Application.h>
 #include <Base/QtTools.h>
@@ -264,7 +263,7 @@ QString MaterialValue::getYAMLStringMultiLine() const
     QString yaml;
     yaml = QString::fromStdString(" |2");
     auto list =
-        getValue().toString().split(QRegExp(QString::fromStdString("[\r\n]")), Qt::SkipEmptyParts);
+        getValue().toString().split(QRegularExpression(QString::fromStdString("[\r\n]")), Qt::SkipEmptyParts);
     for (auto& it : list) {
         yaml += QString::fromStdString("\n      ") + it;
     }

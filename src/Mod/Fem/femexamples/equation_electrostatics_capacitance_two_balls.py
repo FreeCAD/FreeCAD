@@ -138,6 +138,7 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
     con_elect_pot1.ElectricInfinity = True
+    con_elect_pot1.PotentialEnabled = False
     analysis.addObject(con_elect_pot1)
 
     # constraint potential 2nd
@@ -146,6 +147,7 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot2.References = [(geom_obj, "Face2")]
     con_elect_pot2.CapacitanceBody = 1
     con_elect_pot2.CapacitanceBodyEnabled = True
+    con_elect_pot2.PotentialEnabled = False
     analysis.addObject(con_elect_pot2)
 
     # constraint potential 3rd
@@ -154,6 +156,7 @@ def setup(doc=None, solvertype="elmer"):
     con_elect_pot3.References = [(geom_obj, "Face3")]
     con_elect_pot3.CapacitanceBody = 2
     con_elect_pot3.CapacitanceBodyEnabled = True
+    con_elect_pot3.PotentialEnabled = False
     analysis.addObject(con_elect_pot3)
 
     # mesh

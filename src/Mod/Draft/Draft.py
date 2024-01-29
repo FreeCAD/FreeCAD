@@ -379,8 +379,7 @@ if App.GuiUp:
 from draftobjects.layer import (Layer,
                                 _VisGroup)
 
-from draftmake.make_layer import (make_layer,
-                                  makeLayer)
+from draftmake.make_layer import make_layer
 
 if App.GuiUp:
     from draftviewproviders.view_layer import (ViewProviderLayer,

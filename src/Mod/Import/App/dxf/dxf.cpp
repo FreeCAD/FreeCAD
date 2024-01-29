@@ -63,6 +63,10 @@ CDxfWrite::CDxfWrite(const char* filepath)
         return;
     }
     m_ofs->imbue(std::locale("C"));
+
+    // use lots of digits to avoid rounding errors
+    m_ssEntity->setf(std::ios::fixed);
+    m_ssEntity->precision(9);
 }
 
 CDxfWrite::~CDxfWrite()

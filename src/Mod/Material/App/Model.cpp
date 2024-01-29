@@ -21,9 +21,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <string>
+#endif
 
 #include <App/Application.h>
 

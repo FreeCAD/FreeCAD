@@ -88,6 +88,15 @@ bool Sketcher::isBSplineCurve(const Part::Geometry& geom)
     return geom.is<Part::GeomBSplineCurve>();
 }
 
+bool Sketcher::isPeriodicBSplineCurve(const Part::Geometry& geom)
+{
+    if (geom.is<Part::GeomBSplineCurve>()) {
+        auto* spline = static_cast<const Part::GeomBSplineCurve*>(&geom);
+        return spline->isPeriodic();
+    }
+    return false;
+}
+
 bool Sketcher::isPoint(const Part::Geometry& geom)
 {
     return geom.is<Part::GeomPoint>();

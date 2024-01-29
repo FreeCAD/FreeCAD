@@ -40,7 +40,6 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
-
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -140,6 +139,16 @@ struct DrawingParameters
         17;  // Font size to be used by SoDatumLabel, which uses a QPainter and a QFont internally
     int constraintIconSize = 15;  // Size of constraint icons
     int markerSize = 7;           // Size used for markers
+
+    int CurveWidth = 2;         // width of normal edges
+    int ConstructionWidth = 1;  // width of construction edges
+    int InternalWidth = 1;      // width of internal edges
+    int ExternalWidth = 1;      // width of external edges
+
+    unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
+    unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
+    unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
+    unsigned int ExternalPattern = 0b1110010011100100;      // pattern of external edges
     //@}
 };
 
@@ -155,9 +164,9 @@ struct GeometryLayerNodes
 
     /** @name Curve nodes*/
     //@{
-    std::vector<SoMaterial*>& CurvesMaterials;      // The materials for the curves
-    std::vector<SoCoordinate3*>& CurvesCoordinate;  // The coordinates of the segments of the curves
-    std::vector<SoLineSet*>& CurveSet;              // The set of curves
+    std::vector<std::vector<SoMaterial*>>& CurvesMaterials;
+    std::vector<std::vector<SoCoordinate3*>>& CurvesCoordinate;
+    std::vector<std::vector<SoLineSet*>>& CurveSet;
     //@}
 };
 
@@ -176,9 +185,10 @@ struct GeometryLayerNodes
 class MultiFieldId
 {
 public:
-    explicit constexpr MultiFieldId(int fieldindex = -1, int layerid = 0)
+    explicit constexpr MultiFieldId(int fieldindex = -1, int layerid = 0, int geotypeid = 0)
         : fieldIndex(fieldindex)
         , layerId(layerid)
+        , geoTypeId(geotypeid)
     {}
 
     MultiFieldId(const MultiFieldId&) = default;
@@ -189,16 +199,19 @@ public:
 
     inline bool operator==(const MultiFieldId& obj) const
     {
-        return this->fieldIndex == obj.fieldIndex && this->layerId == obj.layerId;
+        return this->fieldIndex == obj.fieldIndex && this->layerId == obj.layerId
+            && this->geoTypeId == obj.geoTypeId;
     }
 
     inline bool operator!=(const MultiFieldId& obj) const
     {
-        return this->fieldIndex != obj.fieldIndex || this->layerId != obj.layerId;
+        return this->fieldIndex != obj.fieldIndex || this->layerId != obj.layerId
+            || this->geoTypeId != obj.geoTypeId;
     }
 
     int fieldIndex = -1;
     int layerId = 0;
+    int geoTypeId = 0;
 
     static const MultiFieldId Invalid;
 };
@@ -255,7 +268,16 @@ private:
         Default = 0
     };
 
+
 public:
+    enum class SubLayer
+    {
+        Normal = 0,
+        Construction = 1,
+        Internal = 2,
+        External = 3,
+    };
+
     void reset()
     {
         CoinLayers = 1;
@@ -280,8 +302,46 @@ public:
         CoinLayers = layernumber;
     }
 
+    int inline getSubLayerCount() const
+    {
+        return SubLayers;
+    }
+
+    int inline getSubLayerIndex(const int geoId, const Sketcher::GeometryFacade* geom) const
+    {
+        bool isConstruction = geom->getConstruction();
+        bool isInternal = geom->isInternalAligned();
+        bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
+
+        return static_cast<int>(isExternal           ? SubLayer::External
+                                    : isInternal     ? SubLayer::Internal
+                                    : isConstruction ? SubLayer::Construction
+                                                     : SubLayer::Normal);
+    }
+
+    bool isNormalSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::Normal);
+    }
+
+    bool isConstructionSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::Construction);
+    }
+
+    bool isInternalSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::Internal);
+    }
+
+    bool isExternalSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::External);
+    }
+
 private:
     int CoinLayers = 1;  // defaults to a single Coin Geometry Layer.
+    int SubLayers = 4;   // Normal, Construction, Internal, External.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -340,10 +400,14 @@ struct EditModeScenegraphNodes
     /** @name Curve nodes*/
     //@{
     SmSwitchboard* CurvesGroup;
-    std::vector<SoMaterial*> CurvesMaterials;
-    std::vector<SoCoordinate3*> CurvesCoordinate;
-    std::vector<SoDrawStyle*> CurvesDrawStyle;
-    std::vector<SoLineSet*> CurveSet;
+    std::vector<std::vector<SoMaterial*>> CurvesMaterials;
+    std::vector<std::vector<SoCoordinate3*>> CurvesCoordinate;
+    std::vector<std::vector<SoLineSet*>> CurveSet;
+    SoDrawStyle* CurvesDrawStyle;
+    SoDrawStyle* CurvesConstructionDrawStyle;
+    SoDrawStyle* CurvesInternalDrawStyle;
+    SoDrawStyle* CurvesExternalDrawStyle;
+    SoDrawStyle* HiddenCurvesDrawStyle;
     //@}
 
     /** @name Axes nodes*/
@@ -395,7 +459,7 @@ struct EditModeScenegraphNodes
 };
 
 /** @brief      Helper struct containing index conversions (mappings) between
- * {GeoId, PointPos} and MF indices per layer, and VertexId and MF indices per layer.
+ * {GeoId, PointPos} and MF indices per layer, sublayers, and VertexId and MF indices per layer.
  *
  * These are updated with every draw of the scenegraph.
  */
@@ -404,6 +468,9 @@ struct CoinMapping
 
     void clear()
     {
+        for (size_t l = 0; l < CurvIdToGeoId.size(); ++l) {
+            CurvIdToGeoId[l].clear();
+        }
         CurvIdToGeoId.clear();
         PointIdToGeoId.clear();
         GeoElementId2SetId.clear();
@@ -412,9 +479,9 @@ struct CoinMapping
 
     /// given the MF index of a curve and the coin layer in which it is drawn returns the GeoId of
     /// the curve
-    int getCurveGeoId(int curveindex, int layerindex)
+    int getCurveGeoId(int curveindex, int layerindex, int sublayerindex = 0)
     {
-        return CurvIdToGeoId[layerindex][curveindex];
+        return CurvIdToGeoId[layerindex][sublayerindex][curveindex];
     }
     /// given the MF index of a point and the coin layer in which it is drawn returns the GeoId of
     /// the point
@@ -461,7 +528,8 @@ struct CoinMapping
 
     //* These map a MF index (second index) within a coin layer (first index) for points or curves
     // to a GeoId */
-    std::vector<std::vector<int>> CurvIdToGeoId;   // conversion of SoLineSet index to GeoId
+    std::vector<std::vector<std::vector<int>>>
+        CurvIdToGeoId;                             // conversion of SoLineSet index to GeoId
     std::vector<std::vector<int>> PointIdToGeoId;  // conversion of SoCoordinate3 index to GeoId
 
     //* This maps an MF index (second index) of a point within a coin layer (first index) to a

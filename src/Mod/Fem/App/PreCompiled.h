@@ -109,6 +109,7 @@
 
 // Opencascade
 #include <Adaptor3d_IsoCurve.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
@@ -136,6 +137,7 @@
 #include <Geom_Plane.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
+#include <ShapeAnalysis_Surface.hxx>
 #include <Standard_Real.hxx>
 #include <Standard_Version.hxx>
 #include <TColgp_Array2OfPnt.hxx>

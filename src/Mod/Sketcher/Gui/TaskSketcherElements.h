@@ -109,6 +109,7 @@ Q_SIGNALS:
 
 private:
     void changeLayer(int layer);
+    void changeLayer(ElementItem* item, int layer);
 };
 
 class ElementFilterList;

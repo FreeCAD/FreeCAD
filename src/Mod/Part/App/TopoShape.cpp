@@ -3188,9 +3188,9 @@ bool TopoShape::fix()
         // through makEWires(), and it will remove those edges. Without
         // remapping, there will be invalid index jumpping in reference in
         // Sketch002.ExternalEdge5.
-        makESHAPE(fixThis.Shape(), MapperHistory(fixThis), {*this});
+        makeShapeWithElementMap(fixThis.Shape(), MapperHistory(fixThis), {*this});
     } else
-        makESHAPE(fix.Shape(), MapperHistory(fix), {copy});
+        makeShapeWithElementMap(fix.Shape(), MapperHistory(fix), {copy});
     return true;
 }
 

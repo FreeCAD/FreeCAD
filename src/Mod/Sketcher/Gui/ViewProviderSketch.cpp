@@ -937,8 +937,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             -16000,
                             -16000);// certainly far away from any clickable place, to avoid
                                     // re-trigger of double-click if next click happens fast.
-
-                        Mode = STATUS_NONE;
+                        if (Mode != STATUS_SELECT_Wire) {
+                            Mode = STATUS_NONE;
+                        }
                     }
                     else {
                         DoubleClick::prvClickTime = SbTime::getTimeOfDay();
@@ -1031,6 +1032,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     Mode = STATUS_NONE;
                     return true;
+                case STATUS_SELECT_Wire: {
+                    toggleWireSelelection(preselection.PreselectCurve);
+                    Mode = STATUS_NONE;
+                    return true;
+                }
                 case STATUS_SELECT_Constraint:
                     if (pp) {
                         auto sels = preselection.PreselectConstraintSet;
@@ -1251,7 +1257,9 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().Log("double click point:%d\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
-        Base::Console().Log("double click edge:%d\n", preselection.PreselectCurve);
+        // We cannot do toggleWireSelelection directly here because the released event with
+        //STATUS_NONE return false which clears the selection.
+        Mode = STATUS_SELECT_Wire;
     }
     else if (preselection.isCrossPreselected()) {
         Base::Console().Log("double click cross:%d\n",
@@ -1276,6 +1284,70 @@ void ViewProviderSketch::editDoubleClicked()
             }
         }
     }
+}
+
+void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
+{
+    Sketcher::SketchObject* obj = getSketchObject();
+
+    const Part::Geometry* geo1 = obj->getGeometry(clickedGeoId);
+    if (isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
+        return;
+    }
+
+    const char* type1 = (clickedGeoId >= 0) ? "Edge" : "ExternalEdge";
+    std::stringstream ss1;
+    ss1 << type1 << clickedGeoId + 1;
+    bool selecting = isSelected(ss1.str());
+
+    std::vector<int> connectedEdges = { clickedGeoId };
+    bool partHasBeenAdded = true;
+    while (partHasBeenAdded) {
+        partHasBeenAdded = false;
+        for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
+            if (geoId == clickedGeoId || std::find(connectedEdges.begin(), connectedEdges.end(), geoId) != connectedEdges.end()) {
+                continue;
+            }
+
+            const Part::Geometry* geo = obj->getGeometry(geoId);
+            if (isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo1)) {
+                continue;
+            }
+
+            Base::Vector3d p11 = obj->getPoint(geoId, PointPos::start);
+            Base::Vector3d p12 = obj->getPoint(geoId, PointPos::end);
+            bool connected = false;
+            for (auto conGeoId : connectedEdges) {
+                Base::Vector3d p21 = obj->getPoint(conGeoId, PointPos::start);
+                Base::Vector3d p22 = obj->getPoint(conGeoId, PointPos::end);
+                if ((p11 - p21).Length() < Precision::Confusion()
+                    || (p11 - p22).Length() < Precision::Confusion()
+                    || (p12 - p21).Length() < Precision::Confusion()
+                    || (p12 - p22).Length() < Precision::Confusion()) {
+                    connected = true;
+                }
+            }
+
+            if (connected) {
+                connectedEdges.push_back(geoId);
+                partHasBeenAdded = true;
+                break;
+            }
+        }
+    }
+
+    for (auto geoId : connectedEdges) {
+        std::stringstream ss;
+        const char* type = (geoId >= 0) ? "Edge" : "ExternalEdge";
+        ss << type << geoId + 1;
+        if (!selecting && isSelected(ss.str())) {
+            rmvSelection(ss.str());
+        }
+        else if (selecting && !isSelected(ss.str())) {
+            addSelection2(ss.str());
+        }
+    }
+
 }
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
@@ -3814,6 +3886,11 @@ void ViewProviderSketch::generateContextMenu()
     int selectedConics = 0;
     int selectedPoints = 0;
     int selectedConstraints = 0;
+    int selectedBsplines = 0;
+    int selectedBsplineKnots = 0;
+    int selectedOrigin = 0;
+    int selectedEndPoints = 0;
+    bool onlyOrigin = false;
 
     Gui::MenuItem menu;
     menu.setCommand("Sketcher context");
@@ -3824,31 +3901,70 @@ void ViewProviderSketch::generateContextMenu()
     // if something is selected, count different elements in the current selection
     if (selection.size() > 0) {
         const std::vector<std::string> SubNames = selection[0].getSubNames();
-
-        for (auto& name : SubNames) {
-            if (name.substr(0, 4) == "Edge") {
-                ++selectedEdges;
-
+        const Sketcher::SketchObject* obj;
+        if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
+            obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+            for (auto& name : SubNames) {
                 int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
-                if (geoId >= 0) {
-                    const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
-                    if (isLineSegment(*geo)) {
-                        ++selectedLines;
-                    }
-                    else {
-                        ++selectedConics;
+                const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
+                if (name.substr(0, 4) == "Edge") {
+                    ++selectedEdges;
+
+                    if (geoId >= 0) {
+                        if (isLineSegment(*geo)) {
+                            ++selectedLines;
+                        }
+                        else if (geo->is<Part::GeomBSplineCurve>()) {
+                            ++selectedBsplines;
+                        }
+                        else {
+                            ++selectedConics;
+                        }
                     }
                 }
-            }
-            else if (name.substr(0, 4) == "Vert") {
-                ++selectedPoints;
-            }
-            else if (name.substr(0, 4) == "Cons") {
-                ++selectedConstraints;
+                else if (name.substr(0, 4) == "Vert") {
+                    ++selectedPoints;
+                    Sketcher::PointPos posId;
+                    getIdsFromName(name, obj, geoId, posId);
+                    if (isBsplineKnotOrEndPoint(obj, geoId, posId)) {
+                        ++selectedBsplineKnots;
+                    }
+                    if (Sketcher::PointPos::start != posId || Sketcher::PointPos::end != posId) {
+                        ++selectedEndPoints;
+                    }
+                }
+                else if (name.substr(0, 4) == "Cons") {
+                    ++selectedConstraints;
+                }
+                else if (name.substr(2, 5) == "Axis") {
+                    ++selectedEdges;
+                    ++selectedLines;
+                    ++selectedOrigin;
+                }
+                else if (name.substr(0, 4) == "Root") {
+                    ++selectedPoints;
+                    ++selectedOrigin;
+                }
             }
         }
+        if (selectedPoints + selectedEdges == selectedOrigin) {
+            onlyOrigin = true;
+        }
         // build context menu items depending on the selection
-        if (selectedEdges >= 1 && selectedPoints == 0) {
+        if (selectedBsplines > 0 && selectedBsplines == selectedEdges && selectedPoints == 0
+            && !onlyOrigin) {
+            menu << "Sketcher_BSplineInsertKnot"
+                 << "Sketcher_BSplineIncreaseDegree"
+                 << "Sketcher_BSplineDecreaseDegree";
+        }
+        else if (selectedBsplineKnots > 0 && selectedBsplineKnots == selectedPoints
+                 && selectedEdges == 0 && !onlyOrigin) {
+            if (selectedBsplineKnots == 1) {
+                menu << "Sketcher_BSplineIncreaseKnotMultiplicity"
+                     << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            }
+        }
+        if (selectedEdges >= 1 && selectedPoints == 0 && selectedBsplines == 0 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
             if (selectedConics == 0) {
                 menu << "Sketcher_ConstrainHorVer"
@@ -3876,15 +3992,19 @@ void ViewProviderSketch::generateContextMenu()
                 menu << "Sketcher_ConstrainTangent";
             }
         }
-        else if (selectedEdges == 1 && selectedPoints >= 1) {
+        else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
-            if (selectedConics == 0) {
+            if (selectedConics == 0 && selectedBsplines == 0) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
                      << "Sketcher_ConstrainVertical"
                      << "Sketcher_ConstrainHorizontal";
                 if (selectedPoints == 2) {
                     menu << "Sketcher_ConstrainSymmetric";
+                }
+                if (selectedPoints == 1) {
+                    menu << "Sketcher_ConstrainPerpendicular"
+                         << "Sketcher_ConstrainTangent";
                 }
             }
             else {
@@ -3893,7 +4013,7 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainTangent";
             }
         }
-        else if (selectedEdges == 0 && selectedPoints >= 1) {
+        else if (selectedEdges == 0 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
 
             if (selectedPoints > 1) {
@@ -3902,8 +4022,15 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainVertical"
                      << "Sketcher_ConstrainHorizontal";
             }
+            if (selectedPoints == 2) {
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
+                if (selectedEndPoints == 2) {
+                    menu << "Sketcher_JoinCurves";
+                }
+            }
         }
-        else if (selectedLines >= 1 && selectedPoints >= 1) {
+        else if (selectedLines >= 1 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension"
                  << "Sketcher_ConstrainHorVer"
                  << "Sketcher_ConstrainVertical"

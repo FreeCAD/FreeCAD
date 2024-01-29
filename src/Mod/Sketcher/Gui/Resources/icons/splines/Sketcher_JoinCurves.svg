@@ -261,11 +261,11 @@
     <linearGradient
        id="linearGradient2">
       <stop
-         style="stop-color:#73d216;stop-opacity:1;"
+         style="stop-color:#d3d7cf;stop-opacity:1;"
          offset="0"
          id="stop1" />
       <stop
-         style="stop-color:#8ae234;stop-opacity:1;"
+         style="stop-color:#ffffff;stop-opacity:1;"
          offset="1"
          id="stop2" />
     </linearGradient>
@@ -316,6 +316,15 @@
        y1="35.978416"
        x2="25.988253"
        y2="29.916241" />
+    <linearGradient
+       xlink:href="#linearGradient2"
+       id="linearGradient3"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.82607043,0,0,0.82533448,-4.0098079,1.346708)"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5" />
   </defs>
   <metadata
      id="metadata2874">
@@ -368,7 +377,7 @@
     </g>
     <g
        id="g1068-6"
-       transform="matrix(-1,0,0,1,45.987644,0)">
+       transform="matrix(-1,0,0,1,47.987644,0)">
       <path
          style="fill:url(#linearGradient1099);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 13.547502,28.511064 v -7.501616 l -10.4959114,1e-6 V 10.507184 H 13.547502 V 3.005568 l 9.44632,12.752748 z"
@@ -394,6 +403,19 @@
          id="path3266-9-2"
          d="M 138.75945,-0.2767731 C 141.87413,39.053035 101.07195,19.660727 91.353198,47.348227"
          style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       transform="matrix(0.77869459,0,0,0.77869445,39.542061,32.862232)"
+       id="g3"
+       style="display:inline;stroke-width:1.2842">
+      <path
+         style="fill:none;stroke:#151819;stroke-width:2.56841;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path2"
+         d="M -26.310778,5.3580033 A 8.3519646,8.3515832 0.02039876 1 1 -13.623399,16.222662 8.3519646,8.3515832 0.02039876 1 1 -26.310778,5.3580033 Z" />
+      <path
+         style="fill:url(#linearGradient3);fill-opacity:1;stroke:#ffffff;stroke-width:2.56842;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path3"
+         d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
     </g>
   </g>
 </svg>

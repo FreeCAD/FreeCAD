@@ -28,40 +28,19 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QFormLayout" name="formLayout_1">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
         <item row="1" column="1">
-         <widget class="Gui::InputField" name="if_tolerance">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="Gui::QuantitySpinBox" name="spb_tolerance">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>0 mm</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
           </property>
           <property name="singleStep">
            <double>1.000000000000000</double>
           </property>
           <property name="maximum">
            <double>1000000000.000000000000000</double>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
           </property>
           <property name="decimals" stdset="0">
            <number>2</number>
@@ -74,7 +53,14 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_tolerance">
           <property name="text">
-           <string>Tolerance:     </string>
+           <string>Tolerance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="ckb_adjust">
+          <property name="text">
+           <string>Enable Adjust</string>
           </property>
          </widget>
         </item>
@@ -87,9 +73,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -475,14 +475,11 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
             if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
                 throw SystemExitException();
             }
-
             throw PyException();
         }
         Py_DECREF(result);
     }
-    else {
-        throw FileException("Unknown file", pxFileName);
-    }
+    throw FileException("Unknown file", pxFileName);
 }
 
 bool InterpreterSingleton::loadModule(const char* psModName)

@@ -61,6 +61,7 @@ bool isLineSegment(const Part::Geometry&);
 bool isArcOfHyperbola(const Part::Geometry&);
 bool isArcOfParabola(const Part::Geometry&);
 bool isBSplineCurve(const Part::Geometry&);
+bool isPeriodicBSplineCurve(const Part::Geometry&);
 bool isPoint(const Part::Geometry&);
 
 bool isCircleOrArc(const Part::Geometry& geo);

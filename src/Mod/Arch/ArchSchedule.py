@@ -21,6 +21,8 @@
 #***************************************************************************
 
 import FreeCAD
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -344,7 +346,7 @@ class _ArchSchedule:
                             tp = FreeCAD.Units.Length
 
                     # format value
-                    dv = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+                    dv = params.get_param("Decimals",path="Units")
                     fs = "{:."+str(dv)+"f}" # format string
                     for o in objs:
                         if verbose:
@@ -514,13 +516,12 @@ class ArchScheduleTaskPanel:
         self.form.buttonSelect.setIcon(QtGui.QIcon(":/icons/edit-select-all.svg"))
 
         # restore widths
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.form.list.setColumnWidth(0,p.GetInt("ScheduleColumnWidth0",100))
-        self.form.list.setColumnWidth(1,p.GetInt("ScheduleColumnWidth1",100))
-        self.form.list.setColumnWidth(2,p.GetInt("ScheduleColumnWidth2",50))
-        self.form.list.setColumnWidth(3,p.GetInt("ScheduleColumnWidth3",100))
-        w = p.GetInt("ScheduleDialogWidth",300)
-        h = p.GetInt("ScheduleDialogHeight",200)
+        self.form.list.setColumnWidth(0,params.get_param_arch("ScheduleColumnWidth0"))
+        self.form.list.setColumnWidth(1,params.get_param_arch("ScheduleColumnWidth1"))
+        self.form.list.setColumnWidth(2,params.get_param_arch("ScheduleColumnWidth2"))
+        self.form.list.setColumnWidth(3,params.get_param_arch("ScheduleColumnWidth3"))
+        w = params.get_param_arch("ScheduleDialogWidth")
+        h = params.get_param_arch("ScheduleDialogHeight")
         self.form.resize(w,h)
 
         # set delegate - Not using custom delegates for now...
@@ -712,13 +713,12 @@ class ArchScheduleTaskPanel:
         """Saves the changes and closes the dialog"""
 
         # store widths
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        p.SetInt("ScheduleColumnWidth0",self.form.list.columnWidth(0))
-        p.SetInt("ScheduleColumnWidth1",self.form.list.columnWidth(1))
-        p.SetInt("ScheduleColumnWidth2",self.form.list.columnWidth(2))
-        p.SetInt("ScheduleColumnWidth3",self.form.list.columnWidth(3))
-        p.SetInt("ScheduleDialogWidth",self.form.width())
-        p.SetInt("ScheduleDialogHeight",self.form.height())
+        params.set_param_arch("ScheduleColumnWidth0",self.form.list.columnWidth(0))
+        params.set_param_arch("ScheduleColumnWidth1",self.form.list.columnWidth(1))
+        params.set_param_arch("ScheduleColumnWidth2",self.form.list.columnWidth(2))
+        params.set_param_arch("ScheduleColumnWidth3",self.form.list.columnWidth(3))
+        params.set_param_arch("ScheduleDialogWidth",self.form.width())
+        params.set_param_arch("ScheduleDialogHeight",self.form.height())
 
         # commit values
         self.writeValues()
