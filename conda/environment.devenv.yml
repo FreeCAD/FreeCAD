@@ -79,7 +79,7 @@ dependencies:
 - numpy
 - occt==7.6.3
 - openssl
-- pcl
+- pcl==1.13.1
 - pip
 - pivy
 - pkg-config
