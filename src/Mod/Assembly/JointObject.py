@@ -1351,7 +1351,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if (
             not cursor_info
             or not self.preselection_dict
-            or cursor_info["SubName"] != self.preselection_dict["sub_name"]
+            # or cursor_info["SubName"] != self.preselection_dict["sub_name"]
+            # Removed because they are not equal when hovering a line endpoints.
+            # But we don't actually need to test because if there's no preselection then not cursor is None
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
             return
