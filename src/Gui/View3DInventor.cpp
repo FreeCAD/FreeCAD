@@ -67,7 +67,6 @@
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
-#include "View3DInventorExamples.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
 #include "ViewProvider.h"
@@ -332,24 +331,6 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
     }
-    else if(strcmp("Example1",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        Texture3D(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
-    else if(strcmp("Example2",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        LightManip(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
-    else if(strcmp("Example3",pMsg) == 0 ) {
-        auto root = new SoSeparator;
-        AnimationTexture(root);
-        _viewer->setSceneGraph(root);
-        return true;
-    }
     else if(strcmp("GetCamera",pMsg) == 0 ) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
         if (!Cam)
@@ -485,15 +466,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if(strcmp("SetStereoOff",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example1",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example2",pMsg) == 0) {
-        return true;
-    }
-    else if(strcmp("Example3",pMsg) == 0) {
         return true;
     }
     else if(strcmp("ViewFit",pMsg) == 0) {
