@@ -42,11 +42,10 @@
 
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
-#include "TopoShapeOpCode.h"
 #include "FaceMaker.h"
 
+#include "TopoShapeOpCode.h"
 #include <App/ElementNamingUtils.h>
-
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -263,6 +262,7 @@ size_t checkSubshapeCount(const TopoShape& topoShape1,
     }
     return count;
 }
+
 }  // namespace
 
 void TopoShape::setupChild(Data::ElementMap::MappedChildElements& child,
@@ -316,7 +316,7 @@ void warnIfLogging()
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         FC_WARN("hasher mismatch");  // NOLINT
     }
-};
+}
 
 void hasherMismatchError()
 {
@@ -392,11 +392,11 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
                     sids.clear();
                 }
             }
-            std::ostringstream ss;
             char elementType {shapeName(type)[0]};
             if (!elementMap()) {
                 FC_THROWM(NullShapeException, "No element map");  // NOLINT
             }
+            std::ostringstream ss;
             elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
         }
@@ -530,7 +530,7 @@ struct ShapeInfo
         , shapetype(TopoShape::shapeName(type).c_str())
     {}
 
-    int count() const
+    [[nodiscard]] int count() const
     {
         return cache.count();
     }
@@ -1298,6 +1298,142 @@ TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char*
     return *this;
 }
 
+struct MapperSewing: Part::TopoShape::Mapper
+{
+    BRepBuilderAPI_Sewing& maker;
+    explicit MapperSewing(BRepBuilderAPI_Sewing& maker)
+        : maker(maker)
+    {}
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override
+    {
+        _res.clear();
+        try {
+            const auto& shape = maker.Modified(s);
+            if (!shape.IsNull() && !shape.IsSame(s)) {
+                _res.push_back(shape);
+            }
+            else {
+                const auto& sshape = maker.ModifiedSubShape(s);
+                if (!sshape.IsNull() && !sshape.IsSame(s)) {
+                    _res.push_back(sshape);
+                }
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+};
+
+struct MapperThruSections: MapperMaker
+{
+    TopoShape firstProfile;
+    TopoShape lastProfile;
+
+    MapperThruSections(BRepOffsetAPI_ThruSections& tmaker, const std::vector<TopoShape>& profiles)
+        : MapperMaker(tmaker)
+    {
+        if (!tmaker.FirstShape().IsNull()) {
+            firstProfile = profiles.front();
+        }
+        if (!tmaker.LastShape().IsNull()) {
+            lastProfile = profiles.back();
+        }
+    }
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
+        MapperMaker::generated(s);
+        if ( ! _res.empty()) {
+            return _res;
+        }
+        try {
+            auto& tmaker = dynamic_cast<BRepOffsetAPI_ThruSections&>(maker);
+            auto shape = tmaker.GeneratedFace(s);
+            if (!shape.IsNull()) {
+                _res.push_back(shape);
+            }
+            if (firstProfile.getShape().IsSame(s) || firstProfile.findShape(s)) {
+                _res.push_back(tmaker.FirstShape());
+            }
+            else if (lastProfile.getShape().IsSame(s) || lastProfile.findShape(s)) {
+                _res.push_back(tmaker.LastShape());
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+};
+
+
+TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
+                                       const TopoShape& source,
+                                       const char* op)
+{
+    std::vector<TopoShape> sources(1, source);
+    return makeElementShape(mkShape, sources, op);
+}
+
+TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
+                                       const std::vector<TopoShape>& shapes,
+                                       const char* op)
+{
+    return makeShapeWithElementMap(mkShape.Shape(), MapperMaker(mkShape), shapes, op);
+}
+
+TopoShape&
+TopoShape::makeElementShape(BRepOffsetAPI_ThruSections& mk, const TopoShape& source, const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::ThruSections;
+    }
+    return makeElementShape(mk, std::vector<TopoShape>(1, source), op);
+}
+
+TopoShape& TopoShape::makeElementShape(BRepOffsetAPI_ThruSections& mk,
+                                       const std::vector<TopoShape>& sources,
+                                       const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::ThruSections;
+    }
+    return makeShapeWithElementMap(mk.Shape(), MapperThruSections(mk, sources), sources, op);
+}
+
+TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_Sewing& mk,
+                                       const std::vector<TopoShape>& shapes,
+                                       const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Sewing;
+    }
+    return makeShapeWithElementMap(mk.SewedShape(), MapperSewing(mk), shapes, op);
+}
+
+TopoShape&
+TopoShape::makeElementShape(BRepBuilderAPI_Sewing& mkShape, const TopoShape& source, const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Sewing;
+    }
+    return makeElementShape(mkShape, std::vector<TopoShape>(1, source), op);
+}
+
+TopoShape& TopoShape::makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
+                                       const TopoShape& source,
+                                       const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::HalfSpace;
+    }
+    return makeShapeWithElementMap(mkShape.Solid(), MapperMaker(mkShape), {source}, op);
+}
 
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
@@ -1395,7 +1531,7 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element
                                                 const Data::ElementIDRefs* _sids)
 {
     if (names.empty()) {
-        return Data::MappedName();
+        return Data::MappedName {};
     }
     std::string _marker;
     if (!marker) {
@@ -1474,7 +1610,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
         tmp = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
     }
     if (tmp.IsNull()) {
-        return TopoShape();
+        return TopoShape {};
     }
     const auto& wires = getSubTopoShapes(TopAbs_WIRE);
     auto it = wires.begin();
@@ -1541,7 +1677,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
             }
         }
     }
-    return TopoShape();
+    return TopoShape {};
 }
 
 struct MapperFill: Part::TopoShape::Mapper
@@ -1567,6 +1703,40 @@ struct MapperFill: Part::TopoShape::Mapper
         return _res;
     }
 };
+
+const std::vector<TopoDS_Shape>& MapperMaker::modified(const TopoDS_Shape& s) const
+{
+    _res.clear();
+    try {
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(maker.Modified(s)); it.More(); it.Next()) {
+            _res.push_back(it.Value());
+        }
+    }
+    catch (const Standard_Failure& e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+        }
+    }
+    return _res;
+}
+
+const std::vector<TopoDS_Shape>& MapperMaker::generated(const TopoDS_Shape& s) const
+{
+    _res.clear();
+    try {
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(maker.Generated(s)); it.More(); it.Next()) {
+            _res.push_back(it.Value());
+        }
+    }
+    catch (const Standard_Failure& e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+        }
+    }
+    return _res;
+}
 
 // topo naming counterpart of TopoShape::makeShell()
 TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
@@ -1659,26 +1829,26 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
     return *this;
 }
 
-// TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wires,
-//                                                 bool silent,
-//                                                 const char* op)
-// {
-//     BRepFill_Generator maker;
-//     for (auto& w : wires) {
-//         if (w.shapeType(silent) == TopAbs_WIRE) {
-//             maker.AddWire(TopoDS::Wire(w.getShape()));
-//         }
-//     }
-//     if (wires.empty()) {
-//         if (silent) {
-//             _Shape.Nullify();
-//             return *this;
-//         }
-//         FC_THROWM(NullShapeException, "No input shapes");
-//     }
-//     maker.Perform();
-//     this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
-//     return *this;
-// }
+TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wires,
+                                                bool silent,
+                                                const char* op)
+{
+    BRepFill_Generator maker;
+    for (auto& w : wires) {
+        if (w.shapeType(silent) == TopAbs_WIRE) {
+            maker.AddWire(TopoDS::Wire(w.getShape()));
+        }
+    }
+    if (wires.empty()) {
+        if (silent) {
+            _Shape.Nullify();
+            return *this;
+        }
+        FC_THROWM(NullShapeException, "No input shapes");
+    }
+    maker.Perform();
+    this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
+    return *this;
+}
 
 }  // namespace Part
