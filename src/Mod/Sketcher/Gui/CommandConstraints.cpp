@@ -2843,7 +2843,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         }
     }
 
-    if (edgegeoids.empty() && pointgeoids.empty()) {
+    if (edgegeoids.empty() && pointgeoids.size() < 2) {
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Impossible constraint"),
@@ -5545,33 +5545,19 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         return;
     }
 
-    // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
-
-    if (SubNames.size() < 2) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("Select at least two lines from the sketch."));
-        return;
-    }
-
     std::vector<int> ids;
     bool hasAlreadyExternal = false;
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : selection[0].getSubNames()) {
 
         int GeoId;
         Sketcher::PointPos PosId;
-        getIdsFromName(*it, Obj, GeoId, PosId);
+        getIdsFromName(subname, Obj, GeoId, PosId);
 
         if (!isEdge(GeoId, PosId)) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select a valid line."));
-            return;
+            continue;
         }
         else if (isPointOrSegmentFixed(Obj, GeoId)) {
             if (hasAlreadyExternal) {
@@ -5586,13 +5572,20 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         // Check that the curve is a line segment
         const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-        if (! isLineSegment(*geo)) {
+        if (!isLineSegment(*geo)) {
             Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("The selected edge is not a valid line."));
+                QObject::tr("Wrong selection"),
+                QObject::tr("One selected edge is not a valid line."));
             return;
         }
         ids.push_back(GeoId);
+    }
+
+    if (ids.size() < 2) {
+        Gui::TranslatedUserWarning(Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select at least two lines from the sketch."));
+        return;
     }
 
     // undo command open
