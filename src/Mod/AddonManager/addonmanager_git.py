@@ -387,6 +387,30 @@ class GitManager:
                 result_dict[author]["count"] += 1
         return result_dict
 
+    def migrate_branch(self, local_path: str, old_branch: str, new_branch: str) -> None:
+        """Rename a branch (used when the remote branch name changed). Assumes that "origin"
+        exists."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            self._synchronous_call_git(["branch", "-m", old_branch, new_branch])
+            self._synchronous_call_git(["fetch", "origin"])
+            self._synchronous_call_git(["branch", "--unset-upstream"])
+            self._synchronous_call_git(["branch", f"--set-upstream-to=origin/{new_branch}"])
+            self._synchronous_call_git(["pull"])
+        except GitFailed as e:
+            fci.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Git branch rename failed with the following message:",
+                )
+                + str(e)
+                + "\n"
+            )
+            os.chdir(old_dir)
+            raise e
+        os.chdir(old_dir)
+
     def _find_git(self):
         # Find git. In preference order
         #   A) The value of the GitExecutable user preference
