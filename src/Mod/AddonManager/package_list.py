@@ -454,11 +454,14 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
 
         installed_version_string = ""
         if repo.status() != Addon.Status.NOT_INSTALLED:
-            if repo.installed_version:
+            if repo.installed_version or repo.installed_metadata:
                 installed_version_string = (
                     "<br/>" + translate("AddonsInstaller", "Installed version") + ": "
                 )
-                installed_version_string += str(repo.installed_version)
+                if repo.installed_metadata:
+                    installed_version_string += str(repo.installed_metadata.version)
+                elif repo.installed_version:
+                    installed_version_string += str(repo.installed_version)
             else:
                 installed_version_string = "<br/>" + translate("AddonsInstaller", "Unknown version")
 

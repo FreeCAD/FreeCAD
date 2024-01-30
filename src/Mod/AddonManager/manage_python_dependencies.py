@@ -415,7 +415,6 @@ class PythonPackageManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         known_python_versions_string = pref.GetString("KnownPythonVersions", "[]")
         known_python_versions = json.loads(known_python_versions_string)
-        print(json.dumps(known_python_versions, indent=4))
         return known_python_versions
 
     @classmethod

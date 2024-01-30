@@ -40,6 +40,7 @@ from PySide import QtCore
 
 from Addon import Addon
 import addonmanager_utilities as utils
+from addonmanager_metadata import get_branch_from_metadata
 from addonmanager_git import initialize_git, GitFailed
 
 if FreeCAD.GuiUp:
@@ -281,7 +282,12 @@ class AddonInstaller(QtCore.QObject):
         install_path = os.path.join(self.installation_path, self.addon_to_install.name)
         try:
             if os.path.isdir(install_path):
-                self.git_manager.update(install_path)
+                old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
+                new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
+                if old_branch != new_branch:
+                    self.git_manager.migrate_branch(install_path, old_branch, new_branch)
+                else:
+                    self.git_manager.update(install_path)
             else:
                 self.git_manager.clone(self.addon_to_install.url, install_path)
             self.git_manager.checkout(install_path, self.addon_to_install.branch)

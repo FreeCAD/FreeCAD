@@ -31,10 +31,14 @@ from PySide import QtCore, QtGui, QtWidgets
 import addonmanager_freecad_interface as fci
 
 import addonmanager_utilities as utils
-from addonmanager_metadata import Version, UrlType, get_first_supported_freecad_version
+from addonmanager_metadata import (
+    Version,
+    get_first_supported_freecad_version,
+    get_branch_from_metadata,
+)
 from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from addonmanager_readme_viewer import ReadmeViewer
-from addonmanager_git import GitManager, NoGitFound, GitFailed
+from addonmanager_git import GitManager, NoGitFound
 from Addon import Addon
 from change_branch import ChangeBranchDialog
 
@@ -150,16 +154,30 @@ class PackageDetails(QtWidgets.QWidget):
 
             if status == Addon.Status.UPDATE_AVAILABLE:
                 if repo.metadata:
-                    installed_version_string += (
-                        "<b>"
-                        + translate(
-                            "AddonsInstaller",
-                            "On branch {}, update available to version",
-                        ).format(repo.branch)
-                        + " "
-                    )
-                    installed_version_string += str(repo.metadata.version)
-                    installed_version_string += ".</b>"
+                    name_change = False
+                    if repo.installed_metadata:
+                        old_branch = get_branch_from_metadata(repo.installed_metadata)
+                        new_branch = get_branch_from_metadata(repo.metadata)
+                        if old_branch != new_branch:
+                            installed_version_string += (
+                                "<b>"
+                                + translate(
+                                    "AddonsInstaller",
+                                    "Currently on branch {}, name changed to {}",
+                                ).format(old_branch, new_branch)
+                            ) + ".</b> "
+                            name_change = True
+                    if not name_change:
+                        installed_version_string += (
+                            "<b>"
+                            + translate(
+                                "AddonsInstaller",
+                                "On branch {}, update available to version",
+                            ).format(repo.branch)
+                            + " "
+                        )
+                        installed_version_string += str(repo.metadata.version)
+                        installed_version_string += ".</b>"
                 elif repo.macro and repo.macro.version:
                     installed_version_string += (
                         "<b>" + translate("AddonsInstaller", "Update available to version") + " "
@@ -364,7 +382,6 @@ class PackageDetails(QtWidgets.QWidget):
 
         # If all four above checks passed, then it's possible for us to switch
         # branches, if there are any besides the one we are on: show the button
-        print("Showing the button")
         self.ui.buttonChangeBranch.show()
 
     def set_disable_button_state(self):
