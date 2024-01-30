@@ -192,6 +192,7 @@ class Addon:
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
+        self.installed_metadata = None
 
         # Each repo is also a node in a directed dependency graph (referenced by name so
         # they can be serialized):
@@ -254,6 +255,8 @@ class Addon:
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
 
+        instance._load_installed_metadata()
+
         if "requires" in cache_dict:
             instance.requires = set(cache_dict["requires"])
             instance.blocks = set(cache_dict["blocks"])
@@ -292,6 +295,14 @@ class Addon:
             self.set_metadata(metadata)
         else:
             fci.Console.PrintLog(f"Internal error: {file} does not exist")
+
+    def _load_installed_metadata(self) -> None:
+        # If it is actually installed, there is a SECOND metadata file, in the actual installation,
+        # that may not match the cached one if the Addon has not been updated but the cache has.
+        mod_dir = os.path.join(self.mod_directory, self.name)
+        installed_metadata_path = os.path.join(mod_dir, "package.xml")
+        if os.path.isfile(installed_metadata_path):
+            self.installed_metadata = MetadataReader.from_file(installed_metadata_path)
 
     def set_metadata(self, metadata: Metadata) -> None:
         """Set the given metadata object as this object's metadata, updating the
@@ -683,9 +694,7 @@ class Addon:
                     filename, extension = os.path.splitext(current_file)
                     if extension == ".py":
                         wb_classname = self._find_classname_in_file(current_file)
-                        print(f"Current file: {current_file} ")
                         if wb_classname:
-                            print(f"Found name {wb_classname} \n")
                             return wb_classname
         return ""
 
