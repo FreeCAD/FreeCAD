@@ -44,7 +44,7 @@ void NavigationAnimation::onStop([[maybe_unused]] bool finished)
 
 FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
                                        const SbVec3f& rotationCenter, const SbVec3f& translation,
-                                       int duration)
+                                       int duration, const QEasingCurve::Type easingCurve)
     : NavigationAnimation(navigation)
     , targetOrientation(orientation)
     , targetTranslation(translation)
@@ -53,6 +53,7 @@ FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRota
     setDuration(duration);
     setStartValue(0.0);
     setEndValue(duration * 1.0);
+    setEasingCurve(easingCurve);
 }
 
 void FixedTimeAnimation::initialize()

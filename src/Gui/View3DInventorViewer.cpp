@@ -3409,8 +3409,12 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
                        ->GetInt("AnimationDuration", 500);
     }
 
+    QEasingCurve::Type easingCurve = static_cast<QEasingCurve::Type>(App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                         ->GetInt("NavigationAnimationEasingCurve", QEasingCurve::Type::InOutCubic));
+
     auto animation = std::make_shared<FixedTimeAnimation>(
-        navigation, orientation, rotationCenter, translation, duration);
+        navigation, orientation, rotationCenter, translation, duration, easingCurve);
 
     navigation->startAnimating(animation, wait);
 }
