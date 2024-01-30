@@ -27,11 +27,19 @@ import Part
 if App.GuiUp:
     import FreeCADGui as Gui
 
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
+
 # translate = App.Qt.translate
 
 __title__ = "Assembly utilitary functions"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
+
+
+def tr(context, text, comment=None):
+    return QtCore.QCoreApplication.translate(context, text, comment)
 
 
 def activeAssembly():

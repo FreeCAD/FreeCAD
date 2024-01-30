@@ -84,6 +84,8 @@ public:
     App::DocumentObject* getActivePart() const;
 
 
+    /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
+    bool keyPressed(bool pressed, int key) override;
     /// is called when the provider is in edit and the mouse is moved
     bool mouseMove(const SbVec2s& pos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and the mouse is clicked

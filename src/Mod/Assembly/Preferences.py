@@ -24,6 +24,8 @@
 import FreeCAD
 import FreeCADGui
 
+from UtilsAssembly import tr
+
 
 def preferences():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Assembly")
@@ -34,7 +36,15 @@ class PreferencesPage:
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/Assembly.ui")
 
     def saveSettings(self):
-        pass
+        pref = preferences()
+        pref.SetBool("LeaveEditWithEscape", self.form.checkBoxEnableEscape.isChecked())
+        pref.SetInt("GroundFirstPart", self.form.groundFirstPart.currentIndex())
 
     def loadSettings(self):
-        pass
+        pref = preferences()
+        self.form.checkBoxEnableEscape.setChecked(pref.GetBool("LeaveEditWithEscape", True))
+        self.form.groundFirstPart.clear()
+        self.form.groundFirstPart.addItem(tr("Assembly", "Ask"))
+        self.form.groundFirstPart.addItem(tr("Assembly", "Always"))
+        self.form.groundFirstPart.addItem(tr("Assembly", "Never"))
+        self.form.groundFirstPart.setCurrentIndex(pref.GetInt("GroundFirstPart", 0))

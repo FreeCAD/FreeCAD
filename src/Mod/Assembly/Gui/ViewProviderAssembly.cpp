@@ -28,6 +28,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <Inventor/events/SoKeyboardEvent.h>
 #endif
 
 #include <App/Link.h>
@@ -233,6 +234,21 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
     }
 
     return activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
+}
+
+bool ViewProviderAssembly::keyPressed(bool pressed, int key)
+{
+    if (key == SoKeyboardEvent::ESCAPE) {
+        if (isInEditMode()) {
+
+            ParameterGrp::handle hPgr = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Assembly");
+
+            return !hPgr->GetBool("LeaveEditWithEscape", true);
+        }
+    }
+
+    return false;  // handle all other key events
 }
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
