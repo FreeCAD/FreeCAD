@@ -1130,7 +1130,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(
                     sel.ObjectName, sub_name
                 )
-                if len(self.current_selection) >= 2 or self.assembly.Name not in objs_names:
+                if self.assembly.Name not in objs_names:
                     Gui.Selection.removeSelection(sel.Object, sub_name)
                     continue
 
@@ -1154,8 +1154,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                     and selected_object == self.current_selection[0]["object"]
                 ):
                     # do not select several feature of the same object.
-                    Gui.Selection.removeSelection(sel.Object, sub_name)
-                    continue
+                    self.current_selection.clear()
+                    Gui.Selection.clearSelection()
+                    return
 
                 selection_dict = {
                     "object": selected_object,
@@ -1168,7 +1169,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
                 self.current_selection.append(selection_dict)
 
-        self.updateJoint()
+        # do not accept initial selection if we don't have 2 selected features
+        if len(self.current_selection) != 2:
+            self.current_selection.clear()
+            Gui.Selection.clearSelection()
+        else:
+            self.updateJoint()
 
     def createJointObject(self):
         type_index = self.form.jointType.currentIndex()
