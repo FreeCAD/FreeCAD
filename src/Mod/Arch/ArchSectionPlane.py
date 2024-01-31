@@ -336,7 +336,7 @@ def getSVG(source,
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text","DraftText"]:
+        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text","DraftText","Axis"]:
             if isOriented(o,cutplane):
                 drafts.append(o)
         elif o.isDerivedFrom("App::DocumentObjectGroup"):
@@ -511,7 +511,8 @@ def getSVG(source,
                                  direction=direction,
                                  color=lineColor,
                                  techdraw=techdraw,
-                                 rotation=rotation)
+                                 rotation=rotation,
+                                 override=False)
         if not techdraw:
             svg += '</g>'
 
