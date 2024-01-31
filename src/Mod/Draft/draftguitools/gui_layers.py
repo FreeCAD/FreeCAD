@@ -94,7 +94,7 @@ class LayerManager:
 
     def Activated(self):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore, QtGui, QtWidgets
 
         # store changes to be committed
         self.deleteList = []
@@ -138,7 +138,7 @@ class LayerManager:
         self.dialog.tree.setItemDelegate(Layers_Delegate())
         self.dialog.tree.setItemsExpandable(False)
         self.dialog.tree.setRootIsDecorated(False) # removes spacing in first column
-        self.dialog.tree.setSelectionMode(QtGui.QTreeView.ExtendedSelection) # allow to select many
+        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow to select many
 
         # fill the tree view
         self.update()
@@ -379,7 +379,7 @@ class LayerManager:
 
         "toggle selected layers on/off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         state = None
         for index in self.dialog.tree.selectedIndexes():
@@ -396,7 +396,7 @@ class LayerManager:
 
         "isolates the selected layers (turns all the others off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         onrows = []
         for index in self.dialog.tree.selectedIndexes():
@@ -409,15 +409,15 @@ class LayerManager:
 
 if FreeCAD.GuiUp:
 
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
 
-    class Layers_Delegate(QtGui.QStyledItemDelegate):
+    class Layers_Delegate(QtWidgets.QStyledItemDelegate):
 
         "model delegate"
 
         def __init__(self, parent=None, *args):
 
-            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            QtWidgets.QStyledItemDelegate.__init__(self, parent, *args)
             # setEditorData() is triggered several times.
             # But we want to show the color dialog only the first time
             self.first = True
@@ -425,26 +425,26 @@ if FreeCAD.GuiUp:
         def createEditor(self,parent,option,index):
 
             if index.column() == 0: # Layer on/off
-                editor = QtGui.QCheckBox(parent)
+                editor = QtWidgets.QCheckBox(parent)
             if index.column() == 1: # Layer name
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
             elif index.column() == 2: # Line width
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(99)
             elif index.column() == 3: # Line style
-                editor = QtGui.QComboBox(parent)
+                editor = QtWidgets.QComboBox(parent)
                 editor.addItems(utils.DRAW_STYLES)
             elif index.column() == 4: # Line color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 5: # Shape color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 6: # Transparency
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(100)
             elif index.column() == 7: # Line print color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             return editor
 
@@ -462,14 +462,14 @@ if FreeCAD.GuiUp:
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 5: # Shape color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 6: # Transparency
@@ -478,7 +478,7 @@ if FreeCAD.GuiUp:
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
 

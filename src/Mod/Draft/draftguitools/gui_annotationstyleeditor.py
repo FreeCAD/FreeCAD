@@ -28,6 +28,8 @@
 # @{
 import json
 import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -209,19 +211,19 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.form.pushButtonRename.setEnabled(False)
         elif index == 1:
             # Add new... entry
-            reply = QtGui.QInputDialog.getText(None,
+            reply = QtWidgets.QInputDialog.getText(None,
                                                "Create new style",
                                                "Style name:")
             if reply[1]:
                 # OK or Enter pressed
                 name = reply[0].strip()
                 if name == "":
-                    QtGui.QMessageBox.information(None,
+                    QtWidgets.QMessageBox.information(None,
                                                   "Style name required",
                                                   "No style name specified")
                     self.form.comboBoxStyles.setCurrentIndex(0)
                 elif name in self.styles:
-                    QtGui.QMessageBox.information(None,
+                    QtWidgets.QMessageBox.information(None,
                                                   "Style exists",
                                                   "This style name already exists")
                     self.form.comboBoxStyles.setCurrentIndex(0)
@@ -250,12 +252,12 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         if self.get_style_users(style):
-            reply = QtGui.QMessageBox.question(None,
+            reply = QtWidgets.QMessageBox.question(None,
                                                "Style in use",
                                                "This style is used by some objects in this document. Are you sure?",
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                               QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.No:
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                               QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.No:
                 return
         self.form.comboBoxStyles.removeItem(index)
         del self.styles[style]
@@ -265,16 +267,16 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         index = self.form.comboBoxStyles.currentIndex()
         style = self.form.comboBoxStyles.itemText(index)
 
-        reply = QtGui.QInputDialog.getText(None,
+        reply = QtWidgets.QInputDialog.getText(None,
                                            "Rename style",
                                            "New name:",
-                                           QtGui.QLineEdit.Normal,
+                                           QtWidgets.QLineEdit.Normal,
                                            style)
         if reply[1]:
             # OK or Enter pressed
             newname = reply[0]
             if newname in self.styles:
-                reply = QtGui.QMessageBox.information(None,
+                reply = QtWidgets.QMessageBox.information(None,
                                                       "Style exists",
                                                       "This style name already exists")
             else:
@@ -286,8 +288,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def on_import(self):
         """Import styles from a json file."""
-        filename = QtGui.QFileDialog.getOpenFileName(
-            QtGui.QApplication.activeWindow(),
+        filename = QtWidgets.QFileDialog.getOpenFileName(
+            QtWidgets.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
             translate("draft","JSON files (*.json *.JSON)"))
@@ -306,8 +308,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def on_export(self):
         """Export styles to a json file."""
-        filename = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(),
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            QtWidgets.QApplication.activeWindow(),
             translate("draft","Save styles file"),
             None,
             translate("draft","JSON file (*.json)"))

@@ -63,7 +63,7 @@ from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
 
 if FreeCAD.GuiUp:
-    from PySide import QtGui
+    from PySide import QtWidgets
     import FreeCADGui
     gui = True
     try:
@@ -752,14 +752,14 @@ class svgHandler(xml.sax.ContentHandler):
                     _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
                             "will use the older standard 90 dpi.")
                     if FreeCAD.GuiUp:
-                        msgBox = QtGui.QMessageBox()
+                        msgBox = QtWidgets.QMessageBox()
                         msgBox.setText(translate("ImportSVG", _inf))
                         msgBox.setInformativeText(translate("ImportSVG", _qst))
-                        msgBox.setStandardButtons(QtGui.QMessageBox.Yes
-                                                  | QtGui.QMessageBox.No)
-                        msgBox.setDefaultButton(QtGui.QMessageBox.No)
+                        msgBox.setStandardButtons(QtWidgets.QMessageBox.Yes
+                                                  | QtWidgets.QMessageBox.No)
+                        msgBox.setDefaultButton(QtWidgets.QMessageBox.No)
                         ret = msgBox.exec_()
-                        if ret == QtGui.QMessageBox.Yes:
+                        if ret == QtWidgets.QMessageBox.Yes:
                             self.svgdpi = 96.0
                         else:
                             self.svgdpi = 90.0

@@ -36,7 +36,7 @@ to the construction group.
 # @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -379,11 +379,11 @@ class Ui_AddNamedGroup():
     simple label and line edit in dialogbox
     """
     def __init__(self):
-        self.form = QtGui.QWidget()
+        self.form = QtWidgets.QWidget()
         self.form.setWindowTitle(translate("draft", "Add group"))
-        row = QtGui.QHBoxLayout(self.form)
-        lbl = QtGui.QLabel(translate("draft", "Group name") + ":")
-        self.name = QtGui.QLineEdit()
+        row = QtWidgets.QHBoxLayout(self.form)
+        lbl = QtWidgets.QLabel(translate("draft", "Group name") + ":")
+        self.name = QtWidgets.QLineEdit()
         row.addWidget(lbl)
         row.addWidget(self.name)
 

@@ -1765,7 +1765,7 @@ def get_working_plane(update=True):
 
 # View observer code to update the Draft Tray:
 if FreeCAD.GuiUp:
-    from PySide2 import QtWidgets
+    from PySide import QtWidgets
     from draftutils.todo import ToDo
 
     def _update_gui():
