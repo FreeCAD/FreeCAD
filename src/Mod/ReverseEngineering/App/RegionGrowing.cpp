@@ -41,6 +41,8 @@
 #include <pcl/search/search.h>
 #include <pcl/segmentation/region_growing.h>
 
+#include "FCConsts.h"
+
 using namespace std;
 using namespace Reen;
 using pcl::PointCloud;
@@ -86,9 +88,8 @@ void RegionGrowing::perform(int ksearch)
     reg.setSearchMethod(tree);
     reg.setNumberOfNeighbours(30);
     reg.setInputCloud(cloud);
-    // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * M_PI);
+    reg.setSmoothnessThreshold(3.0 / 180.0 * pi_v);
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;
@@ -140,9 +141,8 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
     reg.setSearchMethod(tree);
     reg.setNumberOfNeighbours(30);
     reg.setInputCloud(cloud);
-    // reg.setIndices (indices);
     reg.setInputNormals(normals);
-    reg.setSmoothnessThreshold(3.0 / 180.0 * M_PI);
+    reg.setSmoothnessThreshold(3.0 / 180.0 * pi_v);
     reg.setCurvatureThreshold(1.0);
 
     std::vector<pcl::PointIndices> clusters;

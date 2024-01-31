@@ -26,9 +26,7 @@
  ***************************************************************************/
 
 #include "frames.hpp"
-
-#define _USE_MATH_DEFINES  // For MSVC
-#include <math.h>
+#include "FCConsts.h"
 
 namespace KDL {
 
@@ -244,7 +242,7 @@ void Rotation::GetRPY(double& roll,double& pitch,double& yaw) const
     {
 		double epsilon=1E-12;
 		pitch = atan2(-data[6], sqrt( sqr(data[0]) +sqr(data[3]) )  );
-        if ( fabs(pitch) > (M_PI/2.0-epsilon) ) {
+        if ( fabs(pitch) > (pi_1v_2-epsilon) ) {
             yaw = atan2(	-data[1], data[4]);
             roll  = 0.0 ;
         } else {
@@ -358,7 +356,7 @@ double Rotation::GetRotAngle(Vector& axis,double eps) const {
 		return 0;
 	}
 	if (ca < -1+t) {
-		// The case of angles consisting of multiples of M_PI:
+		// The case of angles consisting of multiples of pi:
 		// two solutions, choose a positive Z-component of the axis
 		double x = sqrt( (data[0]+1.0)/2);
 		double y = sqrt( (data[4]+1.0)/2);
@@ -366,8 +364,7 @@ double Rotation::GetRotAngle(Vector& axis,double eps) const {
 		if ( data[2] < 0) x=-x;
 		if ( data[7] < 0) y=-y;
 		if ( x*y*data[1] < 0) x=-x;  // this last line can be necessary when z is 0
-		// z always >= 0 
-		// if z equal to zero 
+
 		axis = Vector( x,y,z  );
 		return PI;
 	}

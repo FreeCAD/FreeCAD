@@ -34,6 +34,8 @@
 #include "VoronoiCellPy.h"
 #include "VoronoiVertexPy.h"
 
+#include "FCConsts.h"
+
 
 using namespace Path;
 
@@ -630,10 +632,10 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
       double a0 = e->dia->angleOfSegment(i0);
       double a1 = e->dia->angleOfSegment(i1);
       double a = a0 - a1;
-      if (a > M_PI_2) {
-        a -= M_PI;
-      } else if (a < -M_PI_2) {
-        a += M_PI;
+      if (a > pi_1v_2) {
+        a -= pi_v;
+      } else if (a < -pi_1v_2) {
+        a += pi_v;
       }
       return Py::new_reference_to(Py::Float(a));
     }

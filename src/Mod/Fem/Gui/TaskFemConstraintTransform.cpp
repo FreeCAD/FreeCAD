@@ -42,6 +42,8 @@
 #include "TaskFemConstraintTransform.h"
 #include "ui_TaskFemConstraintTransform.h"
 
+#include "FCConsts.h"
+
 
 using namespace FemGui;
 using namespace Gui;
@@ -401,13 +403,13 @@ void TaskFemConstraintTransform::addToSelection()
             about_z = 0;
         }
         else {
-            about_z = (-1 * (acos(m / mag_norm_z) * 180 / M_PI) + 180);
+            about_z = (-1 * (acos(m / mag_norm_z) * 180 / pi_v) + 180);
         }
         if (n > 0) {
             about_z = about_z * (-1);
         }
         // rotation to ZY plane
-        double m_p = n * sin(about_z * M_PI / 180) + m * cos(about_z * M_PI / 180);
+        double m_p = n * sin(about_z * pi_v / 180) + m * cos(about_z * pi_v / 180);
         double l_p = l;
         // about X-axis
         double about_x;
@@ -416,7 +418,7 @@ void TaskFemConstraintTransform::addToSelection()
             about_x = 0;
         }
         else {
-            about_x = -(acos(l_p / mag_norm_x) * 180 / M_PI);  // rotation to the Z axis
+            about_x = -(acos(l_p / mag_norm_x) * 180 / pi_v);  // rotation to the Z axis
         }
         ui->sp_X->setValue(round(about_x));
         ui->sp_Z->setValue(round(about_z));

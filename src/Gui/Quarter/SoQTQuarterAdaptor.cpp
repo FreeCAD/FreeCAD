@@ -42,6 +42,8 @@
 
 #include "SoQTQuarterAdaptor.h"
 
+#include "FCConsts.h"
+
 // NOLINTBEGIN
 // clang-format off
 static unsigned char fps2dfont[][12] = {
@@ -294,7 +296,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
 
     SbRotation camrot = in->orientation.getValue();
 
-    float focaldist = float(in->height.getValue() / (2.0*tan(M_PI / 8.0)));  // NOLINT
+    float focaldist = float(in->height.getValue() / (2.0*tan(pi_v / 8.0)));  // NOLINT
 
     SbVec3f offset(0,0,focaldist-in->focalDistance.getValue());
 
@@ -304,7 +306,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
     out->focalDistance.setValue(focaldist);
 
     // 45° is the default value of this field in SoPerspectiveCamera.
-    out->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+    out->heightAngle = (float)(pi_v / 4.0);  // NOLINT
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const SoPerspectiveCamera* in,
@@ -559,7 +561,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
 
     bool end = (par == 1.0F);
 
-    par = (float)((1.0 - cos(M_PI * par)) * 0.5);  // NOLINT
+    par = (float)((1.0 - cos(pi_v * par)) * 0.5);  // NOLINT
 
     thisp->getSoRenderManager()->getCamera()->position = thisp->m_camerastartposition +
             (thisp->m_cameraendposition - thisp->m_camerastartposition) * par;

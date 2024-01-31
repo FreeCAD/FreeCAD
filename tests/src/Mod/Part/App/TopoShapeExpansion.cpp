@@ -13,6 +13,7 @@
 #include <GC_MakeCircle.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
+#include "FCConsts.h"
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -162,10 +163,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
     double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid - pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, Len * Wid + pi_v * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -186,8 +187,8 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + pi_v * Rad * Rad);
     EXPECT_FLOAT_EQ(area2, Len * Wid);
     EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
@@ -211,8 +212,8 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + pi_v * Rad * Rad);
     EXPECT_FLOAT_EQ(area2, Len * Wid);
     EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
@@ -236,10 +237,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid - pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, Len * Wid - pi_v * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -261,8 +262,8 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, 0);
     EXPECT_FLOAT_EQ(area2, Len * Wid);
     EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
@@ -287,10 +288,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceClosedWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area, Len * Wid + pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, 0);
+    EXPECT_FLOAT_EQ(area2, pi_v * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, pi_v * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -392,7 +393,7 @@ TEST_F(TopoShapeExpansionTest, splitWires)
     // Assert
     EXPECT_EQ(inner.size(), 1);
     EXPECT_FLOAT_EQ(getLength(wire.getShape()), 2 + 2 + 3 + 3);
-    EXPECT_FLOAT_EQ(getLength(inner.front().getShape()), M_PI * Rad * 2);
+    EXPECT_FLOAT_EQ(getLength(inner.front().getShape()), pi_2v * Rad);
     EXPECT_EQ(wire.getShape().Orientation(), TopAbs_REVERSED);
     for (Part::TopoShape& shape : inner) {
         EXPECT_EQ(shape.getShape().Orientation(), TopAbs_FORWARD);
@@ -591,7 +592,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellOpen)
     const float Wid = 2;
     auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
     auto transform {gp_Trsf()};
-    transform.SetRotation(gp_Ax1(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)), M_PI / 2);
+    transform.SetRotation(gp_Ax1(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)), pi_1v_2);
     auto face2 = face1;  // Shallow copy
     face2.Move(TopLoc_Location(transform));
     TopoDS_Compound compound1;

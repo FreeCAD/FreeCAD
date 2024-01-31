@@ -30,6 +30,8 @@
 
 #include "SoTouchEvents.h"
 
+#include "FCConsts.h"
+
 
 SO_EVENT_SOURCE(SoGestureEvent);
 
@@ -86,8 +88,8 @@ SoGesturePinchEvent::SoGesturePinchEvent(QPinchGesture* qpinch, QWidget *widget)
     deltaZoom = qpinch->scaleFactor();
     totalZoom = qpinch->totalScaleFactor();
 
-    deltaAngle = -unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * M_PI);
-    totalAngle = -qpinch->totalRotationAngle() / 180 * M_PI;
+    deltaAngle = -unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * pi_v);
+    totalAngle = -qpinch->totalRotationAngle() / 180 * pi_v;
 
     state = SbGestureState(qpinch->state());
 
@@ -111,7 +113,7 @@ SbBool SoGesturePinchEvent::isSoGesturePinchEvent(const SoEvent *ev) const
  */
 double SoGesturePinchEvent::unbranchAngle(double ang)
 {
-    return ang - 2.0 * M_PI * floor((ang + M_PI) / (2.0 * M_PI));
+    return ang - pi_2v * floor((ang + pi_v) / (pi_2v));
 }
 
 

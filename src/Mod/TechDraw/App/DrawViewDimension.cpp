@@ -594,7 +594,7 @@ double DrawViewDimension::getDimValue()
             Base::Vector3d vertex = pts.vertex();
             Base::Vector3d leg0 = pts.first() - vertex;
             Base::Vector3d leg1 = pts.second() - vertex;
-            double legAngle = leg0.GetAngle(leg1) * 180.0 / M_PI;
+            double legAngle = leg0.GetAngle(leg1) * 180.0 / pi_v;
             result = legAngle;
         }
     }
@@ -1529,19 +1529,12 @@ bool DrawViewDimension::fixExactMatch()
 // but we did not find an exact match in the geometry pile
 void DrawViewDimension::handleNoExactMatch()
 {
-//    Base::Console().Message("DVD::handleNoExactMatch()\n");
-//    Base::Console().Message("%s - trying to match changed geometry - stage 2\n", getNameInDocument());
-    // this is where we insert the clever logic to determine that the changed geometry
-    // actually still represents the "front top left" edge.
-    // after figuring out the new reference, save the geometry
-    // updateSavedGeometry();
     m_referencesCorrect = true;
 }
 
 //find an edge in the view that matches the reference entry's type and characteristics
 std::string DrawViewDimension::recoverChangedEdge2d(int iReference)
 {
-//    Base::Console().Message("DVD::recoverChangedEdge2d(ref: %d)\n", iReference);
     double scale = getViewPart()->getScale();
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
     std::vector<TechDraw::BaseGeomPtr> gEdges = getViewPart()->getEdgeGeometry();
@@ -1555,7 +1548,6 @@ std::string DrawViewDimension::recoverChangedEdge2d(int iReference)
             continue;
         }
         bool isSame = m_matcher->compareGeometry(savedGeometryItem, temp);
-//        Base::Console().Message("DVD::recoverChangedEdge2d - iEdge: %d isSame: %d\n", iEdge, isSame);
         if (isSame) {
             return std::string("Edge") + std::to_string(iEdge);
         }
@@ -1566,7 +1558,6 @@ std::string DrawViewDimension::recoverChangedEdge2d(int iReference)
 
 std::string DrawViewDimension::recoverChangedVertex2d(int iReference)
 {
-//    Base::Console().Message("DVD::recoverChangedVertex2d(%d)\n", iReference);
     double scale = getViewPart()->getScale();
     std::vector<Part::TopoShape> savedAll = SavedGeometry.getValues();
     if (savedAll.empty() ||
@@ -1589,7 +1580,6 @@ std::string DrawViewDimension::recoverChangedVertex2d(int iReference)
 
 std::string DrawViewDimension::recoverChangedEdge3d(int iReference)
 {
-//    Base::Console().Message("DVD::recoverChangedEdge3d(%d)\n", iReference);
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
     ReferenceVector references = getEffectiveReferences();
     App::DocumentObject* searchObject = references.at(iReference).getObject();
@@ -1634,7 +1624,6 @@ std::vector<TopoShape> DrawViewDimension::getEdges(const TopoShape& inShape)
 // as recoverChangedVertex2d, but 3d references do not need to be unscaled
 std::string DrawViewDimension::recoverChangedVertex3d(int iReference)
 {
-//    Base::Console().Message("DVD::recoverChangedVertex3d(%d)\n", iReference);
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
     ReferenceVector references = getEffectiveReferences();
     App::DocumentObject* searchObject = references.at(iReference).getObject();
@@ -1697,7 +1686,6 @@ pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) con
 //set the reference property from a reference vector
 void DrawViewDimension::setReferences2d(ReferenceVector refs)
 {
-//    Base::Console().Message("DVD::setReferences2d(%d)\n", refs.size());
     std::vector<App::DocumentObject*> objects;
     std::vector<std::string> subNames;
     if (objects.size() != subNames.size()) {
@@ -1737,7 +1725,6 @@ void DrawViewDimension::setReferences3d(ReferenceVector refs)
 //!add Dimension 3D references to measurement
 void DrawViewDimension::setAll3DMeasurement()
 {
-    //    Base::Console().Message("DVD::setAll3dMeasurement()\n");
     measurement->clear();
     const std::vector<App::DocumentObject*>& Objs = References3D.getValues();
     const std::vector<std::string>& Subs = References3D.getSubValues();

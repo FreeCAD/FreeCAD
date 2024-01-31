@@ -41,6 +41,8 @@
 
 #include "CircleEllipseConstructionMethod.h"
 
+#include "FCConsts.h"
+
 using namespace std;
 
 namespace SketcherGui
@@ -134,7 +136,7 @@ private:
                 if (constructionMethod() == ConstructionMethod::Center) {
                     secondPoint = onSketchPos;
                     double angle1 = (onSketchPos - centerPoint).Angle() - startAngle;
-                    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi_v;
                     arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
                     if (arcAngle > 0) {
@@ -185,7 +187,7 @@ private:
                         }
                         startAngle = std::max(angle1, angle2);
                         endAngle = std::min(angle1, angle2);
-                        arcAngle = 2 * M_PI - (startAngle - endAngle);
+                        arcAngle = pi_2v - (startAngle - endAngle);
                     }
                 }
 
@@ -244,9 +246,6 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
-            /*Gui::NotifyError(sketchgui,
-                QT_TRANSLATE_NOOP("Notifications", "Error"),
-                QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));*/
 
             Gui::Command::abortCommand();
             THROWM(Base::RuntimeError,
@@ -572,7 +571,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     double arcAngle =
                         Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
-                    if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                    if (fmod(fabs(arcAngle), pi_2v) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
                     }

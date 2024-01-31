@@ -24,6 +24,7 @@
 #define __PRECOMPILED__
 
 #include <FCConfig.h>
+#include <FCConsts.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)

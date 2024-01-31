@@ -25,6 +25,7 @@
 #define GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
+#include <FCConsts.h>
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN

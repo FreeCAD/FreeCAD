@@ -66,6 +66,8 @@
 #include "ViewProviderDimension.h"
 #include "ViewProviderPage.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -74,7 +76,6 @@ using DU = DrawUtil;
 
 namespace TechDrawGui
 {
-//TechDraw::LineFormat activeAttributes; // container holding global line attributes
 
 //internal helper functions
 TechDraw::LineFormat& _getActiveLineAttributes();
@@ -1062,7 +1063,6 @@ CmdTechDrawExtensionDrawCosmCircle3Points::CmdTechDrawExtensionDrawCosmCircle3Po
 void CmdTechDrawExtensionDrawCosmCircle3Points::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("Cosmetic Circle 3 Points started\n");
     execDrawCosmCircle3Points(this);
 }
 
@@ -1816,8 +1816,6 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     }
     std::string sUserString = Base::Tools::toStdString(qUserString);
 
-    // set the attributes in the data tab's fields
-    //    balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
     balloon->KinkLength.setValue(0.0);
@@ -2070,7 +2068,7 @@ std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
 float _getAngle(Base::Vector3d center, Base::Vector3d point)
 {
     Base::Vector3d vecCP = point - center;
-    double angle = DU::angleWithX(vecCP) * 180.0 / M_PI;
+    double angle = DU::angleWithX(vecCP) * 180.0 / pi_v;
     return angle;
 }
 

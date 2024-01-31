@@ -80,6 +80,7 @@
 
 #include "Area.h"
 
+#include "FCConsts.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -394,7 +395,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire,
             gp_Pnt center = circle.Location();
             int type = dir.Z() < 0 ? -1 : 1;
             if (reversed) type = -type;
-            if (fabs(first - last) > M_PI) {
+            if (fabs(first - last) > pi_v) {
                 // Split arc(circle) larger than half circle. Because gcode
                 // can't handle full circle?
                 gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
@@ -2323,7 +2324,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
             for (int j = 0; j < steps; ++j, offset += stepover) {
                 Point p1(-r, offset), p2(r, offset);
                 if (a > Precision::Confusion()) {
-                    double r = a * M_PI / 180.0;
+                    double r = a * pi_v / 180.0;
                     p1.Rotate(r);
                     p2.Rotate(r);
                 }
@@ -3696,7 +3697,7 @@ void Area::toPath(Toolpath& path, const std::list<TopoDS_Shape>& shapes,
                         }
                     }
 
-                    if (fabs(first - last) > M_PI) {
+                    if (fabs(first - last) > pi_v) {
                         // Split arc(circle) larger than half circle.
                         gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
                         addGArc(verbose, abs_center, path, plast, mid, center, clockwise, nf, cur_f);

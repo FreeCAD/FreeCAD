@@ -24,10 +24,6 @@
 
 #ifndef _PreComp_
 
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include <Gui/ViewProvider.h>
-# define _USE_MATH_DEFINES
-# include <cmath>
 
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>

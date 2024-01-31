@@ -50,6 +50,8 @@
 #include "DlgRevolution.h"
 #include "ui_DlgRevolution.h"
 
+#include "FCConsts.h"
+
 
 using namespace PartGui;
 
@@ -304,7 +306,7 @@ bool DlgRevolution::validate()
 
     //check angle
     if (!axisLinkHasAngle){
-        if (fabs(this->getAngle() / 180.0 * M_PI) < Precision::Angular()) {
+        if (fabs(this->getAngle() / 180.0 * pi_v) < Precision::Angular()) {
             QMessageBox::critical(this, windowTitle(),
                 tr("Revolution angle span is zero. It must be non-zero."));
             ui->angle->setFocus();

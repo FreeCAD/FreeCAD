@@ -57,6 +57,8 @@
 #include "DrawSketchHandlerOffset.h"
 #include "DrawSketchHandlerRotate.h"
 
+#include "FCConsts.h"
+
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
 using namespace std;
@@ -1392,14 +1394,14 @@ public:
             Base::Vector2d endpoint = onSketchPos;
 
             if (snapMode == SnapMode::Snap5Degree) {
-                angle = round(angle / (M_PI / 36)) * M_PI / 36;
+                angle = round(angle / (pi_v / 36)) * pi_v / 36;
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle), sin(angle));
             }
 
             if (showCursorCoords()) {
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
-                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / pi_v, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(endpoint, text);
             }
@@ -1968,14 +1970,14 @@ public:
             Base::Vector2d endpoint = onSketchPos;
 
             if (snapMode == SnapMode::Snap5Degree) {
-                angle = round(angle / (M_PI / 36)) * M_PI / 36;
+                angle = round(angle / (pi_v / 36)) * pi_v / 36;
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle), sin(angle));
             }
 
             if (showCursorCoords()) {
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
-                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / pi_v, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(endpoint, text);
             }

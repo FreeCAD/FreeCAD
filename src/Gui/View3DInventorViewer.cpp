@@ -2942,7 +2942,7 @@ void View3DInventorViewer::setCameraType(SoType type)
             return;
         }
 
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = pi_1v_4;  // NOLINT
     }
 }
 
@@ -3099,7 +3099,7 @@ void View3DInventorViewer::viewAll()
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
     if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);  // NOLINT
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = pi_1v_4;  // NOLINT
     }
 
     if (isAnimationEnabled()) {
@@ -3461,7 +3461,7 @@ void View3DInventorViewer::drawAxisCross()
 
     const float NEARVAL = 0.1F;
     const float FARVAL = 10.0F;
-    const float dim = NEARVAL * float(tan(M_PI / 8.0)); // FOV is 45 deg (45/360 = 1/8)
+    const float dim = NEARVAL * tan(pi_1v_8); // FOV is 45 deg (45/360 = 1/8)
     glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
 
 

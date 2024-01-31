@@ -35,14 +35,8 @@
 #include "Robot6Axis.h"
 #include "RobotAlgos.h"
 
+#include "FCConsts.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846 /* pi */
-#endif
-
-#ifndef M_PI_2
-#define M_PI_2 1.57079632679489661923 /* pi/2 */
-#endif
 
 using namespace Robot;
 using namespace Base;
@@ -85,12 +79,12 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
     for (int i = 0; i < 6; i++) {
         temp.addSegment(Segment(Joint(Joint::RotZ),
                                 Frame::DH(KinDef[i].a,
-                                          KinDef[i].alpha * (M_PI / 180),
+                                          KinDef[i].alpha * (pi_v / 180),
                                           KinDef[i].d,
-                                          KinDef[i].theta * (M_PI / 180))));
+                                          KinDef[i].theta * (pi_v / 180))));
         RotDir[i] = KinDef[i].rotDir;
-        Max(i) = KinDef[i].maxAngle * (M_PI / 180);
-        Min(i) = KinDef[i].minAngle * (M_PI / 180);
+        Max(i) = KinDef[i].maxAngle * (pi_v / 180);
+        Min(i) = KinDef[i].minAngle * (pi_v / 180);
         Velocity[i] = KinDef[i].velocity;
     }
 
@@ -103,12 +97,12 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 
 double Robot6Axis::getMaxAngle(int Axis)
 {
-    return Max(Axis) * (180.0 / M_PI);
+    return Max(Axis) * (180.0 / pi_v);
 }
 
 double Robot6Axis::getMinAngle(int Axis)
 {
-    return Min(Axis) * (180.0 / M_PI);
+    return Min(Axis) * (180.0 / pi_v);
 }
 
 void split(std::string const& string, const char delimiter, std::vector<std::string>& destination)
@@ -179,8 +173,8 @@ void Robot6Axis::Save(Writer& writer) const
                         << "Q2=\"" << Tip.getRotation()[2] << "\" "
                         << "Q3=\"" << Tip.getRotation()[3] << "\" "
                         << "rotDir=\"" << RotDir[i] << "\" "
-                        << "maxAngle=\"" << Max(i) * (180.0 / M_PI) << "\" "
-                        << "minAngle=\"" << Min(i) * (180.0 / M_PI) << "\" "
+                        << "maxAngle=\"" << Max(i) * (180.0 / pi_v) << "\" "
+                        << "minAngle=\"" << Min(i) * (180.0 / pi_v) << "\" "
                         << "AxisVelocity=\"" << Velocity[i] << "\" "
                         << "Pos=\"" << Actual(i) << "\"/>" << std::endl;
     }
@@ -212,8 +206,8 @@ void Robot6Axis::Restore(XMLReader& reader)
             Velocity[i] = 1.0;
         }
         // read the axis constraints
-        Min(i) = reader.getAttributeAsFloat("maxAngle") * (M_PI / 180);
-        Max(i) = reader.getAttributeAsFloat("minAngle") * (M_PI / 180);
+        Min(i) = reader.getAttributeAsFloat("maxAngle") * (pi_v / 180);
+        Max(i) = reader.getAttributeAsFloat("minAngle") * (pi_v / 180);
         if (reader.hasAttribute("AxisVelocity")) {
             Velocity[i] = reader.getAttributeAsFloat("AxisVelocity");
         }
@@ -292,11 +286,11 @@ bool Robot6Axis::calcTcp()
 
 bool Robot6Axis::setAxis(int Axis, double Value)
 {
-    Actual(Axis) = RotDir[Axis] * Value * (M_PI / 180);  // degree to radiants
+    Actual(Axis) = RotDir[Axis] * Value * (pi_v / 180);  // degree to radiants
     return calcTcp();
 }
 
 double Robot6Axis::getAxis(int Axis)
 {
-    return RotDir[Axis] * (Actual(Axis) / (M_PI / 180));  // radian to degree
+    return RotDir[Axis] * (Actual(Axis) / (pi_v / 180));  // radian to degree
 }

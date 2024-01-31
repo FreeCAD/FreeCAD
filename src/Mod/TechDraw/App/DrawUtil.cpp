@@ -76,11 +76,9 @@ using namespace TechDraw;
 
 /*static*/ int DrawUtil::getIndexFromName(const std::string& geomName)
 {
-    //   Base::Console().Message("DU::getIndexFromName(%s)\n", geomName.c_str());
     boost::regex re("\\d+$");// one of more digits at end of string
     boost::match_results<std::string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
-    //   char* endChar;
     std::string::const_iterator begin = geomName.begin();
     auto pos = geomName.rfind('.');
     if (pos != std::string::npos) {
@@ -179,7 +177,7 @@ double DrawUtil::angleWithX(Base::Vector3d inVec)
 {
     double result = atan2(inVec.y, inVec.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += pi_2v;
     }
 
     return result;
@@ -201,7 +199,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     }
     double result = atan2(u.y, u.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += pi_2v;
     }
 
     return result;
@@ -227,7 +225,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     c->D1(param, paramPoint, derivative);
     double angle = atan2(derivative.Y(), derivative.X());
     if (angle < 0) {//map from [-PI:PI] to [0:2PI]
-        angle += 2.0 * M_PI;
+        angle += pi_2v;
     }
     return angle;
 }
@@ -256,16 +254,14 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
             adapt, vertexParam - paramOffset, noTangents, Precision::Confusion());
         const gp_Pnt& gOffsetPoint = prop.Value();
         offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
-    } else {
-        //TARFU
-        //        Base::Console().Message("DU::incidenceAngle - v is neither first nor last \n");
-    }
+    } 
+
     incidenceVec = anglePoint - offsetPoint;
     incidenceAngle = atan2(incidenceVec.y, incidenceVec.x);
 
     //map to [0:2PI]
     if (incidenceAngle < 0.0) {
-        incidenceAngle = M_2PI + incidenceAngle;
+        incidenceAngle = pi_2v + incidenceAngle;
     }
 
     return incidenceAngle;
@@ -296,8 +292,7 @@ DrawUtil::boxIntersect2d(Base::Vector3d point, Base::Vector3d dirIn, double xRan
     Base::Vector3d p1, p2;
     Base::Vector3d dir = dirIn;
     dir.Normalize();
-    // y = mx + b
-    // m = (y1 - y0) / (x1 - x0)
+
     if (DrawUtil::fpCompare(dir.x, 0.0)) {//vertical case
         p1 = Base::Vector3d(point.x, point.y - (yRange / 2.0), 0.0);
         p2 = Base::Vector3d(point.x, point.y + (yRange / 2.0), 0.0);
@@ -947,7 +942,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
+    double rotRad = rotDeg * pi_v / 180.0;
     if (rotDeg != 0.0) {
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
@@ -967,7 +962,6 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const QPointF& qtP
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
-    //    Base::Console().Message("DU::split - csvLine: %s\n", csvLine.c_str());
     std::vector<std::string> result;
     std::stringstream lineStream(csvLine);
     std::string cell;
@@ -997,7 +991,6 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
 
 App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
-    //    Base::Console().Message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     if (!PyTuple_Check(pColor)) {
         return App::Color(red, green, blue, alpha);
@@ -1021,7 +1014,6 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 
 PyObject* DrawUtil::colorToPyTuple(App::Color color)
 {
-    //    Base::Console().Message("DU::pyTupleToColor()\n");
     PyObject* pTuple = PyTuple_New(4);
     PyObject* pRed = PyFloat_FromDouble(color.r);
     PyObject* pGreen = PyFloat_FromDouble(color.g);
@@ -1039,7 +1031,6 @@ PyObject* DrawUtil::colorToPyTuple(App::Color color)
 //check for crazy edge.  This is probably a geometry error of some sort.
 bool DrawUtil::isCrazy(TopoDS_Edge e)
 {
-
     if (e.IsNull()) {
         return true;
     }
@@ -1081,7 +1072,6 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         }
     }
 
-    //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
     return false;
 }
 
@@ -1282,11 +1272,11 @@ double DrawUtil::sqr(double x)
 
 void DrawUtil::angleNormalize(double& fi)
 {
-    while (fi <= -M_PI) {
-        fi += M_2PI;
+    while (fi <= -pi_v) {
+        fi += pi_2v;
     }
-    while (fi > M_PI) {
-        fi -= M_2PI;
+    while (fi > pi_v) {
+        fi -= pi_2v;
     }
 }
 
@@ -1305,8 +1295,8 @@ double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 
     fi1 -= fi2;
 
-    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
-        fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
+    if ((fi1 > +pi_v || fi1 <= -pi_v) != reflex) {
+        fi1 += fi1 > 0.0 ? -pi_2v : +pi_2v;
     }
 
     return fi1;
@@ -1378,15 +1368,15 @@ void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& markin
         length = -length;
         start -= length;
     }
-    if (length > M_2PI) {
-        length = M_2PI;
+    if (length > pi_2v) {
+        length = pi_2v;
     }
 
     angleNormalize(start);
 
     double end = start + length;
-    if (end > M_PI) {
-        end -= M_2PI;
+    if (end > pi_v) {
+        end -= pi_2v;
     }
 
     // Just make sure the point is stored, its index is read last
@@ -1602,8 +1592,8 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     if (arcRotation < 0.0) {
         arcRotation = -arcRotation;
         arcBaseAngle -= arcRotation;
-        if (arcBaseAngle <= -M_PI) {
-            arcBaseAngle += M_2PI;
+        if (arcBaseAngle <= -pi_v) {
+            arcBaseAngle += pi_2v;
         }
     }
 
@@ -1611,7 +1601,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     for (unsigned int i = 0; i < intersections.size();) {
         double pointAngle = (intersections[i] - circleCenter).Angle();
         if (pointAngle < arcBaseAngle - Precision::Confusion()) {
-            pointAngle += M_2PI;
+            pointAngle += pi_2v;
         }
 
         if (pointAngle > arcBaseAngle + arcRotation + Precision::Confusion()) {
@@ -1748,7 +1738,6 @@ void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
-    //    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
     gp_Pnt pnt = BRep_Tool::Pnt(v);
     Base::Console().Message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
 }
@@ -1762,8 +1751,7 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt, end, 0, Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
-    //Base::Console().Message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
-    //                        vStart.X(), vStart.Y(), vStart.Z(), start, vEnd.X(), vEnd.Y(), vEnd.Z(), end);
+
     Base::Console().Message(
         "%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n",
         label,

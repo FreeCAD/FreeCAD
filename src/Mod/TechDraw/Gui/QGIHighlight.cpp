@@ -126,7 +126,7 @@ void QGIHighlight::makeReference()
     QRectF r(m_start, m_end);
     double radius = r.width() / 2.0;
     QPointF center = r.center();
-    double angleRad = m_referenceAngle * M_PI / 180.0;
+    double angleRad = m_referenceAngle * pi_v / 180.0;
     double posX = center.x() + cos(angleRad) * radius + horizOffset;
     double posY = center.y() - sin(angleRad) * radius - vertOffset;
     m_reference->setPos(posX, posY);

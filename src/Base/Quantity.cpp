@@ -22,9 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
 #include <array>
 #endif
 
@@ -32,6 +29,8 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include <boost/math/special_functions/fpclassify.hpp>
+
+#include "FCConsts.h"
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -441,7 +440,7 @@ const Quantity Quantity::AngSecond(1.0 / 3600.0, Unit(0, 0, 0, 0, 0, 0, 0, 1)); 
 const Quantity
     Quantity::Degree(1.0,
                      Unit(0, 0, 0, 0, 0, 0, 0, 1));  // degree         (internal standard angle)
-const Quantity Quantity::Radian(180 / M_PI, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
+const Quantity Quantity::Radian(180 / pi_v, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
 const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // gon
 
 

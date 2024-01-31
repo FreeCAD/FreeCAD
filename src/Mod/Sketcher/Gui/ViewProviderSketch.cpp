@@ -71,6 +71,8 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "Workbench.h"
 
+#include "FCConsts.h"
+
 
 // clang-format off
 FC_LOG_LEVEL_INIT("Sketch", true, true)
@@ -1911,9 +1913,9 @@ void ViewProviderSketch::moveAngleConstraint(int constNum, const Base::Vector2d&
             Base::Vector3d p = getSolvedSketch().getPoint(constr->Third, constr->ThirdPos);
             p0 = Base::Vector3d(p.x, p.y, 0);
             Base::Vector3d dir1 = getSolvedSketch().calculateNormalAtPoint(constr->First, p.x, p.y);
-            dir1.RotateZ(-M_PI / 2);// convert to vector of tangency by rotating
+            dir1.RotateZ(-pi_1v_2);// convert to vector of tangency by rotating
             Base::Vector3d dir2 = getSolvedSketch().calculateNormalAtPoint(constr->Second, p.x, p.y);
-            dir2.RotateZ(-M_PI / 2);
+            dir2.RotateZ(-pi_1v_2);
 
             Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
             factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
@@ -3806,7 +3808,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
         getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0);
         getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1);
 
-        return -atan2((y1 - y0), (x1 - x0)) * 180 / M_PI;
+        return -atan2((y1 - y0), (x1 - x0)) * 180 / pi_v;
     }
     catch (const Base::ZeroDivisionError&) {
         return 0;

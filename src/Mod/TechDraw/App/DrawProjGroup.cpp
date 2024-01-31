@@ -47,6 +47,8 @@
 #include "DrawUtil.h"
 #include "Preferences.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDraw;
 
@@ -149,12 +151,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
     }
 
-    //        if ( ScaleType.isValue("Automatic") ||
-    //             ScaleType.isValue("Custom") ){
-    //            //just documenting that nothing is required here
-    //            //DrawView::onChanged will sort out Scale hidden/readonly/etc
-    //        }
-
     if (prop == &Rotation) {
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             Rotation.setValue(0.0);
@@ -168,8 +164,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawProjGroup::execute()
 {
-    //    Base::Console().Message("DPG::execute() - %s - waitingForChildren: %d\n",
-    //                            getNameInDocument(), waitingForChildren());
     if (!keepUpdated())
         return App::DocumentObject::StdReturn;
 
@@ -499,10 +493,6 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
                                              true);//Front should stay locked.
                 view->LockPosition.purgeTouched();
             }
-            //        addView(view);                            //from DrawViewCollection
-            //        if (view != getAnchor()) {                //anchor is done elsewhere
-            //            view->recomputeFeature();
-            //        }
         }
     }
     return view;
@@ -597,7 +587,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
 
-    double angle = M_PI / 2.0;//90*
+    double angle = pi_1v_2;//90*
 
     if (viewType == "Right") {
         newCS = anchorCS.Rotated(gUpAxis, angle);
@@ -1285,9 +1275,9 @@ void DrawProjGroup::spin(const std::string& spindirection)
 {
     double angle;
     if (spindirection == "CW")
-        angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
+        angle = pi_1v_2;// Top -> Right -> Bottom -> Left -> Top
     if (spindirection == "CCW")
-        angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
+        angle = -pi_1v_2;// Top -> Left -> Bottom -> Right -> Top
 
     DrawProjGroupItem* anchor = getAnchor();
     Base::Vector3d org(0.0, 0.0, 0.0);

@@ -108,15 +108,10 @@
 #  include "FT2FC.h"
 #endif
 
+#include "FCConsts.h"
+
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 
-#ifndef M_PI
-#define M_PI    3.14159265358979323846 /* pi */
-#endif
-
-#ifndef M_PI_2
-#define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
 
 namespace Part {
 
@@ -1394,7 +1389,7 @@ private:
             circle.SetRadius(radius);
 
             Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-            BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
+            BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(pi_v/180), angle2*(pi_v/180));
             TopoDS_Edge edge = aMakeEdge.Edge();
             return Py::asObject(new TopoShapeEdgePy(new TopoShape(edge)));
         }
@@ -1424,7 +1419,7 @@ private:
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
-            BRepPrimAPI_MakeSphere mkSphere(gp_Ax2(p,d), radius, angle1*(M_PI/180), angle2*(M_PI/180), angle3*(M_PI/180));
+            BRepPrimAPI_MakeSphere mkSphere(gp_Ax2(p,d), radius, angle1*(pi_v/180), angle2*(pi_v/180), angle3*(pi_v/180));
             TopoDS_Shape shape = mkSphere.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
@@ -1454,7 +1449,7 @@ private:
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
-            BRepPrimAPI_MakeCylinder mkCyl(gp_Ax2(p,d),radius, height, angle*(M_PI/180));
+            BRepPrimAPI_MakeCylinder mkCyl(gp_Ax2(p,d),radius, height, angle*(pi_v/180));
             TopoDS_Shape shape = mkCyl.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
@@ -1484,7 +1479,7 @@ private:
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
-            BRepPrimAPI_MakeCone mkCone(gp_Ax2(p,d),radius1, radius2, height, angle*(M_PI/180));
+            BRepPrimAPI_MakeCone mkCone(gp_Ax2(p,d),radius1, radius2, height, angle*(pi_v/180));
             TopoDS_Shape shape = mkCone.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
@@ -1514,7 +1509,7 @@ private:
                 Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
                 d.SetCoord(vec.x, vec.y, vec.z);
             }
-            BRepPrimAPI_MakeTorus mkTorus(gp_Ax2(p,d), radius1, radius2, angle1*(M_PI/180), angle2*(M_PI/180), angle*(M_PI/180));
+            BRepPrimAPI_MakeTorus mkTorus(gp_Ax2(p,d), radius1, radius2, angle1*(pi_v/180), angle2*(pi_v/180), angle*(pi_v/180));
             const TopoDS_Shape& shape = mkTorus.Shape();
             return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
         }
@@ -1662,7 +1657,7 @@ private:
             PyObject* shellType = Base::getTypeAsObject(&Part::TopoShapeShellPy::Type);
             PyObject* faceType = Base::getTypeAsObject(&Part::TopoShapeFacePy::Type);
 
-            BRepPrimAPI_MakeRevolution mkRev(gp_Ax2(p,d),curve, vmin, vmax, angle*(M_PI/180));
+            BRepPrimAPI_MakeRevolution mkRev(gp_Ax2(p,d),curve, vmin, vmax, angle*(pi_v/180));
             if (type == defaultType) {
                 TopoDS_Shape shape = mkRev.Solid();
                 return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));

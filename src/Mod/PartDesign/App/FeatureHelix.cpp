@@ -484,13 +484,13 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     // because of the radius factor we used above, we must reverse after the
     // startOffset movement (that brings the path back to the desired position)
     if (reversed) {
-        mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+        mov.SetRotation(gp_Ax1(origo, dir_axis2), pi_v);
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
 
     if (turned) {  // turn the helix so that the starting point aligns with the profile
-        mov.SetRotation(gp_Ax1(origo, dir_axis1), M_PI);
+        mov.SetRotation(gp_Ax1(origo, dir_axis1), pi_v);
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
@@ -537,7 +537,7 @@ double Helix::safePitch()
         }
     }
 
-    double angle = Angle.getValue() / 180.0 * M_PI;
+    double angle = Angle.getValue() / 180.0 * pi_v;
     gp_Dir direction(axisVec.x, axisVec.y, axisVec.z);
     gp_Dir directionStart(startVec.x, startVec.y, startVec.z);
     TopoDS_Shape sketchshape = getVerifiedFace();

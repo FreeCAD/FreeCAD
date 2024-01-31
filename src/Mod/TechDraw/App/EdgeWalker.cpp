@@ -45,6 +45,8 @@
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDraw;
 using namespace boost;
@@ -67,13 +69,11 @@ void edgeVisitor::next_edge(Edge e)
 
 void edgeVisitor::begin_face()
 {
-//    Base::Console().Message("EV::begin_face()\n");
     wireEdges.clear();
 }
 
 void edgeVisitor::end_face()
 {
-//    Base::Console().Message("EV::end_face()\n");
     graphWires.push_back(wireEdges);
 }
 
@@ -102,7 +102,6 @@ EdgeWalker::~EdgeWalker()
 //loads a list of unique edges into the traversal mechanism
 bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge>& edges)
 {
-//    Base::Console().Message("EW::loadEdges(we) - WEdgesIn: %d\n", edges.size());
     int idx = 0;
     for (auto& e: edges) {
         std::pair<edge_t, bool> p;
@@ -239,7 +238,6 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
 //! make a clean wire with sorted, oriented, connected, etc edges
 TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
 {
-    //Base::Console().Message("TRACE - EW::makeCleanWire()\n");
     TopoDS_Wire result;
     BRepBuilderAPI_MakeWire mkWire;
     ShapeFix_ShapeTolerance sTol;
@@ -268,7 +266,6 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
 
 std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
 {
-//    Base::Console().Message("TRACE - EW::makeUniqueVList() - edgesIn: %d\n", edges.size());
     std::vector<TopoDS_Vertex> uniqueVert;
     for(auto& e:edges) {
         Base::Vector3d v1 = DrawUtil::vertex2Vector(TopExp::FirstVertex(e));
@@ -292,7 +289,6 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
             uniqueVert.push_back(TopExp::LastVertex(e));
         }
     }
-//    Base::Console().Message("EW::makeUniqueVList - verts out: %d\n", uniqueVert.size());
     return uniqueVert;
 }
 
@@ -300,7 +296,6 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
 std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                       std::vector<TopoDS_Vertex> verts)
 {
-//    Base::Console().Message("TRACE - EW::makeWalkerEdges() - edges: %d  verts: %d\n", edges.size(), verts.size());
     m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
     for (const auto& e:edges) {
@@ -321,14 +316,11 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
         we.idx = 0;
         walkerEdges.push_back(we);
     }
-
-    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: %d\n", walkerEdges.size());
     return walkerEdges;
 }
 
 size_t EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
 {
-//    Base::Console().Message("TRACE - EW::findUniqueVert()\n");
     std::size_t idx = 0;
     Base::Vector3d vx3d = DrawUtil::vertex2Vector(vx);
     for(auto& v : uniqueVert) {
@@ -365,7 +357,6 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
 // sort (closed) wires in order of enclosed area
 std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool ascend)
 {
-    //Base::Console().Message("TRACE - EW::sortWiresBySize()\n");
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), EdgeWalker::wireCompare);
     if (ascend) {
@@ -424,7 +415,6 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
 //! get incidence row as edge indices for v'th vertex
 std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
 {
-//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx(%d)\n", v);
     std::vector<int> result;
     embedItem ei = m_embedding[v];
     for (auto& ii: ei.incidenceList) {
@@ -549,7 +539,7 @@ std::string embedItem::dump()
     std::stringstream builder;
     builder << "embedItem - vertex: " << iVertex  << " incidenceList: ";
     for (auto& ii : incidenceList) {
-        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed:" << ii.eDesc;
+        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/pi_v)) << "/ed:" << ii.eDesc;
     }
     return builder.str();
 }

@@ -37,6 +37,8 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 
+#include "FCConsts.h"
+
 namespace SketcherGui
 {
 
@@ -613,15 +615,15 @@ void DSHLineController::addConstraints()
 
     auto constraintp4angle = [&]() {
         double angle = Base::toRadians(p4);
-        if (fabs(angle - M_PI) < Precision::Confusion()
-            || fabs(angle + M_PI) < Precision::Confusion()
+        if (fabs(angle - pi_v) < Precision::Confusion()
+            || fabs(angle + pi_v) < Precision::Confusion()
             || fabs(angle) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
                                   firstCurve);
         }
-        else if (fabs(angle - M_PI / 2) < Precision::Confusion()
-                 || fabs(angle + M_PI / 2) < Precision::Confusion()) {
+        else if (fabs(angle - pi_1v_2) < Precision::Confusion()
+                 || fabs(angle + pi_1v_2) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
                                   firstCurve);

@@ -39,6 +39,8 @@
 #include "ui_TaskCosmeticCircle.h"
 #include "TaskCosmeticCircle.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
@@ -110,10 +112,9 @@ void TaskCosmeticCircle::changeEvent(QEvent *e)
 void TaskCosmeticCircle::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Cosmetic Circle"));
-//    Base::Console().Message("TCC::setUiPrimary() - m_center: %s is3d: %d\n",
-//        DU::formatVector(m_center).c_str(), m_is3d);
+
     double rotDeg = m_partFeat->Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
+    double rotRad = rotDeg * pi_v / 180.0;
     Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
     Base::Vector3d p1;
     if (m_is3d) {
@@ -155,16 +156,15 @@ void TaskCosmeticCircle::setUiEdit()
 
     ui->qsbRadius->setValue(m_ce->permaRadius);
 
-    double angleDeg = m_ce->m_geometry->getStartAngle() * 180.0 / M_PI;
+    double angleDeg = m_ce->m_geometry->getStartAngle() * 180.0 / pi_v;
     ui->qsbStartAngle->setValue(angleDeg);
-    angleDeg = m_ce->m_geometry->getEndAngle() * 180.0 / M_PI;
+    angleDeg = m_ce->m_geometry->getEndAngle() * 180.0 / pi_v;
     ui->qsbEndAngle->setValue(angleDeg);
 }
 
 //******************************************************************************
 void TaskCosmeticCircle::createCosmeticCircle(void)
 {
-//    Base::Console().Message("TCL::createCosmeticCircle()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
     double x = ui->qsbCenterX->value().getValue();
@@ -276,7 +276,6 @@ TaskDlgCosmeticCircle::~TaskDlgCosmeticCircle()
 
 void TaskDlgCosmeticCircle::update()
 {
-//    widget->updateTask();
 }
 
 //==== calls from the TaskView ===============================================================

@@ -681,7 +681,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
     }
     else {
         double actAngle = constr->getValue();
-        constr->setValue(M_PI - actAngle);
+        constr->setValue(pi_v - actAngle);
     }
 }
 
@@ -2534,11 +2534,11 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         if (endAngle < startAngle)
             std::swap(startAngle, endAngle);
 
-        if (endAngle > 2 * M_PI)
-            endAngle -= 2 * M_PI;
+        if (endAngle > pi_2v)
+            endAngle -= pi_2v;
 
         if (startAngle < 0)
-            endAngle += 2 * M_PI;
+            endAngle += pi_2v;
 
         // Create Arc Segment
         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
@@ -2596,8 +2596,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
             double dist1 = (refp1 - arc->getStartPoint(true)).Length();
             double dist2 = (refp1 - arc->getEndPoint(true)).Length();
-
-            // Base::Console().Log("dists_refpoint_to_arc_sp_ep: (%f);(%f)",dist1,dist2);
 
             if (dist1 < dist2) {
                 tangent1->SecondPos = PointPos::start;
@@ -4201,8 +4199,8 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                 Base::Vector3d scp =
                     cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
-                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), pi_2v);
+                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), pi_2v);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -4249,12 +4247,12 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
                 double theta1, theta2;
                 geosymaoe->getRange(theta1, theta2, true);
-                theta1 = 2.0 * M_PI - theta1;
-                theta2 = 2.0 * M_PI - theta2;
+                theta1 = pi_2v - theta1;
+                theta2 = pi_2v - theta2;
                 std::swap(theta1, theta2);
                 if (theta1 < 0) {
-                    theta1 += 2.0 * M_PI;
-                    theta2 += 2.0 * M_PI;
+                    theta1 += pi_2v;
+                    theta2 += pi_2v;
                 }
 
                 geosymaoe->setRange(theta1, theta2, true);
@@ -4522,8 +4520,8 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                 Base::Vector3d sep = ep + 2.0 * (refpoint - ep);
                 Base::Vector3d scp = cp + 2.0 * (refpoint - cp);
 
-                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * M_PI);
-                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * M_PI);
+                double theta1 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), pi_2v);
+                double theta2 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), pi_2v);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -6429,22 +6427,9 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         return false;
     }
 
-    // FIXME: Avoid to delete the whole geometry but only delete invalid constraints
-    // and unused construction geometries
-#if 0
-    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
-
-    std::vector< Part::Geometry * > newVals(vals);
-
-    newVals[GeoId] = bspline.release();
-
-    // AcceptGeometry called from onChanged
-    Geometry.setValues(newVals);
-#else
     delGeometry(GeoId);
     int newId = addGeometry(bspline.release());
     exposeInternalGeometry(newId);
-#endif
 
     return true;
 }
@@ -6627,29 +6612,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     else {
         Geometry.touch();
     }
-
-    // * DOCUMENTING OCC ISSUE OCC < 6.9.0
-    // https://forum.freecad.org/viewtopic.php?f=10&t=9364&start=330#p162528
-    //
-    // A segmentation fault is generated:
-    // Program received signal SIGSEGV, Segmentation fault.
-    // #0 /lib/x86_64-linux-gnu/libc.so.6(+0x36cb0) [0x7f4b933bbcb0]
-    // #1  0x7f4b0300ea14 in BSplCLib::BuildCache(double, double, bool, int, TColStd_Array1OfReal
-    // const&, TColgp_Array1OfPnt const&, TColStd_Array1OfReal const&, TColgp_Array1OfPnt&,
-    // TColStd_Array1OfReal&) from /usr/lib/x86_64-linux-gnu/libTKMath.so.10+0x484 #2 0x7f4b033f9582
-    // in Geom_BSplineCurve::ValidateCache(double) from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202 #3  0x7f4b033f2a7e in
-    // Geom_BSplineCurve::D0(double, gp_Pnt&) const from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde #4  0x7f4b033de1b5 in Geom_Curve::Value(double)
-    // const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25 #5  0x7f4b03423d73 in
-    // GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13 #6  0x7f4b03427175 in
-    // GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75 #7
-    // 0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double,
-    // int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd #8  0x7f4b11924b53 in
-    // Part::GeomCurve::pointAtParameter(double) const from
-    // /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
-
 
     return true;
 }
@@ -7478,7 +7440,7 @@ void SketchObject::rebuildExternalGeometry()
                     Geom_Plane plane = surface.Plane();
                     gp_Dir dnormal = plane.Axis().Direction();
                     gp_Dir snormal = sketchPlane.Axis().Direction();
-                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                    if (fabs(dnormal.Angle(snormal) - pi_2v) < Precision::Confusion()) {
                         // Get vector that is normal to both sketch plane normal and plane normal.
                         // This is the line's direction
                         gp_Dir lnormal = dnormal.Crossed(snormal);
@@ -7582,11 +7544,11 @@ void SketchObject::rebuildExternalGeometry()
                                 int tours = 0;
                                 double startAngle = baseAngle + alpha;
                                 // bring startAngle back in [-pi/2 , 3pi/2[
-                                while (startAngle < -M_PI / 2.0 && tours < 10) {
-                                    startAngle = baseAngle + ++tours * 2.0 * M_PI + alpha;
+                                while (startAngle < -pi_1v_2 && tours < 10) {
+                                    startAngle = baseAngle + ++tours * pi_2v + alpha;
                                 }
-                                while (startAngle >= 3.0 * M_PI / 2.0 && tours > -10) {
-                                    startAngle = baseAngle + --tours * 2.0 * M_PI + alpha;
+                                while (startAngle >= pi_3v / 2.0 && tours > -10) {
+                                    startAngle = baseAngle + --tours * pi_2v + alpha;
                                 }
 
                                 // apply same offset to end angle
@@ -7602,7 +7564,7 @@ void SketchObject::rebuildExternalGeometry()
                                             // P2 = P2 already defined
                                             P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         }
-                                        else if (endAngle < M_PI) {
+                                        else if (endAngle < pi_v) {
                                             // P2 = P2, already defined
                                             P1 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                         }
@@ -7612,16 +7574,16 @@ void SketchObject::rebuildExternalGeometry()
                                         }
                                     }
                                 }
-                                else if (startAngle < M_PI) {
-                                    if (endAngle < M_PI) {
+                                else if (startAngle < pi_v) {
+                                    if (endAngle < pi_v) {
                                         P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
-                                    else if (endAngle < 2.0 * M_PI - startAngle) {
+                                    else if (endAngle < pi_2v - startAngle) {
                                         P2 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         // P1 = P1, already defined
                                     }
-                                    else if (endAngle < 2.0 * M_PI) {
+                                    else if (endAngle < pi_2v) {
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                         // P1 = P1, already defined
                                     }
@@ -7631,15 +7593,15 @@ void SketchObject::rebuildExternalGeometry()
                                     }
                                 }
                                 else {
-                                    if (endAngle < 2 * M_PI) {
+                                    if (endAngle < pi_2v) {
                                         P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
-                                    else if (endAngle < 4 * M_PI - startAngle) {
+                                    else if (endAngle < pi_4v - startAngle) {
                                         P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         // P2 = P2, already defined
                                     }
-                                    else if (endAngle < 3 * M_PI) {
+                                    else if (endAngle < pi_3v) {
                                         // P1 = P1, already defined
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
@@ -7737,7 +7699,7 @@ void SketchObject::rebuildExternalGeometry()
                     gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
                     double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
                     t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
-                    double t_min = t_max + 0.5 * M_PI;
+                    double t_min = t_max + 0.5 * pi_v;
 
                     // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
                     //     becomes the apoapse of the projected ellipse.
@@ -7864,7 +7826,6 @@ void SketchObject::rebuildExternalGeometry()
                                     // a Bspline Split the spline into arcs
                                     GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(
                                         projCurve.BSpline(), 2);
-                                    // int s = bSplineSplitter.NbSplits();
                                     if ((curve.GetType() == GeomAbs_Circle)
                                         && (bSplineSplitter.NbSplits() == 2)) {
                                         // Result of projection is actually a circle...
@@ -7962,7 +7923,6 @@ void SketchObject::rebuildExternalGeometry()
                                     gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
                                     gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
-                                    // gp_Dir normal = e.Axis().Direction();
                                     gp_Dir normal = gp_Dir(0, 0, 1);
                                     gp_Ax2 xdirref(p, normal);
 
@@ -9353,25 +9313,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
                 // the desired angle value (and we are to decide if 180* should be added to it)
                 double angleDesire = 0.0;
                 if (cstr->Type == Tangent) {
-                    angleOffset = -M_PI / 2;
+                    angleOffset = -pi_1v_2;
                     angleDesire = 0.0;
                 }
                 if (cstr->Type == Perpendicular) {
                     angleOffset = 0;
-                    angleDesire = M_PI / 2;
+                    angleDesire = pi_1v_2;
                 }
 
                 double angleErr = calculateAngleViaPoint(geoId1, geoId2, p.x, p.y) - angleDesire;
 
                 // bring angleErr to -pi..pi
-                if (angleErr > M_PI)
-                    angleErr -= M_PI * 2;
-                if (angleErr < -M_PI)
-                    angleErr += M_PI * 2;
+                if (angleErr > pi_v)
+                    angleErr -= pi_2v;
+                if (angleErr < -pi_v)
+                    angleErr += pi_2v;
 
                 // the autodetector
-                if (fabs(angleErr) > M_PI / 2)
-                    angleDesire += M_PI;
+                if (fabs(angleErr) > pi_1v_2)
+                    angleDesire += pi_v;
 
                 // external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is
                 // invalid and treated as "undecided".
@@ -9414,8 +9374,6 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
     Part::TopoShape shape(geo->toShape());
-    // shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
-    //                      Data::MappedName::fromRawData(name));
     TopTools_IndexedMapOfShape vmap;
     TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
     std::ostringstream ss;
@@ -9427,8 +9385,6 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
             if(getPoint(geo,pos[j]) == pt) {
                 ss.str("");
                 ss << name << 'v' << static_cast<int>(pos[j]);
-                // shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
-                //                      Data::MappedName::fromRawData(ss.str().c_str()));
                 break;
             }
         }

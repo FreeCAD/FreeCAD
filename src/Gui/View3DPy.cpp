@@ -68,6 +68,8 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 
@@ -650,7 +652,7 @@ Py::Object View3DInventorPy::viewRotateLeft()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)M_PI/2);
+      SbRotation nrot(vdir, pi_1v_2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -673,7 +675,7 @@ Py::Object View3DInventorPy::viewRotateRight()
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, (float)-M_PI/2);
+      SbRotation nrot(vdir, -pi_1v_2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {

@@ -76,6 +76,8 @@
 #include "DrawProjectSplit.h"
 #include "ShapeUtils.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using namespace std;
 
@@ -117,15 +119,6 @@ const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth,
             }
         }
     }
-    //debug
-    //make compound of edges and save as brep file
-    //    BRep_Builder builder;
-    //    TopoDS_Compound comp;
-    //    builder.MakeCompound(comp);
-    //    for (auto& r: result) {
-    //        builder.Add(comp, r->getOCCEdge());
-    //    }
-    //    BRepTools::Write(comp, "GOVizFaceEdges.brep");            //debug
 
     return result;
 }
@@ -142,13 +135,11 @@ void GeometryObject::clear()
 
 void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("GO::projectShape()\n");
     clear();
 
     Handle(HLRBRep_Algo) brep_hlr;
     try {
         brep_hlr = new HLRBRep_Algo();
-        //        brep_hlr->Debug(true);
         brep_hlr->Add(inShape, m_isoCount);
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(), m_focus);
@@ -178,7 +169,6 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
             visHard = hlrToShape.VCompound();
             BRepLib::BuildCurves3d(visHard);
             visHard =ShapeUtils::invertGeometry(visHard);
-            //            BRepTools::Write(visHard, "GOvisHard.brep");            //debug
         }
 
         if (!hlrToShape.Rg1LineVCompound().IsNull()) {
@@ -194,7 +184,6 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         }
 
         if (!hlrToShape.OutLineVCompound().IsNull()) {
-            //            BRepTools::Write(hlrToShape.OutLineVCompound(), "GOOutLineVCompound.brep");            //debug
             visOutline = hlrToShape.OutLineVCompound();
             BRepLib::BuildCurves3d(visOutline);
             visOutline =ShapeUtils::invertGeometry(visOutline);
@@ -251,7 +240,6 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
 //convert the hlr output into TD Geometry
 void GeometryObject::makeTDGeometry()
 {
-//    Base::Console().Message("GO::makeTDGeometry()\n");
     extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
     extractGeometry(TechDraw::ecOUTLINE,
@@ -361,7 +349,6 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         visHard = polyhlrToShape.VCompound();
         BRepLib::BuildCurves3d(visHard);
         visHard =ShapeUtils::invertGeometry(visHard);
-        //        BRepTools::Write(visHard, "GOvisHardi.brep");            //debug
 
         visSmooth = polyhlrToShape.Rg1LineVCompound();
         BRepLib::BuildCurves3d(visSmooth);
@@ -378,7 +365,6 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         hidHard = polyhlrToShape.HCompound();
         BRepLib::BuildCurves3d(hidHard);
         hidHard =ShapeUtils::invertGeometry(hidHard);
-        //        BRepTools::Write(hidHard, "GOhidHardi.brep");            //debug
 
         hidSmooth = polyhlrToShape.Rg1LineHCompound();
         BRepLib::BuildCurves3d(hidSmooth);
@@ -413,7 +399,6 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
 //TODO: allow use of perspective projector
 TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::()\n");
     if (shape.IsNull()) {
         throw Base::ValueError("GO::projectSimpleShape - input shape is NULL");
     }
@@ -447,7 +432,6 @@ TopoDS_Shape GeometryObject::simpleProjection(const TopoDS_Shape& shape, const g
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::projectFace()\n");
     if (face.IsNull()) {
         throw Base::ValueError("GO::projectFace - input Face is NULL");
     }
@@ -470,7 +454,6 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 {
-    //    Base::Console().Message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
     TopoDS_Shape filtEdges;
     if (hlrVisible) {
         switch (category) {
@@ -528,7 +511,6 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
                                          bool hlrVisible)
 {
-//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
         return;    // There is no OpenCascade Geometry to be calculated
     }
@@ -608,14 +590,12 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 v1->setHlrVisible( true);
             }
             else {
-                //    delete v1;
             }
             if (v2Add) {
                 vertexGeom.push_back(v2);
                 v2->setHlrVisible( true);
             }
             else {
-                //    delete v2;
             }
 
             if (circle) {
@@ -624,7 +604,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                     c1->setHlrVisible( true);
                 }
                 else {
-                    //    delete c1;
                 }
             }
         }
@@ -642,12 +621,10 @@ void GeometryObject::addEdge(TechDraw::BaseGeomPtr bg) { edgeGeom.push_back(bg);
 // insertGeomForCV(cv)
 int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 {
-    //    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
     double scale = m_parent->getScale();
     Base::Vector3d pos = cv->scaled(scale);
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->setCosmetic(true);
-//    v->setCosmeticLink = -1;//obs??
     v->setCosmeticTag(cv->getTagAsString());
     v->setHlrVisible(true);
     int idx = vertexGeom.size();
@@ -671,7 +648,6 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->setCosmetic(true);
     v->setCosmeticTag(tagString);//connected to CV
@@ -688,7 +664,6 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->setCosmetic(true);
@@ -703,13 +678,11 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 //this should be made obsolete and the variant with tag used instead
 int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(occEdge);
     e->setCosmetic(true);
-    //    e->cosmeticLink = link;
     e->setCosmeticTag("tbi");
     e->setHlrVisible(true);
     int idx = edgeGeom.size();
@@ -778,24 +751,24 @@ TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 
 bool GeometryObject::isWithinArc(double theta, double first, double last, bool cw) const
 {
-    if (fabs(last - first) >= 2 * M_PI) {
+    if (fabs(last - first) >=  pi_2v) {
         return true;
     }
 
     // Put params within [0, 2*pi) - not totally sure this is necessary
-    theta = fmod(theta, 2 * M_PI);
+    theta = fmod(theta, pi_2v);
     if (theta < 0) {
-        theta += 2 * M_PI;
+        theta +=  pi_2v;
     }
 
-    first = fmod(first, 2 * M_PI);
+    first = fmod(first,  pi_2v);
     if (first < 0) {
-        first += 2 * M_PI;
+        first +=  pi_2v;
     }
 
-    last = fmod(last, 2 * M_PI);
+    last = fmod(last,  pi_2v);
     if (last < 0) {
-        last += 2 * M_PI;
+        last +=  pi_2v;
     }
 
     if (cw) {

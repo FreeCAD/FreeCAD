@@ -47,6 +47,8 @@
 
 #include "ViewProviderAddSub.h"
 
+#include "FCConsts.h"
+
 
 using namespace PartDesignGui;
 
@@ -121,7 +123,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
         // create or use the mesh on the data structure
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * pi_v;
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 
         // We must reset the location here because the transformation data

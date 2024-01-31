@@ -40,6 +40,8 @@
 #include "HatchLine.h"
 #include "DrawUtil.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDraw;
 
@@ -325,7 +327,6 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
-//    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
     while (inFile.good() ){
          std::string line;
          std::getline(inFile, line);
@@ -413,7 +414,7 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    return tan(angle * M_PI/180.0);
+    return tan(angle * pi_v/180.0);
 }
 
 bool PATLineSpec::isDashed()
@@ -430,7 +431,7 @@ double PATLineSpec::getIntervalX()
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() / cos(perpAngle * M_PI/180.0));
+        return fabs(getInterval() / cos(perpAngle * pi_v/180.0));
     }
 }
 
@@ -443,7 +444,7 @@ double PATLineSpec::getIntervalY()
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * M_PI/180.0));
+        return fabs(getInterval() * tan(perpAngle * pi_v/180.0));
     }
 }
 

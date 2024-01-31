@@ -42,6 +42,8 @@
 #include "CenterLinePy.h"
 #include "ShapeUtils.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using DU = DrawUtil;
 
@@ -395,7 +397,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(cons
                                   const double angleDeg)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    double angleRad = angleDeg * M_PI / 180.0;
+    double angleRad = angleDeg * pi_v / 180.0;
 
     result.first.x = ((p1.x - mid.x) * cos(angleRad)) - ((p1.y - mid.y) * sin(angleRad)) + mid.x;
     result.first.y = ((p1.x - mid.x) * sin(angleRad)) + ((p1.y - mid.y) * cos(angleRad)) + mid.y;

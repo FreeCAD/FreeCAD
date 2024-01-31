@@ -37,6 +37,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "FCConsts.h"
+
 
 namespace SketcherGui
 {
@@ -445,7 +447,7 @@ private:
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
                 std::string angleString =
-                    angleToDisplayFormat((angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0, 1);
+                    angleToDisplayFormat((angle != -FLOAT_MAX) ? angle * 180 / pi_v : 0, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(position, text);
             }

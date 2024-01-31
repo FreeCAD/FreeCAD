@@ -23,12 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
-#endif // _PreComp_
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>

@@ -38,6 +38,8 @@
 #include "TaskFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
+#include "FCConsts.h"
+
 
 using namespace FemGui;
 
@@ -189,7 +191,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             for (const auto& point : points) {
                 SbVec3f base(point.x, point.y, point.z);
                 if (forceDirection.GetAngle(normal)
-                    < M_PI_2) {  // Move arrow so it doesn't disappear inside the solid
+                    < pi_1v_2) {  // Move arrow so it doesn't disappear inside the solid
                     base = base + dir * scaledlength;  // OvG: Scaling
                 }
 #ifdef USE_MULTIPLE_COPY
@@ -234,7 +236,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 
             for (const auto& point : points) {
                 SbVec3f base(point.x, point.y, point.z);
-                if (forceDirection.GetAngle(normal) < M_PI_2) {
+                if (forceDirection.GetAngle(normal) < pi_1v_2) {
                     base = base + dir * scaledlength;  // OvG: Scaling
                 }
 #ifdef USE_MULTIPLE_COPY

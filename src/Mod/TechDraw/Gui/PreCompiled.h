@@ -24,6 +24,7 @@
 #define DRAWINGGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
+#include <FCConsts.h>
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)

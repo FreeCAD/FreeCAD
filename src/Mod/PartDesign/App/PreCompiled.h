@@ -24,6 +24,7 @@
 #define __PRECOMPILED__
 
 #include <FCConfig.h>
+#include <FCConsts.h>
 
 #ifdef _MSC_VER
 // disable warning triggered by use of Part::FaceMaker

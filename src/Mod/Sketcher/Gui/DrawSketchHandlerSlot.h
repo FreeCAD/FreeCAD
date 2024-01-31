@@ -40,6 +40,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "FCConsts.h"
+
 
 namespace SketcherGui
 {
@@ -252,14 +254,14 @@ private:
         }
 
         Part::GeomArcOfCircle* arc1 = addArcToShapeGeometry(toVector3d(startPoint),
-                                                            M_PI / 2 + angle,
-                                                            1.5 * M_PI + angle,
+                                                            pi_1v_2 + angle,
+                                                            1.5 * pi_v + angle,
                                                             radius,
                                                             isConstructionMode());
 
         Part::GeomArcOfCircle* arc2 = addArcToShapeGeometry(toVector3d(secondPoint),
-                                                            1.5 * M_PI + angle,
-                                                            M_PI / 2 + angle,
+                                                            1.5 * pi_v + angle,
+                                                            pi_1v_2 + angle,
                                                             radius,
                                                             isConstructionMode());
 
@@ -330,10 +332,10 @@ private:
         isHorizontal = false;
         isVertical = false;
 
-        if (fmod(fabs(angle), M_PI) < Precision::Confusion()) {
+        if (fmod(fabs(angle), pi_v) < Precision::Confusion()) {
             isHorizontal = true;
         }
-        else if (fmod(fabs(angle + M_PI / 2), M_PI) < Precision::Confusion()) {
+        else if (fmod(fabs(angle + pi_1v_2), pi_v) < Precision::Confusion()) {
             isVertical = true;
         }
     }

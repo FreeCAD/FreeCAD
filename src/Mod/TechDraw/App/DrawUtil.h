@@ -48,9 +48,6 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
-#ifndef M_2PI
-#define M_2PI ((M_PI)*2.0)
-#endif
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 #define VECTORTOLERANCE (Precision::Confusion())

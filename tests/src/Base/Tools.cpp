@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include <Base/Tools.h>
 #include <bitset>
-
+#include <FCConsts.h>
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
 TEST(BaseToolsSuite, TestUniqueName1)
 {
@@ -77,16 +77,16 @@ TEST(Tools, TestSignum)
 TEST(Tools, TestRadian)
 {
     EXPECT_EQ(Base::toRadians<int>(90), 1);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), M_PI);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), M_PI / 2.0);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), pi_v);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), pi_1v_2);
     EXPECT_DOUBLE_EQ(Base::toRadians<double>(0.0), 0.0);
 }
 
 TEST(Tools, TestDegree)
 {
     EXPECT_EQ(Base::toDegrees<int>(3), 171);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI), 180.0);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI / 2.0), 90.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(pi_v), 180.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(pi_1v_2), 90.0);
     EXPECT_DOUBLE_EQ(Base::toDegrees<double>(0.0), 0.0);
 }
 

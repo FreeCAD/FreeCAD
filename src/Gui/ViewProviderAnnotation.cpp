@@ -57,6 +57,8 @@
 #include "Tools.h"
 #include "Window.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 
@@ -155,7 +157,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Rotation) {
-        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*M_PI);
+        pRotationXYZ->angle = (Rotation.getValue()/360)*pi_2v;
     }
     else {
         ViewProviderDocumentObject::onChanged(prop);

@@ -25,10 +25,7 @@
 #ifndef _PreComp_
 #include <array>
 #include <boost/math/constants/constants.hpp>
-#ifdef FC_OS_WIN32
- #define _USE_MATH_DEFINES
-#endif
-#include <cmath>
+
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #else

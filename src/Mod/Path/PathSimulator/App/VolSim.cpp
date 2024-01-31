@@ -773,12 +773,6 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 			}
 		}
 	}
-
-	// Report the performance of the profile extraction
-	//auto stop = std::chrono::high_resolution_clock::now();
-	//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	//Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
-
 }
 
 float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)

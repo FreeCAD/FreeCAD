@@ -24,6 +24,7 @@
 #define PARTGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
+#include <FCConsts.h>
 
 #include <Mod/Part/PartGlobal.h>
 

@@ -27,6 +27,7 @@
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+#include <FCConsts.h>
 #include <functional>
 #include <algorithm>
 #include <cmath>
@@ -120,20 +121,16 @@ inline T sgn(T t)
     return (t > 0) ? T(1) : T(-1);
 }
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 template<class T>
 inline T toRadians(T d)
 {
-    return static_cast<T>((d * M_PI) / 180.0);
+    return static_cast<T>((d * pi_v) / 180.0);
 }
 
 template<class T>
 inline T toDegrees(T r)
 {
-    return static_cast<T>((r / M_PI) * 180.0);
+    return static_cast<T>((r / pi_v) * 180.0);
 }
 
 template<class T>

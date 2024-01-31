@@ -30,14 +30,11 @@
 #include <vector>
 #endif
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846f
-#endif
 
 #include <Eigen/SparseCholesky>
 
 #include "MeshFlatteningLscmRelax.h"
-
+#include "FCConsts.h"
 
 // TODO:
 // area constrained (scale the final unwrapped mesh to the original area)
@@ -207,48 +204,6 @@ void LscmRelax::relax(double weight)
             }
         }
     }
-    // FIXING SOME PINS:
-    // - if there are no pins (or only one pin) selected solve the system without the nullspace solution.
-    // - if there are some pins selected, delete all columns, rows that refer to this pins
-    //          set the diagonal element of these pins to 1 + the rhs to zero
-    //          (? is it possible to fix in the inner of the face? for sure for fem, but lscm could have some problems)
-    //          (we also need some extra variables to see if the pins come from user)
-
-    // fixing some points
-    // although only internal forces are applied there has to be locked
-    // at least 3 degrees of freedom to stop the mesh from pure rotation and pure translation
-    // std::vector<long> fixed_dof;
-    // fixed_dof.push_back(this->triangles(0, 0) * 2); //x0
-    // fixed_dof.push_back(this->triangles(0, 0) * 2 + 1); //y0
-    // fixed_dof.push_back(this->triangles(1, 0) * 2 + 1); // y1
-
-    // align flat mesh to fixed edge
-    // Vector2 edge = this->flat_vertices.col(this->triangles(1, 0)) -
-    //                this->flat_vertices.col(this->triangles(0, 0));
-    // edge.normalize();
-    // Eigen::Matrix<double, 2, 2> rot;
-    // rot << edge.x(), edge.y(), -edge.y(), edge.x();
-    // this->flat_vertices = rot * this->flat_vertices;
-
-    // // return true if triplet row / col is in fixed_dof
-    // auto is_in_fixed_dof = [fixed_dof](const trip & element) -> bool {
-    //     return (
-    //         (std::find(fixed_dof.begin(), fixed_dof.end(), element.row()) != fixed_dof.end()) or
-    //         (std::find(fixed_dof.begin(), fixed_dof.end(), element.col()) != fixed_dof.end()));
-    // };
-    // std::cout << "size of triplets: " << K_g_triplets.size() << std::endl;
-    // K_g_triplets.erase(
-    //     std::remove_if(K_g_triplets.begin(), K_g_triplets.end(), is_in_fixed_dof),
-    //     K_g_triplets.end());
-    // std::cout << "size of triplets: " << K_g_triplets.size() << std::endl;
-    // for (long fixed: fixed_dof)
-    // {
-    //     K_g_triplets.push_back(trip(fixed, fixed, 1.));
-    //     rhs[fixed] = 0;
-    // }
-
-    // for (long i=0; i< this->vertices.cols() * 2; i++)
-    //     K_g_triplets.push_back(trip(i, i, 0.01));
 
     // lagrange multiplier
     for (long i=0; i < this->flat_vertices.cols() ; i++)
@@ -266,24 +221,8 @@ void LscmRelax::relax(double weight)
         K_g_triplets.emplace_back(trip(this->flat_vertices.cols() * 2 + 2, i * 2 + 1, this->flat_vertices(0, i)));
     }
 
-    // project out the nullspace solution:
-
-    // Eigen::VectorXd nullspace1(this->flat_vertices.cols() * 2);
-    // Eigen::VectorXd nullspace2(this->flat_vertices.cols() * 2);
-    // nullspace1.setZero();
-    // nullspace2.setOnes();
-    // for (long i= 0; i < this->flat_vertices.cols(); i++)
-    // {
-    //     nullspace1(i) = 1;
-    //     nullspace2(i) = 0;
-    // }
-    // nullspace1.normalize();
-    // nullspace2.normalize();
-    // rhs -= nullspace1.dot(rhs) * nullspace1;
-    // rhs -= nullspace2.dot(rhs) * nullspace2;
 
     K_g.setFromTriplets(K_g_triplets.begin(), K_g_triplets.end());
-    // rhs +=  K_g * Eigen::VectorXd::Ones(K_g.rows());
 
     // solve linear system (privately store the value for guess in next step)
     Eigen::SimplicialLDLT<spMat, Eigen::Lower> solver;
@@ -481,7 +420,7 @@ void LscmRelax::lscm()
     A.setFromTriplets(mat_triplets.begin(), mat_triplets.end());
 
     // 6. solve the system and set the flatted coordinates
-    // Eigen::SparseQR<spMat, Eigen::COLAMDOrdering<int> > solver;
+
     Eigen::LeastSquaresConjugateGradient<spMat > solver;
     Eigen::VectorXd sol(this->vertices.size() * 2);
     solver.compute(A);
@@ -552,20 +491,7 @@ void LscmRelax::set_fixed_pins()
         this->flat_vertices.col(this->fixed_pins[1]) = Vector2(dist, 0);
     }
     std::sort(this->fixed_pins.begin(), this->fixed_pins.end());
-    // not yet working
-    // if (this->fixed_pins.size() > 2)
-    // {
-    //     std::vector<Vector3> fixed_3d_points;
-    //     for (unsigned int index: this->fixed_pins)
-    //         fixed_3d_points.push_back(this->vertices[index]);
-    //     std::vector<Vector2> maped_points = map_to_2D(fixed_3d_points);
-    //     unsigned int i = 0;
-    //     for (unsigned int index: this->fixed_pins)
-    //     {
-    //         this->flat_vertices[i] = maped_points[i];
-    //         i++;
-    //     }
-    // }
+
 }
 
 
@@ -649,7 +575,7 @@ void LscmRelax::rotate_by_min_bound_area()
     // rotate vector by 90 degree and find min area
     for (int i = 0; i < n + 1; i++ )
     {
-        phi = i * M_PI / n;
+        phi = i * pi_v / n;
         Eigen::VectorXd x_proj = this->flat_vertices.transpose() * Vector2(std::cos(phi), std::sin(phi));
         Eigen::VectorXd y_proj = this->flat_vertices.transpose() * Vector2(-std::sin(phi), std::cos(phi));
         double x_distance = x_proj.maxCoeff() - x_proj.minCoeff();
@@ -663,7 +589,7 @@ void LscmRelax::rotate_by_min_bound_area()
         }
     }
     Eigen::Matrix<double, 2, 2> rot;
-    min_phi += x_dominant * M_PI / 2;
+    min_phi += x_dominant * pi_1v_2;
     rot << std::cos(min_phi), std::sin(min_phi), -std::sin(min_phi), std::cos(min_phi);
     this->flat_vertices = rot * this->flat_vertices;
 }

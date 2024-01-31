@@ -38,6 +38,8 @@
 #include "ViewProviderFemConstraintTransform.h"
 #include <Gui/Control.h>
 
+#include "FCConsts.h"
+
 
 using namespace FemGui;
 
@@ -140,9 +142,9 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
                 double z_axis_y = 0;
                 double z_axis_z = 1;
 
-                double rot_x = (pcConstraint->X_rot.getValue() * (M_PI / 180));
-                double rot_y = (pcConstraint->Y_rot.getValue() * (M_PI / 180));
-                double rot_z = (pcConstraint->Z_rot.getValue() * (M_PI / 180));
+                double rot_x = (pcConstraint->X_rot.getValue() * (pi_v / 180));
+                double rot_y = (pcConstraint->Y_rot.getValue() * (pi_v / 180));
+                double rot_z = (pcConstraint->Z_rot.getValue() * (pi_v / 180));
 
                 double x_axis_x_p;
                 double x_axis_y_p;

@@ -745,18 +745,18 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
 
     // Number of Degree of deviation from horizontal or vertical lines
     const double angleDev = 2;
-    const double angleDevRad = angleDev * M_PI / 180.;
+    const double angleDevRad = angleDev * pi_v / 180.;
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;
     constr.GeoId = GeoEnum::GeoUndef;
     constr.PosId = Sketcher::PointPos::none;
     double angle = std::abs(atan2(Dir.y, Dir.x));
-    if (angle < angleDevRad || (M_PI - angle) < angleDevRad) {
+    if (angle < angleDevRad || (pi_v - angle) < angleDevRad) {
         // Suggest horizontal constraint
         constr.Type = Sketcher::Horizontal;
     }
-    else if (std::abs(angle - M_PI_2) < angleDevRad) {
+    else if (std::abs(angle - pi_1v_2) < angleDevRad) {
         // Suggest vertical constraint
         constr.Type = Sketcher::Vertical;
     }
@@ -912,7 +912,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                         aoe->getMinorRadius()
                             * ((tmpPos.x - center.x) * majdir.x + (tmpPos.y - center.y) * majdir.y))
                         - startAngle,
-                    2.f * M_PI);
+                    pi_2v);
 
                 while (angle < startAngle) {
                     angle += 2 * D_PI;  // Bring it to range of arc
@@ -1078,8 +1078,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
             if (createowncommand) {
                 Gui::Command::commitCommand();
             }
-            // Gui::Command::updateActive(); // There is already an recompute in each command
-            // creation, this is redundant.
         }
     }
 }
@@ -1153,7 +1151,7 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
 
     SbString text;
     std::string lengthString = lengthToDisplayFormat(length, 1);
-    std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+    std::string angleString = angleToDisplayFormat(angle * 180.0 / pi_v, 1);
     text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
     setPositionText(position, text);
 }
@@ -1184,7 +1182,7 @@ void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
     SbString text;
     std::string doubleString = unit == Base::Unit::Length
         ? lengthToDisplayFormat(val, 1)
-        : angleToDisplayFormat(val * 180.0 / M_PI, 1);
+        : angleToDisplayFormat(val * 180.0 / pi_v, 1);
     text.sprintf(" (%s)", doubleString.c_str());
     setPositionText(position, text);
 }

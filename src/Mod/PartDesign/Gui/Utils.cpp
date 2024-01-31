@@ -45,6 +45,7 @@
 #include "ReferenceSelection.h"
 #include "WorkflowManager.h"
 
+#include "FCConsts.h"
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -259,17 +260,6 @@ App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {
     return nullptr;
 }
 
-//static void buildDefaultPartAndBody(const App::Document* doc)
-//{
-//  // This adds both the base planes and the body
-//    std::string PartName = doc->getUniqueObjectName("Part");
-//    //// create a PartDesign Part for now, can be later any kind of Part or an empty one
-//    Gui::Command::addModule(Gui::Command::Doc, "PartDesignGui");
-//    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')", PartName.c_str());
-//    Gui::Command::doCommand(Gui::Command::Doc, "PartDesignGui.setUpPart(App.activeDocument().%s)", PartName.c_str());
-//    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
-//}
-
 
 void fixSketchSupport (Sketcher::SketchObject* sketch)
 {
@@ -325,7 +315,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         // Offset to base plane
         // Find out which direction we need to offset
         double a = sketchVector.GetAngle(pnt);
-        if ((a < -M_PI_2) || (a > M_PI_2))
+        if ((a < -pi_1v_2) || (a > pi_1v_2))
             offset *= -1.0;
 
         std::string Datum = doc->getUniqueObjectName("DatumPlane");

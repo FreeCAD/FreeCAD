@@ -62,6 +62,7 @@
 #include "HatchLine.h"
 #include "Preferences.h"
 
+#include "FCConsts.h"
 
 using namespace TechDraw;
 using DU = DrawUtil;
@@ -332,7 +333,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 
         TopoDS_Shape grid = gridComp;
         if (hatchRotation != 0.0) {
-            double hatchRotationRad = hatchRotation * M_PI / 180.0;
+            double hatchRotationRad = hatchRotation * pi_v / 180.0;
             gp_Ax1 gridAxis(gp_Pnt(0.0, 0.0, 0.0), gp_Vec(gp::OZ().Direction()));
             gp_Trsf xGridRotate;
             xGridRotate.SetRotation(gridAxis, hatchRotationRad);

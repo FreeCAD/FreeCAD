@@ -71,6 +71,8 @@
 #include "DrawUtil.h"
 #include "ShapeUtils.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using namespace std;
 
@@ -299,7 +301,7 @@ TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& vi
     }
 
     gp_Ax1 rotAxis = viewAxis.Axis();
-    double rotation = rotAngle * M_PI / 180.0;
+    double rotation = rotAngle * pi_v / 180.0;
 
     try {
         gp_Trsf tempTransform;

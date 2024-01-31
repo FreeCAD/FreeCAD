@@ -37,6 +37,8 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 
+#include "FCConsts.h"
+
 using namespace Sketcher;
 
 namespace SketcherGui
@@ -103,7 +105,7 @@ private:
                 endpoint = centerPoint + length * Base::Vector2d(cos(endAngle), sin(endAngle));
 
                 double angle1 = endAngle - startAngle;
-                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi_v;
                 totalAngle = abs(angle1 - totalAngle) < abs(angle2 - totalAngle) ? angle1 : angle2;
 
                 CreateAndDrawShapeGeometry();
@@ -556,7 +558,7 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
                 double arcAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
-                if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), pi_2v) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                     return;
                 }
@@ -569,7 +571,7 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
                 double arcAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), pi_2v) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                     return;
                 }

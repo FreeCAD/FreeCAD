@@ -64,6 +64,8 @@
 #include "ViewProviderSketch.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 using namespace SketcherGui;
@@ -262,7 +264,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo);
                                 ra = circle->getRadius();
-                                angle = M_PI / 4;
+                                angle = pi_1v_4;
                                 midpos = circle->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfCircle>()) {
@@ -281,7 +283,7 @@ Restart:
                                 rb = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle = atan2(majdir.y, majdir.x);
-                                angleplus = M_PI / 4;
+                                angleplus = pi_1v_4;
                                 midpos = ellipse->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfEllipse>()) {
@@ -460,7 +462,7 @@ Restart:
 
                         norm1.Normalize();
                         dir1 = norm1;
-                        dir1.RotateZ(-M_PI / 2.0);
+                        dir1.RotateZ(-pi_1v_2);
                     }
                     else if (Constr->FirstPos == Sketcher::PointPos::none) {
 
@@ -485,7 +487,7 @@ Restart:
                         else if (geo1->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo1);
-                            norm1 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
+                            norm1 = Base::Vector3d(cos(pi_1v_4), sin(pi_1v_4), 0);
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = circle->getCenter() + circle->getRadius() * norm1;
                         }
@@ -514,7 +516,7 @@ Restart:
                         else if (geo2->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo2);
-                            norm2 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
+                            norm2 = Base::Vector3d(cos(pi_1v_4), sin(pi_1v_4), 0);
                             dir2 = Base::Vector3d(-norm2.y, norm2.x, 0);
                             midpos2 = circle->getCenter() + circle->getRadius() * norm2;
                         }
@@ -577,7 +579,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo1);
                                 r1a = circle->getRadius();
-                                angle1 = M_PI / 4;
+                                angle1 = pi_1v_4;
                                 midpos1 = circle->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfCircle>()) {
@@ -596,7 +598,7 @@ Restart:
                                 r1b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle1 = atan2(majdir.y, majdir.x);
-                                angle1plus = M_PI / 4;
+                                angle1plus = pi_1v_4;
                                 midpos1 = ellipse->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfEllipse>()) {
@@ -642,7 +644,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo2);
                                 r2a = circle->getRadius();
-                                angle2 = M_PI / 4;
+                                angle2 = pi_1v_4;
                                 midpos2 = circle->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfCircle>()) {
@@ -661,7 +663,7 @@ Restart:
                                 r2b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle2 = atan2(majdir.y, majdir.x);
-                                angle2plus = M_PI / 4;
+                                angle2plus = pi_1v_4;
                                 midpos2 = ellipse->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfEllipse>()) {
@@ -944,7 +946,7 @@ Restart:
                                 // otherwise We still use findHelperAngles before to find if helper
                                 // is needed.
                                 helperStartAngle1 = endAngle;
-                                helperRange1 = 2 * M_PI - (endAngle - startAngle);
+                                helperRange1 = pi_2v - (endAngle - startAngle);
 
                                 numPoints++;
                             }
@@ -967,7 +969,7 @@ Restart:
 
                             if (helperRange2 != 0.) {
                                 helperStartAngle2 = endAngle;
-                                helperRange2 = 2 * M_PI - (endAngle - startAngle);
+                                helperRange2 = pi_2v - (endAngle - startAngle);
 
                                 numPoints++;
                             }
@@ -1065,7 +1067,7 @@ Restart:
                         // getSolvedSketch().calculateNormalAtPoint(Constr->Second, pos.x, pos.y);
                         norm.Normalize();
                         Base::Vector3d dir = norm;
-                        dir.RotateZ(-M_PI / 2.0);
+                        dir.RotateZ(-pi_1v_2);
 
                         relPos = seekConstraintPosition(
                             pos,
@@ -1361,12 +1363,12 @@ Restart:
                             // TODO: Check
                             // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First,
                             // p.x, p.y);
-                            dir1.RotateZ(-M_PI / 2);  // convert to vector of tangency by rotating
+                            dir1.RotateZ(-pi_1v_2);  // convert to vector of tangency by rotating
                             dir2 = getNormal(geolistfacade, Constr->Second, p);
                             // TODO: Check
                             // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second,
                             // p.x, p.y);
-                            dir2.RotateZ(-M_PI / 2);
+                            dir2.RotateZ(-pi_1v_2);
 
                             startangle = atan2(dir1.y, dir1.x);
                             range = atan2(dir1.x * dir2.y - dir1.y * dir2.x,
@@ -1610,24 +1612,24 @@ void EditModeConstraintCoinManager::findHelperAngles(double& helperStartAngle,
 {
     double margin = 0.2;  // about 10deg
     if (angle < 0) {
-        angle = angle + 2 * M_PI;
+        angle = angle + pi_2v;
     }
     // endAngle can be more than 2*pi as its startAngle + arcAngle
-    if (endAngle > 2 * M_PI && angle < endAngle - 2 * M_PI) {
-        angle = angle + 2 * M_PI;
+    if (endAngle > pi_2v && angle < endAngle - pi_2v) {
+        angle = angle + pi_2v;
     }
     if (!(angle > startAngle && angle < endAngle)) {
-        if ((angle < startAngle && startAngle - angle < angle + 2 * M_PI - endAngle)
-            || (angle > endAngle && startAngle + 2 * M_PI - angle < angle - endAngle)) {
+        if ((angle < startAngle && startAngle - angle < angle + pi_2v - endAngle)
+            || (angle > endAngle && startAngle + pi_2v - angle < angle - endAngle)) {
             if (angle > startAngle) {
-                angle -= 2 * M_PI;
+                angle -= pi_2v;
             }
             helperStartAngle = angle - margin;
             helperRange = startAngle - angle + margin;
         }
         else {
             if (angle < endAngle) {
-                angle += 2 * M_PI;
+                angle += pi_2v;
             }
             helperStartAngle = endAngle;
             helperRange = angle - endAngle + margin;

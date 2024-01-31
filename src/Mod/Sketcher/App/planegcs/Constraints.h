@@ -25,6 +25,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
+#include <FCConsts.h>
 
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code

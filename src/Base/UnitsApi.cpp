@@ -39,13 +39,9 @@
 #include "UnitsSchemaMmMin.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
 #include "UnitsSchemaMeterDecimal.h"
+#include "FCConsts.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E 2.71828182845904523536
-#endif
+
 #ifndef DOUBLE_MAX
 #define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
 #endif

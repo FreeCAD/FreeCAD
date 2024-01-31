@@ -3114,28 +3114,28 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
         // the desired angle value (and we are to decide if 180* should be added to it)
         double angleDesire = 0.0;
         if (cTyp == Tangent) {
-            angleOffset = -M_PI / 2;
+            angleOffset = -pi_1v_2;
             angleDesire = 0.0;
         }
         if (cTyp == Perpendicular) {
             angleOffset = 0;
-            angleDesire = M_PI / 2;
+            angleDesire = pi_1v_2;
         }
 
         if (*value
             == 0.0) {  // autodetect tangency internal/external (and same for perpendicularity)
             double angleErr = GCSsys.calculateAngleViaPoint(*crv1, *crv2, p) - angleDesire;
             // bring angleErr to -pi..pi
-            if (angleErr > M_PI) {
-                angleErr -= M_PI * 2;
+            if (angleErr > pi_v) {
+                angleErr -= pi_2v;
             }
-            if (angleErr < -M_PI) {
-                angleErr += M_PI * 2;
+            if (angleErr < -pi_v) {
+                angleErr += pi_2v;
             }
 
             // the autodetector
-            if (fabs(angleErr) > M_PI / 2) {
-                angleDesire += M_PI;
+            if (fabs(angleErr) > pi_1v_2) {
+                angleDesire += pi_v;
             }
 
             *angle = angleDesire;
@@ -4344,7 +4344,7 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if ((*it).constr->Type == Angle) {
 
-                (*it).constr->setValue(std::fmod(*((*it).value), 2.0 * M_PI));
+                (*it).constr->setValue(std::fmod(*((*it).value), pi_2v));
             }
             else if ((*it).constr->Type == Diameter && (*it).constr->First >= 0) {
 

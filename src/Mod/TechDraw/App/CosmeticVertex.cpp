@@ -38,6 +38,8 @@
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
@@ -187,7 +189,7 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
     if (rotDegrees != 0.0) {
         // invert the Y coordinate so the rotation math works out
         scaledPoint = DU::invertY(scaledPoint);
-        scaledPoint.RotateZ(rotDegrees * M_PI / 180.0);
+        scaledPoint.RotateZ(rotDegrees * pi_v / 180.0);
         scaledPoint = DU::invertY(scaledPoint);
     }
     return scaledPoint;
@@ -204,7 +206,7 @@ Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vecto
     Base::Vector3d result = point;
     if (rotDeg != 0.0) {
         // unrotate the point
-        double rotRad = rotDeg * M_PI / 180.0;
+        double rotRad = rotDeg * pi_v / 180.0;
         // we always rotate around the origin.
         result.RotateZ(-rotRad);
     }

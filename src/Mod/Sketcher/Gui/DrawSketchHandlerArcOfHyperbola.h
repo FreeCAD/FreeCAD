@@ -35,6 +35,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "FCConsts.h"
 
 
 namespace SketcherGui
@@ -107,8 +108,6 @@ public:
 
             if (!boost::math::isnan(b)) {
                 for (int i = 15; i >= -15; i--) {
-                    // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle = i*M_PI/16.0;
                     double angle = i * angleatpoint / 15;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
@@ -145,8 +144,6 @@ public:
 
             double startAngle = angleatstartingpoint;
 
-            // double angleatpoint =
-            // acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
 
             double angleatpoint = atanh((((onSketchPos.y - centerPoint.y) * cos(phi)
                                           - (onSketchPos.x - centerPoint.x) * sin(phi))
@@ -155,19 +152,13 @@ public:
                                             + (onSketchPos.y - centerPoint.y) * sin(phi))
                                            * b));
 
-            /*double angle1 = angleatpoint - startAngle;
-
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
-            arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;*/
 
             arcAngle = angleatpoint - startAngle;
 
-            // if(!boost::math::isnan(angle1) && !boost::math::isnan(angle2)){
             if (!boost::math::isnan(arcAngle)) {
                 EditCurve.resize(33);
                 for (int i = 0; i < 33; i++) {
-                    // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle=i*angleatpoint/16;
+
                     double angle = startAngle + i * arcAngle / 32.0;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
@@ -245,9 +236,6 @@ public:
 
             double startAngle = angleatstartingpoint;
 
-            // double angleatpoint =
-            // acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
-
             double endAngle = atanh(
                 (((endPoint.y - centerPoint.y) * cos(phi) - (endPoint.x - centerPoint.x) * sin(phi))
                  * a)
@@ -300,8 +288,8 @@ public:
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint + perp;
                 minAxisPoint = centerPoint + minAxisDir;
-                endAngle += M_PI / 2;
-                startAngle += M_PI / 2;
+                endAngle += pi_1v_2;
+                startAngle += pi_1v_2;
             }
 
             int currentgeoid = getHighestCurveIndex();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2023 Andrea Reale <realeandrea@yahoo.it>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,35 +19,44 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+/** \file FCConsts.h
+ *  \brief Freecad consts.
+ */
+ #ifndef FC_CONSTS_H
+ #define FC_CONSTS_H
+#include <limits>
 
+    #ifndef DOUBLE_MAX
+	#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
+    #endif
+    #ifndef DOUBLE_MIN
+        #define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
+    #endif
 
-#include "PreCompiled.h"
+#if CMAKE_CXX_STANDARD == 20
+    #include <numbers>
+#else
+    #include <boost/math/constants/constants.hpp>
+    static constexpr double pi_v = boost::math::constants::pi<double>();
+    static constexpr double e_v  = boost::math::constants::e<double>();
+    
 
-#include "FCConsts.h"
+     
+#endif
 
-#include <Mod/TechDraw/App/CosmeticExtension.h>
-#include "ViewProviderCosmeticExtension.h"
+//pi consts
+static constexpr double pi_2v = pi_v * 2.0;
+static constexpr double pi_3v = pi_v  * 3.0;
+static constexpr double pi_4v = pi_v  * 4.0;
+static constexpr double pi_1v_2 = pi_v  / 2.0;
+static constexpr double pi_1v_3 = pi_v  / 3.0;
+static constexpr double pi_1v_4 = pi_v  / 4.0;
+static constexpr double pi_1v_6 = pi_v  / 6.0;
+static constexpr double pi_1v_8 = pi_v  / 8.0;
+static constexpr double pi_1v_12 = pi_v  / 12.0;
+static constexpr double pi_1v_16 = pi_v  / 16.0;
+static constexpr double pi_1v_18 = pi_v  / 18.0;
+static constexpr double pi_2v_3 = pi_v  * 2.0/ 3.0;
 
-using namespace TechDrawGui;
-
-EXTENSION_PROPERTY_SOURCE(TechDrawGui::ViewProviderCosmeticExtension, Gui::ViewProviderExtension)
-
-
-ViewProviderCosmeticExtension::ViewProviderCosmeticExtension()
-{
-    initExtensionType(ViewProviderCosmeticExtension::getExtensionClassTypeId());
-}
-
-QIcon ViewProviderCosmeticExtension::extensionMergeGreyableOverlayIcons(const QIcon & orig) const
-{
-    QIcon mergedicon = orig;
-
-    return mergedicon;
-}
-
-namespace Gui {
-    EXTENSION_PROPERTY_SOURCE_TEMPLATE(TechDrawGui::ViewProviderCosmeticExtensionPython, TechDrawGui::ViewProviderCosmeticExtension)
-
-// explicit template instantiation
-    template class TechDrawGuiExport ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension>;
-}
+#endif
+ 

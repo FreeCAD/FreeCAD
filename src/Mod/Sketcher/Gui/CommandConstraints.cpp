@@ -53,6 +53,8 @@
 #include "ui_InsertDatum.h"
 #include <Inventor/events/SoKeyboardEvent.h>
 
+#include "FCConsts.h"
+
 // Remove this after pre-commit hook is activated
 // clang-format off
 using namespace std;
@@ -112,10 +114,10 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     if (lastConstraintType == Radius || lastConstraintType == Diameter) {
         labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0)
-            * (M_PI / 180);// Get radius/diameter constraint display angle
+            * (pi_v / 180);// Get radius/diameter constraint display angle
         labelPositionRandomness =
             hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0)
-            * (M_PI / 180);// Get randomness
+            * (pi_v / 180);// Get randomness
 
         // Adds a random value around the base angle, so that possibly overlapping labels get likely
         // a different position.

@@ -62,7 +62,7 @@
 #include "ui_CylinderWidget.h"
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
-
+#include "FCConsts.h"
 
 using namespace FemGui;
 namespace sp = std::placeholders;
@@ -1200,20 +1200,18 @@ SoGroup* postCylinder()
     // top and bottom
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < nCirc + 1; ++j) {
-            points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nCirc * j),
-                                            std::sin(2 * M_PI / nCirc * j),
-                                            -h / 2. + h * i));
+            points->point.set1Value(
+                idx,
+                SbVec3f(std::cos(pi_2v / nCirc * j), std::sin(pi_2v / nCirc * j), -h / 2. + h * i));
             ++idx;
         }
     }
     // sides
     for (int i = 0; i < nSide; ++i) {
         for (int j = 0; j < 2; ++j) {
-            points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nSide * i),
-                                            std::sin(2 * M_PI / nSide * i),
-                                            -h / 2. + h * j));
+            points->point.set1Value(
+                idx,
+                SbVec3f(std::cos(pi_2v / nSide * i), std::sin(pi_2v / nSide * i), -h / 2. + h * j));
             ++idx;
         }
     }
@@ -1261,18 +1259,18 @@ SoGroup* postSphere()
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
-                                            std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
-                                            std::cos(2 * M_PI / 20 * j)));
+                                    SbVec3f(std::sin(pi_2v / 20 * j) * std::cos(pi_1v_4 * i),
+                                            std::sin(pi_2v / 20 * j) * std::sin(pi_1v_4 * i),
+                                            std::cos(pi_2v / 20 * j)));
             ++idx;
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
-                                            std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
-                                            std::cos(M_PI / 4 * i)));
+                                    SbVec3f(std::sin(pi_1v_4 * i) * std::cos(pi_2v / 20 * j),
+                                            std::sin(pi_1v_4 * i) * std::sin(pi_2v / 20 * j),
+                                            std::cos(pi_1v_4 * i)));
             ++idx;
         }
     }

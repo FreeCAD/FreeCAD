@@ -63,6 +63,8 @@
 #include "ZVALUE.h"
 #include "PathBuilder.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace std;
@@ -896,7 +898,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
-        double rotationRad = viewPart->Rotation.getValue() * M_PI / 180.0;
+        double rotationRad = viewPart->Rotation.getValue() * pi_v / 180.0;
         center.RotateZ(rotationRad);
 
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();

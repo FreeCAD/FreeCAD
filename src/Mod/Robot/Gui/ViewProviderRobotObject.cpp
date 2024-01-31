@@ -42,6 +42,7 @@
 
 #include "ViewProviderRobotObject.h"
 
+#include "FCConsts.h"
 
 using namespace Gui;
 using namespace RobotGui;
@@ -269,33 +270,33 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
         }
         if (Axis1Node) {
             Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis1.getValue() * (M_PI / 180));
+                                         robObj->Axis1.getValue() * (pi_v / 180));
         }
         if (Axis2Node) {
             Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis2.getValue() * (M_PI / 180));
+                                         robObj->Axis2.getValue() * (pi_v / 180));
         }
         if (Axis3Node) {
             Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis3.getValue() * (M_PI / 180));
+                                         robObj->Axis3.getValue() * (pi_v / 180));
         }
         if (Axis4Node) {
             Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis4.getValue() * (M_PI / 180));
+                                         robObj->Axis4.getValue() * (pi_v / 180));
         }
         if (Axis5Node) {
             Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis5.getValue() * (M_PI / 180));
+                                         robObj->Axis5.getValue() * (pi_v / 180));
         }
         if (Axis6Node) {
             Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis6.getValue() * (M_PI / 180));
+                                         robObj->Axis6.getValue() * (pi_v / 180));
         }
     }
     else if (prop == &robObj->Axis1) {
         if (Axis1Node) {
             Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis1.getValue() * (M_PI / 180));
+                                         robObj->Axis1.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -305,7 +306,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis2) {
         if (Axis2Node) {
             Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis2.getValue() * (M_PI / 180));
+                                         robObj->Axis2.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -315,7 +316,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis3) {
         if (Axis3Node) {
             Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis3.getValue() * (M_PI / 180));
+                                         robObj->Axis3.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -325,7 +326,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis4) {
         if (Axis4Node) {
             Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis4.getValue() * (M_PI / 180));
+                                         robObj->Axis4.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -335,7 +336,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis5) {
         if (Axis5Node) {
             Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis5.getValue() * (M_PI / 180));
+                                         robObj->Axis5.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -345,7 +346,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis6) {
         if (Axis6Node) {
             Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis6.getValue() * (M_PI / 180));
+                                         robObj->Axis6.getValue() * (pi_v / 180));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -402,22 +403,22 @@ void ViewProviderRobotObject::setAxisTo(float A1,
     if (Axis1Node) {
         // FIXME Ugly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on
         // Axis 1
-        Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A1 * (M_PI / 180));
+        Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A1 * (pi_v / 180));
     }
     if (Axis2Node) {
-        Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A2 * (M_PI / 180));
+        Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A2 * (pi_v / 180));
     }
     if (Axis3Node) {
-        Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A3 * (M_PI / 180));
+        Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A3 * (pi_v / 180));
     }
     if (Axis4Node) {
-        Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A4 * (M_PI / 180));
+        Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A4 * (pi_v / 180));
     }
     if (Axis5Node) {
-        Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A5 * (M_PI / 180));
+        Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A5 * (pi_v / 180));
     }
     if (Axis6Node) {
-        Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A6 * (M_PI / 180));
+        Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A6 * (pi_v / 180));
     }
     // update tool position
     if (toolShape) {

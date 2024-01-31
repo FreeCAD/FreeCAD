@@ -78,6 +78,8 @@
 
 #include "TaskDimension.h"
 
+#include "FCConsts.h"
+
 
 namespace sp = std::placeholders;
 
@@ -989,16 +991,16 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   std::ostringstream stream;
   stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << std::fixed << std::endl <<
     "angle in radians is: " << angle << std::endl <<
-    "angle in degrees is: " << 180 * angle / M_PI << std::endl;
-  if (angle < M_PI / 2.0)
+    "angle in degrees is: " << 180 * angle / pi_v << std::endl;
+  if (angle < pi_1v_2)
     stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) <<
-    "complement in radians is: " << M_PI / 2.0 - angle << std::endl <<
-    "complement in degrees is: " << 90 - 180 * angle / M_PI << std::endl;
+    "complement in radians is: " << pi_1v_2 - angle << std::endl <<
+    "complement in degrees is: " << 90 - 180 * angle / pi_v << std::endl;
   //I don't think we get anything over 180, but just in case.
-  if (angle > M_PI / 2.0 && angle < M_PI)
+  if (angle > pi_1v_2 && angle < pi_v)
     stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) <<
-    "supplement in radians is: " << M_PI - angle << std::endl <<
-    "supplement in degrees is: " << 180 - 180 * angle / M_PI << std::endl;
+    "supplement in radians is: " << pi_v - angle << std::endl <<
+    "supplement in degrees is: " << 180 - 180 * angle / pi_v << std::endl;
   Base::Console().Message(stream.str().c_str());
 
   SbMatrix dimSys;
@@ -1061,7 +1063,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     dimSys = dimSys.transpose();
 
     radius = midPointProjection.Magnitude();
-    displayAngle = M_PI;
+    displayAngle = pi_v;
   }
   else
   {
@@ -1136,7 +1138,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   dimension->matrix.setValue(dimSys);
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
-  dimension->text.setValue((Base::Quantity(180 * angle / M_PI, Base::Unit::Angle)).getUserString().toUtf8().constData());
+  dimension->text.setValue((Base::Quantity(180 * angle / pi_v, Base::Unit::Angle)).getUserString().toUtf8().constData());
   dimension->dColor.setValue(SbColor(c.r, c.g, c.b));
   dimension->setupDimension();
 

@@ -52,6 +52,7 @@
 
 #include "SoDatumLabel.h"
 
+#include "FCConsts.h"
 
 #define ZCONSTR 0.006f
 
@@ -910,10 +911,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Get magnitude of angle between horizontal
         angle = atan2f(dir[1],dir[0]);
-        if (angle > M_PI_2+M_PI/12) {
-            angle -= (float)M_PI;
-        } else if (angle <= -M_PI_2+M_PI/12) {
-            angle += (float)M_PI;
+        if (angle > pi_1v_2+pi_1v_12) {
+            angle -= pi_v;
+        } else if (angle <= -pi_1v_2+pi_1v_12) {
+            angle += pi_v;
         }
 
         textOffset = midpos + normal * length + dir * length2;
@@ -1001,7 +1002,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
                 float startangle1 = this->param3.getValue();
                 float radius1 = this->param5.getValue();
                 SbVec3f center = points[2];
-                int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * M_PI))));
+                int countSegments = std::max(6, abs(int(50.0 * range1 / pi_2v)));
                 double segment = range1 / (countSegments - 1);
 
                 glBegin(GL_LINE_STRIP);
@@ -1017,7 +1018,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
                 float startangle2 = this->param6.getValue();
                 float radius2 = this->param8.getValue();
                 SbVec3f center = points[3];
-                int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * M_PI))));
+                int countSegments = std::max(6, abs(int(50.0 * range2 / pi_2v)));
                 double segment = range2 / (countSegments - 1);
 
                 glBegin(GL_LINE_STRIP);
@@ -1051,10 +1052,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Get magnitude of angle between horizontal
         angle = atan2f(dir[1],dir[0]);
-        if (angle > M_PI_2+M_PI/12) {
-            angle -= (float)M_PI;
-        } else if (angle <= -M_PI_2+M_PI/12) {
-            angle += (float)M_PI;
+        if (angle > pi_1v_2+pi_1v_12) {
+            angle -= pi_v;
+        } else if (angle <= -pi_1v_2+pi_1v_12) {
+            angle += pi_v;
         }
 
         textOffset = pos;
@@ -1108,7 +1109,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         float startangle = this->param3.getValue();
         float range = this->param4.getValue();
         if (range != 0.0) {
-            int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+            int countSegments = std::max(6, abs(int(50.0 * range / (pi_2v))));
             double segment = range / (countSegments - 1);
 
             glBegin(GL_LINE_STRIP);
@@ -1154,7 +1155,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         else
             range = std::min(0.2f*range, range + this->imgWidth/(2*r));
 
-        int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+        int countSegments = std::max(6, abs(int(50.0 * range / pi_2v)));
         double segment = range / (2*countSegments-2);
 
         textOffset = p0 + v0 * r;
@@ -1317,7 +1318,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Apply a rotation and translation matrix
         glTranslatef(textOffset[0],textOffset[1], textOffset[2]);
-        glRotatef((GLfloat) angle * 180 / M_PI, 0,0,1);
+        glRotatef((GLfloat) angle * 180 / pi_v, 0,0,1);
         glBegin(GL_QUADS);
 
         glColor3f(1.f, 1.f, 1.f);

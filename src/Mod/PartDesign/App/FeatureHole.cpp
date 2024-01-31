@@ -2119,7 +2119,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // Reverse the direction of the helix. So that it goes into the material
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), pi_v);
     TopLoc_Location loc1(mov);
     helix.Move(loc1);
 

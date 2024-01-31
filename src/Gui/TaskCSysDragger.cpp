@@ -39,13 +39,15 @@
 #include "ViewProviderDragger.h"
 #include "TaskView/TaskView.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 
 
 static double degreesToRadians(const double &degreesIn)
 {
-  return degreesIn * (M_PI / 180.0);
+  return degreesIn * (pi_v / 180.0);
 }
 
 
@@ -131,8 +133,6 @@ void TaskCSysDragger::open()
   //we can't have user switching camera types while dragger is shown.
   Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(false);
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
-//   dragger->translationIncrement.setValue(lastTranslationIncrement);
-//   dragger->rotationIncrement.setValue(lastRotationIncrement);
   ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
   double lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
   double lastRotationIncrement = hGrp->GetFloat("LastRotationIncrement", 15.0);

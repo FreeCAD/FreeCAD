@@ -82,6 +82,8 @@
 #include "ShapeUtils.h"
 #include "DrawUtil.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDraw;
 using namespace Part;
@@ -129,7 +131,6 @@ TopoDS_Wire Wire::toOccWire() const
     if (mkWire.IsDone())  {
         return mkWire.Wire();
     }
-//    BRepTools::Write(result, "toOccWire.brep");
     return TopoDS_Wire();
 }
 
@@ -141,12 +142,12 @@ void Wire::dump(std::string s)
 TopoDS_Face Face::toOccFace() const
 {
     TopoDS_Face result;
-    //if (!wires.empty) {
+
     BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
     int limit = wires.size();
     int iwire = 1;
     for ( ; iwire < limit; iwire++) {
-//        w->dump("wireInToFace.brep");
+
         TopoDS_Wire wOCC = wires.at(iwire)->toOccWire();
         if(!wOCC.IsNull())  {
             mkFace.Add(wOCC);
@@ -245,7 +246,6 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-//    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void BaseGeom::Restore(Base::XMLReader &reader)
@@ -424,7 +424,6 @@ bool BaseGeom::closed()
 // return a BaseGeom similar to this, but inverted with respect to Y axis
 BaseGeomPtr BaseGeom::inverted()
 {
-//    Base::Console().Message("BG::inverted()\n");
     TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
     TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
     return baseFactory(invertedEdge);
@@ -492,7 +491,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
       } break;
       case GeomAbs_BezierCurve: {
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
-          //if (bez->Degree() < 4) {
           result = std::make_shared<BezierSegment>(edge);
           if (edge.Orientation() == TopAbs_REVERSED) {
               result->reversed = true;
@@ -517,7 +515,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
                         result = std::make_shared<Circle>(circEdge);
                     }
                 } else {
-//                    Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
                     result = bspline;
                 }
             }
@@ -574,8 +571,6 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
 
 std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 {
-    // find intersection vertex(es) between two edges
-    // call: interPoints = line1.intersection(line2);
     std::vector<Base::Vector3d> interPoints;
 
     TopoDS_Edge edge1 = completeEdge(this->getOCCEdge());
@@ -610,7 +605,6 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -647,7 +641,7 @@ Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
         Base::Console().Message("G:Ellipse - failed to make Ellipse\n");
     }
     const Handle(Geom_Ellipse) gEllipse = me.Value();
-    BRepBuilderAPI_MakeEdge mkEdge(gEllipse, 0.0, 2 * M_PI);
+    BRepBuilderAPI_MakeEdge mkEdge(gEllipse, 0.0, pi_2v);
     if (mkEdge.IsDone()) {
         occEdge = mkEdge.Edge();
     }
@@ -676,10 +670,10 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
                               e.GetMessageString());
     }
 
-    startAngle = fmod(f, 2.0*M_PI);
-    endAngle = fmod(l, 2.0*M_PI);
+    startAngle = fmod(f, pi_2v);
+    endAngle = fmod(l, pi_2v);
     cw = (a < 0) ? true: false;
-    largeArc = (l-f > M_PI) ? true : false;
+    largeArc = (l-f > pi_v) ? true : false;
 
     startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
     endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
@@ -712,7 +706,7 @@ Circle::Circle(Base::Vector3d c, double r)
     double angle2 = 360.0;
 
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(pi_v/180), angle2*(pi_v/180));
     TopoDS_Edge edge = aMakeEdge.Edge();
     occEdge = edge;
 }
@@ -740,6 +734,7 @@ std::string Circle::toString() const
           radius;
     return baseCSV + ", $$$, " + ss.str();
 }
+
 
 void Circle::Save(Base::Writer &writer) const
 {
@@ -782,10 +777,10 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     gp_Vec v3(0, 0, 1);      //stdZ
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
-    startAngle = fmod(f, 2.0*M_PI);
-    endAngle = fmod(l, 2.0*M_PI);
+    startAngle = fmod(f, pi_2v);
+    endAngle = fmod(l, pi_2v);
     cw = (a < 0) ? true: false;
-    largeArc = (fabs(l-f) > M_PI) ? true : false;
+    largeArc = (fabs(l-f) > pi_v) ? true : false;
 
     startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
     endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
@@ -809,7 +804,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     circle.SetRadius(r);
 
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, sAng*(M_PI/180), eAng*(M_PI/180));
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, sAng*(pi_v/180), eAng*(pi_v/180));
     TopoDS_Edge edge = aMakeEdge.Edge();
     occEdge = edge;
 
@@ -825,10 +820,10 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     gp_Vec v3(0, 0, 1);      //stdZ
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
-    startAngle = fmod(f, 2.0*M_PI);
-    endAngle = fmod(l, 2.0*M_PI);
+    startAngle = fmod(f, pi_2v);
+    endAngle = fmod(l, pi_2v);
     cw = (a < 0) ? true: false;
-    largeArc = (fabs(l-f) > M_PI) ? true : false;
+    largeArc = (fabs(l-f) > pi_v) ? true : false;
 
     startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
     endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
@@ -847,7 +842,7 @@ AOC::AOC() : Circle()
     endPnt = Base::Vector3d(0.0, 0.0, 0.0);
     midPnt = Base::Vector3d(0.0, 0.0, 0.0);
     startAngle = 0.0;
-    endAngle = 2.0 * M_PI;
+    endAngle = pi_2v;
     cw = false;
     largeArc = false;
 
@@ -1111,11 +1106,11 @@ BSpline::BSpline(const TopoDS_Edge &e)
 
     startAngle = atan2(startPnt.y, startPnt.x);
     if (startAngle < 0) {
-         startAngle += 2.0 * M_PI;
+         startAngle += pi_2v;
     }
     endAngle = atan2(endPnt.y, endPnt.x);
     if (endAngle < 0) {
-         endAngle += 2.0 * M_PI;
+         endAngle += pi_2v;
     }
 
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
@@ -1300,10 +1295,6 @@ void Vertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
 
-    //do we need to save this?  always recreated by program.
-//    const char r = reference?'1':'0';
-//    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
-
     writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
@@ -1316,8 +1307,6 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     reader.readElement("Extract");
     extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
-//    reader.readElement("Visible");
-//    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Ref3D");
     ref3D = reader.getAttributeAsInteger("value");
     reader.readElement("IsCenter");
@@ -1328,10 +1317,6 @@ void Vertex::Restore(Base::XMLReader &reader)
     cosmeticLink = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute("value");
-
-    //will restore read to eof looking for "Reference" in old docs??  YES!!
-//    reader.readElement("Reference");
-//    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
     reader.readElement("VertexTag");
     std::string temp = reader.getAttribute("value");
@@ -1471,7 +1456,7 @@ TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::CirclePtr c)
     circle.SetAxis(axis);
     circle.SetRadius(c->radius);
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, 0.0, 2.0 * M_PI);
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, 0.0, pi_2v);
     return aMakeEdge.Edge();
 }
 
@@ -1580,7 +1565,6 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
     } else {
         arc = true;
     }
-    //    arc  = !c.IsClosed();    //reliable?
 
     Handle(Geom_BSplineCurve) spline = c.BSpline();
 

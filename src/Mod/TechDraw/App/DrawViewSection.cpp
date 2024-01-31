@@ -93,6 +93,8 @@
 
 #include "DrawViewSection.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 
 using DU = DrawUtil;
@@ -939,8 +941,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     double baseRotation = getBaseDVP()->Rotation.getValue();// Qt degrees are clockwise
-    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
-    Base::Rotation unrotator(stdZ, -baseRotation * M_PI / 180.0);
+    Base::Rotation rotator(stdZ, baseRotation * pi_v / 180.0);
+    Base::Rotation unrotator(stdZ, -baseRotation * pi_v / 180.0);
 
     auto sNorm = SectionNormal.getValue();
     auto axis = getBaseDVP()->Direction.getValue();
@@ -1008,8 +1010,6 @@ bool DrawViewSection::isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const
 
 Base::Vector3d DrawViewSection::getXDirection() const
 {
-    //    Base::Console().Message("DVS::getXDirection() - %s\n",
-    //    Label.getValue());
     App::Property* prop = getPropertyByName("XDirection");
     if (!prop) {
         // No XDirection property.  can this happen?
@@ -1034,8 +1034,6 @@ Base::Vector3d DrawViewSection::getXDirection() const
 
 void DrawViewSection::setCSFromBase(const std::string sectionName)
 {
-    //    Base::Console().Message("DVS::setCSFromBase(%s)\n",
-    //    sectionName.c_str());
     gp_Dir gDir = getCSFromBase(sectionName).Direction();
     Base::Vector3d vDir(gDir.X(), gDir.Y(), gDir.Z());
     Direction.setValue(vDir);
@@ -1048,8 +1046,6 @@ void DrawViewSection::setCSFromBase(const std::string sectionName)
 // set the section CS based on an XY vector in BaseViews CS
 void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
 {
-    //    Base::Console().Message("DVS::setCSFromBase(%s)\n",
-    //    DrawUtil::formatVector(localUnit).c_str());
     gp_Ax2 newSectionCS = getBaseDVP()->localVectorToCS(localUnit);
 
     Base::Vector3d vDir(newSectionCS.Direction().X(),
@@ -1066,8 +1062,6 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
 // reset the section CS based on an XY vector in current section CS
 void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
 {
-    //    Base::Console().Message("DVS::setCSFromLocalUnit(%s)\n",
-    //    DrawUtil::formatVector(localUnit).c_str());
     gp_Dir verticalDir = getSectionCS().YDirection();
     gp_Ax1 verticalAxis(DrawUtil::togp_Pnt(SectionOrigin.getValue()), verticalDir);
     gp_Dir oldNormal = getSectionCS().Direction();
@@ -1080,8 +1074,6 @@ void DrawViewSection::setCSFromLocalUnit(const Base::Vector3d localUnit)
 
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 {
-    //    Base::Console().Message("DVS::getCSFromBase(%s)\n",
-    //    sectionName.c_str());
     Base::Vector3d origin(0.0, 0.0, 0.0);
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
 
@@ -1137,7 +1129,6 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 // returns current section cs
 gp_Ax2 DrawViewSection::getSectionCS() const
 {
-    //    Base::Console().Message("DVS::getSectionCS()\n");
     Base::Vector3d vNormal = SectionNormal.getValue();
     gp_Dir gNormal(vNormal.x, vNormal.y, vNormal.z);
     Base::Vector3d vXDir = getXDirection();
@@ -1172,8 +1163,6 @@ gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
-    //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i,
-    //    m_lineSets.size());
     std::vector<LineSet> result;
     return DrawGeomHatch::getTrimmedLinesSection(this,
                                                  m_lineSets,
@@ -1236,7 +1225,6 @@ void DrawViewSection::setupObject()
 // create geometric hatch lines
 void DrawViewSection::makeLineSets(void)
 {
-    //    Base::Console().Message("DVS::makeLineSets()\n");
     if (PatIncluded.isEmpty()) {
         return;
     }
@@ -1260,8 +1248,6 @@ void DrawViewSection::makeLineSets(void)
 
 void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 {
-    //    Base::Console().Message("DVS::replaceSvgIncluded(%s)\n",
-    //    newSvgFile.c_str());
     if (newSvgFile.empty()) {
         return;
     }
@@ -1277,8 +1263,6 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-    //    Base::Console().Message("DVS::replacePatIncluded(%s)\n",
-    //    newPatFile.c_str());
     if (newPatFile.empty()) {
         return;
     }
@@ -1296,7 +1280,6 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 
 void DrawViewSection::getParameters()
 {
-    //    Base::Console().Message("DVS::getParameters()\n");
     bool fuseFirst = Preferences::getPreferenceGroup("General")->GetBool("SectionFuseFirst", false);
     FuseBeforeCut.setValue(fuseFirst);
 }
@@ -1308,10 +1291,7 @@ bool DrawViewSection::debugSection(void) const
 
 int DrawViewSection::prefCutSurface(void) const
 {
-    //    Base::Console().Message("DVS::prefCutSurface()\n");
-
-    return Preferences::getPreferenceGroup("Decorations")
-        ->GetInt("CutSurfaceDisplay", 2);// default to SvgHatch
+    return Preferences::getPreferenceGroup("Decorations")->GetInt("CutSurfaceDisplay", 2);// default to SvgHatch
 }
 
 bool DrawViewSection::showSectionEdges(void)

@@ -46,6 +46,8 @@
 
 #include "View3DInventorExamples.h"
 
+#include "FCConsts.h"
+
 
 unsigned char * generateTexture(int w, int h, int d)
 {
@@ -60,7 +62,7 @@ unsigned char * generateTexture(int w, int h, int d)
       y = (j-h/2)/2;
       for (int i = 0;i<w;i++) {
         x = (i-w/2)/2;
-        val = int(x*x + y*y*sin(2*x*M_PI/w + z*M_PI/180));
+        val = int(x*x + y*y*sin(x*pi_2v/w + z*pi_v/180));
         val = abs(val%512);
         if (val >= 256) val = 511-val;
         bitmap[k*w*h + j*h + i] = val;

@@ -983,7 +983,7 @@ int System::addConstraintPerpendicularLine2Arc(Point& p1,
         return addConstraintP2PAngle(p1, p2, a.startAngle, 0, tagId, driving);
     }
     else {
-        return addConstraintP2PAngle(p1, p2, a.startAngle, pi, tagId, driving);
+        return addConstraintP2PAngle(p1, p2, a.startAngle, pi_v, tagId, driving);
     }
 }
 
@@ -1000,7 +1000,7 @@ int System::addConstraintPerpendicularArc2Line(Arc& a,
         return addConstraintP2PAngle(p1, p2, a.endAngle, 0, tagId, driving);
     }
     else {
-        return addConstraintP2PAngle(p1, p2, a.endAngle, pi, tagId, driving);
+        return addConstraintP2PAngle(p1, p2, a.endAngle, pi_v, tagId, driving);
     }
 }
 
@@ -1011,7 +1011,7 @@ int System::addConstraintPerpendicularCircle2Arc(Point& center,
                                                  bool driving)
 {
     addConstraintP2PDistance(a.start, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi_2 : -pi_2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi_1v_2 : -pi_1v_2;
     double tangAngle = *a.startAngle + incrAngle;
     double dx = *(a.start.x) - *(center.x);
     double dy = *(a.start.y) - *(center.y);
@@ -1030,7 +1030,7 @@ int System::addConstraintPerpendicularArc2Circle(Arc& a,
                                                  bool driving)
 {
     addConstraintP2PDistance(a.end, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi_2 : pi_2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi_1v_2 : pi_1v_2;
     double tangAngle = *a.endAngle + incrAngle;
     double dx = *(a.end.x) - *(center.x);
     double dy = *(a.end.y) - *(center.y);

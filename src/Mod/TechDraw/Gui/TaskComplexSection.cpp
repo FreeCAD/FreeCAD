@@ -193,7 +193,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
         Base::Vector3d projectedViewDirection = m_baseView->projectPoint(sectionNormalVec, false);
         double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-        m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+        m_compass->setDialAngle(viewAngle * 180.0 / pi_v);
         m_viewDirectionWidget->setValueNoNotify(projectedViewDirection * -1.0);
     }
     else {
@@ -300,15 +300,13 @@ void TaskComplexSection::onSectionObjectsUseSelectionClicked()
 //the VectorEditWidget reports a change in direction
 void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 {
-    //    Base::Console().Message("TCS::slotViewDirectionChanged(%s)\n",
-    //                            DrawUtil::formatVector(newDirection).c_str());
     Base::Vector3d projectedViewDirection = newDirection;
     if (m_baseView) {
         projectedViewDirection = m_baseView->projectPoint(newDirection, false);
     }
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_compass->setDialAngle(viewAngle * 180.0 / pi_v);
     checkAll(false);
     applyAligned();
 }
@@ -317,8 +315,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 //SectionNormal
 void TaskComplexSection::slotChangeAngle(double newAngle)
 {
-    //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
-    double angleRadians = newAngle * M_PI / 180.0;
+    double angleRadians = newAngle * pi_v / 180.0;
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);
@@ -329,7 +326,6 @@ void TaskComplexSection::slotChangeAngle(double newAngle)
 
 void TaskComplexSection::onUpClicked()
 {
-    //    Base::Console().Message("TCS::onUpClicked()\n");
     checkAll(false);
     m_compass->setToNorth();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, 1.0, 0.0));

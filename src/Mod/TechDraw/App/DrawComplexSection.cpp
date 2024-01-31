@@ -100,9 +100,6 @@
 #include <gp_Pnt.hxx>
 #endif
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include <chrono>
 #include <sstream>
 
@@ -122,6 +119,8 @@
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "ShapeUtils.h"
+
+#include "FCConsts.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -381,7 +380,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         }
         //we only want to reverse the segment normal if it is not perpendicular to section normal
         if (segmentNormal.Dot(gProjectionUnit) != 0.0
-            && segmentNormal.Angle(gProjectionUnit) <= M_PI_2) {
+            && segmentNormal.Angle(gProjectionUnit) <= pi_1v_2) {
             segmentNormal.Reverse();
         }
 
@@ -652,7 +651,6 @@ TopoDS_Wire DrawComplexSection::makeProfileWire() const
 
 TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
 {
-    //    Base::Console().Message("DCS::makeProfileWire()\n");
     if (!isProfileObject(toolObj)) {
         return TopoDS_Wire();
     }
@@ -903,7 +901,7 @@ gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
 // being slightly wrong.  see https://forum.freecad.org/viewtopic.php?t=79017&sid=612a62a60f5db955ee071a7aaa362dbb
 bool DrawComplexSection::validateOffsetProfile(TopoDS_Wire profile, Base::Vector3d direction, double angleThresholdDeg) const
 {
-    double angleThresholdRad = angleThresholdDeg * M_PI / 180.0;  // 5 degrees
+    double angleThresholdRad = angleThresholdDeg * pi_v / 180.0;  // 5 degrees
     TopExp_Explorer explEdges(profile, TopAbs_EDGE);
     for (; explEdges.More(); explEdges.Next()) {
         std::pair<Base::Vector3d, Base::Vector3d> segmentEnds = getSegmentEnds(TopoDS::Edge(explEdges.Current()));

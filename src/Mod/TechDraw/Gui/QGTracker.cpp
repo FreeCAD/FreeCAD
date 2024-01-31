@@ -46,6 +46,8 @@
 #include "Rez.h"
 #include "ZVALUE.h"
 
+#include "FCConsts.h"
+
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -109,12 +111,8 @@ void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (!m_sleep) {
         double someLimit = Rez::guiX(10.0);
         QPointF manhat = myScenePos - m_lastClick;
-//        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f, %.3f)\n",
-//                                myScenePos.x(), myScenePos.y(), m_lastClick.x(), m_lastClick.y());
-//        Base::Console().Message("QGT::mousePressEvent - manhat(%.3f, %.3f) mLength: %.3f\n",
-//                                manhat.x(), manhat.y(), manhat.manhattanLength());
+
         if (manhat.manhattanLength() < someLimit) {
-//            Base::Console().Message("QGT::mousePressEvent - too close to last click\n");
         } else {
             if (event->button() == Qt::LeftButton)  {
                 if (event->modifiers() & Qt::ControlModifier) {
@@ -187,7 +185,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
         return dumbPt;
 
     QPointF result(dumbPt);
-    double angleIncr = M_PI / 8.0;   //15*
+    double angleIncr = pi_1v_8;   
     //mirror last clicked point and event point to get sensible coords
     QPointF last(m_points.back().x(), -m_points.back().y());
     QPointF pt(dumbPt.x(), -dumbPt.y());
@@ -196,7 +194,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
     QPointF qVec = last - pt;    //vec from end of track to end of tail
     double actual = atan2(-qVec.y(), qVec.x());
     if (actual < 0.0) {
-        actual = (2 * M_PI) + actual;          //map to +ve angle
+        actual = pi_2v + actual;          //map to +ve angle
     }
 
     double intPart;
@@ -223,7 +221,6 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
 //mouse event reactions
 void QGTracker::onMousePress(QPointF pos)
 {
-//    Base::Console().Message("QGT::onMousePress(%s)\n", TechDraw::DrawUtil::formatVector(pos).c_str());
     m_points.push_back(pos);
     TrackerMode mode = getTrackerMode();
     if (m_points.size() > 1) {
@@ -240,15 +237,13 @@ void QGTracker::onMousePress(QPointF pos)
                 setCircleFromPoints(m_points);
                 break;
             case TrackerMode::Point:
-                //do nothing
-//                setPoint(m_points);
                 break;
         }
     } else if (m_points.size() == 1) {   //first point selected
         //just return pos to caller
         getPickedQGIV(pos);
         setCursor(Qt::CrossCursor);  //why cross??
-//        Q_EMIT qViewPicked(pos, m_qgParent);   //not in use yet.
+
         if (mode == TrackerMode::Point) {
             setPoint(m_points);  //first point is mouse click scene pos
             terminateDrawing();

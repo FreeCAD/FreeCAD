@@ -33,11 +33,8 @@
 
 #include "Origin.h"
 #include "OriginFeature.h"
+#include "FCConsts.h"
 
-
-#ifndef M_PI
-# define M_PI       3.14159265358979323846
-#endif
 
 using namespace App;
 
@@ -138,11 +135,11 @@ void Origin::setupObject () {
         Base::Rotation rot;
     } setupData [] = {
         {App::Line::getClassTypeId(),  AxisRoles[0],  tr("X-axis"),   Base::Rotation()},
-        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)},
-        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1,1), M_PI*2/3)},
+        {App::Line::getClassTypeId(),  AxisRoles[1],  tr("Y-axis"),   Base::Rotation(Base::Vector3d(1,1,1), pi_2v_3)},
+        {App::Line::getClassTypeId(),  AxisRoles[2],  tr("Z-axis"),   Base::Rotation(Base::Vector3d(1,-1,1), pi_2v_3)},
         {App::Plane::getClassTypeId(), PlaneRoles[0], tr("XY-plane"), Base::Rotation()},
         {App::Plane::getClassTypeId(), PlaneRoles[1], tr("XZ-plane"), Base::Rotation(1.0, 0.0, 0.0, 1.0 )},
-        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), M_PI*2/3)}
+        {App::Plane::getClassTypeId(), PlaneRoles[2], tr("YZ-plane"), Base::Rotation(Base::Vector3d(1,1,1), pi_2v_3)}
     };
 
     App::Document *doc = getDocument ();

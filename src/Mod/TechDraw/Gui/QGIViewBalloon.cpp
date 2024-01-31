@@ -54,6 +54,7 @@
 #include "ViewProviderViewPart.h"
 #include "ZVALUE.h"
 
+#include "FCConsts.h"
 
 //TODO: hide the Qt coord system (+y down).
 
@@ -680,14 +681,14 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         radius = radius * scale;
         radius += Rez::guiX(3.0);
-        offsetLR = (tan(30 * M_PI / 180) * radius);
+        offsetLR = (tan(30 * pi_v / 180) * radius);
         QPolygonF triangle;
-        double startAngle = -M_PI / 2;
+        double startAngle = -pi_1v_2;
         double angle = startAngle;
         for (int i = 0; i < 4; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 3);
+            angle += (pi_2v / 3);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));
@@ -721,12 +722,12 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         radius += Rez::guiX(1.0);
         offsetLR = radius;
         QPolygonF triangle;
-        double startAngle = -2 * M_PI / 3;
+        double startAngle = -pi_2v / 3;
         double angle = startAngle;
         for (int i = 0; i < 7; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 6);
+            angle += (pi_2v / 6);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));
@@ -790,7 +791,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
             dirballoonLinesLine = (arrowTipPos - dLineStart).Normalize();
         }
 
-        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / M_PI;
+        float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / pi_v;
 
         arrow->setPos(arrowTipX, arrowTipY);
         if ((endType == ArrowType::FILLED_TRIANGLE) && (prefOrthoPyramid())) {
@@ -810,7 +811,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
             else {
                 arAngle = 0;
             }
-            double radAngle = arAngle * M_PI / 180.0;
+            double radAngle = arAngle * pi_v / 180.0;
             double sinAngle = sin(radAngle);
             double cosAngle = cos(radAngle);
             xAdj = Rez::guiX(arrowAdj * cosAngle);
@@ -848,18 +849,13 @@ void QGIViewBalloon::drawBalloon(bool dragged)
 void QGIViewBalloon::setPrettyPre(void)
 {
     arrow->setPrettyPre();
-    //TODO: primPath needs override for fill
-    //balloonShape->setFillOverride(true);   //don't fill with pre or select colours.
-    //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettyPre();
     balloonLines->setPrettyPre();
 }
 
 void QGIViewBalloon::setPrettySel(void)
 {
-    //    Base::Console().Message("QGIVBal::setPrettySel()\n");
     arrow->setPrettySel();
-    //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettySel();
     balloonLines->setPrettySel();
 }
@@ -867,7 +863,6 @@ void QGIViewBalloon::setPrettySel(void)
 void QGIViewBalloon::setPrettyNormal(void)
 {
     arrow->setPrettyNormal();
-    //    balloonShape->setFill(Qt::white, Qt::SolidPattern);
     balloonShape->setPrettyNormal();
     balloonLines->setPrettyNormal();
 }
@@ -875,8 +870,6 @@ void QGIViewBalloon::setPrettyNormal(void)
 
 void QGIViewBalloon::drawBorder(void)
 {
-    //Dimensions have no border!
-    //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
 }
 
 void QGIViewBalloon::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,

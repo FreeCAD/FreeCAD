@@ -865,8 +865,8 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > pi_18) {
-            lim = std::min(lim, pi_18 / step);
+        if (step > pi_1v_18) {
+            lim = std::min(lim, pi_1v_18 / step);
         }
     }
     return lim;
@@ -1445,8 +1445,8 @@ double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > pi_18) {
-            lim = std::min(lim, pi_18 / step);
+        if (step > pi_1v_18) {
+            lim = std::min(lim, pi_1v_18 / step);
         }
     }
     return lim;

@@ -42,6 +42,8 @@
 #include "SketchAnalysis.h"
 #include "SketchObject.h"
 
+#include "FCConsts.h"
+
 
 using namespace Sketcher;
 
@@ -432,7 +434,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 if (fabs(tgv1 * tgv2) > fabs(cos(angleprecision))) {
                     vc.Type = Sketcher::Tangent;
                 }
-                else if (fabs(tgv1 * tgv2) < fabs(cos(M_PI / 2 - angleprecision))) {
+                else if (fabs(tgv1 * tgv2) < fabs(cos(pi_1v_2 - angleprecision))) {
                     vc.Type = Sketcher::Perpendicular;
                 }
             }
@@ -588,7 +590,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
 
 bool SketchAnalysis::checkVertical(Base::Vector3d dir, double angleprecision)
 {
-    return (dir.x == 0. && dir.y != 0.) || (fabs(dir.y / dir.x) > tan(M_PI / 2 - angleprecision));
+    return (dir.x == 0. && dir.y != 0.) || (fabs(dir.y / dir.x) > tan(pi_1v_2 - angleprecision));
 }
 
 bool SketchAnalysis::checkHorizontal(Base::Vector3d dir, double angleprecision)

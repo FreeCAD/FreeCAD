@@ -43,6 +43,8 @@
 #include "ExtrusionHelper.h"
 #include "Part2DObject.h"
 
+#include "FCConsts.h"
+
 
 using namespace Part;
 
@@ -173,11 +175,11 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.solid = this->Solid.getValue();
 
-    result.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleFwd) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleFwd = this->TaperAngle.getValue() * pi_v / 180.0;
+    if (fabs(result.taperAngleFwd) > pi_1v_2 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
-    result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
-    if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
+    result.taperAngleRev = this->TaperAngleRev.getValue() * pi_v / 180.0;
+    if (fabs(result.taperAngleRev) > pi_1v_2 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
     result.faceMakerClass = this->FaceMakerClass.getValue();
@@ -393,10 +395,6 @@ void FaceMakerExtrusion::Build()
         TopoDS_Shape res = FaceMakerCheese::makeFace(wires);
         if (!res.IsNull())
             this->myShape = res;
-        //}
-        //catch (...) {
-
-        //}
     }
 
     this->Done();

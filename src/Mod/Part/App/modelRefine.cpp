@@ -71,6 +71,8 @@
 
 #include "modelRefine.h"
 
+#include "FCConsts.h"
+
 
 using namespace ModelRefine;
 
@@ -611,10 +613,7 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
         totalArc += length;
     }
 
-    // For an exact calculation, only two results would be possible:
-    // totalArc = 0.0: The wire does not encircle the axis
-    // totalArc = 2 * M_PI * radius: The wire encircles the axis
-    return (fabs(totalArc) > M_PI * radius);
+    return (fabs(totalArc) > pi_v * radius);
 }
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const

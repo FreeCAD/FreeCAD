@@ -30,6 +30,8 @@
 
 #include "View3DInventorRiftViewer.h"
 
+#include "FCConsts.h"
+
 
 using namespace Gui;
 
@@ -37,13 +39,9 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 {
     workplace = new SoGroup();
 
-    //translation  = new SoTranslation   ;
-    //translation->translation.setValue(0,-1,0);
-    //workplace->addChild(translation);
-
     rotation1     = new SoRotationXYZ   ;
     rotation1->axis.setValue(SoRotationXYZ::X);
-    rotation1->angle.setValue(-M_PI/2);
+    rotation1->angle.setValue(-pi_1v_2);
     workplace->addChild(rotation1);
 
     rotation2     = new SoRotationXYZ   ;
@@ -69,12 +67,6 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
     basePosition = SbVec3f(0.0f, 0.5f, 0.8f);
 }
 
-//void saveWinPosition(void)
-//{
-//
-//
-//
-//}
 
 View3DInventorRiftViewer::~View3DInventorRiftViewer()
 {
@@ -104,7 +96,7 @@ void View3DInventorRiftViewer::setSceneGraph(SoNode *sceneGraph)
 void View3DInventorRiftViewer::keyPressEvent(QKeyEvent *event)
 {
     static const float increment = 0.02; // move two centimeter per key
-    static const float rotIncrement = M_PI/4; // move two 90° per key
+    static const float rotIncrement = pi_1v_4; // move two 90° per key
 
 
     if (event->key() == Qt::Key_Plus) {
@@ -200,11 +192,7 @@ bool oculusUp(void)
 
 View3DInventorRiftViewer* oculusStart(void)
 {
-    //SoDB::init();
-
-    //QApplication app(argc, argv);
-    //qAddPostRoutine(cleanup);
-
+    
     // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
     // Init libovr.
     if (!ovr_Initialize()) {
@@ -217,9 +205,7 @@ View3DInventorRiftViewer* oculusStart(void)
     window = new View3DInventorRiftViewer;
     window->show();
 
-
     return window;
-    //return app.exec();
 }
 
 

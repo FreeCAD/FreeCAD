@@ -91,6 +91,8 @@
 #include "Preferences.h"
 #include "ShapeUtils.h"
 
+#include "FCConsts.h"
+
 using namespace TechDraw;
 using DU = DrawUtil;
 
@@ -984,7 +986,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     if (getEdgeCompound().IsNull()) {
         return 1.0;
     }
-    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / M_PI);
+    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, alignmentAngle * 180.0 / pi_v);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
     BRepBndLib::AddOptimal(rotatedShape, shapeBox);
@@ -997,8 +999,6 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
 //used to project a pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
-    //    Base::Console().Message("DVP::projectPoint(%s, %d\n",
-    //                            DrawUtil::formatVector(pt).c_str(), invert);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
     gp_Pnt gPt(pt.x, pt.y, pt.z);
@@ -1108,10 +1108,9 @@ gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
 
 gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
 {
-    //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
     gp_Ax2 unrotated = getProjectionCS(basePoint);
     gp_Ax1 rotationAxis(DU::togp_Pnt(basePoint), unrotated.Direction());
-    double angleRad = Rotation.getValue() * M_PI / 180.0;
+    double angleRad = Rotation.getValue() * pi_v / 180.0;
     gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
     return rotated;
 }
@@ -1308,11 +1307,7 @@ void DrawViewPart::addReferencesToGeom()
 //ex. LandmarkDimension as a reference
 std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 {
-    //    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n",
-    //                            DrawUtil::formatVector(v).c_str(), getNameInDocument());
     std::string refTag;
-    //    Base::Vector3d scaledV = v * getScale();
-    //    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     Base::Vector3d scaledV = v;
     TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
     ref->isReference(true);
