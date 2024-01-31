@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2023 Ondsel <development@Ondsel.com>                    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MEASUREGUI_PRECOMPILED_H
-#define MEASUREGUI_PRECOMPILED_H
+#include "PreCompiled.h"
 
-#include <FCConfig.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-#include <Mod/Measure/MeasureGlobal.h>
-
-#ifdef _PreComp_
-
-// standard
-#include <cfloat>
-#include <cmath>
-
-// STL
-#include <algorithm>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-
-// OpenCasCade
-#include <Mod/Part/App/OpenCascadeAll.h>
+#include "QuickMeasure.h"
+#include "QuickMeasurePy.h"
 
 
-#endif  //_PreComp_
+namespace MeasureGui
+{
+    extern PyObject* initModule();
+}
 
-#endif // MEASUREGUI_PRECOMPILED_H
+
+/* Python entry */
+PyMOD_INIT_FUNC(MeasureGui)
+{
+    PyObject* mod = MeasureGui::initModule();
+    Base::Console().Log("Loading MeasureGui module... done\n");
+
+
+    Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
+
+    PyMOD_Return(mod);
+}

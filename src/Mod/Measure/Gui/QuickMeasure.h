@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,29 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
 
-#ifndef MEASURE_GLOBAL_H
-#define MEASURE_GLOBAL_H
+#ifndef MEASUREGUI_QUICKMEASURE_H
+#define MEASUREGUI_QUICKMEASURE_H
 
+#include <QObject>
 
-// Measure
-#ifndef MeasureExport
-#ifdef Measure_EXPORTS
-#       define MeasureExport   FREECAD_DECL_EXPORT
-#else
-#       define MeasureExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+#include <Mod/Measure/MeasureGlobal.h>
 
+#include <Gui/Selection.h>
+namespace Measure {
+    class Measurement;
+}
 
-// MeasureGui
-#ifndef MeasureGuiExport
-#ifdef MeasureGui_EXPORTS
-#		define MeasureGuiExport FREECAD_DECL_EXPORT
-#else
-#		define MeasureGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+namespace MeasureGui {
 
-#endif //MEASURE_GLOBAL_H
+class QuickMeasure : public QObject, Gui::SelectionObserver
+{
+    Q_OBJECT
+
+public:
+    explicit QuickMeasure(QObject* parent = nullptr);
+    ~QuickMeasure() override;
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+    void print(const QString& message);
+
+    Measure::Measurement* measurement;
+
+};
+
+} //namespace MeasureGui
+
+#endif // MEASUREGUI_QUICKMEASURE_H
