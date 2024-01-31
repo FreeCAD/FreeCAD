@@ -76,7 +76,7 @@ class CommandCreateJointFixed:
             + "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "2 - If a part is active : Position sub parts by matching seleted coordinate systems. The second part selected will move.",
+                "2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -211,7 +211,7 @@ class CommandCreateJointDistance:
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointDistance",
-                "Create a Distance Joint: Depending on your selection this tool will apply different constraints.",
+                "Create a Distance Joint: Fix the distance between the selected objects.",
             )
             + "</p>",
             "CmdType": "ForEdit",

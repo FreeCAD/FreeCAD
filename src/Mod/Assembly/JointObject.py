@@ -42,35 +42,46 @@ from pivy import coin
 import UtilsAssembly
 import Preferences
 
+translate = App.Qt.translate
+
+TranslatedJointTypes = [
+    translate("Assembly", "Fixed"),
+    translate("Assembly", "Revolute"),
+    translate("Assembly", "Cylindrical"),
+    translate("Assembly", "Slider"),
+    translate("Assembly", "Ball"),
+    translate("Assembly", "Distance"),
+]
+
 JointTypes = [
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Fixed"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Revolute"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Cylindrical"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Slider"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Ball"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Distance"),
+    "Fixed",
+    "Revolute",
+    "Cylindrical",
+    "Slider",
+    "Ball",
+    "Distance",
 ]
 
 JointUsingDistance = [
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Distance"),
+    "Distance",
 ]
 
 JointUsingOffset = [
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Fixed"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Revolute"),
+    "Fixed",
+    "Revolute",
 ]
 
 JointUsingRotation = [
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Fixed"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Slider"),
+    "Fixed",
+    "Slider",
 ]
 
 JointUsingReverse = [
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Fixed"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Revolute"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Cylindrical"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Slider"),
-    QT_TRANSLATE_NOOP("AssemblyJoint", "Distance"),
+    "Fixed",
+    "Revolute",
+    "Cylindrical",
+    "Slider",
+    "Distance",
 ]
 
 
@@ -112,7 +123,7 @@ class Joint:
             "App::PropertyString",  # Not PropertyLink because they don't support external objects
             "Object1",
             "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The name of the first object of the joint"),
+            QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
         )
 
         joint.addProperty(
@@ -142,7 +153,7 @@ class Joint:
             "Joint Connector 1",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This is the local coordinate system within the object1 that will be used to joint.",
+                "This is the local coordinate system within object1 that will be used for the joint.",
             ),
         )
 
@@ -152,7 +163,7 @@ class Joint:
             "Joint Connector 1",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This prevent Placement1 from recomputing, enabling custom positioning of the placement.",
+                "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
             ),
         )
 
@@ -161,7 +172,7 @@ class Joint:
             "App::PropertyString",
             "Object2",
             "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The name of the second object of the joint"),
+            QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
         )
 
         joint.addProperty(
@@ -191,7 +202,7 @@ class Joint:
             "Joint Connector 2",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This is the local coordinate system within the object2 that will be used to joint.",
+                "This is the local coordinate system within object2 that will be used for the joint.",
             ),
         )
 
@@ -201,7 +212,7 @@ class Joint:
             "Joint Connector 2",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This prevent Placement2 from recomputing, enabling custom positioning of the placement.",
+                "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
             ),
         )
 
@@ -241,7 +252,7 @@ class Joint:
             "Joint",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This indicate if the joint is active.",
+                "This indicates if the joint is active.",
             ),
         )
         joint.Activated = True
@@ -1020,7 +1031,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if self.activeType == "Part":
             self.form.setWindowTitle("Match parts")
             self.form.jointType.hide()
-        self.form.jointType.addItems(JointTypes)
+        self.form.jointType.addItems(TranslatedJointTypes)
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
@@ -1189,7 +1200,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-        self.joint.Proxy.setJointType(self.joint, self.form.jointType.currentText())
+
+        self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
         self.toggleDistanceVisibility()
         self.toggleOffsetVisibility()
         self.toggleRotationVisibility()
@@ -1208,7 +1220,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Proxy.flipOnePart(self.joint)
 
     def toggleDistanceVisibility(self):
-        if self.form.jointType.currentText() in JointUsingDistance:
+        if JointTypes[self.form.jointType.currentIndex()] in JointUsingDistance:
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
         else:
@@ -1216,7 +1228,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.distanceSpinbox.hide()
 
     def toggleOffsetVisibility(self):
-        if self.form.jointType.currentText() in JointUsingOffset:
+        if JointTypes[self.form.jointType.currentIndex()] in JointUsingOffset:
             self.form.offsetLabel.show()
             self.form.offsetSpinbox.show()
         else:
@@ -1224,7 +1236,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.offsetSpinbox.hide()
 
     def toggleRotationVisibility(self):
-        if self.form.jointType.currentText() in JointUsingRotation:
+        if JointTypes[self.form.jointType.currentIndex()] in JointUsingRotation:
             self.form.rotationLabel.show()
             self.form.rotationSpinbox.show()
         else:
@@ -1232,7 +1244,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.rotationSpinbox.hide()
 
     def toggleReverseVisibility(self):
-        if self.form.jointType.currentText() in JointUsingReverse:
+        if JointTypes[self.form.jointType.currentIndex()] in JointUsingReverse:
             self.form.PushButtonReverse.show()
         else:
             self.form.PushButtonReverse.hide()

@@ -24,7 +24,7 @@
 import FreeCAD
 import FreeCADGui
 
-from UtilsAssembly import tr
+translate = FreeCAD.Qt.translate
 
 
 def preferences():
@@ -44,7 +44,7 @@ class PreferencesPage:
         pref = preferences()
         self.form.checkBoxEnableEscape.setChecked(pref.GetBool("LeaveEditWithEscape", True))
         self.form.groundFirstPart.clear()
-        self.form.groundFirstPart.addItem(tr("Assembly", "Ask"))
-        self.form.groundFirstPart.addItem(tr("Assembly", "Always"))
-        self.form.groundFirstPart.addItem(tr("Assembly", "Never"))
+        self.form.groundFirstPart.addItem(translate("Assembly", "Ask"))
+        self.form.groundFirstPart.addItem(translate("Assembly", "Always"))
+        self.form.groundFirstPart.addItem(translate("Assembly", "Never"))
         self.form.groundFirstPart.setCurrentIndex(pref.GetInt("GroundFirstPart", 0))

@@ -59,7 +59,9 @@ class CommandInsertLink:
             + "</p><p><ul><li>"
             + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert by left clicking items in the list.")
             + "</li><li>"
-            + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Undo by right clicking items in the list.")
+            + QT_TRANSLATE_NOOP(
+                "Assembly_InsertLink", "Remove by right clicking items in the list."
+            )
             + "</li><li>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_InsertLink",

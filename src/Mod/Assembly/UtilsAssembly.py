@@ -38,10 +38,6 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
-def tr(context, text, comment=None):
-    return QtCore.QCoreApplication.translate(context, text, comment)
-
-
 def activeAssembly():
     doc = Gui.ActiveDocument
 
