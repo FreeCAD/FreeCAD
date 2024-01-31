@@ -1174,9 +1174,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
-                    if typ == WindowPartTypes[0]:  # "Frame"
-                        ccol = ArchCommands.getDefaultColor("")
-                    elif typ == WindowPartTypes[2]:  # "Glass panel"
+                    if typ == WindowPartTypes[2]:  # "Glass panel"
                         ccol = ArchCommands.getDefaultColor("WindowGlass")
             if not ccol:
                 ccol = base

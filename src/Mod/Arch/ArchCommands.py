@@ -84,7 +84,7 @@ def getDefaultColor(objectType):
         c = params.get_param("constructioncolor")
         transparency = 0.80
     else:
-        c = params.get_param_arch("WindowColor")
+        c = params.get_param_view("DefaultShapeColor")
     r, g, b, _ = Draft.get_rgba_tuple(c)
     return (r, g, b, transparency)
 
