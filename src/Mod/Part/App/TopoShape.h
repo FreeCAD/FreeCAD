@@ -851,9 +851,11 @@ private:
 
         void Nullify()
         {
-            _owner->resetElementMap();
-            _owner->_cache.reset();
-            _owner->_parentCache.reset();
+            if (!this->IsNull()) {
+                _owner->resetElementMap();
+                _owner->_cache.reset();
+                _owner->_parentCache.reset();
+            }
         }
 
         const TopLoc_Location& Location() const
