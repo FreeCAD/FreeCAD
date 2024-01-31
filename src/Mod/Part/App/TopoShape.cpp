@@ -4042,9 +4042,11 @@ TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
-TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail) {
+TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail)
+{
     (void)op;
     _Shape.Nullify();
+
     if(shape.isNull()) {
         if(!no_fail)
             HANDLE_NULL_SHAPE;
