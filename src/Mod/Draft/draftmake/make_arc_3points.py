@@ -33,7 +33,7 @@ import FreeCAD as App
 import Part
 import Draft
 import draftutils.utils as utils
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 import draftutils.gui_utils as gui_utils
@@ -117,7 +117,6 @@ def make_arc_3points(points, placement=None, face=False,
         Returns `None` if there is a problem and the object cannot be created.
     """
     _name = "make_arc_3points"
-    utils.print_header(_name, "Arc by 3 points")
 
     try:
         utils.type_check([(points, (list, tuple))], name=_name)
@@ -141,10 +140,6 @@ def make_arc_3points(points, placement=None, face=False,
 
     p1, p2, p3 = points
 
-    _msg("p1: {}".format(p1))
-    _msg("p2: {}".format(p2))
-    _msg("p3: {}".format(p3))
-
     try:
         utils.type_check([(p1, App.Vector),
                           (p2, App.Vector),
@@ -163,11 +158,7 @@ def make_arc_3points(points, placement=None, face=False,
     radius = edge.Curve.Radius
     center = edge.Curve.Center
 
-    _msg(translate("draft","Radius:") + " " + "{}".format(radius))
-    _msg(translate("draft","Center:") + " " + "{}".format(center))
-
     if primitive:
-        _msg(translate("draft","Create primitive object"))
         obj = App.ActiveDocument.addObject("Part::Feature", "Arc")
         obj.Shape = edge
         return obj
@@ -190,18 +181,11 @@ def make_arc_3points(points, placement=None, face=False,
 
     if placement and not support:
         obj.Placement.Base = placement.Base
-        _msg(translate("draft","Final placement:") + " " + "{}".format(obj.Placement))
-    if face:
-        _msg(translate("draft","Face: True"))
     if support:
-        _msg(translate("draft","Support:") + " " + "{}".format(support))
-        _msg(translate("draft","Map mode:") + " " + "{}".format(map_mode))
         obj.MapMode = map_mode
         if placement:
             obj.AttachmentOffset.Base = placement.Base
             obj.AttachmentOffset.Rotation = original_placement.Rotation
-            _msg(translate("draft","Attachment offset: {}".format(obj.AttachmentOffset)))
-        _msg(translate("draft","Final placement:") + " " + "{}".format(obj.Placement))
 
     return obj
 

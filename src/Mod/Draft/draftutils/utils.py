@@ -40,7 +40,7 @@ import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import _msg, _wrn, _err, _log
+from draftutils.messages import  _wrn, _err, _log
 from draftutils.translate import translate
 
 # TODO: move the functions that require the graphical interface
@@ -1029,8 +1029,7 @@ def find_doc(doc=None):
         try:
             doc = App.getDocument(doc)
         except NameError:
-            _msg("document: {}".format(doc))
-            _err(translate("draft", "Wrong input: unknown document."))
+            _err(translate("draft", "Wrong input: unknown document {}").format(doc))
             return not FOUND, None
 
     return FOUND, doc

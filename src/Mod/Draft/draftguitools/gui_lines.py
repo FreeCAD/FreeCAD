@@ -44,7 +44,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils import todo
-from draftutils.messages import _err, _msg, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 

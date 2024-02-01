@@ -43,7 +43,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
 from draftutils import utils
-from draftutils.messages import _log, _msg, _toolmsg
+from draftutils.messages import _log, _toolmsg
 
 
 class DraftTool:
