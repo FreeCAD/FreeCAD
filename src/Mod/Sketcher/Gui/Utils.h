@@ -208,6 +208,8 @@ std::string angleToDisplayFormat(double value, int digits);
 
 bool areColinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
 
+int indexOfGeoId(const std::vector<int>& vec, int elem);
+
 }  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane

@@ -131,7 +131,7 @@ jobs:
           . $env:ccachebindir\ccache -s
       - name: Move libpack bin folder to build folder # Shorter in time than copying with CMake FREECAD_COPY_LIBPACK_BIN_TO_BUILD
         run: |
-          Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
+          Move-Item -Force -Path ${{ env.libpackdir }}bin/* -Destination ${{ env.builddir }}/bin
       - name: C++ unit tests
         if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
