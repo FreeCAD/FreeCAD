@@ -34,7 +34,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftobjects.fillet as fillet
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -46,17 +46,6 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftmake
 # @{
-
-
-def _print_obj_length(obj, edge, num=1):
-    if hasattr(obj, "Label"):
-        name = obj.Label
-    else:
-        name = num
-
-    _msg("({0}): {1}; {2} {3}".format(num, name,
-                                      translate("draft","length:"), edge.Length))
-
 
 def _extract_edges(objs):
     """Extract the edges from the list of objects, Draft lines or Part.Edges.
@@ -79,8 +68,6 @@ def _extract_edges(objs):
         if o1.ShapeType in "Edge":
             e1 = o1
 
-    _print_obj_length(o1, e1, num=1)
-
     if hasattr(o2, "PropertiesList"):
         if "Proxy" in o2.PropertiesList:
             if hasattr(o2.Proxy, "Type"):
@@ -92,8 +79,6 @@ def _extract_edges(objs):
     elif hasattr(o2, "ShapeType"):
         if o2.ShapeType in "Edge":
             e2 = o2
-
-    _print_obj_length(o2, e2, num=2)
 
     return e1, e2
 
@@ -126,7 +111,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         It returns `None` if it fails producing the object.
     """
     _name = "make_fillet"
-    utils.print_header(_name, "Fillet")
 
     if len(objs) != 2:
         _err(translate("draft","Two elements are needed."))
@@ -138,11 +122,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     if len(edges) < 3:
         _err(translate("draft","Radius is too large") + ", r={}".format(radius))
         return None
-
-    lengths = [edges[0].Length, edges[1].Length, edges[2].Length]
-    _msg(translate("draft","Segment") + " 1, " + translate("draft","length:") + " {}".format(lengths[0]))
-    _msg(translate("draft","Segment") + " 2, " + translate("draft","length:") + " {}".format(lengths[1]))
-    _msg(translate("draft","Segment") + " 3, " + translate("draft","length:") + " {}".format(lengths[2]))
 
     try:
         wire = Part.Wire(edges)
@@ -161,7 +140,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     if delete:
         _doc.removeObject(objs[0].Name)
         _doc.removeObject(objs[1].Name)
-        _msg(translate("draft","Removed original objects."))
 
     if App.GuiUp:
         view_fillet.ViewProviderFillet(obj.ViewObject)

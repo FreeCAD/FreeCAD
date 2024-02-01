@@ -35,7 +35,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 from draftguitools import gui_tool_utils
-from draftutils.messages import _err, _msg
+from draftutils.messages import _err
 from draftutils.params import get_param
 from draftutils.translate import translate
 from DraftVecUtils import toString

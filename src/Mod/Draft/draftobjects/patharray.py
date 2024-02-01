@@ -67,7 +67,7 @@ import FreeCAD as App
 import DraftVecUtils
 import lazy_loader.lazy_loader as lz
 
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _wrn, _err
 from draftutils.translate import translate
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.base import DraftObject
@@ -578,7 +578,7 @@ def calculate_placement(globalRotation,
         newRot = App.Rotation(t, n, nullv, "XYZ") # priority = "XYZ"
 
     else:
-        _msg(translate("draft", "AlignMode {} is not implemented").format(mode))
+        _err(translate("draft", "AlignMode {} is not implemented").format(mode))
         return placement
 
     placement.Rotation = newRot.multiply(globalRotation)

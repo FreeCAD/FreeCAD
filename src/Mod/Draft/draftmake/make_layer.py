@@ -31,7 +31,7 @@
 import FreeCAD as App
 from draftobjects.layer import Layer, LayerContainer
 from draftutils import utils
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 if App.GuiUp:

@@ -30,7 +30,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import draftobjects.base as base
 
-from draftutils.messages import _msg
+from draftutils.messages import _err
 
 
 class Fillet(base.DraftObject):
@@ -110,11 +110,10 @@ class Fillet(base.DraftObject):
             obj.End = obj.Shape.Vertexes[-1].Point
 
     def _update_radius(self, obj, radius):
-        if (hasattr(obj, "Line1") and hasattr(obj, "Line2")
-                and obj.Line1 and obj.Line2):
-            _msg("Recalculate the radius with objects.")
-
-        _msg("Update radius currently not implemented: r={}".format(radius))
+        #if (hasattr(obj, "Line1") and hasattr(obj, "Line2")
+        #        and obj.Line1 and obj.Line2):
+        # do the unimplemented work
+        _err("Update radius currently not implemented: r={}".format(radius))
 
     def onChanged(self, obj, prop):
         """Change the radius of fillet. NOT IMPLEMENTED.
