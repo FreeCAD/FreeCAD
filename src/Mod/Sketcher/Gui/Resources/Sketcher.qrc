@@ -241,6 +241,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_PointFillet.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Offset.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Rotate.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_Scale.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Heptagon.svg</file>
@@ -297,6 +298,7 @@
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
         <file>icons/tools/Sketcher_Rotate.svg</file>
+        <file>icons/tools/Sketcher_Scale.svg</file>
         <file>icons/tools/Sketcher_Offset.svg</file>
         <file>icons/tools/Sketcher_OffsetArc.svg</file>
         <file>icons/tools/Sketcher_OffsetIntersection.svg</file>
