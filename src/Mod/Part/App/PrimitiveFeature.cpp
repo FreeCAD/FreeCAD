@@ -658,12 +658,21 @@ App::DocumentObjectExecReturn *Cone::execute()
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
     try {
-        // Build a cone
-        BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
-                                    Radius2.getValue(),
-                                    Height.getValue(),
-                                    Angle.getValue()/180.0f*M_PI);
-        TopoDS_Shape ResultShape = mkCone.Shape();
+        TopoDS_Shape ResultShape;
+        if (std::abs(Radius1.getValue() - Radius2.getValue()) < Precision::Confusion()){
+            //Build a cylinder
+            BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
+                                            Height.getValue(),
+                                            2.0 * M_PI);
+            ResultShape = mkCylr.Shape();
+        } else {
+            // Build a cone
+            BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
+                                        Radius2.getValue(),
+                                        Height.getValue(),
+                                        Angle.getValue()/180.0f*M_PI);
+            ResultShape = mkCone.Shape();
+        }
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure& e) {
