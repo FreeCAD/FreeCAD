@@ -1190,7 +1190,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         """Returns a tuple defining as uniquely as possible a solid"""
 
-        return (solid.ShapeType,solid.Volume,solid.Area,solid.Length)
+        return (solid.ShapeType,round(solid.Volume,3),round(solid.Area,3),round(solid.Length,3))
 
     def getSolidMaterial(self,obj,name,mtype=None):
 
