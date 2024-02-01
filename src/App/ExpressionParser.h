@@ -305,6 +305,7 @@ public:
         ROTATIONY, // Create y-axis rotation object.
         ROTATIONZ, // Create z-axis rotation object.
         STR, // stringify
+        PARSEQUANT, // parse string quantity
         TRANSLATIONM, // Create translation matrix object.
         TUPLE, // Create Python tuple.
         VECTOR, // Create vector object.
