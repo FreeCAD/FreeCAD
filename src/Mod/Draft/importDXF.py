@@ -223,9 +223,9 @@ def deformat(text):
     # t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
     # print("input text: ",text)
     t = text.strip("{}")
-    t = re.sub("\\\.*?;", "", t)
+    t = re.sub("\\\\.*?;", "", t)
     # replace UTF codes by utf chars
-    sts = re.split("\\\\(U\+....)", t)
+    sts = re.split("\\\\(U\\+....)", t)
     t = u"".join(sts)
     # replace degrees, diameters chars
     t = re.sub('%%d', u'°', t)
@@ -3925,7 +3925,7 @@ def exportPage(page, filename):
     blocks = ""
     entities = ""
     r12 = False
-    ver = re.findall("\$ACADVER\n.*?\n(.*?)\n", template)
+    ver = re.findall("\\$ACADVER\n.*?\n(.*?)\n", template)
     if ver:
         # at the moment this is not used.
         # TODO: if r12, do not print ellipses or splines
