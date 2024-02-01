@@ -316,8 +316,7 @@ class AddToConstruction(gui_base.GuiCommandNeedsSelection):
         if not hasattr(Gui, "draftToolBar"):
             return
 
-        col = Gui.draftToolBar.getDefaultColor("constr")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        col = params.get_param("constructioncolor") & 0xFFFFFF00
 
         # Get the construction group or create it if it doesn't exist
         grp = self.doc.getObject("Draft_Construction")

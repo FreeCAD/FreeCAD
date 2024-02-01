@@ -527,7 +527,7 @@ def format_object(target, origin=None):
                 obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = Gui.draftToolBar.getDefaultColor("constr") + (0.0,)
+        col = params.get_param("constructioncolor") & 0xFFFFFF00
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")

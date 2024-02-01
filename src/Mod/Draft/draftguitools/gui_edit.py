@@ -54,15 +54,15 @@ from draftguitools import gui_trackers as trackers
 
 
 COLORS = {
-    "default": Gui.draftToolBar.getDefaultColor("snap"),
-    "black":  (0., 0., 0.),
-    "white":  (1., 1., 1.),
-    "grey":   (.5, .5, .5),
-    "red":    (1., 0., 0.),
-    "green":  (0., 1., 0.),
-    "blue":   (0., 0., 1.),
-    "yellow": (1., 1., 0.),
-    "cyan":   (0., 1., 1.),
+    "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
+    "black":   (0., 0., 0.),
+    "white":   (1., 1., 1.),
+    "grey":    (.5, .5, .5),
+    "red":     (1., 0., 0.),
+    "green":   (0., 1., 0.),
+    "blue":    (0., 0., 1.),
+    "yellow":  (1., 1., 0.),
+    "cyan":    (0., 1., 1.),
     "magenta": (1., 0., 1.)
 }
 
