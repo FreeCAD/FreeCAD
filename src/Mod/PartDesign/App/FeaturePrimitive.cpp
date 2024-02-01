@@ -357,7 +357,7 @@ App::DocumentObjectExecReturn* Cone::execute()
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Height of cone too small"));
     try {
-        if (Radius1.getValue() - Radius2.getValue() < Precision::Confusion()){
+        if (std::abs(Radius1.getValue() - Radius2.getValue()) < Precision::Confusion()){
             //Build a cylinder
             BRepPrimAPI_MakeCylinder mkCylr(Radius1.getValue(),
                                             Height.getValue(),
