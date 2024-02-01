@@ -212,6 +212,13 @@ struct PartExport ShapeMapper: TopoShape::Mapper
     std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _modifiedShapes;
 };
 
+/** Generic shape mapper from a given source to an output shape
+ */
+struct PartExport GenericShapeMapper: ShapeMapper {
+    /// Populate the map with a given source shape to an output shape
+    void init(const TopoShape &src, const TopoDS_Shape &dst);
+};
+
 /// Parameters for TopoShape::makeElementFilledFace()
 struct PartExport TopoShape::BRepFillingParams
 {

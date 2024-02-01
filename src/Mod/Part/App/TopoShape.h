@@ -387,6 +387,7 @@ public:
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
     void sewShape(double tolerance = 1.0e-06);
     bool fix(double, double, double);
+    bool fixSolidOrientation();
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
@@ -582,6 +583,36 @@ public:
     {
         return TopoShape().makeGTransform(*this, mat, op, copy);
     }
+    
+    /** Refine the input shape by merging faces/edges that share the same geometry
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param no_fail: if true, throw exception if failed to refine. Or else,
+     *                 the shape remains untouched if failed.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the refined shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementRefine(const TopoShape &source, const char *op=nullptr, bool no_fail=true);
+
+    /** Refine the input shape by merging faces/edges that share the same geometry
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param no_fail: if true, throw exception if failed to refine. Or else,
+     *                 the shape remains untouched if failed.
+     *
+     * @return Return a refined shape. The shape itself is not modified
+     */
+    TopoShape makeElementRefine(const char *op=nullptr, bool no_fail=true) const {
+        return TopoShape(Tag,Hasher).makeElementRefine(*this,op,no_fail);
+    }
+
 
     TopoShape& makeRefine(const TopoShape& shape, const char* op = nullptr, bool no_fail = true);
     TopoShape makeRefine(const char* op = nullptr, bool no_fail = true) const

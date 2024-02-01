@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <modelRefine.h>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
@@ -42,10 +43,12 @@
 
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
+#include "TopoShapeMapper.h"
 #include "FaceMaker.h"
 
 #include "TopoShapeOpCode.h"
 #include <App/ElementNamingUtils.h>
+#include <BRepLib.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -1511,6 +1514,49 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
     return *this;
 }
 
+class MyRefineMaker : public BRepBuilderAPI_RefineModel
+{
+public:
+    MyRefineMaker(const TopoDS_Shape &s)
+        :BRepBuilderAPI_RefineModel(s)
+    {}
+
+    void populate(ShapeMapper &mapper)
+    {
+        for (TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it(this->myModified); it.More(); it.Next())
+        {
+            if (it.Key().IsNull()) continue;
+            mapper.populate(MappingStatus::Generated, it.Key(), it.Value());
+        }
+    }
+};
+
+TopoShape &TopoShape::makeElementRefine(const TopoShape &shape, const char *op, bool no_fail) {
+    if(shape.isNull()) {
+        if(!no_fail)
+            FC_THROWM(NullShapeException, "Null shape");
+        _Shape.Nullify();
+        return *this;
+    }
+    if(!op) op = Part::OpCodes::Refine;
+    bool closed = shape.isClosed();
+    try {
+        MyRefineMaker mkRefine(shape.getShape());
+        GenericShapeMapper mapper;
+        mkRefine.populate(mapper);
+        mapper.init(shape, mkRefine.Shape());
+        makeShapeWithElementMap(mkRefine.Shape(), mapper, {shape}, op);
+        // For some reason, refine operation may reverse the solid
+        fixSolidOrientation();
+        if (isClosed() == closed)
+            return *this;
+    }catch (Standard_Failure &) {
+        if(!no_fail) throw;
+    }
+    *this = shape;
+    return *this;
+}
+
 /**
  *  Encode and set an element name in the elementMap.  If a hasher is defined, apply it to the name.
  *
@@ -1849,6 +1895,56 @@ TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wi
     maker.Perform();
     this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
     return *this;
+}
+
+bool TopoShape::fixSolidOrientation()
+{
+    if (isNull())
+        return false;
+
+    if (shapeType() == TopAbs_SOLID) {
+        TopoDS_Solid solid = TopoDS::Solid(_Shape);
+        BRepLib::OrientClosedSolid(solid);
+        if (solid.IsEqual(_Shape))
+            return false;
+        setShape(solid, false);
+        return true;
+    }
+
+    if (shapeType() == TopAbs_COMPOUND
+        || shapeType() == TopAbs_COMPSOLID)
+    {
+        auto shapes = getSubTopoShapes();
+        bool touched = false;
+        for (auto &s : shapes) {
+            if (s.fixSolidOrientation())
+                touched = true;
+        }
+        if (!touched)
+            return false;
+
+        BRep_Builder builder;
+        if (shapeType() == TopAbs_COMPOUND) {
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        } else {
+            TopoDS_CompSolid comp;
+            builder.MakeCompSolid(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        }
+        return true;
+    }
+
+    return false;
 }
 
 }  // namespace Part
