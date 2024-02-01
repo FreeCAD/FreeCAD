@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>797</height>
+    <height>836</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,17 +66,17 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
         <property name="toolTip">
          <string>The default height for texts, dimension texts and label texts</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
-         <double>0.0</double>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
         </property>
         <property name="rawValue" stdset="0">
-         <double>3.5</double>
+         <double>3.500000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>textheight</cstring>
@@ -90,6 +90,12 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        <spacer name="horizontalSpacer_1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -106,10 +112,10 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <string>The default line spacing for multi-line texts and labels (relative to the font size)</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.050000000000000</double>
         </property>
         <property name="value">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>LineSpacing</cstring>
@@ -133,10 +139,10 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
 in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
         </property>
         <property name="minimum">
-         <number>0</number>
+         <double>0.000000000000000</double>
         </property>
         <property name="value">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DefaultAnnoScaleMultiplier</cstring>
@@ -158,7 +164,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
         <property name="toolTip">
          <string>The default color for texts, dimension texts and label texts</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>0</red>
           <green>0</green>
@@ -181,8 +187,63 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
      <property name="title">
       <string>Lines and arrows</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" colspan="3">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_dimsymbolstart">
+        <property name="text">
+         <string>Start arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_DefaultAnnoLineColor">
+        <property name="text">
+         <string>Line and arrow color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_dimsymbolend">
+        <property name="text">
+         <string>End arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_arrowsize">
+        <property name="text">
+         <string>Arrow size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefColorButton" name="colorButton_DefaultAnnoLineColor">
+        <property name="toolTip">
+         <string>The default color for lines and arrows</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultAnnoLineColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_DefaultAnnoLineWidth">
+        <property name="text">
+         <string>Line width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBox_DimShowLine">
         <property name="toolTip">
          <string>If checked, the dimension line is displayed by default</string>
@@ -201,51 +262,8 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_DefaultAnnoLineWidth">
-        <property name="text">
-         <string>Line width</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefSpinBox" name="spinBox_DefaultAnnoLineWidth">
-        <property name="toolTip">
-         <string>The default line width</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="value">
-         <number>2</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultAnnoLineWidth</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_dimsymbol">
-        <property name="text">
-         <string>Arrow type</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbol">
+      <item row="3" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolend">
         <property name="minimumSize">
          <size>
           <width>140</width>
@@ -253,10 +271,10 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
          </size>
         </property>
         <property name="toolTip">
-         <string>The default symbol displayed at the ends of dimension lines</string>
+         <string>The default symbol displayed at the end of dimension lines</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>dimsymbol</cstring>
+         <cstring>dimsymbolend</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -286,61 +304,119 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
           <string>Tick-2</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_arrowsize">
-        <property name="text">
-         <string>Arrow size</string>
+      <item row="2" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolstart">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
         </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsize">
         <property name="toolTip">
-         <string>The default arrow size</string>
+         <string>The default symbol displayed at the start of dimension lines</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
-        <property name="unit" stdset="0">
-         <string>mm</string>
-        </property>
-        <property name="minimum" stdset="0">
-         <double>0.0</double>
-        </property>
-        <property name="rawValue" stdset="0">
-         <double>1.0</double>
+        <property name="currentIndex">
+         <number>0</number>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>arrowsize</cstring>
+         <cstring>dimsymbolstart</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Arrow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick-2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_DefaultAnnoLineWidth">
+        <property name="toolTip">
+         <string>The default line width</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>2</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultAnnoLineWidth</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_DefaultAnnoLineColor">
-        <property name="text">
-         <string>Line and arrow color</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1">
-       <widget class="Gui::PrefColorButton" name="colorButton_DefaultAnnoLineColor">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsize">
         <property name="toolTip">
-         <string>The default color for lines and arrows</string>
+         <string>The default arrow size</string>
         </property>
-        <property name="color" stdset="0">
-         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>1.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>DefaultAnnoLineColor</cstring>
+         <cstring>arrowsize</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -406,6 +482,12 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -491,14 +573,14 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
         <property name="toolTip">
          <string>The default distance the dimension line is extended past the extension lines</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
         <property name="rawValue" stdset="0">
-         <double>0.0</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>dimovershoot</cstring>
@@ -512,6 +594,12 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -530,14 +618,14 @@ value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
 used for linear dimensions.</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
         <property name="rawValue" stdset="0">
-         <double>-0.5</double>
+         <double>-0.500000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>extlines</cstring>
@@ -559,14 +647,14 @@ used for linear dimensions.</string>
         <property name="toolTip">
          <string>The default length of extension lines above the dimension line</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
         <property name="rawValue" stdset="0">
-         <double>2.0</double>
+         <double>2.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>extovershoot</cstring>
@@ -588,17 +676,17 @@ used for linear dimensions.</string>
         <property name="toolTip">
          <string>The default space between the dimension line and the dimension text</string>
         </property>
-        <property name="singleStep">
-         <double>0.05</double>
-        </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
-         <double>0.0</double>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
         </property>
         <property name="rawValue" stdset="0">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>dimspacing</cstring>
@@ -626,11 +714,11 @@ used for linear dimensions.</string>
       </item>
       <item>
        <widget class="Gui::PrefFileChooser" name="fileChooser_FontFile">
-        <property name="filter">
-         <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
-        </property>
         <property name="toolTip">
          <string>Select a font file</string>
+        </property>
+        <property name="filter">
+         <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>FontFile</cstring>
@@ -648,6 +736,12 @@ used for linear dimensions.</string>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
@@ -656,18 +750,23 @@ used for linear dimensions.</string>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -676,38 +775,33 @@ used for linear dimensions.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefUnitSpinBox</class>
-   <extends>Gui::QuantitySpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

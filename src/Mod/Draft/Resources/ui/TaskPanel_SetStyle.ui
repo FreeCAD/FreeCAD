@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>945</height>
+    <width>290</width>
+    <height>968</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,8 +67,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::ColorButton" name="ShapeColor">
-       </widget>
+       <widget class="Gui::ColorButton" name="ShapeColor"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_Transparency">
@@ -95,8 +94,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::ColorButton" name="LineColor">
-       </widget>
+       <widget class="Gui::ColorButton" name="LineColor"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_LineWidth">
@@ -120,8 +118,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::ColorButton" name="PointColor">
-       </widget>
+       <widget class="Gui::ColorButton" name="PointColor"/>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_PointSize">
@@ -296,7 +293,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
      <property name="title">
       <string>Dimensions</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0" columnminimumwidth="0,120">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QLabel" name="label_AnnoLineColor">
         <property name="text">
@@ -304,14 +301,10 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::ColorButton" name="AnnoLineColor">
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_AnnoLineWidth">
-        <property name="text">
-         <string>Line width</string>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="UnitOverride">
+        <property name="toolTip">
+         <string>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</string>
         </property>
        </widget>
       </item>
@@ -322,15 +315,49 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_ArrowStyle">
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_DimOvershoot">
         <property name="text">
-         <string>Arrow type</string>
+         <string>Dim overshoot</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="ArrowStyle">
+      <item row="0" column="1">
+       <widget class="Gui::ColorButton" name="AnnoLineColor"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_ArrowStyleStart">
+        <property name="text">
+         <string>Start arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="ShowUnit">
+        <property name="toolTip">
+         <string>If checked, a unit symbol is added to dimension texts</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::InputField" name="ArrowSize">
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_UnitOverride">
+        <property name="text">
+         <string>Unit override</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="ArrowStyleEnd">
         <item>
          <property name="text">
           <string>Dot</string>
@@ -356,78 +383,69 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
           <string>Tick-2</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_ArrowSize">
-        <property name="text">
-         <string>Arrow size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::InputField" name="ArrowSize">
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_ShowUnit">
         <property name="text">
          <string>Show unit</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QCheckBox" name="ShowUnit">
+      <item row="10" column="1">
+       <widget class="Gui::InputField" name="TextSpacing">
         <property name="toolTip">
-         <string>If checked, a unit symbol is added to dimension texts</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_UnitOverride">
-        <property name="text">
-         <string>Unit override</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLineEdit" name="UnitOverride">
-        <property name="toolTip">
-         <string>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_DimOvershoot">
-        <property name="text">
-         <string>Dim overshoot</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="Gui::InputField" name="DimOvershoot">
-        <property name="toolTip">
-         <string>The distance the dimension line is extended past the extension lines</string>
+         <string>The space between the dimension line and the dimension text</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_ArrowStyleEnd">
+        <property name="text">
+         <string>End arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::InputField" name="ExtOvershoot">
+        <property name="toolTip">
+         <string>The length of extension lines above the dimension line</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_TextSpacing">
+        <property name="text">
+         <string>Text spacing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_ArrowSize">
+        <property name="text">
+         <string>Arrow size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QLabel" name="label_ExtLines">
         <property name="text">
          <string>Ext lines</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="Gui::InputField" name="ExtLines">
         <property name="toolTip">
          <string>The length of extension lines. Use 0 for full extension lines. A negative value
@@ -440,37 +458,61 @@ for linear dimensions.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_ExtOvershoot">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_AnnoLineWidth">
         <property name="text">
-         <string>Ext overshoot</string>
+         <string>Line width</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
-       <widget class="Gui::InputField" name="ExtOvershoot">
+      <item row="7" column="1">
+       <widget class="Gui::InputField" name="DimOvershoot">
         <property name="toolTip">
-         <string>The length of extension lines above the dimension line</string>
+         <string>The distance the dimension line is extended past the extension lines</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
         </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="ArrowStyleStart">
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Arrow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick-2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="9" column="0">
-       <widget class="QLabel" name="label_TextSpacing">
+       <widget class="QLabel" name="label_ExtOvershoot">
         <property name="text">
-         <string>Text spacing</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <widget class="Gui::InputField" name="TextSpacing">
-        <property name="toolTip">
-         <string>The space between the dimension line and the dimension text</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
+         <string>Ext overshoot</string>
         </property>
        </widget>
       </item>
