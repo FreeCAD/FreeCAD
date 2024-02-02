@@ -150,8 +150,7 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         return None
 
     _doc = App.activeDocument()
-    obj = _doc.addObject("Part::Part2DObjectPython",
-                         "Fillet")
+    obj = _doc.addObject("Part::Part2DObjectPython", "Fillet")
     fillet.Fillet(obj)
     obj.Shape = wire
     obj.Length = wire.Length
@@ -168,7 +167,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         view_fillet.ViewProviderFillet(obj.ViewObject)
         gui_utils.format_object(obj)
         gui_utils.select(obj)
-        gui_utils.autogroup(obj)
 
     return obj
 
