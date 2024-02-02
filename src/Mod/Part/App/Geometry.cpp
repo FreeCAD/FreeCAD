@@ -63,10 +63,6 @@
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom_TrimmedCurve.hxx>
-# if OCC_VERSION_HEX < 0x070600
-#   include <GeomAdaptor_HSurface.hxx>
-#   include <GeomAdaptor_HCurve.hxx>
-# endif
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -95,15 +91,13 @@
 # include <Standard_ConstructionError.hxx>
 # include <Standard_Real.hxx>
 # include <Standard_Version.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TColgp_Array1OfVec.hxx>
 # include <TColgp_Array2OfPnt.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
-# include <TColStd_Array1OfInteger.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
 
 # if OCC_VERSION_HEX < 0x070600
+# include <GeomAdaptor_HSurface.hxx>
 # include <GeomAdaptor_HCurve.hxx>
 # endif
 
@@ -117,6 +111,7 @@
 #include <Base/Writer.h>
 #include <BRep_Tool.hxx>
 #include <TopoDS.hxx>
+#include <memory>
 
 #include "Geometry.h"
 #include "ArcOfCirclePy.h"
@@ -197,40 +192,43 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 
 // ---------------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)    // NOLINT
 
-Geometry::Geometry()
+Geometry::Geometry() // NOLINT
 {
     createNewTag();
 }
 
 Geometry::~Geometry() = default;
 
-bool Geometry::hasSameExtensions(const Geometry &other) const
+bool Geometry::hasSameExtensions(const Geometry& other) const
 {
     // We skip non persistent extension while doing comparison. Not sure if
     // this will cause any problem.
-    size_t i = 0;
-    for (const auto &e : extensions) {
-        if (auto ext = Base::freecad_dynamic_cast<
-                const GeometryPersistenceExtension>(e.get())) {
-            for (;i < other.extensions.size(); ++i) {
-                if (auto extOther = Base::freecad_dynamic_cast<
-                        const GeometryPersistenceExtension>(other.extensions[i].get())) {
-                    if (!ext->isSame(*extOther))
+    size_t index = 0;
+    for (const auto& ext : extensions) {
+        if (auto persistExt =
+                Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(ext.get())) {
+            for (; index < other.extensions.size(); ++index) {
+                if (auto extOther = Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(
+                        other.extensions[index].get())) {
+                    if (!persistExt->isSame(*extOther)) {
                         return false;
+                    }
                     break;
                 }
             }
-            if (i >= other.extensions.size())
+            if (index >= other.extensions.size()) {
                 return false;
-            ++i;
+            }
+            ++index;
         }
     }
-    for (;i < other.extensions.size(); ++i) {
+    for (; index < other.extensions.size(); ++index) {
         if (Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(
-                other.extensions[i].get()))
+                other.extensions[index].get())) {
             return false;
+        }
     }
     return true;
 }
@@ -241,37 +239,37 @@ unsigned int Geometry::getMemSize () const
     return 1;
 }
 
-std::unique_ptr<Geometry> Geometry::fromShape(const TopoDS_Shape &s, bool silent)
+std::unique_ptr<Geometry> Geometry::fromShape(const TopoDS_Shape &shape, bool silent)
 {
     std::unique_ptr<Geometry> geom;
 
-    if (s.IsNull()) {
+    if (shape.IsNull()) {
         if(!silent)
             throw Base::ValueError("Null shape");
         return geom;
     }
 
-    switch (s.ShapeType()) {
+    switch (shape.ShapeType()) {
     case TopAbs_VERTEX: {
-        gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(s));
-        geom.reset(new GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z())));
+        gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+        geom = std::make_unique<GeomPoint>(Base::Vector3d(p.X(),p.Y(),p.Z()));
         break;
     }
     case TopAbs_EDGE: {
-        const TopoDS_Edge& e = TopoDS::Edge(s);
+        const TopoDS_Edge& e = TopoDS::Edge(shape);
         BRepAdaptor_Curve adapt(e);
         geom = makeFromCurveAdaptor(adapt, silent);
         break;
     }
     case TopAbs_FACE: {
-        const TopoDS_Face& f = TopoDS::Face(s);
+        const TopoDS_Face& f = TopoDS::Face(shape);
         BRepAdaptor_Surface adapt(f);
         geom = makeFromSurfaceAdaptor(adapt, silent);
         break;
     }
     default:
         if(!silent)
-            FC_THROWM(Base::TypeError, "Unsupported shape type " << TopoShape::shapeName(s.ShapeType()));
+            FC_THROWM(Base::TypeError, "Unsupported shape type " << TopoShape::shapeName(shape.ShapeType()));
     }
     return geom;
 }
@@ -310,15 +308,15 @@ void Geometry::Restore(Base::XMLReader &reader)
 
         long count = reader.getAttributeAsInteger("count");
 
-        for (long i = 0; i < count; i++) {
+        for (long index = 0; index < count; index++) {
             reader.readElement("GeoExtension");
             const char* TypeName = reader.getAttribute("type");
             Base::Type type = Base::Type::fromName(TypeName);
-            GeometryPersistenceExtension *newE = static_cast<GeometryPersistenceExtension *>(type.createInstance());
-            if (newE) {
-                newE->Restore(reader);
+            auto *newExtension = static_cast<GeometryPersistenceExtension *>(type.createInstance());
+            if (newExtension) {
+                newExtension->Restore(reader);
 
-                extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+                extensions.push_back(std::shared_ptr<GeometryExtension>(newExtension));
             }
             else {
                 Base::Console().Warning("Cannot restore geometry extension of type: %s\n", TypeName);
@@ -329,7 +327,7 @@ void Geometry::Restore(Base::XMLReader &reader)
     }
     else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-        bool construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+        bool construction = (int)reader.getAttributeAsInteger("value") != 0;
 
         // prepare migration
         if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
@@ -353,30 +351,29 @@ std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() co
 {
     std::vector<std::weak_ptr<const GeometryExtension>> wp;
 
-    for(auto & ext:extensions)
+    for (auto& ext : extensions) {
         wp.push_back(ext);
+    }
 
     return wp;
 }
 
 bool Geometry::hasExtension(const Base::Type & type) const
 {
-    for(const auto& ext : extensions) {
-        if(ext->getTypeId() == type)
-            return true;
-    }
-
-    return false;
+    return std::any_of(extensions.begin(),
+                       extensions.end(),
+                       [type](auto geoExt) {
+                           return geoExt->getTypeId() == type;
+                       });
 }
 
 bool Geometry::hasExtension(const std::string & name) const
 {
-    for(const auto& ext : extensions) {
-        if(ext->getName() == name)
-            return true;
-    }
-
-    return false;
+    return std::any_of(extensions.begin(),
+                       extensions.end(),
+                       [name](auto geoExt) {
+                           return geoExt->getName() == name;
+                       });
 }
 
 std::weak_ptr<GeometryExtension> Geometry::getExtension(const Base::Type & type)
@@ -477,9 +474,9 @@ void Geometry::assignTag(const Part::Geometry * geo)
         throw Base::TypeError("Geometry tag can not be assigned as geometry types do not match.");
 }
 
-void Geometry::copyNonTag(const Part::Geometry * src)
+void Geometry::copyNonTag(const Part::Geometry* src)
 {
-    for(auto & ext: src->extensions) {
+    for (auto& ext : src->extensions) {
         this->extensions.push_back(ext->copy());
         extensions.back()->notifyAttachment(this);
     }
@@ -495,19 +492,19 @@ Geometry *Geometry::clone() const
     return cpy;
 }
 
-void Geometry::mirror(const Base::Vector3d& point)
+void Geometry::mirror(const Base::Vector3d& point) const
 {
     gp_Pnt pnt(point.x, point.y, point.z);
     handle()->Mirror(pnt);
 }
 
-void Geometry::mirror(const Base::Vector3d& point, const Base::Vector3d& dir)
+void Geometry::mirror(const Base::Vector3d& point, const Base::Vector3d& dir) const
 {
     gp_Ax1 ax1(gp_Pnt(point.x,point.y,point.z), gp_Dir(dir.x,dir.y,dir.z));
     handle()->Mirror(ax1);
 }
 
-void Geometry::rotate(const Base::Placement& plm)
+void Geometry::rotate(const Base::Placement& plm) const
 {
     Base::Rotation rot(plm.getRotation());
     Base::Vector3d pnt, dir;
@@ -521,13 +518,13 @@ void Geometry::rotate(const Base::Placement& plm)
     handle()->Rotate(ax1, angle);
 }
 
-void Geometry::scale(const Base::Vector3d& vec, double scale)
+void Geometry::scale(const Base::Vector3d& vec, double scale) const
 {
     gp_Pnt pnt(vec.x, vec.y, vec.z);
     handle()->Scale(pnt, scale);
 }
 
-void Geometry::transform(const Base::Matrix4D& mat)
+void Geometry::transform(const Base::Matrix4D& mat) const
 {
     gp_Trsf trf;
     trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
@@ -536,7 +533,7 @@ void Geometry::transform(const Base::Matrix4D& mat)
     handle()->Transform(trf);
 }
 
-void Geometry::translate(const Base::Vector3d& vec)
+void Geometry::translate(const Base::Vector3d& vec) const
 {
     gp_Vec trl(vec.x, vec.y, vec.z);
     handle()->Translate(trl);
@@ -577,7 +574,7 @@ void GeomPoint::setHandle(const Handle(Geom_CartesianPoint)& p)
 
 Geometry *GeomPoint::copy() const
 {
-    GeomPoint *newPoint = new GeomPoint(myPoint);
+    auto newPoint = new GeomPoint(myPoint);
     newPoint->copyNonTag(this);
     return newPoint;
 }
@@ -643,7 +640,7 @@ PyObject *GeomPoint::getPyObject()
 bool GeomPoint::isSame(const Geometry &other, double tol, double) const
 {
     return other.getTypeId() == getTypeId()
-        && Base::DistanceP2(static_cast<const GeomPoint &>(other).getPoint(),getPoint()) <= tol*tol;
+        && Base::DistanceP2(dynamic_cast<const GeomPoint &>(other).getPoint(),getPoint()) <= tol*tol;
 }
 
 // -------------------------------------------------
@@ -694,20 +691,20 @@ static Standard_Boolean IsLinear(const Adaptor3d_Curve& theC)
 
 bool GeomCurve::isLinear(Base::Vector3d *dir, Base::Vector3d *base) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    return isLinear(c, dir, base);
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
+    return isLinear(curve, dir, base);
 }
 
-bool GeomCurve::isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir, Base::Vector3d *base)
+bool GeomCurve::isLinear(const Handle(Geom_Curve) &curve, Base::Vector3d *dir, Base::Vector3d *base)
 {
-    GeomAdaptor_Curve adaptor(c);
+    GeomAdaptor_Curve adaptor(curve);
     if (!IsLinear(adaptor))
         return false;
 
     if (dir || base) {
         if (adaptor.GetType() == GeomAbs_Line) {
             // Special treatment of Geom_Line because it is infinite
-            Handle(Geom_Line) curv = Handle(Geom_Line)::DownCast(c);
+            Handle(Geom_Line) curv = Handle(Geom_Line)::DownCast(curve);
             if (base) {
                 gp_Pnt Pos = curv->Lin().Location();
                 *base = Base::Vector3d(Pos.X(), Pos.Y(), Pos.Z());
@@ -719,8 +716,8 @@ bool GeomCurve::isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir, Base:
             return true;
         }
         try {
-            GeomLProp_CLProps prop1(c,c->FirstParameter(),0,Precision::Confusion());
-            GeomLProp_CLProps prop2(c,c->LastParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop1(curve,curve->FirstParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop2(curve,curve->LastParameter(),0,Precision::Confusion());
             const gp_Pnt &p1 = prop1.Value();
             const gp_Pnt &p2 = prop2.Value();
             if (base)
@@ -735,7 +732,7 @@ bool GeomCurve::isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir, Base:
     return true;
 }
 
-GeomLine* GeomCurve::toLine(bool clone) const
+GeomLine* GeomCurve::toLine(KeepTag clone) const
 {
     if (!isLinear())
         return nullptr;
@@ -744,20 +741,21 @@ GeomLine* GeomCurve::toLine(bool clone) const
     auto p2 = pointAtParameter(getLastParameter());
     auto res = new GeomLine(p1, p2-p1);
     res->copyNonTag(this);
-    if (clone)
+    if (clone == CopyTag) {
         res->tag = this->tag;
+    }
     return res;
 }
 
-GeomLineSegment* GeomCurve::toLineSegment(bool clone) const
+GeomLineSegment* GeomCurve::toLineSegment(KeepTag clone) const
 {
     if (!isLinear())
         return nullptr;
 
     Base::Vector3d start, end;
     if (isDerivedFrom(GeomBoundedCurve::getClassTypeId())) {
-        start = static_cast<const GeomBoundedCurve*>(this)->getStartPoint();
-        end = static_cast<const GeomBoundedCurve*>(this)->getEndPoint();
+        start = dynamic_cast<const GeomBoundedCurve*>(this)->getStartPoint();
+        end = dynamic_cast<const GeomBoundedCurve*>(this)->getEndPoint();
     } else {
         start = pointAtParameter(getFirstParameter());
         end = pointAtParameter(getLastParameter());
@@ -765,8 +763,9 @@ GeomLineSegment* GeomCurve::toLineSegment(bool clone) const
     auto res = new GeomLineSegment;
     res->setPoints(start, end);
     res->copyNonTag(this);
-    if (clone)
+    if (clone == CopyTag) {
         res->tag = this->tag;
+    }
     return res;
 }
 
@@ -787,8 +786,8 @@ GeomBSplineCurve* GeomCurve::toNurbs(double first, double last) const
 
 bool GeomCurve::tangent(double u, gp_Dir& dir) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
+    GeomLProp_CLProps prop(curve, u,1,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         prop.Tangent(dir);
         return true;
@@ -812,17 +811,17 @@ bool GeomCurve::tangent(double u, Base::Vector3d& dir) const
 
 Base::Vector3d GeomCurve::value(double u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
-    const gp_Pnt &point = c->Value(u);
+    const gp_Pnt &point = curve->Value(u);
 
     return Base::Vector3d(point.X(),point.Y(),point.Z());
 }
 
 Base::Vector3d GeomCurve::pointAtParameter(double u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    GeomLProp_CLProps prop(c,u,0,Precision::Confusion());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
+    GeomLProp_CLProps prop(curve, u,0,Precision::Confusion());
 
     const gp_Pnt &point=prop.Value();
 
@@ -831,8 +830,8 @@ Base::Vector3d GeomCurve::pointAtParameter(double u) const
 
 Base::Vector3d GeomCurve::firstDerivativeAtParameter(double u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
+    GeomLProp_CLProps prop(curve, u,1,Precision::Confusion());
 
     const gp_Vec &vec=prop.D1();
 
@@ -841,8 +840,8 @@ Base::Vector3d GeomCurve::firstDerivativeAtParameter(double u) const
 
 Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
+    GeomLProp_CLProps prop(curve, u,2,Precision::Confusion());
 
     const gp_Vec &vec=prop.D2();
 
@@ -851,11 +850,11 @@ Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 
 bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
-        if (!c.IsNull()) {
-            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+        if (!curve.IsNull()) {
+            GeomLProp_CLProps prop(curve, u,2,Precision::Confusion());
             gp_Dir gdir;
             prop.Normal(gdir);
             dir = Base::Vector3d(gdir.X(), gdir.Y(), gdir.Z());
@@ -867,8 +866,8 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
         dir.Set(0,0,0);
         return false;
     }
-    catch (Standard_Failure& e) {
-        THROWM(Base::CADKernelError,e.GetMessageString())
+    catch (Standard_Failure& exc) {
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 
     return false;
@@ -882,12 +881,12 @@ bool GeomCurve::normalAt(const Base::Vector3d & curvepoint, Base::Vector3d & dir
     return normalAt(u, dir);
 }
 
-bool GeomCurve::intersect(  const GeomCurve *c,
+bool GeomCurve::intersect(  const GeomCurve *curve,
                             std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                             double tol) const
 {
     Handle(Geom_Curve) curve1 = Handle(Geom_Curve)::DownCast(handle());
-    Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(c->handle());
+    Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(curve->handle());
 
     if(!curve1.IsNull() && !curve2.IsNull()) {
         return intersect(curve1,curve2,points, tol);
@@ -897,7 +896,7 @@ bool GeomCurve::intersect(  const GeomCurve *c,
 
 }
 
-bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Curve) curve2,
+bool GeomCurve::intersect(const Handle(Geom_Curve)& curve1, const Handle(Geom_Curve)& curve2,
                 std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                 double tol)
 {
@@ -934,55 +933,55 @@ bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Cur
             return false;
         }
 
-        for (int i = 1; i <= intersector.NbExtrema(); i++) {
-            if (intersector.Distance(i) > tol)
+        for (int index = 1; index <= intersector.NbExtrema(); index++) {
+            if (intersector.Distance(index) > tol)
                 continue;
 
             gp_Pnt p1, p2;
-            intersector.Points(i, p1, p2);
+            intersector.Points(index, p1, p2);
             points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
         }
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
         // Yes Extrema finding failed, but if we got an intersection then go on with it
-        if(points.size()>0)
-            return points.size()>0?true:false;
+        if(!points.empty())
+            return !points.empty();
         else
-            THROWM(Base::CADKernelError,e.GetMessageString())
+            THROWM(Base::CADKernelError,exc.GetMessageString())
     }
 
 
-    return !points.empty()?true:false;
+    return !points.empty();
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
     try {
-        if (!c.IsNull()) {
+        if (!curve.IsNull()) {
             gp_Pnt pnt(point.x,point.y,point.z);
-            GeomAPI_ProjectPointOnCurve ppc(pnt, c);
+            GeomAPI_ProjectPointOnCurve ppc(pnt, curve);
             u = ppc.LowerDistanceParameter();
             return true;
         }
     }
-    catch (StdFail_NotDone& e) {
-        if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
-            Base::Vector3d firstpoint = this->pointAtParameter(c->FirstParameter());
-            Base::Vector3d lastpoint = this->pointAtParameter(c->LastParameter());
+    catch (StdFail_NotDone& exc) {
+        if (curve->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
+            Base::Vector3d firstpoint = this->pointAtParameter(curve->FirstParameter());
+            Base::Vector3d lastpoint = this->pointAtParameter(curve->LastParameter());
 
             if((firstpoint-point).Length() < (lastpoint-point).Length())
-                u = c->FirstParameter();
+                u = curve->FirstParameter();
             else
-                u = c->LastParameter();
+                u = curve->LastParameter();
         }
         else
-            THROWM(Base::CADKernelError,e.GetMessageString())
+            THROWM(Base::CADKernelError, exc.GetMessageString())
 
         return true;
     }
-    catch (Standard_Failure& e) {
-        THROWM(Base::CADKernelError,e.GetMessageString())
+    catch (Standard_Failure& exc) {
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 
     return false;
@@ -990,9 +989,9 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 
 bool GeomCurve::closestParameterToBasisCurve(const Base::Vector3d& point, double &u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
-    if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
+    if (curve->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
         Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(handle());
         Handle(Geom_Curve) bc = tc->BasisCurve();
         try {
@@ -1003,8 +1002,8 @@ bool GeomCurve::closestParameterToBasisCurve(const Base::Vector3d& point, double
                 return true;
             }
         }
-        catch (Standard_Failure& e) {
-            THROWM(Base::CADKernelError,e.GetMessageString())
+        catch (Standard_Failure& exc) {
+            THROWM(Base::CADKernelError, exc.GetMessageString())
         }
 
         return false;
@@ -1016,71 +1015,71 @@ bool GeomCurve::closestParameterToBasisCurve(const Base::Vector3d& point, double
 
 double GeomCurve::getFirstParameter() const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         // pending check for RealFirst RealLast in case of infinite curve
-        return c->FirstParameter();
+        return curve->FirstParameter();
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
 double GeomCurve::getLastParameter() const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
         // pending check for RealFirst RealLast in case of infinite curve
-        return c->LastParameter();
+        return curve->LastParameter();
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
 double GeomCurve::curvatureAt(double u) const
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
-        GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+        GeomLProp_CLProps prop(curve, u,2,Precision::Confusion());
         return prop.Curvature();
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
 double GeomCurve::length(double u, double v) const
 {
 
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
-        GeomAdaptor_Curve adaptor(c);
+        GeomAdaptor_Curve adaptor(curve);
         return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
 void GeomCurve::reverse()
 {
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(handle());
 
     try {
-        c->Reverse();
+        curve->Reverse();
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
@@ -1112,20 +1111,20 @@ Base::Vector3d GeomBoundedCurve::getEndPoint() const
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomBezierCurve,Part::GeomBoundedCurve)
+TYPESYSTEM_SOURCE(Part::GeomBezierCurve, Part::GeomBoundedCurve)
 
 GeomBezierCurve::GeomBezierCurve()
 {
     TColgp_Array1OfPnt poles(1,2);
     poles(1) = gp_Pnt(0.0,0.0,0.0);
     poles(2) = gp_Pnt(0.0,0.0,1.0);
-    Handle(Geom_BezierCurve) b = new Geom_BezierCurve(poles);
-    this->myCurve = b;
+    Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(poles);
+    this->myCurve = bezier;
 }
 
-GeomBezierCurve::GeomBezierCurve(const Handle(Geom_BezierCurve)& b)
+GeomBezierCurve::GeomBezierCurve(const Handle(Geom_BezierCurve)& bezier)
 {
-    setHandle(b);
+    setHandle(bezier);
 }
 
 GeomBezierCurve::GeomBezierCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
@@ -1133,20 +1132,20 @@ GeomBezierCurve::GeomBezierCurve( const std::vector<Base::Vector3d>& poles, cons
     if (poles.size() != weights.size())
         throw Base::ValueError("poles and weights mismatch");
 
-    TColgp_Array1OfPnt p(1,poles.size());
-    TColStd_Array1OfReal w(1,poles.size());
-    for (std::size_t i = 1; i <= poles.size(); i++) {
-        p.SetValue(i, gp_Pnt(poles[i-1].x,poles[i-1].y,poles[i-1].z));
-        w.SetValue(i, weights[i-1]);
+    TColgp_Array1OfPnt poleArray(1,poles.size());
+    TColStd_Array1OfReal weightArray(1,poles.size());
+    for (std::size_t index = 1; index <= poles.size(); index++) {
+        poleArray.SetValue(index, gp_Pnt(poles[index-1].x,poles[index-1].y,poles[index-1].z));
+        weightArray.SetValue(index, weights[index-1]);
     }
-    this->myCurve = new Geom_BezierCurve (p, w);
+    this->myCurve = new Geom_BezierCurve (poleArray, weightArray);
 }
 
 GeomBezierCurve::~GeomBezierCurve() = default;
 
-void GeomBezierCurve::setHandle(const Handle(Geom_BezierCurve)& c)
+void GeomBezierCurve::setHandle(const Handle(Geom_BezierCurve)& curve)
 {
-    myCurve = Handle(Geom_BezierCurve)::DownCast(c->Copy());
+    myCurve = Handle(Geom_BezierCurve)::DownCast(curve->Copy());
 }
 
 const Handle(Geom_Geometry)& GeomBezierCurve::handle() const
@@ -1156,7 +1155,7 @@ const Handle(Geom_Geometry)& GeomBezierCurve::handle() const
 
 Geometry *GeomBezierCurve::copy() const
 {
-    GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
+    auto *newCurve = new GeomBezierCurve(myCurve);
     newCurve->copyNonTag(this);
     return newCurve;
 }
@@ -1165,11 +1164,11 @@ std::vector<Base::Vector3d> GeomBezierCurve::getPoles() const
 {
     std::vector<Base::Vector3d> poles;
     poles.reserve(myCurve->NbPoles());
-    TColgp_Array1OfPnt p(1,myCurve->NbPoles());
-    myCurve->Poles(p);
+    TColgp_Array1OfPnt poleArray(1,myCurve->NbPoles());
+    myCurve->Poles(poleArray);
 
-    for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
-        const gp_Pnt& pnt = p(i);
+    for (Standard_Integer index=poleArray.Lower(); index<=poleArray.Upper(); index++) {
+        const gp_Pnt& pnt = poleArray(index);
         poles.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
     }
     return poles;
@@ -1179,11 +1178,11 @@ std::vector<double> GeomBezierCurve::getWeights() const
 {
     std::vector<double> weights;
     weights.reserve(myCurve->NbPoles());
-    TColStd_Array1OfReal w(1,myCurve->NbPoles());
-    myCurve->Weights(w);
+    TColStd_Array1OfReal weightArray(1,myCurve->NbPoles());
+    myCurve->Weights(weightArray);
 
-    for (Standard_Integer i=w.Lower(); i<=w.Upper(); i++) {
-        const Standard_Real& real = w(i);
+    for (Standard_Integer index=weightArray.Lower(); index<=weightArray.Upper(); index++) {
+        const Standard_Real& real = weightArray(index);
         weights.push_back(real);
     }
     return weights;
@@ -1238,38 +1237,38 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
     // get the value of my attribute
     int polescount = reader.getAttributeAsInteger("PolesCount");
 
-    TColgp_Array1OfPnt p(1,polescount);
-    TColStd_Array1OfReal w(1,polescount);
+    TColgp_Array1OfPnt poleArray(1,polescount);
+    TColStd_Array1OfReal weightArray(1,polescount);
 
-    for (int i = 1; i <= polescount; i++) {
+    for (int index = 1; index <= polescount; index++) {
         reader.readElement("Pole");
         double X = reader.getAttributeAsFloat("X");
         double Y = reader.getAttributeAsFloat("Y");
         double Z = reader.getAttributeAsFloat("Z");
         double W = reader.getAttributeAsFloat("Weight");
-        p.SetValue(i, gp_Pnt(X,Y,Z));
-        w.SetValue(i, W);
+        poleArray.SetValue(index, gp_Pnt(X,Y,Z));
+        weightArray.SetValue(index, W);
     }
 
     reader.readEndElement("BezierCurve");
 
     try {
-        Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(p, w);
+        Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(poleArray, weightArray);
 
         if (!bezier.IsNull())
             this->myCurve = bezier;
         else
             THROWM(Base::CADKernelError,"BezierCurve restore failed")
     }
-    catch (Standard_Failure& e) {
+    catch (Standard_Failure& exc) {
 
-        THROWM(Base::CADKernelError,e.GetMessageString())
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
 PyObject *GeomBezierCurve::getPyObject()
 {
-    return new BezierCurvePy(static_cast<GeomBezierCurve*>(this->clone()));
+    return new BezierCurvePy(dynamic_cast<GeomBezierCurve*>(this->clone()));
 }
 
 bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
@@ -1277,16 +1276,16 @@ bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
     if(_other.getTypeId() != getTypeId())
         return false;
 
-    auto &other = static_cast<const GeomBezierCurve &>(_other);
+    auto &other = dynamic_cast<const GeomBezierCurve &>(_other);
 
     Standard_Integer c = myCurve->NbPoles();
     if(c!= other.myCurve->NbPoles())
         return false;
 
     double tol2 = tol*tol;
-    for(Standard_Integer i=1; i<=c; ++i) {
-        if(myCurve->Pole(i).SquareDistance(other.myCurve->Pole(i)) > tol2
-                || fabs(myCurve->Weight(i) - other.myCurve->Weight(i)) > tol)
+    for(Standard_Integer index =1; index <=c; ++index) {
+        if(myCurve->Pole(index).SquareDistance(other.myCurve->Pole(index)) > tol2
+                || fabs(myCurve->Weight(index) - other.myCurve->Weight(index)) > tol)
             return false;
     }
     return true;
@@ -1333,14 +1332,14 @@ GeomBSplineCurve::GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, co
     TColStd_Array1OfReal k(1,knots.size());
     TColStd_Array1OfInteger m(1,knots.size());
 
-    for (std::size_t i = 1; i <= poles.size(); i++) {
-        p.SetValue(i, gp_Pnt(poles[i-1].x,poles[i-1].y,poles[i-1].z));
-        w.SetValue(i, weights[i-1]);
+    for (int index = 1; index <= poles.size(); index++) {
+        p.SetValue(index, gp_Pnt(poles[index -1].x,poles[index -1].y,poles[index -1].z));
+        w.SetValue(index, weights[index -1]);
     }
 
-    for (std::size_t i = 1; i <= knots.size(); i++) {
-        k.SetValue(i, knots[i-1]);
-        m.SetValue(i, multiplicities[i-1]);
+    for (int index = 1; index <= knots.size(); index++) {
+        k.SetValue(index, knots[index -1]);
+        m.SetValue(index, multiplicities[index -1]);
     }
 
     this->myCurve = new Geom_BSplineCurve (p, w, k, m, degree, periodic?Standard_True:Standard_False, checkrational?Standard_True:Standard_False);
@@ -1350,9 +1349,9 @@ GeomBSplineCurve::GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, co
 
 GeomBSplineCurve::~GeomBSplineCurve() = default;
 
-void GeomBSplineCurve::setHandle(const Handle(Geom_BSplineCurve)& c)
+void GeomBSplineCurve::setHandle(const Handle(Geom_BSplineCurve)& curve)
 {
-    myCurve = Handle(Geom_BSplineCurve)::DownCast(c->Copy());
+    myCurve = Handle(Geom_BSplineCurve)::DownCast(curve->Copy());
 }
 
 const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
@@ -1363,12 +1362,12 @@ const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
 Geometry *GeomBSplineCurve::copy() const
 {
     try {
-        GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
+        auto *newCurve = new GeomBSplineCurve(myCurve);
         newCurve->copyNonTag(this);
         return newCurve;
     }
-    catch (Standard_Failure& e) {
-        THROWM(Base::CADKernelError, e.GetMessageString())
+    catch (Standard_Failure& exc) {
+        THROWM(Base::CADKernelError, exc.GetMessageString())
     }
 }
 
@@ -1439,7 +1438,7 @@ void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles)
 {
     Standard_Integer index=1;
 
-    for (std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it, index++){
+    for (auto it = poles.begin(); it != poles.end(); ++it, index++){
         setPole(index, *it);
     }
 }
@@ -1479,7 +1478,7 @@ void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
     try {
         Standard_Integer index=1;
 
-        for (std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
+        for (auto it = weights.begin(); it != weights.end(); ++it, index++){
             myCurve->SetWeight(index, *it);
         }
     }
@@ -1507,7 +1506,7 @@ void GeomBSplineCurve::setKnots(const std::vector<double>& knots)
 {
     Standard_Integer index=1;
 
-    for (std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it, index++) {
+    for (auto it = knots.begin(); it != knots.end(); ++it, index++) {
         setKnot(index, *it);
     }
 }
@@ -1958,7 +1957,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBSplineCurve::getPyObject()
 {
-    return new BSplineCurvePy(static_cast<GeomBSplineCurve*>(this->clone()));
+    return new BSplineCurvePy(dynamic_cast<GeomBSplineCurve*>(this->clone()));
 }
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -1972,7 +1971,7 @@ bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) c
         return false;
     }
 
-    auto &other = static_cast<const GeomBSplineCurve &>(_other);
+    auto &other = dynamic_cast<const GeomBSplineCurve &>(_other);
     (void)atol;
 
     if(countPoles() != other.countPoles()
@@ -3940,7 +3939,7 @@ GeomBSplineCurve* GeomParabola::toNurbs(double first, double last) const
 {
     // the default implementation suffices because a non-rational B-spline with
     // one segment is a parabola
-    return GeomCurve::toNurbs(first, last);
+    return GeomCurve::toNurbs(first, last); // NOLINT
 }
 
 double GeomParabola::getFocal() const
@@ -4373,14 +4372,14 @@ bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
         if (_other.isDerivedFrom(GeomCurve::getClassTypeId())) {
-            std::unique_ptr<Geometry> geo(static_cast<const GeomCurve&>(_other).toLine());
+            std::unique_ptr<Geometry> geo(dynamic_cast<const GeomCurve&>(_other).toLine());
             if (geo)
                 return isSame(*geo, tol, atol);
         }
         return false;
     }
 
-    auto &other = static_cast<const GeomLine &>(_other);
+    auto &other = dynamic_cast<const GeomLine &>(_other);
 
     return getDir().GetAngle(other.getDir()) <= atol
             && Base::DistanceP2(getPos(), other.getPos()) <= tol*tol;
@@ -4425,7 +4424,7 @@ const Handle(Geom_Geometry)& GeomLineSegment::handle() const
 
 Geometry *GeomLineSegment::copy()const
 {
-    GeomLineSegment *tempCurve = new GeomLineSegment();
+    auto *tempCurve = new GeomLineSegment();
     tempCurve->myCurve = Handle(Geom_TrimmedCurve)::DownCast(myCurve->Copy());
     tempCurve->copyNonTag(this);
     return tempCurve;
@@ -4463,7 +4462,8 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
         // get Geom_Line of line segment
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
             (this_curv->BasisCurve());
-        Handle(Geom_TrimmedCurve) that_curv = ms.Value();
+        Handle(Geom_TrimmedCurve)& that_curv =
+            const_cast<opencascade::handle<Geom_TrimmedCurve>&>(ms.Value());
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         this_line->SetLin(that_line->Lin());
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
@@ -4541,7 +4541,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
 
 PyObject *GeomLineSegment::getPyObject()
 {
-    return new LineSegmentPy(static_cast<GeomLineSegment*>(this->clone()));
+    return new LineSegmentPy(dynamic_cast<GeomLineSegment*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4568,12 +4568,12 @@ GeomOffsetCurve::~GeomOffsetCurve() = default;
 
 Geometry *GeomOffsetCurve::copy() const
 {
-    GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
+    auto *newCurve = new GeomOffsetCurve(myCurve);
     newCurve->copyNonTag(this);
     return newCurve;
 }
 
-Base::Vector3d GeomOffsetCurve::getDir(void) const
+Base::Vector3d GeomOffsetCurve::getDir() const
 {
     gp_Dir Dir = this->myCurve->Direction();
     return Base::Vector3d(Dir.X(),Dir.Y(),Dir.Z());
@@ -4612,7 +4612,7 @@ void GeomOffsetCurve::Restore(Base::XMLReader &/*reader*/)
 
 PyObject *GeomOffsetCurve::getPyObject()
 {
-    return new OffsetCurvePy(static_cast<GeomOffsetCurve*>(this->clone()));
+    return new OffsetCurvePy(dynamic_cast<GeomOffsetCurve*>(this->clone()));
 }
 
 bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -4620,7 +4620,7 @@ bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) co
     if(_other.getTypeId() != getTypeId())
         return false;
 
-    auto &other = static_cast<const GeomOffsetCurve &>(_other);
+    auto &other = dynamic_cast<const GeomOffsetCurve &>(_other);
     if(myCurve->Direction().Angle(other.myCurve->Direction()) > atol || fabs(getOffset() - other.getOffset()) > tol)
         return false;
 
@@ -4662,10 +4662,11 @@ bool GeomSurface::isPlanar(const Handle(Geom_Surface) &s, gp_Pln *pln, double to
 GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
 {
     if (isDerivedFrom(GeomPlane::getClassTypeId())) {
-        if (clone)
-            return static_cast<GeomPlane*>(this->clone());
-        else
-            return static_cast<GeomPlane*>(this->copy());
+        if (clone) {
+            return dynamic_cast<GeomPlane*>(this->clone());
+        } else {
+            return dynamic_cast<GeomPlane*>(this->copy());
+        }
     }
 
     gp_Pln pln;
@@ -4813,7 +4814,7 @@ void GeomBezierSurface::setHandle(const Handle(Geom_BezierSurface)& b)
 
 Geometry *GeomBezierSurface::copy() const
 {
-    GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
+    auto *newSurf =  new GeomBezierSurface(mySurface);
     newSurf->copyNonTag(this);
     return newSurf;
 }

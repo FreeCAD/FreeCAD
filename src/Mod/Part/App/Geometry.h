@@ -72,6 +72,12 @@
 
 namespace Part {
 
+enum KeepTag
+{
+    NewTag,  // Assign a new tag
+    CopyTag  // Keep the existing tag
+};
+
 class PartExport Geometry: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -114,12 +120,12 @@ public:
     void deleteExtension(const Base::Type & type);
     void deleteExtension(const std::string & name);
 
-    void mirror(const Base::Vector3d& point);
-    void mirror(const Base::Vector3d& point, const Base::Vector3d& dir);
-    void rotate(const Base::Placement& plm);
-    void scale(const Base::Vector3d& vec, double scale);
-    void transform(const Base::Matrix4D& mat);
-    void translate(const Base::Vector3d& vec);
+    void mirror(const Base::Vector3d& point) const;
+    void mirror(const Base::Vector3d& point, const Base::Vector3d& dir) const;
+    void rotate(const Base::Placement& plm) const;
+    void scale(const Base::Vector3d& vec, double scale) const;
+    void transform(const Base::Matrix4D& mat) const;
+    void translate(const Base::Vector3d& vec) const;
 
 protected:
     /// create a new tag for the geometry object
@@ -146,8 +152,8 @@ class PartExport GeomPoint : public Geometry
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomPoint();
-    GeomPoint(const Handle(Geom_CartesianPoint)&);
-    GeomPoint(const Base::Vector3d&);
+    explicit GeomPoint(const Handle(Geom_CartesianPoint)&);
+    explicit GeomPoint(const Base::Vector3d&);
     ~GeomPoint() override;
     Geometry *copy() const override;
     TopoDS_Shape toShape() const override;
@@ -157,8 +163,15 @@ public:
     void Save(Base::Writer &/*writer*/) const override;
     void Restore(Base::XMLReader &/*reader*/) override;
     // Base implementer ----------------------------
-    PyObject *getPyObject() override;
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    PyObject* getPyObject() override;
+    /**
+     *  Compare this point to another one.
+     * @param other     Other geometry point.  Can pass in Other geometry types but will not match
+     * @param tol       Points meed to be within tol^2 to match.
+     * @param atol      Angle tolerance is not used for points.
+     * @return      True if a match is found.
+     */
+    bool isSame(const Geometry& other, double tol, double atol) const override;
     const Handle(Geom_Geometry)& handle() const override;
     void setHandle(const Handle(Geom_CartesianPoint)&);
 
@@ -183,7 +196,7 @@ public:
     static bool isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr);
     bool isLinear(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
 
-    TopoDS_Shape toShape() const;
+    TopoDS_Shape toShape() const override;
     /*!
      * \brief toBSpline Converts the curve to a B-spline
      * \param This is the start parameter of the curve
@@ -218,11 +231,11 @@ public:
 
     Base::Vector3d value(double u) const;
 
-    GeomLine *toLine(bool clone=true) const;
-    GeomLineSegment *toLineSegment(bool clone=true) const;
+    GeomLine* toLine(KeepTag clone = CopyTag) const;
+    GeomLineSegment* toLineSegment(KeepTag clone = CopyTag) const;
 
 protected:
-    static bool intersect(const Handle(Geom_Curve) c, const Handle(Geom_Curve) c2,
+    static bool intersect(const Handle(Geom_Curve)& c, const Handle(Geom_Curve)& c2,
                           std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                           double tol = Precision::Confusion());
 };
@@ -244,7 +257,7 @@ class PartExport GeomBezierCurve : public GeomBoundedCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBezierCurve();
-    GeomBezierCurve(const Handle(Geom_BezierCurve)&);
+    explicit GeomBezierCurve(const Handle(Geom_BezierCurve)&);
     GeomBezierCurve(const std::vector<Base::Vector3d>&, const std::vector<double>&);
     ~GeomBezierCurve() override;
     Geometry *copy() const override;
@@ -271,7 +284,7 @@ class PartExport GeomBSplineCurve : public GeomBoundedCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBSplineCurve();
-    GeomBSplineCurve(const Handle(Geom_BSplineCurve)&);
+    explicit GeomBSplineCurve(const Handle(Geom_BSplineCurve)&);
 
     GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights,
                       const std::vector<double>& knots, const std::vector<int>& multiplicities,
@@ -342,7 +355,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject(void) override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_BSplineCurve)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -394,9 +407,9 @@ public:
     PyObject *getPyObject() override = 0;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
-    const Handle(Geom_Geometry)& handle() const = 0;
+    const Handle(Geom_Geometry)& handle() const override = 0;
 };
 
 class PartExport GeomTrimmedCurve : public GeomBoundedCurve
@@ -404,7 +417,7 @@ class PartExport GeomTrimmedCurve : public GeomBoundedCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomTrimmedCurve();
-    GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
+    explicit GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
     ~GeomTrimmedCurve() override;
     Geometry *copy() const override;
 
@@ -415,9 +428,9 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject(void) override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    virtual void setHandle(const Handle(Geom_TrimmedCurve)&);
     const Handle(Geom_Geometry)& handle() const override;
 
     bool intersectBasisCurves(  const GeomTrimmedCurve * c,
@@ -488,7 +501,7 @@ class PartExport GeomCircle : public GeomConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCircle();
-    GeomCircle(const Handle(Geom_Circle)&);
+    explicit GeomCircle(const Handle(Geom_Circle)&);
     ~GeomCircle() override;
     Geometry *copy() const override;
 
@@ -503,7 +516,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     const Handle(Geom_Geometry)& handle() const override;
 
@@ -518,7 +531,7 @@ class PartExport GeomArcOfCircle : public GeomArcOfConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfCircle();
-    GeomArcOfCircle(const Handle(Geom_Circle)&);
+    explicit GeomArcOfCircle(const Handle(Geom_Circle)&);
     ~GeomArcOfCircle() override;
     Geometry *copy() const override;
 
@@ -538,7 +551,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_TrimmedCurve)&) override;
     void setHandle(const Handle(Geom_Circle)&);
     const Handle(Geom_Geometry)& handle() const override;
 
@@ -549,7 +562,7 @@ class PartExport GeomEllipse : public GeomConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomEllipse();
-    GeomEllipse(const Handle(Geom_Ellipse)&);
+    explicit GeomEllipse(const Handle(Geom_Ellipse)&);
     ~GeomEllipse() override;
     Geometry *copy() const override;
 
@@ -569,7 +582,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_Ellipse) &e);
     const Handle(Geom_Geometry)& handle() const override;
@@ -583,7 +596,7 @@ class PartExport GeomArcOfEllipse : public GeomArcOfConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfEllipse();
-    GeomArcOfEllipse(const Handle(Geom_Ellipse)&);
+    explicit GeomArcOfEllipse(const Handle(Geom_Ellipse)&);
     ~GeomArcOfEllipse() override;
     Geometry *copy() const override;
 
@@ -606,7 +619,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_TrimmedCurve)&) override;
     void setHandle(const Handle(Geom_Ellipse)&);
     const Handle(Geom_Geometry)& handle() const override;
 };
@@ -617,7 +630,7 @@ class PartExport GeomHyperbola : public GeomConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomHyperbola();
-    GeomHyperbola(const Handle(Geom_Hyperbola)&);
+    explicit GeomHyperbola(const Handle(Geom_Hyperbola)&);
     ~GeomHyperbola() override;
     Geometry *copy() const override;
 
@@ -634,7 +647,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     const Handle(Geom_Geometry)& handle() const override;
     void setHandle(const Handle(Geom_Hyperbola)&);
@@ -648,7 +661,7 @@ class PartExport GeomArcOfHyperbola : public GeomArcOfConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfHyperbola();
-    GeomArcOfHyperbola(const Handle(Geom_Hyperbola)&);
+    explicit GeomArcOfHyperbola(const Handle(Geom_Hyperbola)&);
     ~GeomArcOfHyperbola() override;
     Geometry *copy() const override;
 
@@ -671,7 +684,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_TrimmedCurve)&) override;
     void setHandle(const Handle(Geom_Hyperbola)&);
     const Handle(Geom_Geometry)& handle() const override;
 };
@@ -681,7 +694,7 @@ class PartExport GeomParabola : public GeomConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomParabola();
-    GeomParabola(const Handle(Geom_Parabola)&);
+    explicit GeomParabola(const Handle(Geom_Parabola)&);
     ~GeomParabola() override;
     Geometry *copy() const override;
 
@@ -696,7 +709,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     const Handle(Geom_Geometry)& handle() const override;
     void setHandle(const Handle(Geom_Parabola)&);
@@ -710,7 +723,7 @@ class PartExport GeomArcOfParabola : public GeomArcOfConic
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfParabola();
-    GeomArcOfParabola(const Handle(Geom_Parabola)&);
+    explicit GeomArcOfParabola(const Handle(Geom_Parabola)&);
     ~GeomArcOfParabola() override;
     Geometry *copy() const override;
 
@@ -730,7 +743,7 @@ public:
     PyObject *getPyObject() override;
     GeomBSplineCurve* toNurbs(double first, double last) const override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_TrimmedCurve)&) override;
     void setHandle(const Handle(Geom_Parabola)&);
     const Handle(Geom_Geometry)& handle() const override;
 };
@@ -740,7 +753,7 @@ class PartExport GeomLine : public GeomCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomLine();
-    GeomLine(const Handle(Geom_Line)&);
+    explicit GeomLine(const Handle(Geom_Line)&);
     GeomLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir);
     ~GeomLine() override;
     Geometry *copy() const override;
@@ -756,7 +769,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     const Handle(Geom_Geometry)& handle() const override;
     void setHandle(const Handle(Geom_Line)&);
@@ -770,7 +783,7 @@ class PartExport GeomLineSegment : public GeomTrimmedCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomLineSegment();
-    GeomLineSegment(const Handle(Geom_Line)& l);
+    explicit GeomLineSegment(const Handle(Geom_Line)& l);
     ~GeomLineSegment() override;
     Geometry *copy() const override;
 
@@ -787,7 +800,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    void setHandle(const Handle(Geom_TrimmedCurve)&) override;
     void setHandle(const Handle(Geom_Line)&);
     const Handle(Geom_Geometry)& handle() const override;
 
@@ -800,11 +813,11 @@ public:
     GeomOffsetCurve();
     GeomOffsetCurve(const Handle(Geom_Curve)&, double, const gp_Dir&);
     GeomOffsetCurve(const Handle(Geom_Curve)&, double, Base::Vector3d&);
-    GeomOffsetCurve(const Handle(Geom_OffsetCurve)&);
+    explicit GeomOffsetCurve(const Handle(Geom_OffsetCurve)&);
     ~GeomOffsetCurve() override;
-    Geometry *copy(void) const override;
+    Geometry *copy() const override;
 
-    Base::Vector3d getDir(void) const;
+    Base::Vector3d getDir() const;
     double getOffset() const;
 
     // Persistence implementer ---------------------
@@ -814,7 +827,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_OffsetCurve)& c);
     const Handle(Geom_Geometry)& handle() const override;
@@ -868,7 +881,7 @@ class PartExport GeomBezierSurface : public GeomSurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBezierSurface();
-    GeomBezierSurface(const Handle(Geom_BezierSurface)&);
+    explicit GeomBezierSurface(const Handle(Geom_BezierSurface)&);
     ~GeomBezierSurface() override;
     Geometry *copy() const override;
 
@@ -879,7 +892,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_BezierSurface)& b);
     const Handle(Geom_Geometry)& handle() const override;
@@ -893,7 +906,7 @@ class PartExport GeomBSplineSurface : public GeomSurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBSplineSurface();
-    GeomBSplineSurface(const Handle(Geom_BSplineSurface)&);
+    explicit GeomBSplineSurface(const Handle(Geom_BSplineSurface)&);
     ~GeomBSplineSurface() override;
     Geometry *copy() const override;
 
@@ -905,7 +918,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_BSplineSurface)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -922,22 +935,22 @@ protected:
     GeomElementarySurface();
 
 public:
-    virtual ~GeomElementarySurface();
+    ~GeomElementarySurface() override;
 
-    Base::Vector3d getLocation(void) const;
-    Base::Vector3d getDir(void) const;
-    Base::Vector3d getXDir(void) const;
-    Base::Vector3d getYDir(void) const;
+    Base::Vector3d getLocation() const;
+    Base::Vector3d getDir() const;
+    Base::Vector3d getXDir() const;
+    Base::Vector3d getYDir() const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 };
 
 class PartExport GeomCylinder : public GeomElementarySurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCylinder();
-    GeomCylinder(const Handle(Geom_CylindricalSurface)&);
+    explicit GeomCylinder(const Handle(Geom_CylindricalSurface)&);
     ~GeomCylinder() override;
     Geometry *copy() const override;
 
@@ -946,11 +959,11 @@ public:
     void Save(Base::Writer &/*writer*/) const override;
     void Restore(Base::XMLReader &/*reader*/) override;
     // Base implementer ----------------------------
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     double getRadius() const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_CylindricalSurface)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -964,7 +977,7 @@ class PartExport GeomCone : public GeomElementarySurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCone();
-    GeomCone(const Handle(Geom_ConicalSurface)&);
+    explicit GeomCone(const Handle(Geom_ConicalSurface)&);
     ~GeomCone() override;
     Geometry *copy() const override;
 
@@ -973,12 +986,12 @@ public:
     void Save(Base::Writer &/*writer*/) const override;
     void Restore(Base::XMLReader &/*reader*/) override;
     // Base implementer ----------------------------
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     double getRadius() const;
     double getSemiAngle() const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_ConicalSurface)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -995,7 +1008,7 @@ class PartExport GeomSphere : public GeomElementarySurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomSphere();
-    GeomSphere(const Handle(Geom_SphericalSurface)&);
+    explicit GeomSphere(const Handle(Geom_SphericalSurface)&);
     ~GeomSphere() override;
     Geometry *copy() const override;
 
@@ -1008,7 +1021,7 @@ public:
 
     double getRadius(void) const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_SphericalSurface)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1022,7 +1035,7 @@ class PartExport GeomToroid : public GeomElementarySurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomToroid();
-    GeomToroid(const Handle(Geom_ToroidalSurface)&);
+    explicit GeomToroid(const Handle(Geom_ToroidalSurface)&);
     ~GeomToroid() override;
     Geometry *copy() const override;
 
@@ -1033,10 +1046,10 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    double getMajorRadius(void) const;
-    double getMinorRadius(void) const;
+    double getMajorRadius() const;
+    double getMinorRadius() const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_ToroidalSurface)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1050,8 +1063,8 @@ class PartExport GeomPlane : public GeomElementarySurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomPlane();
-    GeomPlane(const Handle(Geom_Plane)&);
-    GeomPlane(const gp_Pln &pln);
+    explicit GeomPlane(const Handle(Geom_Plane)&);
+    explicit GeomPlane(const gp_Pln &pln);
     ~GeomPlane() override;
     Geometry *copy() const override;
 
@@ -1062,7 +1075,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_Plane)&);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1077,7 +1090,7 @@ class PartExport GeomOffsetSurface : public GeomSurface
 public:
     GeomOffsetSurface();
     GeomOffsetSurface(const Handle(Geom_Surface)&, double);
-    GeomOffsetSurface(const Handle(Geom_OffsetSurface)&);
+    explicit GeomOffsetSurface(const Handle(Geom_OffsetSurface)&);
     ~GeomOffsetSurface() override;
     Geometry *copy() const override;
 
@@ -1090,7 +1103,7 @@ public:
 
     double getOffset() const;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_OffsetSurface)& s);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1105,8 +1118,8 @@ class PartExport GeomPlateSurface : public GeomSurface
 public:
     GeomPlateSurface();
     GeomPlateSurface(const Handle(Geom_Surface)&, const Plate_Plate&);
-    GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
-    GeomPlateSurface(const Handle(GeomPlate_Surface)&);
+    explicit GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
+    explicit GeomPlateSurface(const Handle(GeomPlate_Surface)&);
     ~GeomPlateSurface() override;
     Geometry *copy() const override;
 
@@ -1117,7 +1130,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(GeomPlate_Surface)& s);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1131,7 +1144,7 @@ class PartExport GeomTrimmedSurface : public GeomSurface
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomTrimmedSurface();
-    GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)&);
+    explicit GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)&);
     ~GeomTrimmedSurface() override;
     Geometry *copy() const override;
 
@@ -1142,7 +1155,7 @@ public:
     // Base implementer ----------------------------
     PyObject *getPyObject() override;
 
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 
     void setHandle(const Handle(Geom_RectangularTrimmedSurface)& s);
     const Handle(Geom_Geometry)& handle() const override;
@@ -1159,20 +1172,20 @@ protected:
     GeomSweptSurface();
 
 public:
-    virtual ~GeomSweptSurface();
+    ~GeomSweptSurface() override;
 
-    Base::Vector3d getDir(void) const;
-    virtual bool isSame(const Geometry &other, double tol, double atol) const;
+    Base::Vector3d getDir() const;
+    bool isSame(const Geometry &other, double tol, double atol) const override;
 };
 
 
 class PartExport GeomSurfaceOfRevolution : public GeomSweptSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomSurfaceOfRevolution();
     GeomSurfaceOfRevolution(const Handle(Geom_Curve)&, const gp_Ax1&);
-    GeomSurfaceOfRevolution(const Handle(Geom_SurfaceOfRevolution)&);
+    explicit GeomSurfaceOfRevolution(const Handle(Geom_SurfaceOfRevolution)&);
     ~GeomSurfaceOfRevolution() override;
     Geometry *copy() const override;
 
