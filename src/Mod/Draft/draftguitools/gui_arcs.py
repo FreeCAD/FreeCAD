@@ -100,7 +100,6 @@ class Arc(gui_base_original.Creator):
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
-            self.doc.recompute()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
@@ -468,11 +467,8 @@ class Arc(gui_base_original.Creator):
 Gui.addCommand('Draft_Arc', Arc())
 
 
-class Arc_3Points(gui_base.GuiCommandSimplest):
+class Arc_3Points(gui_base.GuiCommandBase):
     """GuiCommand for the Draft_Arc_3Points tool."""
-
-    def __init__(self):
-        super().__init__(name="Arc by 3 points")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -483,7 +479,10 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        if App.activeDraftCommand:
+            App.activeDraftCommand.finish()
+        App.activeDraftCommand = self
+        self.featureName = "Arc_3Points"
 
         # Reset the values
         self.points = []
@@ -550,15 +549,16 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             # If three points were already picked in the 3D view
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
-            if params.get_param("UsePartPrimitives"):
-                Draft.make_arc_3points([self.points[0],
-                                        self.points[1],
-                                        self.points[2]], primitive=True)
-            else:
-                Draft.make_arc_3points([self.points[0],
-                                        self.points[1],
-                                        self.points[2]], primitive=False)
-
+            Gui.addModule("Draft")
+            _cmd = "Draft.make_arc_3points(["
+            _cmd += "FreeCAD." + str(self.points[0])
+            _cmd += ", FreeCAD." + str(self.points[1])
+            _cmd += ", FreeCAD." + str(self.points[2])
+            _cmd += "], primitive=" + str(params.get_param("UsePartPrimitives")) + ")"
+            _cmd_list = ["circle = " + _cmd,
+                         "Draft.autogroup(circle)",
+                         "FreeCAD.ActiveDocument.recompute()"]
+            self.commit(translate("draft", "Create Arc by 3 points"), _cmd_list)
             self.finish(cont=None)
 
     def drawArc(self, point, info):
@@ -590,8 +590,9 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        App.activeDraftCommand = None
         self.tracker.finalize()
-        self.doc.recompute()
+        super().finish()
         if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
             self.Activated()
 

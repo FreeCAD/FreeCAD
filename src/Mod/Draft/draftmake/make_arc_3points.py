@@ -183,9 +183,6 @@ def make_arc_3points(points, placement=None, face=False,
                             startangle=start, endangle=end,
                             support=support)
 
-    if App.GuiUp:
-        gui_utils.autogroup(obj)
-
     original_placement = obj.Placement
 
     if placement and not support:
