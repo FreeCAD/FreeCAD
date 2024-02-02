@@ -138,7 +138,6 @@ class Fillet(gui_base_original.Creator):
         """
         self.rad = rad
         self.draw_arc(rad, self.chamfer, self.delete)
-        self.finish()
 
     def draw_arc(self, rad, chamfer, delete):
         """Process the selection and draw the actual object."""
@@ -185,16 +184,8 @@ class Fillet(gui_base_original.Creator):
                      'Draft.autogroup(arc)',
                      'FreeCAD.ActiveDocument.recompute()']
 
-        self.commit(translate("draft", "Create fillet"),
-                    _cmd_list)
-
-    def finish(self, cont=False):
-        """Terminate the operation."""
-        super(Fillet, self).finish()
-        if self.ui:
-            # self.linetrack.finalize()
-            # self.arctrack.finalize()
-            self.doc.recompute()
+        self.commit(translate("draft", "Create fillet"), _cmd_list)
+        self.finish()
 
 
 Gui.addCommand('Draft_Fillet', Fillet())
