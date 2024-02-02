@@ -591,8 +591,8 @@ class Arc_3Points(gui_base.GuiCommandBase):
             `ui.continueMode` is `True`.
         """
         App.activeDraftCommand = None
-        self.tracker.finalize()
         super().finish()
+        self.tracker.finalize()
         if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
             self.Activated()
 
