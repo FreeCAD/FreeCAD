@@ -100,7 +100,8 @@ public:
             "                         AngularDeflection=0.5,\n"
             "                         Relative=False,"
             "                         Segments=False,\n"
-            "                         GroupColors=[])\n"
+            "                         GroupColors=[],\n"
+            "                         ReleaseGIL=False)\n"
             "    meshFromShape(Shape, MaxLength)\n"
             "    meshFromShape(Shape, MaxArea)\n"
             "    meshFromShape(Shape, LocalLength)\n"
@@ -138,6 +139,7 @@ public:
             "    GrowthRate (optional, float)\n"
             "    SegPerEdge (optional, float)\n"
             "    SegPerRadius (optional, float)\n"
+            "    ReleaseGIL (optional, boolean)\n"
         );
         initialize("This module is the MeshPart module."); // register with Python
     }
@@ -474,18 +476,19 @@ private:
     {
         PyObject *shape;
 
-        static const std::array<const char *, 7> kwds_lindeflection{"Shape", "LinearDeflection", "AngularDeflection",
-                                                                    "Relative", "Segments", "GroupColors", nullptr};
+        static const std::array<const char *, 8> kwds_lindeflection{"Shape", "LinearDeflection", "AngularDeflection",
+                                                                    "Relative", "Segments", "GroupColors", "ReleaseGIL", nullptr};
         PyErr_Clear();
         double lindeflection=0;
         double angdeflection=0.5;
         PyObject* relative = Py_False;
         PyObject* segment = Py_False;
         PyObject* groupColors = nullptr;
-        if (Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dO!O!O", kwds_lindeflection,
+        PyObject* releaseGIL = Py_False;
+        if (Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!d|dO!O!OO!", kwds_lindeflection,
                                                 &(Part::TopoShapePy::Type), &shape, &lindeflection,
                                                 &angdeflection, &(PyBool_Type), &relative,
-                                                &(PyBool_Type), &segment, &groupColors)) {
+                                                &(PyBool_Type), &segment, &groupColors, &(PyBool_Type), &releaseGIL)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Standard);
             mesher.setDeflection(lindeflection);
@@ -509,7 +512,15 @@ private:
                 }
                 mesher.setColors(colors);
             }
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            Mesh::MeshObject* mesh;
+            if (Base::asBoolean(releaseGIL)) {
+                Py_BEGIN_ALLOW_THREADS
+                mesh = mesher.createMesh();
+                Py_END_ALLOW_THREADS
+            } else {
+                mesh = mesher.createMesh();
+            }
+            return Py::asObject(new Mesh::MeshPy(mesh));
         }
 
         static const std::array<const char *, 3> kwds_maxLength{"Shape", "MaxLength", nullptr};
