@@ -36,7 +36,7 @@ import Draft
 import Draft_rc  # include resources, icons, ui files
 import draftutils.todo as todo
 
-from draftutils.messages import _msg, _log
+from draftutils.messages import _log
 from draftutils.translate import translate
 from draftguitools import gui_base
 from drafttaskpanels import task_orthoarray
@@ -72,8 +72,6 @@ class OrthoArray(gui_base.GuiCommandBase):
         the widgets of the task panel.
         """
         _log("GuiCommand: {}".format(self.command_name))
-        #_msg("{}".format(16*"-"))
-        #_msg("GuiCommand: {}".format(self.command_name))
 
         # self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()

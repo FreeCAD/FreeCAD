@@ -185,7 +185,6 @@ class TaskPanelOrthoArray:
         if self.valid_input:
             self.create_object()
             # The internal function already displays messages
-            # self.print_messages()
             self.finish()
 
     def validate_input(self, selection,
@@ -311,28 +310,16 @@ class TaskPanelOrthoArray:
             self.form.input_X_y.setProperty('rawValue', 0)
             self.form.input_X_z.setProperty('rawValue', 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(translate("draft","Interval X reset:")
-                 + " ({0}, {1}, {2})".format(self.v_x.x,
-                                             self.v_x.y,
-                                             self.v_x.z))
         elif interval == "Y":
             self.form.input_Y_x.setProperty('rawValue', 0)
             self.form.input_Y_y.setProperty('rawValue', 100)
             self.form.input_Y_z.setProperty('rawValue', 0)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(translate("draft","Interval Y reset:")
-                 + " ({0}, {1}, {2})".format(self.v_y.x,
-                                             self.v_y.y,
-                                             self.v_y.z))
         elif interval == "Z":
             self.form.input_Z_x.setProperty('rawValue', 0)
             self.form.input_Z_y.setProperty('rawValue', 0)
             self.form.input_Z_z.setProperty('rawValue', 100)
             self.v_x, self.v_y, self.v_z = self.get_intervals()
-            _msg(translate("draft","Interval Z reset:")
-                 + " ({0}, {1}, {2})".format(self.v_z.x,
-                                             self.v_z.y,
-                                             self.v_z.z))
 
     def print_fuse_state(self, fuse):
         """Print the fuse state translated."""
@@ -345,7 +332,6 @@ class TaskPanelOrthoArray:
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
         self.fuse = self.form.checkbox_fuse.isChecked()
-        self.print_fuse_state(self.fuse)
         params.set_param("Draft_array_fuse", self.fuse)
 
     def print_link_state(self, use_link):
@@ -359,7 +345,6 @@ class TaskPanelOrthoArray:
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
         self.use_link = self.form.checkbox_link.isChecked()
-        self.print_link_state(self.use_link)
         params.set_param("Draft_array_Link", self.use_link)
 
     def print_messages(self):
@@ -392,7 +377,6 @@ class TaskPanelOrthoArray:
 
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
-        _msg(translate("draft","Aborted:") + " {}".format(translate("draft","Orthogonal array")))
         self.finish()
 
     def finish(self):

@@ -445,7 +445,7 @@ class bsplineTracker(Tracker):
             except Exception:
                 # workaround for pivy SoInput.setBuffer() bug
                 buf = buf.replace("\n", "")
-                pts = re.findall("point \[(.*?)\]", buf)[0]
+                pts = re.findall("point \\[(.*?)\\]", buf)[0]
                 pts = pts.split(",")
                 pc = []
                 for p in pts:
@@ -523,7 +523,7 @@ class bezcurveTracker(Tracker):
                 except Exception:
                     # workaround for pivy SoInput.setBuffer() bug
                     buf = buf.replace("\n","")
-                    pts = re.findall("point \[(.*?)\]", buf)[0]
+                    pts = re.findall("point \\[(.*?)\\]", buf)[0]
                     pts = pts.split(",")
                     pc = []
                     for p in pts:
@@ -652,7 +652,7 @@ class arcTracker(Tracker):
         except Exception:
             # workaround for pivy SoInput.setBuffer() bug
             buf = buf.replace("\n", "")
-            pts = re.findall("point \[(.*?)\]", buf)[0]
+            pts = re.findall("point \\[(.*?)\\]", buf)[0]
             pts = pts.split(",")
             pc = []
             for p in pts:

@@ -78,7 +78,6 @@ def mirror(objlist, p1, p2):
     just use `Part::Mirroring`. It should create a derived object,
     that is, it should work similar to `Draft.offset`.
     """
-    utils.print_header('mirror', "Create mirror")
 
     if not objlist:
         _err(translate("draft","No object given"))

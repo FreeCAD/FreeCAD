@@ -229,7 +229,6 @@ class Offset(gui_base_original.Modifier):
                     copymode = True
                 Gui.addModule("Draft")
                 if self.npts:
-                    # _msg("offset:npts= " + str(self.npts))
                     _cmd = 'Draft.offset'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'

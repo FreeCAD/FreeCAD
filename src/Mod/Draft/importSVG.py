@@ -415,7 +415,7 @@ def getsize(length, mode='discard', base=1):
         }
 
     # Extract a number from a string like '+56215.14565E+6mm'
-    _num = '([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)'
+    _num = '([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)'
     _unit = '(px|pt|pc|mm|cm|in|em|ex|%)?'
     _full_num = _num + _unit
     number, exponent, unit = re.findall(_full_num, length)[0]
@@ -725,7 +725,7 @@ class svgHandler(xml.sax.ContentHandler):
             if 'inkscape:version' in data:
                 inks_doc_name = attrs.getValue('sodipodi:docname')
                 inks_full_ver = attrs.getValue('inkscape:version')
-                inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
+                inks_ver_pars = re.search("\\d+\\.\\d+", inks_full_ver)
                 if inks_ver_pars is not None:
                     inks_ver_f = float(inks_ver_pars.group(0))
                 else:
@@ -928,10 +928,10 @@ class svgHandler(xml.sax.ContentHandler):
 
             _op = '([mMlLhHvVaAcCqQsStTzZ])'
             _op2 = '([^mMlLhHvVaAcCqQsStTzZ]*)'
-            _command = '\s*?' + _op + '\s*?' + _op2 + '\s*?'
+            _command = '\\s*?' + _op + '\\s*?' + _op2 + '\\s*?'
             pathcommandsre = re.compile(_command, re.DOTALL)
 
-            _num = '[-+]?[0-9]*\.?[0-9]+'
+            _num = '[-+]?[0-9]*\\.?[0-9]+'
             _exp = '([eE][-+]?[0-9]+)?'
             _point = '(' + _num + _exp + ')'
             pointsre = re.compile(_point, re.DOTALL)
@@ -1613,8 +1613,8 @@ class svgHandler(xml.sax.ContentHandler):
             The translated matrix.
         """
         _op = '(matrix|translate|scale|rotate|skewX|skewY)'
-        _val = '\((.*?)\)'
-        _transf = _op + '\s*?' + _val
+        _val = '\\((.*?)\\)'
+        _transf = _op + '\\s*?' + _val
         transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
         for transformation, arguments in transformre.findall(tr):

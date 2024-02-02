@@ -42,7 +42,7 @@ import os
 import FreeCAD as App
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _err, _msg, _wrn
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -328,7 +328,6 @@ def remove_hidden(objectslist):
         if obj.ViewObject:
             if not obj.ViewObject.isVisible():
                 newlist.remove(obj)
-                _msg(translate("draft", "Visibility off; removed from list: ") + obj.Label)
     return newlist
 
 
@@ -821,7 +820,6 @@ def get_bbox(obj, debug=False):
         If there is a problem it will return `None`.
     """
     _name = "get_bbox"
-    utils.print_header(_name, "Bounding box", debug=debug)
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
@@ -833,12 +831,8 @@ def get_bbox(obj, debug=False):
 
     found, obj = utils.find_object(obj, doc)
     if not found:
-        _msg("obj: {}".format(obj_str))
-        _err(translate("draft", "Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
-
-    if debug:
-        _msg("obj: {}".format(obj.Label))
 
     if (not hasattr(obj, "ViewObject")
             or not obj.ViewObject
