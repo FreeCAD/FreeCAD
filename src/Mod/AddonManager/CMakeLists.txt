@@ -1,5 +1,6 @@
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(AddonManager_QRC_SRCS Resources/AddonManager.qrc)
+    add_subdirectory(Widgets)
 ENDIF (BUILD_GUI)
 
 SET(AddonManager_SRCS

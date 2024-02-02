@@ -64,6 +64,7 @@
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
         <file>icons/compact_view.svg</file>
+        <file>icons/composite_view.svg</file>
         <file>icons/expanded_view.svg</file>
 		<file>licenses/Apache-2.0.txt</file>
 		<file>licenses/BSD-2-Clause.txt</file>

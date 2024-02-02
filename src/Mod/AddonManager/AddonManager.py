@@ -481,7 +481,7 @@ class CommandAddonManager:
 
     def activate_table_widgets(self) -> None:
         self.packageList.setEnabled(True)
-        self.packageList.ui.lineEditFilter.setFocus()
+        self.packageList.ui.search_box.setFocus()
         self.do_next_startup_phase()
 
     def populate_macros(self) -> None:
@@ -824,7 +824,7 @@ class CommandAddonManager:
         self.dialog.labelStatusInfo.hide()
         self.dialog.progressBar.hide()
         self.dialog.buttonPauseUpdate.hide()
-        self.packageList.ui.lineEditFilter.setFocus()
+        self.packageList.ui.search_box.setFocus()
 
     def show_progress_widgets(self) -> None:
         if self.dialog.progressBar.isHidden():
