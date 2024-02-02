@@ -125,7 +125,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
-       <widget class="QLabel" name="labelOffset">
+       <widget class="QLabel" name="labelOffsetX">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -164,7 +164,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="labelOffset2">
+       <widget class="QLabel" name="labelOffsetY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -200,7 +200,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="labelOffset3">
+       <widget class="QLabel" name="labelOffsetZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -236,7 +236,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="labelYaw">
+       <widget class="QLabel" name="labelRoll">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -316,7 +316,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QLabel" name="labelRoll">
+       <widget class="QLabel" name="labelYaw">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
