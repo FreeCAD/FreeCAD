@@ -90,20 +90,14 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         _err(translate("draft", "No active document. Aborting."))
         return None
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _err(translate("draft", "Wrong input: base_object {} not in document.").format(base_object_str))
+        _err(translate("draft", "Wrong input: base_object not in document."))
         return None
-
-    if isinstance(point_object, str):
-        point_object_str = point_object
 
     found, point_object = utils.find_object(point_object, doc)
     if not found:
-        _err(translate("draft", "Wrong input: point_object {} not in document.").format(point_object_str))
+        _err(translate("draft", "Wrong input: point_object not in document."))
         return None
 
     if not ((hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))

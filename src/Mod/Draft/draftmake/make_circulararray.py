@@ -120,13 +120,9 @@ def make_circular_array(base_object,
     """
     _name = "make_circular_array"
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
-    found, base_object = utils.find_object(base_object,
-                                           doc=App.activeDocument())
+    found, base_object = utils.find_object(base_object, doc=App.activeDocument())
     if not found:
-        _err(translate("draft","Wrong input: base_object {} not in document.").format(base_object_str))
+        _err(translate("draft","Wrong input: base_object not in document."))
         return None
 
     try:

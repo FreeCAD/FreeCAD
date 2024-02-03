@@ -140,17 +140,11 @@ def _are_numbers(d_x, d_y, d_z=None, name="Unknown"):
 
 def _find_object_in_doc(base_object, doc=None):
     """Check that a document is available and the object exists."""
-    FOUND = True
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
-    found, base_object = utils.find_object(base_object,
-                                           doc=doc)
+    found, base_object = utils.find_object(base_object, doc=doc)
     if not found:
-        _err(translate("draft","Wrong input: base_object {} not in document.").format(base_object_str))
-        return not FOUND, base_object
+        _err(translate("draft","Wrong input: base_object not in document."))
 
-    return FOUND, base_object
+    return found, base_object
 
 
 def make_ortho_array(base_object,
