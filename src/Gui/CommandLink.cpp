@@ -33,6 +33,7 @@
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "Action.h"
 #include "Application.h"
@@ -50,8 +51,9 @@ FC_LOG_LEVEL_INIT("CommandLink", true, true)
 using namespace Gui;
 
 static void setLinkLabel(App::DocumentObject *obj, const char *doc, const char *name) {
-    const char *label = obj->Label.getValue();
-    Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s'",doc,name,label);
+    std::string label = obj->Label.getValue();
+    label = Base::Tools::escapeEncodeString(label);
+    Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s'",doc,name,label.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +197,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
         Command::abortCommand();
         e.ReportException();
     }
-}
+} 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
