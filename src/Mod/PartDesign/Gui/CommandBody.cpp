@@ -33,6 +33,7 @@
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -194,8 +195,9 @@ void CmdPartDesignBody::activated(int iMsg)
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyString);
     // set Label for i18n/L10N
-    QByteArray labelByteArray = QObject::tr("Body").toUtf8();
-    doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelByteArray.constData());
+    std::string labelString = QObject::tr("Body").toUtf8().toStdString();
+    labelString = Base::Tools::escapeEncodeString(labelString);
+    doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelString.c_str());
     if (baseFeature) {
         if (partOfBaseFeature){
             //withdraw base feature from Part, otherwise visibility madness results
