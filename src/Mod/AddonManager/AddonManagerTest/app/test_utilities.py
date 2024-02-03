@@ -43,6 +43,7 @@ class TestUtilities(unittest.TestCase):
         self.test_dir = os.path.join(
             FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
         )
+
     @classmethod
     def tearDownClass(cls):
         try:
