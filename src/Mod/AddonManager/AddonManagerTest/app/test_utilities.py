@@ -43,6 +43,12 @@ class TestUtilities(unittest.TestCase):
         self.test_dir = os.path.join(
             FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
         )
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            os.remove("AM_INSTALLATION_DIGEST.txt")
+        except FileNotFoundError:
+            pass
 
     def test_recognized_git_location(self):
         recognized_urls = [
