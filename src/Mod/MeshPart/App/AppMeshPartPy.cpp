@@ -514,9 +514,8 @@ private:
             }
             Mesh::MeshObject* mesh;
             if (Base::asBoolean(releaseGIL)) {
-                Py_BEGIN_ALLOW_THREADS
+                Base::PyGILStateRelease();
                 mesh = mesher.createMesh();
-                Py_END_ALLOW_THREADS
             } else {
                 mesh = mesher.createMesh();
             }
