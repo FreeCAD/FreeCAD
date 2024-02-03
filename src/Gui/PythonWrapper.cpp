@@ -425,11 +425,10 @@ static PyObject* importPySide(const std::string& moduleName)
 template<typename qttype>
 Py::Object qt_wrapInstance(qttype object,
                            const std::string& className,
-                           const std::string& moduleName,
-                           const std::string& wrap)
+                           const std::string& moduleName)
 {
     Py::Module mainmod(importShiboken(), true);
-    Py::Callable func = mainmod.getDict().getItem(wrap);
+    Py::Callable func = mainmod.getDict().getItem("wrapInstance");
 
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr((void*)object));
@@ -576,7 +575,7 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
     throw Py::RuntimeError("Failed to wrap image");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui", "wrapInstance");
+    return qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
 #endif
 }
 
@@ -597,7 +596,7 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
     throw Py::RuntimeError("Failed to wrap icon");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<const QIcon*>(icon, "QIcon", "QtGui", "wrapInstance");
+    return qt_wrapInstance<const QIcon*>(icon, "QIcon", "QtGui");
 #endif
 }
 
@@ -648,7 +647,7 @@ Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
     throw Py::RuntimeError("Failed to wrap printer");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "QtCore", "wrapInstance");
+    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "QtCore");
 #endif
 }
 
@@ -677,7 +676,7 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         typeName = className;
     else
         typeName = object->metaObject()->className();
-    return qt_wrapInstance<QObject*>(object, typeName, "QtCore", "wrapInstance");
+    return qt_wrapInstance<QObject*>(object, typeName, "QtCore");
 #endif
 }
 
@@ -704,7 +703,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         typeName = className;
     else
         typeName = widget->metaObject()->className();
-    return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets", "wrapInstance");
+    return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets");
 #endif
 }
 
@@ -778,7 +777,7 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
                         className = "QObject";
                 }
 
-                Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets", "wrapInstance"));
+                Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets"));
                 PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
 #endif
             }
