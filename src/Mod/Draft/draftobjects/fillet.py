@@ -30,8 +30,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import draftobjects.base as base
 
-from draftutils.messages import _err
-
 
 class Fillet(base.DraftObject):
     """Proxy class for the Fillet object."""
@@ -113,7 +111,7 @@ class Fillet(base.DraftObject):
         #if (hasattr(obj, "Line1") and hasattr(obj, "Line2")
         #        and obj.Line1 and obj.Line2):
         # do the unimplemented work
-        _err("Update radius currently not implemented: r={}".format(radius))
+        pass
 
     def onChanged(self, obj, prop):
         """Change the radius of fillet. NOT IMPLEMENTED.
