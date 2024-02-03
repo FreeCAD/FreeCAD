@@ -754,7 +754,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
     // First, collect names from other shapes that generates or modifies the
     // new shape
-    for (auto& pinfo : infos) {
+    for (auto& pinfo : infos) { // Walk Vertexes, then Edges, then Faces
         auto& info = *pinfo;
         for (const auto & incomingShape : shapes) {
             if (!canMapElement(incomingShape)) {
@@ -1517,7 +1517,7 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
 class MyRefineMaker : public BRepBuilderAPI_RefineModel
 {
 public:
-    MyRefineMaker(const TopoDS_Shape &s)
+    explicit MyRefineMaker(const TopoDS_Shape &s)
         :BRepBuilderAPI_RefineModel(s)
     {}
 
@@ -1531,14 +1531,18 @@ public:
     }
 };
 
-TopoShape &TopoShape::makeElementRefine(const TopoShape &shape, const char *op, bool no_fail) {
-    if(shape.isNull()) {
-        if(!no_fail)
+TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, RefineFail no_fail)
+{
+    if (shape.isNull()) {
+        if (no_fail == RefineFail::throwException) {
             FC_THROWM(NullShapeException, "Null shape");
+        }
         _Shape.Nullify();
         return *this;
     }
-    if(!op) op = Part::OpCodes::Refine;
+    if (!op) {
+        op = Part::OpCodes::Refine;
+    }
     bool closed = shape.isClosed();
     try {
         MyRefineMaker mkRefine(shape.getShape());
@@ -1548,10 +1552,14 @@ TopoShape &TopoShape::makeElementRefine(const TopoShape &shape, const char *op, 
         makeShapeWithElementMap(mkRefine.Shape(), mapper, {shape}, op);
         // For some reason, refine operation may reverse the solid
         fixSolidOrientation();
-        if (isClosed() == closed)
+        if (isClosed() == closed) {
             return *this;
-    }catch (Standard_Failure &) {
-        if(!no_fail) throw;
+        }
+    }
+    catch (Standard_Failure&) {
+        if (no_fail == RefineFail::throwException) {
+            throw;
+        }
     }
     *this = shape;
     return *this;
@@ -1899,45 +1907,50 @@ TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wi
 
 bool TopoShape::fixSolidOrientation()
 {
-    if (isNull())
+    if (isNull()) {
         return false;
+    }
 
     if (shapeType() == TopAbs_SOLID) {
         TopoDS_Solid solid = TopoDS::Solid(_Shape);
         BRepLib::OrientClosedSolid(solid);
-        if (solid.IsEqual(_Shape))
+        if (solid.IsEqual(_Shape)) {
             return false;
+        }
         setShape(solid, false);
         return true;
     }
 
-    if (shapeType() == TopAbs_COMPOUND
-        || shapeType() == TopAbs_COMPSOLID)
-    {
+    if (shapeType() == TopAbs_COMPOUND || shapeType() == TopAbs_COMPSOLID) {
         auto shapes = getSubTopoShapes();
         bool touched = false;
-        for (auto &s : shapes) {
-            if (s.fixSolidOrientation())
+        for (auto& s : shapes) {
+            if (s.fixSolidOrientation()) {
                 touched = true;
+            }
         }
-        if (!touched)
+        if (!touched) {
             return false;
+        }
 
         BRep_Builder builder;
         if (shapeType() == TopAbs_COMPOUND) {
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
-            for(auto &s : shapes) {
-                if (!s.isNull())
+            for (auto& s : shapes) {
+                if (!s.isNull()) {
                     builder.Add(comp, s.getShape());
+                }
             }
             setShape(comp, false);
-        } else {
+        }
+        else {
             TopoDS_CompSolid comp;
             builder.MakeCompSolid(comp);
-            for(auto &s : shapes) {
-                if (!s.isNull())
+            for (auto& s : shapes) {
+                if (!s.isNull()) {
                     builder.Add(comp, s.getShape());
+                }
             }
             setShape(comp, false);
         }

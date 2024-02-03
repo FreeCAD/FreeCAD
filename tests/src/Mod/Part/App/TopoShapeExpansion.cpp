@@ -642,7 +642,6 @@ TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
     auto transform {gp_Trsf()};
     transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.5, 0.5, 0.0));
     cube2.Move(TopLoc_Location(transform));
-    // Arrange
     Part::TopoShape topoShape {cube1};
     std::vector<Part::TopoShape> shapes;
     for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
@@ -655,7 +654,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
     // Act
     Part::TopoShape topoShape1 {1L};
     topoShape1.makeElementCompound(shapes, "D");
-    // Act / Assert
+    // Assert
     EXPECT_THROW(topoShape1.makeElementShell(false, nullptr), Base::CADKernelError);
 }
 

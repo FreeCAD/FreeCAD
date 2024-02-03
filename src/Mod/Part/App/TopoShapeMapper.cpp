@@ -1,7 +1,28 @@
-#include <TopoDS.hxx>
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
+
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
-#include "PreCompiled.h"
 
 #include "TopoShapeMapper.h"
 #include "Geometry.h"
@@ -100,14 +121,25 @@ void ShapeMapper::insert(MappingStatus status,
     }
 };
 
-void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
+void GenericShapeMapper::init(const TopoShape& src, const TopoDS_Shape& dst)
 {
     for (TopExp_Explorer exp(dst, TopAbs_FACE); exp.More(); exp.Next()) {
-        const TopoDS_Shape &dstFace = exp.Current();
-        if (src.findShape(dstFace))
+        const TopoDS_Shape& dstFace = exp.Current();
+        if (src.findShape(dstFace)) {
             continue;
-
+        }
+#if OCC_VERSION_HEX < 0x070800
+        struct TopoDS_ShapeHasher
+        {
+            std::size_t operator()(const TopoDS_Shape& key) const
+            {
+                return key.HashCode(IntegerLast());
+            }
+        };
+        std::unordered_map<TopoDS_Shape, int, TopoDS_ShapeHasher> map;
+#else
         std::unordered_map<TopoDS_Shape, int> map;
+#endif
         bool found = false;
 
         // Try to find a face in the src that shares at least two edges (or one
@@ -115,14 +147,14 @@ void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
         // TODO: consider degenerative cases of two or more edges on the same line.
         for (TopExp_Explorer it(dstFace, TopAbs_EDGE); it.More(); it.Next()) {
             int idx = src.findShape(it.Current());
-            if (!idx)
+            if (!idx) {
                 continue;
+            }
             TopoDS_Edge e = TopoDS::Edge(it.Current());
-            if(BRep_Tool::IsClosed(e))
-            {
+            if (BRep_Tool::IsClosed(e)) {
                 // closed edge, one face is enough
-                TopoDS_Shape face = src.findAncestorShape(
-                    src.getSubShape(TopAbs_EDGE,idx), TopAbs_FACE);
+                TopoDS_Shape face =
+                    src.findAncestorShape(src.getSubShape(TopAbs_EDGE, idx), TopAbs_FACE);
                 if (!face.IsNull()) {
                     this->insert(MappingStatus::Generated, face, dstFace);
                     found = true;
@@ -130,27 +162,33 @@ void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
                 }
                 continue;
             }
-            for (auto &face : src.findAncestorsShapes(src.getSubShape(TopAbs_EDGE,idx), TopAbs_FACE)) {
-                int &cnt = map[face];
+            for (auto& face :
+                 src.findAncestorsShapes(src.getSubShape(TopAbs_EDGE, idx), TopAbs_FACE)) {
+                int& cnt = map[face];
                 if (++cnt == 2) {
                     this->insert(MappingStatus::Generated, face, dstFace);
                     found = true;
                     break;
                 }
-                if (found)
-                break;
+                if (found) {
+                    break;
+                }
             }
         }
 
-        if (found) continue;
+        if (found) {
+            continue;
+        }
 
         // if no face matches, try search by geometry surface
         std::unique_ptr<Geometry> g(Geometry::fromShape(dstFace));
-        if (!g) continue;
+        if (!g) {
+            continue;
+        }
 
-        for (auto &v : map) {
+        for (auto& v : map) {
             std::unique_ptr<Geometry> g2(Geometry::fromShape(v.first));
-            if (g2 && g2->isSame(*g,1e-7,1e-12)) {
+            if (g2 && g2->isSame(*g, 1e-7, 1e-12)) {
                 this->insert(MappingStatus::Generated, v.first, dstFace);
                 break;
             }

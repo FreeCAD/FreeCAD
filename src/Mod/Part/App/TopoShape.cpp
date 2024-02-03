@@ -4042,14 +4042,15 @@ TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
-TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail)
+TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, RefineFail no_fail)
 {
     (void)op;
     _Shape.Nullify();
 
     if(shape.isNull()) {
-        if(!no_fail)
+        if (no_fail == RefineFail::throwException) {
             HANDLE_NULL_SHAPE;
+        }
         return *this;
     }
     try {
@@ -4057,7 +4058,9 @@ TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no
         _Shape = mkRefine.Shape();
         return *this;
     }catch (Standard_Failure &) {
-        if(!no_fail) throw;
+        if(no_fail == RefineFail::throwException ) {
+            throw;
+        }
     }
     *this = shape;
     return *this;
