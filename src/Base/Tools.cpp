@@ -236,6 +236,26 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     return string;
 }
 
+std::string Base::Tools::escapeQuotesFromString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
+        }
+    }
+    return result;
+}
+
 QString Base::Tools::escapeEncodeString(const QString& s)
 {
     QString result;
