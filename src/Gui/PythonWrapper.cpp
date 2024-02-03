@@ -277,6 +277,31 @@ void registerTypes()
 
 namespace Gui {
 
+static std::string getPySideModuleName(const std::string& moduleName)
+{
+    std::string name(ModulePySide);
+    name += '.';
+    name += moduleName;
+
+    return name;
+}
+
+static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& types)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    if (!types) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import(getPySideModuleName(moduleName).c_str()));
+        if (requiredModule.isNull())
+            return false;
+        types = Shiboken::Module::getTypes(requiredModule);
+    }
+#else
+    Q_UNUSED(moduleName)
+    Q_UNUSED(types)
+#endif
+    return true;
+}
+
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
 template<typename qttype>
 #if defined (HAVE_SHIBOKEN2)
@@ -303,6 +328,20 @@ getPyTypeObjectForTypeName()
 #endif
 }
 
+template<typename qttype>
+qttype* qt_getCppType(PyObject* pyobj)
+{
+    auto type = getPyTypeObjectForTypeName<qttype>();
+    if (type) {
+        if (Shiboken::Object::checkType(pyobj)) {
+            auto skbobj = reinterpret_cast<SbkObject *>(pyobj);
+            auto pytypeobj = reinterpret_cast<PyTypeObject *>(type);
+            return static_cast<qttype*>(Shiboken::Object::cppPointer(skbobj, pytypeobj));
+        }
+    }
+    return nullptr;
+}
+
 /*!
  * \brief The WrapperManager class
  * This is a helper class that records the Python wrappers of a QObject and invalidates
@@ -319,7 +358,6 @@ getPyTypeObjectForTypeName()
  */
 class WrapperManager : public QObject
 {
-
 
 public:
     static WrapperManager& instance()
@@ -384,21 +422,12 @@ private:
     ~WrapperManager() override = default;
 };
 
-#endif
+#else
 
 static std::string formatModuleError(const std::string& name)
 {
     std::string error = "Cannot load " + name + " module";
     return error;
-}
-
-static std::string getPySideModuleName(const std::string& moduleName)
-{
-    std::string name(ModulePySide);
-    name += '.';
-    name += moduleName;
-
-    return name;
 }
 
 static PyObject* importShiboken()
@@ -423,6 +452,19 @@ static PyObject* importPySide(const std::string& moduleName)
 }
 
 template<typename qttype>
+qttype* qt_getCppType(PyObject* pyobj)
+{
+    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
+    Py::Module mainmod(importShiboken(), true);
+    Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+
+    Py::Tuple arguments(1);
+    arguments[0] = Py::asObject(pyobj); // PySide pointer
+    Py::Tuple result(func.apply(arguments));
+    return reinterpret_cast<qttype*>(PyLong_AsVoidPtr(result[0].ptr()));
+}
+
+template<typename qttype>
 Py::Object qt_wrapInstance(qttype object,
                            const std::string& className,
                            const std::string& moduleName)
@@ -436,18 +478,6 @@ Py::Object qt_wrapInstance(qttype object,
     Py::Module qtmod(importPySide(moduleName));
     arguments[1] = qtmod.getDict().getItem(className);
     return func.apply(arguments);
-}
-
-void* qt_getCppPointer(const Py::Object& pyobject, const std::string& unwrap)
-{
-    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
-    Py::Module mainmod(importShiboken(), true);
-    Py::Callable func = mainmod.getDict().getItem(unwrap);
-
-    Py::Tuple arguments(1);
-    arguments[0] = pyobject; //PySide pointer
-    Py::Tuple result(func.apply(arguments));
-    return PyLong_AsVoidPtr(result[0].ptr());
 }
 
 const char* qt_identifyType(QObject* ptr, const std::string& moduleName)
@@ -464,42 +494,7 @@ const char* qt_identifyType(QObject* ptr, const std::string& moduleName)
     return nullptr;
 }
 
-template<typename qttype>
-qttype* qt_getCppType(PyObject* pyobj)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    auto type = getPyTypeObjectForTypeName<qttype>();
-    if (type) {
-        if (Shiboken::Object::checkType(pyobj)) {
-            auto skbobj = reinterpret_cast<SbkObject *>(pyobj);
-            auto pytypeobj = reinterpret_cast<PyTypeObject *>(type);
-            return static_cast<qttype*>(Shiboken::Object::cppPointer(skbobj, pytypeobj));
-        }
-    }
-    return nullptr;
-#else
-    void* ptr = qt_getCppPointer(Py::asObject(pyobj), "getCppPointer");
-    if (ptr)
-        return reinterpret_cast<qttype*>(ptr);
 #endif
-    return nullptr;
-}
-
-static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& types)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    if (!types) {
-        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import(getPySideModuleName(moduleName).c_str()));
-        if (requiredModule.isNull())
-            return false;
-        types = Shiboken::Module::getTypes(requiredModule);
-    }
-#else
-    Q_UNUSED(moduleName)
-    Q_UNUSED(types)
-#endif
-    return true;
-}
 
 }
 
