@@ -37,9 +37,9 @@ from expanded_view import Ui_ExpandedView
 
 import addonmanager_utilities as utils
 from addonmanager_metadata import get_first_supported_freecad_version, Version
-from Widgets.addonmanager_widget_view_selector import WidgetViewSelector, AddonManagerDisplayStyle
-from Widgets.addonmanager_widget_search import WidgetSearch
-from Widgets.addonmanager_widget_filter_selector import WidgetFilterSelector, StatusFilter, Filter
+from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar
+from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
+from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter, ContentFilter
 
 translate = FreeCAD.Qt.translate
 
@@ -64,16 +64,16 @@ class PackageList(QtWidgets.QWidget):
         self.ui.listPackages.setItemDelegate(self.item_delegate)
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
-        self.ui.filter_selector.filter_changed.connect(self.update_status_filter)
-        self.ui.search_box.search_changed.connect(self.item_filter.setFilterRegularExpression)
-        self.ui.view_selector.view_changed.connect(self.set_view_style)
+        self.ui.view_bar.view_changed.connect(self.set_view_style)
+        self.ui.view_bar.filter_changed.connect(self.update_status_filter)
+        self.ui.view_bar.search_changed.connect(self.item_filter.setFilterRegularExpression)
 
         # Set up the view the same as the last time:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         package_type = pref.GetInt("PackageTypeSelection", 1)
         status = pref.GetInt("StatusSelection", 0)
-        self.ui.filter_selector.set_contents_filter(package_type)
-        self.ui.filter_selector.set_status_filter(status)
+        self.ui.view_bar.filter_selector.set_contents_filter(package_type)
+        self.ui.view_bar.filter_selector.set_status_filter(status)
 
         # Pre-init of other members:
         self.item_model = None
@@ -87,7 +87,7 @@ class PackageList(QtWidgets.QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         style = pref.GetInt("ViewStyle", AddonManagerDisplayStyle.EXPANDED)
         self.set_view_style(style)
-        self.ui.view_selector.set_current_view(style)
+        self.ui.view_bar.view_selector.set_current_view(style)
 
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
@@ -599,22 +599,9 @@ class Ui_PackageList:
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
 
-        self.view_selector = WidgetViewSelector(form)
-        self.horizontalLayout_6.addWidget(self.view_selector)
-
-        self.labelPackagesContaining = QtWidgets.QLabel(form)
-        self.labelPackagesContaining.setObjectName("labelPackagesContaining")
-
-        self.horizontalLayout_6.addWidget(self.labelPackagesContaining)
-
-        self.filter_selector = WidgetFilterSelector(form)
-        self.filter_selector.setObjectName("filter_selector")
-        self.horizontalLayout_6.addWidget(self.filter_selector)
-
-        self.search_box = WidgetSearch(form)
-        self.search_box.setObjectName("search_box")
-
-        self.horizontalLayout_6.addWidget(self.search_box)
+        self.view_bar = WidgetViewControlBar(form)
+        self.view_bar.setObjectName("ViewControlBar")
+        self.horizontalLayout_6.addWidget(self.view_bar)
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
@@ -630,9 +617,4 @@ class Ui_PackageList:
 
         self.verticalLayout.addWidget(self.listPackages)
 
-        self.retranslateUi(form)
-
         QtCore.QMetaObject.connectSlotsByName(form)
-
-    def retranslateUi(self, _):
-        pass

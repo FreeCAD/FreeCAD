@@ -40,6 +40,7 @@ try:
 except ImportError:
     QtCore = None
     QtWidgets = None
+    QtGui = None
 
 import addonmanager_freecad_interface as fci
 
@@ -95,7 +96,7 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def rmdir(path: os.PathLike) -> bool:
+def rmdir(path: str) -> bool:
     try:
         if os.path.islink(path):
             os.unlink(path)  # Remove symlink
