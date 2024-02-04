@@ -40,6 +40,7 @@ from addonmanager_metadata import get_first_supported_freecad_version, Version
 from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar
 from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
 from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter, ContentFilter
+from Widgets.addonmanager_widget_progress_bar import WidgetProgressBar
 from addonmanager_licenses import get_license_manager, SPDXLicenseManager
 
 translate = FreeCAD.Qt.translate
@@ -642,5 +643,8 @@ class Ui_PackageList:
         self.listPackages.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.verticalLayout.addWidget(self.listPackages)
+
+        self.progressBar = WidgetProgressBar()
+        self.verticalLayout.addWidget(self.progressBar)
 
         QtCore.QMetaObject.connectSlotsByName(form)

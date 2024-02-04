@@ -214,9 +214,6 @@ class CommandAddonManager:
         self.dialog.buttonClose.setIcon(
             QtGui.QIcon.fromTheme("close", QtGui.QIcon(":/icons/process-stop.svg"))
         )
-        self.dialog.buttonPauseUpdate.setIcon(
-            QtGui.QIcon.fromTheme("pause", QtGui.QIcon(":/icons/media-playback-stop.svg"))
-        )
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         dev_mode_active = pref.GetBool("developerMode", False)
@@ -236,12 +233,12 @@ class CommandAddonManager:
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
-        self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
         self.dialog.buttonCheckForUpdates.clicked.connect(
             lambda: self.force_check_updates(standalone=True)
         )
         self.dialog.buttonUpdateDependencies.clicked.connect(self.show_python_updates_dialog)
         self.dialog.buttonDevTools.clicked.connect(self.show_developer_tools)
+        self.packageList.ui.progressBar.stop_clicked.connect(self.stop_update)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -256,9 +253,6 @@ class CommandAddonManager:
         self.dialog.move(
             mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
         )
-
-        # set info for the progress bar:
-        self.dialog.progressBar.setMaximum(1000)
 
         # begin populating the table in a set of sub-threads
         self.startup()
@@ -407,8 +401,8 @@ class CommandAddonManager:
         if selection:
             self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
             pref.SetString("SelectedAddon", "")
-        self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
+        self.current_progress_region = 0
         self.do_next_startup_phase()
 
     def do_next_startup_phase(self) -> None:
@@ -750,8 +744,8 @@ class CommandAddonManager:
     def show_information(self, message: str) -> None:
         """shows generic text in the information pane"""
 
-        self.dialog.labelStatusInfo.setText(message)
-        self.dialog.labelStatusInfo.repaint()
+        self.packageList.ui.progressBar.set_status(message)
+        self.packageList.ui.progressBar.repaint()
 
     def show_workbench(self, repo: Addon) -> None:
         self.packageList.hide()
@@ -821,16 +815,12 @@ class CommandAddonManager:
     def hide_progress_widgets(self) -> None:
         """hides the progress bar and related widgets"""
 
-        self.dialog.labelStatusInfo.hide()
-        self.dialog.progressBar.hide()
-        self.dialog.buttonPauseUpdate.hide()
+        self.packageList.ui.progressBar.hide()
         self.packageList.ui.view_bar.search.setFocus()
 
     def show_progress_widgets(self) -> None:
-        if self.dialog.progressBar.isHidden():
-            self.dialog.progressBar.show()
-            self.dialog.buttonPauseUpdate.show()
-            self.dialog.labelStatusInfo.show()
+        if self.packageList.ui.progressBar.isHidden():
+            self.packageList.ui.progressBar.show()
 
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""
@@ -847,10 +837,10 @@ class CommandAddonManager:
         completed_region_portion = (self.current_progress_region - 1) * region_size
         current_region_portion = (float(current_value) / float(max_value)) * region_size
         value = completed_region_portion + current_region_portion
-        self.dialog.progressBar.setValue(
+        self.packageList.ui.progressBar.set_value(
             value * 10
         )  # Out of 1000 segments, so it moves sort of smoothly
-        self.dialog.progressBar.repaint()
+        self.packageList.ui.progressBar.repaint()
 
     def stop_update(self) -> None:
         self.cleanup_workers()
