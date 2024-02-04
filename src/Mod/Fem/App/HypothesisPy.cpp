@@ -26,8 +26,9 @@
 // see: https://forum.freecad.org/viewtopic.php?p=633192#p633192
 #include "HypothesisPy.h"
 
-#ifndef _PreComp_
 #include <SMESH_Version.h>  // needed for SMESH_VERSION_MAJOR
+
+#ifndef _PreComp_
 #include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_CompositeSegment_1D.hxx>
@@ -1180,8 +1181,8 @@ StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_G
     : SMESH_HypothesisPyBase(new StdMeshers_MEFISTO_2D(hypId, studyId, gen))
 {}
 #endif
-#endif
 StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy() = default;
+#endif
 
 // ---------------------------------------------------------------------------
 
