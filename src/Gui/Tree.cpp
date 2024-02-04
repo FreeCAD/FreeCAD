@@ -93,6 +93,10 @@ const int TreeWidget::ObjectType = 1001;
 static bool _DraggingActive;
 static bool _DragEventFilter;
 
+static bool isVisibilityIconEnabled() {
+    return true;
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -4907,7 +4911,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (currentStatus & 1) { // visible
+    if (isVisibilityIconEnabled() || (currentStatus & 1)) { // visible
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5050,6 +5054,35 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
 
         icon = object()->mergeColorfulOverlayIcons(icon);
+    }
+
+    if (isVisibilityIconEnabled()) {
+        static QPixmap pxVisible, pxInvisible;
+        if (pxVisible.isNull()) {
+            pxVisible = BitmapFactory().pixmap("TreeItemVisible");
+        }
+        if (pxInvisible.isNull()) {
+            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
+        }
+
+        // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
+        QIcon new_icon;
+        for (auto state: {QIcon::On, QIcon::Off}) {
+            QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
+
+            QPixmap px(2*px_org.width(), px_org.height());
+            px.fill(Qt::transparent);
+
+            QPainter pt;
+            pt.begin(&px);
+            pt.setPen(Qt::NoPen);
+            pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+            pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+            pt.end();
+
+            new_icon.addPixmap(px, QIcon::Normal, state);
+        }
+        icon = new_icon;
     }
 
 
