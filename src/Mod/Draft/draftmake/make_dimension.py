@@ -301,16 +301,13 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    if isinstance(edge_object, str):
-        edge_object_str = edge_object
-
     if isinstance(edge_object, (list, tuple)):
-        _err(translate("draft","Wrong input: edge_object {} must not be a list or tuple.").format(edge_object))
+        _err(translate("draft","Wrong input: edge_object must not be a list or tuple."))
         return None
 
     found, edge_object = utils.find_object(edge_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: edge_object {} not in document.").format(edge_object_str))
+        _err(translate("draft","Wrong input: edge_object not in document."))
         return None
 
     if not hasattr(edge_object, "Shape"):
@@ -424,12 +421,9 @@ def make_radial_dimension_obj(edge_object, index=1, mode="radius",
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    if isinstance(edge_object, str):
-        edge_object_str = edge_object
-
     found, edge_object = utils.find_object(edge_object, doc)
     if not found:
-        _err(translate("draft","Wrong input: edge_object {} not in document.").format(edge_object_str))
+        _err(translate("draft","Wrong input: edge_object not in document."))
         return None
 
     if not hasattr(edge_object, "Shape"):

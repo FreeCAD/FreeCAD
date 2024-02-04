@@ -217,20 +217,16 @@ def make_label(target_point=App.Vector(0, 0, 0),
         placement = App.Placement(placement, App.Rotation())
     elif isinstance(placement, App.Rotation):
         placement = App.Placement(App.Vector(), placement)
-
-    if isinstance(target_object, str):
-        target_object_str = target_object
-
+        
     if target_object:
         if isinstance(target_object, (list, tuple)):
-            _err(translate("draft","Wrong input: target_object {} must not be a list.").format(target_object))
+            _err(translate("draft","Wrong input: target_object must not be a list."))
             return None
 
         found, target_object = utils.find_object(target_object, doc)
         if not found:
-            _err(translate("draft","Wrong input: target_object {} not in document.").format(target_object_str))
+            _err(translate("draft","Wrong input: target_object not in document."))
             return None
-
 
     if target_object and subelements:
         try:
