@@ -266,6 +266,7 @@ public:
     void addAppearance(const QString& uuid);
     void removeAppearance(const QString& uuid);
     void clearModels();
+    void clearInherited();
     void newUuid();
 
     void setPhysicalValue(const QString& name, const QString& value);
@@ -298,6 +299,7 @@ public:
     bool hasModel(const QString& uuid) const;
     bool hasPhysicalModel(const QString& uuid) const;
     bool hasAppearanceModel(const QString& uuid) const;
+    bool isInherited(const QString& uuid) const;
     bool isModelComplete(const QString& uuid) const
     {
         return isPhysicalModelComplete(uuid) || isAppearanceModelComplete(uuid);
@@ -323,6 +325,10 @@ public:
     void markDereferenced()
     {
         _dereferenced = true;
+    }
+    void clearDereferenced()
+    {
+        _dereferenced = false;
     }
     bool isOldFormat() const
     {

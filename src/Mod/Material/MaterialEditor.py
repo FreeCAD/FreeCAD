@@ -298,6 +298,7 @@ class MaterialEditor:
                 card_name_list.append([a_name, a_path, self.icons[a_path]])
 
         card_name_list.insert(0, [None, "", ""])
+        self.widget.ComboMaterial.clear()
         for mat in card_name_list:
             self.widget.ComboMaterial.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
 
@@ -684,8 +685,15 @@ class MaterialEditor:
 
                 from importFCMat import write
                 write(filename, d)
+                import Material
+                # Load the material
+                manager = Material.MaterialManager()
+                manager.getMaterialByPath(filename)
                 self.edited = False
                 self.updateCardsInCombo()
+
+                # Ensure our card is selected
+                self.widget.ComboMaterial.setCurrentText(path.stem)
 
     def show(self):
         return self.widget.show()
