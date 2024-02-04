@@ -871,8 +871,6 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 )
             with self.lock:
                 self.failed.append(macro_name)
-                self.repo_queue.task_done()
-                self.counter += 1
 
 
 class GetMacroDetailsWorker(QtCore.QThread):
