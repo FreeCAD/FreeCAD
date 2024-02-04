@@ -859,7 +859,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 ).format(macro_name)
                 + "\n"
             )
-            worker.blockSignals(True)
+            # worker.blockSignals(True)
             worker.requestInterruption()
             worker.wait(100)
             if worker.isRunning():
