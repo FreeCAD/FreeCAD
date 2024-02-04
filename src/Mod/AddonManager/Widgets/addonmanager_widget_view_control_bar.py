@@ -57,6 +57,7 @@ class WidgetViewControlBar(QtWidgets.QWidget):
 
     def _setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout()
+        self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
         self.view_selector = WidgetViewSelector(self)
         self.filter_selector = WidgetFilterSelector(self)
         self.search = WidgetSearch(self)

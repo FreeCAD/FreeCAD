@@ -63,6 +63,7 @@ class WidgetSearch(QtWidgets.QWidget):
 
     def _setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout()
+        self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
         self.filter_line_edit = QtWidgets.QLineEdit(self)
         self.filter_line_edit.setClearButtonEnabled(True)
         self.horizontal_layout.addWidget(self.filter_line_edit)

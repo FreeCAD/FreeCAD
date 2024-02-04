@@ -92,6 +92,8 @@ class WidgetViewSelector(QtWidgets.QWidget):
 
     def _setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout()
+        self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
+        self.horizontal_layout.setSpacing(2)
         self.compact_button = QtWidgets.QToolButton(self)
         self.compact_button.setObjectName("compact_button")
         self.compact_button.setIcon(
