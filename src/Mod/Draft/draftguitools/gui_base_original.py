@@ -33,6 +33,9 @@ of the DraftToolBar, the Snapper, and the working plane.
 
 ## \addtogroup draftguitools
 # @{
+
+from PySide import QtCore
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
@@ -170,6 +173,10 @@ class DraftTool:
         if self.call:
             try:
                 self.view.removeEventCallback("SoEvent", self.call)
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                QtCore.QCoreApplication.processEvents()
+                # It seems to work in most cases. If it does not, use this instead:
+                # gui_utils.end_all_events()
             except RuntimeError:
                 # the view has been deleted already
                 pass

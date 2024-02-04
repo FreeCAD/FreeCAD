@@ -117,6 +117,7 @@ class Point(gui_base_original.Creator):
                              'point.Y = ' + str(self.point[1]),
                              'point.Z = ' + str(self.point[2]),
                              'Draft.autogroup(point)',
+                             'Draft.select(point)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Point"), _cmd_list)
             else:
@@ -146,6 +147,11 @@ class Point(gui_base_original.Creator):
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
             self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+        if self.callbackClick or self.callbackMove:
+            # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+            gui_utils.end_all_events()
+        self.callbackClick = None
+        self.callbackMove = None
         super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()

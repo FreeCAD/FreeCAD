@@ -156,6 +156,7 @@ class Line(gui_base_original.Creator):
                              'line.Y2 = ' + str(p2.y),
                              'line.Z2 = ' + str(p2.z),
                              'Draft.autogroup(line)',
+                             'Draft.select(line)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Line"),
                             _cmd_list)
