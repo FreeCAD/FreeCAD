@@ -85,6 +85,8 @@ class WidgetProgressBar(QtWidgets.QWidget):
         self.vertical_layout.addWidget(self.status_label)
         self.horizontal_layout.addWidget(self.progress_bar)
         self.horizontal_layout.addWidget(self.stop_button)
+        self.vertical_layout.setContentsMargins(0, 0, 0, 0)
+        self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.vertical_layout)
 
     def set_status(self, status: str):
