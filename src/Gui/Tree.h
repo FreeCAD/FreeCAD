@@ -122,6 +122,7 @@ public:
     void itemSearch(const QString &text, bool select);
 
     static void synchronizeSelectionCheckBoxes();
+    static void updateVisibilityIcons();
 
     QList<QTreeWidgetItem *> childrenOfItem(const QTreeWidgetItem &item) const;
 

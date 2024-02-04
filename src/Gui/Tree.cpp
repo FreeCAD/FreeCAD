@@ -3199,6 +3199,20 @@ void TreeWidget::synchronizeSelectionCheckBoxes() {
     }
 }
 
+void TreeWidget::updateVisibilityIcons() {
+    for (auto tree : TreeWidget::Instances) {
+        QSignalBlocker blocker(tree);
+        for (QTreeWidgetItemIterator it(tree); *it; ++it) {
+            auto item = *it;
+            if (item->type() == ObjectType) {
+                auto objitem = static_cast<DocumentObjectItem*>(item);
+                objitem->testStatus(true);
+            }
+        }
+        tree->resizeColumnToContents(0);
+    }
+}
+
 QList<QTreeWidgetItem*> TreeWidget::childrenOfItem(const QTreeWidgetItem& item) const {
     QList children = QList<QTreeWidgetItem*>();
 
