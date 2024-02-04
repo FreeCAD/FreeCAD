@@ -76,6 +76,7 @@
 		<file>licenses/LGPLv3.txt</file>
 		<file>licenses/MIT.txt</file>
 		<file>licenses/MPL-2.0.txt</file>
+        <file>licenses/spdx.json</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>

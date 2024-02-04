@@ -6,8 +6,10 @@
 	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
 	.st1{fill:none;stroke:#000000;stroke-width:0.9259;stroke-miterlimit:10;}
 </style>
-<line class="st0" x1="0.3" y1="3.5" x2="6.7" y2="3.5"/>
-<line class="st0" x1="0.3" y1="8.5" x2="6.7" y2="8.5"/>
+<line class="st0" x1="0.3" y1="1.5" x2="6.7" y2="1.5"/>
+<line class="st0" x1="0.3" y1="4.5" x2="6.7" y2="4.5"/>
+<line class="st0" x1="0.3" y1="7.5" x2="6.7" y2="7.5"/>
+<line class="st0" x1="0.3" y1="10.5" x2="6.7" y2="10.5"/>
 <line class="st0" x1="0.3" y1="13.5" x2="6.7" y2="13.5"/>
-<rect x="8.9" y="2" class="st1" width="5.2" height="12.1"/>
+<rect x="9.5" y="1.5" class="st1" width="5" height="13"/>
 </svg>

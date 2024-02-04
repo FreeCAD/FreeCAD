@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022-2024 FreeCAD Project Association                   *
+# *   Copyright (c) 2024 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -99,5 +99,5 @@ class WidgetSearch(QtWidgets.QWidget):
 
     def retranslateUi(self, _):
         self.filter_line_edit.setPlaceholderText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Filter", None)
+            QtCore.QCoreApplication.translate("AddonsInstaller", "Search...", None)
         )

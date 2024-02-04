@@ -41,11 +41,14 @@ from addonmanager_metadata import (
     Version,
     DependencyType,
 )
+from AddonStats import AddonStats
 
 translate = fci.translate
 
+#  A list of internal workbenches that can be used as a dependency of an Addon
 INTERNAL_WORKBENCHES = {
     "arch": "Arch",
+    "assembly": "Assembly",
     "draft": "Draft",
     "fem": "FEM",
     "mesh": "Mesh",
@@ -163,6 +166,7 @@ class Addon:
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
         self.last_updated = None
+        self.stats = AddonStats()
 
         # To prevent multiple threads from running git actions on this repo at the
         # same time
@@ -205,6 +209,7 @@ class Addon:
         self.python_min_version = {"major": 3, "minor": 0}
 
         self._icon_file = None
+        self._cached_license: str = ""
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -214,6 +219,15 @@ class Addon:
         if self.macro is not None:
             result += "Has linked Macro object\n"
         return result
+
+    @property
+    def license(self):
+        if not self._cached_license:
+            if self.metadata and self.metadata.license:
+                self._cached_license = self.metadata.license
+            elif self.stats and self.stats.license:
+                self._cached_license = self.stats.license
+        return self._cached_license
 
     @classmethod
     def from_macro(cls, macro: Macro):

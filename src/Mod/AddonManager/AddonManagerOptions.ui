@@ -91,6 +91,38 @@ installed addons will be checked for available updates
     </layout>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidenonfsf">
+     <property name="text">
+      <string>Hide Addons with non-FSF Free/Libre license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonFSFFreeLibre</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxnonosi">
+     <property name="text">
+      <string>Hide Addons with non-OSI-approved license</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>HideNonOSIApproved</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidepy2">
      <property name="text">
       <string>Hide Addons marked Python 2 Only</string>

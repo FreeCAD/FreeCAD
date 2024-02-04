@@ -6,6 +6,7 @@ ENDIF (BUILD_GUI)
 SET(AddonManager_SRCS
     add_toolbar_button_dialog.ui
     Addon.py
+    AddonStats.py
     AddonManager.py
     AddonManager.ui
     addonmanager_cache.py
@@ -25,6 +26,7 @@ SET(AddonManager_SRCS
     addonmanager_git.py
     addonmanager_installer.py
     addonmanager_installer_gui.py
+    addonmanager_licenses.py
     addonmanager_macro.py
     addonmanager_macro_parser.py
     addonmanager_metadata.py
