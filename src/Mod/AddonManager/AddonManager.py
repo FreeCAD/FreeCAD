@@ -53,6 +53,7 @@ import addonmanager_utilities as utils
 import AddonManager_rc  # This is required by Qt, it's not unused
 from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
+from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
 from Addon import Addon
 from manage_python_dependencies import (
     PythonPackageManager,
@@ -130,6 +131,7 @@ class CommandAddonManager:
         self.update_all_worker = None
         self.developer_mode = None
         self.installer_gui = None
+        self.button_bar = None
 
         self.update_cache = False
         self.dialog = None
@@ -185,21 +187,21 @@ class CommandAddonManager:
         w = pref.GetInt("WindowWidth", 800)
         h = pref.GetInt("WindowHeight", 600)
         self.dialog.resize(w, h)
+        self.button_bar = WidgetGlobalButtonBar(self.dialog)
 
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
         if autocheck:
-            self.dialog.buttonCheckForUpdates.hide()
+            self.button_bar.check_for_updates.hide()
         else:
-            self.dialog.buttonUpdateAll.hide()
+            self.button_bar.update_all_addons.hide()
 
         # Set up the listing of packages using the model-view-controller architecture
         self.packageList = PackageList(self.dialog)
         self.item_model = PackageListItemModel()
         self.packageList.setModel(self.item_model)
-        self.dialog.contentPlaceholder.hide()
-        self.dialog.layout().replaceWidget(self.dialog.contentPlaceholder, self.packageList)
-        self.packageList.show()
+        self.dialog.layout().addWidget(self.packageList)
+        self.dialog.layout().addWidget(self.button_bar)
 
         # Package details start out hidden
         self.packageDetails = PackageDetails(self.dialog)
@@ -209,35 +211,30 @@ class CommandAddonManager:
 
         # set nice icons to everything, by theme with fallback to FreeCAD icons
         self.dialog.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
-        self.dialog.buttonUpdateAll.setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
-        self.dialog.buttonCheckForUpdates.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-        self.dialog.buttonClose.setIcon(
-            QtGui.QIcon.fromTheme("close", QtGui.QIcon(":/icons/process-stop.svg"))
-        )
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         dev_mode_active = pref.GetBool("developerMode", False)
 
         # enable/disable stuff
-        self.dialog.buttonUpdateAll.setEnabled(False)
+        self.button_bar.update_all_addons.setEnabled(False)
         self.hide_progress_widgets()
-        self.dialog.buttonUpdateCache.setEnabled(False)
-        self.dialog.buttonUpdateCache.setText(translate("AddonsInstaller", "Starting up..."))
+        self.button_bar.refresh_local_cache.setEnabled(False)
+        self.button_bar.refresh_local_cache.setText(translate("AddonsInstaller", "Starting up..."))
         if dev_mode_active:
-            self.dialog.buttonDevTools.show()
+            self.button_bar.developer_tools.show()
         else:
-            self.dialog.buttonDevTools.hide()
+            self.button_bar.developer_tools.hide()
 
         # connect slots
         self.dialog.rejected.connect(self.reject)
-        self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
-        self.dialog.buttonClose.clicked.connect(self.dialog.reject)
-        self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
-        self.dialog.buttonCheckForUpdates.clicked.connect(
+        self.button_bar.update_all_addons.clicked.connect(self.update_all)
+        self.button_bar.close.clicked.connect(self.dialog.reject)
+        self.button_bar.refresh_local_cache.clicked.connect(self.on_buttonUpdateCache_clicked)
+        self.button_bar.check_for_updates.clicked.connect(
             lambda: self.force_check_updates(standalone=True)
         )
-        self.dialog.buttonUpdateDependencies.clicked.connect(self.show_python_updates_dialog)
-        self.dialog.buttonDevTools.clicked.connect(self.show_developer_tools)
+        self.button_bar.python_dependencies.clicked.connect(self.show_python_updates_dialog)
+        self.button_bar.developer_tools.clicked.connect(self.show_developer_tools)
         self.packageList.ui.progressBar.stop_clicked.connect(self.stop_update)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
@@ -415,8 +412,8 @@ class CommandAddonManager:
         else:
             self.hide_progress_widgets()
             self.update_cache = False
-            self.dialog.buttonUpdateCache.setEnabled(True)
-            self.dialog.buttonUpdateCache.setText(
+            self.button_bar.refresh_local_cache.setEnabled(True)
+            self.button_bar.refresh_local_cache.setText(
                 translate("AddonsInstaller", "Refresh local cache")
             )
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -545,8 +542,10 @@ class CommandAddonManager:
         cache_path = FreeCAD.getUserCachePath()
         am_path = os.path.join(cache_path, "AddonManager")
         utils.rmdir(am_path)
-        self.dialog.buttonUpdateCache.setEnabled(False)
-        self.dialog.buttonUpdateCache.setText(translate("AddonsInstaller", "Updating cache..."))
+        self.button_bar.refresh_local_cache.setEnabled(False)
+        self.button_bar.refresh_local_cache.setText(
+            translate("AddonsInstaller", "Updating cache...")
+        )
         self.startup()
 
         # Recaching implies checking for updates, regardless of the user's autocheck option
@@ -608,10 +607,12 @@ class CommandAddonManager:
                     self.do_next_startup_phase()
                     return
 
-        self.dialog.buttonUpdateAll.setText(translate("AddonsInstaller", "Checking for updates..."))
+        self.button_bar.update_all_addons.setText(
+            translate("AddonsInstaller", "Checking for updates...")
+        )
         self.packages_with_updates.clear()
-        self.dialog.buttonUpdateAll.show()
-        self.dialog.buttonCheckForUpdates.setDisabled(True)
+        self.button_bar.update_all_addons.show()
+        self.button_bar.check_for_updates.setDisabled(True)
         self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
         self.check_worker.finished.connect(self.do_next_startup_phase)
         self.check_worker.finished.connect(self.update_check_complete)
@@ -636,21 +637,21 @@ class CommandAddonManager:
 
         if number_of_updates:
             s = translate("AddonsInstaller", "Apply {} update(s)", "", number_of_updates)
-            self.dialog.buttonUpdateAll.setText(s.format(number_of_updates))
-            self.dialog.buttonUpdateAll.setEnabled(True)
+            self.button_bar.update_all_addons.setText(s.format(number_of_updates))
+            self.button_bar.update_all_addons.setEnabled(True)
         elif hasattr(self, "check_worker") and self.check_worker.isRunning():
-            self.dialog.buttonUpdateAll.setText(
+            self.button_bar.update_all_addons.setText(
                 translate("AddonsInstaller", "Checking for updates...")
             )
         else:
-            self.dialog.buttonUpdateAll.setText(
+            self.button_bar.update_all_addons.setText(
                 translate("AddonsInstaller", "No updates available")
             )
-            self.dialog.buttonUpdateAll.setEnabled(False)
+            self.button_bar.update_all_addons.setEnabled(False)
 
     def update_check_complete(self) -> None:
         self.enable_updates(len(self.packages_with_updates))
-        self.dialog.buttonCheckForUpdates.setEnabled(True)
+        self.button_bar.check_for_updates.setEnabled(True)
 
     def check_python_updates(self) -> None:
         PythonPackageManager.migrate_old_am_installations()  # Migrate 0.20 to 0.21
@@ -846,8 +847,10 @@ class CommandAddonManager:
         self.cleanup_workers()
         self.hide_progress_widgets()
         self.write_cache_stopfile()
-        self.dialog.buttonUpdateCache.setEnabled(True)
-        self.dialog.buttonUpdateCache.setText(translate("AddonsInstaller", "Refresh local cache"))
+        self.button_bar.refresh_local_cache.setEnabled(True)
+        self.button_bar.refresh_local_cache.setText(
+            translate("AddonsInstaller", "Refresh local cache")
+        )
 
     def write_cache_stopfile(self) -> None:
         stopfile = utils.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
