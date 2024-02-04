@@ -50,6 +50,7 @@ import Draft
 import DraftVecUtils
 import DraftGeomUtils
 from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
@@ -1218,24 +1219,27 @@ class Snapper:
             self.dim1.off()
         if self.dim2:
             self.dim2.off()
-        if self.grid:
-            if self.grid.show_always is False:
-                self.grid.off()
         if self.holdTracker:
             self.holdTracker.clear()
             self.holdTracker.off()
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if params.get_param("SnapBarShowOnlyDuringCommands"):
-            toolbar = self.get_snap_toolbar()
-            if toolbar:
-                toolbar.hide()
         self.mask = None
         self.selectMode = False
         self.running = False
         self.holdPoints = []
         self.lastObj = []
+
+        if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
+            return
+        if self.grid:
+            if self.grid.show_always is False:
+                self.grid.off()
+        if params.get_param("SnapBarShowOnlyDuringCommands"):
+            toolbar = self.get_snap_toolbar()
+            if toolbar:
+                toolbar.hide()
 
 
     def setSelectMode(self, mode):
@@ -1384,6 +1388,9 @@ class Snapper:
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
             self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+        if self.callbackClick or self.callbackMove:
+            # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+            gui_utils.end_all_events()
         self.callbackClick = None
         self.callbackMove = None
 
@@ -1424,6 +1431,9 @@ class Snapper:
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            if self.callbackClick or self.callbackMove:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
             self.callbackClick = None
             self.callbackMove = None
             Gui.Snapper.off()
@@ -1443,6 +1453,9 @@ class Snapper:
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            if self.callbackClick or self.callbackMove:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
             self.callbackClick = None
             self.callbackMove = None
             Gui.Snapper.off()
