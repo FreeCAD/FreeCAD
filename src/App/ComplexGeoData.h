@@ -67,6 +67,11 @@ public:
     virtual std::string getName() const=0;
 };
 
+enum ElementMapResetPolicy
+{
+    AllowNoMap,
+    ForceEmptyMap
+};
 
 /** ComplexGeoData Object
  */
@@ -265,8 +270,10 @@ public:
      *
      * @return Returns the existing element map.
      */
-    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap=ElementMapPtr(), bool forceEmpty=false) {
-        if ( ! elementMap && ! forceEmpty ) {
+    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr(),
+                                          ElementMapResetPolicy forceEmpty = ForceEmptyMap)
+    {
+        if (!elementMap && forceEmpty == ForceEmptyMap) {
             elementMap = std::make_shared<Data::ElementMap>();
         }
         _elementMap.swap(elementMap);
