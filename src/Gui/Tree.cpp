@@ -97,6 +97,10 @@ static bool isVisibilityIconEnabled() {
     return true;
 }
 
+static bool isSelectionCheckBoxesEnabled() {
+    return TreeParams::getCheckBoxesSelection();
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -1555,6 +1559,50 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
         }
     }
     QTreeWidget::keyPressEvent(event);
+}
+
+void TreeWidget::mousePressEvent(QMouseEvent* event)
+{
+    QTreeWidget::mousePressEvent(event);
+
+    // Handle the visibility icon after the normal event processing to not interfer with
+    // the selection logic.
+    if (isVisibilityIconEnabled()) {
+        QTreeWidgetItem* item = itemAt(event->pos());
+        if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
+            auto objitem = static_cast<DocumentObjectItem*>(item);
+
+            // Mouse position relative to viewport
+            auto mousePos = event->pos();
+
+            // Rect occupied by the item relative to viewport
+            auto iconRect = visualItemRect(objitem);
+
+            // If the checkboxes are visible, these are displayed before the icon
+            // and we have to compensate for its width.
+            if (isSelectionCheckBoxesEnabled()) {
+                auto style = this->style();
+                int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
+                                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+                iconRect.adjust(checkboxWidth, 0, 0, 0);
+            }
+
+            // We are interested in the first icon (visibility icon)
+            iconRect.setWidth(iconSize());
+
+            // If the visibility icon was clicked, toggle the DocumentObject visibility
+            if (iconRect.contains(mousePos)) {
+                auto vp = objitem->object();
+                if (vp->isShow()) {
+                    vp->hide();
+                } else {
+                    vp->show();
+                }
+                event->setAccepted(true);
+                return;
+            }
+        }
+    }
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -3132,10 +3180,6 @@ void TreeWidget::onItemSelectionChanged()
     }
 
     this->blockSelection(lock);
-}
-
-static bool isSelectionCheckBoxesEnabled() {
-    return TreeParams::getCheckBoxesSelection();
 }
 
 void TreeWidget::synchronizeSelectionCheckBoxes() {
