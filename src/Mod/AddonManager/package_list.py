@@ -76,6 +76,8 @@ class PackageList(QtWidgets.QWidget):
         status = pref.GetInt("StatusSelection", 0)
         self.ui.view_bar.filter_selector.set_contents_filter(package_type)
         self.ui.view_bar.filter_selector.set_status_filter(status)
+        self.item_filter.setPackageFilter(package_type)
+        self.item_filter.setStatusFilter(status)
 
         # Pre-init of other members:
         self.item_model = None
@@ -112,6 +114,7 @@ class PackageList(QtWidgets.QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("StatusSelection", new_filter.status_filter)
         pref.SetInt("PackageTypeSelection", new_filter.content_filter)
+        self.item_filter.invalidateFilter()
 
     def set_view_style(self, style: AddonManagerDisplayStyle) -> None:
         """Set the style (compact or expanded) of the list"""

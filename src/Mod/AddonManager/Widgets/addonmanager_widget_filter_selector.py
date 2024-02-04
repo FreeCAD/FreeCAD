@@ -173,6 +173,7 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
                     item.setCheckState(QtCore.Qt.Checked)
                 else:
                     item.setCheckState(QtCore.Qt.Unchecked)
+        self._update_first_row_text()
 
     def set_status_filter(self, status_filter: StatusFilter):
         model = self.model()
@@ -184,6 +185,7 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
                     item.setCheckState(QtCore.Qt.Checked)
                 else:
                     item.setCheckState(QtCore.Qt.Unchecked)
+        self._update_first_row_text()
 
     def _setup_connections(self):
         self.activated.connect(self._selected)
