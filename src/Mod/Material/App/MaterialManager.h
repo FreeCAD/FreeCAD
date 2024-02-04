@@ -85,6 +85,7 @@ public:
     void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
     {
         library->deleteRecursive(path);
+        dereference();
     }
     void remove(const QString& uuid) const
     {
@@ -106,6 +107,7 @@ public:
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
     materialsWithModelComplete(const QString& uuid) const;
     void dereference(std::shared_ptr<Material> material) const;
+    void dereference() const;
 
 private:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;

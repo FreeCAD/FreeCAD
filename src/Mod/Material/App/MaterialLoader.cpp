@@ -242,8 +242,8 @@ void MaterialYamlEntry::addToTree(
                             QString propertyValue =
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
-                                propertyValue =
-                                    propertyValue.remove(QRegularExpression(QString::fromStdString("[\r\n]")));
+                                propertyValue = propertyValue.remove(
+                                    QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          propertyValue);
@@ -309,8 +309,8 @@ void MaterialYamlEntry::addToTree(
                             QString propertyValue =
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
-                                propertyValue =
-                                    propertyValue.remove(QRegularExpression(QString::fromStdString("[\r\n]")));
+                                propertyValue = propertyValue.remove(
+                                    QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            propertyValue);
