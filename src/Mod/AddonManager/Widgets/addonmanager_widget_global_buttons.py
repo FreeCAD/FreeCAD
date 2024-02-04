@@ -98,3 +98,16 @@ class WidgetGlobalButtonBar(QtWidgets.QWidget):
         self.python_dependencies.setText(translate("AddonsInstaller", "Python dependencies..."))
         self.developer_tools.setText(translate("AddonsInstaller", "Developer tools..."))
         self.close.setText(translate("AddonsInstaller", "Close"))
+
+    def set_number_of_available_updates(self, updates: int):
+        if updates <= 0:
+            self.update_all_addons.setEnabled(False)
+            self.update_all_addons.setText(translate("AddonsInstaller", "No updates available"))
+        elif updates == 1:
+            self.update_all_addons.setEnabled(True)
+            self.update_all_addons.setText(translate("AddonsInstaller", "Apply 1 available update"))
+        else:
+            self.update_all_addons.setEnabled(True)
+            self.update_all_addons.setText(
+                translate("AddonsInstaller", "Apply %1 available updates").format(updates)
+            )

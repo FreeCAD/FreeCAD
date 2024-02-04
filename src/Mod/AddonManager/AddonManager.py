@@ -636,18 +636,13 @@ class CommandAddonManager:
         """enables the update button"""
 
         if number_of_updates:
-            s = translate("AddonsInstaller", "Apply {} update(s)", "", number_of_updates)
-            self.button_bar.update_all_addons.setText(s.format(number_of_updates))
-            self.button_bar.update_all_addons.setEnabled(True)
+            self.button_bar.set_number_of_available_updates(number_of_updates)
         elif hasattr(self, "check_worker") and self.check_worker.isRunning():
             self.button_bar.update_all_addons.setText(
                 translate("AddonsInstaller", "Checking for updates...")
             )
         else:
-            self.button_bar.update_all_addons.setText(
-                translate("AddonsInstaller", "No updates available")
-            )
-            self.button_bar.update_all_addons.setEnabled(False)
+            self.button_bar.set_number_of_available_updates(0)
 
     def update_check_complete(self) -> None:
         self.enable_updates(len(self.packages_with_updates))
