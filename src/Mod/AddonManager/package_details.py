@@ -41,6 +41,7 @@ from addonmanager_readme_viewer import ReadmeViewer
 from addonmanager_git import GitManager, NoGitFound
 from Addon import Addon
 from change_branch import ChangeBranchDialog
+from Widgets.addonmanager_widget_addon_buttons import WidgetAddonButtons
 
 translate = fci.translate
 
@@ -70,15 +71,17 @@ class PackageDetails(QtWidgets.QWidget):
         except NoGitFound:
             self.git_manager = None
 
-        self.ui.buttonBack.clicked.connect(self.back.emit)
-        self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
-        self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
-        self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
-        self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
-        self.ui.buttonCheckForUpdate.clicked.connect(lambda: self.check_for_update.emit(self.repo))
-        self.ui.buttonChangeBranch.clicked.connect(self.change_branch_clicked)
-        self.ui.buttonEnable.clicked.connect(self.enable_clicked)
-        self.ui.buttonDisable.clicked.connect(self.disable_clicked)
+        self.ui.button_bar.back_button.clicked.connect(self.back.emit)
+        self.ui.button_bar.run_macro_button.clicked.connect(lambda: self.execute.emit(self.repo))
+        self.ui.button_bar.install_button.clicked.connect(lambda: self.install.emit(self.repo))
+        self.ui.button_bar.uninstall_button.clicked.connect(lambda: self.uninstall.emit(self.repo))
+        self.ui.button_bar.update_button.clicked.connect(lambda: self.update.emit(self.repo))
+        self.ui.button_bar.check_for_update_button.clicked.connect(
+            lambda: self.check_for_update.emit(self.repo)
+        )
+        self.ui.button_bar.change_branch_button.clicked.connect(self.change_branch_clicked)
+        self.ui.button_bar.enable_button.clicked.connect(self.enable_clicked)
+        self.ui.button_bar.disable_button.clicked.connect(self.disable_clicked)
 
     def show_repo(self, repo: Addon, reload: bool = False) -> None:
         """The main entry point for this class, shows the package details and related buttons
@@ -97,13 +100,13 @@ class PackageDetails(QtWidgets.QWidget):
 
             if repo.repo_type == Addon.Kind.MACRO:
                 self.show_macro(repo)
-                self.ui.buttonExecute.show()
+                self.ui.button_bar.run_macro_button.show()
             elif repo.repo_type == Addon.Kind.WORKBENCH:
                 self.show_workbench(repo)
-                self.ui.buttonExecute.hide()
+                self.ui.button_bar.run_macro_button.hide()
             elif repo.repo_type == Addon.Kind.PACKAGE:
                 self.show_package(repo)
-                self.ui.buttonExecute.hide()
+                self.ui.button_bar.run_macro_button.hide()
 
         if repo.status() == Addon.Status.UNCHECKED:
             if not self.status_update_thread:
@@ -264,35 +267,35 @@ class PackageDetails(QtWidgets.QWidget):
             self.ui.labelInstallationLocation.hide()
 
         if status == Addon.Status.NOT_INSTALLED:
-            self.ui.buttonInstall.show()
-            self.ui.buttonUninstall.hide()
-            self.ui.buttonUpdate.hide()
-            self.ui.buttonCheckForUpdate.hide()
+            self.ui.button_bar.install_button.show()
+            self.ui.button_bar.uninstall_button.hide()
+            self.ui.button_bar.update_button.hide()
+            self.ui.button_bar.check_for_update_button.hide()
         elif status == Addon.Status.NO_UPDATE_AVAILABLE:
-            self.ui.buttonInstall.hide()
-            self.ui.buttonUninstall.show()
-            self.ui.buttonUpdate.hide()
-            self.ui.buttonCheckForUpdate.hide()
+            self.ui.button_bar.install_button.hide()
+            self.ui.button_bar.uninstall_button.show()
+            self.ui.button_bar.update_button.hide()
+            self.ui.button_bar.check_for_update_button.hide()
         elif status == Addon.Status.UPDATE_AVAILABLE:
-            self.ui.buttonInstall.hide()
-            self.ui.buttonUninstall.show()
-            self.ui.buttonUpdate.show()
-            self.ui.buttonCheckForUpdate.hide()
+            self.ui.button_bar.install_button.hide()
+            self.ui.button_bar.uninstall_button.show()
+            self.ui.button_bar.update_button.show()
+            self.ui.button_bar.check_for_update_button.hide()
         elif status == Addon.Status.UNCHECKED:
-            self.ui.buttonInstall.hide()
-            self.ui.buttonUninstall.show()
-            self.ui.buttonUpdate.hide()
-            self.ui.buttonCheckForUpdate.show()
+            self.ui.button_bar.install_button.hide()
+            self.ui.button_bar.uninstall_button.show()
+            self.ui.button_bar.update_button.hide()
+            self.ui.button_bar.check_for_update_button.show()
         elif status == Addon.Status.PENDING_RESTART:
-            self.ui.buttonInstall.hide()
-            self.ui.buttonUninstall.show()
-            self.ui.buttonUpdate.hide()
-            self.ui.buttonCheckForUpdate.hide()
+            self.ui.button_bar.install_button.hide()
+            self.ui.button_bar.uninstall_button.show()
+            self.ui.button_bar.update_button.hide()
+            self.ui.button_bar.check_for_update_button.hide()
         elif status == Addon.Status.CANNOT_CHECK:
-            self.ui.buttonInstall.hide()
-            self.ui.buttonUninstall.show()
-            self.ui.buttonUpdate.show()
-            self.ui.buttonCheckForUpdate.hide()
+            self.ui.button_bar.install_button.hide()
+            self.ui.button_bar.uninstall_button.show()
+            self.ui.button_bar.update_button.show()
+            self.ui.button_bar.check_for_update_button.hide()
 
         required_version = self.requires_newer_freecad()
         if repo.obsolete:
@@ -355,7 +358,7 @@ class PackageDetails(QtWidgets.QWidget):
         """The change branch button is only available for installed Addons that have a .git directory
         and in runs where the git is available."""
 
-        self.ui.buttonChangeBranch.hide()
+        self.ui.button_bar.change_branch_button.hide()
 
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
         show_switcher = pref.GetBool("ShowBranchSwitcher", False)
@@ -382,19 +385,19 @@ class PackageDetails(QtWidgets.QWidget):
 
         # If all four above checks passed, then it's possible for us to switch
         # branches, if there are any besides the one we are on: show the button
-        self.ui.buttonChangeBranch.show()
+        self.ui.button_bar.change_branch_button.show()
 
     def set_disable_button_state(self):
         """Set up the enable/disable button based on the enabled/disabled state of the addon"""
-        self.ui.buttonEnable.hide()
-        self.ui.buttonDisable.hide()
+        self.ui.button_bar.enable_button.hide()
+        self.ui.button_bar.disable_button.hide()
         status = self.repo.status()
         if status != Addon.Status.NOT_INSTALLED:
             disabled = self.repo.is_disabled()
             if disabled:
-                self.ui.buttonEnable.show()
+                self.ui.button_bar.enable_button.show()
             else:
-                self.ui.buttonDisable.show()
+                self.ui.button_bar.disable_button.show()
 
     def show_workbench(self, repo: Addon) -> None:
         """loads information of a given workbench"""
@@ -511,59 +514,9 @@ class Ui_PackageDetails(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.layoutDetailsBackButton = QtWidgets.QHBoxLayout()
         self.layoutDetailsBackButton.setObjectName("layoutDetailsBackButton")
-        self.buttonBack = QtWidgets.QToolButton(PackageDetails)
-        self.buttonBack.setObjectName("buttonBack")
-        self.buttonBack.setIcon(
-            QtGui.QIcon.fromTheme("back", QtGui.QIcon(":/icons/button_left.svg"))
-        )
 
-        self.layoutDetailsBackButton.addWidget(self.buttonBack)
-
-        self.horizontalSpacer = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-
-        self.layoutDetailsBackButton.addItem(self.horizontalSpacer)
-
-        self.buttonInstall = QtWidgets.QPushButton(PackageDetails)
-        self.buttonInstall.setObjectName("buttonInstall")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonInstall)
-
-        self.buttonUninstall = QtWidgets.QPushButton(PackageDetails)
-        self.buttonUninstall.setObjectName("buttonUninstall")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonUninstall)
-
-        self.buttonUpdate = QtWidgets.QPushButton(PackageDetails)
-        self.buttonUpdate.setObjectName("buttonUpdate")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonUpdate)
-
-        self.buttonCheckForUpdate = QtWidgets.QPushButton(PackageDetails)
-        self.buttonCheckForUpdate.setObjectName("buttonCheckForUpdate")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonCheckForUpdate)
-
-        self.buttonChangeBranch = QtWidgets.QPushButton(PackageDetails)
-        self.buttonChangeBranch.setObjectName("buttonChangeBranch")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonChangeBranch)
-
-        self.buttonExecute = QtWidgets.QPushButton(PackageDetails)
-        self.buttonExecute.setObjectName("buttonExecute")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonExecute)
-
-        self.buttonDisable = QtWidgets.QPushButton(PackageDetails)
-        self.buttonDisable.setObjectName("buttonDisable")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonDisable)
-
-        self.buttonEnable = QtWidgets.QPushButton(PackageDetails)
-        self.buttonEnable.setObjectName("buttonEnable")
-
-        self.layoutDetailsBackButton.addWidget(self.buttonEnable)
+        self.button_bar = WidgetAddonButtons(PackageDetails)
+        self.layoutDetailsBackButton.addWidget(self.button_bar)
 
         self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
 
@@ -601,33 +554,6 @@ class Ui_PackageDetails(object):
     # setupUi
 
     def retranslateUi(self, _):
-        self.buttonBack.setText("")
-        self.buttonInstall.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Install", None)
-        )
-        self.buttonUninstall.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Uninstall", None)
-        )
-        self.buttonUpdate.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Update", None)
-        )
-        self.buttonCheckForUpdate.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Check for Update", None)
-        )
-        self.buttonExecute.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Run Macro", None)
-        )
-        self.buttonChangeBranch.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Change Branch", None)
-        )
-        self.buttonEnable.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Enable", None)
-        )
-        self.buttonDisable.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Disable", None)
-        )
-        self.buttonBack.setToolTip(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Return to package list", None)
-        )
+        pass
 
     # retranslateUi

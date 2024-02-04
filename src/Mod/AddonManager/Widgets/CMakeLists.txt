@@ -1,5 +1,6 @@
 SET(AddonManagerWidget_SRCS
         __init__.py
+        addonmanager_widget_addon_buttons.py
         addonmanager_widget_filter_selector.py
         addonmanager_widget_global_buttons.py
         addonmanager_widget_progress_bar.py
