@@ -210,11 +210,12 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
         """
 
         if not hasattr(self, "displaymodes_cleaned"):
-            main_switch = vobj.RootNode.getChild(2)  # The display mode switch.
-            if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
-                for node in tuple(main_switch.getChildren()):
-                    node.removeAllChildren()
-                self.displaymodes_cleaned = True
+            if vobj.RootNode.getNumChildren() > 2:
+                main_switch = vobj.RootNode.getChild(2)  # The display mode switch.
+                if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
+                    for node in tuple(main_switch.getChildren()):
+                        node.removeAllChildren()
+                    self.displaymodes_cleaned = True
 
     def onChanged(self,vobj,prop):
         self.removeDisplaymodeChildNodes(vobj)

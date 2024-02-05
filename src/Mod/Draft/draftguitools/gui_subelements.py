@@ -138,9 +138,10 @@ class SubelementHighlight(gui_base_original.Modifier):
             obj.ViewObject.PointColor = (1.0, 0.0, 0.0)
             obj.ViewObject.LineColor = (1.0, 0.0, 0.0)
             xray = coin.SoAnnotation()
-            xray.addChild(obj.ViewObject.RootNode.getChild(2).getChild(0))
-            xray.setName("xray")
-            obj.ViewObject.RootNode.addChild(xray)
+            if obj.ViewObject.RootNode.getNumChildren() > 2:
+                xray.addChild(obj.ViewObject.RootNode.getChild(2).getChild(0))
+                xray.setName("xray")
+                obj.ViewObject.RootNode.addChild(xray)
 
     def restore_editable_objects_graphics(self):
         """Restore the editable objects' appearance."""
