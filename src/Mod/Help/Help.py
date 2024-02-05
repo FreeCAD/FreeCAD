@@ -182,8 +182,10 @@ def get_location(page):
     elif PREFS.GetBool("optionCustom", False):
         location = PREFS.GetString("Location", "")
         if not location:
-            location = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", "Documentation", "wiki")
-        location += page + "md"
+            location = os.path.join(
+                FreeCAD.getUserAppDataDir(), "Mod", "offline-documentation", "FreeCAD-documentation-main", "wiki"
+            )
+        location = os.path.join(location, page + ".md")
     return location
 
 
