@@ -61,7 +61,7 @@ TYPESYSTEM_SOURCE(Measure::Measurement, Base::BaseClass)
 
 Measurement::Measurement()
 {
-    measureType = Invalid;
+    measureType = MeasureType::Invalid;
     References3D.setScope(App::LinkScope::Global);
 }
 
@@ -72,7 +72,7 @@ void Measurement::clear()
     std::vector<App::DocumentObject*> Objects;
     std::vector<std::string> SubElements;
     References3D.setValues(Objects, SubElements);
-    measureType = Invalid;
+    measureType = MeasureType::Invalid;
 }
 
 bool Measurement::has3DReferences()
@@ -135,7 +135,7 @@ MeasureType Measurement::findType()
             try {
                 refSubShape = Part::Feature::getShape(*obj,(*subEl).c_str(),true);
                 if(refSubShape.IsNull()){
-                    return Invalid;
+                    return MeasureType::Invalid;
                 }
             }
             catch (Standard_Failure& e) {
@@ -196,87 +196,87 @@ MeasureType Measurement::findType()
 
     if(vols > 0) {
         if(verts > 0 || edges > 0 || faces > 0) {
-            mode = Invalid;
+            mode = MeasureType::Invalid;
         }
         else {
-            mode = Volumes;
+            mode = MeasureType::Volumes;
         }
     }
     else if(faces > 0) {
         if(verts > 0 || edges > 0) {
             if (faces == 1 && verts == 1) {
-                mode = PointToSurface;
+                mode = MeasureType::PointToSurface;
             }
             else {
-                mode = Invalid;
+                mode = MeasureType::Invalid;
             }
         }
         else {
             if (planes == 1 && faces == 1) {
-                mode = Plane;
+                mode = MeasureType::Plane;
             }
             else if (planes == 2 && faces == 2) {
                 if (planesAreParallel()) {
-                    mode = TwoPlanes;
+                    mode = MeasureType::TwoPlanes;
                 }
                 else {
-                    mode = Surfaces;
+                    mode = MeasureType::Surfaces;
                 }
             }
             else if (cylinders == 1 && faces == 1) {
-                mode = Cylinder;
+                mode = MeasureType::Cylinder;
             }
             else if (cones == 1 && faces == 1) {
-                mode = Cone;
+                mode = MeasureType::Cone;
             }
             else if (spheres == 1 && faces == 1) {
-                mode = Sphere;
+                mode = MeasureType::Sphere;
             }
             else if (torus == 1 && faces == 1) {
-                mode = Torus;
+                mode = MeasureType::Torus;
             }
             else {
-                mode = Surfaces;
+                mode = MeasureType::Surfaces;
             }
         }
     }
     else if(edges > 0) {
         if(verts > 0) {
             if(verts > 1 && edges > 0) {
-                mode = Invalid;
+                mode = MeasureType::Invalid;
             }
             else {
-                mode = PointToEdge;
+                mode = MeasureType::PointToEdge;
             }
         }
         else if (lines == 1 && edges == 1) {
-            mode = Line;
+            mode = MeasureType::Line;
         }
         else if (lines == 2 && edges == 2) {
             if (linesAreParallel()) {
-                mode = TwoParallelLines;
+                mode = MeasureType::TwoParallelLines;
             }
             else {
-                mode = TwoLines;
+                mode = MeasureType::TwoLines;
             }
         }
         else if (circles == 1 && edges == 1) {
-            mode = Circle;
+            mode = MeasureType::Circle;
         }
         else {
-            mode = Edges;
+            mode = MeasureType::Edges;
         }
     }
     else if (verts > 0) {
         if (verts == 2) {
-            mode = PointToPoint;
+            mode = MeasureType::PointToPoint;
         }
         else {
-            mode = Points;
+            mode = MeasureType::Points;
         }
     }
     else {
-        mode = Invalid;
+        mode = MeasureType::Invalid;
     }
 
     return mode;
@@ -331,22 +331,22 @@ double Measurement::length() const
     if(numRefs == 0) {
         Base::Console().Error("Measurement::length - No 3D references available\n");
     }
-    else if (measureType == Invalid) {
+    else if (measureType == MeasureType::Invalid) {
         Base::Console().Error("Measurement::length - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*> &objects = References3D.getValues();
         const std::vector<std::string> &subElements = References3D.getSubValues();
 
-        if(measureType == Points ||
-           measureType == PointToPoint ||
-           measureType == PointToEdge ||
-           measureType == PointToSurface)  {
+        if(measureType == MeasureType::Points ||
+           measureType == MeasureType::PointToPoint ||
+           measureType == MeasureType::PointToEdge ||
+           measureType == MeasureType::PointToSurface)  {
 
             Base::Vector3d diff = this->delta();
             result = diff.Length();
         }
-        else if(measureType == Edges || measureType == Line || measureType == Circle) {
+        else if(measureType == MeasureType::Edges || measureType == MeasureType::Line || measureType == MeasureType::Circle) {
 
             // Iterate through edges and calculate each length
             std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
@@ -391,7 +391,7 @@ double Measurement::length() const
                     }
                 }  //end switch
             }  //end for
-        } //end measureType == Edges
+        }
     }
     return result;
 }
@@ -402,7 +402,7 @@ double Measurement::lineLineDistance() const
     // Here we get the nominal distance between the infinite lines.
     double distance = 0.0;
 
-    if (measureType != TwoParallelLines || References3D.getSize() != 2) {
+    if (measureType != MeasureType::TwoParallelLines || References3D.getSize() != 2) {
         return distance;
     }
 
@@ -448,7 +448,7 @@ double Measurement::lineLineDistance() const
 }
 
 double Measurement::planePlaneDistance() const {
-    if (measureType != TwoPlanes || References3D.getSize() != 2) {
+    if (measureType != MeasureType::TwoPlanes || References3D.getSize() != 2) {
         return 0.0;
     }
 
@@ -493,10 +493,10 @@ double Measurement::angle(const Base::Vector3d & /*param*/) const
     if(numRefs == 0) {
         throw Base::RuntimeError("No references available for angle measurement");
     }
-    else if (measureType == Invalid) {
+    else if (measureType == MeasureType::Invalid) {
         throw Base::RuntimeError("MeasureType is Invalid for angle measurement");
     }
-    else if(measureType == TwoLines) {
+    else if(measureType == MeasureType::TwoLines) {
         //Only case that is supported is edge to edge
         //The angle between two skew lines is measured by the angle between one line (A)
         //and a line (B) with the direction of the second through a point on the first line.
@@ -532,7 +532,7 @@ double Measurement::angle(const Base::Vector3d & /*param*/) const
             throw Base::RuntimeError("Can not compute angle measurement - too many references");
         }
     }
-    else if (measureType == Points) {
+    else if (measureType == MeasureType::Points) {
         //NOTE: we are calculating the 3d angle here, not the projected angle
         //ASSUMPTION: the references are in end-apex-end order
         if(numRefs == 3) {
@@ -567,7 +567,7 @@ double Measurement::radius() const
     if(numRefs == 0) {
         Base::Console().Error("Measurement::radius - No 3D references available\n");
     }
-    else if (measureType == Circle) {
+    else if (measureType == MeasureType::Circle) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
         const TopoDS_Edge& edge = TopoDS::Edge(shape);
 
@@ -576,7 +576,7 @@ double Measurement::radius() const
             return (double) curve.Circle().Radius();
         }
     }
-    else if (measureType == Cylinder || measureType == Sphere || measureType == Torus) {
+    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::Sphere || measureType == MeasureType::Torus) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
         TopoDS_Face face = TopoDS::Face(shape);
 
@@ -602,14 +602,14 @@ Base::Vector3d Measurement::delta() const
     if (numRefs == 0) {
         Base::Console().Error("Measurement::delta - No 3D references available\n");
     }
-    else if (measureType == Invalid) {
+    else if (measureType == MeasureType::Invalid) {
         Base::Console().Error("Measurement::delta - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*> &objects = References3D.getValues();
         const std::vector<std::string> &subElements = References3D.getSubValues();
 
-        if(measureType == PointToPoint) {
+        if(measureType == MeasureType::PointToPoint) {
             if(numRefs == 2) {
                 // Keep separate case for two points to reduce need for complex algorithm
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
@@ -624,7 +624,7 @@ Base::Vector3d Measurement::delta() const
                 return Base::Vector3d(diff.X(), diff.Y(), diff.Z());
             }
         }
-        else if(measureType == PointToEdge || measureType == PointToSurface) {
+        else if(measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface) {
             // BrepExtema can calculate minimum distance between any set of topology sets.
             if(numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
@@ -642,7 +642,7 @@ Base::Vector3d Measurement::delta() const
                 }
             }
         }
-        else if(measureType == Edges) {
+        else if(measureType == MeasureType::Edges) {
             // Only case that is supported is straight line edge
             if(numRefs == 1) {
                 TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
@@ -692,7 +692,7 @@ double Measurement::volume() const
     if (References3D.getSize() == 0) {
         Base::Console().Error("Measurement::volume - No 3D references available\n");
     }
-    else if (measureType != Volumes) {
+    else if (measureType != MeasureType::Volumes) {
         Base::Console().Error("Measurement::volume - measureType is not Volumes\n");
     }
     else {
@@ -714,9 +714,10 @@ double Measurement::area() const
     if (References3D.getSize() == 0) {
         Base::Console().Error("Measurement::area - No 3D references available\n");
     }
-    else if (measureType == Volumes || measureType == Surfaces
-        || measureType == Cylinder || measureType == Cone
-        || measureType == Sphere || measureType == Torus || measureType == Plane) {
+    else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
+        || measureType == MeasureType::Cylinder || measureType == MeasureType::Cone
+        || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+        || measureType == MeasureType::Plane) {
 
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
         const std::vector<std::string>& subElements = References3D.getSubValues();
@@ -740,7 +741,7 @@ Base::Vector3d Measurement::massCenter() const
     if (numRefs == 0) {
         Base::Console().Error("Measurement::massCenter - No 3D references available\n");
     }
-    else if (measureType == Invalid) {
+    else if (measureType == MeasureType::Invalid) {
         Base::Console().Error("Measurement::massCenter - measureType is Invalid\n");
     }
     else {
@@ -748,7 +749,7 @@ Base::Vector3d Measurement::massCenter() const
         const std::vector<std::string> &subElements = References3D.getSubValues();
         GProp_GProps gprops = GProp_GProps();
 
-        if(measureType == Volumes) {
+        if(measureType == MeasureType::Volumes) {
             // Iterate through edges and calculate each length
             std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
             std::vector<std::string>::const_iterator subEl = subElements.begin();

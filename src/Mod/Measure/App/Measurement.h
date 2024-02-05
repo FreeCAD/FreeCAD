@@ -36,7 +36,7 @@
 class TopoDS_Shape;
 namespace Measure
 {
- enum MeasureType {
+ enum class MeasureType {
         Volumes, // Measure the Volume(s)
         Edges, // Measure the Edge(s)
         Line, // One Line
