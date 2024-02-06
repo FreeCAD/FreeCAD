@@ -118,7 +118,6 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
     calcMaterialIndex(SbRotation());
     // getting center point
     center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
-
 }
 
 void ViewProviderMeshTransformDemolding::calcNormalVector()
@@ -142,7 +141,6 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot
     for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end();
          ++it, i++) {
         rot.multVec(*it, result);
-     
     }
 }
 
