@@ -448,7 +448,7 @@ template<>
 void DSHTranslateController::firstKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value + 1);
+    toolWidget->setParameterWithoutPassingFocus(WParameter::First, value + 1);
 }
 
 template<>
@@ -456,7 +456,23 @@ void DSHTranslateController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
     if (value > 0.0) {
-        toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
+        toolWidget->setParameterWithoutPassingFocus(WParameter::First, value - 1);
+    }
+}
+
+template<>
+void DSHTranslateController::thirdKeyShortcut()
+{
+    auto value = toolWidget->getParameter(WParameter::Second);
+    toolWidget->setParameterWithoutPassingFocus(WParameter::Second, value + 1);
+}
+
+template<>
+void DSHTranslateController::fourthKeyShortcut()
+{
+    auto value = toolWidget->getParameter(WParameter::Second);
+    if (value > 1.0) {
+        toolWidget->setParameterWithoutPassingFocus(WParameter::Second, value - 1);
     }
 }
 
@@ -495,8 +511,9 @@ void DSHTranslateController::configureToolWidget()
     toolWidget->setParameterLabel(
         WParameter::First,
         QApplication::translate("TaskSketcherTool_p3_translate", "Copies (+'U'/-'J')"));
-    toolWidget->setParameterLabel(WParameter::Second,
-                                  QApplication::translate("TaskSketcherTool_p5_translate", "Rows"));
+    toolWidget->setParameterLabel(
+        WParameter::Second,
+        QApplication::translate("TaskSketcherTool_p5_translate", "Rows (+'R'/-'F')"));
 
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->setParameter(OnViewParameter::Second, 1.0);

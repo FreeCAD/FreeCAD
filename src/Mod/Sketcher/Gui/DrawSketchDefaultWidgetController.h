@@ -220,7 +220,7 @@ public:
         Q_UNUSED(onSketchPos)
     }
 
-    /** on first shortcut, it toggles the first checkbox if there is go. Must be specialised if
+    /** on first shortcut, it toggles the first checkbox if there is one. Must be specialised if
      * this is not intended */
     void firstKeyShortcut() override
     {
@@ -230,13 +230,33 @@ public:
         }
     }
 
-    /** on second shortcut, it toggles the second checkbox if there is go. Must be specialised if
+    /** on second shortcut, it toggles the second checkbox if there is one. Must be specialised if
      * this is not intended */
     void secondKeyShortcut() override
     {
         if (nCheckbox >= 2) {
             auto secondchecked = toolWidget->getCheckboxChecked(WCheckbox::SecondBox);
             toolWidget->setCheckboxChecked(WCheckbox::SecondBox, !secondchecked);
+        }
+    }
+
+    /** on third shortcut, it toggles the third checkbox if there is one. Must be specialised if
+     * this is not intended */
+    void thirdKeyShortcut() override
+    {
+        if (nCheckbox >= 3) {
+            auto thirdchecked = toolWidget->getCheckboxChecked(WCheckbox::ThirdBox);
+            toolWidget->setCheckboxChecked(WCheckbox::ThirdBox, !thirdchecked);
+        }
+    }
+
+    /** on fourth shortcut, it toggles the fourth checkbox if there is one. Must be specialised if
+     * this is not intended */
+    void fourthKeyShortcut() override
+    {
+        if (nCheckbox >= 4) {
+            auto fourthchecked = toolWidget->getCheckboxChecked(WCheckbox::FourthBox);
+            toolWidget->setCheckboxChecked(WCheckbox::FourthBox, !fourthchecked);
         }
     }
 

@@ -444,6 +444,12 @@ public:
     virtual void secondKeyShortcut()
     {}
 
+    virtual void thirdKeyShortcut()
+    {}
+
+    virtual void fourthKeyShortcut()
+    {}
+
     virtual void tabShortcut()
     {
         passFocusToNextOnViewParameter();
