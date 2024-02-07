@@ -55,7 +55,8 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
@@ -144,7 +145,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
         profileshape.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
-        if (method == "UpToFirst" || method == "UpToFace") {
+        if (method == "UpToFirst" || method == "UpToFace" || method == "UpToShape") {
             if (base.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Extruding up to a face is only possible if the sketch is located on a face"));
 
@@ -156,10 +157,16 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 dir.Reverse();
 
             TopoDS_Shape upToShape;
-            int faceCount = 1;
+            int faceCount = 0;
             // Find a valid face or datum plane to extrude up to
             if (method == "UpToFace") {
-                faceCount = getShapeFromLinkSubList(upToShape, UpToFace);
+                TopoDS_Face upToFace;
+                getFaceFromLinkSub(upToFace, UpToFace);
+                upToShape = TopoDS_Shape(upToFace);
+                faceCount = 1;
+            }
+            else if (method == "UpToShape") {
+                faceCount = getShapeFromLinkSubList(upToShape, UpToShape);
                 upToShape.Move(invObjLoc);
             }
             if (faceCount == 1) {

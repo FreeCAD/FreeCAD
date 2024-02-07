@@ -54,7 +54,8 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pad", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pad", App::Prop_None, "Face(s) or shape(s) where pad will end");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pad", App::Prop_None, "Face where pad will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pad", App::Prop_None, "Faces or shape(s) where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Taper angle");
@@ -151,11 +152,23 @@ App::DocumentObjectExecReturn *Pad::execute()
                 dir.Reverse();
 
             TopoDS_Shape upToShape;
-            int faceCount = 1;
-            // Find a valid face or datum plane to extrude up to
+            int faceCount = 0;
+            // Find a valid shape, face or datum plane to extrude up to
             if (method == "UpToFace") {
-                faceCount = getShapeFromLinkSubList(upToShape, UpToFace);
-                upToShape.Move(invObjLoc);
+                TopoDS_Face upToFace;
+                getFaceFromLinkSub(upToFace, UpToFace);
+                upToShape = TopoDS_Shape(upToFace);
+                faceCount = 1;
+            }
+            else if (method == "UpToShape") {
+                try {
+                    faceCount = getShapeFromLinkSubList(upToShape, UpToShape);
+                    upToShape.Move(invObjLoc);
+                }
+                catch (Base::ValueError){
+                    //no shape selected use the base
+                    upToShape = base;
+                }
             }
             if (faceCount == 1) {
                 getUpToFace(upToShape, base, sketchshape, method, dir);

@@ -55,8 +55,10 @@ public:
     App::PropertyBool    Reversed;
     /// Make extrusion symmetric to sketch plane
     App::PropertyBool    Midplane;
-    /// Faces to extrude up to
-    App::PropertyLinkSubList UpToFace;
+    /// Face to extrude up to
+    App::PropertyLinkSub UpToFace;
+    /// Shape to extrude up to
+    App::PropertyLinkSubList UpToShape;
 
     App::PropertyBool AllowMultiFace;
 
@@ -130,6 +132,9 @@ protected:
     /// Extract a face from a given LinkSub
     static void getFaceFromLinkSub(TopoDS_Face& upToFace,
                                    const App::PropertyLinkSub& refFace);
+
+    static void getFaceFromLinkSub(TopoDS_Face& upToFace,
+                                   const App::PropertyLinkSubList& refFace);
 
     /// Create a shape with shapes and faces from a given LinkSubList
     /// return 0 if almost one full shape is selected else the face count

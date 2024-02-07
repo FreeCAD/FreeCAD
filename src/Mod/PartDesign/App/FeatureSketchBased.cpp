@@ -74,6 +74,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace, (false), "SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -448,6 +449,7 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
     if (upToFace.IsNull())
         throw Base::ValueError("SketchBased: Failed to extract face");
 }
+
 
 int ProfileBased::getShapeFromLinkSubList(TopoDS_Shape& upToShape, const App::PropertyLinkSubList& refFaces)
 {
