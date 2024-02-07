@@ -3375,8 +3375,7 @@ private:
 };
 }
 
-//const double Vertex::MESH_MIN_PT_DIST = 1.0e-6;
-const double MeshVertex::MESH_MIN_PT_DIST = gp::Resolution();
+const double MeshVertex::MESH_MIN_PT_DIST = 10 * std::numeric_limits<double>::epsilon();
 
 void TopoShape::getFacesFromDomains(const std::vector<Domain>& domains,
                                     std::vector<Base::Vector3d>& points,
