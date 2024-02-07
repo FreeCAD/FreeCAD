@@ -380,6 +380,9 @@ PyTypeObject @self.export.Name@::Type = {
     nullptr                                           /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
     ,nullptr                                          /*tp_vectorcall */
+#if PY_VERSION_HEX >= 0x030c0000
+    ,0                                                /*tp_watched */
+#endif
 #elif PY_VERSION_HEX >= 0x03080000
     ,nullptr                                          /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
