@@ -3268,7 +3268,7 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
         return ConstraintsCounter;
     }
     else {
-        GCS::Circle *c1, *c2;
+        GCS::Circle *c1 {}, *c2 {};
         if (Geoms[geoId1].type == Circle) {
             c1 = &Circles[Geoms[geoId1].index];
         }

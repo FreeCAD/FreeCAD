@@ -140,8 +140,6 @@ void Array2D::onDataChanged(const QModelIndex& topLeft,
 
 void Array2D::onContextMenu(const QPoint& pos)
 {
-    QModelIndex index = ui->tableView->indexAt(pos);
-
     QMenu contextMenu(tr("Context menu"), this);
 
     contextMenu.addAction(&_deleteAction);
