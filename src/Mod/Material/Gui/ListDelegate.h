@@ -54,10 +54,12 @@ public:
 protected:
     Materials::MaterialValue::ValueType getType(const QModelIndex& index) const override
     {
+        Q_UNUSED(index)
         return _type;
     }
     QString getUnits(const QModelIndex& index) const override
     {
+        Q_UNUSED(index)
         return _units;
     }
     QVariant getValue(const QModelIndex& index) const override;

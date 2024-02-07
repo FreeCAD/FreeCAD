@@ -1276,6 +1276,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_DragConstraint:
                 case STATUS_SKETCH_StartRubberBand:
                 case STATUS_SKETCH_UseRubberBand:
+                case STATUS_SELECT_Wire:
                     break;
             }
         }
@@ -3976,9 +3977,8 @@ void ViewProviderSketch::generateContextMenu()
                     if (isBsplineKnotOrEndPoint(obj, geoId, posId)) {
                         ++selectedBsplineKnots;
                     }
-                    if (Sketcher::PointPos::start != posId || Sketcher::PointPos::end != posId) {
-                        ++selectedEndPoints;
-                    }
+
+                    ++selectedEndPoints;
                 }
                 else if (name.substr(0, 4) == "Cons") {
                     ++selectedConstraints;

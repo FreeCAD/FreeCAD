@@ -138,9 +138,6 @@ void ViewProviderTrajectory::updateData(const App::Property* prop)
         }
         pcLines->numVertices.set1Value(0, trak.getSize());
     }
-    else if (prop == &pcTracObj->Base) {
-        Base::Placement loc = *(&pcTracObj->Base.getValue());
-    }
 }
 
 void ViewProviderTrajectory::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
