@@ -45,7 +45,9 @@
         virtual ~_class_(); \
     };
 
-#if PY_VERSION_HEX >= 0x03090000
+#if PY_VERSION_HEX >= 0x030c0000
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+#elif PY_VERSION_HEX >= 0x03090000
 #define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #elif PY_VERSION_HEX >= 0x03080000
 #define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
