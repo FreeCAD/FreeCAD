@@ -12,6 +12,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/FeaturePartFuse.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureRevolution.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartTestHelpers.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/TEST_WRITING_TUTORIAL.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShape.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeCache.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeExpansion.cpp
