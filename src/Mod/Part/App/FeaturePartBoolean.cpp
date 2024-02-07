@@ -60,33 +60,38 @@ Boolean::Boolean()
 short Boolean::mustExecute() const
 {
     if (Base.getValue() && Tool.getValue()) {
-        if (Base.isTouched())
+        if (Base.isTouched()) {
             return 1;
-        if (Tool.isTouched())
+        }
+        if (Tool.isTouched()) {
             return 1;
+        }
     }
     return 0;
 }
 
-App::DocumentObjectExecReturn *Boolean::execute()
+App::DocumentObjectExecReturn* Boolean::execute()
 {
     try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+#if defined(__GNUC__) && defined(FC_OS_LINUX)
         Base::SignalException se;
 #endif
         auto base = Base.getValue();
         auto tool = Tool.getValue();
 
-        if (!base || !tool)
+        if (!base || !tool) {
             return new App::DocumentObjectExecReturn("Linked object is not a Part object");
+        }
 
         // Now, let's get the TopoDS_Shape
         TopoDS_Shape BaseShape = Feature::getShape(base);
-        if (BaseShape.IsNull())
+        if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
+        }
         TopoDS_Shape ToolShape = Feature::getShape(tool);
-        if (ToolShape.IsNull())
+        if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");
+        }
 
         std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
@@ -104,12 +109,15 @@ App::DocumentObjectExecReturn *Boolean::execute()
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                                 .GetUserParameter()
+                                                 .GetGroup("BaseApp")
+                                                 ->GetGroup("Preferences")
+                                                 ->GetGroup("Mod/Part/Boolean");
 
         if (hGrp->GetBool("CheckModel", false)) {
             BRepCheck_Analyzer aChecker(resShape);
-            if (! aChecker.IsValid() ) {
+            if (!aChecker.IsValid()) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }
@@ -136,15 +144,17 @@ App::DocumentObjectExecReturn *Boolean::execute()
         this->History.setValues(history);
         return App::DocumentObject::StdReturn;
 #else
-        TopoShape res(0,getDocument()->getStringHasher());
-        res.makeElementShape(*mkBool,shapes,opCode());
-        if (this->Refine.getValue())
+        TopoShape res(0, getDocument()->getStringHasher());
+        res.makeElementShape(*mkBool, shapes, opCode());
+        if (this->Refine.getValue()) {
             res = res.makeElementRefine();
+        }
         this->Shape.setValue(res);
         return Part::Feature::execute();
 #endif
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn("A fatal error occurred when running boolean operation");
+        return new App::DocumentObjectExecReturn(
+            "A fatal error occurred when running boolean operation");
     }
 }

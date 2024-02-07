@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "FeaturePartCommon.h"
+#include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
 
