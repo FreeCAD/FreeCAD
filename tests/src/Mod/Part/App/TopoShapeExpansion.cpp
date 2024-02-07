@@ -9,6 +9,8 @@
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepFeat_SplitShape.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <GC_MakeCircle.hxx>
 #include <TopExp_Explorer.hxx>
@@ -150,6 +152,63 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     // 6 Faces
     // ----------
     // 26 subshapes each
+}
+
+TEST_F(TopoShapeExpansionTest, MapperMakerModified)
+{
+    // Arrange
+    // Definition of all the objects needed for a Transformation
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_builder_a_p_i___transform.html)
+    auto translation {gp_Trsf()};
+    auto transform {BRepBuilderAPI_Transform(translation)};
+    auto transformMprMkr {MapperMaker(transform)};
+
+    // Definition of all the objects needed for a Shape Splitting
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_feat___split_shape.html)
+    auto split {BRepFeat_SplitShape()};
+    auto splitMprMkr {MapperMaker(split)};
+
+    // Creating a Wire, used later to create a Face
+    auto wireMkr {BRepBuilderAPI_MakeWire(
+        BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)),
+        BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)),
+        BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)))};
+    auto wire = wireMkr.Wire();
+
+    // Creating a Face using the Wire created before
+    auto faceMkr {BRepBuilderAPI_MakeFace(wire)};
+    auto face = faceMkr.Face();
+
+    // Creating an Edge to split the Face and the Wire
+    auto edgeMkr {BRepBuilderAPI_MakeEdge(gp_Pnt(0.5, 1.0, 0.0), gp_Pnt(0.5, -1.0, 0.0))};
+    auto edge = edgeMkr.Edge();
+
+    // Act
+    // Performing the Transformation
+    translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
+    transform.Perform(wire);
+
+    // Initializing and performing the Split
+    split.Init(face);
+    split.Add(edge, face);
+    split.Build();
+
+    // Assert
+    // Check that all the shapes and operations have been performed
+    EXPECT_TRUE(wireMkr.IsDone());
+    EXPECT_TRUE(faceMkr.IsDone());
+    EXPECT_TRUE(edgeMkr.IsDone());
+    EXPECT_TRUE(split.IsDone());
+    EXPECT_TRUE(transform.IsDone());
+
+    // Check the result of the operations
+    EXPECT_EQ(transformMprMkr.modified(wire).size(), 1);  // The Transformation acts on the Wire...
+    EXPECT_EQ(transformMprMkr.modified(face).size(), 1);  // ... and therefor on the created Face...
+    EXPECT_EQ(transformMprMkr.modified(edge).size(), 1);  // ... and on the Edge added to the Face
+
+    EXPECT_EQ(splitMprMkr.modified(edge).size(), 0);  // The Split doesn't modify the Edge
+    EXPECT_EQ(splitMprMkr.modified(wire).size(), 2);  // The Split modifies the Wire into 2 Wires
+    EXPECT_EQ(splitMprMkr.modified(face).size(), 2);  // The Split modifies the Face into 2 Faces
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
