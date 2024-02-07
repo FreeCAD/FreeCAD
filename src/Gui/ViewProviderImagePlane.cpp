@@ -200,7 +200,9 @@ void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 {
     if (!img.isNull()) {
         Image::ImagePlane* imagePlane = static_cast<Image::ImagePlane*>(pcObject);
-        if (!isRestoring()) {
+        // When restoring the document or importing a ImagePlane by eg. pasting it
+        // preserve the X and Y size.
+        if (!isRestoring() && !pcObject->testStatus(App::ObjectStatus::ObjImporting)) {
             imagePlane->XSize.setValue(size.width());
             imagePlane->YSize.setValue(size.height());
         }
