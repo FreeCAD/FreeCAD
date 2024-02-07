@@ -35,7 +35,7 @@ __url__ = "https://www.freecad.org"
 import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -54,15 +54,15 @@ from draftguitools import gui_trackers as trackers
 
 
 COLORS = {
-    "default": Gui.draftToolBar.getDefaultColor("snap"),
-    "black":  (0., 0., 0.),
-    "white":  (1., 1., 1.),
-    "grey":   (.5, .5, .5),
-    "red":    (1., 0., 0.),
-    "green":  (0., 1., 0.),
-    "blue":   (0., 0., 1.),
-    "yellow": (1., 1., 0.),
-    "cyan":   (0., 1., 1.),
+    "default": utils.get_rgba_tuple(params.get_param("snapcolor"))[:3],
+    "black":   (0., 0., 0.),
+    "white":   (1., 1., 1.),
+    "grey":    (.5, .5, .5),
+    "red":     (1., 0., 0.),
+    "green":   (0., 1., 0.),
+    "blue":    (0., 0., 1.),
+    "yellow":  (1., 1., 0.),
+    "cyan":    (0., 1., 1.),
     "magenta": (1., 0., 1.)
 }
 
@@ -650,7 +650,7 @@ class Edit(gui_base_original.Modifier):
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
-        self.tracker_menu = QtGui.QMenu()
+        self.tracker_menu = QtWidgets.QMenu()
         actions = None
 
         if self.overNode:

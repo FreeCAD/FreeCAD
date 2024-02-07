@@ -29,6 +29,7 @@
 #include <App/Application.h>
 
 #include "Exceptions.h"
+#include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
 #include "MaterialManager.h"
 #include "ModelManager.h"
@@ -123,7 +124,23 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
 
     for (auto& library : *_libraryList) {
         if (cleanPath.startsWith(library->getDirectory())) {
-            return library->getMaterialByPath(cleanPath);
+            try {
+                return library->getMaterialByPath(cleanPath);
+            } catch (const MaterialNotFound&) {}
+
+            // See if it's a new file saved by the old editor
+            {
+                QMutexLocker locker(&_mutex);
+
+                if (MaterialConfigLoader::isConfigStyle(path)) {
+                    auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
+                    if (material) {
+                        (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
+                    }
+
+                    return material;
+                }
+            }
         }
     }
 
@@ -242,6 +259,21 @@ MaterialManager::materialsWithModelComplete(const QString& uuid) const
     }
 
     return dict;
+}
+
+void MaterialManager::dereference() const
+{
+    // First clear the inheritences
+    for (auto& it : *_materialMap) {
+        auto material = it.second;
+        material->clearDereferenced();
+        material->clearInherited();
+    }
+
+    // Run the dereference again
+    for (auto& it : *_materialMap) {
+        dereference(it.second);
+    }
 }
 
 void MaterialManager::dereference(std::shared_ptr<Material> material) const

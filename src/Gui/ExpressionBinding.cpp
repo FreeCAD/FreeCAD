@@ -159,7 +159,10 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
 
 std::string ExpressionBinding::getEscapedExpressionString() const
 {
-    return Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
+    std::string escapedstr;
+    escapedstr = Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
+    escapedstr = Base::Tools::escapeQuotesFromString(escapedstr);
+    return escapedstr;
 }
 
 bool ExpressionBinding::assignToProperty(const std::string & propName, double value)

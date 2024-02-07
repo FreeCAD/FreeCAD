@@ -76,12 +76,23 @@ endfunction()
 
 set(TestExecutables
     Tests_run
-    Material_tests_run
-    Mesh_tests_run
-    Part_tests_run
-    Points_tests_run
-    Sketcher_tests_run
 )
+
+if(BUILD_MATERIAL)
+  list (APPEND TestExecutables Material_tests_run)
+endif(BUILD_MATERIAL)
+if(BUILD_MESH)
+  list (APPEND TestExecutables Mesh_tests_run)
+endif(BUILD_MESH)
+if(BUILD_PART)
+  list (APPEND TestExecutables Part_tests_run)
+endif(BUILD_PART)
+if(BUILD_POINTS)
+  list (APPEND TestExecutables Points_tests_run)
+endif(BUILD_POINTS)
+if(BUILD_SKETCHER)
+  list (APPEND TestExecutables Sketcher_tests_run)
+endif(BUILD_SKETCHER)
 
 # -------------------------
 

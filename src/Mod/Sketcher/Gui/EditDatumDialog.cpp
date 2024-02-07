@@ -203,11 +203,13 @@ void EditDatumDialog::accepted()
                     ui_ins_datum->labelEdit->apply();
                 }
                 else {
+                    auto unitString = newQuant.getUnit().getString().toUtf8().toStdString();
+                    unitString = Base::Tools::escapeQuotesFromString(unitString);
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr,
                                           newDatum,
-                                          (const char*)newQuant.getUnit().getString().toUtf8());
+                                          unitString);
                 }
             }
 
@@ -215,6 +217,7 @@ void EditDatumDialog::accepted()
             if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                 std::string escapedstr =
                     Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
+                escapedstr = Base::Tools::escapeQuotesFromString(escapedstr);
                 Gui::cmdAppObjectArgs(sketch,
                                       "renameConstraint(%d, u'%s')",
                                       ConstrNbr,

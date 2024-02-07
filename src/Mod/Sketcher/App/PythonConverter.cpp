@@ -169,7 +169,7 @@ std::string PythonConverter::convert(const std::string& doc,
                                      GeoIdMode geoIdMode)
 {
     if (constraints.size() == 1) {
-        auto cg = convert(constraints[0]);
+        auto cg = convert(constraints[0], geoIdMode);
 
         return boost::str(boost::format("%s.%s\n") % doc % cg);
     }

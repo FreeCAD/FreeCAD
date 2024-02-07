@@ -44,7 +44,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils import todo
-from draftutils.messages import _err, _msg, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -313,7 +313,7 @@ class Wire(Line):
                 edges.extend(o.Shape.Edges)
             if edges:
                 try:
-                    w = Part.Wire(edges)
+                    w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
                                    "Unable to create a Wire "
@@ -333,7 +333,10 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
+                    _cmd = 'wire = Draft.make_wire('
+                    _cmd += '[' + pts + '], closed=' + str(w.isClosed())
+                    _cmd += ')'
+                    _cmd_list = [_cmd]
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')

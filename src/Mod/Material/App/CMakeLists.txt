@@ -105,18 +105,7 @@ endif(FREECAD_USE_PCH)
 add_library(Material SHARED ${Material_SRCS})
 target_link_libraries(Material ${Material_LIBS})
 
-# SET_BIN_DIR(Material Material /Mod/Material)
-SET_BIN_DIR(Material Material)
+SET_BIN_DIR(Material Material /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(Material)
 
-# INSTALL(TARGETS Material DESTINATION ${CMAKE_INSTALL_LIBDIR})
-if(WIN32)
-    INSTALL(TARGETS Material
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-else(WIN32)
-    INSTALL(TARGETS Material
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-endif(WIN32)
+INSTALL(TARGETS Material DESTINATION ${CMAKE_INSTALL_LIBDIR})

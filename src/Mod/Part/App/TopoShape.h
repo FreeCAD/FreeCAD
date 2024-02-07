@@ -37,7 +37,12 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
-
+#include <BRepBuilderAPI_MakeShape.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
+#include <BRepOffsetAPI_ThruSections.hxx>
+#include <BRepOffsetAPI_MakePipeShell.hxx>
+#include <BRepFeat_MakePrism.hxx>
+#include <BRepPrimAPI_MakeHalfSpace.hxx>
 
 class gp_Ax1;
 class gp_Ax2;
@@ -106,6 +111,13 @@ enum class HistoryTraceType
     followTypeChange
 };
 
+/// Behavior of refines when a problem arises; either leave the shape untouched or throw an exception.
+/// This replaces a boolean parameter in the original Toponaming branch by realthunder..
+enum class RefineFail
+{
+    shapeUntouched,
+    throwException
+};
 
 /** The representation for a CAD Shape
  */
@@ -390,6 +402,7 @@ public:
     void sewShape(double tolerance = 1.0e-06);
     bool fix();
     bool fix(double, double, double);
+    bool fixSolidOrientation();
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
@@ -585,9 +598,47 @@ public:
     {
         return TopoShape().makeGTransform(*this, mat, op, copy);
     }
+    
+    /** Refine the input shape by merging faces/edges that share the same geometry
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param no_fail: if throwException, throw exception if failed to refine. Or else,
+     *                 if shapeUntouched the shape remains untouched if failed.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the refined shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape& makeElementRefine(const TopoShape& source,
+                                 const char* op = nullptr,
+                                 RefineFail no_fail = RefineFail::throwException);
 
-    TopoShape& makeRefine(const TopoShape& shape, const char* op = nullptr, bool no_fail = true);
-    TopoShape makeRefine(const char* op = nullptr, bool no_fail = true) const
+    /** Refine the input shape by merging faces/edges that share the same geometry
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param no_fail: if throwException, throw exception if failed to refine. Or else,
+     *                 if shapeUntouched the shape remains untouched if failed.
+     *
+     * @return Return a refined shape. The shape itself is not modified
+     */
+    TopoShape makeElementRefine(const char* op = nullptr,
+                                RefineFail no_fail = RefineFail::throwException) const
+    {
+        return TopoShape(Tag, Hasher).makeElementRefine(*this, op, no_fail);
+    }
+
+
+    TopoShape& makeRefine(const TopoShape& shape,
+                          const char* op = nullptr,
+                          RefineFail no_fail = RefineFail::throwException);
+
+    TopoShape makeRefine(const char* op = nullptr,
+                         RefineFail no_fail = RefineFail::throwException) const
     {
         return TopoShape().makeRefine(*this, op, no_fail);
     }
@@ -879,9 +930,9 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-     // TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
-     //                               bool silent = true,
-     //                               const char* op = nullptr);
+    TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
+                                         bool silent = true,
+                                         const char* op = nullptr);
     /* Make a shell with input wires
      *
      * @param wires: input wires
@@ -891,10 +942,10 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-     // TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
-     // {
-     //     return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
-     // }
+    TopoShape& makeElementShellFromWires(bool silent = true, const char* op = nullptr)
+    {
+        return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
+    }
 
     TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
                                const char* op = nullptr,
@@ -984,6 +1035,222 @@ public:
         CN,
     };
 
+
+    /** Generic shape making with mapped element name from shape history
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
+                                const std::vector<TopoShape>& sources,
+                                const char* op = nullptr);
+    /** Generic shape making with mapped element name from shape history
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param source: source shape.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
+                                const TopoShape& source,
+                                const char* op = nullptr);
+    /** Generic shape making with mapped element name from shape history
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Returns the new shape built by the shape maker with mappend element
+     *         name generated using this shape as the source. The shape itself
+     *         is not modified.
+     */
+    TopoShape makeElementShape(BRepBuilderAPI_MakeShape& mkShape, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
+    }
+
+    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
+                                const std::vector<TopoShape>& sources,
+                                const char* op = nullptr);
+    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param source: source shape.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
+                                const TopoShape& source,
+                                const char* op = nullptr);
+    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Returns the new shape built by the shape maker with mappend element
+     *         name generated using this shape as the source. The shape itself
+     *         is not modified.
+     */
+    TopoShape makeElementShape(BRepBuilderAPI_Sewing& mkShape, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
+    }
+
+    /** Specialized shape making for BRepBuilderAPI_ThruSections with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
+                                const std::vector<TopoShape>& sources,
+                                const char* op = nullptr);
+    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param source: source shape.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
+                                const TopoShape& source,
+                                const char* op = nullptr);
+    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Returns the new shape built by the shape maker with mappend element
+     *         name generated using this shape as the source. The shape itself
+     *         is not modified.
+     */
+    TopoShape makeElementShape(BRepOffsetAPI_ThruSections& mkShape, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
+    }
+
+    /** Specialized shape making for BRepBuilderAPI_MakePipeShell with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepOffsetAPI_MakePipeShell& mkShape,
+                                const std::vector<TopoShape>& sources,
+                                const char* op = nullptr);
+
+    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param source: source shape.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
+                                const TopoShape& source,
+                                const char* op = nullptr);
+    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Returns the new shape built by the shape maker with mappend element
+     *         name generated using this shape as the source. The shape itself
+     *         is not modified.
+     */
+    TopoShape makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
+    }
+
+    /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementShape(BRepFeat_MakePrism& mkShape,
+                                const std::vector<TopoShape>& sources,
+                                const TopoShape& uptoface,
+                                const char* op);
+
+    /** Helper class to return the generated and modified shape given an input shape
+     *
+     * Shape history information is extracted using OCCT APIs
+     * BRepBuilderAPI_MakeShape::Generated/Modified(). However, there is often
+     * some glitches in various derived class. So we use this class as an
+     * abstraction, and create various derived classes to deal with the glitches.
+     */
+
     friend class TopoShapeCache;
 
 private:
@@ -1013,9 +1280,11 @@ private:
 
         void Nullify()
         {
-            _owner->resetElementMap();
-            _owner->_cache.reset();
-            _owner->_parentCache.reset();
+            if (!this->IsNull()) {
+                _owner->resetElementMap();
+                _owner->_cache.reset();
+                _owner->_parentCache.reset();
+            }
         }
 
         const TopLoc_Location& Location() const

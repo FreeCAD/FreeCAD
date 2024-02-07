@@ -31,6 +31,7 @@
 import os
 from PySide import QtCore
 from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -305,7 +306,7 @@ class Draft_SetStyle_TaskPanel:
 
     def onSaveStyle(self):
 
-        reply = QtGui.QInputDialog.getText(None,
+        reply = QtWidgets.QInputDialog.getText(None,
                                            translate("Draft", "Save style"),
                                            translate("Draft", "Name of this new style:"))
         if reply[1]:
@@ -313,12 +314,12 @@ class Draft_SetStyle_TaskPanel:
             pdict = self.load()
             if pdict:
                 if name in pdict:
-                    reply = QtGui.QMessageBox.question(None,
+                    reply = QtWidgets.QMessageBox.question(None,
                                                        translate("Draft", "Warning"),
                                                        translate("Draft", "Name exists. Overwrite?"),
-                                                       QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                                       QtGui.QMessageBox.No)
-                    if reply == QtGui.QMessageBox.No:
+                                                       QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                       QtWidgets.QMessageBox.No)
+                    if reply == QtWidgets.QMessageBox.No:
                         return
             preset = self.getValues()
             pdict[name] = preset

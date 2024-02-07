@@ -31,21 +31,16 @@ from PySide import QtCore, QtGui, QtWidgets
 import addonmanager_freecad_interface as fci
 
 import addonmanager_utilities as utils
-from addonmanager_metadata import Version, UrlType, get_first_supported_freecad_version
+from addonmanager_metadata import (
+    Version,
+    get_first_supported_freecad_version,
+    get_branch_from_metadata,
+)
 from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from addonmanager_readme_viewer import ReadmeViewer
+from addonmanager_git import GitManager, NoGitFound
 from Addon import Addon
 from change_branch import ChangeBranchDialog
-
-have_git = False
-try:
-    import git
-
-    if hasattr(git, "Repo"):
-        have_git = True
-except ImportError:
-    git = None
-
 
 translate = fci.translate
 
@@ -70,6 +65,10 @@ class PackageDetails(QtWidgets.QWidget):
         self.worker = None
         self.repo = None
         self.status_update_thread = None
+        try:
+            self.git_manager = GitManager()
+        except NoGitFound:
+            self.git_manager = None
 
         self.ui.buttonBack.clicked.connect(self.back.emit)
         self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
@@ -155,16 +154,30 @@ class PackageDetails(QtWidgets.QWidget):
 
             if status == Addon.Status.UPDATE_AVAILABLE:
                 if repo.metadata:
-                    installed_version_string += (
-                        "<b>"
-                        + translate(
-                            "AddonsInstaller",
-                            "On branch {}, update available to version",
-                        ).format(repo.branch)
-                        + " "
-                    )
-                    installed_version_string += str(repo.metadata.version)
-                    installed_version_string += ".</b>"
+                    name_change = False
+                    if repo.installed_metadata:
+                        old_branch = get_branch_from_metadata(repo.installed_metadata)
+                        new_branch = get_branch_from_metadata(repo.metadata)
+                        if old_branch != new_branch:
+                            installed_version_string += (
+                                "<b>"
+                                + translate(
+                                    "AddonsInstaller",
+                                    "Currently on branch {}, name changed to {}",
+                                ).format(old_branch, new_branch)
+                            ) + ".</b> "
+                            name_change = True
+                    if not name_change:
+                        installed_version_string += (
+                            "<b>"
+                            + translate(
+                                "AddonsInstaller",
+                                "On branch {}, update available to version",
+                            ).format(repo.branch)
+                            + " "
+                        )
+                        installed_version_string += str(repo.metadata.version)
+                        installed_version_string += ".</b>"
                 elif repo.macro and repo.macro.version:
                     installed_version_string += (
                         "<b>" + translate("AddonsInstaller", "Update available to version") + " "
@@ -183,14 +196,16 @@ class PackageDetails(QtWidgets.QWidget):
             elif status == Addon.Status.NO_UPDATE_AVAILABLE:
                 detached_head = False
                 branch = repo.branch
-                if have_git and repo.repo_type != Addon.Kind.MACRO:
+                if self.git_manager and repo.repo_type != Addon.Kind.MACRO:
                     basedir = fci.getUserAppDataDir()
                     moddir = os.path.join(basedir, "Mod", repo.name)
-                    if os.path.exists(os.path.join(moddir, ".git")):
-                        gitrepo = git.Repo(moddir)
-                        branch = gitrepo.head.ref.name
-                        detached_head = gitrepo.head.is_detached
-
+                    repo_path = os.path.join(moddir, ".git")
+                    if os.path.exists(repo_path):
+                        branch = self.git_manager.current_branch(repo_path)
+                        if self.git_manager.detached_head(repo_path):
+                            tag = self.git_manager.current_tag(repo_path)
+                            branch = tag
+                            detached_head = True
                 if detached_head:
                     installed_version_string += (
                         translate(
@@ -356,7 +371,7 @@ class PackageDetails(QtWidgets.QWidget):
             return
 
         # Can we actually switch branches? If not, return.
-        if not have_git:
+        if not self.git_manager:
             return
 
         # Is there a .git subdirectory? If not, return.

@@ -163,6 +163,8 @@ def get_zip_url(repo):
         return f"{repo.url}/archive/{repo.branch}.zip"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/archive/{repo.branch}.zip"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
         + parsed_url.netloc
@@ -181,6 +183,7 @@ def recognized_git_location(repo) -> bool:
         "gitlab.com",
         "framagit.org",
         "salsa.debian.org",
+        "codeberg.org",
     ]
 
 
@@ -192,6 +195,8 @@ def construct_git_url(repo, filename):
         return f"{repo.url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/{filename}"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
         + parsed_url.netloc
@@ -222,6 +227,8 @@ def get_desc_regex(repo):
         return r'<meta property="og:description" content="(.*?)"'
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
+    if parsed_url.netloc in ["codeberg.org"]:
+        return r'<meta property="og:description" content="(.*?)"'
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
         repo.url,
@@ -238,6 +245,8 @@ def get_readme_html_url(repo):
         return f"{repo.url}/blob/{repo.branch}/README.md"
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/README.md"
     fci.Console.PrintLog("Unrecognized git repo location '' -- guessing it is a GitLab instance...")
     return f"{repo.url}/-/blob/{repo.branch}/README.md"
 

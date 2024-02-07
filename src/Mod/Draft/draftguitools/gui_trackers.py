@@ -147,11 +147,11 @@ class Tracker:
             self.color.rgb = color
         elif hasattr(FreeCAD, "activeDraftCommand") \
                 and FreeCAD.activeDraftCommand is not None \
+                and hasattr(FreeCAD.activeDraftCommand, "featureName") \
                 and FreeCAD.activeDraftCommand.featureName in ("Dimension", "Label", "Text"):
-            color = utils.get_rgba_tuple(params.get_param("DefaultAnnoLineColor"))[:3]
-            self.color.rgb = color
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("DefaultAnnoLineColor"))[:3]
         else:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("line")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3]
 
     def _get_wp(self):
         return FreeCAD.DraftWorkingPlane
@@ -178,7 +178,7 @@ class snapTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -445,7 +445,7 @@ class bsplineTracker(Tracker):
             except Exception:
                 # workaround for pivy SoInput.setBuffer() bug
                 buf = buf.replace("\n", "")
-                pts = re.findall("point \[(.*?)\]", buf)[0]
+                pts = re.findall("point \\[(.*?)\\]", buf)[0]
                 pts = pts.split(",")
                 pc = []
                 for p in pts:
@@ -523,7 +523,7 @@ class bezcurveTracker(Tracker):
                 except Exception:
                     # workaround for pivy SoInput.setBuffer() bug
                     buf = buf.replace("\n","")
-                    pts = re.findall("point \[(.*?)\]", buf)[0]
+                    pts = re.findall("point \\[(.*?)\\]", buf)[0]
                     pts = pts.split(",")
                     pc = []
                     for p in pts:
@@ -652,7 +652,7 @@ class arcTracker(Tracker):
         except Exception:
             # workaround for pivy SoInput.setBuffer() bug
             buf = buf.replace("\n", "")
-            pts = re.findall("point \[(.*?)\]", buf)[0]
+            pts = re.findall("point \\[(.*?)\\]", buf)[0]
             pts = pts.split(",")
             pc = []
             for p in pts:
@@ -714,7 +714,7 @@ class ghostTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -898,7 +898,7 @@ class editTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -1399,7 +1399,7 @@ class archDimTracker(Tracker):
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
         self.dimnode.pnts.setValues([p1node, p2node])
         self.dimnode.lineWidth = 1
-        color = FreeCADGui.draftToolBar.getDefaultColor("snap")
+        color = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
         self.dimnode.size = 11
         self.size_pixel = self.dimnode.size.getValue()*96/72
