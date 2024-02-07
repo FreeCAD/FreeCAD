@@ -152,12 +152,13 @@ App::DocumentObjectExecReturn *Pad::execute()
                 dir.Reverse();
 
             TopoDS_Shape upToShape;
-            int faceCount = 0;
+            int faceCount = 1;
             // Find a valid shape, face or datum plane to extrude up to
             if (method == "UpToFace") {
                 TopoDS_Face upToFace;
                 getFaceFromLinkSub(upToFace, UpToFace);
                 upToShape = TopoDS_Shape(upToFace);
+                upToShape.Move(invObjLoc);
                 faceCount = 1;
             }
             else if (method == "UpToShape") {
@@ -168,6 +169,7 @@ App::DocumentObjectExecReturn *Pad::execute()
                 catch (Base::ValueError){
                     //no shape selected use the base
                     upToShape = base;
+                    faceCount = 0;
                 }
             }
             if (faceCount == 1) {
@@ -206,10 +208,7 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 PrismMode mode = PrismMode::None;
-                if (method == "UpToShape")
-                    generatePrism(prism, "UpToFace", base, sketchshape, supportface, base, dir, mode, Standard_True);
-                else
-                    generatePrism(prism, method, base, sketchshape, supportface, upToShape, dir, mode, Standard_True);
+                generatePrism(prism, method, base, sketchshape, supportface, upToShape, dir, mode, Standard_True);
             }
         }
         else {

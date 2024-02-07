@@ -133,9 +133,6 @@ protected:
     static void getFaceFromLinkSub(TopoDS_Face& upToFace,
                                    const App::PropertyLinkSub& refFace);
 
-    static void getFaceFromLinkSub(TopoDS_Face& upToFace,
-                                   const App::PropertyLinkSubList& refFace);
-
     /// Create a shape with shapes and faces from a given LinkSubList
     /// return 0 if almost one full shape is selected else the face count
     static int getShapeFromLinkSubList(TopoDS_Shape& upToFaces,

@@ -39,7 +39,7 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -157,12 +157,13 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 dir.Reverse();
 
             TopoDS_Shape upToShape;
-            int faceCount = 0;
+            int faceCount = 1;
             // Find a valid face or datum plane to extrude up to
             if (method == "UpToFace") {
                 TopoDS_Face upToFace;
                 getFaceFromLinkSub(upToFace, UpToFace);
                 upToShape = TopoDS_Shape(upToFace);
+                upToShape.Move(invObjLoc);
                 faceCount = 1;
             }
             else if (method == "UpToShape") {
