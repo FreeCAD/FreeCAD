@@ -21,6 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
 

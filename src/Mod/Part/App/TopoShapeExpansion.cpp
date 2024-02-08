@@ -61,6 +61,7 @@
 #   include <OSD_Parallel.hxx>
 #endif
 
+#include "modelRefine.h"
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeCache.h"
