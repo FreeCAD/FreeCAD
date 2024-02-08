@@ -30,8 +30,9 @@ SET(AddonManager_SRCS
     addonmanager_macro.py
     addonmanager_macro_parser.py
     addonmanager_metadata.py
+    addonmanager_package_details_controller.py
     addonmanager_pyside_interface.py
-    addonmanager_readme_viewer.py
+    addonmanager_readme_controller.py
     addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
     addonmanager_uninstaller_gui.py
@@ -68,7 +69,7 @@ SET(AddonManager_SRCS
     loading.html
     manage_python_dependencies.py
     NetworkManager.py
-    package_details.py
+        addonmanager_package_details_controller.py
     package_list.py
     PythonDependencyUpdateDialog.ui
     select_toolbar_dialog.ui

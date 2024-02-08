@@ -472,19 +472,21 @@ if HAVE_QTNETWORK:
                 sender.abort()
                 self.__launch_request(current_index, self.__create_get_request(url))
 
-        def __on_ssl_error(self, reply: str, errors: List[str]):
+        def __on_ssl_error(self, reply: str, errors: List[str] = None):
             """Called when an SSL error occurs: prints the error information."""
             if HAVE_FREECAD:
                 FreeCAD.Console.PrintWarning(
                     translate("AddonsInstaller", "Error with encrypted connection") + "\n:"
                 )
                 FreeCAD.Console.PrintWarning(reply)
-                for error in errors:
-                    FreeCAD.Console.PrintWarning(error)
+                if errors is not None:
+                    for error in errors:
+                        FreeCAD.Console.PrintWarning(error)
             else:
                 print("Error with encrypted connection")
-                for error in errors:
-                    print(error)
+                if errors is not None:
+                    for error in errors:
+                        print(error)
 
         def __download_progress(self, bytesReceived: int, bytesTotal: int) -> None:
             """Monitors download progress and emits a progress_made signal"""

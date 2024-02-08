@@ -52,7 +52,8 @@ from addonmanager_update_all_gui import UpdateAllGUI
 import addonmanager_utilities as utils
 import AddonManager_rc  # This is required by Qt, it's not unused
 from package_list import PackageList, PackageListItemModel
-from package_details import PackageDetails
+from addonmanager_package_details_controller import PackageDetailsController
+from Widgets.addonmanager_widget_package_details_view import PackageDetailsView
 from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
 from Addon import Addon
 from manage_python_dependencies import (
@@ -204,7 +205,8 @@ class CommandAddonManager:
         self.dialog.layout().addWidget(self.button_bar)
 
         # Package details start out hidden
-        self.packageDetails = PackageDetails(self.dialog)
+        self.packageDetails = PackageDetailsView(self.dialog)
+        self.package_details_controller = PackageDetailsController(self.packageDetails)
         self.packageDetails.hide()
         index = self.dialog.layout().indexOf(self.packageList)
         self.dialog.layout().insertWidget(index, self.packageDetails)
@@ -238,12 +240,12 @@ class CommandAddonManager:
         self.packageList.ui.progressBar.stop_clicked.connect(self.stop_update)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
-        self.packageDetails.execute.connect(self.executemacro)
-        self.packageDetails.install.connect(self.launch_installer_gui)
-        self.packageDetails.uninstall.connect(self.remove)
-        self.packageDetails.update.connect(self.update)
-        self.packageDetails.back.connect(self.on_buttonBack_clicked)
-        self.packageDetails.update_status.connect(self.status_updated)
+        self.package_details_controller.execute.connect(self.executemacro)
+        self.package_details_controller.install.connect(self.launch_installer_gui)
+        self.package_details_controller.uninstall.connect(self.remove)
+        self.package_details_controller.update.connect(self.update)
+        self.package_details_controller.back.connect(self.on_buttonBack_clicked)
+        self.package_details_controller.update_status.connect(self.status_updated)
 
         # center the dialog over the FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -735,7 +737,7 @@ class CommandAddonManager:
 
         self.packageList.hide()
         self.packageDetails.show()
-        self.packageDetails.show_repo(selected_repo)
+        self.package_details_controller.show_repo(selected_repo)
 
     def show_information(self, message: str) -> None:
         """shows generic text in the information pane"""
@@ -746,7 +748,7 @@ class CommandAddonManager:
     def show_workbench(self, repo: Addon) -> None:
         self.packageList.hide()
         self.packageDetails.show()
-        self.packageDetails.show_repo(repo)
+        self.package_details_controller.show_repo(repo)
 
     def on_buttonBack_clicked(self) -> None:
         self.packageDetails.hide()
@@ -765,7 +767,7 @@ class CommandAddonManager:
         else:
             repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
-        self.packageDetails.show_repo(repo)
+        self.package_details_controller.show_repo(repo)
 
     def launch_installer_gui(self, addon: Addon) -> None:
         if self.installer_gui is not None:
@@ -860,7 +862,7 @@ class CommandAddonManager:
         if repo.status() == Addon.Status.PENDING_RESTART:
             self.restart_required = True
         self.item_model.reload_item(repo)
-        self.packageDetails.show_repo(repo)
+        self.package_details_controller.show_repo(repo)
         if repo in self.packages_with_updates:
             self.packages_with_updates.remove(repo)
             self.enable_updates(len(self.packages_with_updates))

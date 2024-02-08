@@ -23,50 +23,66 @@
 
 """ A Qt Widget for displaying Addon README information """
 
-import Addon
-from PySide import QtCore, QtGui, QtWidgets
-from enum import Enum, auto
-from html.parser import HTMLParser
-
-import addonmanager_freecad_interface as fci
+import FreeCAD
+from Addon import Addon
 import addonmanager_utilities as utils
+
+from enum import IntEnum, Enum, auto
+from html.parser import HTMLParser
+from typing import Optional
+
 import NetworkManager
 
-translate = fci.translate
+translate = FreeCAD.Qt.translate
+
+from PySide import QtCore, QtGui
 
 
-class ReadmeViewer(QtWidgets.QTextBrowser):
+class ReadmeDataType(IntEnum):
+    PlainText = 0
+    Markdown = 1
+    Html = 2
 
-    """A QTextBrowser widget that, when given an Addon, downloads the README data as appropriate
-    and renders it with whatever technology is available (usually Qt's Markdown renderer for
-    workbenches and its HTML renderer for Macros)."""
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+class ReadmeController(QtCore.QObject):
+
+    """A class that can provide README data from an Addon, possibly loading external resources such
+    as images"""
+
+    def __init__(self, widget):
+        super().__init__()
         NetworkManager.InitializeNetworkManager()
         NetworkManager.AM_NETWORK_MANAGER.completed.connect(self._download_completed)
         self.readme_request_index = 0
         self.resource_requests = {}
+        self.resource_failures = []
         self.url = ""
-        self.repo: Addon.Addon = None
-        self.setOpenExternalLinks(True)
-        self.setOpenLinks(True)
-        self.image_map = {}
+        self.readme_data = None
+        self.readme_data_type = None
+        self.addon: Optional[Addon] = None
         self.stop = True
+        self.widget = widget
+        self.widget.load_resource.connect(self.loadResource)
 
     def set_addon(self, repo: Addon):
         """Set which Addon's information is displayed"""
 
-        self.setPlainText(translate("AddonsInstaller", "Loading README data..."))
-        self.repo = repo
+        self.addon = repo
         self.stop = False
-        if self.repo.repo_type == Addon.Addon.Kind.MACRO:
-            self.url = self.repo.macro.wiki
+        self.readme_data = None
+        if self.addon.repo_type == Addon.Kind.MACRO:
+            self.url = self.addon.macro.wiki
             if not self.url:
-                self.url = self.repo.macro.url
+                self.url = self.addon.macro.url
         else:
             self.url = utils.get_readme_url(repo)
+        self.widget.setUrl(self.url)
 
+        self.widget.setText(
+            translate("AddonsInstaller", "Loading page for {} from {}...").format(
+                self.addon.display_name, self.url
+            )
+        )
         self.readme_request_index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
             self.url
         )
@@ -77,7 +93,7 @@ class ReadmeViewer(QtWidgets.QTextBrowser):
             if code == 200:  # HTTP success
                 self._process_package_download(data.data().decode("utf-8"))
             else:
-                self.setPlainText(
+                self.widget.setText(
                     translate(
                         "AddonsInstaller",
                         "Failed to download data from {} -- received response code {}.",
@@ -87,47 +103,42 @@ class ReadmeViewer(QtWidgets.QTextBrowser):
             if code == 200:
                 self._process_resource_download(self.resource_requests[index], data.data())
             else:
-                self.image_map[self.resource_requests[index]] = None
+                FreeCAD.Console.PrintLog(f"Failed to load {self.resource_requests[index]}\n")
+                self.resource_failures.append(self.resource_requests[index])
             del self.resource_requests[index]
             if not self.resource_requests:
-                self.set_addon(self.repo)  # Trigger a reload of the page now with resources
+                if self.readme_data:
+                    if self.readme_data_type == ReadmeDataType.Html:
+                        self.widget.setHtml(self.readme_data)
+                    elif self.readme_data_type == ReadmeDataType.Markdown:
+                        self.widget.setMarkdown(self.readme_data)
+                    else:
+                        self.widget.setText(self.readme_data)
+                else:
+                    self.set_addon(self.addon)  # Trigger a reload of the page now with resources
 
     def _process_package_download(self, data: str):
-        if self.repo.repo_type == Addon.Addon.Kind.MACRO:
+        if self.addon.repo_type == Addon.Kind.MACRO:
             parser = WikiCleaner()
             parser.feed(data)
-            self.setHtml(parser.final_html)
+            self.readme_data = parser.final_html
+            self.readme_data_type = ReadmeDataType.Html
+            self.widget.setHtml(parser.final_html)
         else:
-            # Check for recent Qt (e.g. Qt5.15 or later). Check can be removed when
-            # we no longer support Ubuntu 20.04LTS for compiling.
-            if hasattr(self, "setMarkdown"):
-                self.setMarkdown(data)
-            else:
-                self.setPlainText(data)
+            self.readme_data = data
+            self.readme_data_type = ReadmeDataType.Markdown
+            self.widget.setMarkdown(data)
 
     def _process_resource_download(self, resource_name: str, resource_data: bytes):
         image = QtGui.QImage.fromData(resource_data)
-        if image:
-            self.image_map[resource_name] = self._ensure_appropriate_width(image)
-        else:
-            self.image_map[resource_name] = None
+        self.widget.set_resource(resource_name, image)
 
-    def loadResource(self, resource_type: int, name: QtCore.QUrl) -> object:
-        """Callback for resource loading. Called automatically by underlying Qt
-        code when external resources are needed for rendering. In particular,
-        here it is used to download and cache (in RAM) the images needed for the
-        README and Wiki pages."""
-        if resource_type == QtGui.QTextDocument.ImageResource and not self.stop:
-            full_url = self._create_full_url(name.toString())
-            if full_url not in self.image_map:
-                self.image_map[full_url] = None
-                fci.Console.PrintMessage(f"Downloading image from {full_url}...\n")
-                index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(full_url)
-                self.resource_requests[index] = full_url
-            return self.image_map[full_url]
-        return super().loadResource(resource_type, name)
+    def loadResource(self, full_url: str):
+        if full_url not in self.resource_failures:
+            index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(full_url)
+            self.resource_requests[index] = full_url
 
-    def hideEvent(self, event: QtGui.QHideEvent):
+    def cancel_resource_loading(self):
         self.stop = True
         for request in self.resource_requests:
             NetworkManager.AM_NETWORK_MANAGER.abort(request)
@@ -140,12 +151,6 @@ class ReadmeViewer(QtWidgets.QTextBrowser):
             return url
         lhs, slash, _ = self.url.rpartition("/")
         return lhs + slash + url
-
-    def _ensure_appropriate_width(self, image: QtGui.QImage) -> QtGui.QImage:
-        ninety_seven_percent = self.width() * 0.97
-        if image.width() < ninety_seven_percent:
-            return image
-        return image.scaledToWidth(ninety_seven_percent)
 
 
 class WikiCleaner(HTMLParser):
