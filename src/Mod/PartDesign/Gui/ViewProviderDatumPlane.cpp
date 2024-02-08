@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include <Gui/SoAxisCrossKit.h>
@@ -72,7 +74,7 @@ ViewProviderDatumPlane::ViewProviderDatumPlane()
     axisGroup->addChild(pTransform);
     axisGroup->addChild(axisCross);
 
-    pArrowSwitch = new SoSwitch();
+    pArrowSwitch = new SoSwitch;
     pArrowSwitch->ref();
 
     pArrowSwitch->addChild(axisGroup);

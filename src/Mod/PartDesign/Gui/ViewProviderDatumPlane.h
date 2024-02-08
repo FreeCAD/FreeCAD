@@ -27,6 +27,8 @@
 
 #include "ViewProviderDatum.h"
 
+class SoTransform;
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumPlane : public PartDesignGui::ViewProviderDatum
@@ -49,7 +51,6 @@ public:
 
 private:
     SoCoordinate3 *pCoords;
-    SoCoordinate3 *pArrowCoords;
     SoTransform *pTransform;
     SoSwitch *pArrowSwitch;
 
