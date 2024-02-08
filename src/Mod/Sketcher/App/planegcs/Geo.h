@@ -25,10 +25,11 @@
 
 #include "Util.h"
 #include <boost/math/constants/constants.hpp>
+#include "../../SketcherGlobal.h"
 
 namespace GCS
 {
-class Point
+class SketcherExport Point
 {
 public:
     Point()
@@ -62,7 +63,7 @@ static constexpr double pi_18 = pi / 18.0;
 /// manually as well. The class also provides a bunch of methods to do math
 /// on it (and derivatives are calculated implicitly).
 ///
-class DeriVector2
+class SketcherExport DeriVector2
 {
 public:
     DeriVector2()
@@ -146,7 +147,8 @@ public:
 // Geometries
 ///////////////////////////////////////
 
-class Curve  // a base class for all curve-based objects (line, circle/arc, ellipse/arc)
+/// A base class for all curve-based objects (line, circle/arc, ellipse/arc).
+class SketcherExport Curve
 {
 public:
     virtual ~Curve()
@@ -189,7 +191,7 @@ public:
     virtual Curve* Copy() = 0;
 };
 
-class Line: public Curve
+class SketcherExport Line: public Curve
 {
 public:
     Line()
@@ -205,7 +207,7 @@ public:
     Line* Copy() override;
 };
 
-class Circle: public Curve
+class SketcherExport Circle: public Curve
 {
 public:
     Circle()
@@ -223,7 +225,7 @@ public:
     Circle* Copy() override;
 };
 
-class Arc: public Circle
+class SketcherExport Arc: public Circle
 {
 public:
     Arc()
@@ -245,7 +247,7 @@ public:
     Arc* Copy() override;
 };
 
-class MajorRadiusConic: public Curve
+class SketcherExport MajorRadiusConic: public Curve
 {
 public:
     ~MajorRadiusConic() override
@@ -260,7 +262,7 @@ public:
     // DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
 };
 
-class Ellipse: public MajorRadiusConic
+class SketcherExport Ellipse: public MajorRadiusConic
 {
 public:
     Ellipse()
@@ -286,7 +288,7 @@ public:
     Ellipse* Copy() override;
 };
 
-class ArcOfEllipse: public Ellipse
+class SketcherExport ArcOfEllipse: public Ellipse
 {
 public:
     ArcOfEllipse()
@@ -310,7 +312,7 @@ public:
     ArcOfEllipse* Copy() override;
 };
 
-class Hyperbola: public MajorRadiusConic
+class SketcherExport Hyperbola: public MajorRadiusConic
 {
 public:
     Hyperbola()
@@ -336,7 +338,7 @@ public:
     Hyperbola* Copy() override;
 };
 
-class ArcOfHyperbola: public Hyperbola
+class SketcherExport ArcOfHyperbola: public Hyperbola
 {
 public:
     ArcOfHyperbola()
@@ -358,7 +360,7 @@ public:
     ArcOfHyperbola* Copy() override;
 };
 
-class Parabola: public Curve
+class SketcherExport Parabola: public Curve
 {
 public:
     Parabola()
@@ -374,7 +376,7 @@ public:
     Parabola* Copy() override;
 };
 
-class ArcOfParabola: public Parabola
+class SketcherExport ArcOfParabola: public Parabola
 {
 public:
     ArcOfParabola()
@@ -395,7 +397,7 @@ public:
     ArcOfParabola* Copy() override;
 };
 
-class BSpline: public Curve
+class SketcherExport BSpline: public Curve
 {
 public:
     BSpline()
