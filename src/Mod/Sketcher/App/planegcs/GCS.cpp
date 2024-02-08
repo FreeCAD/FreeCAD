@@ -1679,6 +1679,16 @@ System::calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1, 
     return atan2(-n2.x * n1.y + n2.y * n1.x, n2.x * n1.x + n2.y * n1.y);
 }
 
+double System::calculateAngleViaParams(const Curve& crv1,
+                                       const Curve& crv2,
+                                       double* param1,
+                                       double* param2) const
+{
+    GCS::DeriVector2 n1 = crv1.CalculateNormal(param1);
+    GCS::DeriVector2 n2 = crv2.CalculateNormal(param2);
+    return atan2(-n2.x * n1.y + n2.y * n1.x, n2.x * n1.x + n2.y * n1.y);
+}
+
 void System::calculateNormalAtPoint(const Curve& crv,
                                     const Point& p,
                                     double& rtnX,

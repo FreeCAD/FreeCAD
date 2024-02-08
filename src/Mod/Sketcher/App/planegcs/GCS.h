@@ -501,6 +501,10 @@ public:
 
     double calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p) const;
     double calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1, Point& p2) const;
+    double calculateAngleViaParams(const Curve& crv1,
+                                   const Curve& crv2,
+                                   double* param1,
+                                   double* param2) const;
     void calculateNormalAtPoint(const Curve& crv, const Point& p, double& rtnX, double& rtnY) const;
 
     // Calculates errors of all constraints which have a tag equal to
