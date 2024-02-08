@@ -27,7 +27,6 @@
 #ifndef _PreComp_
 
 #include <BRepBuilderAPI_MakeWire.hxx>
-#include <modelRefine.h>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
@@ -41,6 +40,7 @@
 #include <utility>
 #endif
 
+#include "modelRefine.h"
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
 #include "TopoShapeMapper.h"
