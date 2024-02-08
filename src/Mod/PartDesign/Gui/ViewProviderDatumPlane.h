@@ -44,8 +44,15 @@ public:
     void setExtents (Base::BoundBox3d bbox) override;
     void setExtents(double l, double w);
 
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+
 private:
     SoCoordinate3 *pCoords;
+    SoCoordinate3 *pArrowCoords;
+    SoTransform *pTransform;
+    SoSwitch *pArrowSwitch;
+
 };
 
 } // namespace PartDesignGui

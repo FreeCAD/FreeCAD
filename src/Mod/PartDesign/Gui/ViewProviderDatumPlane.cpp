@@ -29,6 +29,8 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
 
+#include <Gui/SoAxisCrossKit.h>
+#include <Gui/SoFCBoundingBox.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -45,6 +47,36 @@ ViewProviderDatumPlane::ViewProviderDatumPlane()
 
     pCoords = new SoCoordinate3();
     pCoords->ref ();
+
+    // Hide the X and Y axes, we're only interested in showing the normal direction.
+    auto axisKit = new Gui::SoAxisCrossKit;
+    axisKit->set("xAxis.appearance.drawStyle", "style INVISIBLE");
+    axisKit->set("xHead.appearance.drawStyle", "style INVISIBLE");
+    axisKit->set("yAxis.appearance.drawStyle", "style INVISIBLE");
+    axisKit->set("yHead.appearance.drawStyle", "style INVISIBLE");
+    axisKit->set("zAxis.appearance.drawStyle", "lineWidth 2");
+
+    auto coords = new SoCoordinate3;
+    coords->point.set1Value(0, SbVec3f(0,0,0));
+    coords->point.set1Value(1, SbVec3f(10,0,0));
+    axisKit->setPart("zAxis.coordinate3", coords);
+    axisKit->set("zHead.transform", "translation 0 0 15");
+    axisKit->set("zHead.transform", "scaleFactor 0.5 1.5 0.5");
+
+    auto axisCross = new Gui::SoShapeScale;
+    axisCross->setPart("shape", axisKit);
+    axisCross->scaleFactor = 1.0F;
+
+    pTransform = new SoTransform;
+    auto axisGroup = new Gui::SoSkipBoundingGroup;
+    axisGroup->addChild(pTransform);
+    axisGroup->addChild(axisCross);
+
+    pArrowSwitch = new SoSwitch();
+    pArrowSwitch->ref();
+
+    pArrowSwitch->addChild(axisGroup);
+    pArrowSwitch->whichChild = -1;
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
@@ -85,6 +117,8 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
 
     getShapeRoot ()->addChild(faceSet);
+
+    getShapeRoot ()->addChild(pArrowSwitch);
 }
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
@@ -129,6 +163,10 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     pCoords->point.set1Value(1, bbox.MinX - margin, bbox.MaxY + margin, 0 );
     pCoords->point.set1Value(2, bbox.MinX - margin, bbox.MinY - margin, 0 );
     pCoords->point.set1Value(3, bbox.MaxX + margin, bbox.MinY - margin, 0 );
+
+    // Place the normal vector in the center.
+    pTransform->translation.setValue((bbox.MaxX + bbox.MinX) / 2,
+            (bbox.MaxY + bbox.MinY) / 2, 0);
 }
 
 void ViewProviderDatumPlane::setExtents(double l, double w)
@@ -139,4 +177,21 @@ void ViewProviderDatumPlane::setExtents(double l, double w)
     pCoords->point.set1Value(1, -l/2, w/2, 0);
     pCoords->point.set1Value(2, -l/2, -w/2, 0);
     pCoords->point.set1Value(3, l/2, -w/2, 0);
+
+    // Place the normal vector in the center.
+    pTransform->translation.setValue(0, 0, 0);
+}
+
+bool ViewProviderDatumPlane::setEdit(int ModNum)
+{
+    // Show the normal vector.
+    pArrowSwitch->whichChild = 0;
+    return ViewProviderDatum::setEdit(ModNum);
+}
+
+void ViewProviderDatumPlane::unsetEdit(int ModNum)
+{
+    // Hide the normal vector.
+    pArrowSwitch->whichChild = -1;
+    ViewProviderDatum::unsetEdit(ModNum);
 }
