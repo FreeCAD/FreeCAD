@@ -26,6 +26,9 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
+from FreeCAD import Units, Vector
+
+
 def get_analysis_types():
     return "all"    # write for all analysis types
 
@@ -71,12 +74,38 @@ def write_constraint(f, femobj, tie_obj, ccxwriter):
 
     tolerance = tie_obj.Tolerance.getValueAs("mm").Value
     adjust = ""
+    symmetry = ""
+    tie_name = tie_obj.Name
     if not tie_obj.Adjust:
         adjust = ", ADJUST=NO"
+
+    if tie_obj.CyclicSymmetry:
+        symmetry = ", CYCLIC SYMMETRY"
+
     f.write(
-        "*TIE, POSITION TOLERANCE={:.13G}{}, NAME=TIE{}\n"
-        .format(tolerance, adjust, tie_obj.Name)
+        "*TIE, POSITION TOLERANCE={:.13G}{}{}, NAME=TIE{}\n"
+        .format(tolerance, adjust, symmetry, tie_name)
     )
-    ind_surf = "TIE_IND{}".format(tie_obj.Name)
-    dep_surf = "TIE_DEP{}".format(tie_obj.Name)
+    ind_surf = "TIE_IND{}".format(tie_name)
+    dep_surf = "TIE_DEP{}".format(tie_name)
     f.write("{}, {}\n".format(dep_surf, ind_surf))
+
+    # write CYCLIC SYMMETRY MODEL card
+    if tie_obj.CyclicSymmetry:
+        f.write(
+            "*CYCLIC SYMMETRY MODEL, N={}, NGRAPH={}, TIE=TIE{}, ELSET=Eall\n"
+            .format(tie_obj.Sectors, tie_obj.ConnectedSectors, tie_name)
+        )
+
+        # get symmetry axis points
+        vec_a = tie_obj.SymmetryAxis.Base
+        vec_b = tie_obj.SymmetryAxis * Vector(0, 0, 1)
+
+        set_unit = lambda x: Units.Quantity(x, Units.Length).getValueAs("mm").Value
+        point_a = [set_unit(coord) for coord in vec_a]
+        point_b = [set_unit(coord) for coord in vec_b]
+
+        f.write(
+            "{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n"
+            .format(*point_a, *point_b)
+        )
