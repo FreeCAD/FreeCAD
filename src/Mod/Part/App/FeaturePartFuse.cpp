@@ -81,6 +81,7 @@ short MultiFuse::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiFuse::execute()
 {
+#ifndef FC_USE_TNP_FIX
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
@@ -192,4 +193,39 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     }
 
     return App::DocumentObject::StdReturn;
+#else
+
+    std::vector<TopoShape> shapes;
+    for(auto obj : Shapes.getValues()) {
+        TopoShape sh = Feature::getTopoShape(obj);
+        if(sh.isNull())
+            return new App::DocumentObjectExecReturn("Input shape is null");
+        if(!sh.hasSubShape(TopAbs_SOLID)) {
+            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("fusion of non solid: " << obj->getFullName());
+            else
+                FC_MSG("fusion of non solid: " << obj->getFullName());
+        }
+        shapes.push_back(sh);
+    }
+
+    TopoShape res(0,getDocument()->getStringHasher());
+    res.makEBoolean(Part::OpCodes::Fuse,shapes);
+    if (res.isNull())
+        throw Base::RuntimeError("Resulting shape is null");
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    if (hGrp->GetBool("CheckModel", false)) {
+        BRepCheck_Analyzer aChecker(res.getShape());
+        if (! aChecker.IsValid() ) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+    }
+
+    if (this->Refine.getValue())
+        res = res.makERefine();
+    this->Shape.setValue(res);
+    return Part::Feature::execute();
+#endif
 }
