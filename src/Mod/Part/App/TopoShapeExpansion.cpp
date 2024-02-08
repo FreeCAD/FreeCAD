@@ -41,7 +41,6 @@
 #include <utility>
 #endif
 
-#include "modelRefine.h"
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
 #include "TopoShapeMapper.h"
