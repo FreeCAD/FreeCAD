@@ -488,6 +488,8 @@ public:
     // value as the point approaches intersection of curves).
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py);
 
+    double calculateAngleViaParams(int geoId1, int geoId2, double param1, double param2);
+
     // This is to be used for rendering of angle-via-point constraint.
     Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py) const;
 

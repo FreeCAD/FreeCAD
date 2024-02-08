@@ -78,7 +78,9 @@ enum ConstraintType
     PointOnBSpline = 29,
     C2CDistance = 30,
     C2LDistance = 31,
-    P2CDistance = 32
+    P2CDistance = 32,
+    AngleViaPointAndParam = 33,
+    AngleViaPointAndTwoParams = 34
 };
 
 enum InternalAlignmentType
@@ -1167,6 +1169,91 @@ public:
                     bool flipn1,
                     bool flipn2);
     ~ConstraintSnell() override;
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
+class ConstraintAngleViaPointAndParam: public Constraint
+{
+private:
+    inline double* angle()
+    {
+        return pvec[0];
+    };
+    inline double* cparam()
+    {
+        return pvec[3];
+    };
+    Curve* crv1;
+    Curve* crv2;
+    // These two pointers hold copies of the curves that were passed on
+    //  constraint creation. The curves must be deleted upon destruction of
+    //  the constraint. It is necessary to have copies, since messing with
+    //  original objects that were passed is a very bad idea (but messing is
+    //  necessary, because we need to support redirectParams()/revertParams
+    //  functions.
+    // The pointers in the curves need to be reconstructed if pvec was redirected
+    //  (test pvecChangedFlag variable before use!)
+    Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
+                // The point is easily shallow-copied by C++, so no pointer type here and no delete
+                // is necessary.
+    void
+    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+public:
+    // We assume first curve needs param1
+    ConstraintAngleViaPointAndParam(Curve& acrv1,
+                                    Curve& acrv2,
+                                    Point p,
+                                    double* param1,
+                                    double* angle);
+    ~ConstraintAngleViaPointAndParam() override;
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
+// TODO: Do we need point here at all?
+class ConstraintAngleViaPointAndTwoParams: public Constraint
+{
+private:
+    inline double* angle()
+    {
+        return pvec[0];
+    };
+    inline double* cparam1()
+    {
+        return pvec[3];
+    };
+    inline double* cparam2()
+    {
+        return pvec[4];
+    };
+    Curve* crv1;
+    Curve* crv2;
+    // These two pointers hold copies of the curves that were passed on
+    //  constraint creation. The curves must be deleted upon destruction of
+    //  the constraint. It is necessary to have copies, since messing with
+    //  original objects that were passed is a very bad idea (but messing is
+    //  necessary, because we need to support redirectParams()/revertParams
+    //  functions.
+    // The pointers in the curves need to be reconstructed if pvec was redirected
+    //  (test pvecChangedFlag variable before use!)
+    Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
+                // The point is easily shallow-copied by C++, so no pointer type here and no delete
+                // is necessary.
+    void
+    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+public:
+    ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
+                                        Curve& acrv2,
+                                        Point p,
+                                        double* param1,
+                                        double* param2,
+                                        double* angle);
+    ~ConstraintAngleViaPointAndTwoParams() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
