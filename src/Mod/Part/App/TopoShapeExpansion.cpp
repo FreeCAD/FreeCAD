@@ -44,9 +44,7 @@
 #include <utility>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #endif
 
@@ -1293,12 +1291,11 @@ void addShapesToBuilder(const std::vector<TopoShape>& shapes,
 }
 }  // namespace
 
-TopoShape&
-TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
-                               const char* op,
-                               SingleShapeCompoundCreationPolicy policy)
+TopoShape& TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
+                                          const char* op,
+                                          SingleShapeCompoundCreationPolicy policy)
 {
-    if (policy == SingleShapeCompoundCreationPolicy::RETURN_SHAPE && shapes.size() == 1) {
+    if (policy == SingleShapeCompoundCreationPolicy::returnShape && shapes.size() == 1) {
         *this = shapes[0];
         return *this;
     }
@@ -1348,7 +1345,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
         tol = Precision::Confusion();
     }
 
-    if (policy == ConnectionPolicy::REQUIRE_SHARED_VERTEX) {
+    if (policy == ConnectionPolicy::requireSharedVertex) {
         // Can't use ShapeAnalysis_FreeBounds if not shared. It seems the output
         // edges are modified somehow, and it is not obvious how to map the
         // resulting edges.
@@ -1371,7 +1368,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
             wires.emplace_back(Tag, Hasher, wire);
         }
         shape.mapSubElementsTo(wires, op);
-        return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
+        return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
     }
 
     std::vector<TopoShape> wires;
@@ -1429,7 +1426,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
         wires.back().mapSubElement(edges, op);
         wires.back().fix();
     }
-    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
+    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
 
@@ -1438,7 +1435,7 @@ struct EdgePoints
     gp_Pnt v1, v2;
     std::list<TopoShape>::iterator it;
     const TopoShape* edge;
-    bool closed{false};
+    bool closed {false};
 
     EdgePoints(std::list<TopoShape>::iterator it, double tol)
         : it(it)
@@ -1458,11 +1455,11 @@ struct EdgePoints
     }
 };
 
-TopoShape TopoShape::reverseEdge (const TopoShape& edge) {
+TopoShape TopoShape::reverseEdge(const TopoShape& edge)
+{
     Standard_Real first = NAN;
     Standard_Real last = NAN;
-    const Handle(Geom_Curve)& curve =
-        BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
+    const Handle(Geom_Curve)& curve = BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
     first = curve->ReversedParameter(first);
     last = curve->ReversedParameter(last);
     TopoShape res(BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
@@ -1596,7 +1593,8 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
     std::vector<TopoShape> wires;
     std::list<TopoShape> edgeList;
 
-    auto shape = TopoShape().makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
+    auto shape =
+        TopoShape().makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
         edgeList.push_back(edge);
     }
@@ -1618,29 +1616,34 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
         wires.emplace_back(mkWire.Wire());
         wires.back().mapSubElement(edges, op);
     }
-    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
+    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
 
-TopoShape &TopoShape::makeElementCopy(const TopoShape &shape, const char *op, bool copyGeom, bool copyMesh)
+TopoShape&
+TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom, bool copyMesh)
 {
-    if(shape.isNull())
+    if (shape.isNull()) {
         return *this;
+    }
 
     TopoShape tmp(shape);
 #if OCC_VERSION_HEX >= 0x070000
-    tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(),copyGeom,copyMesh).Shape(), false);
+    tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
 #else
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape()).Shape(), false);
 #endif
-    if(op || (shape.Tag && shape.Tag!=Tag)) {
+    if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
-        if (!Hasher)
+        if (!Hasher) {
             Hasher = tmp.Hasher;
+        }
         copyElementMap(tmp, op);
-    }else
+    }
+    else {
         *this = tmp;
+    }
     return *this;
 }
 
@@ -2135,52 +2138,58 @@ const std::vector<TopoDS_Shape>& MapperMaker::generated(const TopoDS_Shape& s) c
     return _res;
 }
 
-MapperHistory::MapperHistory(const Handle(BRepTools_History) &history)
-    :history(history)
+MapperHistory::MapperHistory(const Handle(BRepTools_History) & history)
+    : history(history)
 {}
 
-MapperHistory::MapperHistory(const Handle(BRepTools_ReShape) &reshape)
+MapperHistory::MapperHistory(const Handle(BRepTools_ReShape) & reshape)
 {
-    if (reshape)
+    if (reshape) {
         history = reshape->History();
+    }
 }
 
-MapperHistory::MapperHistory(ShapeFix_Root &fix)
+MapperHistory::MapperHistory(ShapeFix_Root& fix)
 {
-    if (fix.Context())
+    if (fix.Context()) {
         history = fix.Context()->History();
+    }
 }
 
-const std::vector<TopoDS_Shape> &
-MapperHistory::modified(const TopoDS_Shape &s) const
+const std::vector<TopoDS_Shape>& MapperHistory::modified(const TopoDS_Shape& s) const
 {
     _res.clear();
     try {
         if (history) {
             TopTools_ListIteratorOfListOfShape it;
-            for (it.Initialize(history->Modified(s)); it.More(); it.Next())
+            for (it.Initialize(history->Modified(s)); it.More(); it.Next()) {
                 _res.push_back(it.Value());
+            }
         }
-    } catch (const Standard_Failure & e) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    }
+    catch (const Standard_Failure& e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+        }
     }
     return _res;
 }
 
-const std::vector<TopoDS_Shape> &
-MapperHistory::generated(const TopoDS_Shape &s) const
+const std::vector<TopoDS_Shape>& MapperHistory::generated(const TopoDS_Shape& s) const
 {
     _res.clear();
     try {
         if (history) {
             TopTools_ListIteratorOfListOfShape it;
-            for (it.Initialize(history->Generated(s)); it.More(); it.Next())
+            for (it.Initialize(history->Generated(s)); it.More(); it.Next()) {
                 _res.push_back(it.Value());
+            }
         }
-    } catch (const Standard_Failure & e) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    }
+    catch (const Standard_Failure& e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+        }
     }
     return _res;
 }

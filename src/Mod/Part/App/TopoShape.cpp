@@ -3148,8 +3148,9 @@ void TopoShape::sewShape(double tolerance)
 
 bool TopoShape::fix()
 {
-    if (this->_Shape.IsNull())
+    if (this->_Shape.IsNull()) {
         return false;
+    }
 
     // First, we do fix regardless if the current shape is valid or not,
     // because not all problems that are handled by ShapeFix_Shape can be
@@ -3164,12 +3165,14 @@ bool TopoShape::fix()
     ShapeFix_Shape fix(copy._Shape);
     fix.Perform();
 
-    if (fix.Shape().IsSame(copy._Shape))
+    if (fix.Shape().IsSame(copy._Shape)) {
         return false;
+    }
 
     BRepCheck_Analyzer aChecker(fix.Shape());
-    if (!aChecker.IsValid())
+    if (!aChecker.IsValid()) {
         return false;
+    }
 
     // If the above fix produces a valid shape, then we fix the original shape,
     // because BRepBuilderAPI_Copy has some undesired side effect (e.g. flatten
@@ -3189,8 +3192,10 @@ bool TopoShape::fix()
         // remapping, there will be invalid index jumpping in reference in
         // Sketch002.ExternalEdge5.
         makeShapeWithElementMap(fixThis.Shape(), MapperHistory(fixThis), {*this});
-    } else
+    }
+    else {
         makeShapeWithElementMap(fix.Shape(), MapperHistory(fix), {copy});
+    }
     return true;
 }
 

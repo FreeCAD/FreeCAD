@@ -60,7 +60,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundOneShapeReturnsShape)
     topoShape.makeElementCompound(shapes,
                                   "C",
                                   Part::TopoShape::SingleShapeCompoundCreationPolicy::
-                                      RETURN_SHAPE /*Don't force the creation*/);
+                                      returnShape /*Don't force the creation*/);
 
     // Assert
     EXPECT_EQ(edge.ShapeType(), topoShape.getShape().ShapeType());  // NOT a Compound
@@ -77,7 +77,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundOneShapeForceReturnsCompound)
     topoShape.makeElementCompound(
         shapes,
         "C",
-        Part::TopoShape::SingleShapeCompoundCreationPolicy::FORCE_COMPOUND /*Force the creation*/);
+        Part::TopoShape::SingleShapeCompoundCreationPolicy::forceCompound /*Force the creation*/);
 
     // Assert
     EXPECT_NE(edge.ShapeType(), topoShape.getShape().ShapeType());  // No longer the same thing

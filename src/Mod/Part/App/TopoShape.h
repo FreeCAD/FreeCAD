@@ -30,10 +30,6 @@
 #include <Base/Exception.h>
 #include <Mod/Part/PartGlobal.h>
 
-#include <BRepBuilderAPI_MakeShape.hxx>
-#include <BRepTools_History.hxx>
-#include <BRepTools_ReShape.hxx>
-#include <ShapeFix_Root.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -43,6 +39,9 @@
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <BRepTools_History.hxx>
+#include <BRepTools_ReShape.hxx>
+#include <ShapeFix_Root.hxx>
 
 class gp_Ax1;
 class gp_Ax2;
@@ -695,7 +694,7 @@ public:
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
-    void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=nullptr) const;
+    void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
     /** Helper class to return the generated and modified shape given an input shape
@@ -741,8 +740,8 @@ public:
      * return the shape as given, or to force it to be placed in a Compound.
      */
     enum class SingleShapeCompoundCreationPolicy {
-        RETURN_SHAPE,
-        FORCE_COMPOUND
+        returnShape,
+        forceCompound
     };
 
     /** Make a compound shape
@@ -759,12 +758,14 @@ public:
      */
     TopoShape& makeElementCompound(const std::vector<TopoShape>& shapes,
                                    const char* op = nullptr,
-                                   SingleShapeCompoundCreationPolicy policy = SingleShapeCompoundCreationPolicy::FORCE_COMPOUND);
+                                   SingleShapeCompoundCreationPolicy policy =
+                                       SingleShapeCompoundCreationPolicy::forceCompound);
 
 
-    enum class ConnectionPolicy {
-        REQUIRE_SHARED_VERTEX,
-        MERGE_WITH_TOLERANCE
+    enum class ConnectionPolicy
+    {
+        requireSharedVertex,
+        mergeWithTolerance
     };
 
     /** Make a compound of wires by connecting input edges
@@ -792,7 +793,7 @@ public:
     TopoShape& makeElementWires(const std::vector<TopoShape>& shapes,
                                 const char* op = nullptr,
                                 double tol = 0.0,
-                                ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
+                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
                                 TopoShapeMap* output = nullptr);
 
 
@@ -805,8 +806,8 @@ public:
      * @param keepOrder: whether to respect the order of the input edges
      * @param tol: tolerance for checking the distance of two vertex to decide
      *             if two edges are connected
-     * @param policy: if REQUIRE_SHARED_VERTEX, then only connect edges if they shared the same
-     *                vertex. If MERGE_WITH_TOLERANCE use \c tol to check for connection.
+     * @param policy: if requireSharedVertex, then only connect edges if they shared the same
+     *                vertex. If mergeWithTolerance use \c tol to check for connection.
      * @param output: optional output mapping from wire edges to input edge.
      *                Note that edges may be modified after adding to the wire,
      *                so the output edges may not be the same as the input
@@ -821,7 +822,7 @@ public:
     TopoShape& makeElementWires(const TopoShape& shape,
                                 const char* op = nullptr,
                                 double tol = 0.0,
-                                ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
+                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
                                 TopoShapeMap* output = nullptr);
 
     /** Make a compound of wires by connecting input edges in the given order
@@ -869,12 +870,11 @@ public:
      */
     TopoShape makeElementWires(const char* op = nullptr,
                                double tol = 0.0,
-                               ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
+                               ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
                                TopoShapeMap* output = nullptr) const
     {
         return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
     }
-
 
 
     /** Make a deep copy of the shape
@@ -890,7 +890,10 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementCopy(const TopoShape &source, const char *op=nullptr, bool copyGeom=true, bool copyMesh=false);
+    TopoShape& makeElementCopy(const TopoShape& source,
+                               const char* op = nullptr,
+                               bool copyGeom = true,
+                               bool copyMesh = false);
 
     /** Make a deep copy of the shape
      *
@@ -902,8 +905,10 @@ public:
      * @return Return a deep copy of the shape. The shape itself is not
      *         modified
      */
-    TopoShape makeElementCopy(const char *op=nullptr, bool copyGeom=true, bool copyMesh=false) const {
-        return TopoShape(Tag,Hasher).makeElementCopy(*this,op,copyGeom,copyMesh);
+    TopoShape
+    makeElementCopy(const char* op = nullptr, bool copyGeom = true, bool copyMesh = false) const
+    {
+        return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
     }
 
     /* Make a shell using this shape
@@ -1398,77 +1403,7 @@ private:
      */
     static std::deque<TopoShape>
     sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
-    static TopoShape reverseEdge (const TopoShape& edge);
-};
-
-
-/// Shape hasher that ignore orientation
-struct ShapeHasher
-{
-    inline size_t operator()(const TopoShape& s) const
-    {
-#if OCC_VERSION_HEX >= 0x070800
-        return std::hash<TopoDS_Shape> {}(s.getShape());
-#else
-        return s.getShape().HashCode(INT_MAX);
-#endif
-    }
-    inline size_t operator()(const TopoDS_Shape& s) const
-    {
-#if OCC_VERSION_HEX >= 0x070800
-        return std::hash<TopoDS_Shape> {}(s);
-#else
-        return s.HashCode(INT_MAX);
-#endif
-    }
-    inline bool operator()(const TopoShape& a, const TopoShape& b) const
-    {
-        return a.getShape().IsSame(b.getShape());
-    }
-    inline bool operator()(const TopoDS_Shape& a, const TopoDS_Shape& b) const
-    {
-        return a.IsSame(b);
-    }
-    template<class T>
-    static inline void hash_combine(std::size_t& seed, const T& v)
-    {
-        // copied from boost::hash_combine
-        std::hash<T> hasher;
-        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-    inline size_t operator()(const std::pair<TopoShape, TopoShape>& s) const
-    {
-#if OCC_VERSION_HEX >= 0x070800
-        size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
-        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
-#else
-        size_t res = s.first.getShape().HashCode(INT_MAX);
-        hash_combine(res, s.second.getShape().HashCode(INT_MAX));
-#endif
-        return res;
-    }
-    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& s) const
-    {
-#if OCC_VERSION_HEX >= 0x070800
-        size_t res = std::hash<TopoDS_Shape> {}(s.first);
-        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
-#else
-        size_t res = s.first.HashCode(INT_MAX);
-        hash_combine(res, s.second.HashCode(INT_MAX));
-#endif
-        return res;
-    }
-    inline bool operator()(const std::pair<TopoShape, TopoShape>& a,
-                           const std::pair<TopoShape, TopoShape>& b) const
-    {
-        return a.first.getShape().IsSame(b.first.getShape())
-            && a.second.getShape().IsSame(b.second.getShape());
-    }
-    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& a,
-                           const std::pair<TopoDS_Shape, TopoDS_Shape>& b) const
-    {
-        return a.first.IsSame(b.first) && a.second.IsSame(b.second);
-    }
+    static TopoShape reverseEdge(const TopoShape& edge);
 };
 
 /** Shape mapper for generic BRepBuilderAPI_MakeShape derived class
@@ -1476,13 +1411,14 @@ struct ShapeHasher
  * Uses BRepBuilderAPI_MakeShape::Modified/Generated() function to extract
  * shape history for generating mapped element names
  */
-struct PartExport MapperMaker: TopoShape::Mapper {
-    BRepBuilderAPI_MakeShape &maker;
-    MapperMaker(BRepBuilderAPI_MakeShape &maker)
-        :maker(maker)
+struct PartExport MapperMaker: TopoShape::Mapper
+{
+    BRepBuilderAPI_MakeShape& maker;
+    explicit MapperMaker(BRepBuilderAPI_MakeShape& maker)
+        : maker(maker)
     {}
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
 };
 
 /** Shape mapper for BRepTools_History
@@ -1490,13 +1426,14 @@ struct PartExport MapperMaker: TopoShape::Mapper {
  * Uses BRepTools_History::Modified/Generated() function to extract
  * shape history for generating mapped element names
  */
-struct PartExport MapperHistory: TopoShape::Mapper {
+struct PartExport MapperHistory: TopoShape::Mapper
+{
     Handle(BRepTools_History) history;
-    MapperHistory(const Handle(BRepTools_History) &history);
-    MapperHistory(const Handle(BRepTools_ReShape) &reshape);
-    MapperHistory(ShapeFix_Root &fix);
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
+    explicit MapperHistory(const Handle(BRepTools_History) & history);
+    explicit MapperHistory(const Handle(BRepTools_ReShape) & reshape);
+    explicit MapperHistory(ShapeFix_Root& fix);
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
 };
 
 }  // namespace Part
