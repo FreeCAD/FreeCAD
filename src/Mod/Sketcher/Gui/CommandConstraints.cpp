@@ -1235,27 +1235,27 @@ public:
         case Reference:
             al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension_Driven"));
             //al[1] is the separator
-            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
-            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
-            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
-            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
             al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
             al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
-            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
             getAction()->setIcon(al[index]->icon());
             break;
         case Driving:
             al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension"));
             //al[1] is the separator
-            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
-            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
-            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
-            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
             al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
             al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
-            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
             getAction()->setIcon(al[index]->icon());
             break;
         }
