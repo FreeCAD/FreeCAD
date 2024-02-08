@@ -45,8 +45,7 @@ class ConnectionCheckerGUI(QtCore.QObject):
 
         # Check the connection in a new thread, so FreeCAD stays responsive
         self.connection_checker = ConnectionChecker()
-        self.connection_checker.success.connect(self._check_succeeded)
-        self.connection_checker.failure.connect(self._network_connection_failed)
+        self.signals_connected = False
 
         self.connection_message_timer = None
         self.connection_check_message = None
@@ -54,6 +53,9 @@ class ConnectionCheckerGUI(QtCore.QObject):
     def start(self):
         """Start the connection check"""
         self.connection_checker.start()
+        self.connection_checker.success.connect(self._check_succeeded)
+        self.connection_checker.failure.connect(self._network_connection_failed)
+        self.signals_connected = True
 
         # If it takes longer than a half second to check the connection, show a message:
         self.connection_message_timer = QtCore.QTimer.singleShot(
@@ -75,8 +77,7 @@ class ConnectionCheckerGUI(QtCore.QObject):
     def cancel_network_check(self, _):
         """Cancel the check"""
         if not self.connection_checker.isFinished():
-            self.connection_checker.success.disconnect(self._check_succeeded)
-            self.connection_checker.failure.disconnect(self._network_connection_failed)
+            self._disconnect_signals()
             self.connection_checker.requestInterruption()
             self.connection_checker.wait(500)
             self.connection_check_message.close()
@@ -99,10 +100,12 @@ class ConnectionCheckerGUI(QtCore.QObject):
                 translate("AddonsInstaller", "Missing dependency"),
                 translate(
                     "AddonsInstaller",
-                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.",
+                    "Could not import QtNetwork -- see Report View for details. Addon Manager "
+                    "unavailable.",
                 ),
             )
 
+        self._disconnect_signals()
         self.check_complete.emit()
 
     def _check_succeeded(self):
@@ -112,4 +115,11 @@ class ConnectionCheckerGUI(QtCore.QObject):
             self.connection_check_message.close()
 
         self.connection_available.emit()
+        self._disconnect_signals()
         self.check_complete.emit()
+
+    def _disconnect_signals(self):
+        if self.signals_connected:
+            self.connection_checker.success.disconnect(self._check_succeeded)
+            self.connection_checker.failure.disconnect(self._network_connection_failed)
+        self.signals_connected = False
