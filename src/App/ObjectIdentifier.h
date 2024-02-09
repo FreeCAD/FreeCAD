@@ -32,6 +32,8 @@
 #include <boost/any.hpp>
 #include <FCConfig.h>
 
+#include "VarSet.h"
+
 namespace Py {
 class Object;
 }
@@ -471,7 +473,8 @@ protected:
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
-    Py::Object access(const ResolveResults &rs,
+    void redirect(VarSet* varSet, ResolveResults &rs) const;
+    Py::Object access(ResolveResults &rs,
             Py::Object *value=nullptr, Dependencies *deps=nullptr) const;
 
     void resolve(ResolveResults & results) const;

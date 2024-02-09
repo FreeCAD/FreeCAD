@@ -27,6 +27,8 @@
 #include "GeoFeature.h"
 #include "OriginGroupExtension.h"
 #include "PropertyLinks.h"
+#include "VarSet.h"
+#include "PropertyVarSet.h"
 
 
 namespace App
@@ -84,7 +86,9 @@ public:
         return "Gui::ViewProviderPart";
     }
 
-
+    std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> objs) override;
+    std::vector<DocumentObject*> removeObjects(std::vector<DocumentObject*> objs) override;
+    
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
 
     /**
@@ -96,6 +100,27 @@ public:
     static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
     PyObject *getPyObject() override;
+
+protected:
+
+    void onChanged(const Property* prop) override;
+
+private:
+    /**
+     * @brief Acquire the original varset given a PropertyVarSet.
+     *
+     * When a VarSet is exposed, the parent Part maintains two PropertyVarSets.
+     * The first points to the VarSet that should parameterize this part, the
+     * second one is hidden and points to the original VarSet inside the part.
+     * This function acquires the original VarSet given the first
+     * PropertyVarSet.  Note that the original VarSet can be the same as the
+     * VarSet the first property is pointing to.
+     *
+     * @param prop The property that points to the VarSet that replaces the
+     * exposed VarSet in the Part.
+     * @return The original VarSet that is replaced by prop.
+     */
+    VarSet* getOriginalVarSet(const PropertyVarSet *prop) const;
 };
 
 //using PartPython = App::FeaturePythonT<Part>;
