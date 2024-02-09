@@ -35,8 +35,9 @@ import FreeCAD
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
-import draftguitools.gui_base as gui_base
-
+from draftguitools import gui_base
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -76,8 +77,8 @@ class Layer(gui_base.GuiCommandSimplest):
 
         self.doc.openTransaction("Create Layer")
         Gui.addModule("Draft")
-        Gui.doCommand('_layer_ = Draft.make_layer()')
-        Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
+        Gui.doCommand("_layer_ = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
+        Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.doc.commitTransaction()
 
 
@@ -93,7 +94,7 @@ class LayerManager:
 
     def Activated(self):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore, QtGui, QtWidgets
 
         # store changes to be committed
         self.deleteList = []
@@ -112,9 +113,8 @@ class LayerManager:
         self.dialog.buttonOK.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
         # restore window geometry from stored state
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        w = pref.GetInt("LayersManagerWidth",640)
-        h = pref.GetInt("LayersManagerHeight",320)
+        w = params.get_param("LayersManagerWidth")
+        h = params.get_param("LayersManagerHeight")
         self.dialog.resize(w,h)
 
         # center the dialog over FreeCAD window
@@ -138,7 +138,7 @@ class LayerManager:
         self.dialog.tree.setItemDelegate(Layers_Delegate())
         self.dialog.tree.setItemsExpandable(False)
         self.dialog.tree.setRootIsDecorated(False) # removes spacing in first column
-        self.dialog.tree.setSelectionMode(QtGui.QTreeView.ExtendedSelection) # allow to select many
+        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow to select many
 
         # fill the tree view
         self.update()
@@ -171,7 +171,8 @@ class LayerManager:
                 if not changed:
                     FreeCAD.ActiveDocument.openTransaction("Layers change")
                     changed = True
-                obj = Draft.make_layer()
+                obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
+                                       line_width=None, draw_style=None, transparency=None)
 
             # visibility
             checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
@@ -261,9 +262,8 @@ class LayerManager:
         "when Cancel button is pressed or dialog is closed"
 
         # save dialog size
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        pref.SetInt("LayersManagerWidth",self.dialog.width())
-        pref.SetInt("LayersManagerHeight",self.dialog.height())
+        params.set_param("LayersManagerWidth", self.dialog.width())
+        params.set_param("LayersManagerHeight", self.dialog.height())
 
         return True
 
@@ -302,18 +302,30 @@ class LayerManager:
         onItem = QtGui.QStandardItem()
         onItem.setCheckable(True)
         onItem.setCheckState(QtCore.Qt.Checked)
-        nameItem = QtGui.QStandardItem(translate("Draft","New Layer"))
+        nameItem = QtGui.QStandardItem(translate("Draft", "New Layer"))
         widthItem = QtGui.QStandardItem()
-        widthItem.setData(self.getPref("DefaultShapeLineWidth",2,"Integer"),QtCore.Qt.DisplayRole)
-        styleItem = QtGui.QStandardItem("Solid")
+        widthItem.setData(params.get_param_view("DefaultShapeLineWidth"), QtCore.Qt.DisplayRole)
+        styleItem = QtGui.QStandardItem(utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")])
         lineColorItem = QtGui.QStandardItem()
-        lineColorItem.setData(self.getPref("DefaultShapeLineColor",421075455),QtCore.Qt.UserRole)
+        lineColorItem.setData(
+            utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3],
+            QtCore.Qt.UserRole
+        )
         shapeColorItem = QtGui.QStandardItem()
-        shapeColorItem.setData(self.getPref("DefaultShapeColor",3435973887),QtCore.Qt.UserRole)
+        shapeColorItem.setData(
+            utils.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))[:3],
+            QtCore.Qt.UserRole
+        )
         transparencyItem = QtGui.QStandardItem()
-        transparencyItem.setData(0,QtCore.Qt.DisplayRole)
+        transparencyItem.setData(
+            params.get_param_view("DefaultShapeTransparency"),
+            QtCore.Qt.DisplayRole
+        )
         linePrintColorItem = QtGui.QStandardItem()
-        linePrintColorItem.setData(self.getPref("DefaultPrintColor",0),QtCore.Qt.UserRole)
+        linePrintColorItem.setData(
+            utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3],
+            QtCore.Qt.UserRole
+        )
 
         # populate with object data
         if obj:
@@ -341,20 +353,6 @@ class LayerManager:
                               transparencyItem,
                               linePrintColorItem])
 
-    def getPref(self,value,default,valuetype="Unsigned"):
-
-        "retrieves a view pref value"
-
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-        if valuetype == "Unsigned":
-            c = p.GetUnsigned(value,default)
-            r = float((c>>24)&0xFF)/255.0
-            g = float((c>>16)&0xFF)/255.0
-            b = float((c>>8)&0xFF)/255.0
-            return (r,g,b,)
-        elif valuetype == "Integer":
-            return p.GetInt(value,default)
-
     def onDelete(self):
 
         "delete selected rows"
@@ -381,7 +379,7 @@ class LayerManager:
 
         "toggle selected layers on/off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         state = None
         for index in self.dialog.tree.selectedIndexes():
@@ -398,7 +396,7 @@ class LayerManager:
 
         "isolates the selected layers (turns all the others off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         onrows = []
         for index in self.dialog.tree.selectedIndexes():
@@ -411,15 +409,15 @@ class LayerManager:
 
 if FreeCAD.GuiUp:
 
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
 
-    class Layers_Delegate(QtGui.QStyledItemDelegate):
+    class Layers_Delegate(QtWidgets.QStyledItemDelegate):
 
         "model delegate"
 
         def __init__(self, parent=None, *args):
 
-            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            QtWidgets.QStyledItemDelegate.__init__(self, parent, *args)
             # setEditorData() is triggered several times.
             # But we want to show the color dialog only the first time
             self.first = True
@@ -427,26 +425,26 @@ if FreeCAD.GuiUp:
         def createEditor(self,parent,option,index):
 
             if index.column() == 0: # Layer on/off
-                editor = QtGui.QCheckBox(parent)
+                editor = QtWidgets.QCheckBox(parent)
             if index.column() == 1: # Layer name
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
             elif index.column() == 2: # Line width
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(99)
             elif index.column() == 3: # Line style
-                editor = QtGui.QComboBox(parent)
-                editor.addItems(["Solid","Dashed","Dotted","Dashdot"])
+                editor = QtWidgets.QComboBox(parent)
+                editor.addItems(utils.DRAW_STYLES)
             elif index.column() == 4: # Line color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 5: # Shape color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 6: # Transparency
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(100)
             elif index.column() == 7: # Line print color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             return editor
 
@@ -459,19 +457,19 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 editor.setValue(index.data())
             elif index.column() == 3: # Line style
-                editor.setCurrentIndex(["Solid","Dashed","Dotted","Dashdot"].index(index.data()))
+                editor.setCurrentIndex(utils.DRAW_STYLES.index(index.data()))
             elif index.column() == 4: # Line color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 5: # Shape color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 6: # Transparency
@@ -480,7 +478,7 @@ if FreeCAD.GuiUp:
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
 
@@ -493,7 +491,7 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 model.setData(index,editor.value())
             elif index.column() == 3: # Line style
-                model.setData(index,["Solid","Dashed","Dotted","Dashdot"][editor.currentIndex()])
+                model.setData(index,utils.DRAW_STYLES[editor.currentIndex()])
             elif index.column() == 4: # Line color
                 model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))

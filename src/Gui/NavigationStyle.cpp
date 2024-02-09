@@ -86,48 +86,14 @@ public:
     SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
-        if (orbit == Trackball)
-            return rot;
-        else if (orbit == Turntable) {
-            SbVec3f axis;
-            float angle;
-            rot.getValue(axis, angle);
-            SbVec3f dif = point1 - point2;
-            if (fabs(dif[1]) > fabs(dif[0])) {
-                SbVec3f xaxis(1,0,0);
-                if (dif[1] < 0)
-                    angle = -angle;
-                rot.setValue(xaxis, angle);
-            }
-            else {
-                SbVec3f zaxis(0,0,1);
-                this->worldToScreen.multDirMatrix(zaxis, zaxis);
-                if (zaxis[1] < 0) {
-                    if (dif[0] < 0)
-                        angle = -angle;
-                }
-                else {
-                    if (dif[0] > 0)
-                        angle = -angle;
-                }
-                rot.setValue(zaxis, angle);
-            }
-
-            return rot;
-        } else {
-            // Turntable without constraints
-            SbRotation zrot, xrot;
-            SbVec3f dif = point1 - point2;
-
-            SbVec3f zaxis(1,0,0);
-            zrot.setValue(zaxis, dif[1]);
-
-            SbVec3f xaxis(0,0,1);
-            this->worldToScreen.multDirMatrix(xaxis, xaxis);
-            xrot.setValue(xaxis, -dif[0]);
-
-            return zrot * xrot;
+        if (orbit == Turntable) {
+            return getTurntable(rot, point1, point2);
         }
+        if (orbit == FreeTurntable) {
+            return getFreeTurntable(point1, point2);
+        }
+
+        return rot;
     }
 
     void setOrbitStyle(OrbitStyle style)
@@ -138,6 +104,57 @@ public:
     OrbitStyle getOrbitStyle() const
     {
         return this->orbit;
+    }
+
+private:
+    SbRotation getTurntable(SbRotation rot, const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // 0000333: Turntable camera rotation
+        SbVec3f axis;
+        float angle{};
+        rot.getValue(axis, angle);
+        SbVec3f dif = point1 - point2;
+        if (fabs(dif[1]) > fabs(dif[0])) {
+            SbVec3f xaxis(1,0,0);
+            if (dif[1] < 0) {
+                angle = -angle;
+            }
+            rot.setValue(xaxis, angle);
+        }
+        else {
+            SbVec3f zaxis(0,0,1);
+            this->worldToScreen.multDirMatrix(zaxis, zaxis);
+            if (zaxis[1] < 0) {
+                if (dif[0] < 0) {
+                    angle = -angle;
+                }
+            }
+            else {
+                if (dif[0] > 0) {
+                    angle = -angle;
+                }
+            }
+            rot.setValue(zaxis, angle);
+        }
+
+        return rot;
+    }
+
+    SbRotation getFreeTurntable(const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // Turntable without constraints
+        SbRotation zrot;
+        SbRotation xrot;
+        SbVec3f dif = point1 - point2;
+
+        SbVec3f zaxis(1,0,0);
+        zrot.setValue(zaxis, dif[1]);
+
+        SbVec3f xaxis(0,0,1);
+        this->worldToScreen.multDirMatrix(xaxis, xaxis);
+        xrot.setValue(xaxis, -dif[0]);
+
+        return zrot * xrot;
     }
 
 private:
@@ -176,7 +193,8 @@ NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
 {
     this->panningplane = ns.panningplane;
     this->menuenabled = ns.menuenabled;
-    this->spinanimatingallowed = ns.spinanimatingallowed;
+    this->animationEnabled = ns.animationEnabled;
+    this->spinningAnimationEnabled = ns.spinningAnimationEnabled;
     static_cast<FCSphereSheetProjector*>(this->spinprojector)->setOrbitStyle
         (static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
@@ -194,7 +212,8 @@ void NavigationStyle::initialize()
     this->sensitivity = 2.0f;
     this->resetcursorpos = false;
     this->currentmode = NavigationStyle::IDLE;
-    this->spinanimatingallowed = true;
+    this->animationEnabled = true;
+    this->spinningAnimationEnabled = false;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -238,6 +257,9 @@ void NavigationStyle::initialize()
         setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
                               NavigationStyle::RotationCenterMode::BoundingBoxCenter);
     }
+
+    this->hasDragged = false;
+    this->hasPanned = false;
 }
 
 void NavigationStyle::finalize()
@@ -404,7 +426,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbViewVolume vv = cam->getViewVolume(vp.getViewportAspectRatio());
 
-    short sizeX,sizeY;
+    short sizeX{},sizeY{};
     box.getSize(sizeX, sizeY);
     SbVec2s size = vp.getViewportSizePixels();
 
@@ -414,7 +436,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
         return;
 
     // Get the new center in normalized pixel coordinates
-    short xmin,xmax,ymin,ymax;
+    short xmin{},xmax{},ymin{},ymax{};
     box.getBounds(xmin,ymin,xmax,ymax);
     const SbVec2f center((float) ((xmin+xmax)/2) / (float) std::max((int)(size[0] - 1), 1),
                          (float) (size[1]-(ymin+ymax)/2) / (float) std::max((int)(size[1] - 1), 1));
@@ -564,6 +586,7 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
     // Reposition camera according to the vector difference between the
     // projected points.
     cam->position = cam->position.getValue() - (current_planept - old_planept);
+    hasPanned = true;
 }
 
 void NavigationStyle::pan(SoCamera* camera)
@@ -839,7 +862,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
-        float radians;
+        float radians{};
         r.getValue(axis, radians);
         radians = sensitivity * radians;
         r.setValue(axis, radians);
@@ -861,7 +884,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // to a possible spin animation mode appear smooth.
 
     SbVec3f dummy_axis, newaxis;
-    float acc_angle, newangle;
+    float acc_angle{}, newangle{};
     this->spinincrement.getValue(dummy_axis, acc_angle);
     acc_angle *= this->spinsamplecounter; // weight
     r.getValue(newaxis, newangle);
@@ -876,6 +899,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // when the user quickly trigger (as in "click-drag-release") a spin
     // animation.
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
+
+    hasDragged = true;
 }
 
 /*!
@@ -902,7 +927,7 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
-        float radians;
+        float radians{};
         r.getValue(axis, radians);
         radians = sensitivity * radians;
         r.setValue(axis, radians);
@@ -910,13 +935,14 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     r.invert();
     this->reorientCamera(cam, r);
 
+    hasDragged = true;
 }
 
 SbBool NavigationStyle::doSpin()
 {
     if (this->log.historysize >= 3) {
         SbTime stoptime = (SbTime::getTimeOfDay() - this->log.time[0]);
-        if (this->spinanimatingallowed && stoptime.getValue() < 0.100) {
+        if (isSpinningAnimationEnabled() && stoptime.getValue() < 0.100) {
             const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
             const SbVec2s glsize(vp.getViewportSizePixels());
             SbVec3f from = this->spinprojector->project(SbVec2f(float(this->log.position[2][0]) / float(std::max(glsize[0]-1, 1)),
@@ -930,7 +956,7 @@ SbBool NavigationStyle::doSpin()
             rot.scaleAngle(float(0.200 / deltatime));
 
             SbVec3f axis;
-            float radians;
+            float radians{};
             rot.getValue(axis, radians);
             if ((radians > 0.01f) && (deltatime < 0.300)) {
                 viewer->startSpinningAnimation(axis, radians * 5);
@@ -1061,38 +1087,62 @@ SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
     return action.isHandled();
 }
 
-/*!
-  Decide if it should be possible to start a spin animation of the
-  model in the viewer by releasing the mouse button while dragging.
-
-  If the \a enable flag is \c false and we're currently animating, the
-  spin will be stopped.
-*/
-void
-NavigationStyle::setAnimationEnabled(const SbBool enable)
+/**
+ * @brief Decide if it should be possible to start any animation
+ *
+ * If the enable flag is false and we're currently animating, the animation will be stopped
+ */
+void NavigationStyle::setAnimationEnabled(const SbBool enable)
 {
-    this->spinanimatingallowed = enable;
-    if (!enable && this->isAnimating()) { animator->stop(); }
+    animationEnabled = enable;
+    if (!enable && isAnimating()) {
+        animator->stop();
+    }
 }
 
-/*!
-  Query whether or not it is possible to start a spinning animation by
-  releasing the left mouse button while dragging the mouse.
-*/
-
-SbBool
-NavigationStyle::isAnimationEnabled() const
+/**
+ * @brief Decide if it should be possible to start a spin animation of the model in the viewer by releasing the mouse button while dragging
+ *
+ * If the enable flag is false and we're currently animating, the spin animation will be stopped
+ */
+void NavigationStyle::setSpinningAnimationEnabled(const SbBool enable)
 {
-    return this->spinanimatingallowed;
+    spinningAnimationEnabled = enable;
+    if (!enable && isSpinning()) {
+        animator->stop();
+    }
 }
 
-/*!
-  Query if the model in the viewer is currently in spinning mode after
-  a user drag.
-*/
+/**
+ * @return Whether or not it is possible to start any animation
+ */
+SbBool NavigationStyle::isAnimationEnabled() const
+{
+    return animationEnabled;
+}
+
+/**
+ * @return Whether or not it is possible to start a spinning animation e.g. after dragging
+ */
+SbBool NavigationStyle::isSpinningAnimationEnabled() const
+{
+    return animationEnabled && spinningAnimationEnabled;
+}
+
+/**
+ * @return Whether or not any animation is currently active
+ */
 SbBool NavigationStyle::isAnimating() const
 {
-    return this->currentmode == NavigationStyle::SPINNING;
+    return animator->isAnimating();
+}
+
+/**
+ * @return Whether or not a spinning animation is currently active e.g. after a user drag
+ */
+SbBool NavigationStyle::isSpinning() const
+{
+    return currentmode == NavigationStyle::SPINNING;
 }
 
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const
@@ -1300,6 +1350,11 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     const ViewerMode oldmode = this->currentmode;
     if (newmode == oldmode) {
         return;
+    }
+
+    if (newmode != NavigationStyle::IDLE) {
+        hasPanned = false;
+        hasDragged = false;
     }
 
     switch (newmode) {

@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMenu>
 #include <QMessageBox>
 #endif
-
-#include <QMenu>
 
 #include <Gui/MainWindow.h>
 
@@ -40,7 +39,7 @@ using namespace MatGui;
 /* TRANSLATOR MatGui::TextEdit */
 
 TextEdit::TextEdit(const QString& propertyName,
-                   std::shared_ptr<Materials::Material> material,
+                   const std::shared_ptr<Materials::Material>& material,
                    QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_TextEdit)
@@ -59,8 +58,6 @@ TextEdit::TextEdit(const QString& propertyName,
         _property = nullptr;
     }
     if (_property) {
-        Base::Console().Log("Value type %d\n",
-                            static_cast<int>(_property->getMaterialValue()->getType()));
         _value = _property->getString();
     }
     else {

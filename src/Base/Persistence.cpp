@@ -76,32 +76,34 @@ std::string Persistence::encodeAttribute(const std::string& str)
 {
     std::string tmp;
     for (char it : str) {
-        if (it == '<') {
-            tmp += "&lt;";
-        }
-        else if (it == '\"') {
-            tmp += "&quot;";
-        }
-        else if (it == '\'') {
-            tmp += "&apos;";
-        }
-        else if (it == '&') {
-            tmp += "&amp;";
-        }
-        else if (it == '>') {
-            tmp += "&gt;";
-        }
-        else if (it == '\r') {
-            tmp += "&#13;";
-        }
-        else if (it == '\n') {
-            tmp += "&#10;";
-        }
-        else if (it == '\t') {
-            tmp += "&#9;";
-        }
-        else {
-            tmp += it;
+        switch (it) {
+            case '<':
+                tmp += "&lt;";
+                break;
+            case '\"':
+                tmp += "&quot;";
+                break;
+            case '\'':
+                tmp += "&apos;";
+                break;
+            case '&':
+                tmp += "&amp;";
+                break;
+            case '>':
+                tmp += "&gt;";
+                break;
+            case '\r':
+                tmp += "&#13;";
+                break;
+            case '\n':
+                tmp += "&#10;";
+                break;
+            case '\t':
+                tmp += "&#9;";
+                break;
+            default:
+                tmp += it;
+                break;
         }
     }
 

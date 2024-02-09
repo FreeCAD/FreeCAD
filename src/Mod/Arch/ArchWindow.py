@@ -29,6 +29,7 @@ import DraftVecUtils
 import ArchWindowPresets
 from FreeCAD import Units
 from FreeCAD import Vector
+from draftutils import params
 from draftutils.messages import _wrn
 
 if FreeCAD.GuiUp:
@@ -78,7 +79,6 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         if Draft.getType(baseobj) == "Window":
             obj = Draft.clone(baseobj)
             return obj
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
     _Window(obj)
     if name:
@@ -87,7 +87,6 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
-        #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
     if width:
         obj.Width = width
     if height:
@@ -95,7 +94,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if baseobj:
         obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
         obj.Base = baseobj
-    if parts:
+    if parts is not None:
         obj.WindowParts = parts
     else:
         if baseobj:
@@ -172,14 +171,14 @@ class _CommandWindow:
     def Activated(self):
 
         self.sel = FreeCADGui.Selection.getSelection()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.Thickness = p.GetFloat("WindowThickness",50)
-        self.Width = p.GetFloat("WindowWidth",1000)
+        self.W1 = params.get_param_arch("WindowW1")  # thickness of the fixed frame
         if self.doormode:
-            self.Height = p.GetFloat("DoorHeight",2100)
+            self.Width = params.get_param_arch("DoorWidth")
+            self.Height = params.get_param_arch("DoorHeight")
         else:
-            self.Height = p.GetFloat("WindowHeight",1000)
-        self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
+            self.Width = params.get_param_arch("WindowWidth")
+            self.Height = params.get_param_arch("WindowHeight")
+        self.RemoveExternal = params.get_param_arch("archRemoveExternal")
         self.Preset = 0
         self.LibraryPreset = 0
         self.Sill = 0
@@ -241,7 +240,7 @@ class _CommandWindow:
 
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
-        self.tracker.width(self.Thickness)
+        self.tracker.width(self.W1)
         self.tracker.height(self.Height)
         self.tracker.on()
         FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
@@ -340,7 +339,7 @@ class _CommandWindow:
 
         "this function is called by the Snapper when the mouse is moved"
 
-        delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
+        delta = FreeCAD.Vector(self.Width/2,self.W1/2,self.Height/2)
         delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
 
         if self.baseFace is None:
@@ -439,20 +438,14 @@ class _CommandWindow:
             lab = QtGui.QLabel(translate("Arch",param))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
-            if param == "Width":
+            if param == "W1":
+                wid.setText(FreeCAD.Units.Quantity(self.W1,FreeCAD.Units.Length).UserString)
+            elif param == "Width":
                 wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
             elif param == "Height":
                 wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
-            elif param == "O1":
-                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowO1",0.0)
-                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
-                setattr(self,param,n)
-            elif param == "W1":
-                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowW1",self.Thickness*2)
-                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
-                setattr(self,param,n)
             else:
-                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("Window"+param,self.Thickness)
+                n = params.get_param_arch("Window"+param)
                 wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
                 setattr(self,param,n)
             grid.addWidget(lab,i,0,1,1)
@@ -464,11 +457,11 @@ class _CommandWindow:
 
         # restore saved states
         if self.doormode:
-            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("DoorPreset",0)
-            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("DoorSill",0)
+            i = params.get_param_arch("DoorPreset")
+            d = params.get_param_arch("DoorSill")
         else:
-            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("WindowPreset",0)
-            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowSill",0)
+            i = params.get_param_arch("WindowPreset")
+            d = params.get_param_arch("WindowSill")
         if i < valuep.count():
             valuep.setCurrentIndex(i)
         values.setText(FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).UserString)
@@ -483,9 +476,9 @@ class _CommandWindow:
 
         self.Sill = d
         if self.doormode:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("DoorSill",d)
+            params.set_param_arch("DoorSill",d)
         else:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WindowSill",d)
+            params.set_param_arch("WindowSill",d)
 
     def setInclude(self,i):
 
@@ -497,20 +490,21 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("Window"+param,d)
+        prefix = "Door" if self.doormode and param in ("Width","Height") else "Window"
+        params.set_param_arch(prefix+param,d)
 
     def setPreset(self,i):
 
         self.Preset = i
         if self.doormode:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("DoorPreset",i)
+            params.set_param_arch("DoorPreset",i)
         else:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WindowPreset",i)
+            params.set_param_arch("WindowPreset",i)
         if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
             self.tracker.length(self.Width)
-            self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
+            self.tracker.width(self.W1)
             self.tracker.on()
             self.pic.hide()
             self.im.show()
@@ -518,40 +512,41 @@ class _CommandWindow:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
             elif i in [1,8]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i == 6:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i in [2,4,7]:
+                self.im.load(":/ui/ParametersWindowDouble.svg")
             elif i == 3:
                 self.im.load(":/ui/ParametersWindowStash.svg")
             elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
+            elif i == 6:
+                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i == 9:
+                self.im.load(":/ui/ParametersOpening.svg")
             else:
-                if i >= len(WindowPresets):
-                    # From Library
-                    self.im.hide()
-                    path = self.librarypresets[i-len(WindowPresets)][1]
-                    if path.lower().endswith(".fcstd"):
-                        try:
-                            import tempfile
-                            import zipfile
-                        except Exception:
-                            pass
-                        else:
-                            zfile = zipfile.ZipFile(path)
-                            files = zfile.namelist()
-                            # check for meta-file if it's really a FreeCAD document
-                            if files[0] == "Document.xml":
-                                image="thumbnails/Thumbnail.png"
-                                if image in files:
-                                    image = zfile.read(image)
-                                    thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                                    thumb = open(thumbfile,"wb")
-                                    thumb.write(image)
-                                    thumb.close()
-                                    im = QtGui.QPixmap(thumbfile)
-                                    self.pic.setPixmap(im)
-                                    self.pic.show()
-                else:
-                    self.im.load(":/ui/ParametersWindowDouble.svg")
+                # From Library
+                self.im.hide()
+                path = self.librarypresets[i-len(WindowPresets)][1]
+                if path.lower().endswith(".fcstd"):
+                    try:
+                        import tempfile
+                        import zipfile
+                    except Exception:
+                        pass
+                    else:
+                        zfile = zipfile.ZipFile(path)
+                        files = zfile.namelist()
+                        # check for meta-file if it's really a FreeCAD document
+                        if files[0] == "Document.xml":
+                            image="thumbnails/Thumbnail.png"
+                            if image in files:
+                                image = zfile.read(image)
+                                thumbfile = tempfile.mkstemp(suffix='.png')[1]
+                                thumb = open(thumbfile,"wb")
+                                thumb.write(image)
+                                thumb.close()
+                                im = QtGui.QPixmap(thumbfile)
+                                self.pic.setPixmap(im)
+                                self.pic.show()
             #for param in self.wparams:
             #    getattr(self,"val"+param).setEnabled(True)
         else:
@@ -648,19 +643,26 @@ class _Window(ArchComponent.Component):
 
         if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
             setattr(self,prop,getattr(obj,prop))
+        if prop in ["Height","Width"]:
+            self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False
-                if hasattr(self,prop):
-                    if getattr(self,prop) != getattr(obj,prop):
+                if prop == "Shape":
+                    if hasattr(self,"TouchOnShapeChange") and self.TouchOnShapeChange:
+                        self.TouchOnShapeChange = False
                         touchhosts = True
-                if touchhosts and hasattr(self, "Hosts") and hasattr(obj, "Hosts"):
-                    for host in set(self.Hosts + obj.Hosts): # use set to remove duplicates
+                elif hasattr(self,prop) and getattr(self,prop) != getattr(obj,prop):
+                    touchhosts = True
+                if touchhosts:
+                    hosts = self.Hosts if hasattr(self, "Hosts") else []
+                    hosts += obj.Hosts if hasattr(obj, "Hosts") else []
+                    for host in set(hosts): # use set to remove duplicates
                         # mark host to recompute so it can detect this object
                         host.touch()
             if prop in ["Width","Height","Frame"]:
@@ -911,7 +913,7 @@ class _Window(ArchComponent.Component):
                         if shapes:
                             base = Part.makeCompound(shapes)
                     elif not obj.WindowParts:
-                        if not obj.Base.Shape.isNull():
+                        if obj.Base.Shape.Solids:
                             base = obj.Base.Shape.copy()
                             # obj placement is already added by applyShape() below
                             #if not DraftGeomUtils.isNull(pl):
@@ -940,6 +942,8 @@ class _Window(ArchComponent.Component):
                     #base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
                 obj.Placement = pl
+        else:
+            obj.Shape = Part.Shape()
         if hasattr(obj,"Area"):
             obj.Area = obj.Width.Value * obj.Height.Value
 
@@ -1173,7 +1177,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
-                    if typ == WindowPartTypes[2]: # transparent parts
+                    if typ == WindowPartTypes[2]:  # "Glass panel"
                         ccol = ArchCommands.getDefaultColor("WindowGlass")
             if not ccol:
                 ccol = base

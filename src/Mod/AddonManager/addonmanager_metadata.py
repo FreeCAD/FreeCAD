@@ -234,6 +234,13 @@ def get_first_supported_freecad_version(metadata: Metadata) -> Optional[Version]
     return current_earliest
 
 
+def get_branch_from_metadata(metadata: Metadata) -> str:
+    for url in metadata.url:
+        if url.type == UrlType.repository:
+            return url.branch
+    return "master"  # Legacy default
+
+
 class MetadataReader:
     """Read metadata XML data and construct a Metadata object"""
 

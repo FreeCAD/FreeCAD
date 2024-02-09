@@ -32,11 +32,13 @@ from PartDesignTests.TestShapeBinder import TestSubShapeBinder
 # additive/subtractive features & primitives
 from PartDesignTests.TestPad import TestPad
 from PartDesignTests.TestPocket import TestPocket
+from PartDesignTests.TestHelix import TestHelix
 from PartDesignTests.TestHole import TestHole
 from PartDesignTests.TestRevolve import TestRevolve
 from PartDesignTests.TestPipe import TestPipe
 from PartDesignTests.TestLoft import TestLoft
 from PartDesignTests.TestPrimitive import TestPrimitive
+from PartDesignTests.TestHelix import TestHelix
 
 # transformations and boolean
 from PartDesignTests.TestMirrored import TestMirrored

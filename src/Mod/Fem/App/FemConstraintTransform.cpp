@@ -110,6 +110,9 @@ void ConstraintTransform::handleChangedPropertyType(Base::XMLReader& reader,
         Z_rotProperty.Restore(reader);
         Z_rot.setValue(Z_rotProperty.getValue());
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintTransform::onChanged(const App::Property* prop)

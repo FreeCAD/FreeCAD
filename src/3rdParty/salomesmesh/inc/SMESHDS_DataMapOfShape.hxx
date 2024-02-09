@@ -29,13 +29,26 @@
 
 #include <TopoDS_Shape.hxx>
 
+#include <Standard_Version.hxx>
+
 /*
  * This method needed for instance NCollection_DataMap with TopoDS_Shape as key
  */
+#if OCC_VERSION_HEX >= 0x070800
+struct SMESHDS_Hasher
+{
+  size_t operator()(const TopoDS_Shape& S) const noexcept {
+    return std::hash<TopoDS_Shape>{}(S);
+  }
+  size_t operator()(const TopoDS_Shape& S1, const TopoDS_Shape& S2) const noexcept {
+    return S1.IsSame(S2);
+  }
+};
+#else
 struct SMESHDS_Hasher
 {
   static inline Standard_Boolean IsEqual(const TopoDS_Shape& S1,
-                                         const TopoDS_Shape& S2)
+                                        const TopoDS_Shape& S2)
   {
     return S1.IsSame(S2);
   }
@@ -45,6 +58,6 @@ struct SMESHDS_Hasher
     return ::HashCode( S, Upper);
   }
 };
-
+#endif
 
 #endif

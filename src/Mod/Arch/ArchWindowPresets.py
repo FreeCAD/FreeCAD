@@ -25,8 +25,8 @@ from FreeCAD import Vector
 from draftutils.translate import translate
 
 
-WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
-                  "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane", "Awning"]
+WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", "Sliding 2-pane",
+                  "Simple door", "Glass door", "Sliding 4-pane", "Awning", "Opening only"]
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -62,9 +62,9 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         gla = 10
         s = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
 
-        def addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8):
+        def addRectangle(s,p1,p2,p3,p4):
 
-            "adds two rectangles to the given sketch"
+            "adds a rectangle to the given sketch"
 
             idx = s.GeometryCount
             s.addGeometry(Part.LineSegment(p1,p2))
@@ -79,18 +79,13 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Horizontal',idx+2))
             s.addConstraint(Sketcher.Constraint('Vertical',idx+1))
             s.addConstraint(Sketcher.Constraint('Vertical',idx+3))
-            s.addGeometry(Part.LineSegment(p5,p6))
-            s.addGeometry(Part.LineSegment(p6,p7))
-            s.addGeometry(Part.LineSegment(p7,p8))
-            s.addGeometry(Part.LineSegment(p8,p5))
-            s.addConstraint(Sketcher.Constraint('Coincident',idx+4,2,idx+5,1))
-            s.addConstraint(Sketcher.Constraint('Coincident',idx+5,2,idx+6,1))
-            s.addConstraint(Sketcher.Constraint('Coincident',idx+6,2,idx+7,1))
-            s.addConstraint(Sketcher.Constraint('Coincident',idx+7,2,idx+4,1))
-            s.addConstraint(Sketcher.Constraint('Horizontal',idx+4))
-            s.addConstraint(Sketcher.Constraint('Horizontal',idx+6))
-            s.addConstraint(Sketcher.Constraint('Vertical',idx+5))
-            s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
+
+        def addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8):
+
+            "adds two rectangles to the given sketch"
+
+            addRectangle(s,p1,p2,p3,p4)
+            addRectangle(s,p5,p6,p7,p8)
 
         def simpleFrame(s,width,height,h1,h2,tol):
 
@@ -489,6 +484,20 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["InnerFrame","Frame","Wire2,Wire3,Edge8,Mode1",fw,str(o2)+"+V"])
             wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
 
+        elif windowtype == "Opening only":
+
+            wp = []
+            p1 = Vector(0,0,0)
+            p2 = Vector(width,0,0)
+            p3 = Vector(width,height,0)
+            p4 = Vector(0,height,0)
+            addRectangle(s,p1,p2,p3,p4)
+            s.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+            s.addConstraint(Sketcher.Constraint('DistanceX',0,width))
+            s.addConstraint(Sketcher.Constraint('DistanceY',1,height))
+            s.renameConstraint(9,'Width')
+            s.renameConstraint(10,'Height')
+
         return (s,wp)
 
     if windowtype in WindowPresets:
@@ -501,12 +510,15 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = ArchWindow.makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
-            obj.Frame = h1
+            obj.Frame = w2
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
-            if "door" in windowtype:
+            if "door" in windowtype.lower():
                 obj.IfcType = "Door"
                 obj.Label = translate("Arch","Door")
+            elif "opening" in windowtype.lower():
+                obj.IfcType = "Opening Element"
+                obj.Label = translate("Arch","Opening")
             FreeCAD.ActiveDocument.recompute()
             return obj
 

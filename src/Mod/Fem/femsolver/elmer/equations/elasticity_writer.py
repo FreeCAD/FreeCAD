@@ -364,7 +364,7 @@ class ElasticityWriter:
         obj = self.write.getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
-                gravity = self.write.convert(self.write.constsdef["Gravity"], "L/T^2")
+                gravity = self.write.convert(obj.GravityAcceleration.toStr(), "L/T^2")
                 if self.write.getBodyMaterial(name) is None:
                     raise general_writer.WriteError(
                         "The body {} is not referenced in any material.\n\n".format(name)
@@ -380,9 +380,9 @@ class ElasticityWriter:
                     dimension = "M/L^2"
                 density = self.write.convert(densityQuantity, dimension)
 
-                force1 = gravity * obj.Gravity_x * density
-                force2 = gravity * obj.Gravity_y * density
-                force3 = gravity * obj.Gravity_z * density
+                force1 = gravity * obj.GravityDirection.x * density
+                force2 = gravity * obj.GravityDirection.y * density
+                force3 = gravity * obj.GravityDirection.z * density
                 self.write.bodyForce(name, "Stress Bodyforce 1", force1)
                 self.write.bodyForce(name, "Stress Bodyforce 2", force2)
                 self.write.bodyForce(name, "Stress Bodyforce 3", force3)

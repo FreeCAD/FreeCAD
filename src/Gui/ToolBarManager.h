@@ -103,13 +103,16 @@ public:
     void restoreState() const;
     void retranslate() const;
 
-    void setMovable(bool movable) const;
+    bool areToolBarsLocked() const;
+    void setToolBarsLocked(bool locked) const;
 
     void setState(const QList<QString>& names, State state);
-    void setState (const QString& name, State state);
-
+    void setState(const QString& name, State state);
+    
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
+
+    void setMovable(bool movable) const;
 
     ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
 

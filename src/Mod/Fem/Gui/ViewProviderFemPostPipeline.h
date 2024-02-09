@@ -45,6 +45,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     std::vector<App::DocumentObject*> claimChildren3D() const override;
     void updateData(const App::Property* prop) override;
+    bool onDelete(const std::vector<std::string>& objs) override;
     void onSelectionChanged(const Gui::SelectionChanges& sel) override;
     void updateColorBars();
     void transformField(char* FieldName, double FieldFactor);

@@ -145,6 +145,38 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this](const std::string& param) {
              updateElementSizeParameters(param);
          }},
+        {"EdgeWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.CurveWidth, param, 2);
+         }},
+        {"ConstructionWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.ConstructionWidth, param, 1);
+         }},
+        {"InternalWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.InternalWidth, param, 1);
+         }},
+        {"ExternalWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.ExternalWidth, param, 1);
+         }},
+        {"EdgePattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
+         }},
+        {"ConstructionPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.ConstructionPattern, param, 0b1111110011111100);
+         }},
+        {"InternalPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.InternalPattern, param, 0b1111110011111100);
+         }},
+        {"ExternalPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.ExternalPattern, param, 0b1110010011100100);
+         }},
         {"CreateLineColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CreateCurveColor, param);
@@ -382,6 +414,30 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     Client.drawingParameters.markerSize = markersize;
 
     Client.updateInventorNodeSizes();
+}
+
+void EditModeCoinManager::ParameterObserver::updateWidth(int& width,
+                                                         const std::string& parametername,
+                                                         int def)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+
+    width = hGrp->GetInt(parametername.c_str(), def);
+
+    Client.updateInventorWidths();
+}
+
+void EditModeCoinManager::ParameterObserver::updatePattern(unsigned int& pattern,
+                                                           const std::string& parametername,
+                                                           unsigned int def)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+
+    pattern = hGrp->GetInt(parametername.c_str(), def);
+
+    Client.updateInventorPatterns();
 }
 
 void EditModeCoinManager::ParameterObserver::updateColor(SbColor& sbcolor,
@@ -691,14 +747,17 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
         }
 
         // checking for a hit in the curves
-        if (tail == editModeScenegraphNodes.CurveSet[l]) {
-            const SoDetail* curve_detail = Point->getDetail(editModeScenegraphNodes.CurveSet[l]);
-            if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-                // get the index
-                int curveIndex = static_cast<const SoLineDetail*>(curve_detail)->getLineIndex();
-                result.GeoIndex = coinMapping.getCurveGeoId(curveIndex, l);
+        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+            if (tail == editModeScenegraphNodes.CurveSet[l][t]) {
+                const SoDetail* curve_detail =
+                    Point->getDetail(editModeScenegraphNodes.CurveSet[l][t]);
+                if (curve_detail && curve_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+                    // get the index
+                    int curveIndex = static_cast<const SoLineDetail*>(curve_detail)->getLineIndex();
+                    result.GeoIndex = coinMapping.getCurveGeoId(curveIndex, l, t);
 
-                return result;
+                    return result;
+                }
             }
         }
     }
@@ -1036,14 +1095,14 @@ void EditModeCoinManager::updateInventorNodeSizes()
 {
     auto layersconfiguration = viewProvider.VisualLayerList.getValues();
 
+    updateInventorWidths();
+
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         editModeScenegraphNodes.PointsDrawStyle[l]->pointSize =
             8 * drawingParameters.pixelScalingFactor;
         editModeScenegraphNodes.PointSet[l]->markerIndex =
             Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED",
                                                          drawingParameters.markerSize);
-        editModeScenegraphNodes.CurvesDrawStyle[l]->lineWidth =
-            layersconfiguration[l].getLineWidth() * drawingParameters.pixelScalingFactor;
     }
 
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth =
@@ -1062,6 +1121,29 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.textFont->size.setValue(drawingParameters.coinFontSize);
 
     pEditModeConstraintCoinManager->rebuildConstraintNodes();
+}
+
+void EditModeCoinManager::updateInventorWidths()
+{
+    editModeScenegraphNodes.CurvesDrawStyle->lineWidth =
+        drawingParameters.CurveWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesConstructionDrawStyle->lineWidth =
+        drawingParameters.ConstructionWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesInternalDrawStyle->lineWidth =
+        drawingParameters.InternalWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesExternalDrawStyle->lineWidth =
+        drawingParameters.ExternalWidth * drawingParameters.pixelScalingFactor;
+}
+
+void EditModeCoinManager::updateInventorPatterns()
+{
+    editModeScenegraphNodes.CurvesDrawStyle->linePattern = drawingParameters.CurvePattern;
+    editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern =
+        drawingParameters.ConstructionPattern;
+    editModeScenegraphNodes.CurvesInternalDrawStyle->linePattern =
+        drawingParameters.InternalPattern;
+    editModeScenegraphNodes.CurvesExternalDrawStyle->linePattern =
+        drawingParameters.ExternalPattern;
 }
 
 void EditModeCoinManager::updateInventorColors()

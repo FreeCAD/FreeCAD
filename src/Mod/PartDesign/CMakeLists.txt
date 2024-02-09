@@ -38,6 +38,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestShapeBinder.py
     PartDesignTests/TestPad.py
     PartDesignTests/TestPocket.py
+    PartDesignTests/TestHelix.py
     PartDesignTests/TestHole.py
     PartDesignTests/TestRevolve.py
     PartDesignTests/TestLoft.py
@@ -53,6 +54,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestDraft.py
     PartDesignTests/TestThickness.py
     PartDesignTests/TestInvoluteGear.py
+    PartDesignTests/TestHelix.py
 )
 
 set(PartDesign_TestFixtures

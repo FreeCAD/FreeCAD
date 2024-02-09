@@ -34,12 +34,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-
-from draftutils.messages import _toolmsg, _err
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -61,7 +61,7 @@ class Rectangle(gui_base_original.Creator):
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
             self.ui.extUi()
-            if utils.getParam("UsePartPrimitives", False):
+            if params.get_param("UsePartPrimitives"):
                 self.fillstate = self.ui.hasFill.isChecked()
                 self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -112,7 +112,7 @@ class Rectangle(gui_base_original.Creator):
                 height = -height
                 base = base.add((p1.sub(p2)).negative())
             Gui.addModule("Draft")
-            if utils.getParam("UsePartPrimitives", False):
+            if params.get_param("UsePartPrimitives"):
                 # Insert a Part::Primitive object
                 _cmd = 'FreeCAD.ActiveDocument.'
                 _cmd += 'addObject("Part::Plane", "Plane")'

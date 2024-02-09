@@ -22,14 +22,14 @@
 # Prevent RPM from doing its magical 'build' directory for now
 %global __cmake_in_source_build 0
 
-# See FreeCAD-master/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
+# See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 
 # Some plugins go in the Mod folder instead of lib. Deal with those here:
 %global mod_plugins Mod/PartDesign
 %define name freecad
 %define github_name FreeCAD
-%define branch master
+%define branch main
 
 Name:           %{name}
 Epoch:          1
@@ -73,7 +73,6 @@ BuildRequires:  qt5-qtwebengine-devel
 #BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  qt5-qttools-static
-BuildRequires:  qt5-qtxmlpatterns-devel
 
 BuildRequires:  fmt-devel
 
@@ -234,7 +233,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
 %endif
        -DPACKAGE_WCREF="%{release} (Git)" \
-       -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git master" \
+       -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git main" \
        -DENABLE_DEVELOPER_TESTS=FALSE \
 	   -DBUILD_GUI=TRUE \
        ../
@@ -242,7 +241,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 make fc_version
 for I in src/Build/Version.h src/Build/Version.h.out; do
 	sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
-	sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' $I
+	sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git main\",' $I
 done
 
 %{make_build}

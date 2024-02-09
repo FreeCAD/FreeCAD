@@ -84,7 +84,7 @@ runs:
           testName: Sketcher
       - name: Compose summary report based on test results
         if: always()
-        shell: bash
+        shell: bash -l {0}
         run: |
           # Print global result
           if [ ${{ job.status }} != "success" ]
@@ -104,4 +104,3 @@ runs:
           echo "</blockquote>" >> ${{ inputs.reportFile }}
           echo "</details>" >> ${{ inputs.reportFile }}
           echo "" >> ${{ inputs.reportFile }}
-

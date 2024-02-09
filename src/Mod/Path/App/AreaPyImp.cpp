@@ -22,11 +22,13 @@
 
 #include "PreCompiled.h"
 
+#include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
 // inclusion of the generated files (generated out of AreaPy.xml)
+#include "PathPy.h"
 #include "AreaPy.h"
 #include "AreaPy.cpp"
 
@@ -149,8 +151,8 @@ static const PyMethodDef areaOverrides[] = {
     },
     {
         "getClearedArea",nullptr,0,
-        "getClearedArea(tipDiameter, diameter):\n"
-        "Gets the area cleared when a tool maximally clears this area. This method assumes a tool tip diameter 'tipDiameter' traces the full area, and that (perhaps at a different height on the tool) this clears a different region with tool diameter 'diameter'.\n",
+        "getClearedArea(path, diameter, zmax, bbox):\n"
+        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox.\n",
     },
     {
         "getRestArea",nullptr,0,
@@ -406,10 +408,21 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
 PyObject* AreaPy::getClearedArea(PyObject *args)
 {
     PY_TRY {
-        double tipDiameter, diameter;
-        if (!PyArg_ParseTuple(args, "dd", &tipDiameter, &diameter))
+        PyObject *pyPath, *pyBbox;
+        double diameter, zmax;
+        if (!PyArg_ParseTuple(args, "OddO", &pyPath, &diameter, &zmax, &pyBbox))
             return nullptr;
-        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(tipDiameter, diameter);
+	if (!PyObject_TypeCheck(pyPath, &(PathPy::Type))) {
+		PyErr_SetString(PyExc_TypeError, "path must be of type PathPy");
+		return nullptr;
+	}
+	if (!PyObject_TypeCheck(pyBbox, &(Base::BoundBoxPy::Type))) {
+		PyErr_SetString(PyExc_TypeError, "bbox must be of type BoundBoxPy");
+		return nullptr;
+	}
+	const PathPy *path = static_cast<PathPy*>(pyPath);
+        const Py::BoundingBox bbox(pyBbox, false);
+        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(path->getToolpathPtr(), diameter, zmax, bbox.getValue());
         auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
         return Py::new_reference_to(pyClearedArea);
     } PY_CATCH_OCC
@@ -440,6 +453,9 @@ PyObject* AreaPy::getRestArea(PyObject *args)
         }
 
         std::shared_ptr<Area> restArea = getAreaPtr()->getRestArea(clearedAreas, diameter);
+        if (!restArea) {
+            return Py_None;
+        }
         auto pyRestArea = Py::asObject(new AreaPy(new Area(*restArea, true)));
         return Py::new_reference_to(pyRestArea);
     } PY_CATCH_OCC

@@ -558,7 +558,7 @@
       <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>Objektets YZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
@@ -731,7 +731,7 @@
       <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>Objektets X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -743,7 +743,7 @@
       <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>Objektets X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -755,7 +755,7 @@
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>Objektets Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -2244,7 +2244,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>Fusion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="878"/>
@@ -2274,7 +2274,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Make face</source>
-      <translation type="unfinished">Make face</translation>
+      <translation>Skapa yta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -2368,7 +2368,7 @@ of projection.</translation>
       <translation>Svep</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="198"/>
+      <location filename="../../ViewProviderMirror.cpp" line="211"/>
       <source>Edit Mirror</source>
       <translation>Redigera spegel</translation>
     </message>
@@ -2413,7 +2413,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>I x-riktning:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2425,12 +2425,12 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>I y-riktning:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>I z-riktning:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
@@ -2949,7 +2949,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="652"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Okänt fel</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="656"/>
@@ -3091,7 +3091,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Två avstånd</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -3373,7 +3373,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="176"/>
       <source>Object per document</source>
-      <translation type="unfinished">Object per document</translation>
+      <translation>Objekt per dokument</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="181"/>
@@ -3928,7 +3928,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
       <source>Show faces</source>
-      <translation type="unfinished">Show faces</translation>
+      <translation>Visa ytor</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
@@ -4094,7 +4094,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Okänt fel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4291,7 +4291,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>Slumpad</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
@@ -4527,57 +4527,78 @@ the sketch plane's normal vector will be used</translation>
       <translation>Spegling</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="33"/>
+      <location filename="../../Mirroring.ui" line="121"/>
+      <source>Use selected reference</source>
+      <translation type="unfinished">Use selected reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="142"/>
       <source>Shapes</source>
       <translation>Former</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="41"/>
+      <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane:</source>
       <translation>Speglingsplan:</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="49"/>
+      <location filename="../../Mirroring.ui" line="106"/>
       <source>XY plane</source>
       <translation>XY plan</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="54"/>
+      <location filename="../../Mirroring.ui" line="111"/>
       <source>XZ plane</source>
       <translation>XZ plan</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="59"/>
+      <location filename="../../Mirroring.ui" line="116"/>
       <source>YZ plane</source>
       <translation>YZ plan</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="67"/>
+      <location filename="../../Mirroring.ui" line="150"/>
+      <location filename="../../Mirroring.cpp" line="215"/>
+      <source>Selecting</source>
+      <translation type="unfinished">Selecting</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="166"/>
+      <source>Mirror plane reference</source>
+      <translation type="unfinished">Mirror plane reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="20"/>
       <source>Base point</source>
       <translation>Baspunkt</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="73"/>
+      <location filename="../../Mirroring.ui" line="26"/>
       <source>x</source>
       <translation>x</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="96"/>
+      <location filename="../../Mirroring.ui" line="49"/>
       <source>y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="119"/>
+      <location filename="../../Mirroring.ui" line="72"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="126"/>
+      <location filename="../../Mirroring.cpp" line="211"/>
+      <source>Select reference</source>
+      <translation>Markera referens</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="280"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Välj en form för spegling först.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="133"/>
+      <location filename="../../Mirroring.cpp" line="287"/>
       <source>No such document '%1'.</source>
       <translation>Inget sådant dokument '%1'.</translation>
     </message>
@@ -4743,7 +4764,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="222"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Stöds inte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="222"/>
@@ -4958,7 +4979,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>I x-riktning:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="158"/>
@@ -4972,12 +4993,12 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="175"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>I y-riktning:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="211"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>I z-riktning:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="247"/>
@@ -5123,7 +5144,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
+      <translation>Hoppa över inställningssidan</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
@@ -5205,7 +5226,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
       <source>Bad type</source>
-      <translation type="unfinished">Bad type</translation>
+      <translation>Dålig typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
@@ -5215,7 +5236,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Too small edge</source>
-      <translation type="unfinished">Too small edge</translation>
+      <translation>För liten kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
@@ -5334,7 +5355,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="478"/>
       <source>Checking</source>
-      <translation type="unfinished">Checking</translation>
+      <translation>Kontrollerar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="501"/>
@@ -5602,7 +5623,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>Rör</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
@@ -5612,7 +5633,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
       <source>Outer radius</source>
-      <translation type="unfinished">Outer radius</translation>
+      <translation>Ytterradie</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="69"/>
@@ -5698,8 +5719,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -5791,20 +5812,20 @@ Vill du fortsätta?</translation>
       <translation>Ingen referens markerad</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Kant</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Hörn</translation>
     </message>
@@ -6126,27 +6147,27 @@ Vill du fortsätta?</translation>
       <translation>Ställ in färgerna ...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="78"/>
+      <location filename="../../ViewProviderMirror.cpp" line="85"/>
       <source>Edit mirror plane</source>
       <translation>Redigera speglingsplan</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="282"/>
+      <location filename="../../ViewProviderMirror.cpp" line="295"/>
       <source>Edit fillet edges</source>
       <translation>Redigera avrundade kanter</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="392"/>
+      <location filename="../../ViewProviderMirror.cpp" line="405"/>
       <source>Edit chamfer edges</source>
       <translation>Redigera faskanter</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="528"/>
+      <location filename="../../ViewProviderMirror.cpp" line="541"/>
       <source>Edit offset</source>
       <translation>Redigera offset</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="610"/>
+      <location filename="../../ViewProviderMirror.cpp" line="623"/>
       <source>Edit thickness</source>
       <translation>Redigera tjocklek</translation>
     </message>
@@ -6163,7 +6184,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Skapa rör</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -6173,7 +6194,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Ange avstånd:</translation>
     </message>
   </context>
   <context>
@@ -6244,12 +6265,12 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Skapa rör</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Skapar ett rör</translation>
     </message>
   </context>
   <context>
@@ -6512,7 +6533,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>Referens{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
@@ -6522,7 +6543,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>Misslyckades att följa länkar. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -6537,7 +6558,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Fel: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
@@ -6578,7 +6599,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Kanter</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
@@ -6658,7 +6679,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Är stängd</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
@@ -6673,7 +6694,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Global placering</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
@@ -6686,7 +6707,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Booleska fragment</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6763,7 +6784,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>X faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6773,7 +6794,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Z-faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
@@ -6788,7 +6809,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Y-faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>

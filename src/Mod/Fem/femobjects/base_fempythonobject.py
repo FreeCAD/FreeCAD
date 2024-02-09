@@ -47,3 +47,19 @@ class BaseFemPythonObject(object):
 
     def loads(self, state):
         return None
+
+
+class _PropHelper:
+    """
+    Helper class to manage property data inside proxy objects.
+    Initialization keywords are the same used with PropertyContainer
+    to add dynamics properties plus "value" for the initial value.
+    """
+    def __init__(self, **kwds):
+        self.value = kwds.pop("value")
+        self.info = kwds
+        self.name = kwds["name"]
+
+    def add_to_object(self, obj):
+        obj.addProperty(**self.info)
+        setattr(obj, self.name, self.value)

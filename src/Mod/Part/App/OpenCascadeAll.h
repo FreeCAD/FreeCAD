@@ -94,6 +94,7 @@
 #include <BinTools.hxx>
 #include <BinTools_ShapeSet.hxx>
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
+#include <BOPAlgo_Builder.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
 #include <Bnd_Box.hxx>
 
@@ -149,6 +150,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFill.hxx>
 #include <BRepFill_Filling.hxx>
+#include <BRepFill_Generator.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepGProp.hxx>

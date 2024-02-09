@@ -91,6 +91,11 @@ SoDatumLabel::SoDatumLabel()
 
     SO_NODE_ADD_FIELD(param1, (0.f));
     SO_NODE_ADD_FIELD(param2, (0.f));
+    SO_NODE_ADD_FIELD(param4, (0.f));
+    SO_NODE_ADD_FIELD(param5, (0.f));
+    SO_NODE_ADD_FIELD(param6, (0.f));
+    SO_NODE_ADD_FIELD(param7, (0.f));
+    SO_NODE_ADD_FIELD(param8, (0.f));
 
     useAntialiasing = true;
 
@@ -919,7 +924,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Set GL Properties
         glLineWidth(this->lineWidth.getValue());
         glColor3f(t[0], t[1], t[2]);
-        float margin = this->imgHeight / 4.0;
+        float margin = this->imgHeight / 3.0;
 
 
         SbVec3f perp1 = p1_ + normal * (length + offset1 * scale);
@@ -969,15 +974,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(par4[0], par4[1]);
         glEnd();
 
+        float arrowWidth = margin * 0.5;
+
         SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
-        SbVec3f ar2 = ar1 + normal * margin;
-                ar1 -= normal * margin;
+        SbVec3f ar2 = ar1 + normal * arrowWidth;
+        ar1 -= normal * arrowWidth;
 
         SbVec3f ar3 = par4 - ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
-        SbVec3f ar4 = ar3 + normal * margin ;
-                ar3 -= normal * margin;
+        SbVec3f ar4 = ar3 + normal * arrowWidth;
+        ar3 -= normal * arrowWidth;
 
-        //Draw a pretty arrowhead (Equilateral) (Eventually could be improved to other shapes?)
+        // Draw the arrowheads
         glBegin(GL_TRIANGLES);
             glVertex2f(par1[0], par1[1]);
             glVertex2f(ar1[0], ar1[1]);
@@ -987,6 +994,43 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(ar3[0], ar3[1]);
             glVertex2f(ar4[0], ar4[1]);
         glEnd();
+
+
+        if (this->datumtype.getValue() == DISTANCE) {
+            // Draw arc helpers if needed
+            float range1 = this->param4.getValue();
+            if (range1 != 0.0) {
+                float startangle1 = this->param3.getValue();
+                float radius1 = this->param5.getValue();
+                SbVec3f center = points[2];
+                int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * M_PI))));
+                double segment = range1 / (countSegments - 1);
+
+                glBegin(GL_LINE_STRIP);
+                for (int i = 0; i < countSegments; i++) {
+                    double theta = startangle1 + segment * i;
+                    SbVec3f v1 = center + SbVec3f(radius1 * cos(theta), radius1 * sin(theta), 0);
+                    glVertex2f(v1[0], v1[1]);
+                }
+                glEnd();
+            }
+            float range2 = this->param7.getValue();
+            if (range2 != 0.0) {
+                float startangle2 = this->param6.getValue();
+                float radius2 = this->param8.getValue();
+                SbVec3f center = points[3];
+                int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * M_PI))));
+                double segment = range2 / (countSegments - 1);
+
+                glBegin(GL_LINE_STRIP);
+                for (int i = 0; i < countSegments; i++) {
+                    double theta = startangle2 + segment * i;
+                    SbVec3f v1 = center + SbVec3f(radius2 * cos(theta), radius2 * sin(theta), 0);
+                    glVertex2f(v1[0], v1[1]);
+                }
+                glEnd();
+            }
+        }
     }
     else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
         // Get the Points
@@ -994,6 +1038,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f p2 = points[1];
 
         SbVec3f dir = (p2-p1);
+        SbVec3f center = p1;
+        double radius = (p2 - p1).length();
+        if (this->datumtype.getValue() == DIAMETER) {
+            center = (p1 + p2) / 2;
+            radius = radius / 2;
+        }
+
         dir.normalize();
         SbVec3f normal (-dir[1],dir[0],0);
 
@@ -1010,13 +1061,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = pos;
 
-        float margin = this->imgHeight / 4.0;
+        float margin = this->imgHeight / 3.0;
 
         // Create the arrowhead
+        float arrowWidth = margin * 0.5;
         SbVec3f ar0  = p2;
         SbVec3f ar1  = p2 - dir * 0.866f * 2 * margin;
-        SbVec3f ar2  = ar1 + normal * margin;
-        ar1 -= normal * margin;
+        SbVec3f ar2  = ar1 + normal * arrowWidth;
+        ar1 -= normal * arrowWidth;
 
         SbVec3f p3 = pos +  dir * (this->imgWidth / 2 + margin);
         if ((p3-p1).length() > (p2-p1).length())
@@ -1045,15 +1097,30 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             // create second arrowhead
             SbVec3f ar0_1  = p1;
             SbVec3f ar1_1  = p1 + dir * 0.866f * 2 * margin;
-            SbVec3f ar2_1  = ar1_1 + normal * margin;
-            ar1_1 -= normal * margin;
+            SbVec3f ar2_1  = ar1_1 + normal * arrowWidth;
+            ar1_1 -= normal * arrowWidth;
 
             glBegin(GL_TRIANGLES);
                 glVertex2f(ar0_1[0], ar0_1[1]);
                 glVertex2f(ar1_1[0], ar1_1[1]);
                 glVertex2f(ar2_1[0], ar2_1[1]);
             glEnd();
+        }
 
+        // Draw arc helper if needed
+        float startangle = this->param3.getValue();
+        float range = this->param4.getValue();
+        if (range != 0.0) {
+            int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+            double segment = range / (countSegments - 1);
+
+            glBegin(GL_LINE_STRIP);
+            for (int i = 0; i < countSegments; i++) {
+                double theta = startangle + segment * i;
+                SbVec3f v1 = center + SbVec3f(radius * cos(theta), radius * sin(theta), 0);
+                glVertex2f(v1[0], v1[1]);
+            }
+            glEnd();
         }
 
     }
@@ -1061,11 +1128,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Only the angle intersection point is needed
         SbVec3f p0 = points[0];
 
+        float margin = this->imgHeight / 3.0;
+
         // Load the Parameters
         float length     = this->param1.getValue();
         float startangle = this->param2.getValue();
         float range      = this->param3.getValue();
         float endangle   = startangle + range;
+        float endLineLength1 = std::max(this->param4.getValue(), margin);
+        float endLineLength2 = std::max(this->param5.getValue(), margin);
+        float endLineLength12 = std::max(- this->param4.getValue(), margin);
+        float endLineLength22 = std::max(- this->param5.getValue(), margin);
 
 
         float r = 2*length;
@@ -1089,7 +1162,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = p0 + v0 * r;
 
-        float margin = this->imgHeight / 4.0;
 
         // Draw
         glBegin(GL_LINE_STRIP);
@@ -1113,10 +1185,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f v1(cos(startangle),sin(startangle),0);
         SbVec3f v2(cos(endangle),sin(endangle),0);
 
-        SbVec3f pnt1 = p0+(r-margin)*v1;
-        SbVec3f pnt2 = p0+(r+margin)*v1;
-        SbVec3f pnt3 = p0+(r-margin)*v2;
-        SbVec3f pnt4 = p0+(r+margin)*v2;
+        SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
+        SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
+        SbVec3f pnt3 = p0 + (r - endLineLength2) * v2;
+        SbVec3f pnt4 = p0 + (r + endLineLength22) * v2;
 
         glBegin(GL_LINES);
             glVertex2f(pnt1[0],pnt1[1]);
@@ -1126,6 +1198,36 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(pnt4[0],pnt4[1]);
         glEnd();
 
+        // Create the arrowheads
+        float arrowLength = margin * 2;
+        float arrowWidth = margin * 0.5;
+
+        // Normals for the arrowheads
+        SbVec3f dirStart(v1[1], -v1[0], 0);
+        SbVec3f dirEnd(-v2[1], v2[0], 0);
+
+        // Calculate arrowhead points for start angle
+        SbVec3f startArrowBase = p0 + r * v1;
+        SbVec3f startArrowLeft = startArrowBase - arrowLength * dirStart + arrowWidth * v1;
+        SbVec3f startArrowRight = startArrowBase - arrowLength * dirStart - arrowWidth * v1;
+
+        // Calculate arrowhead points for end angle
+        SbVec3f endArrowBase = p0 + r * v2;
+        SbVec3f endArrowLeft = endArrowBase - arrowLength * dirEnd + arrowWidth * v2;
+        SbVec3f endArrowRight = endArrowBase - arrowLength * dirEnd - arrowWidth * v2;
+
+        // Draw arrowheads
+        glBegin(GL_TRIANGLES);
+        // Start angle arrowhead
+        glVertex2f(startArrowBase[0], startArrowBase[1]);
+        glVertex2f(startArrowLeft[0], startArrowLeft[1]);
+        glVertex2f(startArrowRight[0], startArrowRight[1]);
+
+        // End angle arrowhead
+        glVertex2f(endArrowBase[0], endArrowBase[1]);
+        glVertex2f(endArrowLeft[0], endArrowLeft[1]);
+        glVertex2f(endArrowRight[0], endArrowRight[1]);
+        glEnd();
     }
     else if (this->datumtype.getValue() == SYMMETRIC) {
 

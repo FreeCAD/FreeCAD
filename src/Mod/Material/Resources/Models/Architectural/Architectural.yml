@@ -27,22 +27,12 @@ Model:
   URL: ''
   Description: "default architectural model"
   DOI: ""
-  Color:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
   EnvironmentalEfficiencyClass:
     Type: 'String'
     Units: ''
     URL: ''
     Description: " "
   ExecutionInstructions:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  Finish:
     Type: 'String'
     Units: ''
     URL: ''

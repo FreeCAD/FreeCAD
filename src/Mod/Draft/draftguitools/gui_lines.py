@@ -38,13 +38,13 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftutils.todo as todo
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-
-from draftutils.messages import _msg, _err, _toolmsg
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
+from draftutils import todo
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -141,7 +141,7 @@ class Line(gui_base_original.Creator):
             # The command to run is built as a series of text strings
             # to be committed through the `draftutils.todo.ToDo` class.
             if (len(self.node) == 2
-                    and utils.getParam("UsePartPrimitives", False)):
+                    and params.get_param("UsePartPrimitives")):
                 # Insert a Part::Primitive object
                 p1 = self.node[0]
                 p2 = self.node[-1]
@@ -313,7 +313,7 @@ class Wire(Line):
                 edges.extend(o.Shape.Edges)
             if edges:
                 try:
-                    w = Part.Wire(edges)
+                    w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
                                    "Unable to create a Wire "
@@ -333,7 +333,10 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
+                    _cmd = 'wire = Draft.make_wire('
+                    _cmd += '[' + pts + '], closed=' + str(w.isClosed())
+                    _cmd += ')'
+                    _cmd_list = [_cmd]
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')

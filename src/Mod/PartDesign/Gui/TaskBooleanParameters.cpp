@@ -337,7 +337,7 @@ void TaskDlgBooleanParameters::clicked(int)
 bool TaskDlgBooleanParameters::accept()
 {
     auto obj = BooleanView->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     BooleanView->Visibility.setValue(true);
 

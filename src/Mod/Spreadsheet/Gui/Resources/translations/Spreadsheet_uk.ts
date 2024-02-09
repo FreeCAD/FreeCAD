@@ -682,7 +682,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);Всі (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -924,12 +924,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Якщо позначено, використовувати індивідуальне представлення для показу вмісту клітинок.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Показати псевдонім у комірці з форматуванням</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -938,11 +938,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Формат комірки з індивідуальним представленням.
+За замовчуванням: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - псевдонім
+%V - значення комірки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>

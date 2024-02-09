@@ -40,13 +40,11 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
 import WorkingPlane
-import draftgeoutils.wires as wires
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.messages import _msg
+from draftgeoutils import wires
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
-
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -75,7 +73,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "ArrowSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowSize = utils.get_param("arrowsize", 0.1)
+            vobj.ArrowSize = params.get_param("arrowsize")
 
         if not hasattr(vobj, "ArrowType"):
             _tip = "Arrow type"
@@ -84,7 +82,7 @@ class ViewProviderWire(ViewProviderDraft):
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
             vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
+            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
     def attach(self, vobj):
         self.Object = vobj.Object
@@ -127,7 +125,7 @@ class ViewProviderWire(ViewProviderDraft):
                     if hasattr(vobj,"ArrowSize"):
                         s = vobj.ArrowSize
                     else:
-                        s = utils.get_param("arrowsize",0.1)
+                        s = params.get_param("arrowsize")
                     self.coords.scaleFactor.setValue((s,s,s))
                     rn.addChild(self.pt)
                 else:

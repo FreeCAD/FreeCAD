@@ -28,16 +28,16 @@
 # @{
 import json
 import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftguitools.gui_base as gui_base
-
-from draftutils.translate import translate
+from draftguitools import gui_base
+from draftutils import params
 from draftutils import utils
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+from draftutils.translate import translate
 
 
 class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
@@ -94,8 +94,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form = Gui.PySideUic.loadUi(ui_file)
 
         # restore stored size
-        w = param.GetInt("AnnotationStyleEditorWidth", 450)
-        h = param.GetInt("AnnotationStyleEditorHeight", 450)
+        w = params.get_param("AnnotationStyleEditorWidth")
+        h = params.get_param("AnnotationStyleEditorHeight")
         self.form.resize(w, h)
 
         # center the dialog over FreeCAD window
@@ -135,8 +135,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.save_meta(self.styles)
 
         # store dialog size
-        param.SetInt("AnnotationStyleEditorWidth", self.form.width())
-        param.SetInt("AnnotationStyleEditorHeight", self.form.height())
+        params.set_param("AnnotationStyleEditorWidth", self.form.width())
+        params.set_param("AnnotationStyleEditorHeight", self.form.height())
 
     def read_meta(self):
         """Read the document Meta attribute and return a dict."""
@@ -211,19 +211,19 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.form.pushButtonRename.setEnabled(False)
         elif index == 1:
             # Add new... entry
-            reply = QtGui.QInputDialog.getText(None,
+            reply = QtWidgets.QInputDialog.getText(None,
                                                "Create new style",
                                                "Style name:")
             if reply[1]:
                 # OK or Enter pressed
                 name = reply[0].strip()
                 if name == "":
-                    QtGui.QMessageBox.information(None,
+                    QtWidgets.QMessageBox.information(None,
                                                   "Style name required",
                                                   "No style name specified")
                     self.form.comboBoxStyles.setCurrentIndex(0)
                 elif name in self.styles:
-                    QtGui.QMessageBox.information(None,
+                    QtWidgets.QMessageBox.information(None,
                                                   "Style exists",
                                                   "This style name already exists")
                     self.form.comboBoxStyles.setCurrentIndex(0)
@@ -252,12 +252,12 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         if self.get_style_users(style):
-            reply = QtGui.QMessageBox.question(None,
+            reply = QtWidgets.QMessageBox.question(None,
                                                "Style in use",
                                                "This style is used by some objects in this document. Are you sure?",
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                               QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.No:
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                               QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.No:
                 return
         self.form.comboBoxStyles.removeItem(index)
         del self.styles[style]
@@ -267,16 +267,16 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         index = self.form.comboBoxStyles.currentIndex()
         style = self.form.comboBoxStyles.itemText(index)
 
-        reply = QtGui.QInputDialog.getText(None,
+        reply = QtWidgets.QInputDialog.getText(None,
                                            "Rename style",
                                            "New name:",
-                                           QtGui.QLineEdit.Normal,
+                                           QtWidgets.QLineEdit.Normal,
                                            style)
         if reply[1]:
             # OK or Enter pressed
             newname = reply[0]
             if newname in self.styles:
-                reply = QtGui.QMessageBox.information(None,
+                reply = QtWidgets.QMessageBox.information(None,
                                                       "Style exists",
                                                       "This style name already exists")
             else:
@@ -288,8 +288,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def on_import(self):
         """Import styles from a json file."""
-        filename = QtGui.QFileDialog.getOpenFileName(
-            QtGui.QApplication.activeWindow(),
+        filename = QtWidgets.QFileDialog.getOpenFileName(
+            QtWidgets.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
             translate("draft","JSON files (*.json *.JSON)"))
@@ -308,8 +308,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def on_export(self):
         """Export styles to a json file."""
-        filename = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(),
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            QtWidgets.QApplication.activeWindow(),
             translate("draft","Save styles file"),
             None,
             translate("draft","JSON file (*.json)"))

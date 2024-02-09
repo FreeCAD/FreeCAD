@@ -31,10 +31,10 @@ See also the `upgrade` function.
 ## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftfunctions.cut as cut
-
+from draftfunctions import cut
+from draftutils import utils
+from draftutils import params
+from draftutils import gui_utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -75,7 +75,6 @@ def downgrade(objects, delete=False, force=None):
     upgrade
     """
     _name = "downgrade"
-    utils.print_header(_name, "Downgrade objects")
 
     if not isinstance(objects, list):
         objects = [objects]
@@ -119,9 +118,8 @@ def downgrade(objects, delete=False, force=None):
     def splitFaces(objects):
         """Split faces contained in objects into new objects."""
         result = False
-        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        preserveFaceColor = params.GetBool("preserveFaceColor")  # True
-        preserveFaceNames = params.GetBool("preserveFaceNames")  # True
+        preserveFaceColor = params.get_param("preserveFaceColor")
+        preserveFaceNames = params.get_param("preserveFaceNames")
         for o in objects:
             if App.GuiUp and preserveFaceColor and o.ViewObject:
                 voDColors = o.ViewObject.DiffuseColor

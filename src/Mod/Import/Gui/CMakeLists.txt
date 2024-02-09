@@ -25,6 +25,8 @@ SET(ImportGui_SRCS
     Command.cpp
     ExportOCAFGui.cpp
     ExportOCAFGui.h
+    dxf/ImpExpDxfGui.cpp
+    dxf/ImpExpDxfGui.h
     ImportOCAFGui.cpp
     ImportOCAFGui.h
     OCAFBrowser.cpp

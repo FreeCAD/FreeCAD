@@ -61,6 +61,9 @@ public:
     App::PropertyFloat  Radius;
     App::PropertyString Reference;
 
+    App::PropertyBool   ShowMatting;
+    App::PropertyBool   ShowHighlight;
+
     short mustExecute() const override;
     App::DocumentObjectExecReturn *execute() override;
     void onChanged(const App::Property* prop) override;

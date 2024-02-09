@@ -1421,7 +1421,7 @@ void ObjectIdentifier::setDocumentObjectName(ObjectIdentifier::String &&name, bo
 void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force,
         ObjectIdentifier::String &&subname, bool checkImport)
 {
-    if(!owner || !obj || !obj->getNameInDocument() || !obj->getDocument())
+    if(!owner || !obj || !obj->isAttachedToDocument() || !obj->getDocument())
         FC_THROWM(Base::RuntimeError,"invalid object");
 
     if(checkImport)
@@ -1725,8 +1725,6 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
         else if(lastObj) {
             const char *attr = components[idx].getName().c_str();
             auto prop = lastObj->getPropertyByName(attr);
-            if(!prop && !pyobj.hasAttr(attr))
-                attr = nullptr;
             setPropDep(lastObj,prop,attr);
             lastObj = nullptr;
         }
@@ -1930,7 +1928,7 @@ bool ObjectIdentifier::isTouched() const {
 }
 
 void ObjectIdentifier::resolveAmbiguity() {
-    if(!owner || !owner->getNameInDocument() || isLocalProperty() ||
+    if(!owner || !owner->isAttachedToDocument() || isLocalProperty() ||
        (documentObjectNameSet && !documentObjectName.getString().empty() &&
         (documentObjectName.isRealString() || documentObjectName.isForceIdentifier())))
     {

@@ -52,9 +52,14 @@ class _TaskPanel:
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintTie.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.if_tolerance,
+            self.parameterWidget.spb_tolerance,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.tolerance_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.ckb_adjust,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.adjust_changed
         )
         self.init_parameter_widget()
 
@@ -67,7 +72,7 @@ class _TaskPanel:
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.selectionWidget, self.parameterWidget]
 
     def accept(self):
         # check values
@@ -94,6 +99,7 @@ class _TaskPanel:
             elif msgBox.clickedButton() == ignoreButton:
                 pass
         self.obj.Tolerance = self.tolerance
+        self.obj.Adjust = self.adjust
         self.obj.References = self.selectionWidget.references
         self.recompute_and_set_back_all()
         return True
@@ -112,7 +118,12 @@ class _TaskPanel:
 
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
-        self.parameterWidget.if_tolerance.setText(self.tolerance.UserString)
+        self.adjust = self.obj.Adjust
+        self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
+        self.parameterWidget.ckb_adjust.setChecked(self.adjust)
 
     def tolerance_changed(self, base_quantity_value):
         self.tolerance = base_quantity_value
+
+    def adjust_changed(self, bool_value):
+        self.adjust = bool_value

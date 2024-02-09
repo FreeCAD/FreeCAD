@@ -31,6 +31,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <Precision.hxx>
@@ -214,10 +215,6 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.Move(invObjLoc);
 
-        // generate the helix path
-        TopoDS_Shape path = generateHelixPath();
-        TopoDS_Shape auxpath = generateHelixPath(1.0);
-
 
         std::vector<TopoDS_Wire> wires;
         try {
@@ -226,43 +223,83 @@ App::DocumentObjectExecReturn* Helix::execute()
         catch (const Base::Exception& e) {
             return new App::DocumentObjectExecReturn(e.what());
         }
+        TopoDS_Shape result;
 
-        //build all shells
-        BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+        // generate the helix path
+        TopoDS_Shape path = generateHelixPath();
+        TopoDS_Shape auxpath = generateHelixPath(1.0);
 
-        mkPS.SetTolerance(Precision::Confusion());
-        mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
-        mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-
-        if (Angle.getValue() == 0) {
-            mkPS.SetMode(true);  // This is for frenet, quicker than auxiliary
-                                 // but can introduce to much error, checked below
-        } else {
-            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-        }
-
-        for (TopoDS_Wire& wire : wires) {
-            wire.Move(invObjLoc);
-            mkPS.Add(wire);
-        }
-
-        if (!mkPS.IsReady())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
-
-        mkPS.Build();
-
-        //check for error value at pipe creation and re-build if needed
-        if (Angle.getValue() == 0 && mkPS.ErrorOnSurface() < Precision::Confusion() / 2.0 ) {
-            Base::Console().Log("PartDesign_Helix : Fall back to auxiliary mode\n");
-            mkPS.SetMode(TopoDS::Wire(auxpath), true);
+        // Use MakePipe for frenet ( Angle is 0 ) calculations, faster than MakePipeShell
+        if ( Angle.getValue() == 0 ) {
+            TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+            face.Move(invObjLoc);
+            BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
             mkPS.Build();
+            result = mkPS.Shape();
+        } else {
+            std::vector<std::vector<TopoDS_Wire>> wiresections;
+            for (TopoDS_Wire& wire : wires)
+                wiresections.emplace_back(1, wire);
+
+            //build all shells
+            std::vector<TopoDS_Shape> shells;
+            std::vector<TopoDS_Wire> frontwires, backwires;
+            for (std::vector<TopoDS_Wire>& wires : wiresections) {
+
+                BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+
+                // Frenet mode doesn't place the face quite right on an angled helix, so
+                // use the auxiliary spine to force that.
+                mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
+
+                for (TopoDS_Wire& wire : wires) {
+                    wire.Move(invObjLoc);
+                    mkPS.Add(wire);
+                }
+
+                if (!mkPS.IsReady())
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
+                mkPS.Build();
+
+                shells.push_back(mkPS.Shape());
+
+                if (!mkPS.Shape().Closed()) {
+                    // // shell is not closed - use simulate to get the end wires
+                    TopTools_ListOfShape sim;
+                    mkPS.Simulate(2, sim);
+
+                    frontwires.push_back(TopoDS::Wire(sim.First()));
+                    backwires.push_back(TopoDS::Wire(sim.Last()));
+                }
+                BRepBuilderAPI_MakeSolid mkSolid;
+
+                if (!frontwires.empty()) {
+                    // build the end faces, sew the shell and build the final solid
+                    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+                    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+
+                    BRepBuilderAPI_Sewing sewer;
+                    sewer.SetTolerance(Precision::Confusion());
+                    sewer.Add(front);
+                    sewer.Add(back);
+
+                    for (TopoDS_Shape& s : shells)
+                        sewer.Add(s);
+                    sewer.Perform();
+                    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+                }
+                else {
+                    // shells are already closed - add them directly
+                    for (TopoDS_Shape& s : shells) {
+                        mkSolid.Add(TopoDS::Shell(s));
+                    }
+                }
+                if (!mkSolid.IsDone())
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+
+                result = mkSolid.Shape();
+            }
         }
-
-        if (!mkPS.MakeSolid())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not make solid helix with open wire"));
-
-        TopoDS_Shape result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
@@ -425,7 +462,7 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     //build the helix path
     //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
-    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 0, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)

@@ -143,10 +143,8 @@ void CmdTechDrawHatch::activated(int iMsg)
     // dialog to fill in hatch values
     Gui::Control().showDialog(new TaskDlgHatch(partFeat, subNames));
 
-    //Horrible hack to force Tree update  ??still required??
-    //WF: yes. ViewProvider will not claim children without this!
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
+    // Touch the parent feature so the hatching in tree view appears as a child
+    partFeat->touch();
     getDocument()->recompute();
 }
 
@@ -216,9 +214,8 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
 
     commitCommand();
 
-    //Horrible hack to force Tree update  ??still required??
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    // Touch the parent feature so the hatching in tree view appears as a child
+    objFeat->touch();
     getDocument()->recompute();
 }
 

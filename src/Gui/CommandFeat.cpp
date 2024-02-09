@@ -88,26 +88,31 @@ void StdCmdRandomColor::activated(int iMsg)
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
+
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set Random Color"));
     for (const auto & it : sel) {
         auto fMax = (float)RAND_MAX;
         auto fRed = (float)rand()/fMax;
         auto fGrn = (float)rand()/fMax;
         auto fBlu = (float)rand()/fMax;
+        auto objColor = App::Color(fRed, fGrn, fBlu);
 
         ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
         auto vpLink = dynamic_cast<ViewProviderLink*>(view);
         if(vpLink) {
             if(!vpLink->OverrideMaterial.getValue())
-                cmdGuiObjectArgs(it.pObject, "OverrideMaterial = True");
-            cmdGuiObjectArgs(it.pObject, "ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
+                vpLink->OverrideMaterial.setValue(true);
+            vpLink->ShapeMaterial.setDiffuseColor(objColor);
             continue;
         }
         auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
         if (color) {
             // get the view provider of the selected object and set the shape color
-            cmdGuiObjectArgs(it.pObject, "ShapeColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
+            color->setValue(objColor);
         }
     }
+
+    Command::commitCommand();
 }
 
 bool StdCmdRandomColor::isActive()

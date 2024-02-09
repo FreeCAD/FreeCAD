@@ -43,7 +43,7 @@ from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
-from addonmanager_metadata import MetadataReader
+from addonmanager_metadata import MetadataReader, get_branch_from_metadata
 
 translate = FreeCAD.Qt.translate
 
@@ -193,8 +193,8 @@ class CreateAddonListWorker(QtCore.QThread):
                 repo = Addon(name, addon["url"], state, addon["branch"])
                 md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
-                    repo.load_metadata_file(md_file)
-                    repo.installed_version = repo.metadata.version
+                    repo.installed_metadata = MetadataReader.from_file(md_file)
+                    repo.installed_version = repo.installed_metadata.version
                     repo.updated_timestamp = os.path.getmtime(md_file)
                     repo.verify_url_and_branch(addon["url"], addon["branch"])
 
@@ -236,8 +236,8 @@ class CreateAddonListWorker(QtCore.QThread):
             repo = Addon(name, url, state, branch)
             md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
-                repo.load_metadata_file(md_file)
-                repo.installed_version = repo.metadata.version
+                repo.installed_metadata = MetadataReader.from_file(md_file)
+                repo.installed_version = repo.installed_metadata.version
                 repo.updated_timestamp = os.path.getmtime(md_file)
                 repo.verify_url_and_branch(url, branch)
 
@@ -453,8 +453,6 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
-                            repo.installed_version = repo.metadata.version
-                            repo.updated_timestamp = os.path.getmtime(repo_metadata_cache_path)
                         except Exception as e:
                             FreeCAD.Console.PrintLog(f"Failed loading {repo_metadata_cache_path}\n")
                             FreeCAD.Console.PrintLog(str(e) + "\n")
@@ -608,15 +606,36 @@ class UpdateChecker:
                         )
                         wb.set_status(Addon.Status.CANNOT_CHECK)
 
+    def _branch_name_changed(self, package: Addon) -> bool:
+        clone_dir = os.path.join(self.moddir, package.name)
+        installed_metadata_file = os.path.join(clone_dir, "package.xml")
+        if not os.path.isfile(installed_metadata_file):
+            return False
+        try:
+            installed_metadata = MetadataReader.from_file(installed_metadata_file)
+            installed_default_branch = get_branch_from_metadata(installed_metadata)
+            remote_default_branch = get_branch_from_metadata(package.metadata)
+            if installed_default_branch != remote_default_branch:
+                return True
+        except Exception:
+            return False
+        return False
+
     def check_package(self, package: Addon) -> None:
         """Given a packaged Addon package, check it for updates. If git is available that is
         used. If not, the package's metadata is examined, and if the metadata file has changed
-        compared to the installed copy, an update is flagged."""
+        compared to the installed copy, an update is flagged. In addition, a change to the
+        default branch name triggers an update."""
 
-        clonedir = self.moddir + os.sep + package.name
-        if os.path.exists(clonedir):
+        clone_dir = self.moddir + os.sep + package.name
+        if os.path.exists(clone_dir):
 
-            # First, try to just do a git-based update, which will give the most accurate results:
+            # First, see if the branch name changed, which automatically triggers an update
+            if self._branch_name_changed(package):
+                package.set_status(Addon.Status.UPDATE_AVAILABLE)
+                return
+
+            # Next, try to just do a git-based update, which will give the most accurate results:
             if self.git_manager:
                 self.check_workbench(package)
                 if package.status() != Addon.Status.CANNOT_CHECK:
@@ -624,7 +643,7 @@ class UpdateChecker:
                     return
 
             # If we were unable to do a git-based update, try using the package.xml file instead:
-            installed_metadata_file = os.path.join(clonedir, "package.xml")
+            installed_metadata_file = os.path.join(clone_dir, "package.xml")
             if not os.path.isfile(installed_metadata_file):
                 # If there is no package.xml file, then it's because the package author added it
                 # after the last time the local installation was updated. By definition, then,
@@ -852,6 +871,8 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 )
             with self.lock:
                 self.failed.append(macro_name)
+                self.repo_queue.task_done()
+                self.counter += 1
 
 
 class GetMacroDetailsWorker(QtCore.QThread):

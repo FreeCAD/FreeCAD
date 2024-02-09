@@ -28,11 +28,11 @@
 #include <QPainter>
 #include <QString>
 #include <QStringList>
+#include <QSvgRenderer>
 #include <QTextStream>
 #include <QVariant>
-#endif
-
 #include <limits>
+#endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -49,6 +49,7 @@
 
 #include "Array2D.h"
 #include "Array3D.h"
+#include "ImageEdit.h"
 #include "ListEdit.h"
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
@@ -58,8 +59,108 @@
 using namespace MatGui;
 
 MaterialDelegate::MaterialDelegate(QObject* parent)
-    : QStyledItemDelegate(parent)
+    : BaseDelegate(parent)
 {}
+
+Materials::MaterialValue::ValueType MaterialDelegate::getType(const QModelIndex& index) const
+{
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group) {
+        return {};
+    }
+
+    int row = index.row();
+    QString propertyType;
+    if (group->child(row, 1)) {
+        propertyType = group->child(row, 2)->text();
+    }
+
+    return Materials::MaterialValue::mapType(propertyType);
+}
+
+QString MaterialDelegate::getUnits(const QModelIndex& index) const
+{
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group) {
+        return {};
+    }
+
+    int row = index.row();
+    QString propertyUnits;
+    if (group->child(row, 1)) {
+        propertyUnits = group->child(row, 3)->text();
+    }
+    return propertyUnits;
+}
+
+QVariant MaterialDelegate::getValue(const QModelIndex& index) const
+{
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group) {
+        return {};
+    }
+
+    int row = index.row();
+    QVariant propertyValue;
+    if (group->child(row, 1)) {
+        auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
+        auto propertyName = group->child(row, 0)->text();
+        propertyValue = material->getProperty(propertyName)->getValue();
+    }
+    return propertyValue;
+}
+
+void MaterialDelegate::setValue(QAbstractItemModel* model,
+                                const QModelIndex& index,
+                                const QVariant& value) const
+{
+    auto matModel = dynamic_cast<const QStandardItemModel*>(model);
+    auto item = matModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group) {
+        return;
+    }
+
+    int row = index.row();
+    if (group->child(row, 1)) {
+        auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
+        auto propertyName = group->child(row, 0)->text();
+        material->getProperty(propertyName)->setValue(value);
+        group->child(row, 1)->setText(value.toString());
+    }
+
+    notifyChanged(model, index);
+}
+
+void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
+                                     const QModelIndex& index) const
+{
+    Base::Console().Log("MaterialDelegate::notifyChanged()\n");
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(model);
+    auto item = treeModel->itemFromIndex(index);
+    auto group = item->parent();
+    if (!group) {
+        return;
+    }
+
+    int row = index.row();
+    if (group->child(row, 1)) {
+        auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
+        auto propertyName = group->child(row, 0)->text();
+        auto propertyValue = material->getProperty(propertyName)->getValue();
+        material->setEditStateAlter();
+        Base::Console().Log("MaterialDelegate::notifyChanged() - marked altered\n");
+
+        Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName,
+                                                                   propertyValue.toString());
+    }
+}
 
 bool MaterialDelegate::editorEvent(QEvent* event,
                                    QAbstractItemModel* model,
@@ -68,8 +169,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 {
     if (index.column() == 1) {
         if (event->type() == QEvent::MouseButtonDblClick) {
-            const QStandardItemModel* treeModel =
-                static_cast<const QStandardItemModel*>(index.model());
+            auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
 
             // Check we're not the material model root. This is also used to access the entry
             // columns
@@ -82,39 +182,36 @@ bool MaterialDelegate::editorEvent(QEvent* event,
             int row = index.row();
 
             QString propertyName = group->child(row, 0)->text();
-            QString propertyType = QString::fromStdString("String");
-            if (group->child(row, 2)) {
-                propertyType = group->child(row, 2)->text();
-            }
 
-            std::string type = propertyType.toStdString();
-            if (type == "Color") {
-                Base::Console().Log("Edit color\n");
-                showColorModal(item, propertyName);
+            auto type = getType(index);
+            if (type == Materials::MaterialValue::Color) {
+                showColorModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
-            else if (type == "MultiLineString") {
-                Base::Console().Log("Edit List\n");
-                showMultiLineString(propertyName, item);
+            if (type == Materials::MaterialValue::MultiLineString) {
+                showMultiLineStringModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
-            else if (type == "List") {
-                Base::Console().Log("Edit List\n");
+            if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::FileList
+                || type == Materials::MaterialValue::ImageList) {
                 showListModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
-            else if (type == "2DArray") {
-                Base::Console().Log("Edit 2DArray\n");
+            if (type == Materials::MaterialValue::Array2D) {
                 showArray2DModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
-            else if (type == "3DArray") {
-                Base::Console().Log("Edit 3DArray\n");
+            if (type == Materials::MaterialValue::Array3D) {
                 showArray3DModal(propertyName, item);
+                // Mark as handled
+                return true;
+            }
+            if (type == Materials::MaterialValue::Image || type == Materials::MaterialValue::SVG) {
+                showImageModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
@@ -123,11 +220,11 @@ bool MaterialDelegate::editorEvent(QEvent* event,
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
+void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem* item)
 {
     QColor currentColor;  // = d->col;
     currentColor.setRgba(parseColor(item->text()));
-    QColorDialog* dlg = new QColorDialog(currentColor);
+    auto dlg = new QColorDialog(currentColor);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     if (Gui::DialogOptions::dontUseNativeColorDialog()) {
@@ -140,10 +237,8 @@ void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
 
     connect(dlg, &QColorDialog::finished, this, [&](int result) {
         if (result == QDialog::Accepted) {
-            Base::Console().Log("Accepted\n");
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
-                Base::Console().Log("isValid\n");
                 QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
@@ -159,6 +254,20 @@ void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
     dlg->exec();
 }
 
+void MaterialDelegate::showImageModal(const QString& propertyName, QStandardItem* item)
+{
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
+    auto dlg = new ImageEdit(propertyName, material);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {});
+
+    dlg->exec();
+}
+
 void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem* item)
 {
     auto material = item->data().value<std::shared_ptr<Materials::Material>>();
@@ -168,29 +277,21 @@ void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem*
 
     dlg->adjustSize();
 
-    connect(dlg, &QDialog::finished, this, [&](int result) {
-        if (result == QDialog::Accepted) {
-            Base::Console().Log("Accepted\n");
-        }
-    });
+    connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
 
-void MaterialDelegate::showMultiLineString(const QString& propertyName, QStandardItem* item)
+void MaterialDelegate::showMultiLineStringModal(const QString& propertyName, QStandardItem* item)
 {
     auto material = item->data().value<std::shared_ptr<Materials::Material>>();
-    TextEdit* dlg = new TextEdit(propertyName, material);
+    auto dlg = new TextEdit(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     dlg->adjustSize();
 
-    connect(dlg, &QDialog::finished, this, [&](int result) {
-        if (result == QDialog::Accepted) {
-            Base::Console().Log("Accepted\n");
-        }
-    });
+    connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -199,17 +300,13 @@ void MaterialDelegate::showMultiLineString(const QString& propertyName, QStandar
 void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardItem* item)
 {
     auto material = item->data().value<std::shared_ptr<Materials::Material>>();
-    Array2D* dlg = new Array2D(propertyName, material);
+    auto dlg = new Array2D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     dlg->adjustSize();
 
-    connect(dlg, &QDialog::finished, this, [&](int result) {
-        if (result == QDialog::Accepted) {
-            Base::Console().Log("Accepted\n");
-        }
-    });
+    connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -217,17 +314,13 @@ void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardIt
 void MaterialDelegate::showArray3DModal(const QString& propertyName, QStandardItem* item)
 {
     auto material = item->data().value<std::shared_ptr<Materials::Material>>();
-    Array3D* dlg = new Array3D(propertyName, material);
+    auto dlg = new Array3D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     dlg->adjustSize();
 
-    connect(dlg, &QDialog::finished, this, [&](int result) {
-        if (result == QDialog::Accepted) {
-            Base::Console().Log("Accepted\n");
-        }
-    });
+    connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -236,13 +329,12 @@ void MaterialDelegate::paint(QPainter* painter,
                              const QStyleOptionViewItem& option,
                              const QModelIndex& index) const
 {
-    // Base::Console().Log("MaterialsEditor::paint()\n");
     if (index.column() != 1) {
         QStyledItemDelegate::paint(painter, option, index);
         return;
     }
 
-    const QStandardItemModel* treeModel = static_cast<const QStandardItemModel*>(index.model());
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
 
     // Check we're not the material model root. This is also used to access the entry columns
     auto item = treeModel->itemFromIndex(index);
@@ -252,182 +344,51 @@ void MaterialDelegate::paint(QPainter* painter,
         return;
     }
 
-    int row = index.row();
-
-    QString propertyName = group->child(row, 0)->text();
-    QString propertyType = QString::fromStdString("String");
-    if (group->child(row, 2)) {
-        propertyType = group->child(row, 2)->text();
-    }
-    QString propertyValue = QString::fromStdString("");
-    if (group->child(row, 1)) {
-        propertyValue = group->child(row, 1)->text();
-    }
-
-    std::string type = propertyType.toStdString();
-    if (type == "Color") {
-        painter->save();
-
-        QColor color;
-        color.setRgba(parseColor(propertyValue));
-        int left = option.rect.left() + 5;
-        int width = option.rect.width() - 10;
-        if (option.rect.width() > 75) {
-            left += (option.rect.width() - 75) / 2;
-            width = 65;
-        }
-        painter->fillRect(left,
-                          option.rect.top() + 5,
-                          width,
-                          option.rect.height() - 10,
-                          QBrush(color));
-
-        painter->restore();
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Quantity) {
+        paintQuantity(painter, option, index);
         return;
     }
-    else if (type == "MultiLineString") {
-        painter->save();
-
-        QImage table(QString::fromStdString(":/icons/multiline.svg"));
-        QRect target(option.rect);
-        if (target.width() > target.height()) {
-            target.setWidth(target.height());
-        }
-        else {
-            target.setHeight(target.width());
-        }
-        painter->drawImage(target, table, table.rect());
-
-        painter->restore();
+    if (type == Materials::MaterialValue::Image) {
+        paintImage(painter, option, index);
         return;
     }
-    else if (type == "List") {
-        painter->save();
-
-        QImage table(QString::fromStdString(":/icons/list.svg"));
-        QRect target(option.rect);
-        if (target.width() > target.height()) {
-            target.setWidth(target.height());
-        }
-        else {
-            target.setHeight(target.width());
-        }
-        painter->drawImage(target, table, table.rect());
-
-        painter->restore();
+    if (type == Materials::MaterialValue::SVG) {
+        paintSVG(painter, option, index);
         return;
     }
-    else if (type == "2DArray" || type == "3DArray") {
-        // painter->save();
-
-        QImage table(QString::fromStdString(":/icons/table.svg"));
-        QRect target(option.rect);
-        if (target.width() > target.height()) {
-            target.setWidth(target.height());
-        }
-        else {
-            target.setHeight(target.width());
-        }
-        painter->drawImage(target, table, table.rect());
-
-        // painter->restore();
+    if (type == Materials::MaterialValue::Color) {
+        paintColor(painter, option, index);
+        return;
+    }
+    if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::FileList
+        || type == Materials::MaterialValue::ImageList) {
+        paintList(painter, option, index);
+        return;
+    }
+    if (type == Materials::MaterialValue::MultiLineString) {
+        paintMultiLineString(painter, option, index);
+        return;
+    }
+    if (type == Materials::MaterialValue::Array2D || type == Materials::MaterialValue::Array3D) {
+        paintArray(painter, option, index);
         return;
     }
 
     QStyledItemDelegate::paint(painter, option, index);
 }
 
-QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
-{
-    if (index.column() != 1) {
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
-    const QStandardItemModel* treeModel = static_cast<const QStandardItemModel*>(index.model());
-
-    // Check we're not the material model root. This is also used to access the entry columns
-    auto item = treeModel->itemFromIndex(index);
-    auto group = item->parent();
-    if (!group) {
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
-    int row = index.row();
-
-    QString propertyType = QString::fromStdString("String");
-    if (group->child(row, 2)) {
-        propertyType = group->child(row, 2)->text();
-    }
-
-    std::string type = propertyType.toStdString();
-    if (type == "Color") {
-        return QSize(75, 23);  // Standard QPushButton size
-    }
-    else if (type == "2DArray" || type == "3DArray" || type == "MultiLineString"
-             || type == "List") {
-        return QSize(23, 23);
-    }
-
-    return QStyledItemDelegate::sizeHint(option, index);
-}
-
-void MaterialDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
-{
-    Base::Console().Log("MaterialsEditor::setEditorData()\n");
-    QVariant propertyType = editor->property("Type");
-    const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
-    QStandardItem* item = model->itemFromIndex(index);
-    auto group = item->parent();
-    if (!group) {
-        return;
-    }
-
-    int row = index.row();
-    QString propertyName = group->child(row, 0)->text();
-
-    std::string type = propertyType.toString().toStdString();
-    if (type == "File") {
-        Gui::FileChooser* chooser = static_cast<Gui::FileChooser*>(editor);
-        item->setText(chooser->fileName());
-    }
-    else if (type == "Quantity") {
-        Gui::InputField* input = static_cast<Gui::InputField*>(editor);
-        item->setText(input->getQuantityString());
-    }
-    else {
-        QStyledItemDelegate::setEditorData(editor, index);
-    }
-
-    // Q_EMIT const_cast<MaterialDelegate *>(this)->propertyChange(propertyName, item->text());
-}
-
-void MaterialDelegate::setModelData(QWidget* editor,
-                                    QAbstractItemModel* model,
-                                    const QModelIndex& index) const
-{
-    QStyledItemDelegate::setModelData(editor, model, index);
-
-    QStandardItem* item = static_cast<const QStandardItemModel*>(model)->itemFromIndex(index);
-    auto group = item->parent();
-    if (!group) {
-        return;
-    }
-
-    int row = index.row();
-    QString propertyName = group->child(row, 0)->text();
-    Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName, item->text());
-}
-
 QWidget* MaterialDelegate::createEditor(QWidget* parent,
-                                        const QStyleOptionViewItem&,
+                                        const QStyleOptionViewItem& styleOption,
                                         const QModelIndex& index) const
 {
-    Base::Console().Log("MaterialsEditor::createEditor()\n");
+    Q_UNUSED(styleOption)
+
     if (index.column() != 1) {
         return nullptr;
     }
 
-    const QStandardItemModel* treeModel = static_cast<const QStandardItemModel*>(index.model());
+    auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
 
     // Check we're not the material model root. This is also used to access the entry columns
     auto item = treeModel->itemFromIndex(index);
@@ -436,53 +397,28 @@ QWidget* MaterialDelegate::createEditor(QWidget* parent,
         return nullptr;
     }
 
-    int row = index.row();
-
-    QString propertyName = group->child(row, 0)->text();
-    QString propertyType = QString::fromStdString("String");
-    if (group->child(row, 2)) {
-        propertyType = group->child(row, 2)->text();
-    }
-
-    QString propertyValue = QString::fromStdString("");
-    if (group->child(row, 1)) {
-        propertyValue = group->child(row, 1)->text();
-    }
-
-    QString propertyUnits = QString::fromStdString("");
-    if (group->child(row, 1)) {
-        propertyUnits = group->child(row, 3)->text();
-    }
-
-    QWidget* editor =
-        createWidget(parent, propertyName, propertyType, propertyValue, propertyUnits);
+    QVariant value = treeModel->data(index);
+    QWidget* editor = createWidget(parent, value, index);
 
     return editor;
 }
 
 QWidget* MaterialDelegate::createWidget(QWidget* parent,
-                                        const QString& propertyName,
-                                        const QString& propertyType,
-                                        const QString& propertyValue,
-                                        const QString& propertyUnits) const
+                                        const QVariant& item,
+                                        const QModelIndex& index) const
 {
-    Q_UNUSED(propertyName);
-
     QWidget* widget = nullptr;
 
-    std::string type = propertyType.toStdString();
-    if (type == "String" || type == "URL" || type == "List") {
-        widget = new Gui::PrefLineEdit(parent);
-    }
-    else if ((type == "Integer") || (type == "Int")) {
-        Gui::IntSpinBox* spinner = new Gui::IntSpinBox(parent);
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Integer) {
+        auto spinner = new Gui::IntSpinBox(parent);
         spinner->setMinimum(0);
         spinner->setMaximum(INT_MAX);
-        spinner->setValue(propertyValue.toInt());
+        spinner->setValue(item.toInt());
         widget = spinner;
     }
-    else if (type == "Float") {
-        Gui::DoubleSpinBox* spinner = new Gui::DoubleSpinBox(parent);
+    else if (type == Materials::MaterialValue::Float) {
+        auto spinner = new Gui::DoubleSpinBox(parent);
 
         // the magnetic permeability is the parameter for which many decimals matter
         // the most however, even for this, 6 digits are sufficient
@@ -493,61 +429,43 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
 
         spinner->setMinimum(std::numeric_limits<double>::min());
         spinner->setMaximum(std::numeric_limits<double>::max());
-        spinner->setValue(propertyValue.toDouble());
+        spinner->setValue(item.toDouble());
         widget = spinner;
     }
-    else if (type == "Boolean") {
-        Gui::PrefComboBox* combo = new Gui::PrefComboBox(parent);
+    else if (type == Materials::MaterialValue::Boolean) {
+        auto combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
-        combo->setCurrentText(propertyValue);
+        combo->setCurrentText(item.toString());
         widget = combo;
     }
-    else if (type == "Quantity") {
-        Gui::InputField* input = new Gui::InputField();
+    else if (type == Materials::MaterialValue::Quantity) {
+        auto input = new Gui::InputField(parent);
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
-        input->setUnitText(propertyUnits);  // TODO: Ensure this exists
+        input->setUnitText(getUnits(index));
         input->setPrecision(6);
-        input->setQuantityString(propertyValue);
+        input->setValue(item.value<Base::Quantity>());
 
         widget = input;
     }
-    else if (type == "File") {
-        Gui::FileChooser* chooser = new Gui::FileChooser();
-        if (propertyValue.length() > 0) {
-            chooser->setFileName(propertyValue);
+    else if (type == Materials::MaterialValue::File) {
+        auto chooser = new Gui::FileChooser(parent);
+        if (!item.toString().isEmpty()) {
+            chooser->setFileName(item.toString());
         }
 
         widget = chooser;
     }
     else {
         // Default editor
-        widget = new QLineEdit(parent);
+        auto lineEdit = new Gui::PrefLineEdit(parent);
+        lineEdit->setText(item.toString());
+        widget = lineEdit;
     }
-
-    widget->setProperty("Type", propertyType);
-    widget->setParent(parent);
 
     return widget;
-}
-
-QRgb MaterialDelegate::parseColor(const QString& color) const
-{
-    QString trimmed = color;
-    trimmed.replace(QRegularExpression(QString::fromStdString("\\(([^<]*)\\)")),
-                    QString::fromStdString("\\1"));
-    QStringList parts = trimmed.split(QString::fromStdString(","));
-    if (parts.length() < 4) {
-        return qRgba(0, 0, 0, 1);
-    }
-    int red = parts.at(0).toDouble() * 255;
-    int green = parts.at(1).toDouble() * 255;
-    int blue = parts.at(2).toDouble() * 255;
-    int alpha = parts.at(3).toDouble() * 255;
-
-    return qRgba(red, green, blue, alpha);
 }
 
 #include "moc_MaterialDelegate.cpp"

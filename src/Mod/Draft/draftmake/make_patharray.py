@@ -40,7 +40,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 from draftobjects.patharray import PathArray
 from draftobjects.pathtwistedarray import PathTwistedArray
@@ -164,36 +164,22 @@ def make_path_array(base_object, path_object, count=4,
         If there is a problem it will return `None`.
     """
     _name = "make_path_array"
-    utils.print_header(_name, "Path array")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: base_object not in document."))
         return None
-
-    _msg("base_object: {}".format(base_object.Label))
-
-    if isinstance(path_object, str):
-        path_object_str = path_object
 
     found, path_object = utils.find_object(path_object, doc)
     if not found:
-        _msg("path_object: {}".format(path_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: path_object not in document."))
         return None
 
-    _msg("path_object: {}".format(path_object.Label))
-
-    _msg("count: {}".format(count))
     try:
         utils.type_check([(count, (int, float))],
                          name=_name)
@@ -202,7 +188,6 @@ def make_path_array(base_object, path_object, count=4,
         return None
     count = int(count)
 
-    _msg("extra: {}".format(extra))
     try:
         utils.type_check([(extra, App.Vector)],
                          name=_name)
@@ -210,7 +195,6 @@ def make_path_array(base_object, path_object, count=4,
         _err(translate("draft","Wrong input: must be a vector."))
         return None
 
-    _msg("subelements: {}".format(subelements))
     if subelements:
         try:
             # Make a list
@@ -243,9 +227,7 @@ def make_path_array(base_object, path_object, count=4,
         sub_list = None
 
     align = bool(align)
-    _msg("align: {}".format(align))
 
-    _msg("align_mode: {}".format(align_mode))
     try:
         utils.type_check([(align_mode, str)],
                          name=_name)
@@ -256,7 +238,6 @@ def make_path_array(base_object, path_object, count=4,
         _err(translate("draft","Wrong input: must be 'Original', 'Frenet', or 'Tangent'."))
         return None
 
-    _msg("tan_vector: {}".format(tan_vector))
     try:
         utils.type_check([(tan_vector, App.Vector)],
                          name=_name)
@@ -265,9 +246,6 @@ def make_path_array(base_object, path_object, count=4,
         return None
 
     force_vertical = bool(force_vertical)
-    _msg("force_vertical: {}".format(force_vertical))
-
-    _msg("vertical_vector: {}".format(vertical_vector))
     try:
         utils.type_check([(vertical_vector, App.Vector)],
                          name=_name)
@@ -275,7 +253,6 @@ def make_path_array(base_object, path_object, count=4,
         _err(translate("draft","Wrong input: must be a vector."))
         return None
 
-    _msg("start_offset: {}".format(start_offset))
     try:
         utils.type_check([(start_offset, (int, float))],
                          name=_name)
@@ -284,7 +261,6 @@ def make_path_array(base_object, path_object, count=4,
         return None
     start_offset = float(start_offset)
 
-    _msg("end_offset: {}".format(end_offset))
     try:
         utils.type_check([(end_offset, (int, float))],
                          name=_name)
@@ -294,7 +270,6 @@ def make_path_array(base_object, path_object, count=4,
     end_offset = float(end_offset)
 
     use_link = bool(use_link)
-    _msg("use_link: {}".format(use_link))
 
     if use_link:
         # The PathArray class must be called in this special way
@@ -351,36 +326,21 @@ def make_path_twisted_array(base_object, path_object,
                             use_link=True):
     """Create a Path twisted array."""
     _name = "make_path_twisted_array"
-    utils.print_header(_name, "Path twisted array")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: base_object not in document."))
         return None
-
-    _msg("base_object: {}".format(base_object.Label))
-
-    if isinstance(path_object, str):
-        path_object_str = path_object
 
     found, path_object = utils.find_object(path_object, doc)
     if not found:
-        _msg("path_object: {}".format(path_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: path_object not in document."))
         return None
-
-    _msg("path_object: {}".format(path_object.Label))
-
-    _msg("count: {}".format(count))
     try:
         utils.type_check([(count, (int, float))],
                          name=_name)
@@ -390,8 +350,6 @@ def make_path_twisted_array(base_object, path_object,
     count = int(count)
 
     use_link = bool(use_link)
-    _msg("use_link: {}".format(use_link))
-
     if use_link:
         # The PathTwistedArray class must be called in this special way
         # to make it a PathTwistLinkArray
@@ -413,18 +371,9 @@ def make_path_twisted_array(base_object, path_object,
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.formatObject(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-            # Workaround to trigger update of DiffuseColor:
-            ToDo.delay(reapply_diffuse_color, new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 
     return new_obj
-
-
-def reapply_diffuse_color(vobj):
-    try:
-        vobj.DiffuseColor = vobj.DiffuseColor
-    except:
-        pass
 
 ## @}

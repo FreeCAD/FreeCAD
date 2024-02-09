@@ -119,7 +119,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyLinkList",
                 "MeshRegionList",
                 "Base",
-                "Mesh regions of the mesh"
+                "Mesh refinments of the mesh"
             )
             obj.MeshRegionList = []
 

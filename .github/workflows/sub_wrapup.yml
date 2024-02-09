@@ -54,7 +54,7 @@ jobs:
         run: |
           mkdir -p ${{ env.artifactsDownloadDir }}
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: ${{ env.artifactsDownloadDir }}
       - name: Save input data to file
@@ -83,8 +83,8 @@ jobs:
             echo "### $icon $step step" >> report.md
             if [ $result == 'skipped' ]
             then
-             echo "Step was skipped, no report was generated" | tee -a report.md
-             continue
+              echo "Step was skipped, no report was generated" | tee -a report.md
+              continue
             elif [ $result == 'cancelled' ]
             then
               echo "Step was cancelled when executing, report may be incomplete" | tee -a report.md

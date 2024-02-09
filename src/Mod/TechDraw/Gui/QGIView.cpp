@@ -130,11 +130,24 @@ bool QGIView::isVisible()
     return vpdo->Visibility.getValue();
 }
 
+//Gets selection state for this view and/or eventually its children
+bool QGIView::getGroupSelection()
+{
+    return isSelected();
+}
+
 //Set selection state for this and its children
 //required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool isSelected)
 {
     setSelected(isSelected);
+}
+
+// Set selection state of the feature (empty subName) or its sub items
+void QGIView::setGroupSelection(bool isSelected, const std::vector<std::string> &subNames)
+{
+    Q_UNUSED(subNames);
+    setGroupSelection(isSelected);
 }
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
@@ -150,6 +163,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if(change == ItemPositionChange && scene()) {
         newPos = value.toPointF();            //position within parent!
         if(m_locked){
+            // ignore position change for locked items
             newPos.setX(pos().x());
             newPos.setY(pos().y());
             return newPos;
@@ -157,9 +171,8 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
         TechDraw::DrawView *viewObj = getViewObject();
 
-        // TODO  find a better data structure for this
-        // this is just a pair isn't it?
         if (viewObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            // restrict movements of secondary views.
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewObj);
             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
             if (dpg) {
@@ -173,11 +186,11 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                     }
                 }
             }
-        } else {
-            Gui::ViewProvider *vp = getViewProvider(viewObj);
-            if (vp && !vp->isRestoring()) {
-                viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
-            }
+        }
+        // tell the feature that we have moved
+        Gui::ViewProvider *vp = getViewProvider(viewObj);
+        if (vp && !vp->isRestoring()) {
+            viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
         }
 
         return newPos;

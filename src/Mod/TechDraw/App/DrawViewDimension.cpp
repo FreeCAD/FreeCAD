@@ -236,11 +236,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             MeasureType.touch();               //run MeasureType logic for this case
         }
         updateSavedGeometry();
-        return;
     }
-    else if (prop == &Type) {//why??
+    else if (prop == &Type) {
         FormatSpec.setValue(getDefaultFormatSpec().c_str());
-
         DimensionType type = static_cast<DimensionType>(Type.getValue());
         if (type == DimensionType::Angle || type == DimensionType::Angle3Pt) {
             OverTolerance.setUnit(Base::Unit::Angle);
@@ -250,7 +248,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             OverTolerance.setUnit(Base::Unit::Length);
             UnderTolerance.setUnit(Base::Unit::Length);
         }
-        return;
     }
     else if (prop == &TheoreticalExact) {
         // if TheoreticalExact disable tolerances and set them to zero
@@ -273,7 +270,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        return;
     }
     else if (prop == &EqualTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -297,7 +293,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        return;
     }
     else if (prop == &OverTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -305,19 +300,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
             UnderTolerance.setUnit(OverTolerance.getUnit());
         }
-        return;
     }
     else if (prop == &FormatSpecOverTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
         }
-        return;
     }
     else if (prop == &FormatSpecUnderTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
         }
-        return;
     }
 
     DrawView::onChanged(prop);
@@ -399,11 +391,15 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     resetAngular();
     resetArc();
 
-    m_referencesCorrect = compareSavedGeometry();
-    if (!m_referencesCorrect) {
-        m_referencesCorrect = fixExactMatch();
+    const std::vector<TopoShape> savedGeometry = SavedGeometry.getValues();
+    if (!savedGeometry.empty()) {
+        // we can only correct references if we have saved geometry for comparison
+        m_referencesCorrect = compareSavedGeometry();
         if (!m_referencesCorrect) {
-            handleNoExactMatch();
+            m_referencesCorrect = fixExactMatch();
+            if (!m_referencesCorrect) {
+                handleNoExactMatch();
+            }
         }
     }
 
@@ -1426,7 +1422,7 @@ bool DrawViewDimension::compareSavedGeometry()
     if (savedGeometry.empty()) {
         // no saved geometry, so we have nothing to compare, so we don't know if there has been a change
         // this should return false, since something != nothing
-//        Base::Console().Warning("%s has no saved reference geometry!\n", getNameInDocument());
+//        Base::Console().("%s has no saved reference geometry!\n", getNameInDocument());
         return false;
     }
 
@@ -1500,7 +1496,7 @@ bool DrawViewDimension::fixExactMatch()
                 std::pair<int, std::string> toFix(iRef, newReference);
                 refsToFix3d.push_back(toFix);
             } else {
-                Base::Console().Warning("%s - no exact match for changed 3d reference: %d\n", getNameInDocument(), iRef);
+                Base::Console().Message("%s - no exact match for changed 3d reference: %d\n", getNameInDocument(), iRef);
                 success = false;
             }
         } else {
@@ -1513,7 +1509,7 @@ bool DrawViewDimension::fixExactMatch()
                 std::pair<int, std::string> toFix(iRef, newReference);
                 refsToFix2d.push_back(toFix);
             } else {
-                Base::Console().Warning("%s - no exact match for changed 2d reference: %d\n", getNameInDocument(), iRef);
+                Base::Console().Message("%s - no exact match for changed 2d reference: %d\n", getNameInDocument(), iRef);
                 success = false;
             }
         }

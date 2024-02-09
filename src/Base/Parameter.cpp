@@ -501,11 +501,7 @@ std::vector<Base::Reference<ParameterGrp>> ParameterGrp::GetGroups()
 /// test if this group is empty
 bool ParameterGrp::IsEmpty() const
 {
-    if (_pGroupNode && _pGroupNode->getFirstChild()) {
-        return false;
-    }
-
-    return true;
+    return !(_pGroupNode && _pGroupNode->getFirstChild());
 }
 
 /// test if a special sub group is in this group

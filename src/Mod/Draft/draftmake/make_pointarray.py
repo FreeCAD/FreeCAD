@@ -38,7 +38,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 from draftobjects.pointarray import PointArray
 
@@ -84,43 +84,31 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         If there is a problem it will return `None`.
     """
     _name = "make_point_array"
-    utils.print_header(_name, "Point array")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft", "No active document. Aborting."))
         return None
 
-    if isinstance(base_object, str):
-        base_object_str = base_object
-
     found, base_object = utils.find_object(base_object, doc)
     if not found:
-        _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft", "Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: base_object not in document."))
         return None
-
-    _msg("base_object: {}".format(base_object.Label))
-
-    if isinstance(point_object, str):
-        point_object_str = point_object
 
     found, point_object = utils.find_object(point_object, doc)
     if not found:
-        _msg("point_object: {}".format(point_object_str))
-        _err(translate("draft", "Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: point_object not in document."))
         return None
 
-    _msg("point_object: {}".format(point_object.Label))
     if not ((hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))
             or hasattr(point_object, "Mesh")
             or hasattr(point_object, "Points")):
         _err(translate("draft", "Wrong input: object has the wrong type."))
         return None
 
-    _msg("extra: {}".format(extra))
     if not extra:
         extra = App.Placement()
+
     try:
         utils.type_check([(extra, (App.Placement,
                                    App.Vector,
@@ -157,8 +145,6 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-            # Workaround to trigger update of DiffuseColor:
-            ToDo.delay(reapply_diffuse_color, new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 
@@ -170,12 +156,5 @@ def makePointArray(base, ptlst):
     utils.use_instead('make_point_array')
 
     return make_point_array(base, ptlst)
-
-
-def reapply_diffuse_color(vobj):
-    try:
-        vobj.DiffuseColor = vobj.DiffuseColor
-    except:
-        pass
 
 ## @}

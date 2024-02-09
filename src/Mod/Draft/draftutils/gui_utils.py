@@ -40,9 +40,9 @@ import math
 import os
 
 import FreeCAD as App
-import draftutils.utils as utils
-
-from draftutils.messages import _msg, _wrn, _err
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -188,7 +188,7 @@ def dim_symbol(symbol=None, invert=False):
     ----------
     symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
-        database, `get_param("dimsymbol", 0)`.
+        database, `get_param("dimsymbol")`.
 
         A numerical value defines different markers
          * 0, `SoSphere`
@@ -211,7 +211,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = utils.get_param("dimsymbol", 0)
+        symbol = params.get_param("dimsymbol")
 
     if symbol == 0:
         # marker = coin.SoMarkerSet()
@@ -328,7 +328,6 @@ def remove_hidden(objectslist):
         if obj.ViewObject:
             if not obj.ViewObject.isVisible():
                 newlist.remove(obj)
-                _msg(translate("draft", "Visibility off; removed from list: ") + obj.Label)
     return newlist
 
 
@@ -435,15 +434,46 @@ def get_diffuse_color(objs):
     return colors
 
 
+def apply_current_style(objs):
+    """Apply the current style to one or more objects.
+
+    Parameters
+    ----------
+    objs: a single object or an iterable with objects.
+    """
+    if not isinstance(objs, list):
+        objs = [objs]
+    anno_style = utils.get_default_annotation_style()
+    shape_style = utils.get_default_shape_style()
+    for obj in objs:
+        if not hasattr(obj, 'ViewObject'):
+            continue
+        vobj = obj.ViewObject
+        props = vobj.PropertiesList
+        style = anno_style if ("FontName" in props) else shape_style
+        for prop in props:
+            if prop in style:
+                if style[prop][0] == "index":
+                    if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
+                        setattr(vobj, prop, style[prop][2])
+                elif style[prop][0] == "color":
+                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
+                else:
+                    setattr(vobj, prop, style[prop][1])
+
+
 def format_object(target, origin=None):
     """Apply visual properties to an object.
 
     This function only works if the graphical interface is available.
 
-    If construction mode is active the `origin` argument is ignored.
-    The `target` is then placed in the construction group and the `constr`
-    color is applied to its applicable color properties:
-    `TextColor`, `PointColor`, `LineColor`, and `ShapeColor`.
+    If origin is `None` and target is not an annotation, the DefaultDrawStyle
+    and DefaultDisplayMode preferences are applied. Else, the properties of
+    origin are applied to target.
+
+    If construction mode is active target is then placed in the construction
+    group and the `constr` color is applied to its applicable color properties:
+    TextColor, PointColor, LineColor, and ShapeColor.
 
     Parameters
     ----------
@@ -464,30 +494,13 @@ def format_object(target, origin=None):
     if not hasattr(target, 'ViewObject'):
         return
     obrep = target.ViewObject
-    if Gui.draftToolBar.isConstructionMode():
-        doc = App.ActiveDocument
-        col = Gui.draftToolBar.getDefaultColor("constr") + (0.0,)
-        grp = doc.getObject("Draft_Construction")
-        if not grp:
-            grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-            grp.Label = utils.get_param("constructiongroupname", "Construction")
-        grp.addObject(target)
-        if "TextColor" in obrep.PropertiesList:
-            obrep.TextColor = col
-        if "PointColor" in obrep.PropertiesList:
-            obrep.PointColor = col
-        if "LineColor" in obrep.PropertiesList:
-            obrep.LineColor = col
-        if "ShapeColor" in obrep.PropertiesList:
-            obrep.ShapeColor = col
-        if hasattr(obrep, "Transparency"):
-            obrep.Transparency = 80
-    elif origin and hasattr(origin, 'ViewObject'):
+    obprops = obrep.PropertiesList
+    if origin and hasattr(origin, 'ViewObject'):
         matchrep = origin.ViewObject
         for p in matchrep.PropertiesList:
             if p not in ("DisplayMode", "BoundingBox",
                          "Proxy", "RootNode", "Visibility"):
-                if p in obrep.PropertiesList:
+                if p in obprops:
                     if not obrep.getEditorMode(p):
                         if hasattr(getattr(matchrep, p), "Value"):
                             val = getattr(matchrep, p).Value
@@ -503,6 +516,32 @@ def format_object(target, origin=None):
             difcol = get_diffuse_color(origin)
             if difcol:
                 obrep.DiffuseColor = difcol
+    elif "FontName" not in obprops:
+        # Apply 2 Draft style preferences, other style preferences are applied by Core.
+        if "DrawStyle" in obprops:
+            obrep.DrawStyle = utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")]
+        if "DisplayMode" in obprops:
+            dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
+            if dm in obrep.listDisplayModes():
+                obrep.DisplayMode = dm
+    if Gui.draftToolBar.isConstructionMode():
+        doc = App.ActiveDocument
+        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        grp = doc.getObject("Draft_Construction")
+        if not grp:
+            grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+            grp.Label = params.get_param("constructiongroupname")
+        grp.addObject(target)
+        if "TextColor" in obprops:
+            obrep.TextColor = col
+        if "PointColor" in obprops:
+            obrep.PointColor = col
+        if "LineColor" in obprops:
+            obrep.LineColor = col
+        if "ShapeColor" in obprops:
+            obrep.ShapeColor = col
+        if hasattr(obrep, "Transparency"):
+            obrep.Transparency = 80
 
 
 formatObject = format_object
@@ -781,7 +820,6 @@ def get_bbox(obj, debug=False):
         If there is a problem it will return `None`.
     """
     _name = "get_bbox"
-    utils.print_header(_name, "Bounding box", debug=debug)
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
@@ -793,12 +831,8 @@ def get_bbox(obj, debug=False):
 
     found, obj = utils.find_object(obj, doc)
     if not found:
-        _msg("obj: {}".format(obj_str))
-        _err(translate("draft", "Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
-
-    if debug:
-        _msg("obj: {}".format(obj.Label))
 
     if (not hasattr(obj, "ViewObject")
             or not obj.ViewObject

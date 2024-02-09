@@ -188,19 +188,19 @@
       <translation>佈置</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../Transform.cpp" line="101"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2572"/>
+      <location filename="../ViewProviderLink.cpp" line="2577"/>
       <source>Toggle array elements</source>
       <translation>切換陣列元件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2981"/>
+      <location filename="../ViewProviderLink.cpp" line="2986"/>
       <source>Link Transform</source>
       <translation>連結轉換</translation>
     </message>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../CommandView.cpp" line="917"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>切換透明度</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1019"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>表示式編輯器</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>請輸入表示式... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
@@ -782,37 +782,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="284"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="290"/>
       <source>Camera settings</source>
       <translation>相機視角設定</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="291"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="297"/>
       <source>Orientation</source>
       <translation>定位</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="305"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="311"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="315"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="321"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="325"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="331"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="335"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="341"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="344"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="350"/>
       <source>Current view</source>
       <translation>目前視角</translation>
     </message>
@@ -2427,17 +2427,17 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
-      <location filename="../DlgPreferences.ui" line="14"/>
+      <location filename="../DlgPreferences.ui" line="20"/>
       <source>Preferences</source>
       <translation>偏好設定</translation>
     </message>
     <message>
-      <location filename="../DlgPreferences.ui" line="152"/>
+      <location filename="../DlgPreferences.ui" line="158"/>
       <source>Reset</source>
       <translation>重設</translation>
     </message>
     <message>
-      <location filename="../DlgPreferences.ui" line="192"/>
+      <location filename="../DlgPreferences.ui" line="198"/>
       <source>Header</source>
       <translation>標題</translation>
     </message>
@@ -2449,72 +2449,72 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="439"/>
+      <location filename="../DlgPreferencesImp.cpp" line="489"/>
       <source>Reset page '%1'...</source>
       <translation type="unfinished">Reset page '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="442"/>
+      <location filename="../DlgPreferencesImp.cpp" line="492"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation type="unfinished">Resets the user settings for the page '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="445"/>
+      <location filename="../DlgPreferencesImp.cpp" line="495"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>重設群組  '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="448"/>
+      <location filename="../DlgPreferencesImp.cpp" line="498"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation type="unfinished">Resets the user settings for the group '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="451"/>
+      <location filename="../DlgPreferencesImp.cpp" line="501"/>
       <source>Reset all...</source>
-      <translation type="unfinished">Reset all...</translation>
+      <translation>全部重置...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="454"/>
+      <location filename="../DlgPreferencesImp.cpp" line="504"/>
       <source>Resets the user settings entirely</source>
       <translation type="unfinished">Resets the user settings entirely</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="469"/>
+      <location filename="../DlgPreferencesImp.cpp" line="520"/>
       <source>Clear user settings</source>
       <translation>清除使用者設定</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="470"/>
+      <location filename="../DlgPreferencesImp.cpp" line="521"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>您確定要清除所有的設定嗎？</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="471"/>
+      <location filename="../DlgPreferencesImp.cpp" line="522"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>當您同意後，所有的設定將會被清除</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="571"/>
+      <location filename="../DlgPreferencesImp.cpp" line="622"/>
       <source>Wrong parameter</source>
       <translation>錯誤的參數</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="614"/>
+      <location filename="../DlgPreferencesImp.cpp" line="665"/>
       <source>Restart required</source>
       <translation>需要重新啟動</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="615"/>
+      <location filename="../DlgPreferencesImp.cpp" line="666"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>您必須重新啟動 FreeCAD 以使更改生效。</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="620"/>
+      <location filename="../DlgPreferencesImp.cpp" line="671"/>
       <source>Restart now</source>
       <translation>現在重新啟動</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="621"/>
+      <location filename="../DlgPreferencesImp.cpp" line="672"/>
       <source>Restart later</source>
       <translation>稍後重新啟動</translation>
     </message>
@@ -2524,7 +2524,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>文件資訊</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2553,46 +2553,56 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
+      <source>Unit System:</source>
+      <translation>單位系統：</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformation.ui" line="152"/>
+      <source>Unit system for this file</source>
+      <translation>此檔案的單位系統</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by:</source>
       <translation>作者：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="165"/>
+      <location filename="../DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date:</source>
       <translation>建立日期(&amp;D)：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="191"/>
+      <location filename="../DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by:</source>
       <translation>最後修改(&amp;L)：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="214"/>
+      <location filename="../DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date:</source>
       <translation>最後修改日期(&amp;M)：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="240"/>
+      <location filename="../DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany:</source>
       <translation>&amp;P公司：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="263"/>
+      <location filename="../DlgProjectInformation.ui" line="280"/>
       <source>License information:</source>
       <translation>授權申明：</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="276"/>
+      <location filename="../DlgProjectInformation.ui" line="293"/>
       <source>License URL</source>
       <translation>授權連結</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="291"/>
+      <location filename="../DlgProjectInformation.ui" line="308"/>
       <source>Open in browser</source>
       <translation>於瀏覽器中開啟</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="300"/>
+      <location filename="../DlgProjectInformation.ui" line="317"/>
       <source>&amp;Comment:</source>
       <translation>&amp;註釋：</translation>
     </message>
@@ -2606,12 +2616,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>文件實用程式</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>提取文件</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2633,12 +2643,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>建立文件</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>創建後載入文件檔案</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2677,12 +2687,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>提取文件失敗</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>無法建立文件</translation>
     </message>
   </context>
   <context>
@@ -3105,17 +3115,17 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20像素</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25像素</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30像素</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
@@ -3611,67 +3621,67 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>新文件的預設授權</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="39"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="41"/>
       <source>All rights reserved</source>
       <translation>版權所有</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="40"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="42"/>
       <source>Creative Commons Attribution</source>
       <translation>創用CC授權之姓名標示</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="41"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="43"/>
       <source>Creative Commons Attribution-ShareAlike</source>
       <translation>創用CC授權之姓名標示-相同方式分享</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="42"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="44"/>
       <source>Creative Commons Attribution-NoDerivatives</source>
       <translation>創用CC授權之姓名標示─禁止改作</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="43"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="45"/>
       <source>Creative Commons Attribution-NonCommercial</source>
       <translation>創用CC授權之姓名標示─非商業性</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="44"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="46"/>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
       <translation>創用CC授權之姓名標示─非商業性─相同方式分享</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="45"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="47"/>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>創用CC授權之姓名標示─非商業性─禁止改作</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="46"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="48"/>
       <source>Public Domain</source>
       <translation>公眾領域</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="47"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="49"/>
       <source>FreeArt</source>
       <translation>自由藝術</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="48"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="50"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
       <translation>強烈相互回報的CERN開放硬體授權</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="49"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="51"/>
       <source>CERN Open Hardware Licence weakly-reciprocal</source>
       <translation>弱相互回報的CERN開放硬體授權</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="50"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="52"/>
       <source>CERN Open Hardware Licence permissive</source>
       <translation>寬鬆的CERN開放硬體授權</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="51"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="53"/>
       <source>Other</source>
       <translation>其他</translation>
     </message>
@@ -4233,60 +4243,69 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
-      <source>Enable navigation animations</source>
-      <translation type="unfinished">Enable navigation animations</translation>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
+      <source>Animations</source>
+      <translation>動畫</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
+      <source>Enable spinning animations that are used in some navigation styles after dragging</source>
+      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
+      <source>Enable spinning animations</source>
+      <translation type="unfinished">Enable spinning animations</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
       <source>Duration of navigation animations that have a fixed duration</source>
       <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="707"/>
       <source>Animation duration</source>
       <translation type="unfinished">Animation duration</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="723"/>
       <source>The duration of navigation animations in milliseconds</source>
       <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="590"/>
       <source>Zoom step</source>
       <translation type="unfinished">Zoom step</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="657"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="571"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>縮放操作將在滑鼠滑標位置執行</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="660"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
       <source>Zoom at cursor</source>
       <translation>遊標處放大</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="694"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="608"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>將縮放多少。
 縮放步驟 '1' 表示每個縮放步驟的因數為7.5。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="738"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="652"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>縮放操作的方向將被反轉</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="741"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="655"/>
       <source>Invert zoom</source>
       <translation>反相縮放</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="757"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="671"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4295,57 +4314,57 @@ Mouse tilting is not disabled by this setting.</source>
 此設置不會停用滑鼠傾斜。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="762"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>停用觸控屏傾斜手勢</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="167"/>
       <source>Isometric</source>
       <translation>等角立體</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="162"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="168"/>
       <source>Dimetric</source>
       <translation>二等角立體</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="163"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="169"/>
       <source>Trimetric</source>
       <translation>不等角立體</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="164"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="170"/>
       <source>Top</source>
       <translation>上視圖</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="171"/>
       <source>Front</source>
       <translation>前視圖</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="166"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="172"/>
       <source>Left</source>
-      <translation>左視圖</translation>
+      <translation>靠左</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="167"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="173"/>
       <source>Right</source>
-      <translation>右視圖</translation>
+      <translation>靠右</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="168"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="174"/>
       <source>Rear</source>
       <translation>後視圖</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="169"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="175"/>
       <source>Bottom</source>
       <translation>底視圖</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="170"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="176"/>
       <source>Custom</source>
       <translation>自訂</translation>
     </message>
@@ -4360,7 +4379,7 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>控制台</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -6063,15 +6082,15 @@ Do you want to save your changes?</source>
       <translation>PDF 格式</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz 格式</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>匯出圖形</translation>
     </message>
@@ -6218,12 +6237,12 @@ Do you want to save your changes?</source>
       <translation>巨集</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1173"/>
+      <location filename="../Command.cpp" line="1184"/>
       <source>Macro file doesn't exist</source>
       <translation>無此巨集</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1174"/>
+      <location filename="../Command.cpp" line="1185"/>
       <source>No such macro file: '%1'</source>
       <translation>無 '%1'之巨集</translation>
     </message>
@@ -6231,73 +6250,73 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="169"/>
-      <location filename="../MainWindow.cpp" line="2323"/>
+      <location filename="../MainWindow.cpp" line="168"/>
+      <location filename="../MainWindow.cpp" line="2351"/>
       <source>Dimension</source>
       <translation>標註</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="486"/>
+      <location filename="../MainWindow.cpp" line="510"/>
       <source>Ready</source>
       <translation>就緒</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="978"/>
+      <location filename="../MainWindow.cpp" line="1002"/>
       <source>Help addon needed!</source>
       <translation>需要幫助的附加元件!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="979"/>
+      <location filename="../MainWindow.cpp" line="1003"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>%1 的幫助系統現在由 "幫助" 附加元件管理。您可以通過附加元件管理器來輕鬆安裝它</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="981"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Open Addon Manager</source>
       <translation>開啟附加元件管理員</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1176"/>
+      <location filename="../MainWindow.cpp" line="1200"/>
       <source>Close All</source>
       <translation>全部關閉</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1384"/>
-      <location filename="../MainWindow.cpp" line="1385"/>
-      <location filename="../MainWindow.cpp" line="1386"/>
+      <location filename="../MainWindow.cpp" line="1408"/>
+      <location filename="../MainWindow.cpp" line="1409"/>
+      <location filename="../MainWindow.cpp" line="1410"/>
       <source>Toggles this toolbar</source>
       <translation>切換此工具列</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1399"/>
-      <location filename="../MainWindow.cpp" line="1400"/>
-      <location filename="../MainWindow.cpp" line="1401"/>
+      <location filename="../MainWindow.cpp" line="1427"/>
+      <location filename="../MainWindow.cpp" line="1428"/>
+      <location filename="../MainWindow.cpp" line="1429"/>
       <source>Toggles this dockable window</source>
       <translation>切換此可停靠的視窗</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1909"/>
+      <location filename="../MainWindow.cpp" line="1937"/>
       <source>WARNING: This is a development version.</source>
       <translation>警告：這是開發版。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1910"/>
+      <location filename="../MainWindow.cpp" line="1938"/>
       <source>Please do not use it in a production environment.</source>
       <translation>請不要在生產環境中使用它。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2114"/>
-      <location filename="../MainWindow.cpp" line="2206"/>
+      <location filename="../MainWindow.cpp" line="2142"/>
+      <location filename="../MainWindow.cpp" line="2234"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2115"/>
+      <location filename="../MainWindow.cpp" line="2143"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>匯出的物件包含外部連結。請在匯出前至少儲存一次文件。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2207"/>
+      <location filename="../MainWindow.cpp" line="2235"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>要連結到外部物件，文件必須至少儲存一次。
@@ -6797,17 +6816,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="859"/>
+      <location filename="../Action.cpp" line="872"/>
       <source>Open file %1</source>
       <translation>打開檔案 %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="916"/>
       <source>File not found</source>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="916"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>無法打開'%1'檔案。</translation>
     </message>
@@ -6815,22 +6834,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1029"/>
+      <location filename="../Action.cpp" line="1042"/>
       <source>none</source>
       <translation>無</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1044"/>
+      <location filename="../Action.cpp" line="1057"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>執行巨集  %1 (Shift+click 來編輯) 快捷鍵： %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1102"/>
+      <location filename="../Action.cpp" line="1115"/>
       <source>File not found</source>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1102"/>
+      <location filename="../Action.cpp" line="1115"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>無法打開'%1'檔案。</translation>
     </message>
@@ -7513,7 +7532,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2965"/>
-      <location filename="../Tree.cpp" line="5096"/>
+      <location filename="../Tree.cpp" line="5095"/>
       <source>Rename</source>
       <translation>重新命名</translation>
     </message>
@@ -7603,12 +7622,12 @@ Do you want to specify another directory?</source>
       <translation>重新計算所選的物件</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5067"/>
+      <location filename="../Tree.cpp" line="5066"/>
       <source> (but must be executed)</source>
       <translation> (但是必須被執行)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5069"/>
+      <location filename="../Tree.cpp" line="5068"/>
       <source>%1, Internal name: %2</source>
       <translation>%1，內部名稱：%2</translation>
     </message>
@@ -7652,7 +7671,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="724"/>
+      <location filename="../Action.cpp" line="737"/>
       <source>Select the '%1' workbench</source>
       <translation>選擇 '%1' 工作台</translation>
     </message>
@@ -7819,47 +7838,47 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="650"/>
+      <location filename="../MainWindow.cpp" line="674"/>
       <source>Tree view</source>
       <translation>樹狀檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="572"/>
+      <location filename="../MainWindow.cpp" line="596"/>
       <source>Tasks</source>
       <translation>任務</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="676"/>
+      <location filename="../MainWindow.cpp" line="700"/>
       <source>Property view</source>
       <translation>屬性檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="589"/>
+      <location filename="../MainWindow.cpp" line="613"/>
       <source>Selection view</source>
       <translation>選擇視圖</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="704"/>
+      <location filename="../MainWindow.cpp" line="728"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>任務列表</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="729"/>
+      <location filename="../MainWindow.cpp" line="753"/>
       <source>Model</source>
       <translation>模型</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="755"/>
+      <location filename="../MainWindow.cpp" line="779"/>
       <source>DAG View</source>
       <translation>DAG視圖</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="607"/>
+      <location filename="../MainWindow.cpp" line="631"/>
       <source>Report view</source>
       <translation>報告檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="627"/>
+      <location filename="../MainWindow.cpp" line="651"/>
       <source>Python console</source>
       <translation>Python 主控台</translation>
     </message>
@@ -7993,8 +8012,8 @@ Do you want to specify another directory?</source>
       <translation>匯出 PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="809"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
@@ -8260,89 +8279,94 @@ Do you want to continue?</source>
       <translation>變更值</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1022"/>
+      <location filename="../NotificationArea.cpp" line="431"/>
+      <source> (%1 times)</source>
+      <translation type="unfinished"> (%1 times)</translation>
+    </message>
+    <message>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Type</source>
       <translation>類型</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1023"/>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Notifier</source>
       <translation>通知器</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1024"/>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Message</source>
       <translation>訊息</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="965"/>
+      <location filename="../NotificationArea.cpp" line="1087"/>
       <source>Notifier: </source>
       <translation>通知人: </translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="967"/>
+      <location filename="../NotificationArea.cpp" line="1089"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
       <translation>當載入檔案時，您是否想要跳過進一步重要訊息通知的確認？</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="971"/>
+      <location filename="../NotificationArea.cpp" line="1093"/>
       <source>Critical Message</source>
       <translation>嚴重訊息</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="1037"/>
+      <location filename="../NotificationArea.cpp" line="1159"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
       <translation>太多已開啟之非侵入通知。通知已被忽略!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1079"/>
+      <location filename="../Document.cpp" line="1052"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
       <translation>偵測到相同的實體路徑。這可能會導致現有文件被不必要地覆寫！</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1080"/>
+      <location filename="../Document.cpp" line="1053"/>
       <source>Are you sure you want to continue?</source>
       <translation>您確定要繼續嗎?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1099"/>
+      <location filename="../Document.cpp" line="1072"/>
       <source>Please check report view for more...</source>
       <translation>請檢視報告檢視以獲得更多...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1102"/>
+      <location filename="../Document.cpp" line="1075"/>
       <source>Physical path:</source>
       <translation>實體路徑：</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1104"/>
-      <location filename="../Document.cpp" line="1110"/>
+      <location filename="../Document.cpp" line="1077"/>
+      <location filename="../Document.cpp" line="1083"/>
       <source>Document:</source>
       <translation>文件：</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1106"/>
-      <location filename="../Document.cpp" line="1112"/>
+      <location filename="../Document.cpp" line="1079"/>
+      <location filename="../Document.cpp" line="1085"/>
       <source>Path:</source>
       <translation>路徑：</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1121"/>
+      <location filename="../Document.cpp" line="1094"/>
       <source>Identical physical path</source>
       <translation>相同實體路徑</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1129"/>
+      <location filename="../Document.cpp" line="1102"/>
       <source>Could not save document</source>
       <translation>無法儲存文件</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1130"/>
+      <location filename="../Document.cpp" line="1103"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8353,102 +8377,102 @@ Would you like to save the file with a different name?</source>
 "%1"</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1140"/>
-      <location filename="../Document.cpp" line="1272"/>
-      <location filename="../Document.cpp" line="1355"/>
+      <location filename="../Document.cpp" line="1113"/>
+      <location filename="../Document.cpp" line="1245"/>
+      <location filename="../Document.cpp" line="1328"/>
       <source>Saving aborted</source>
       <translation>終止存檔</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1187"/>
+      <location filename="../Document.cpp" line="1160"/>
       <source>Save dependent files</source>
       <translation>儲存相依檔案</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1188"/>
+      <location filename="../Document.cpp" line="1161"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>該檔案包含外部相依性。您是否也要一併儲存相依的檔案？</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1222"/>
-      <location filename="../Document.cpp" line="1266"/>
+      <location filename="../Document.cpp" line="1195"/>
+      <location filename="../Document.cpp" line="1239"/>
       <source>Saving document failed</source>
       <translation>儲存文件失敗</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1236"/>
+      <location filename="../Document.cpp" line="1209"/>
       <source>Save document under new filename...</source>
       <translation>以新檔名儲存文件</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1239"/>
-      <location filename="../Document.cpp" line="1340"/>
+      <location filename="../Document.cpp" line="1212"/>
+      <location filename="../Document.cpp" line="1313"/>
       <source>Save %1 Document</source>
       <translation>儲存文件 %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1241"/>
+      <location filename="../Document.cpp" line="1214"/>
       <source>Document</source>
       <translation>文件</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1285"/>
-      <location filename="../Document.cpp" line="1326"/>
+      <location filename="../Document.cpp" line="1258"/>
+      <location filename="../Document.cpp" line="1299"/>
       <source>Failed to save document</source>
       <translation>儲存文件失敗。</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1286"/>
+      <location filename="../Document.cpp" line="1259"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>文件包含循環相依性。您是否仍然要儲存它們？</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1337"/>
+      <location filename="../Document.cpp" line="1310"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>以新的檔案名稱儲存文件的副本</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1342"/>
+      <location filename="../Document.cpp" line="1315"/>
       <source>%1 document (*.FCStd)</source>
       <translation>％1文件（*.FCStd）</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2010"/>
+      <location filename="../Document.cpp" line="1967"/>
       <source>Document not closable</source>
       <translation>文件無法關閉</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2011"/>
+      <location filename="../Document.cpp" line="1968"/>
       <source>The document is not closable for the moment.</source>
       <translation>目前文件無法關閉</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2048"/>
+      <location filename="../Document.cpp" line="2005"/>
       <source>Document not saved</source>
       <translation>文件未儲存</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2049"/>
+      <location filename="../Document.cpp" line="2006"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>文件%1無法被儲存。請問您是否要關閉它？</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2377"/>
+      <location filename="../Document.cpp" line="2334"/>
       <source>Undo</source>
       <translation>復原</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2377"/>
+      <location filename="../Document.cpp" line="2334"/>
       <source>Redo</source>
       <translation>重做</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2379"/>
+      <location filename="../Document.cpp" line="2336"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>以下文件中存在與其他前置交易進行群組交易。</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2382"/>
+      <location filename="../Document.cpp" line="2339"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8529,12 +8553,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>選項 ...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2360"/>
+      <location filename="../View3DInventorViewer.cpp" line="2375"/>
       <source>Out of memory</source>
       <translation>記憶體不足</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2361"/>
+      <location filename="../View3DInventorViewer.cpp" line="2376"/>
       <source>Not enough memory available to display the data.</source>
       <translation>沒有足夠的記憶體可用來顯示資料。</translation>
     </message>
@@ -8550,18 +8574,13 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>在%2與%3中找不到檔案 %1 </translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1627"/>
+      <location filename="../NavigationStyle.cpp" line="1677"/>
       <source>Navigation styles</source>
       <translation>導航模式</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="410"/>
-      <source>Move annotation</source>
-      <translation>移動標註</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderDragger.cpp" line="85"/>
-      <location filename="../ViewProviderLink.cpp" line="2596"/>
+      <location filename="../ViewProviderLink.cpp" line="2601"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
@@ -8571,32 +8590,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="811"/>
+      <location filename="../MainWindow.cpp" line="835"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>於關閉前要儲存「%1」檔嘛?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="814"/>
+      <location filename="../MainWindow.cpp" line="838"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>您是否在關閉前要儲存改變至此文件？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="816"/>
+      <location filename="../MainWindow.cpp" line="840"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>若不儲存將會失去所有修改</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="821"/>
+      <location filename="../MainWindow.cpp" line="845"/>
       <source>Apply answer to all</source>
       <translation>套用答案到全部</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="911"/>
+      <location filename="../MainWindow.cpp" line="935"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 文件未儲存</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>某些文件無法被儲存。請問您是否要關閉它？</translation>
     </message>
@@ -8616,12 +8635,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>原點</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="165"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="169"/>
       <source>Delete group content?</source>
       <translation>刪除群組內容？</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="166"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="170"/>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1內尚有內容，確定要刪除嗎？</translation>
     </message>
@@ -8737,53 +8756,53 @@ underscore, and must not start with a digit.</source>
       <translation>拖放操作失敗</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2423"/>
+      <location filename="../ViewProviderLink.cpp" line="2428"/>
       <source>Setup configurable object</source>
       <translation>可設定屬性物件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2424"/>
+      <location filename="../ViewProviderLink.cpp" line="2429"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>當設定變更時，請選擇什麼物件要複製或排除。預設情況下，所有外部連結的物件都會被排除。</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2439"/>
+      <location filename="../ViewProviderLink.cpp" line="2444"/>
       <source>Please select which objects to copy when the configuration is changed</source>
       <translation>請選擇在設定變更時要複製的物件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2441"/>
+      <location filename="../ViewProviderLink.cpp" line="2446"/>
       <source>Apply to all</source>
       <translation>全部套用</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2442"/>
+      <location filename="../ViewProviderLink.cpp" line="2447"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
       <translation>套用此設定至所有連結。或者，取消選中此選項僅將其套用於此連結。</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2487"/>
+      <location filename="../ViewProviderLink.cpp" line="2492"/>
       <source>Copy on change</source>
       <translation>變更時複製</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2488"/>
+      <location filename="../ViewProviderLink.cpp" line="2493"/>
       <source>Enable</source>
       <translation>啟用</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2489"/>
+      <location filename="../ViewProviderLink.cpp" line="2494"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>當連結物件的設定更改時啟用自動複製連結物件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2502"/>
+      <location filename="../ViewProviderLink.cpp" line="2507"/>
       <source>Tracking</source>
       <translation>追蹤</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2503"/>
+      <location filename="../ViewProviderLink.cpp" line="2508"/>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8792,17 +8811,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2522"/>
+      <location filename="../ViewProviderLink.cpp" line="2527"/>
       <source>Disable copy on change</source>
       <translation>停用變更時複製</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2537"/>
+      <location filename="../ViewProviderLink.cpp" line="2542"/>
       <source>Refresh configurable object</source>
       <translation>重新運算可設定物件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2538"/>
+      <location filename="../ViewProviderLink.cpp" line="2543"/>
       <source>Synchronize the original configurable source object by
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
@@ -8811,23 +8830,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2570"/>
+      <location filename="../ViewProviderLink.cpp" line="2575"/>
       <source>Toggle array elements</source>
       <translation>切換陣列元件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2579"/>
+      <location filename="../ViewProviderLink.cpp" line="2584"/>
       <source>Change whether show each link array element as individual objects</source>
       <translation>更改是否將每個連結陣列元素顯示為個別的物件</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2597"/>
+      <location filename="../ViewProviderLink.cpp" line="2602"/>
       <source>Transform at the origin of the placement</source>
       <translation>在放置原點轉換</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2607"/>
-      <location filename="../ViewProviderLink.cpp" line="2613"/>
+      <location filename="../ViewProviderLink.cpp" line="2612"/>
+      <location filename="../ViewProviderLink.cpp" line="2618"/>
       <source>Override colors...</source>
       <translation>覆蓋顏色...</translation>
     </message>
@@ -8857,8 +8876,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -8871,12 +8890,12 @@ the current copy will be lost.
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>請按 ESC 鍵來隱藏提示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>使用者介面</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8896,7 +8915,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>可調整大小的列</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
@@ -8921,12 +8940,12 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
       <source>IconSize</source>
-      <translation type="unfinished">IconSize</translation>
+      <translation>圖示大小</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
@@ -8936,12 +8955,12 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>重疊</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>隱藏分頁列</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
@@ -9036,7 +9055,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>提示延遲 (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
@@ -9132,13 +9151,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="171"/>
+      <location filename="../CommandWindow.cpp" line="172"/>
       <source>Ne&amp;xt</source>
       <translation>下一個(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="172"/>
-      <location filename="../CommandWindow.cpp" line="174"/>
+      <location filename="../CommandWindow.cpp" line="173"/>
+      <location filename="../CommandWindow.cpp" line="175"/>
       <source>Activate next window</source>
       <translation>啟動下一個視窗</translation>
     </message>
@@ -9146,13 +9165,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="200"/>
+      <location filename="../CommandWindow.cpp" line="201"/>
       <source>Pre&amp;vious</source>
       <translation>前一個(&amp;V)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="201"/>
-      <location filename="../CommandWindow.cpp" line="203"/>
+      <location filename="../CommandWindow.cpp" line="202"/>
+      <location filename="../CommandWindow.cpp" line="204"/>
       <source>Activate previous window</source>
       <translation>啟動前一個視窗</translation>
     </message>
@@ -9188,13 +9207,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCascadeWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="83"/>
+      <location filename="../CommandWindow.cpp" line="84"/>
       <source>&amp;Cascade</source>
       <translation>重疊顯示(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="84"/>
-      <location filename="../CommandWindow.cpp" line="86"/>
+      <location filename="../CommandWindow.cpp" line="85"/>
+      <location filename="../CommandWindow.cpp" line="87"/>
       <source>Tile pragmatic</source>
       <translation>實用背景</translation>
     </message>
@@ -9202,13 +9221,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="111"/>
+      <location filename="../CommandWindow.cpp" line="112"/>
       <source>Cl&amp;ose</source>
       <translation>&amp;關閉</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="112"/>
-      <location filename="../CommandWindow.cpp" line="114"/>
+      <location filename="../CommandWindow.cpp" line="113"/>
+      <location filename="../CommandWindow.cpp" line="115"/>
       <source>Close active window</source>
       <translation>關閉使用中視窗</translation>
     </message>
@@ -9216,13 +9235,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="143"/>
+      <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close Al&amp;l</source>
       <translation>全部關閉(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="144"/>
-      <location filename="../CommandWindow.cpp" line="146"/>
+      <location filename="../CommandWindow.cpp" line="145"/>
+      <location filename="../CommandWindow.cpp" line="147"/>
       <source>Close all windows</source>
       <translation>關閉所有視窗</translation>
     </message>
@@ -9408,13 +9427,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="280"/>
+      <location filename="../CommandWindow.cpp" line="281"/>
       <source>Panels</source>
       <translation>面板</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="281"/>
-      <location filename="../CommandWindow.cpp" line="283"/>
+      <location filename="../CommandWindow.cpp" line="282"/>
+      <location filename="../CommandWindow.cpp" line="284"/>
       <source>List of available dock panels</source>
       <translation>可使用之面板清單</translation>
     </message>
@@ -9987,8 +10006,8 @@ the current copy will be lost.
       <translation>建立一個新的空白檔案</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2311"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
@@ -10441,13 +10460,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="371"/>
+      <location filename="../CommandWindow.cpp" line="412"/>
       <source>Status bar</source>
       <translation>狀態列</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="372"/>
-      <location filename="../CommandWindow.cpp" line="374"/>
+      <location filename="../CommandWindow.cpp" line="413"/>
+      <location filename="../CommandWindow.cpp" line="415"/>
       <source>Toggles the status bar</source>
       <translation>切換狀態列</translation>
     </message>
@@ -10483,13 +10502,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTileWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="55"/>
+      <location filename="../CommandWindow.cpp" line="56"/>
       <source>&amp;Tile</source>
       <translation>並排(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="56"/>
-      <location filename="../CommandWindow.cpp" line="58"/>
+      <location filename="../CommandWindow.cpp" line="57"/>
+      <location filename="../CommandWindow.cpp" line="59"/>
       <source>Tile the windows</source>
       <translation>並排視窗</translation>
     </message>
@@ -10581,13 +10600,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="316"/>
+      <location filename="../CommandWindow.cpp" line="317"/>
       <source>Tool&amp;bars</source>
       <translation>工具列(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="317"/>
-      <location filename="../CommandWindow.cpp" line="319"/>
+      <location filename="../CommandWindow.cpp" line="318"/>
+      <location filename="../CommandWindow.cpp" line="320"/>
       <source>Toggles this window</source>
       <translation>切換此視窗</translation>
     </message>
@@ -10721,13 +10740,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="258"/>
+      <location filename="../CommandWindow.cpp" line="259"/>
       <source>Dock views</source>
       <translation>停泊視圖</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="259"/>
-      <location filename="../CommandWindow.cpp" line="261"/>
+      <location filename="../CommandWindow.cpp" line="260"/>
+      <location filename="../CommandWindow.cpp" line="262"/>
       <source>Dock all top-level views</source>
       <translation>停泊所有頂層的視圖</translation>
     </message>
@@ -10975,7 +10994,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1368"/>
       <source>Left</source>
-      <translation>左視圖</translation>
+      <translation>靠左</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1369"/>
@@ -11017,7 +11036,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1416"/>
       <source>Right</source>
-      <translation>右視圖</translation>
+      <translation>靠右</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1417"/>
@@ -11127,13 +11146,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="234"/>
+      <location filename="../CommandWindow.cpp" line="235"/>
       <source>&amp;Windows...</source>
       <translation>視窗(&amp;W)</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="235"/>
-      <location filename="../CommandWindow.cpp" line="237"/>
+      <location filename="../CommandWindow.cpp" line="236"/>
+      <location filename="../CommandWindow.cpp" line="238"/>
       <source>Windows list</source>
       <translation>視窗清單</translation>
     </message>
@@ -11141,13 +11160,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="417"/>
+      <location filename="../CommandWindow.cpp" line="458"/>
       <source>Activate window</source>
       <translation>啟動視窗</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="418"/>
-      <location filename="../CommandWindow.cpp" line="420"/>
+      <location filename="../CommandWindow.cpp" line="459"/>
+      <location filename="../CommandWindow.cpp" line="461"/>
       <source>Activates this window</source>
       <translation>啟動此視窗</translation>
     </message>
@@ -11791,12 +11810,12 @@ Do you still want to proceed?</source>
   <context>
     <name>Gui::MDIView</name>
     <message>
-      <location filename="../MDIView.cpp" line="255"/>
+      <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
       <translation>匯出 PDF</translation>
     </message>
     <message>
-      <location filename="../MDIView.cpp" line="256"/>
+      <location filename="../MDIView.cpp" line="258"/>
       <source>PDF file</source>
       <translation>PDF 檔</translation>
     </message>
@@ -12062,17 +12081,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>XY-平面</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>XZ-平面</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ-平面</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12082,7 +12101,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>偏移：</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -12224,17 +12243,17 @@ after FreeCAD launches</source>
   <context>
     <name>NotificationsAction</name>
     <message>
-      <location filename="../NotificationArea.cpp" line="574"/>
+      <location filename="../NotificationArea.cpp" line="685"/>
       <source>Delete</source>
       <translation>刪除</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="585"/>
+      <location filename="../NotificationArea.cpp" line="696"/>
       <source>Delete user notifications</source>
       <translation>刪除使用者通知</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="592"/>
+      <location filename="../NotificationArea.cpp" line="703"/>
       <source>Delete All</source>
       <translation>全部刪除</translation>
     </message>
@@ -12242,12 +12261,12 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::NotificationArea</name>
     <message>
-      <location filename="../NotificationArea.cpp" line="863"/>
+      <location filename="../NotificationArea.cpp" line="978"/>
       <source>Delete user notifications</source>
       <translation>刪除使用者通知</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="873"/>
+      <location filename="../NotificationArea.cpp" line="987"/>
       <source>Delete All</source>
       <translation>全部刪除</translation>
     </message>
@@ -12310,32 +12329,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="540"/>
+      <location filename="../View3DSettings.cpp" line="546"/>
       <source>FRONT</source>
       <translation>前視圖</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="542"/>
+      <location filename="../View3DSettings.cpp" line="548"/>
       <source>TOP</source>
       <translation>上視圖</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="544"/>
+      <location filename="../View3DSettings.cpp" line="550"/>
       <source>RIGHT</source>
       <translation>右視圖</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="546"/>
+      <location filename="../View3DSettings.cpp" line="552"/>
       <source>REAR</source>
       <translation>後視圖</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="548"/>
+      <location filename="../View3DSettings.cpp" line="554"/>
       <source>BOTTOM</source>
       <translation>底視圖</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="550"/>
+      <location filename="../View3DSettings.cpp" line="556"/>
       <source>LEFT</source>
       <translation>左視圖</translation>
     </message>
@@ -12575,11 +12594,6 @@ after FreeCAD launches</source>
       <translation>應用程式使用者介面的語言</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
-      <source>Unit system:</source>
-      <translation>單位系統：</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
       <source>Number of decimals:</source>
       <translation>小數位數：</translation>
@@ -12596,56 +12610,51 @@ after FreeCAD launches</source>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-      <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-      <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
       <translation type="unfinished">If enabled, document unit systems are ignored</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
-      <source>Ignore</source>
-      <translation>忽略</translation>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
+      <source>Default Unit system:</source>
+      <translation type="unfinished">Default Unit system:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
+      <source>Ignore project unit system and use default</source>
+      <translation type="unfinished">Ignore project unit system and use default</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
       <source>Minimum fractional inch:</source>
       <translation>最小分數英吋：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="124"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
       <source>Minimum fractional inch to be displayed</source>
       <translation>所要顯示的最小分數英吋</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="152"/>
       <source>Number format:</source>
       <translation>數字格式：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="180"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
       <source>Operating system</source>
       <translation>作業系統</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="185"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="171"/>
       <source>Selected language</source>
       <translation>選擇語言</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="176"/>
       <source>C/POSIX</source>
       <translation>C/POSIX</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="198"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="184"/>
       <source>If enabled, numerical keypad decimal separator
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
@@ -12653,43 +12662,43 @@ dot/period will always be printed.</source>
       <translation>如果啟用，數字鍵盤的小數點分隔符號將會被替換為區域設定的分隔符號，但在 Python 主控台和巨集編輯器中，將始終顯示一個點/句號。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="204"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
       <source>Substitute decimal separator</source>
       <translation>替換小數分隔符號</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="220"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="206"/>
       <source>Application</source>
       <translation>應用程式</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="227"/>
       <source>Theme:</source>
       <translation>主題：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="234"/>
       <source>Customize how user interface will look like</source>
       <translation>客製化使用者界面的外觀</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
       <source>Size of toolbar icons:</source>
       <translation>工具列圖示尺寸：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
       <translation>在偏好設定中選擇工具列圖示大小。您可以依照螢幕大小及個人品味來調整。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="270"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
       <source>Tree view mode:</source>
       <translation>樹狀圖模式：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="277"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Customize how tree view is shown in the panel (restart required).
 
 'ComboView': combine tree view and property view into one panel.
@@ -12702,171 +12711,171 @@ this according to your screen size or personal taste</source>
 '全部': 保留全部三個面板，你可看到二組 樹狀檢視 及屬性檢視面板.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="274"/>
       <source>Size of recent file list:</source>
       <translation>最近檔案清單大小:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="295"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="281"/>
       <source>How many files should be listed in recent files list</source>
       <translation>在最近使用的檔案清單中，要列出多少檔案</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="297"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
       <translation>主視窗的背景(當沒有開啟文件時)將由特殊影像的圖塊組成.
 有關此影像的詳細資訊，請參閱 FreeCAD 維基百科網頁。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="315"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="301"/>
       <source>Enable tiled background</source>
       <translation>啟用平面背景</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="322"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="308"/>
       <source>The text cursor will be blinking</source>
       <translation>文字遊標將會閃爍</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="325"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
       <source>Enable cursor blinking</source>
       <translation>啟動遊標閃爍</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="341"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="327"/>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
       <translation>啟動畫面是在FreeCAD啟動後顯示的開始畫面。如果勾選此選項，FreeCAD啟動後將顯示啟動畫面。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="346"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="332"/>
       <source>Enable splash screen at start up</source>
       <translation>在開啟時使用啟動畫面</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="348"/>
       <source>Activate overlay handling of dock windows</source>
       <translation type="unfinished">Activate overlay handling of dock windows</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="351"/>
       <source>Activate overlay handling</source>
       <translation type="unfinished">Activate overlay handling</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="370"/>
       <source>Preference packs</source>
       <translation>偏好設定包</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="450"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="436"/>
       <source>Name</source>
       <translation>名稱</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="461"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="447"/>
       <source>Type</source>
       <translation>類型</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="472"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="458"/>
       <source>Load</source>
       <translation>載入</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="495"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="481"/>
       <source>Import config...</source>
       <translation>匯入設定...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="502"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="488"/>
       <source>Save new...</source>
       <translation>另存新檔...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="515"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="501"/>
       <source>Manage...</source>
       <translation>管理...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="522"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="508"/>
       <source>Revert...</source>
       <translation>還原...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="86"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="87"/>
       <source>Manage preference packs</source>
       <translation>管理偏好設定包</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="349"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="324"/>
       <source>Small (%1px)</source>
       <translation>小 (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="350"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="325"/>
       <source>Medium (%1px)</source>
       <translation>中 (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="351"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="326"/>
       <source>Large (%1px)</source>
       <translation>大 (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="352"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="327"/>
       <source>Extra large (%1px)</source>
       <translation>超大 (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="355"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="330"/>
       <source>Custom (%1px)</source>
       <translation>自訂 (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="472"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="445"/>
       <source>Combo View</source>
       <translation>複合檢視</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="473"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="446"/>
       <source>TreeView and PropertyView</source>
       <translation>樹狀圖檢視及屬性檢視</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="473"/>
       <source>Preference Pack Name</source>
       <translation>偏好設定包名稱</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="501"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="474"/>
       <source>Tags</source>
       <translation>標籤</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="538"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="511"/>
       <source>Apply</source>
       <translation>應用</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="539"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="512"/>
       <source>Apply the %1 preference pack</source>
       <translation>套用 %1 之偏好設定包</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="600"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="573"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>還擇一個 FreeCAD 設定檔以匯入</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="611"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="584"/>
       <source>File exists</source>
       <translation>檔案已存在</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="612"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="585"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>有此名稱之偏好設定包已存在。是否覆寫？</translation>
     </message>
@@ -13179,7 +13188,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>切換透明度</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
@@ -13233,7 +13242,7 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>切換透明</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3902"/>
@@ -13248,7 +13257,7 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3926"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>切換靠左</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
@@ -13261,7 +13270,7 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3951"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>切換靠右</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
@@ -13561,6 +13570,20 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="861"/>
       <source>Utility to extract or create document files</source>
       <translation type="unfinished">Utility to extract or create document files</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleToolBarLock</name>
+    <message>
+      <location filename="../CommandWindow.cpp" line="352"/>
+      <source>Lock toolbars</source>
+      <translation type="unfinished">Lock toolbars</translation>
+    </message>
+    <message>
+      <location filename="../CommandWindow.cpp" line="353"/>
+      <location filename="../CommandWindow.cpp" line="355"/>
+      <source>Locks toolbar so they are no longer moveable</source>
+      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
     </message>
   </context>
 </TS>

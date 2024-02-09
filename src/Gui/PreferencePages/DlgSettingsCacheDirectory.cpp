@@ -98,6 +98,19 @@ void DlgSettingsCacheDirectory::loadSettings()
     ui->comboBoxLimit->setCurrentIndex(index);
 }
 
+void DlgSettingsCacheDirectory::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = WindowParameter::getDefaultParameter()->GetGroup("CacheDirectory");
+    //reset "Limit" parameter
+    hGrp->RemoveUnsigned("Limit");
+    //reset "Period" parameter
+    hGrp->RemoveInt("Period");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 void DlgSettingsCacheDirectory::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {

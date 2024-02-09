@@ -370,4 +370,9 @@ bool TaskMirroring::accept()
     return widget->accept();
 }
 
+bool TaskMirroring::reject()
+{
+    return widget->reject();
+}
+
 #include "moc_Mirroring.cpp"

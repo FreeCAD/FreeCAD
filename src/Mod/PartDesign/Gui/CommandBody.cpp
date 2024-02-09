@@ -33,6 +33,7 @@
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -194,8 +195,9 @@ void CmdPartDesignBody::activated(int iMsg)
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyString);
     // set Label for i18n/L10N
-    QByteArray labelByteArray = QObject::tr("Body").toUtf8();
-    doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelByteArray.constData());
+    std::string labelString = QObject::tr("Body").toUtf8().toStdString();
+    labelString = Base::Tools::escapeEncodeString(labelString);
+    doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelString.c_str());
     if (baseFeature) {
         if (partOfBaseFeature){
             //withdraw base feature from Part, otherwise visibility madness results
@@ -212,6 +214,12 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
+
+    if (actPart) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
+                 actPart->getNameInDocument(), bodyString);
+    }
+
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PDBODYKEY, bodyString);
@@ -219,10 +227,6 @@ void CmdPartDesignBody::activated(int iMsg)
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyString);
-    if (actPart) {
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyString);
-    }
 
     // check if a proxy object has been created for the base feature inside the body
     if (baseFeature) {

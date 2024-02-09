@@ -28,7 +28,7 @@ mw = Gui.getMainWindow()
 statusBar = mw.statusBar()
 p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
-
+pMWin = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -61,6 +61,29 @@ class IndicatorButton(QtGui.QPushButton):
     def onChange(self, paramGrp, param):
         if param == "NavigationStyle":
             setCurrent()
+
+    def mousePressEvent(self, event):
+        RePopulateIcons()
+        return super(IndicatorButton, self).mousePressEvent(event)
+
+
+def RePopulateIcons():
+    curStyleSheet = pMWin.GetString("StyleSheet")
+    if "dark" in curStyleSheet.lower():
+        StyleSheetType = "light"
+    else:
+        StyleSheetType = "dark"
+
+    a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
+    a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
+    a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
+    a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
+    a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
+    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
+    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
+    a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -602,64 +625,56 @@ a0.setData("Undefined  ")
 a0.setObjectName("Indicator_NavigationUndefined")
 
 a1 = QtGui.QAction(gStyle)
-a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_dark.svg"))
 a1.setText("Blender  ")
 a1.setData("Gui::BlenderNavigationStyle")
 a1.setObjectName("Indicator_NavigationBlender")
 
 a2 = QtGui.QAction(gStyle)
-a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_dark.svg"))
 a2.setText("CAD  ")
 a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_dark.svg"))
 a3.setText("Gesture  ")
 a3.setData("Gui::GestureNavigationStyle")
 a3.setObjectName("Indicator_NavigationGesture")
 
 a4 = QtGui.QAction(gStyle)
-a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_dark.svg"))
 a4.setText("MayaGesture  ")
 a4.setData("Gui::MayaGestureNavigationStyle")
 a4.setObjectName("Indicator_NavigationMayaGesture")
 
 a5 = QtGui.QAction(gStyle)
-a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_dark.svg"))
 a5.setText("OpenCascade  ")
 a5.setData("Gui::OpenCascadeNavigationStyle")
 a5.setObjectName("Indicator_NavigationOpenCascade")
 
 a6 = QtGui.QAction(gStyle)
-a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_dark.svg"))
 a6.setText("OpenInventor  ")
 a6.setData("Gui::InventorNavigationStyle")
 a6.setObjectName("Indicator_NavigationOpenInventor")
 
 a7 = QtGui.QAction(gStyle)
-a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_dark.svg"))
 a7.setText("OpenSCAD  ")
 a7.setData("Gui::OpenSCADNavigationStyle")
 a7.setObjectName("Indicator_NavigationOpenSCAD")
 
 a8 = QtGui.QAction(gStyle)
-a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_dark.svg"))
 a8.setText("Revit  ")
 a8.setData("Gui::RevitNavigationStyle")
 a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
-a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_dark.svg"))
 a9.setText("TinkerCAD  ")
 a9.setData("Gui::TinkerCADNavigationStyle")
 a9.setObjectName("Indicator_NavigationTinkerCAD")
 
 a10 = QtGui.QAction(gStyle)
-a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_dark.svg"))
 a10.setText("Touchpad  ")
 a10.setData("Gui::TouchpadNavigationStyle")
 a10.setObjectName("Indicator_NavigationTouchpad")
+
+RePopulateIcons()
 
 menu.addMenu(menuSettings)
 menu.addSeparator()

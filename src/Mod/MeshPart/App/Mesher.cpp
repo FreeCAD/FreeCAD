@@ -37,7 +37,6 @@
 
 #include "Mesher.h"
 
-
 #ifdef HAVE_SMESH
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -53,15 +52,13 @@
 #include <SMESH_Mesh.hxx>
 #include <StdMeshers_MaxLength.hxx>
 
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
-
 #include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_QuadranglePreference.hxx>
@@ -360,7 +357,6 @@ Mesh::MeshObject* Mesher::createMesh() const
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
 #endif
 
-
     int hyp = 0;
 
     switch (method) {
@@ -409,6 +405,7 @@ Mesh::MeshObject* Mesher::createMesh() const
             hypoth.push_back(alg2d);
         } break;
 #endif
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #if defined(HAVE_MEFISTO)
         case Mefisto: {
             if (maxLength > 0) {
@@ -487,11 +484,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #endif
                 hypoth.push_back(hyp1d);
             }
-#if SMESH_VERSION_MAJOR < 7
-            StdMeshers_TrianglePreference* hyp2d_1 =
-                new StdMeshers_TrianglePreference(hyp++, 0, meshgen);
-            hypoth.push_back(hyp2d_1);
-#endif
+
 #if SMESH_VERSION_MAJOR >= 9
             StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++, meshgen);
 #else
@@ -499,6 +492,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #endif
             hypoth.push_back(alg2d);
         } break;
+#endif
 #endif
         default:
             break;

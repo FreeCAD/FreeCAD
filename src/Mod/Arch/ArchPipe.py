@@ -22,6 +22,8 @@
 
 import FreeCAD
 import ArchComponent
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     import Arch_rc
@@ -71,8 +73,7 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
     if diameter:
         obj.Diameter = diameter
     else:
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        obj.Diameter = p.GetFloat("PipeDiameter",50)
+        obj.Diameter = params.get_param_arch("PipeDiameter")
     if placement:
         obj.Placement = placement
     return obj

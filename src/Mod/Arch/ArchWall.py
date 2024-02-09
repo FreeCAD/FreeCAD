@@ -31,6 +31,8 @@ TODO put examples here.
 
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -102,7 +104,6 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
     if name:
         obj.Label = name
@@ -123,15 +124,15 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align=None,face=Non
     if width:
         obj.Width = width
     else:
-        obj.Width = p.GetFloat("WallWidth",200)
+        obj.Width = params.get_param_arch("WallWidth")
     if height:
         obj.Height = height
     else:
-        obj.Height = p.GetFloat("WallHeight",3000)
+        obj.Height = params.get_param_arch("WallHeight")
     if align:
         obj.Align = align
     else:
-        obj.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
+        obj.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
     if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()
@@ -303,16 +304,15 @@ class _CommandWall:
         points to create a base.
         """
 
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
+        self.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
         self.MultiMat = None
         self.Length = None
         self.lengthValue = 0
         self.continueCmd = False
-        self.Width = p.GetFloat("WallWidth",200)
-        self.Height = p.GetFloat("WallHeight",3000)
-        self.JOIN_WALLS_SKETCHES = p.GetBool("joinWallSketches",False)
-        self.AUTOJOIN = p.GetBool("autoJoinWalls",True)
+        self.Width = params.get_param_arch("WallWidth")
+        self.Height = params.get_param_arch("WallHeight")
+        self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
+        self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
@@ -434,7 +434,7 @@ class _CommandWall:
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
+        if params.get_param_arch("WallSketches"):
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
@@ -550,7 +550,7 @@ class _CommandWall:
         value5.setObjectName("UseSketches")
         value5.setLayoutDirection(QtCore.Qt.RightToLeft)
         label5.setBuddy(value5)
-        value5.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True))
+        value5.setChecked(params.get_param_arch("WallSketches"))
         grid.addWidget(label5,6,0,1,1)
         grid.addWidget(value5,6,1,1,1)
 
@@ -588,7 +588,7 @@ class _CommandWall:
 
         self.Width = d
         self.tracker.width(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallWidth",d)
+        params.set_param_arch("WallWidth",d)
 
 
     def setHeight(self,d):
@@ -596,13 +596,13 @@ class _CommandWall:
 
         self.Height = d
         self.tracker.height(d)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallHeight",d)
+        params.set_param_arch("WallHeight",d)
 
     def setAlign(self,i):
         """Simple callback for the interactive mode gui widget to set alignment."""
 
         self.Align = ["Center","Left","Right"][i]
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WallAlignment",i)
+        params.set_param_arch("WallAlignment",i)
 
     def setContinue(self,i):
         """Simple callback to set if the interactive mode will restart when finished.
@@ -617,7 +617,7 @@ class _CommandWall:
     def setUseSketch(self,i):
         """Simple callback to set if walls should join their base sketches when possible."""
 
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetBool("joinWallSketches",bool(i))
+        params.set_param_arch("joinWallSketches",bool(i))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
@@ -1270,6 +1270,7 @@ class _Wall(ArchComponent.Component):
 
                     # If the object is a single edge, use that as the
                     # basewires.
+                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 
@@ -1290,7 +1291,10 @@ class _Wall(ArchComponent.Component):
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
+                                # TODO 2023.11.26: Multiplication order should be switched?
+                                # So far 'no problem' as 'edge.placement' is always '0,0,0' ?
                                 edge.Placement = edge.Placement.multiply(skPlacement)  ## TODO add attribute to skip Transform...
+
                                 clusterTransformed.append(edge)
                             # Only use cluster of edges rather than turning into wire
                             self.basewires.append(clusterTransformed)
@@ -1304,8 +1308,14 @@ class _Wall(ArchComponent.Component):
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     else:
-                        self.basewires = obj.Base.Shape.Wires
-
+                        # See discussion - https://forum.freecad.org/viewtopic.php?t=82207&start=10
+                        #self.basewires = obj.Base.Shape.Wires
+                        #
+                        # Now, adopt approach same as for Sketch
+                        self.basewires = []
+                        clusters = Part.getSortedClusters(obj.Base.Shape.Edges)
+                        self.basewires = clusters
+                        # Previously :
                         # Found case that after sorting below, direction of
                         # edges sorted are not as 'expected' thus resulted in
                         # bug - e.g. a Dwire with edges/vertexes in clockwise
@@ -1624,7 +1634,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if not image is None:
             tex.image = image
         texcoords = coin.SoTextureCoordinatePlane()
-        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("patternScale",0.01)
+        s = params.get_param_arch("patternScale")
         texcoords.directionS.setValue(s,0,0)
         texcoords.directionT.setValue(0,s,0)
         self.fcoords = coin.SoCoordinate3()

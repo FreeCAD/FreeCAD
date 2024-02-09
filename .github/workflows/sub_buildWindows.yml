@@ -52,7 +52,7 @@ jobs:
       #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
       CCACHE_LOGFILE: C:/logs/ccache.log
       ## Have to use C:\ because not enough space on workspace drive
-      builddir: C:/FC/build/
+      builddir: C:/FC/build/release/
       libpackdir: C:/FC/libpack/
       ccachebindir: C:/FC/ccache/
       logdir: C:/logs/
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checking out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Make needed directories, files and initializations
@@ -104,6 +104,7 @@ jobs:
       - name: Configuring CMake
         run: >
           cmake -B"${{ env.builddir }}" .
+          --preset release
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DFREECAD_USE_PCH=OFF
@@ -130,18 +131,18 @@ jobs:
           . $env:ccachebindir\ccache -s
       - name: Move libpack bin folder to build folder # Shorter in time than copying with CMake FREECAD_COPY_LIBPACK_BIN_TO_BUILD
         run: |
-          Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
+          Move-Item -Force -Path ${{ env.libpackdir }}bin/* -Destination ${{ env.builddir }}/bin
       - name: C++ unit tests
-        if: false # Disabled because seems to not exist on Windows build
+        if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
         run: |
-          . ${{ env.builddir }}\test\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+          . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
       - name: FreeCAD CLI tests
         run: |
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

@@ -90,3 +90,15 @@ void NavigationAnimator::stop()
         activeAnimation.reset();
     }
 }
+
+/**
+ * @return Whether or not an animation is active
+ */
+bool NavigationAnimator::isAnimating() const
+{
+    if (activeAnimation != nullptr) {
+        return activeAnimation->state() == QAbstractAnimation::State::Running;
+    }
+
+    return false;
+}

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QBitmap>
 # include <QComboBox>
 # include <QMessageBox>
 # include <QPointF>
@@ -43,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -52,18 +54,21 @@
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/PrefWidgets.h>
 #include <Inventor/SbVec3f.h>
+
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
+#include <Mod/TechDraw/App/LineNameEnum.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 
 #include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
-
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -78,6 +83,79 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
         qcb->setItemIcon(i, itemIcon);
     }
 }
+
+void DrawGuiUtil::loadLineStandardsChoices(QComboBox* combo)
+{
+    combo->clear();
+    std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
+    for (auto& entry : choices) {
+        QString qentry = Base::Tools::fromStdString(entry);
+        combo->addItem(qentry);
+    }
+}
+
+void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generator)
+{
+    combo->clear();
+    std::vector<std::string> choices;
+    if (generator) {
+        choices = generator->getLoadedDescriptions();
+    } else {
+        choices = LineGenerator::getLineDescriptions();
+    }
+
+    int itemNumber{0};
+    for (auto& entry : choices) {
+        QString qentry = Base::Tools::fromStdString(entry);
+        combo->addItem(qentry);
+        if (generator) {
+            combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator));
+        }
+        itemNumber++;
+    }
+}
+
+
+//! make an icon that shows a sample of lineNumber in the current line standard
+QIcon DrawGuiUtil::iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator)
+{
+//    Base::Console().Message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
+    constexpr int iconSize{64};
+    constexpr int borderSize{4};
+    constexpr double iconLineWeight{1.0};
+    size_t lineCount{4};
+    double maxLineLength = iconSize - borderSize * 2.0;
+    QBitmap bitmap{iconSize, iconSize};
+    bitmap.clear();
+
+    QPainter painter(&bitmap);
+    QPen linePen = generator->getLinePen(lineNumber, iconLineWeight);
+    linePen.setDashOffset(0.0);
+    linePen.setCapStyle(Qt::FlatCap);
+    linePen.setColor(Qt::color1);
+
+    // handle simple case of continuous line
+    if (linePen.style() == Qt::SolidLine) {
+        linePen.setWidthF(iconLineWeight * lineCount);
+        painter.setPen(linePen);
+        painter.drawLine(borderSize, iconSize / 2, iconSize - borderSize, iconSize / 2);
+        return QIcon{bitmap};
+    }
+
+    // dashed line
+    linePen.setWidthF(iconLineWeight);
+    painter.setPen(linePen);
+    double yHeight = (iconSize / 2) - (lineCount * iconLineWeight);
+    size_t iLine = 0;
+    // draw multiple lines to stretch the line vertically without horizontal
+    // distortion
+    for ( ; iLine < lineCount; iLine++){
+        painter.drawLine(borderSize, yHeight, maxLineLength, yHeight);
+        yHeight += iconLineWeight;
+    }
+    return QIcon{bitmap};
+}
+
 
 //===========================================================================
 // validate helper routines
@@ -460,4 +538,34 @@ double DrawGuiUtil::roundToDigits(double original, int digits)
     double rounded = std::round(temp);
     temp = rounded / factor;
     return temp;
+}
+
+// Returns true if the item or any of its descendants is selected
+bool DrawGuiUtil::isSelectedInTree(QGraphicsItem *item)
+{
+    if (item) {
+        if (item->isSelected()) {
+            return true;
+        }
+
+        for (QGraphicsItem *child : item->childItems()) {
+           if (isSelectedInTree(child)) {
+               return true;
+           }
+        }
+    }
+
+    return false;
+}
+
+// Selects or deselects the item and all its descendants
+void DrawGuiUtil::setSelectedTree(QGraphicsItem *item, bool selected)
+{
+    if (item) {
+        item->setSelected(selected);
+
+        for (QGraphicsItem *child : item->childItems()) {
+            setSelectedTree(child, selected);
+        }
+    }
 }

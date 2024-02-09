@@ -67,6 +67,11 @@ public:
     virtual std::string getName() const=0;
 };
 
+enum ElementMapResetPolicy
+{
+    AllowNoMap,
+    ForceEmptyMap
+};
 
 /** ComplexGeoData Object
  */
@@ -176,6 +181,7 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+    static const std::string &elementMapPrefix();
 
     /** @name Element name mapping */
     //@{
@@ -246,6 +252,13 @@ public:
     }
 
     // NOTE: getElementHistory is now in ElementMap
+    long getElementHistory(const MappedName & name,
+                           MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
+        return _elementMap->getElementHistory(name, Tag, original, history);
+    };
+
+    void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);
+    std::vector<Data::ElementMap::MappedChildElements> getMappedChildElements() const;
 
     char elementType(const Data::MappedName &) const;
     char elementType(const Data::IndexedName &) const;
@@ -257,7 +270,12 @@ public:
      *
      * @return Returns the existing element map.
      */
-    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap=ElementMapPtr()) {
+    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr(),
+                                          ElementMapResetPolicy forceEmpty = ForceEmptyMap)
+    {
+        if (!elementMap && forceEmpty == ForceEmptyMap) {
+            elementMap = std::make_shared<Data::ElementMap>();
+        }
         _elementMap.swap(elementMap);
         return elementMap;
     }

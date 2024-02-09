@@ -138,7 +138,7 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     }
 
     if (!vp) {
-        if (!obj || !obj->getNameInDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
+        if (!obj || !obj->isAttachedToDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
             PyErr_SetString(PyExc_ValueError,"Invalid document object");
             return nullptr;
         }
@@ -467,7 +467,7 @@ Py::Object DocumentPy::getInEditInfo() const {
     std::string subname,subelement;
     int mode = 0;
     getDocumentPtr()->getInEdit(&vp,&subname,&mode,&subelement);
-    if (!vp || !vp->getObject() || !vp->getObject()->getNameInDocument())
+    if (!vp || !vp->getObject() || !vp->getObject()->isAttachedToDocument())
         return Py::None();
 
     return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),

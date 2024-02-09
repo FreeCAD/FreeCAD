@@ -86,6 +86,9 @@ void ConstraintTemperature::handleChangedPropertyType(Base::XMLReader& reader,
         CFluxProperty.Restore(reader);
         CFlux.setValue(CFluxProperty.getValue());
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintTemperature::onChanged(const App::Property* prop)

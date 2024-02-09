@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM mesh region task panel for the document object"
+__title__ = "FreeCAD FEM mesh refinement task panel for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 ## @package task_mesh_region
 #  \ingroup FEM
-#  \brief task panel for mesh region object
+#  \brief task panel for mesh refinement object
 
 from PySide import QtCore
 

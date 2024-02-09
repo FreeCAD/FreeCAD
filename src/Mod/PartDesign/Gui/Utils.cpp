@@ -73,7 +73,7 @@ App::DocumentObject* getParent(App::DocumentObject* obj, std::string& subname)
 }
 
 bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
-    if (!obj || !obj->getNameInDocument()) {
+    if (!obj || !obj->isAttachedToDocument()) {
         FC_ERR("invalid object");
         return false;
     }

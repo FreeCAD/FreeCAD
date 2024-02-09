@@ -43,11 +43,12 @@ runs:
   steps:
     - name: Run tests
       id: runTests
-      shell: bash
+      shell: bash -l {0}
       run: |
-        stdbuf -oL -eL ${{ inputs.testCommand }} |& sed -Ee "/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d" | tee -a ${{ inputs.logFile }}
+        set -o pipefail
+        ${{ inputs.testCommand }} | sed -Ee "/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d" | tee -a ${{ inputs.logFile }}
     - name: Write report
-      shell: bash
+      shell: bash -l {0}
       if: always()
       run: |
         sed -ne "/^\(FAILED\|ERROR\):/,/^[[:blank:]]*$/bF; /^Traceback/,/^[^[:blank:]]/{/^Traceback/bT; /^[^[:blank:]]/G; bT}; b; :T w ${{ inputs.logFile }}_tracebacks" -e "b; :F w ${{ inputs.logFile }}_failedtests" ${{ inputs.logFile }}

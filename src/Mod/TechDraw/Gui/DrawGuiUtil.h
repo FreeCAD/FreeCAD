@@ -25,6 +25,7 @@
 
 #include <string>
 #include <QCoreApplication>
+#include <QGraphicsItem>
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -44,6 +45,7 @@ class Feature;
 
 namespace TechDraw {
 class DrawPage;
+class LineGenerator;
 }
 namespace Gui {
 class Command;
@@ -70,9 +72,14 @@ class TechDrawGuiExport DrawGuiUtil {
     static std::pair<Base::Vector3d, Base::Vector3d> getProjDirFromFace(App::DocumentObject* obj,
                                                                        std::string faceName);
     static void loadArrowBox(QComboBox* qcb);
+    static void loadLineStandardsChoices(QComboBox* combo);
+    static void loadLineStyleChoices(QComboBox* combo, TechDraw::LineGenerator* generator = nullptr);
+    static QIcon iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator);
 
     static double roundToDigits(double original, int digits);
 
+    static bool isSelectedInTree(QGraphicsItem *item);
+    static void setSelectedTree(QGraphicsItem *item, bool selected);
 
 };
 

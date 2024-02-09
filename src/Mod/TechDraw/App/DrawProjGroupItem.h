@@ -86,6 +86,7 @@ public:
                        const bool flip=true) const override;
 
     double getScale() const override;
+    int getScaleType() const override;
     void autoPosition();
     bool isAnchor() const;
 

@@ -21,9 +21,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <string>
+#endif
 
 #include <App/Application.h>
 
@@ -41,9 +40,6 @@ LibraryBase::LibraryBase(const QString& libraryName, const QString& dir, const Q
     : _name(libraryName)
     , _directory(QDir::cleanPath(dir))
     , _iconPath(icon)
-{}
-
-LibraryBase::LibraryBase()
 {}
 
 bool LibraryBase::operator==(const LibraryBase& library) const
@@ -103,7 +99,7 @@ QString LibraryBase::getRelativePath(const QString& path) const
     return filePath;
 }
 
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, LibraryBase)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LibraryBase)
 
 ModelLibrary::ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon)
     : LibraryBase(libraryName, dir, icon)
@@ -146,39 +142,36 @@ ModelLibrary::getModelTree(ModelFilter filter) const
     std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> modelTree =
         std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
 
-    for (auto it = _modelPathMap->begin(); it != _modelPathMap->end(); it++) {
-        auto filename = it->first;
-        auto model = it->second;
+    for (auto& it : *_modelPathMap) {
+        auto filename = it.first;
+        auto model = it.second;
 
         if (ModelManager::passFilter(filter, model->getType())) {
-            // Base::Console().Log("Relative path '%s'\n\t", filename.toStdString().c_str());
             QStringList list = filename.split(QString::fromStdString("/"));
 
             // Start at the root
             std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;
-            for (auto itp = list.begin(); itp != list.end(); itp++) {
-                // Base::Console().Log("\t%s", itp->toStdString().c_str());
-                if (ModelManager::isModel(*itp)) {
+            for (auto& itp : list) {
+                if (ModelManager::isModel(itp)) {
                     std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
                     child->setData(model);
-                    (*node)[*itp] = child;
+                    (*node)[itp] = child;
                 }
                 else {
                     // Add the folder only if it's not already there
-                    if (node->count(*itp) == 0) {
+                    if (node->count(itp) == 0) {
                         auto mapPtr =
                             std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
                         std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
                         child->setFolder(mapPtr);
-                        (*node)[*itp] = child;
+                        (*node)[itp] = child;
                         node = mapPtr;
                     }
                     else {
-                        node = (*node)[*itp]->getFolder();
+                        node = (*node)[itp]->getFolder();
                     }
                 }
             }
-            // Base::Console().Log("\n");
         }
     }
 

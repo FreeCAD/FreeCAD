@@ -445,8 +445,11 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     if (!vals[ConstrId]->isDimensional() && type != Tangent && type != Perpendicular)
         return -1;
 
-    if ((type == Distance || type == Radius || type == Diameter || type == Weight) && Datum <= 0)
+    if ((type == Radius || type == Diameter || type == Weight) && Datum <= 0)
         return (Datum == 0) ? -5 : -4;
+
+    if (type == Distance && Datum == 0)
+            return -5;
 
     // copy the list
     std::vector<Constraint*> newVals(vals);
@@ -664,7 +667,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 {
     std::swap(constr->First, constr->Second);
     std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    if (constr->FirstPos == constr->SecondPos) {
+        constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
+    else {
+        constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -675,6 +683,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
         double actAngle = constr->getValue();
         constr->setValue(M_PI - actAngle);
     }
+}
+
+void SketchObject::inverseAngleConstraint(Constraint* constr)
+{
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 bool SketchObject::constraintHasExpression(int constNum) const
@@ -8564,12 +8578,23 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     // Temporary sketch based calculation. Slow, but guaranteed consistency with constraints.
     Sketcher::Sketch sk;
 
-    const Part::Geometry* p1 = this->getGeometry(GeoId1);
-    const Part::Geometry* p2 = this->getGeometry(GeoId2);
+    const Part::GeomCurve* p1 = dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId1));
+    const Part::GeomCurve* p2 = dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId2));
 
     if (p1 && p2) {
+        // TODO: Check if any of these are B-splines
         int i1 = sk.addGeometry(this->getGeometry(GeoId1));
         int i2 = sk.addGeometry(this->getGeometry(GeoId2));
+
+        if (p1->is<Part::GeomBSplineCurve>() ||
+            p2->is<Part::GeomBSplineCurve>()) {
+            double p1ClosestParam, p2ClosestParam;
+            Base::Vector3d pt(px, py, 0);
+            p1->closestParameter(pt, p1ClosestParam);
+            p2->closestParameter(pt, p2ClosestParam);
+
+            return sk.calculateAngleViaParams(i1, i2, p1ClosestParam, p2ClosestParam);
+        }
 
         return sk.calculateAngleViaPoint(i1, i2, px, py);
     }

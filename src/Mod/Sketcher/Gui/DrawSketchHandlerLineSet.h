@@ -98,11 +98,8 @@ public:
 
     void registerPressedKey(bool pressed, int key) override
     {
-        if (Mode != STATUS_SEEK_Second) {
-            return;  // SegmentMode can be changed only in STATUS_SEEK_Second mode
-        }
-
-        if (key == SoKeyboardEvent::M && pressed && previousCurve != -1) {
+        if (Mode == STATUS_SEEK_Second && key == SoKeyboardEvent::M && pressed
+            && previousCurve != -1) {
             // loop through the following modes:
             // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
             // SEGMENT_MODE_Line, TRANSITION_MODE_Perpendicular_L
@@ -183,6 +180,9 @@ public:
                 EditCurve.resize(32);
             }
             mouseMove(onSketchPos);  // trigger an update of EditCurve
+        }
+        else {
+            DrawSketchHandler::registerPressedKey(pressed, key);
         }
     }
 

@@ -34,6 +34,8 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 
 #include "PreferencesGui.h"
 #include "Rez.h"
@@ -154,6 +156,8 @@ double PreferencesGui::edgeFuzz()
     return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
 }
 
+
+// this is for the iso vs ansi positioning of arrows and text.  rename to sectionLineConvention?
 Qt::PenStyle PreferencesGui::sectionLineStyle()
 {
     Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("Decorations")->GetInt("SectionLine", 2));
@@ -273,4 +277,18 @@ QColor PreferencesGui::lightenColor(QColor orig)
     blue += newm;
 
     return QColor(red, green, blue, alpha);
+}
+
+
+double PreferencesGui::templateClickBoxSize()
+{
+    return Preferences::getPreferenceGroup("General")->GetFloat("TemplateDotSize", 5.0);
+}
+
+
+QColor PreferencesGui::templateClickBoxColor()
+{
+    App::Color fcColor;
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("TemplateUnderlineColor", 0x0000FFFF));  //#0000FF blue
+    return fcColor.asValue<QColor>();
 }

@@ -89,7 +89,7 @@ ViewProviderDimension::ViewProviderDimension()
                       "Adjusts the gap between dimension point and extension line");
     ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
-    ADD_PROPERTY_TYPE(LineSpacingFactorISO, (2.0), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(LineSpacingFactorISO, (Preferences::LineSpacingISO()), group, App::Prop_None,
                       "Adjusts the gap between dimension line and dimension text");
 
    StackOrder.setValue(ZVALUE::DIMENSION);
