@@ -142,13 +142,13 @@ class MetadataValidators:
             found_repo = False
             found_readme = False
             for url in urls:
-                if url["type"] == "repository":
+                if url.type == "repository":
                     found_repo = True
-                    if len(url["branch"]) == 0:
+                    if len(url.branch) == 0:
                         errors.append("<repository> element is missing the 'branch' attribute")
-                elif url["type"] == "readme":
+                elif url.type == "readme":
                     found_readme = True
-                    location = url["location"]
+                    location = url.location
                     p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(location)
                     if not p:
                         errors.append(f"Could not access specified readme at {location}")
