@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <limits>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "Vector3D.h"
 #include "Tools.h"
@@ -228,22 +229,26 @@ bool Vector3<float_type>::IsEqual(const Vector3<float_type>& rclPnt, float_type 
 }
 
 template<class float_type>
-bool Vector3<float_type>::IsParallel(const Vector3<float_type>& rclPnt, float_type tol) const
+bool Vector3<float_type>::IsParallel(const Vector3<float_type>& rclDir, float_type tol) const
 {
-    Vector3<float_type> v1 = *this;
-    Vector3<float_type> v2 = rclPnt;
-    double dot = abs(v1 * v2);
-    double mag = v1.Length() * v2.Length();
-    return (abs(dot - mag) < tol);
+    float_type angle = GetAngle(rclDir);
+    if (boost::math::isnan(angle)) {
+        return false;
+    }
+
+    return angle <= tol || traits_type::pi() - angle <= tol;
 }
 
 template<class float_type>
-bool Vector3<float_type>::IsNormal(const Vector3<float_type>& rclPnt, float_type tol) const
+bool Vector3<float_type>::IsNormal(const Vector3<float_type>& rclDir, float_type tol) const
 {
-    Vector3<float_type> v1 = *this;
-    Vector3<float_type> v2 = rclPnt;
-    double dot = abs(v1 * v2);
-    return (dot < tol);
+    float_type angle = GetAngle(rclDir);
+    if (boost::math::isnan(angle)) {
+        return false;
+    }
+
+    float_type diff = std::abs(traits_type::pi() / 2.0 - angle);  // NOLINT
+    return diff <= tol;
 }
 
 template<class float_type>
