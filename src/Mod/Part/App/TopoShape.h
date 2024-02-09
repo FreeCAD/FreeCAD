@@ -39,6 +39,9 @@
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <BRepTools_History.hxx>
+#include <BRepTools_ReShape.hxx>
+#include <ShapeFix_Root.hxx>
 
 class gp_Ax1;
 class gp_Ax2;
@@ -53,7 +56,10 @@ class Color;
 namespace Part
 {
 
+struct ShapeHasher;
+class TopoShape;
 class TopoShapeCache;
+typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
 
 /* A special sub-class to indicate null shapes
  */
@@ -393,6 +399,7 @@ public:
     TopoDS_Shape replaceShape(const std::vector<std::pair<TopoDS_Shape, TopoDS_Shape>>& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
     void sewShape(double tolerance = 1.0e-06);
+    bool fix();
     bool fix(double, double, double);
     bool fixSolidOrientation();
     bool removeInternalWires(double);
@@ -687,6 +694,7 @@ public:
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+    void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
     /** Helper class to return the generated and modified shape given an input shape
@@ -727,22 +735,181 @@ public:
                                        const Mapper &mapper,
                                        const std::vector<TopoShape> &sources,
                                        const char *op=nullptr);
+    /**
+     * When given a single shape to create a compound, two results are possible: either to simply
+     * return the shape as given, or to force it to be placed in a Compound.
+     */
+    enum class SingleShapeCompoundCreationPolicy {
+        returnShape,
+        forceCompound
+    };
 
     /** Make a compound shape
      *
      * @param shapes: input shapes
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
-     * @param force: if true and there is only one input shape, then return
-     *               that shape instead.  If false, then always return a
-     *               compound, even if there is no input shape.
+     * @param policy: set behavior when only a single shape is given
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
+    TopoShape& makeElementCompound(const std::vector<TopoShape>& shapes,
+                                   const char* op = nullptr,
+                                   SingleShapeCompoundCreationPolicy policy =
+                                       SingleShapeCompoundCreationPolicy::forceCompound);
+
+
+    enum class ConnectionPolicy
+    {
+        requireSharedVertex,
+        mergeWithTolerance
+    };
+
+    /** Make a compound of wires by connecting input edges
+     *
+     * @param shapes: input shapes. Can be any type of shape. Edges will be
+     *                extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param shared: if true, then only connect edges if they shared the same
+     *                vertex, or else use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementWires(const std::vector<TopoShape>& shapes,
+                                const char* op = nullptr,
+                                double tol = 0.0,
+                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+                                TopoShapeMap* output = nullptr);
+
+
+    /** Make a compound of wires by connecting input edges
+     *
+     * @param shape: input shape. Can be any type of shape. Edges will be
+     *               extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param policy: if requireSharedVertex, then only connect edges if they shared the same
+     *                vertex. If mergeWithTolerance use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementWires(const TopoShape& shape,
+                                const char* op = nullptr,
+                                double tol = 0.0,
+                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+                                TopoShapeMap* output = nullptr);
+
+    /** Make a compound of wires by connecting input edges in the given order
+     *
+     * @param shapes: input shapes. Can be any type of shape. Edges will be
+     *                extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return Same as makeElementWires() but respects the order of the input edges.
+     *         The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementOrderedWires(const std::vector<TopoShape>& shapes,
+                                       const char* op = nullptr,
+                                       double tol = 0.0,
+                                       TopoShapeMap* output = nullptr);
+
+    /** Make a wire or compound of wires with the edges inside the this shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param shared: if true, then only connect edges if they shared the same
+     *                vertex, or else use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     *
+     * @return The function returns a new shape of either a single wire or a
+     *         compound of wires. The shape itself is not modified.
+     */
+    TopoShape makeElementWires(const char* op = nullptr,
+                               double tol = 0.0,
+                               ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+                               TopoShapeMap* output = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
+    }
+
+
+    /** Make a deep copy of the shape
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copyGeom: whether to copy internal geometry of the shape
+     * @param copyMesh: whether to copy internal meshes of the shape
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with a deep copy of the input shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape& makeElementCopy(const TopoShape& source,
+                               const char* op = nullptr,
+                               bool copyGeom = true,
+                               bool copyMesh = false);
+
+    /** Make a deep copy of the shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copyGeom: whether to copy internal geometry of the shape
+     * @param copyMesh: whether to copy internal meshes of the shape
+     *
+     * @return Return a deep copy of the shape. The shape itself is not
+     *         modified
+     */
+    TopoShape
+    makeElementCopy(const char* op = nullptr, bool copyGeom = true, bool copyMesh = false) const
+    {
+        return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
+    }
 
     /* Make a shell using this shape
      * @param silent: whether to throw exception on failure
@@ -1223,8 +1390,21 @@ private:
                                    bool& warned);
     void mapCompoundSubElements(const std::vector<TopoShape>& shapes, const char* op);
 
+    /** Given a set of edges, return a sorted list of connected edges
+     *
+     * @param edges: (input/output) input list of shapes. Must be of type edge.
+     *               On return, the returned connected edges will be removed
+     *               from this list. You can repeated call this function to find
+     *               all wires.
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @return Return a list of ordered connected edges.
+     */
+    static std::deque<TopoShape>
+    sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
+    static TopoShape reverseEdge(const TopoShape& edge);
 };
-
 
 /** Shape mapper for generic BRepBuilderAPI_MakeShape derived class
  *
@@ -1241,7 +1421,21 @@ struct PartExport MapperMaker: TopoShape::Mapper
     const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
 };
 
-}  // namespace Part
+/** Shape mapper for BRepTools_History
+ *
+ * Uses BRepTools_History::Modified/Generated() function to extract
+ * shape history for generating mapped element names
+ */
+struct PartExport MapperHistory: TopoShape::Mapper
+{
+    Handle(BRepTools_History) history;
+    explicit MapperHistory(const Handle(BRepTools_History) & history);
+    explicit MapperHistory(const Handle(BRepTools_ReShape) & reshape);
+    explicit MapperHistory(ShapeFix_Root& fix);
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
+};
 
+}  // namespace Part
 
 #endif  // PART_TOPOSHAPE_H

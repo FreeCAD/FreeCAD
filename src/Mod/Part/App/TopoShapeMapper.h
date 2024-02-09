@@ -112,6 +112,7 @@ enum class MappingStatus
     Generated,
     Modified
 };
+
 /** Shape mapper for user defined shape mapping
  */
 struct PartExport ShapeMapper: TopoShape::Mapper

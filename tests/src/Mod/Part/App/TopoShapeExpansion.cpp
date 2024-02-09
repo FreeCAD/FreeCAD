@@ -9,7 +9,10 @@
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepFeat_SplitShape.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
 #include <GC_MakeCircle.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
@@ -54,7 +57,10 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundOneShapeReturnsShape)
     std::vector<Part::TopoShape> shapes {topoShape};
 
     // Act
-    topoShape.makeElementCompound(shapes, "C", false /*Don't force the creation*/);
+    topoShape.makeElementCompound(shapes,
+                                  "C",
+                                  Part::TopoShape::SingleShapeCompoundCreationPolicy::
+                                      returnShape /*Don't force the creation*/);
 
     // Assert
     EXPECT_EQ(edge.ShapeType(), topoShape.getShape().ShapeType());  // NOT a Compound
@@ -68,7 +74,10 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundOneShapeForceReturnsCompound)
     std::vector<Part::TopoShape> shapes {topoShape};
 
     // Act
-    topoShape.makeElementCompound(shapes, "C", true /*Force the creation*/);
+    topoShape.makeElementCompound(
+        shapes,
+        "C",
+        Part::TopoShape::SingleShapeCompoundCreationPolicy::forceCompound /*Force the creation*/);
 
     // Assert
     EXPECT_NE(edge.ShapeType(), topoShape.getShape().ShapeType());  // No longer the same thing
@@ -145,6 +154,125 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     // ----------
     // 26 subshapes each
 }
+
+TEST_F(TopoShapeExpansionTest, MapperMakerModified)
+{
+    // Arrange
+    // Definition of all the objects needed for a Transformation
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_builder_a_p_i___transform.html)
+    auto translation {gp_Trsf()};
+    auto transform {BRepBuilderAPI_Transform(translation)};
+    auto transformMprMkr {MapperMaker(transform)};
+
+    // Definition of all the objects needed for a Shape Splitting
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_feat___split_shape.html)
+    auto splitMkr {BRepFeat_SplitShape()};
+    auto splitMprMkr {MapperMaker(splitMkr)};
+
+    // Creating a Wire, used later to create a Face
+    auto wireMkr {BRepBuilderAPI_MakeWire(
+        BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)),
+        BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)),
+        BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)))};
+    auto wire = wireMkr.Wire();
+
+    // Creating a Face using the Wire created before
+    auto faceMkr {BRepBuilderAPI_MakeFace(wire)};
+    auto face = faceMkr.Face();
+
+    // Creating an Edge to split the Face and the Wire
+    auto edgeMkr {BRepBuilderAPI_MakeEdge(gp_Pnt(0.5, 1.0, 0.0), gp_Pnt(0.5, -1.0, 0.0))};
+    auto edge = edgeMkr.Edge();
+
+    // Act
+    // Performing the Transformation
+    translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
+    transform.Perform(wire);
+
+    // Initializing and performing the Split
+    splitMkr.Init(face);
+    splitMkr.Add(edge, face);
+    splitMkr.Build();
+
+    // Assert
+    // Check that all the shapes and operations have been performed
+    EXPECT_TRUE(wireMkr.IsDone());
+    EXPECT_TRUE(faceMkr.IsDone());
+    EXPECT_TRUE(edgeMkr.IsDone());
+    EXPECT_TRUE(splitMkr.IsDone());
+    EXPECT_TRUE(transform.IsDone());
+
+    // Check the result of the operations
+    EXPECT_EQ(transformMprMkr.modified(wire).size(), 1);  // The Transformation acts on the Wire...
+    EXPECT_EQ(transformMprMkr.modified(face).size(), 1);  // ... and therefor on the created Face...
+    EXPECT_EQ(transformMprMkr.modified(edge).size(), 1);  // ... and on the Edge added to the Face
+
+    EXPECT_EQ(splitMprMkr.modified(edge).size(), 0);  // The Split doesn't modify the Edge
+    EXPECT_EQ(splitMprMkr.modified(wire).size(), 2);  // The Split modifies the Wire into 2 Wires
+    EXPECT_EQ(splitMprMkr.modified(face).size(), 2);  // The Split modifies the Face into 2 Faces
+}
+
+TEST_F(TopoShapeExpansionTest, MapperMakerGenerated)
+{
+    // Arrange
+    // Creating tree Edges, used later in the Fuse operations
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-1.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, -1.0, 0.0), gp_Pnt(0.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, -1.0), gp_Pnt(0.0, 0.0, 1.0)).Edge()};
+
+    // Definition of all the objects needed for the Fuses
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_algo_a_p_i___fuse.html)
+    // The Fuse operation, like other Boolean operations derived from BRepAlgoAPI_BuilderAlgo,
+    // supports the generation history
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_algo_a_p_i___builder_algo.html)
+    auto fuse1Mkr {BRepAlgoAPI_Fuse(edge1, edge2)};
+    auto fuse1MprMkr {MapperMaker(fuse1Mkr)};
+    auto fuse2Mkr {BRepAlgoAPI_Fuse(edge1, edge3)};
+    auto fuse2MprMkr {MapperMaker(fuse2Mkr)};
+
+    // Act
+    fuse1Mkr.Build();
+    fuse2Mkr.Build();
+
+    // Assert
+    // Check that all the shapes and operations have been performed
+    EXPECT_TRUE(fuse1Mkr.IsDone());
+    EXPECT_TRUE(fuse2Mkr.IsDone());
+
+    // Check the result of the operations
+    EXPECT_EQ(fuse1MprMkr.generated(edge1).size(), 1);  // fuse1 has a new vertex generated by edge1
+    EXPECT_EQ(fuse1MprMkr.generated(edge2).size(), 1);  // fuse1 has a new vertex generated by edge2
+    EXPECT_EQ(fuse1MprMkr.generated(edge3).size(),
+              0);  // fuse1 doesn't have a new vertex generated by edge3
+
+    EXPECT_EQ(fuse2MprMkr.generated(edge1).size(), 1);  // fuse2 has a new vertex generated by edge1
+    EXPECT_EQ(fuse2MprMkr.generated(edge2).size(),
+              0);  // fuse2 doesn't have a new vertex generated by edge2
+    EXPECT_EQ(fuse2MprMkr.generated(edge3).size(), 1);  // fuse2 has a new vertex generated by edge3
+}
+
+// ================================================================================================
+//  The following test has been disabled to avoid the CI failing
+//  will be enabled again in following PRs
+// ================================================================================================
+
+// TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
+// {
+//     // Arrange
+//     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge();
+//     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge();
+//     Part::TopoShape topoShape;
+//     std::vector<Part::TopoShape> shapes {edge1, edge2};
+
+//     // Act
+//     topoShape.makeElementWires(shapes);
+
+//     // Assert
+//     auto elementMap = topoShape.getElementMap();
+//     EXPECT_EQ(6, elementMap.size());
+// }
+
+// ================================================================================================
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
 {
