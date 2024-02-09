@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <Base/Vector3D.h>
 
+// NOLINTBEGIN
 TEST(Vector, TestDefault)
 {
     Base::Vector3d vec;
@@ -261,3 +262,58 @@ TEST(Vector, TestAngle)
     double angle = vec1.GetAngle(vec2);
     EXPECT_EQ(angle, Base::float_traits<double>::pi() / 2);
 }
+
+TEST(Vector, TestIsNormal)
+{
+    Base::Vector3d vec(1, 2, 3);
+    EXPECT_FALSE(vec.IsNormal(Base::Vector3d(1, 1, 1), 0.0));
+    EXPECT_FALSE(vec.IsNormal(Base::Vector3d(1, 2, 3), 0.0));
+    EXPECT_TRUE(vec.IsNormal(Base::Vector3d(3, 0, -1), 0.0));
+}
+
+TEST(Vector, TestIsNormalNullVector)
+{
+    Base::Vector3d vec(1, 2, 3);
+    EXPECT_FALSE(vec.IsNormal(Base::Vector3d(0, 0, 0), 0.0));
+}
+
+TEST(Vector, TestIsNormalLongVectors)
+{
+    Base::Vector3d vec(10000, 20000, 30000);
+    EXPECT_TRUE(vec.IsNormal(Base::Vector3d(30000, 0, -10001), 0.02));
+}
+
+TEST(Vector, TestIsNormalShortVectors)
+{
+    Base::Vector3d vec(0.01, 0.02, 0.03);
+    EXPECT_FALSE(vec.IsNormal(Base::Vector3d(0.03, 0, -0.02), 0.02));
+}
+
+TEST(Vector, TestIsParallel)
+{
+    Base::Vector3d vec(1, 2, 3);
+    EXPECT_FALSE(vec.IsParallel(Base::Vector3d(1, 1, 1), 0.0));
+    EXPECT_TRUE(vec.IsParallel(Base::Vector3d(1, 2, 3), 0.0));
+    EXPECT_TRUE(vec.IsParallel(Base::Vector3d(-1, -2, -3), 0.0));
+    EXPECT_FALSE(vec.IsParallel(Base::Vector3d(3, 0, -1), 0.0));
+}
+
+TEST(Vector, TestIsParallelNullVector)
+{
+    Base::Vector3d vec(1, 2, 3);
+    EXPECT_FALSE(vec.IsParallel(Base::Vector3d(0, 0, 0), 0.0));
+}
+
+TEST(Vector, TestIsParallelLongVectors)
+{
+    Base::Vector3d vec(10000, 20000, 30000);
+    EXPECT_TRUE(vec.IsParallel(Base::Vector3d(10000, 20000, 30001), 0.02));
+}
+
+TEST(Vector, TestIsParallelShortVectors)
+{
+    Base::Vector3d vec(0.01, 0.02, 0.03);
+    EXPECT_FALSE(vec.IsParallel(Base::Vector3d(0.01, 0.02, 0.04), 0.02));
+}
+
+// NOLINTEND
