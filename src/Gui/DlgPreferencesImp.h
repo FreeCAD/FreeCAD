@@ -185,6 +185,7 @@ private:
     void addSizeHint(QWidget*);
     int minimumPageWidth() const;
     int minimumDialogWidth(int) const;
+    void expandToMinimumDialogWidth();
     //@}
 
 private:
