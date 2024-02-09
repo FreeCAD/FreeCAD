@@ -96,6 +96,7 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
         self._setup_connections()
         self.retranslateUi(None)
         self.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.extra_padding = 64
 
     def _setup_ui(self):
         self._build_menu()
@@ -190,8 +191,17 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
     def _setup_connections(self):
         self.activated.connect(self._selected)
 
+    def _adjust_dropdown_width(self):
+        max_width = 0
+        font_metrics = self.fontMetrics()
+        for index in range(self.count()):
+            width = font_metrics.width(self.itemText(index))
+            max_width = max(max_width, width)
+        self.view().setMinimumWidth(max_width + self.extra_padding)
+
     def retranslateUi(self, _):
         self._build_menu()
+        self._adjust_dropdown_width()
 
     def _selected(self, row: int):
         if row == 0:
