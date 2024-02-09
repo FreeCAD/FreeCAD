@@ -256,6 +256,8 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
+    void updateAxesLength(double minX, double minY, double maxX, double maxY);
+
 private:
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);

@@ -816,7 +816,9 @@ void EditModeCoinManager::processGeometryConstraintsInformationOverlay(
 
     processGeometryInformationOverlay(geolistfacade);
 
+#if 0
     updateAxesLength();
+#endif
 
     pEditModeConstraintCoinManager->processConstraints(geolistfacade);
 }
@@ -858,6 +860,24 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade&
 
 
     overlayParameters.visibleInformationChanged = false;  // just updated
+}
+
+void EditModeCoinManager::updateAxesLength(double minX, double minY, double maxX, double maxY)
+{
+    auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+        * drawingParameters.zCross;
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        0,
+        SbVec3f(minX, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        1,
+        SbVec3f(maxX, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        2,
+        SbVec3f(0.0f, minY, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(
+        3,
+        SbVec3f(0.0f, maxY, zCrossH));
 }
 
 void EditModeCoinManager::updateAxesLength()

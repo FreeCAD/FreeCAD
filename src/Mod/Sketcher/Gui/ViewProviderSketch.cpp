@@ -3369,6 +3369,22 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
 
+    Gui::MDIView* mdi =
+        Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
+    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+
+        // Add 50% to be sure the whole viewport is covered.
+        float axesLength = 1.5f * viewer->getMaxDimension();
+        // Project the camera focus onto the sketch plane.
+        float x, y, z;
+        viewer->getCenterPointOnFocalPlane().getValue(x, y, z);
+
+        editCoinManager->updateAxesLength(
+                x - axesLength / 2, y - axesLength / 2,
+                x + axesLength / 2, y + axesLength / 2);
+    }
+
     drawGrid(true);
 }
 
