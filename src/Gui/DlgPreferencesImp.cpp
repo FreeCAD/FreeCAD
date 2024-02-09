@@ -759,6 +759,14 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
         move(x(), heightDifference / 2);
     }
 
+    expandToMinimumDialogWidth();
+}
+
+void DlgPreferencesImp::expandToMinimumDialogWidth()
+{
+    auto screen = windowHandle()->screen();
+    auto availableSize = screen->availableSize();
+
     // if the expanded dialog occupies less than 50% of the screen
     int mw = minimumDialogWidth(minimumPageWidth());
     if (availableSize.width() > 2 * mw) {
@@ -878,8 +886,10 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             }
         }
 
+        expandToMinimumDialogWidth();
         updatePageDependentWidgets();
-    } else {
+    }
+    else {
         QWidget::changeEvent(e);
     }
 }
