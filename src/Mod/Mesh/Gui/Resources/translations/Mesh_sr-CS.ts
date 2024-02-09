@@ -1187,7 +1187,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
       <source>Cube</source>
-      <translation>Kocka</translation>
+      <translation>Kvadar</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
@@ -1428,7 +1428,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Donja strana površine će biti prikazana na isti način kao gornja strana.
 Ako nije označeno, zavisi od opcije „Omogući boju pozadinskog osvetljenja“
-(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog
+(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog 
 osvetljenja ili crna boja.</translation>
     </message>
     <message>

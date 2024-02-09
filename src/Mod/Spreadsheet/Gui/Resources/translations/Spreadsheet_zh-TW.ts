@@ -608,7 +608,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>靠左</translation>
+      <translation>左視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -619,7 +619,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>靠右</translation>
+      <translation>右視圖</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>

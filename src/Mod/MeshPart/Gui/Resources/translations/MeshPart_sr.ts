@@ -180,7 +180,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
-      <translation>Направи</translation>
+      <translation>Спакуј</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>

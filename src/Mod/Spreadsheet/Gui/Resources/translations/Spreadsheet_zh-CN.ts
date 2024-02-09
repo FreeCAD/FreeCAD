@@ -968,7 +968,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
-      <translation>引号字符</translation>
+      <translation>引号字符：</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="163"/>
@@ -978,7 +978,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
-      <translation>Escape 字符</translation>
+      <translation>转义字符：</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1123,7 +1123,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="294"/>
       <source>Export PDF</source>
-      <translation>导出PDF</translation>
+      <translation>导出 PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="296"/>
