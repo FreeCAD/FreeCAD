@@ -92,11 +92,11 @@ class WidgetFilterSelector(QtWidgets.QComboBox):
         super().__init__(parent)
         self.addon_type_index = 0
         self.installation_status_index = 0
+        self.extra_padding = 64
         self._setup_ui()
         self._setup_connections()
         self.retranslateUi(None)
         self.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
-        self.extra_padding = 64
 
     def _setup_ui(self):
         self._build_menu()
