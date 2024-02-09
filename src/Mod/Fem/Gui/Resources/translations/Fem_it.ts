@@ -3110,14 +3110,14 @@ con una forza motrice armonica/oscillante</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente x del potenziale 
+      <translation>Parte reale componente x del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente x del potenziale 
+      <translation>Parte immaginaria componente x del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
@@ -3131,14 +3131,14 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente y del potenziale 
+      <translation>Parte reale componente y del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente y del potenziale 
+      <translation>Parte immaginaria componente y del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
@@ -3152,14 +3152,14 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte reale componente z del potenziale 
+      <translation>Parte reale componente z del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Parte immaginaria componente z del potenziale 
+      <translation>Parte immaginaria componente z del potenziale
 Nota: non ha effetto se è stato selezionato un solido</translation>
     </message>
     <message>
