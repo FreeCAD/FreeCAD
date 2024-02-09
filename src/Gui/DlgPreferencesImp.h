@@ -181,6 +181,10 @@ private:
     void updatePageDependentWidgets();
 
     QPixmap loadIconForGroup(const std::string& name) const;
+
+    void addSizeHint(QWidget*);
+    int minimumPageWidth() const;
+    int minimumDialogWidth(int) const;
     //@}
 
 private:
@@ -189,6 +193,7 @@ private:
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
 
     QStandardItemModel _model;
+    QSize _sizeHintOfPages;
 
     struct Group {
         std::string iconName;
