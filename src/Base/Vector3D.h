@@ -211,9 +211,11 @@ public:
      */
     bool IsEqual(const Vector3& rclPnt, float_type tol) const;
     /// Returns true if two vectors are parallel within the tol
-    bool IsParallel(const Vector3& rclPnt, float_type tol) const;
+    /// If one of the vectors is the null vector then false is returned.
+    bool IsParallel(const Vector3& rclDir, float_type tol) const;
     /// Returns true if two vectors are normal within the tol
-    bool IsNormal(const Vector3& rclPnt, float_type tol) const;
+    /// If one of the vectors is the null vector then false is returned.
+    bool IsNormal(const Vector3& rclDir, float_type tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
     Vector3& ProjectToPlane(const Vector3& rclBase, const Vector3& rclNorm);
     /**
