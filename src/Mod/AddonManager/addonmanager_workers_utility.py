@@ -85,7 +85,7 @@ class ConnectionChecker(QtCore.QThread):
             else:
                 FreeCAD.Console.PrintWarning(f"No data received: status returned was {status}\n")
                 self.data = None
-        self.done = True
+            self.done = True
 
     def disconnect_network_manager(self):
         NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.connection_data_received)
