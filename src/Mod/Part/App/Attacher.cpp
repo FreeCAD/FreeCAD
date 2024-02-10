@@ -36,6 +36,7 @@
 # include <GeomAPI.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomAPI_IntSS.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
