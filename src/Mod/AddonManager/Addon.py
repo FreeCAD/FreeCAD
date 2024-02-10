@@ -227,6 +227,8 @@ class Addon:
                 self._cached_license = self.metadata.license
             elif self.stats and self.stats.license:
                 self._cached_license = self.stats.license
+            elif self.macro and self.macro.license:
+                self._cached_license = self.macro.license
         return self._cached_license
 
     @classmethod

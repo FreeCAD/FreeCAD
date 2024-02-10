@@ -560,12 +560,41 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                 return False
 
             # If it is not an OSI-approved license, check to see if we are hiding those
-            if self.hide_non_OSI_approved and not license_manager.is_osi_approved(data.license):
-                return False
+            if self.hide_non_OSI_approved or self.hide_non_FSF_libre:
+                if not data.license:
+                    return False
+                licenses_to_check = []
+                if type(data.license) is str:
+                    licenses_to_check.append(data.license)
+                elif type(data.license) is list:
+                    for license_id in data.license:
+                        if type(license_id) is str:
+                            licenses_to_check.append(license_id)
+                        else:
+                            licenses_to_check.append(license_id.name)
+                else:
+                    licenses_to_check.append(data.license.name)
 
-            # If it is not an FSF Free/Libre license, check to see if we are hiding those
-            if self.hide_non_FSF_libre and not license_manager.is_fsf_libre(data.license):
-                return False
+                fsf_libre = False
+                osi_approved = False
+                for license_id in licenses_to_check:
+                    if not osi_approved and license_manager.is_osi_approved(license_id):
+                        osi_approved = True
+                    if not fsf_libre and license_manager.is_fsf_libre(license_id):
+                        fsf_libre = True
+                if self.hide_non_OSI_approved and not osi_approved:
+                    FreeCAD.Console.PrintLog(
+                        f"Hiding addon {data.name} because its license, {licenses_to_check}, "
+                        f"is "
+                        f"not OSI approved\n"
+                    )
+                    return False
+                if self.hide_non_FSF_libre and not fsf_libre:
+                    FreeCAD.Console.PrintLog(
+                        f"Hiding addon {data.name} because its license, {licenses_to_check},  is "
+                        f"not FSF Libre\n"
+                    )
+                    return False
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD
         if (

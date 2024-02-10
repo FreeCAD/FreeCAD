@@ -315,7 +315,11 @@ if HAVE_QTNETWORK:
                 reply.readyRead.connect(self.__ready_to_read)
                 reply.downloadProgress.connect(self.__download_progress)
 
-        def submit_unmonitored_get(self, url: str) -> int:
+        def submit_unmonitored_get(
+            self,
+            url: str,
+            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+        ) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
             in conjunction with the completed() signal to handle the results of the call. All data is
             kept in memory, and the completed() call includes a direct handle to the bytes returned. It
@@ -324,12 +328,18 @@ if HAVE_QTNETWORK:
             current_index = next(self.counting_iterator)  # A thread-safe counter
             # Use a queue because we can only put things on the QNAM from the main event loop thread
             self.queue.put(
-                QueueItem(current_index, self.__create_get_request(url), track_progress=False)
+                QueueItem(
+                    current_index, self.__create_get_request(url, timeout_ms), track_progress=False
+                )
             )
             self.__request_queued.emit()
             return current_index
 
-        def submit_monitored_get(self, url: str) -> int:
+        def submit_monitored_get(
+            self,
+            url: str,
+            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+        ) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
             in conjunction with the progress_made() and progress_completed() signals to handle the
             results of the call. All data is cached to disk, and progress is reported periodically
@@ -340,12 +350,18 @@ if HAVE_QTNETWORK:
             current_index = next(self.counting_iterator)  # A thread-safe counter
             # Use a queue because we can only put things on the QNAM from the main event loop thread
             self.queue.put(
-                QueueItem(current_index, self.__create_get_request(url), track_progress=True)
+                QueueItem(
+                    current_index, self.__create_get_request(url, timeout_ms), track_progress=True
+                )
             )
             self.__request_queued.emit()
             return current_index
 
-        def blocking_get(self, url: str) -> Optional[QtCore.QByteArray]:
+        def blocking_get(
+            self,
+            url: str,
+            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+        ) -> Optional[QtCore.QByteArray]:
             """Submits a GET request to the QNetworkAccessManager and block until it is complete"""
 
             current_index = next(self.counting_iterator)  # A thread-safe counter
@@ -353,7 +369,9 @@ if HAVE_QTNETWORK:
                 self.synchronous_complete[current_index] = False
 
             self.queue.put(
-                QueueItem(current_index, self.__create_get_request(url), track_progress=False)
+                QueueItem(
+                    current_index, self.__create_get_request(url, timeout_ms), track_progress=False
+                )
             )
             self.__request_queued.emit()
             while True:
@@ -388,7 +406,7 @@ if HAVE_QTNETWORK:
                         )
                     self.synchronous_complete[index] = True
 
-        def __create_get_request(self, url: str) -> QtNetwork.QNetworkRequest:
+        def __create_get_request(self, url: str, timeout_ms: int) -> QtNetwork.QNetworkRequest:
             """Construct a network request to a given URL"""
             request = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
             request.setAttribute(
@@ -400,6 +418,7 @@ if HAVE_QTNETWORK:
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                 QtNetwork.QNetworkRequest.PreferNetwork,
             )
+            request.setTransferTimeout(timeout_ms)
             return request
 
         def abort_all(self):
@@ -428,7 +447,8 @@ if HAVE_QTNETWORK:
             authenticator: QtNetwork.QAuthenticator,
         ):
             """If proxy authentication is required, attempt to authenticate. If the GUI is running this displays
-            a window asking for credentials. If the GUI is not running, it prompts on the command line."""
+            a window asking for credentials. If the GUI is not running, it prompts on the command line.
+            """
             if HAVE_FREECAD and FreeCAD.GuiUp:
                 proxy_authentication = FreeCADGui.PySideUic.loadUi(
                     os.path.join(os.path.dirname(__file__), "proxy_authentication.ui")
@@ -463,6 +483,9 @@ if HAVE_QTNETWORK:
         def __follow_redirect(self, url):
             """Used with the QNetworkAccessManager to follow redirects."""
             sender = self.sender()
+            current_index = -1
+            timeout_ms = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant
+            # TODO: Figure out what the actual timeout value should be from the original request
             if sender:
                 for index, reply in self.replies.items():
                     if reply == sender:
@@ -470,7 +493,8 @@ if HAVE_QTNETWORK:
                         break
 
                 sender.abort()
-                self.__launch_request(current_index, self.__create_get_request(url))
+                if current_index != -1:
+                    self.__launch_request(current_index, self.__create_get_request(url, timeout_ms))
 
         def __on_ssl_error(self, reply: str, errors: List[str] = None):
             """Called when an SSL error occurs: prints the error information."""
@@ -620,7 +644,6 @@ def InitializeNetworkManager():
 
 
 if __name__ == "__main__":
-
     app = QtCore.QCoreApplication()
 
     InitializeNetworkManager()

@@ -67,6 +67,7 @@ class Macro:
         self.raw_code_url = ""
         self.wiki = ""
         self.version = ""
+        self.license = ""
         self.date = ""
         self.src_filename = ""
         self.filename_from_url = ""
@@ -111,8 +112,8 @@ class Macro:
 
     def is_installed(self):
         """Returns True if this macro is currently installed (that is, if it exists
-        in the user macro directory), or False if it is not. Both the exact filename,
-        as well as the filename prefixed with "Macro", are considered an installation
+        in the user macro directory), or False if it is not. Both the exact filename
+        and the filename prefixed with "Macro", are considered an installation
         of this macro.
         """
         if self.on_git and not self.src_filename:
@@ -159,6 +160,9 @@ class Macro:
             code = self._fetch_raw_code(p)
         if not code:
             code = self._read_code_from_wiki(p)
+        if not self.license:
+            # The default license on the wiki is CC-BY-3.0 (which is non-Libre and not OSI-approved)
+            self.license = "CC-BY-3.0"
         if not code:
             self._console.PrintWarning(
                 translate("AddonsInstaller", "Unable to fetch the code of this macro.") + "\n"
@@ -227,7 +231,7 @@ class Macro:
         code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
         if code:
             # take the biggest code block
-            code = sorted(code, key=len)[-1]
+            code = str(sorted(code, key=len)[-1])
             code = code.replace("--endl--", "\n")
             # Clean HTML escape codes.
             code = unescape(code)
@@ -327,7 +331,7 @@ class Macro:
                 self.other_files.append(self.icon)
 
     def _copy_other_files(self, macro_dir, warnings) -> bool:
-        """Copy any specified "other files" into the install directory"""
+        """Copy any specified "other files" into the installation directory"""
         base_dir = os.path.dirname(self.src_filename)
         for other_file in self.other_files:
             if not other_file:
@@ -382,7 +386,7 @@ class Macro:
                 )
 
     def parse_wiki_page_for_icon(self, page_data: str) -> None:
-        """Attempt to find a url for the icon in the wiki page. Sets self.icon if
+        """Attempt to find the url for the icon in the wiki page. Sets 'self.icon' if
         found."""
 
         # Method 1: the text "toolbar icon" appears on the page, and provides a direct

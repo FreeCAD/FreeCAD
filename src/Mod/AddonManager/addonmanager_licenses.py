@@ -42,6 +42,8 @@ except ImportError:
 
 from PySide import QtCore
 
+import addonmanager_freecad_interface as fci
+
 
 class SPDXLicenseManager:
     """A class that loads a list of licenses from an internal Qt resource and provides access to
@@ -74,15 +76,28 @@ class SPDXLicenseManager:
         """Check to see if the license is OSI-approved, according to the SPDX database. Returns
         False if the license is not in the database, or is not marked as "isOsiApproved"."""
         if spdx_id not in self.license_data:
+            fci.Console.PrintWarning(
+                f"WARNING: License ID {spdx_id} is not in the SPDX license "
+                f"list. The Addon author must correct their metadata.\n"
+            )
             return False
-        return self.license_data[spdx_id]["isOsiApproved"]
+        return (
+            "isOsiApproved" in self.license_data[spdx_id]
+            and self.license_data[spdx_id]["isOsiApproved"]
+        )
 
     def is_fsf_libre(self, spdx_id: str) -> bool:
         """Check to see if the license is FSF Free/Libre, according to the SPDX database. Returns
         False if the license is not in the database, or is not marked as "isFsfLibre"."""
         if spdx_id not in self.license_data:
+            fci.Console.PrintWarning(
+                f"WARNING: License ID {spdx_id} is not in the SPDX license "
+                f"list. The Addon author must correct their metadata.\n"
+            )
             return False
-        return self.license_data[spdx_id]["isFsfLibre"]
+        return (
+            "isFsfLibre" in self.license_data[spdx_id] and self.license_data[spdx_id]["isFsfLibre"]
+        )
 
     def name(self, spdx_id: str) -> str:
         if spdx_id not in self.license_data:
@@ -113,6 +128,40 @@ class SPDXLicenseManager:
         if spdx_id not in self.license_data:
             return ""
         return self.license_data[spdx_id]["detailsUrl"]
+
+    def normalize(self, license_string: str) -> str:
+        """Given a potentially non-compliant license string, attempt to normalize it to match an
+        SPDX record. Takes a conservative view and tries not to over-expand stated rights (e.g.
+        it will select 'GPL-3.0-only' rather than 'GPL-3.0-or-later' when given just GPL3)."""
+        if self.name(license_string):
+            return license_string
+        fci.Console.PrintLog(
+            f"Attempting to normalize non-compliant license '" f"{license_string}'... "
+        )
+        normed = license_string.replace("lgpl", "LGPL").replace("gpl", "GPL")
+        normed = (
+            normed.replace(" ", "-")
+            .replace("v", "-")
+            .replace("GPL2", "GPL-2")
+            .replace("GPL3", "GPL-3")
+        )
+        if self.name(normed):
+            fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
+            return normed
+        # If it still doesn't match, try some other things
+        while "--" in normed:
+            normed = license_string.replace("--", "-")
+
+        if self.name(normed):
+            fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
+            return normed
+        if not normed.endswith(".0"):
+            normed += ".0"
+        if self.name(normed):
+            fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
+            return normed
+        fci.Console.PrintLog(f"failed to normalize (typo in ID or invalid version number??)\n")
+        return license_string  # We failed to normalize this one
 
 
 _LICENSE_MANAGER = None  # Internal use only, see get_license_manager()

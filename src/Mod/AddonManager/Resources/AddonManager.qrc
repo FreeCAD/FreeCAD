@@ -69,11 +69,11 @@
 		<file>licenses/Apache-2.0.txt</file>
 		<file>licenses/BSD-2-Clause.txt</file>
 		<file>licenses/BSD-3-Clause.txt</file>
-		<file>licenses/CC0v1.txt</file>
-		<file>licenses/GPLv2.txt</file>
-		<file>licenses/GPLv3.txt</file>
-		<file>licenses/LGPLv2.1.txt</file>
-		<file>licenses/LGPLv3.txt</file>
+		<file>licenses/CC0-1.0.txt</file>
+		<file>licenses/GPL-2.0-or-later.txt</file>
+		<file>licenses/GPL-3.0-or-later.txt</file>
+		<file>licenses/LGPL-2.1-or-later.txt</file>
+		<file>licenses/LGPL-3.0-or-later.txt</file>
 		<file>licenses/MIT.txt</file>
 		<file>licenses/MPL-2.0.txt</file>
         <file>licenses/spdx.json</file>
