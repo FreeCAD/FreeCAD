@@ -73,7 +73,7 @@ dependencies:
 - graphviz
 - hdf5
 - libcxx
-- mamba==1.4.9
+- mamba==1.5.6
 - matplotlib
 - ninja
 - numpy
