@@ -96,8 +96,11 @@ class PackageList(QtWidgets.QWidget):
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
         self.item_filter.setHideNonOSIApproved(pref.GetBool("HideNonOSIApproved", True))
-        self.item_filter.setHideNonFSFLibre(pref.GetBool("HideNonFSFFreeLibre", True))
-        self.item_filter.setHideNewerFreeCADRequired(pref.GetBool("HideNewerFreeCADRequired", True))
+        self.item_filter.setHideNonFSFLibre(pref.GetBool("HideNonFSFFreeLibre", False))
+        self.item_filter.setHideNewerFreeCADRequired(
+            pref.GetBool("HideNewerFreeCADRequired", False)
+        )
+        self.item_filter.setHideUnlicensed(pref.GetBool("HideUnlicensed", False))
 
     def on_listPackages_clicked(self, index: QtCore.QModelIndex):
         """Determine what addon was selected and emit the itemSelected signal with it as
@@ -473,6 +476,7 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
         self.hide_py2 = False
         self.hide_non_OSI_approved = False
         self.hide_non_FSF_libre = False
+        self.hide_unlicensed = False
         self.hide_newer_freecad_required = False
 
     def setPackageFilter(
@@ -507,6 +511,11 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
     def setHideNonFSFLibre(self, hide: bool) -> None:
         """Sets whether to hide Addons with non-FSF-Libre licenses"""
         self.hide_non_FSF_libre = hide
+        self.invalidateFilter()
+
+    def setHideUnlicensed(self, hide: bool) -> None:
+        """Sets whether to hide addons without a specified license"""
+        self.hide_unlicensed = hide
         self.invalidateFilter()
 
     def setHideNewerFreeCADRequired(self, hide_nfr: bool) -> None:
@@ -558,6 +567,11 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
             # If it's not installed, check to see if it's marked obsolete
             if self.hide_obsolete and data.obsolete:
                 return False
+
+            if self.hide_unlicensed:
+                if not data.license or data.license in ["UNLICENSED", "UNLICENCED"]:
+                    FreeCAD.Console.PrintLog(f"Hiding {data.name} because it has no license set\n")
+                    return False
 
             # If it is not an OSI-approved license, check to see if we are hiding those
             if self.hide_non_OSI_approved or self.hide_non_FSF_libre:
