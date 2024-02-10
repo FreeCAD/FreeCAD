@@ -790,14 +790,7 @@ public:
      *
      * @param sources: the source shapes, each of which must contain either a
      *                 single edge or a single wire.
-     * @param orientation:
-     * @param isSolid: whether to make a solid
-     * @param isRuled: If true, then the faces generated between the edges of
-     *                 two consecutive section wires are ruled surfaces. If
-     *                 false, then they are smoothed out by approximation
-     * @param isClosed: If true, then the first section is duplicated to close
-     *                  the loft as the last section
-     * @param maxDegree: define the maximal U degree of the result surface
+     * @param orientation: A Qt::Orientation, where Qt::Horizontal is 1 and Qt::Vertical is 2.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
@@ -806,7 +799,7 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makERuledSurface(const std::vector<TopoShape> &source, int orientation=0, const char *op=nullptr);
+    TopoShape &makeElementRuledSurface(const std::vector<TopoShape> &source, int orientation=0, const char *op=nullptr);
 
     /** Core function to generate mapped element names from shape history
      *

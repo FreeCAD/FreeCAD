@@ -115,6 +115,26 @@ App::DocumentObjectExecReturn *RuledSurface::execute()
 {
     try {
 #ifdef FC_USE_TNP_FIX
+        std::vector<TopoShape> shapes;
+        std::array<App::PropertyLinkSub*,2> links = {&Curve1,&Curve2};
+        for(auto link : links) {
+            const auto &subs = link->getSubValues();
+            if(subs.empty())
+                shapes.push_back(getTopoShape(link->getValue()));
+            else if(subs.size()!=1)
+                return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
+            else
+                shapes.push_back(getTopoShape(link->getValue(),
+                                              subs.front().c_str(),true));
+            if(shapes.back().isNull())
+                return new App::DocumentObjectExecReturn("Invalid link.");
+        }
+        TopoShape res(0);//, getDocument()->getStringHasher());
+        res.makeElementRuledSurface(shapes, Orientation.getValue());
+        this->Shape.setValue(res);
+        return Part::Feature::execute();
+
+#else
         App::DocumentObjectExecReturn* ret;
 
         // get the first input shape
@@ -232,25 +252,6 @@ App::DocumentObjectExecReturn *RuledSurface::execute()
 
         this->Shape.setValue(ruledShape);
         return App::DocumentObject::StdReturn;
-#else
-        std::vector<TopoShape> shapes;
-        std::array<App::PropertyLinkSub*,2> links = {&Curve1,&Curve2};
-        for(auto link : links) {
-            const auto &subs = link->getSubValues();
-            if(subs.empty())
-                shapes.push_back(getTopoShape(link->getValue()));
-            else if(subs.size()!=1)
-                return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
-            else
-                shapes.push_back(getTopoShape(link->getValue(),
-                                              subs.front().c_str(),true));
-            if(shapes.back().isNull())
-                return new App::DocumentObjectExecReturn("Invalid link.");
-        }
-        TopoShape res(0, getDocument()->getStringHasher());
-        res.makERuledSurface(shapes, Orientation.getValue());
-        this->Shape.setValue(res);
-        return Part::Feature::execute();
 #endif
     }
     catch (Standard_Failure& e) {
