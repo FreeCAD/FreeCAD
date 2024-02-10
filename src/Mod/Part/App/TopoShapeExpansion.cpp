@@ -1653,6 +1653,145 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
+TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
+                                       int orientation, const char *op)
+{
+    if(!op)
+        op = Part::OpCodes::RuledSurface;
+
+    if(shapes.size()!=2)
+        FC_THROWM(Base::CADKernelError,"Wrong number of input shape");
+
+    std::vector<TopoShape> curves(2);
+    int i=0;
+    for(auto &s : shapes) {
+        if(s.isNull())
+            HANDLE_NULL_INPUT;
+        auto type = s.shapeType();
+        if(type == TopAbs_WIRE || type == TopAbs_EDGE) {
+            curves[i++] = s;
+            continue;
+        }
+        auto count = s.countSubShapes(TopAbs_WIRE);
+        if(count>1)
+            FC_THROWM(Base::CADKernelError,"Input shape has more than one wire");
+        if(count==1) {
+            curves[i++] = s.getSubTopoShape(TopAbs_WIRE,1);
+            continue;
+        }
+        count = s.countSubShapes(TopAbs_EDGE);
+        if(count==0)
+            FC_THROWM(Base::CADKernelError,"Input shape has no edge");
+        if(count == 1) {
+            curves[i++] = s.getSubTopoShape(TopAbs_EDGE,1);
+            continue;
+        }
+        curves[i] = s.makEWires();
+        if(curves[i].isNull())
+            HANDLE_NULL_INPUT;
+        if(curves[i].shapeType()!=TopAbs_WIRE)
+            FC_THROWM(Base::CADKernelError,"Input shape forms more than one wire");
+        ++i;
+    }
+
+    if(curves[0].shapeType()!=curves[1].shapeType()) {
+        for(auto &curve : curves) {
+            if(curve.shapeType() == TopAbs_EDGE)
+                curve = curve.makEWires();
+        }
+    }
+
+    auto &S1 = curves[0];
+    auto &S2 = curves[1];
+    bool isWire = S1.shapeType()==TopAbs_WIRE;
+
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+    //
+    // if both shapes are sub-elements of one common shape then the fill
+    // algorithm leads to problems if the shape has set a placement. The
+    // workaround is to copy the sub-shape
+    S1 = S1.makECopy();
+    S2 = S2.makECopy();
+
+    if (orientation == 0) {
+        // Automatic
+        Handle(Adaptor3d_HCurve) a1;
+        Handle(Adaptor3d_HCurve) a2;
+        if (!isWire) {
+            BRepAdaptor_Curve adapt1(TopoDS::Edge(S1.getShape()));
+            BRepAdaptor_Curve adapt2(TopoDS::Edge(S2.getShape()));
+            a1 = new BRepAdaptor_HCurve(adapt1);
+            a2 = new BRepAdaptor_HCurve(adapt2);
+        }
+        else {
+            BRepAdaptor_CompCurve adapt1(TopoDS::Wire(S1.getShape()));
+            BRepAdaptor_CompCurve adapt2(TopoDS::Wire(S2.getShape()));
+            a1 = new BRepAdaptor_HCompCurve(adapt1);
+            a2 = new BRepAdaptor_HCompCurve(adapt2);
+        }
+
+        if (!a1.IsNull() && !a2.IsNull()) {
+            // get end points of 1st curve
+            gp_Pnt p1 = a1->Value(a1->FirstParameter());
+            gp_Pnt p2 = a1->Value(a1->LastParameter());
+            if (S1.getShape().Orientation() == TopAbs_REVERSED) {
+                std::swap(p1, p2);
+            }
+
+            // get end points of 2nd curve
+            gp_Pnt p3 = a2->Value(a2->FirstParameter());
+            gp_Pnt p4 = a2->Value(a2->LastParameter());
+            if (S2.getShape().Orientation() == TopAbs_REVERSED) {
+                std::swap(p3, p4);
+            }
+
+            // Form two triangles (P1,P2,P3) and (P4,P3,P2) and check their normals.
+            // If the dot product is negative then it's assumed that the resulting face
+            // is twisted, hence the 2nd edge is reversed.
+            gp_Vec v1(p1, p2);
+            gp_Vec v2(p1, p3);
+            gp_Vec n1 = v1.Crossed(v2);
+
+            gp_Vec v3(p4, p3);
+            gp_Vec v4(p4, p2);
+            gp_Vec n2 = v3.Crossed(v4);
+
+            if (n1.Dot(n2) < 0) {
+                S2.setShape(S2.getShape().Reversed(), false);
+            }
+        }
+    }
+    else if (orientation == 2) {
+        // Reverse
+        S2.setShape(S2.getShape().Reversed(), false);
+    }
+
+    TopoDS_Shape ruledShape;
+    if (!isWire) {
+        ruledShape = BRepFill::Face(TopoDS::Edge(S1.getShape()), TopoDS::Edge(S2.getShape()));
+    }
+    else {
+        ruledShape = BRepFill::Shell(TopoDS::Wire(S1.getShape()), TopoDS::Wire(S2.getShape()));
+    }
+
+    // Both BRepFill::Face() and Shell() modifies the original input edges
+    // without any API to provide relationship to the output edges. So we have
+    // to use searchSubShape() to build the relationship by ourselves.
+
+    TopoShape res(ruledShape.Located(TopLoc_Location()));
+    std::vector<TopoShape> edges;
+    for (const auto &c : curves) {
+        for (const auto &e : c.getSubTopoShapes(TopAbs_EDGE)) {
+            auto found = res.searchSubShape(e);
+            if (found.size() > 0) {
+                found.front().resetElementMap(e.elementMap());
+                edges.push_back(found.front());
+            }
+        }
+    }
+    // Use empty mapper and let makEShape name the created surface with lower elements.
+    return makESHAPE(res.getShape(),Mapper(),edges,op);
+}
 
 TopoShape& TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
                                           const char* op,
