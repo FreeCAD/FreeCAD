@@ -50,7 +50,6 @@
 #include <Standard_LicenseError.hxx>
 #include <Standard_LicenseNotFound.hxx>
 #include <Standard_Macro.hxx>
-#include <Standard_math.hxx>
 #include <Standard_MultiplyDefined.hxx>
 #include <Standard_NegativeValue.hxx>
 #include <Standard_NoMoreObject.hxx>

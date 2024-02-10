@@ -62,7 +62,6 @@
 // OCC
 #include <BRepAdaptor_Surface.hxx>
 #include <Precision.hxx>
-#include <Standard_math.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 
