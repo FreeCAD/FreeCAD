@@ -1897,10 +1897,9 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
             const TopoDS_Face &face1 = TopoDS::Face(*(shapes[0]));
             const TopoDS_Face &face2 = TopoDS::Face(*(shapes[1]));
 
-            GeomAPI_IntSS intersector(
-                    BRep_Tool::Surface(face1),
-                    BRep_Tool::Surface(face2),
-                    Precision::Confusion());
+            Handle(Geom_Surface) hSurf1 = BRep_Tool::Surface(face1);
+            Handle(Geom_Surface) hSurf2 = BRep_Tool::Surface(face2);
+            GeomAPI_IntSS intersector(hSurf1, hSurf2, Precision::Confusion());
             if (!intersector.IsDone())
                 throw Base::ValueError("Intersection failed");
 
