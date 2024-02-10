@@ -1737,8 +1737,8 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
 
     if (orientation == 0) {
         // Automatic
-        Handle(Adaptor3d_HCurve) a1;
-        Handle(Adaptor3d_HCurve) a2;
+        Handle(Adaptor3d_Curve) a1;
+        Handle(Adaptor3d_Curve) a2;
         if (!isWire) {
             BRepAdaptor_HCurve adapt1(TopoDS::Edge(S1.getShape()));
             BRepAdaptor_HCurve adapt2(TopoDS::Edge(S2.getShape()));
