@@ -44,6 +44,8 @@ class Vector3;
 
 class Vector2d;
 
+class BoundBox2d;
+
 class Placement;
 }  // namespace Base
 
@@ -256,7 +258,8 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    void updateAxesLength(double minX, double minY, double maxX, double maxY);
+    // Updates the Axes extension to span the specified area.
+    void updateAxesLength(const Base::BoundBox2d& bb);
 
 private:
     // This function populates the coin nodes with the information of the current geometry
@@ -266,9 +269,6 @@ private:
     // information gathered during the processGeometry step, so it is not possible to run both in
     // parallel.
     void processGeometryInformationOverlay(const GeoListFacade& geolistfacade);
-
-    // updates the Axes length to extend beyond the calculated bounding box magnitude
-    void updateAxesLength();
 
     // updates the parameters to be used for the Overlay information layer
     void updateOverlayParameters();

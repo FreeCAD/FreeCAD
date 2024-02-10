@@ -3343,6 +3343,27 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     vp->onCameraChanged(cam);
 }
 
+Base::Vector3d ViewProviderSketch::getCamCenterInSketchCoordinates(const Gui::View3DInventorViewer* viewer) const
+{
+    Base::Vector3d xaxis(1, 0, 0), yaxis(0, 1, 0);
+
+    Base::Placement plm = getEditingPlacement();
+    Base::Rotation rot(plm.getRotation());
+    Base::Vector3d pos(plm.getPosition());
+
+    rot.multVec(xaxis, xaxis);
+    rot.multVec(yaxis, yaxis);
+
+    float x,y,z;
+    viewer->getCenterPointOnFocalPlane().getValue(x, y, z);
+
+    Base::Vector3d center (x,y,z);
+
+    center.TransformToCoordinateSystem(pos, xaxis, yaxis);
+
+    return center;
+}
+
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)
 {
     auto rotSk = Base::Rotation(getDocument()->getEditingTransform());// sketch orientation
@@ -3374,14 +3395,13 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         Gui::View3DInventorViewer* viewer = view->getViewer();
 
         // Add 50% to be sure the whole viewport is covered.
-        float axesLength = 1.5f * viewer->getMaxDimension();
-        // Project the camera focus onto the sketch plane.
-        float x, y, z;
-        viewer->getCenterPointOnFocalPlane().getValue(x, y, z);
+        const float halfAxisLength = 1.5f * viewer->getMaxDimension() / 2.f;
+        Base::Vector3d camCenter = getCamCenterInSketchCoordinates(viewer);
 
-        editCoinManager->updateAxesLength(
-                x - axesLength / 2, y - axesLength / 2,
-                x + axesLength / 2, y + axesLength / 2);
+        editCoinManager->updateAxesLength({
+                camCenter.x - halfAxisLength, camCenter.y - halfAxisLength,
+                camCenter.x + halfAxisLength, camCenter.y + halfAxisLength
+        });
     }
 
     drawGrid(true);
