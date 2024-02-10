@@ -222,9 +222,6 @@ App::DocumentObjectExecReturn *Pad::execute()
             }
         }
 
-        if (prism.IsNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Resulting shape is empty"));
-
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);

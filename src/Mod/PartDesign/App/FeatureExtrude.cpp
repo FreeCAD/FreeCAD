@@ -213,7 +213,9 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                 Mode = PrismMode::FuseWithBase;
         }
 
-        prism = base;
+        prism = getSolid(base);
+        if (prism.IsNull())
+            throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
     }
     else if (method == "UpToLast") {
         BRepFeat_MakePrism PrismMaker;
