@@ -3369,10 +3369,9 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
 
-    Gui::MDIView* mdi =
-        Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
 
         // Add 50% to be sure the whole viewport is covered.
         float axesLength = 1.5f * viewer->getMaxDimension();
