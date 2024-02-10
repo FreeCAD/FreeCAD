@@ -223,12 +223,16 @@ class Addon:
     @property
     def license(self):
         if not self._cached_license:
+            self._cached_license = "UNLICENSED"
             if self.metadata and self.metadata.license:
                 self._cached_license = self.metadata.license
             elif self.stats and self.stats.license:
                 self._cached_license = self.stats.license
-            elif self.macro and self.macro.license:
-                self._cached_license = self.macro.license
+            elif self.macro:
+                if self.macro.license:
+                    self._cached_license = self.macro.license
+                elif self.macro.on_wiki:
+                    self._cached_license = "CC-BY-3.0"
         return self._cached_license
 
     @classmethod

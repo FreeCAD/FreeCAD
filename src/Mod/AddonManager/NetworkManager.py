@@ -391,7 +391,8 @@ if HAVE_QTNETWORK:
         def __synchronous_process_completion(
             self, index: int, code: int, data: QtCore.QByteArray
         ) -> None:
-            """Check the return status of a completed process, and handle its returned data (if any)."""
+            """Check the return status of a completed process, and handle its returned data (if
+            any)."""
             with self.synchronous_lock:
                 if index in self.synchronous_complete:
                     if code == 200:
@@ -406,7 +407,8 @@ if HAVE_QTNETWORK:
                         )
                     self.synchronous_complete[index] = True
 
-        def __create_get_request(self, url: str, timeout_ms: int) -> QtNetwork.QNetworkRequest:
+        @staticmethod
+        def __create_get_request(url: str, timeout_ms: int) -> QtNetwork.QNetworkRequest:
             """Construct a network request to a given URL"""
             request = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
             request.setAttribute(
@@ -560,21 +562,20 @@ if HAVE_QTNETWORK:
                 # This can happen during a cancellation operation: silently do nothing
                 return
 
-            if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
-                # Silently do nothing
-                return
-
             index = None
             for key, value in self.replies.items():
                 if reply == value:
                     index = key
                     break
             if index is None:
-                print(f"Lost net request for {reply.url()}")
                 return
 
             response_code = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            self.queue.task_done()
+            if response_code == 301:  # Permanently moved -- this is a redirect, bail out
+                return
+            if reply.error() != QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
+                # It this was not a timeout, make sure we mark the queue task done
+                self.queue.task_done()
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
                 if index in self.monitored_connections:
                     # Make sure to read any remaining data

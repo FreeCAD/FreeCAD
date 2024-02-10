@@ -380,7 +380,7 @@ def blocking_get(url: str, method=None) -> bytes:
     p = b""
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
         if p:
             try:
                 p = p.data()

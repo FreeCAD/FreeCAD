@@ -550,8 +550,9 @@ class CommandAddonManager:
         )
         self.startup()
 
-        # Recaching implies checking for updates, regardless of the user's autocheck option
-        self.startup_sequence.remove(self.check_updates)
+        # Re-caching implies checking for updates, regardless of the user's autocheck option
+        if self.check_updates in self.startup_sequence:
+            self.startup_sequence.remove(self.check_updates)
         self.startup_sequence.append(self.force_check_updates)
 
     def on_package_updated(self, repo: Addon) -> None:

@@ -75,6 +75,8 @@ class SPDXLicenseManager:
     def is_osi_approved(self, spdx_id: str) -> bool:
         """Check to see if the license is OSI-approved, according to the SPDX database. Returns
         False if the license is not in the database, or is not marked as "isOsiApproved"."""
+        if spdx_id == "UNLICENSED" or spdx_id == "UNLICENCED" or spdx_id.startswith("SEE LIC"):
+            return False
         if spdx_id not in self.license_data:
             fci.Console.PrintWarning(
                 f"WARNING: License ID {spdx_id} is not in the SPDX license "
@@ -89,6 +91,8 @@ class SPDXLicenseManager:
     def is_fsf_libre(self, spdx_id: str) -> bool:
         """Check to see if the license is FSF Free/Libre, according to the SPDX database. Returns
         False if the license is not in the database, or is not marked as "isFsfLibre"."""
+        if spdx_id == "UNLICENSED" or spdx_id == "UNLICENCED" or spdx_id.startswith("SEE LIC"):
+            return False
         if spdx_id not in self.license_data:
             fci.Console.PrintWarning(
                 f"WARNING: License ID {spdx_id} is not in the SPDX license "
@@ -100,6 +104,10 @@ class SPDXLicenseManager:
         )
 
     def name(self, spdx_id: str) -> str:
+        if spdx_id == "UNLICENSED":
+            return "All rights reserved"
+        if spdx_id.startswith("SEE LIC"):  # "SEE LICENSE IN" or "SEE LICENCE IN"
+            return f"Custom license: {spdx_id}"
         if spdx_id not in self.license_data:
             return ""
         return self.license_data[spdx_id]["name"]
@@ -145,21 +153,24 @@ class SPDXLicenseManager:
             .replace("GPL2", "GPL-2")
             .replace("GPL3", "GPL-3")
         )
-        if self.name(normed):
+        or_later = ""
+        if normed.endswith("+"):
+            normed = normed[:-1]
+            or_later = "-or-later"
+        if self.name(normed + or_later):
             fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
-            return normed
+            return normed + or_later
         # If it still doesn't match, try some other things
         while "--" in normed:
-            normed = license_string.replace("--", "-")
+            normed = normed.replace("--", "-")
 
-        if self.name(normed):
+        if self.name(normed + or_later):
             fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
-            return normed
-        if not normed.endswith(".0"):
-            normed += ".0"
-        if self.name(normed):
+            return normed + or_later
+        normed += ".0"
+        if self.name(normed + or_later):
             fci.Console.PrintLog(f"found valid SPDX license ID {normed}\n")
-            return normed
+            return normed + or_later
         fci.Console.PrintLog(f"failed to normalize (typo in ID or invalid version number??)\n")
         return license_string  # We failed to normalize this one
 

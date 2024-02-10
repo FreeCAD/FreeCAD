@@ -160,9 +160,6 @@ class Macro:
             code = self._fetch_raw_code(p)
         if not code:
             code = self._read_code_from_wiki(p)
-        if not self.license:
-            # The default license on the wiki is CC-BY-3.0 (which is non-Libre and not OSI-approved)
-            self.license = "CC-BY-3.0"
         if not code:
             self._console.PrintWarning(
                 translate("AddonsInstaller", "Unable to fetch the code of this macro.") + "\n"
