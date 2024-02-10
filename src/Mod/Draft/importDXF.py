@@ -1431,7 +1431,7 @@ def drawSpline(spline, forceShape=False):
     -------
     Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft BezCurve`
-        created with `Draft.make_bezcurve(controlpoints, Degree=degree)`,
+        created with `Draft.make_bezcurve(controlpoints, degree=degree)`,
         if `forceShape` is `False` and there are no weights.
 
         Otherwise it tries to return a `Part.Shape` of type `'Wire'`,
@@ -1553,7 +1553,7 @@ def drawSpline(spline, forceShape=False):
             if not forceShape and weights is None:
                 points = controlpoints[:]
                 del points[degree+1::degree+1]
-                return Draft.make_bezcurve(points, Degree=degree)
+                return Draft.make_bezcurve(points, degree=degree)
             else:
                 poles = controlpoints[:]
                 edges = []
