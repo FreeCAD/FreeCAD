@@ -1687,7 +1687,7 @@ AttachEngineLine::AttachEngineLine()
 
     modeRefTypes[mm1FaceNormal] = attacher3D.modeRefTypes[mmTangentPlane];
 
-
+    modeRefTypes[mm1Intersection].push_back(cat(rtFace,rtFace));
 
     this->EnableAllSupportedModes();
 }
@@ -1885,6 +1885,34 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
                 LineDir = dx2.Direction();
                 LineBasePoint = dx2.Location();
             }
+        }break;
+        case mm1Intersection:{
+            if (shapes.size() < 2)
+                throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: Intersection mode requires two shapes; only one is supplied");
+            if (shapes[0]->IsNull())
+                throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+            if (shapes[1]->IsNull())
+                throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+
+            const TopoDS_Face &face1 = TopoDS::Face(*(shapes[0]));
+            const TopoDS_Face &face2 = TopoDS::Face(*(shapes[1]));
+
+            GeomAPI_IntSS intersector(
+                    BRep_Tool::Surface(face1),
+                    BRep_Tool::Surface(face2),
+                    Precision::Confusion());
+            if (!intersector.IsDone())
+                throw Base::ValueError("Intersection failed");
+
+            if (intersector.NbLines() != 1)
+                throw Base::ValueError("Intersection failed");
+
+            GeomAdaptor_Curve adapt(intersector.Line(1));
+            if (adapt.GetType() != GeomAbs_Line)
+                throw Base::ValueError("Intersection failed, intersection is not a straight line");
+
+            LineBasePoint = adapt.Line().Location();
+            LineDir = adapt.Line().Direction();
         }break;
         case mm1Proximity:{
             if (shapes.size() < 2)
