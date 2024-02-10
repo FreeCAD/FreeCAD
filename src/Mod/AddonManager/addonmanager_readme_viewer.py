@@ -27,12 +27,15 @@ import Addon
 from PySide import QtCore, QtGui, QtWidgets
 from enum import Enum, auto
 from html.parser import HTMLParser
+import re
 
 import addonmanager_freecad_interface as fci
 import addonmanager_utilities as utils
 import NetworkManager
 
 translate = fci.translate
+
+REGEX_HTML_COMMENT = r"(?s)<!--.*-->"
 
 
 class ReadmeViewer(QtWidgets.QTextBrowser):
@@ -92,6 +95,14 @@ class ReadmeViewer(QtWidgets.QTextBrowser):
             if not self.resource_requests:
                 self.set_addon(self.repo)  # Trigger a reload of the page now with resources
 
+    def removeHTMLComments(self, string: str):
+        """Remove HTML Comments from a string"""
+        return re.sub(REGEX_HTML_COMMENT, "", string)
+
+    def cleanMarkdown(self, markdown: str):
+        """Clean a string of Markdown"""
+        return self.removeHTMLComments(markdown)
+
     def _process_package_download(self, data: str):
         if self.repo.repo_type == Addon.Addon.Kind.MACRO:
             parser = WikiCleaner()
@@ -101,7 +112,7 @@ class ReadmeViewer(QtWidgets.QTextBrowser):
             # Check for recent Qt (e.g. Qt5.15 or later). Check can be removed when
             # we no longer support Ubuntu 20.04LTS for compiling.
             if hasattr(self, "setMarkdown"):
-                self.setMarkdown(data)
+                self.setMarkdown(self.cleanMarkdown(data))
             else:
                 self.setPlainText(data)
 
