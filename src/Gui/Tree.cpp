@@ -4788,51 +4788,51 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     };
 
     switch (high) {
-    case HighlightMode::Bold:
-        f.setBold(set);
-        break;
-    case HighlightMode::Italic:
-        f.setItalic(set);
-        break;
-    case HighlightMode::Underlined:
-        f.setUnderline(set);
-        break;
-    case HighlightMode::Overlined:
-        f.setOverline(set);
-        break;
-    case HighlightMode::Blue:
-        highlight(QColor(200, 200, 255));
-        break;
-    case HighlightMode::LightBlue:
-        highlight(QColor(230, 230, 255));
-        break;
-    case HighlightMode::UserDefined:
-    {
-        QColor color(230, 230, 255);
-        if (set) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-            bool bold = hGrp->GetBool("TreeActiveBold", true);
-            bool italic = hGrp->GetBool("TreeActiveItalic", false);
-            bool underlined = hGrp->GetBool("TreeActiveUnderlined", false);
-            bool overlined = hGrp->GetBool("TreeActiveOverlined", false);
-            f.setBold(bold);
-            f.setItalic(italic);
-            f.setUnderline(underlined);
-            f.setOverline(overlined);
+        case HighlightMode::Bold:
+            f.setBold(set);
+            break;
+        case HighlightMode::Italic:
+            f.setItalic(set);
+            break;
+        case HighlightMode::Underlined:
+            f.setUnderline(set);
+            break;
+        case HighlightMode::Overlined:
+            f.setOverline(set);
+            break;
+        case HighlightMode::Blue:
+            highlight(QColor(200, 200, 255));
+            break;
+        case HighlightMode::LightBlue:
+            highlight(QColor(230, 230, 255));
+            break;
+        case HighlightMode::UserDefined:
+        {
+            QColor color(230, 230, 255);
+            if (set) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                int fontweight = hGrp->GetInt("TreeActiveFontWeight", 70);
+                bool italic = hGrp->GetBool("TreeActiveItalic", false);
+                bool underlined = hGrp->GetBool("TreeActiveUnderlined", false);
+                bool overlined = hGrp->GetBool("TreeActiveOverlined", false);
+                f.setItalic(italic);
+                f.setUnderline(underlined);
+                f.setOverline(overlined);
+                f.setWeight(fontweight);
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
-            color = App::Color::fromPackedRGB<QColor>(col);
-        }
-        else {
-            f.setBold(false);
-            f.setItalic(false);
-            f.setUnderline(false);
-            f.setOverline(false);
-        }
-        highlight(color);
-    }   break;
-    default:
-        break;
+                unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
+                color = App::Color::fromPackedRGB<QColor>(col);
+            }
+            else {
+                f.setBold(false);
+                f.setItalic(false);
+                f.setUnderline(false);
+                f.setOverline(false);
+            }
+            highlight(color);
+        }   break;
+        default:
+            break;
     }
     this->setFont(0, f);
 }
