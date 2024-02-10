@@ -911,6 +911,61 @@ public:
         return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
     }
 
+
+    /** Generalized shape making with mapped element name from shape history
+     *
+     * @param maker: op code from OpCodes
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance option available to some shape making algorithm
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementBoolean(const char* maker,
+                                  const std::vector<TopoShape>& sources,
+                                  const char* op = nullptr,
+                                  double tol = 0.0);
+    /** Generalized shape making with mapped element name from shape history
+     *
+     * @param maker: op code from TopoShapeOpCodes
+     * @param source: source shape.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance option available to some shape making algorithm
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape& makeElementBoolean(const char* maker,
+                                  const TopoShape& source,
+                                  const char* op = nullptr,
+                                  double tol = 0.0);
+
+    /** Generalized shape making with mapped element name from shape history
+     *
+     * @param maker: op code from TopoShapeOpCodes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance option available to some shape making algorithm
+     *
+     * @return Returns the new shape with mappend element name generated from
+     *         shape history using this shape as the source. The shape itself
+     *         is not modified.
+     */
+    TopoShape
+    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = 0.0) const
+    {
+        return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
+    }
+
     /* Make a shell using this shape
      * @param silent: whether to throw exception on failure
      * @param op: optional string to be encoded into topo naming for indicating
