@@ -45,6 +45,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/ShapeMapHasher.h>
 
 #include "ImportOCAFAssembly.h"
 
@@ -109,7 +110,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
     int hash = 0;
     TopoDS_Shape aShape;
     if (aShapeTool->GetShape(label, aShape)) {
-        hash = aShape.HashCode(HashUpper);
+        hash = Part::ShapeMapHasher {}(aShape);
     }
 
     Handle(TDataStd_Name) name;
@@ -192,7 +193,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
         TopoDS_Shape aShape;
         if (isRef && aShapeTool->GetShape(label, aShape)) {
-            myRefShapes.insert(aShape.HashCode(HashUpper));
+            myRefShapes.insert(Part::ShapeMapHasher {}(aShape));
         }
 
         if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {

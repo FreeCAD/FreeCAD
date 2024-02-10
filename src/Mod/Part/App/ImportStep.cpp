@@ -48,6 +48,7 @@
 
 #include "ImportStep.h"
 #include "encodeFilename.h"
+#include "ShapeMapHasher.h"
 #include "PartFeature.h"
 #include "ProgressIndicator.h"
 
@@ -137,12 +138,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 // This is a trick to access the GUI via Python and set the color property
                 // of the associated view provider. If no GUI is up an exception is thrown
                 // and cleared immediately
-#if OCC_VERSION_HEX >= 0x070800
-                std::hash<TopoDS_Solid> hasher;
-                std::map<int, Quantity_Color>::iterator it = hash_col.find(hasher(aSolid));
-#else
-                std::map<int, Quantity_Color>::iterator it = hash_col.find(aSolid.HashCode(INT_MAX));
-#endif
+                std::map<int, Quantity_Color>::iterator it = hash_col.find(ShapeMapHasher{}(aSolid));
                 if (it != hash_col.end()) {
                     try {
                         Py::Object obj(pcFeature->getPyObject(), true);
