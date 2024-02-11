@@ -825,21 +825,22 @@ class _Roof(ArchComponent.Component):
 
     def getSubVolume(self, obj):
         '''returns a volume to be subtracted'''
-        if obj.Base:
-            if hasattr(obj.Base, "Shape"):
-                if obj.Base.Shape.Solids:
-                    return obj.Shape
-                else :
-                    if hasattr(self, "sub"):
-                        if self.sub:
-                            return self.sub
-                        else :
-                            self.execute(obj)
-                            return self.sub
-                    else :
-                        self.execute(obj)
-                        return self.sub
-        return None
+        if not obj.Base:
+            return None
+
+        if not hasattr(obj.Base, "Shape"):
+            return None
+
+        if obj.Base.Shape.Solids:
+            return obj.Shape
+
+        # self.sub is auto-generated subvolume for wire-based roof
+        sub_field = getattr(self, 'sub', None)
+        if not sub_field:
+            self.execute(obj)
+
+        return self.sub
+
 
     def computeAreas(self, obj):
         '''computes border and ridge roof edges length'''
