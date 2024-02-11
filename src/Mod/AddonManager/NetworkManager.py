@@ -426,7 +426,9 @@ if HAVE_QTNETWORK:
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                 QtNetwork.QNetworkRequest.PreferNetwork,
             )
-            request.setTransferTimeout(timeout_ms)
+            if hasattr(request, "setTransferTimeout"):
+                # Added in Qt 5.15
+                request.setTransferTimeout(timeout_ms)
             return request
 
         def abort_all(self):
