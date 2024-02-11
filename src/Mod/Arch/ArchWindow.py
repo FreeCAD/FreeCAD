@@ -645,7 +645,7 @@ class _Window(ArchComponent.Component):
 
         if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
             setattr(self,prop,getattr(obj,prop))
-        if prop in ["Height","Width"]:
+        if prop in ["Height","Width"] and obj.CloneOf is None:
             self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
     def onChanged(self,obj,prop):
