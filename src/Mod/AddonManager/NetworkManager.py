@@ -102,6 +102,12 @@ except ImportError:
 
 if HAVE_QTNETWORK:
 
+    # Added in Qt 5.15
+    if hasattr(QtNetwork.QNetworkRequest, "DefaultTransferTimeoutConstant"):
+        default_timeout = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant
+    else:
+        default_timeout = 30000
+
     class QueueItem:
         """A container for information about an item in the network queue."""
 
@@ -318,7 +324,7 @@ if HAVE_QTNETWORK:
         def submit_unmonitored_get(
             self,
             url: str,
-            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+            timeout_ms: int = default_timeout,
         ) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
             in conjunction with the completed() signal to handle the results of the call. All data is
@@ -338,7 +344,7 @@ if HAVE_QTNETWORK:
         def submit_monitored_get(
             self,
             url: str,
-            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+            timeout_ms: int = default_timeout,
         ) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
             in conjunction with the progress_made() and progress_completed() signals to handle the
@@ -360,7 +366,7 @@ if HAVE_QTNETWORK:
         def blocking_get(
             self,
             url: str,
-            timeout_ms: int = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant,
+            timeout_ms: int = default_timeout,
         ) -> Optional[QtCore.QByteArray]:
             """Submits a GET request to the QNetworkAccessManager and block until it is complete"""
 
@@ -486,7 +492,7 @@ if HAVE_QTNETWORK:
             """Used with the QNetworkAccessManager to follow redirects."""
             sender = self.sender()
             current_index = -1
-            timeout_ms = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant
+            timeout_ms = default_timeout
             # TODO: Figure out what the actual timeout value should be from the original request
             if sender:
                 for index, reply in self.replies.items():
