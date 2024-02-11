@@ -308,6 +308,11 @@ class _Roof(ArchComponent.Component):
                             "Flip",
                             "Roof",
                             QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"))
+        if not "Subvolume" in pl:
+            obj.addProperty("App::PropertyLink",
+                            "Subvolume",
+                            "Roof",
+                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"))
         self.Type = "Roof"
 
     def onDocumentRestored(self, obj):
@@ -825,6 +830,10 @@ class _Roof(ArchComponent.Component):
 
     def getSubVolume(self, obj):
         '''returns a volume to be subtracted'''
+        custom_subvolume = getattr(obj, 'Subvolume', None)
+        if custom_subvolume:
+            return custom_subvolume.Shape
+
         if not obj.Base:
             return None
 
