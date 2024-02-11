@@ -433,8 +433,8 @@ if HAVE_QTNETWORK:
 
         def abort_all(self):
             """Abort ALL network calls in progress, including clearing the queue"""
-            for reply in self.replies:
-                if reply.isRunning():
+            for reply in self.replies.values():
+                if reply.abort().isRunning():
                     reply.abort()
             while True:
                 try:
