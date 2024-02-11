@@ -51,12 +51,37 @@ DrawViewSymbol::DrawViewSymbol()
     ADD_PROPERTY_TYPE(Symbol, (""), vgroup, App::Prop_None, "The SVG code defining this symbol");
     ADD_PROPERTY_TYPE(EditableTexts, (""), vgroup, App::Prop_None,
                       "Substitution values for the editable strings in this symbol");
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this symbol is attached");
+
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::ReadOnly, false);
     Symbol.setStatus(App::Property::Hidden, true);
 }
 
 DrawViewSymbol::~DrawViewSymbol() {}
+
+void DrawViewSymbol::touchTreeOwner()
+{
+    auto owner = dynamic_cast<DrawView *>(Owner.getValue());
+    if (owner) {
+        owner->touch();
+    }
+    else { // If no owner is specified, touch all parent pages
+        for (auto page : findAllParentPages()) {
+            page->touch();
+        }
+    }
+}
+
+void DrawViewSymbol::onBeforeChange(const App::Property *prop)
+{
+    if (prop == &Owner && !isRestoring()) {
+        touchTreeOwner();
+    }
+
+    TechDraw::DrawView::onBeforeChange(prop);
+}
 
 void DrawViewSymbol::onChanged(const App::Property* prop)
 {
@@ -72,8 +97,24 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
         //1 cycle
         updateFieldsInSymbol();
     }
+    else if (prop == &Owner) {
+        if (!isRestoring()) {
+            touchTreeOwner();
+        }
+    }
 
     TechDraw::DrawView::onChanged(prop);
+}
+
+short DrawViewSymbol::mustExecute() const
+{
+    if (!isRestoring()) {
+        if (Owner.isTouched()) {
+            return 1;
+        }
+    }
+
+    return DrawView::mustExecute();
 }
 
 App::DocumentObjectExecReturn* DrawViewSymbol::execute()
@@ -81,6 +122,11 @@ App::DocumentObjectExecReturn* DrawViewSymbol::execute()
     //nothing to do. DVS is just a container for properties.
     //the action takes place on the Gui side.
     return DrawView::execute();
+}
+
+DrawView *DrawViewSymbol::claimParent() const
+{
+    return dynamic_cast<DrawView *>(Owner.getValue());
 }
 
 QRectF DrawViewSymbol::getRect() const
