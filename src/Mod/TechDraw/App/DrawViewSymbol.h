@@ -48,7 +48,9 @@ public:
 
     App::PropertyString       Symbol;
     App::PropertyStringList   EditableTexts;
+    App::PropertyLink         Owner;
 
+    short mustExecute() const override;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
@@ -59,6 +61,7 @@ public:
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
+    DrawView *claimParent(void) const override;
     QRectF getRect() const override;
     bool checkFit(TechDraw::DrawPage* p) const override;
 
@@ -66,6 +69,8 @@ public:
     PyObject *getPyObject() override;
 
 protected:
+    void touchTreeOwner();
+    void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
 

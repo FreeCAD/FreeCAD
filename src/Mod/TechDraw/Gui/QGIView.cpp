@@ -663,6 +663,26 @@ void QGIView::addArbitraryItem(QGraphicsItem* qgi)
     }
 }
 
+void QGIView::switchParentItem(QGIView *targetParent)
+{
+    auto currentParent = dynamic_cast<QGIView *>(this->parentItem());
+    if (currentParent != targetParent) {
+        if (targetParent) {
+            targetParent->addToGroup(this);
+        }
+        else {
+            currentParent->removeFromGroup(this);
+        }
+
+        if (currentParent) {
+            currentParent->updateView();
+        }
+        if (targetParent) {
+            targetParent->updateView();
+        }
+    }
+}
+
 void QGIView::setStack(int z)
 {
     m_zOrder = z;

@@ -32,10 +32,14 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
+#include "QGIView.h"
 #include "ui_TaskSurfaceFinishSymbols.h"
 #include "TaskSurfaceFinishSymbols.h"
+#include "ViewProviderSymbol.h"
+#include "ZVALUE.h"
 
 
 using namespace Gui;
@@ -79,16 +83,60 @@ std::string SvgString::finish()
 // TaskSurfaceFinishSymbols
 //===========================================================================
 
-TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view) :
-    selectedView(view),
+TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName) :
     ui(new Ui_TaskSurfaceFinishSymbols)
 {
+    App::Document *doc = App::GetApplication().getActiveDocument();
+    if (doc) {
+        owner = doc->getObject(ownerName.c_str());
+        std::string subName;
+        if (!owner) {
+            size_t dot = ownerName.rfind('.');
+            if (dot != std::string::npos) {
+                subName = ownerName.substr(dot + 1);
+                owner = doc->getObject(ownerName.substr(0, dot).c_str());
+            }
+        }
+
+        auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
+        if (page) {
+            placement.x = page->getPageWidth()/2.0;
+            placement.y = page->getPageHeight()/2.0;
+        }
+
+        auto viewPart = dynamic_cast<TechDraw::DrawViewPart *>(owner);
+        if (viewPart && !subName.empty()) {
+            std::string subType = DrawUtil::getGeomTypeFromName(subName);
+            if (subType == "Vertex") {
+                TechDraw::VertexPtr vertex = viewPart->getVertex(subName);
+                if (vertex) {
+                    placement = vertex->point();
+                }
+            }
+            else if (subType == "Edge") {
+                TechDraw::BaseGeomPtr edge = viewPart->getEdge(subName);
+                if (edge) {
+                    placement = edge->getMidPoint();
+                }
+            }
+            else if (subType == "Face") {
+                TechDraw::FacePtr face = viewPart->getFace(subName);
+                if (face) {
+                    placement = face->getCenter();
+                }
+            }
+
+            placement = DrawUtil::invertY(placement);
+        }
+    }
+
     raValues = {"Ra50", "Ra25", "Ra12, 5", "Ra6, 3",
                 "Ra3, 2", "Ra1, 6", "Ra0, 8", "Ra0, 4",
                 "Ra0, 2", "Ra0, 1", "Ra0, 05", "Ra0, 025"};
     laySymbols = {"", "=", "⟂", "X", "M", "C", "R"};
     roughGrades = {"", "N1", "N2", "N3", "N4", "N5",
                    "N6", "N7", "N8", "N9", "N10", "N11"};
+
     ui->setupUi(this);
     setUiEdit();
 }
@@ -324,8 +372,25 @@ bool TaskSurfaceFinishSymbols::accept()
     TechDraw::DrawViewSymbol *surfaceSymbol = dynamic_cast<TechDraw::DrawViewSymbol*>(docObject);
     surfaceSymbol->Symbol.setValue(completeSymbol());
     surfaceSymbol->Rotation.setValue(ui->leAngle->text().toDouble());
-    TechDraw::DrawPage* page = selectedView->findParentPage();
-    page->addView(surfaceSymbol);
+
+    auto view = dynamic_cast<TechDraw::DrawView *>(owner);
+    auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
+    if (!page && view) {
+        page = view->findParentPage();
+    }
+    if (page) {
+        page->addView(surfaceSymbol);
+    }
+
+    surfaceSymbol->Owner.setValue(view);
+    surfaceSymbol->X.setValue(placement.x);
+    surfaceSymbol->Y.setValue(placement.y);
+
+    auto viewProvider = dynamic_cast<ViewProviderSymbol *>(QGIView::getViewProvider(surfaceSymbol));
+    if (viewProvider) {
+        viewProvider->StackOrder.setValue(ZVALUE::DIMENSION);
+    }
+
     Gui::Command::commitCommand();
     return true;
 }
@@ -339,10 +404,10 @@ bool TaskSurfaceFinishSymbols::reject()
 // TaskDlgSurfaceFinishSymbols//
 //===========================================================================
 
-TaskDlgSurfaceFinishSymbols::TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view)
+TaskDlgSurfaceFinishSymbols::TaskDlgSurfaceFinishSymbols(const std::string &ownerName)
     : TaskDialog()
 {
-    widget  = new TaskSurfaceFinishSymbols(view);
+    widget  = new TaskSurfaceFinishSymbols(ownerName);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SurfaceFinishSymbols"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
