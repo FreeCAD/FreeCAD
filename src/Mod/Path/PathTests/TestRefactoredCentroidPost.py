@@ -93,7 +93,7 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         args = "--no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertTrue(len(gcode.splitlines()) == 16)
 
         # Test without header
@@ -115,7 +115,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode, expected)
 
         # test without comments
@@ -131,7 +131,7 @@ M99
 
         args = "--no-header --no-comments --no-show-editor"
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode, expected)
 
     def test010(self):
@@ -144,13 +144,13 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[5]
         expected = "G0 X10.0000 Y20.0000 Z30.0000"
         self.assertEqual(result, expected)
 
         args = "--no-header --axis-precision=2 --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[5]
         expected = "G0 X10.00 Y20.00 Z30.00"
         self.assertEqual(result, expected)
@@ -165,7 +165,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --line-numbers --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[5]
         expected = "N150 G0 X10.0000 Y20.0000 Z30.0000"
         self.assertEqual(result, expected)
@@ -179,7 +179,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --no-comments --preamble='G18 G55' --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[1]
         self.assertEqual(result, "G18 G55")
 
@@ -190,7 +190,7 @@ M99
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
         args = "--no-header --no-comments --postamble='G0 Z50\nM2' --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[-2]
         self.assertEqual(result, "G0 Z50")
         self.assertEqual(gcode.splitlines()[-1], "M2")
@@ -205,7 +205,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --inches --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode.splitlines()[3], "G20")
 
         result = gcode.splitlines()[5]
@@ -213,7 +213,7 @@ M99
         self.assertEqual(result, expected)
 
         args = "--no-header --inches --axis-precision=2 --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[5]
         expected = "G0 X0.39 Y0.79 Z1.18"
         self.assertEqual(result, expected)
@@ -230,7 +230,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --modal --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[6]
         expected = "X10.0000 Y30.0000 Z30.0000"
         self.assertEqual(result, expected)
@@ -247,7 +247,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --axis-modal --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[6]
         expected = "G0 Y30.0000"
         self.assertEqual(result, expected)
@@ -262,13 +262,13 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode.splitlines()[6], "M6 T2")
         self.assertEqual(gcode.splitlines()[7], "M3 S3000")
 
         # suppress TLO
         args = "--no-header --no-tlo --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         self.assertEqual(gcode.splitlines()[7], "M3 S3000")
 
     def test090(self):
@@ -282,7 +282,7 @@ M99
         postables = [self.docobj]
 
         args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[5]
         expected = ";comment"
         self.assertEqual(result, expected)

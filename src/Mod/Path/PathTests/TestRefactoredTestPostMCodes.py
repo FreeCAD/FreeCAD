@@ -92,7 +92,7 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
         nl = "\n"
         self.docobj.Path = Path.Path(path)
         postables = [self.docobj]
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
@@ -105,7 +105,7 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
         else:
             self.docobj.Path = Path.Path([])
         postables = [self.docobj]
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
