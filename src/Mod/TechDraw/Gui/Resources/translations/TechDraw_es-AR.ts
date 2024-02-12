@@ -388,17 +388,17 @@
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1610"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1632"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1611"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1633"/>
       <source>Extend Line</source>
       <translation>Extender línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1612"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1634"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Extiende una línea adicional o una línea central en ambos extremos:&lt;br&gt;- Especifique la distancia delta (opcional)&lt;br&gt;- Seleccione una sola línea&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1713"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1735"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1714"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1736"/>
       <source>Calculate the area of selected faces</source>
       <translation>Calcular el área de las caras seleccionadas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1715"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1737"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
       <translation>Seleccione varias caras&lt;br&gt;    - haga clic en esta herramienta</translation>
     </message>
@@ -520,17 +520,17 @@
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="756"/>
+      <location filename="../../CommandExtensionPack.cpp" line="774"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="757"/>
+      <location filename="../../CommandExtensionPack.cpp" line="775"/>
       <source>Change Line Attributes</source>
       <translation>Cambiar atributos de línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="758"/>
+      <location filename="../../CommandExtensionPack.cpp" line="776"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Cambia los atributos de las líneas adicionales y de las líneas centrales:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione una o más líneas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -538,19 +538,19 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="234"/>
+      <location filename="../../CommandExtensionPack.cpp" line="252"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="235"/>
-      <location filename="../../CommandExtensionPack.cpp" line="337"/>
+      <location filename="../../CommandExtensionPack.cpp" line="253"/>
+      <location filename="../../CommandExtensionPack.cpp" line="355"/>
       <source>Add Circle Centerlines</source>
       <translation>Agregar centros de líneas a círculos</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="236"/>
-      <location filename="../../CommandExtensionPack.cpp" line="338"/>
+      <location filename="../../CommandExtensionPack.cpp" line="254"/>
+      <location filename="../../CommandExtensionPack.cpp" line="356"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Agrega líneas centrales a círculos y arcos:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione uno o más círculos o arcos&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -558,17 +558,17 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="268"/>
+      <location filename="../../CommandExtensionPack.cpp" line="286"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="269"/>
+      <location filename="../../CommandExtensionPack.cpp" line="287"/>
       <source>Add Circle Centerlines</source>
       <translation>Agregar centros de líneas a círculos</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="270"/>
+      <location filename="../../CommandExtensionPack.cpp" line="288"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Agrega líneas centrales a círculos y arcos:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione uno o más círculos o arcos&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -828,17 +828,17 @@
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1069"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1086"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1070"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1087"/>
       <source>Add Cosmetic Circle</source>
       <translation>Agregar círculo adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1088"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Agrega un círculo adicional basado en dos vértices:&lt;br&gt;- Especifica los atributos de línea (opcional)&lt;br&gt;- Selecciona el vértice 1 (punto central)&lt;br&gt;- Selecciona el vértice 2 (radio)&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -846,19 +846,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="908"/>
+      <location filename="../../CommandExtensionPack.cpp" line="925"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="909"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1156"/>
+      <location filename="../../CommandExtensionPack.cpp" line="926"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1173"/>
       <source>Add Cosmetic Arc</source>
       <translation>Agregar arco adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="910"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1158"/>
+      <location filename="../../CommandExtensionPack.cpp" line="927"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1175"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Agrega un arco adicional en sentido horario basado en tres vértices:&lt;br&gt;- Especifica los atributos de línea (opcional)&lt;br&gt;- Selecciona el vértice 1 (punto central)&lt;br&gt;- Selecciona el vértice 2 (radio y ángulo de inicio)&lt;br&gt;- Selecciona el vértice 3 (ángulo final)&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -866,19 +866,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="970"/>
+      <location filename="../../CommandExtensionPack.cpp" line="987"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="971"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1147"/>
+      <location filename="../../CommandExtensionPack.cpp" line="988"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1164"/>
       <source>Add Cosmetic Circle</source>
       <translation>Agregar círculo adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="972"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1148"/>
+      <location filename="../../CommandExtensionPack.cpp" line="989"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1165"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Agrega un círculo adicional basado en dos vértices:&lt;br&gt;- Especifica los atributos de línea (opcional)&lt;br&gt;- Selecciona el vértice 1 (punto central)&lt;br&gt;- Selecciona el vértice 2 (radio)&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -886,23 +886,23 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1034"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1051"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1035"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1167"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1052"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1184"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>Agregar círculo adicional de 3 puntos</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1036"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1053"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Agrega un círculo adicional basado en tres vértices:&lt;br&gt;- Especifica los atributos de línea (opcional)&lt;br&gt;- Selecciona 3 vértices&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1169"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1186"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Agrega un círculo adicional basado en tres vértices:&lt;br&gt;- Especifica los atributos de línea (opcional)&lt;br&gt;- Selecciona tres vértices&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -910,19 +910,19 @@
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1540"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1562"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1541"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1679"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1563"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1701"/>
       <source>Extend Line</source>
       <translation>Extender línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1542"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1680"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1564"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1702"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Extiende una línea adicional o una línea central en ambos extremos:&lt;br&gt;- Especifique la distancia delta (opcional)&lt;br&gt;- Seleccione una sola línea&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -930,19 +930,19 @@
   <context>
     <name>CmdTechDrawExtensionHoleCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="160"/>
+      <location filename="../../CommandExtensionPack.cpp" line="175"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="161"/>
-      <location filename="../../CommandExtensionPack.cpp" line="346"/>
+      <location filename="../../CommandExtensionPack.cpp" line="176"/>
+      <location filename="../../CommandExtensionPack.cpp" line="364"/>
       <source>Add Bolt Circle Centerlines</source>
       <translation>Agregar ejes de agujeros en un círculo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="162"/>
-      <location filename="../../CommandExtensionPack.cpp" line="347"/>
+      <location filename="../../CommandExtensionPack.cpp" line="177"/>
+      <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Agrega líneas centrales a un patrón circular de círculos:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione tres o más círculos que forman un patrón circular&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1046,17 +1046,17 @@
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1314"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1331"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1315"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1332"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Agregar línea paralela adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1316"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1333"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea adicional paralela a otra línea a través de un vértice:&lt;br&gt;- Selecciona una línea&lt;br&gt;- Selecciona un vértice&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -1064,19 +1064,19 @@
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1245"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1262"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1246"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1384"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1263"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1401"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Agregar línea paralela adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1247"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1386"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1264"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1403"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea adicional paralela a otra línea a través de un vértice:&lt;br&gt;- Selecciona una línea&lt;br&gt;- Selecciona un vértice&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -1084,19 +1084,19 @@
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1279"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1296"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1280"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1393"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1297"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1410"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>Agregar línea perpendicular adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1282"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1395"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1299"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1412"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea adicional perpendicular a otra línea a través de un vértice:&lt;br&gt;- Selecciona una línea&lt;br&gt;- Selecciona un vértice&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -1104,17 +1104,17 @@
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1421"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1438"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1422"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1439"/>
       <source>Lock/Unlock View</source>
       <translation>Bloquear/desbloquear Vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1440"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>Bloquea o desbloquea la posición de una vista:&lt;br&gt;- Selecciona una vista única&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -1218,17 +1218,17 @@
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="721"/>
+      <location filename="../../CommandExtensionPack.cpp" line="739"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="722"/>
+      <location filename="../../CommandExtensionPack.cpp" line="740"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Seleccionar atributos de línea, espaciado en cascada y distancia Delta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="723"/>
+      <location filename="../../CommandExtensionPack.cpp" line="741"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
       <translation>Selecciona los atributos para nuevas líneas adicionales y líneas centrales, y especifica la distancia delta y espaciado en cascada:&lt;br&gt;- Haga clic en esta herramienta&lt;br&gt;- Especifique los atributos, espaciado y distancia en el cuadro de diálogo&lt;br&gt;- Pulse OK</translation>
     </message>
@@ -1236,19 +1236,19 @@
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1575"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1597"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1576"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1687"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1598"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1709"/>
       <source>Shorten Line</source>
       <translation>Acortar línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1577"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1688"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1599"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Acorta una línea adicional o una línea central en ambos extremos:&lt;br&gt;- Especificar la distancia delta (opcional)&lt;br&gt;- Seleccione una sola línea&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1256,19 +1256,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="546"/>
+      <location filename="../../CommandExtensionPack.cpp" line="564"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="547"/>
-      <location filename="../../CommandExtensionPack.cpp" line="693"/>
+      <location filename="../../CommandExtensionPack.cpp" line="565"/>
+      <location filename="../../CommandExtensionPack.cpp" line="711"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
       <translation>Agregar línea adicional de la rosca de tornillo en vista inferior</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="549"/>
-      <location filename="../../CommandExtensionPack.cpp" line="695"/>
+      <location filename="../../CommandExtensionPack.cpp" line="567"/>
+      <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea de rosca adicional a la vista superior o inferior de los bulones/tornillos/varillas:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione uno o más círculos&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1276,19 +1276,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="442"/>
+      <location filename="../../CommandExtensionPack.cpp" line="460"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="443"/>
-      <location filename="../../CommandExtensionPack.cpp" line="683"/>
+      <location filename="../../CommandExtensionPack.cpp" line="461"/>
+      <location filename="../../CommandExtensionPack.cpp" line="701"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
       <translation>Agregar línea adicional de la rosca de tornillo en vista lateral</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="444"/>
-      <location filename="../../CommandExtensionPack.cpp" line="686"/>
+      <location filename="../../CommandExtensionPack.cpp" line="462"/>
+      <location filename="../../CommandExtensionPack.cpp" line="704"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea de rosca adicional a la vista lateral de un bulón/tornillo/varilla:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Selecciona dos líneas paralelas&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -1296,19 +1296,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="494"/>
+      <location filename="../../CommandExtensionPack.cpp" line="512"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="495"/>
-      <location filename="../../CommandExtensionPack.cpp" line="673"/>
+      <location filename="../../CommandExtensionPack.cpp" line="513"/>
+      <location filename="../../CommandExtensionPack.cpp" line="691"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
       <translation>Agregar línea adicional de agujero roscado en vista inferior</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="496"/>
-      <location filename="../../CommandExtensionPack.cpp" line="676"/>
+      <location filename="../../CommandExtensionPack.cpp" line="514"/>
+      <location filename="../../CommandExtensionPack.cpp" line="694"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea de rosca adicional a la vista superior o inferior de los agujeros:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione uno o más círculos&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1316,19 +1316,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="390"/>
+      <location filename="../../CommandExtensionPack.cpp" line="408"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="391"/>
-      <location filename="../../CommandExtensionPack.cpp" line="664"/>
+      <location filename="../../CommandExtensionPack.cpp" line="409"/>
+      <location filename="../../CommandExtensionPack.cpp" line="682"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Agregar línea adicional de agujero roscado en vista lateral</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="392"/>
-      <location filename="../../CommandExtensionPack.cpp" line="666"/>
+      <location filename="../../CommandExtensionPack.cpp" line="410"/>
+      <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea de rosca adicional a la vista lateral de un agujero:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione dos líneas paralelas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1336,17 +1336,17 @@
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="581"/>
+      <location filename="../../CommandExtensionPack.cpp" line="599"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="582"/>
+      <location filename="../../CommandExtensionPack.cpp" line="600"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Agregar línea adicional de agujero roscado en vista lateral</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="583"/>
+      <location filename="../../CommandExtensionPack.cpp" line="601"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Agrega una línea de rosca adicional a la vista lateral de un agujero:&lt;br&gt;- Especifique los atributos de línea (opcional)&lt;br&gt;- Seleccione dos líneas paralelas&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1354,17 +1354,17 @@
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="816"/>
+      <location filename="../../CommandExtensionPack.cpp" line="834"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="817"/>
+      <location filename="../../CommandExtensionPack.cpp" line="835"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
       <translation>Agregar vértices de intersección adicionales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="819"/>
+      <location filename="../../CommandExtensionPack.cpp" line="837"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
       <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</translation>
     </message>
@@ -1996,8 +1996,8 @@
       <translation>Crear vista de hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
       <location filename="../../PagePrinter.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Save page to dxf</source>
       <translation>Guardar página como dxf</translation>
     </message>
@@ -2073,8 +2073,8 @@
       <translation>Crear línea central</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <location filename="../../TaskCosmeticLine.cpp" line="187"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <source>Create Cosmetic Line</source>
       <translation>Crear Línea Adicional</translation>
     </message>
@@ -2119,7 +2119,7 @@
       <translation>Editar anotación</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="508"/>
       <source>Create SectionView</source>
       <translation>Crear vista de corte</translation>
     </message>
@@ -2129,8 +2129,8 @@
       <translation>Crear sección compleja</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="661"/>
-      <location filename="../../TaskSectionView.cpp" line="594"/>
+      <location filename="../../TaskComplexSection.cpp" line="653"/>
+      <location filename="../../TaskSectionView.cpp" line="589"/>
       <source>Edit SectionView</source>
       <translation>Editar vista de corte</translation>
     </message>
@@ -2145,7 +2145,7 @@
       <translation>Editar símbolo de soldadura</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="137"/>
+      <location filename="../../TaskCosVertex.cpp" line="138"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Agregar vértice adicional</translation>
     </message>
@@ -2260,152 +2260,152 @@
       <translation>Líneas centrales del círculo de perno</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="194"/>
+      <location filename="../../CommandExtensionPack.cpp" line="209"/>
       <source>TechDraw Circle Centerlines</source>
       <translation>Centros de línea de círculo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="196"/>
+      <location filename="../../CommandExtensionPack.cpp" line="211"/>
       <source>Circle Centerlines</source>
       <translation>Centros de línea de círculo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="371"/>
+      <location filename="../../CommandExtensionPack.cpp" line="389"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>Dibuja lateral del agujero de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="373"/>
+      <location filename="../../CommandExtensionPack.cpp" line="391"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Lado de agujero roscado cosmético</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="423"/>
+      <location filename="../../CommandExtensionPack.cpp" line="441"/>
       <source>TechDraw Thread Bolt Side</source>
       <translation>Rosca de perno lateral de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="425"/>
+      <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Lado de perno roscado cosmético</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="475"/>
+      <location filename="../../CommandExtensionPack.cpp" line="493"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>Agujero de rosca inferior de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="477"/>
+      <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Planta de agujero roscado cosmética</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="527"/>
+      <location filename="../../CommandExtensionPack.cpp" line="545"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>Rosca de perno lateral de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="529"/>
+      <location filename="../../CommandExtensionPack.cpp" line="547"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Planta de perno roscado cosmética</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="773"/>
+      <location filename="../../CommandExtensionPack.cpp" line="791"/>
       <source>TechDraw Change Line Attributes</source>
       <translation>Cambio de atributos de línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="775"/>
+      <location filename="../../CommandExtensionPack.cpp" line="793"/>
       <source>Change Line Attributes</source>
       <translation>Cambiar atributos de línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="833"/>
+      <location filename="../../CommandExtensionPack.cpp" line="851"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
       <translation>Añadir vértice(s) de intersección estético(s) en TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="835"/>
+      <location filename="../../CommandExtensionPack.cpp" line="853"/>
       <source>Cosmetic Intersection Vertex(es)</source>
       <translation>Vértice(s) de intersección cosmético(s)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="880"/>
+      <location filename="../../CommandExtensionPack.cpp" line="897"/>
       <source>TechDraw Cosmetic Arc</source>
       <translation>Arco estético en TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="882"/>
+      <location filename="../../CommandExtensionPack.cpp" line="899"/>
       <source>Cosmetic Arc</source>
       <translation>Arco cosmético</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="944"/>
+      <location filename="../../CommandExtensionPack.cpp" line="961"/>
       <source>TechDraw Cosmetic Circle</source>
       <translation>Círculo estético en TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="946"/>
+      <location filename="../../CommandExtensionPack.cpp" line="963"/>
       <source>Cosmetic Circle</source>
       <translation>Círculo cosmético</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1022"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>Añadir círculo estético con 3 puntos en TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1024"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Círculo cosmético 3 puntos</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1193"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1210"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>Línea estética paralela/perpendicular en TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1195"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1212"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Línea cosmética paralela/perpendicular</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1437"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1454"/>
       <source>TechDraw Lock/Unlock View</source>
       <translation>Bloquear/desbloquear vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1439"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1456"/>
       <source>Lock/Unlock View</source>
       <translation>Bloquear/desbloquear Vista</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1464"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1481"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>Extender/acortar línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1466"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1483"/>
       <source>Extend/Shorten Line</source>
       <translation>Extender/Acortar Línea</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1728"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1750"/>
       <source>TechDraw calculate selected area</source>
       <translation>Cálculo del área seleccionada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1769"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
       <source>Calculate Face Area</source>
       <translation>Calcular área de caras</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1858"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1880"/>
       <source>TechDraw calculate selected arc length</source>
       <translation>Cálculo de la longitud del arco seleccionado</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1896"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1918"/>
       <source>Calculate Edge Length</source>
       <translation>Calcular longitud del borde</translation>
     </message>
@@ -2686,6 +2686,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="318"/>
+      <location filename="../../CommandAnnotate.cpp" line="419"/>
+      <location filename="../../CommandAnnotate.cpp" line="1308"/>
+      <location filename="../../CommandAnnotate.cpp" line="1316"/>
+      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1505"/>
+      <location filename="../../CommandAnnotate.cpp" line="1512"/>
+      <location filename="../../CommandAnnotate.cpp" line="1576"/>
+      <location filename="../../CommandCreateDims.cpp" line="1249"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2703,16 +2713,6 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../CommandAnnotate.cpp" line="318"/>
-      <location filename="../../CommandAnnotate.cpp" line="419"/>
-      <location filename="../../CommandAnnotate.cpp" line="1308"/>
-      <location filename="../../CommandAnnotate.cpp" line="1316"/>
-      <location filename="../../CommandAnnotate.cpp" line="1363"/>
-      <location filename="../../CommandAnnotate.cpp" line="1505"/>
-      <location filename="../../CommandAnnotate.cpp" line="1512"/>
-      <location filename="../../CommandAnnotate.cpp" line="1576"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Wrong selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
@@ -2744,10 +2744,9 @@
       <translation>No se encontró ningún objeto de perfil en la selección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2759,34 +2758,34 @@
       <location filename="../../CommandCreateDims.cpp" line="1423"/>
       <location filename="../../CommandCreateDims.cpp" line="1431"/>
       <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1743"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1872"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
       <location filename="../../CommandCreateDims.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Select an object first</source>
       <translation>Seleccione primero un objeto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Too many objects selected</source>
       <translation>Demasiados objetos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
       <location filename="../../CommandCreateDims.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Create a page first.</source>
       <translation>Cree una página de dibujo primero.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2795,6 +2794,7 @@
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
       <location filename="../../CommandCreateDims.cpp" line="1057"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>No View of a Part in selection.</source>
       <translation>No hay Vista de una Pieza en la selección.</translation>
     </message>
@@ -2906,6 +2906,8 @@
       <translation>La arista seleccionada es un BSpline. El radio será aproximado. ¿Continuar?</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2925,12 +2927,10 @@
       <location filename="../../CommandCreateDims.cpp" line="1084"/>
       <location filename="../../CommandCreateDims.cpp" line="1098"/>
       <location filename="../../CommandCreateDims.cpp" line="1190"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3058,9 +3058,6 @@
       <translation>Seleccione objetos de 2 puntos y 1 Vista. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="106"/>
       <location filename="../../CommandAnnotate.cpp" line="167"/>
       <location filename="../../CommandAnnotate.cpp" line="219"/>
@@ -3087,6 +3084,11 @@
       <location filename="../../CommandCreateDims.cpp" line="938"/>
       <location filename="../../CommandCreateDims.cpp" line="1036"/>
       <location filename="../../CommandCreateDims.cpp" line="1149"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="266"/>
       <location filename="../../CommandExtensionDims.cpp" line="475"/>
       <location filename="../../CommandExtensionDims.cpp" line="767"/>
@@ -3094,23 +3096,18 @@
       <location filename="../../CommandExtensionDims.cpp" line="1442"/>
       <location filename="../../CommandExtensionDims.cpp" line="1807"/>
       <location filename="../../CommandExtensionDims.cpp" line="2066"/>
-      <location filename="../../CommandExtensionPack.cpp" line="282"/>
-      <location filename="../../CommandExtensionPack.cpp" line="596"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1085"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1329"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1625"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../CommandExtensionPack.cpp" line="300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="614"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1102"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1346"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1647"/>
       <source>Task In Progress</source>
       <translation>Tarea en progreso</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3137,6 +3134,11 @@
       <location filename="../../CommandCreateDims.cpp" line="939"/>
       <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <location filename="../../CommandCreateDims.cpp" line="1150"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="267"/>
       <location filename="../../CommandExtensionDims.cpp" line="476"/>
       <location filename="../../CommandExtensionDims.cpp" line="768"/>
@@ -3144,16 +3146,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1443"/>
       <location filename="../../CommandExtensionDims.cpp" line="1808"/>
       <location filename="../../CommandExtensionDims.cpp" line="2067"/>
-      <location filename="../../CommandExtensionPack.cpp" line="283"/>
-      <location filename="../../CommandExtensionPack.cpp" line="597"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1086"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1330"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1626"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../CommandExtensionPack.cpp" line="301"/>
+      <location filename="../../CommandExtensionPack.cpp" line="615"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1103"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1347"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1648"/>
       <source>Close active task dialog and try again.</source>
       <translation>Cerrar diálogo de tareas activo e inténtelo de nuevo.</translation>
     </message>
@@ -3423,8 +3423,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="213"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>¿Estás seguro/a de que quieres continuar?</translation>
     </message>
@@ -3459,9 +3459,9 @@
       <translation>Creador de texto enriquecido</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Editor de texto enriquecido</translation>
     </message>
@@ -3516,7 +3516,7 @@
       <translation>Crear Vista de Corte</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="157"/>
+      <location filename="../../TaskSectionView.cpp" line="161"/>
       <source>Edit Section View</source>
       <translation>Editar Vista de Corte</translation>
     </message>
@@ -3532,19 +3532,19 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="217"/>
-      <location filename="../../TaskSectionView.cpp" line="228"/>
+      <location filename="../../TaskSectionView.cpp" line="232"/>
       <source>Current View Direction</source>
       <translation>Dirección de vista actual</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="218"/>
-      <location filename="../../TaskSectionView.cpp" line="229"/>
+      <location filename="../../TaskSectionView.cpp" line="233"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>La dirección de la vista en coordenadas BaseView</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="733"/>
-      <location filename="../../TaskSectionView.cpp" line="665"/>
+      <location filename="../../TaskComplexSection.cpp" line="716"/>
+      <location filename="../../TaskSectionView.cpp" line="651"/>
       <source>Operation Failed</source>
       <translation>Operación Fallida</translation>
     </message>
@@ -3579,8 +3579,8 @@
       <translation>Editar Vista Detalle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="123"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -3701,14 +3701,14 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1624"/>
       <location filename="../../CommandExtensionDims.cpp" line="2274"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2014"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2036"/>
       <source>Selection is empty</source>
       <translation>La selección está vacía</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1630"/>
       <location filename="../../CommandExtensionDims.cpp" line="2290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2021"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2043"/>
       <source>No object selected</source>
       <translation>Ningún objeto seleccionado</translation>
     </message>
@@ -3723,22 +3723,22 @@
       <translation>Menos de tres círculos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1744"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <source>No faces in selection.</source>
       <translation>No hay caras en la selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1873"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1895"/>
       <source>No edges in selection.</source>
       <translation>No hay bordes en la selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2097"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2118"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>Dibuja lateral del agujero de la rosca</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2098"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2119"/>
       <source>Please select two straight lines</source>
       <translation>Por favor, seleccione dos líneas rectas</translation>
     </message>
@@ -3865,17 +3865,17 @@ tiene un símbolo de soldadura que se rompería.</translation>
       <translation>No puede eliminar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderPage.cpp" line="216"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderPage.cpp" line="216"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
     </message>
@@ -4018,7 +4018,7 @@ tiene un cuadro de soldadura que se rompería.</translation>
     <name>TaskPojGroup</name>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
-      <location filename="../../TaskSectionView.cpp" line="432"/>
+      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source> updates pending</source>
       <translation> actualizaciones pendientes</translation>
     </message>
@@ -4026,7 +4026,7 @@ tiene un cuadro de soldadura que se rompería.</translation>
   <context>
     <name>TaskSectionView</name>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="150"/>
+      <location filename="../../TaskSectionView.cpp" line="154"/>
       <source>No direction set</source>
       <translation>Sin dirección establecida</translation>
     </message>
@@ -6080,12 +6080,12 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="562"/>
-      <location filename="../../TaskComplexSection.cpp" line="721"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
       <source>ComplexSection</source>
       <translation>Sección compleja</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="732"/>
+      <location filename="../../TaskComplexSection.cpp" line="715"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No se puede continuar. Objeto * %1 o %2 no encontrado.</translation>
     </message>
@@ -6129,28 +6129,28 @@ Do you want to continue?</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="161"/>
-      <location filename="../../TaskCosVertex.cpp" line="252"/>
+      <location filename="../../TaskCosVertex.cpp" line="160"/>
+      <location filename="../../TaskCosVertex.cpp" line="254"/>
       <source>Pick Points</source>
       <translation>Elegir puntos</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="175"/>
+      <location filename="../../TaskCosVertex.cpp" line="174"/>
       <source>Pick a point for cosmetic vertex</source>
       <translation>Elegir un punto para vértice adicional</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="178"/>
+      <location filename="../../TaskCosVertex.cpp" line="177"/>
       <source>Escape picking</source>
       <translation>Anular la selección</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="203"/>
+      <location filename="../../TaskCosVertex.cpp" line="202"/>
       <source>Left click to set a point</source>
       <translation>Clic izquierdo para establecer un punto</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="280"/>
+      <location filename="../../TaskCosVertex.cpp" line="282"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Edición en progreso abandonada. Empiece de nuevo.</translation>
     </message>
@@ -7832,12 +7832,12 @@ usando el espacio X/Y dado</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="444"/>
+      <location filename="../../TaskSectionView.cpp" line="448"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>Nada que aplicar. Aún no se seleccionó la dirección del corte</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="664"/>
+      <location filename="../../TaskSectionView.cpp" line="650"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No se puede continuar. Objeto * %1 o %2 no encontrado.</translation>
     </message>
@@ -8958,17 +8958,17 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1842"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1864"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1843"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
       <source>Calculate the arc length of selected edges</source>
       <translation>Calcula la longitud del arco de los bordes seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1844"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1866"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
       <translation>Seleccione varios bordes&lt;br&gt;    - haga clic en esta herramienta</translation>
     </message>
@@ -9319,7 +9319,7 @@ hay un diálogo de tareas abiertas.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="51"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Posición de la vista de sección</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="59"/>
@@ -9328,11 +9328,11 @@ hay un diálogo de tareas abiertas.</translation>
                 - Click this tool&lt;br&gt;
                 - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
                   Click this tool</source>
-      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;
-                - Select a single section view&lt;br&gt;
-                - Click this tool&lt;br&gt;
-                - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
-                  Click this tool</translation>
+      <translation>Alinear ortogonalmente una vista de sección con su vista fuente:&lt;br&gt;
+                - Seleccione una vista de sección única&lt;br&gt;
+                - Haga clic en esta herramienta&lt;br&gt;
+                - opcional: seleccione un borde en la vista de sección y su&apos;s correspondiente vértice en la vista base&lt;br&gt;
+                  Haga clic en esta herramienta</translation>
     </message>
   </context>
 </TS>

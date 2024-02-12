@@ -206,7 +206,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Hieronder staat een lijst van extra beschikbare werkbanken die kunnen worden toegevoegd aan Uw FreeCAD instalatie. Doorzoek en installleer ze via het menu Tools -&gt; Addons manager. U kunt meer over ze te weten komen door op onderstaande links te klikken.</translation>
+      <translation>Hieronder staat een lijst van extra beschikbare werkbanken die kunnen worden toegevoegd aan Uw FreeCAD installatie. Doorzoek en installeer ze via het menu Gereedschap -&gt; Uitbreidingsmanager. U kunt meer over ze te weten komen door op onderstaande links te klikken.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>

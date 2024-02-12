@@ -569,7 +569,7 @@
     <message>
       <location filename="../../SegmentationManual.cpp" line="354"/>
       <source>Create</source>
-      <translation>Napravi</translation>
+      <translation>Spakuj</translation>
     </message>
   </context>
   <context>

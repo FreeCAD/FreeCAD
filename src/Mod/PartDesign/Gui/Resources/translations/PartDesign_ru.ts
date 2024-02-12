@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="72"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="73"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>Центральная точка начала спирали; берется из опорной оси.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="74"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="75"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>Направление спирали; берется из опорной оси.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="76"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="77"/>
       <source>The reference axis of the helix.</source>
       <translation>Опорная ось спирали.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="78"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="79"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Режим ввода спирали определяет, какие свойства задаются пользователем.
 Затем рассчитываются зависимые свойства.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="82"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="83"/>
       <source>The axial distance between two turns.</source>
       <translation>Осевое расстояние между двумя оборотами.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="84"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="85"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>Высота траектории спирали, не учитывающая протяженность профиля.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="86"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="87"/>
       <source>The number of turns in the helix.</source>
       <translation>Количество витков в спирали.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="89"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="90"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
@@ -50,31 +50,31 @@ Positive values make the radius grow, nevatige shrink.</source>
 При положительных значениях радиус увеличивается, а при отрицательных - уменьшается.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="94"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="95"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Увеличение радиуса спирали за один оборот.
 Ненулевые значения превращают спираль в коническую спираль.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="97"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Устанавливает направление поворота на левостороннее,
 то есть против часовой стрелки при движении вдоль своей оси.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="100"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>Определяет, указывает ли спираль в направлении, противоположном оси.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="102"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="103"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
       <translation>Если установлено, результатом будет пересечение профиля и ранее существовавшего тела.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="104"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Если false, инструмент предложит начальное значение шага на основе ограничивающей рамки профиля,
@@ -183,17 +183,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBody</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="85"/>
+      <location filename="../../CommandBody.cpp" line="86"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="86"/>
+      <location filename="../../CommandBody.cpp" line="87"/>
       <source>Create body</source>
       <translation>Создать тело</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="87"/>
+      <location filename="../../CommandBody.cpp" line="88"/>
       <source>Create a new body and make it active</source>
       <translation>Создать новое тело и сделать активным</translation>
     </message>
@@ -291,17 +291,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="606"/>
+      <location filename="../../CommandBody.cpp" line="610"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="607"/>
+      <location filename="../../CommandBody.cpp" line="611"/>
       <source>Duplicate selected object</source>
       <translation>Дублировать выбранный объект</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="608"/>
+      <location filename="../../CommandBody.cpp" line="612"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>Дублирует выбранный объект и добавляет его в активное тело</translation>
     </message>
@@ -399,17 +399,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="312"/>
+      <location filename="../../CommandBody.cpp" line="316"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="313"/>
+      <location filename="../../CommandBody.cpp" line="317"/>
       <source>Migrate</source>
       <translation>Миграция</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="314"/>
+      <location filename="../../CommandBody.cpp" line="318"/>
       <source>Migrate document to the modern PartDesign workflow</source>
       <translation>Перенести документ в современный рабочий процесс разработки детали</translation>
     </message>
@@ -435,17 +435,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="662"/>
+      <location filename="../../CommandBody.cpp" line="666"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="663"/>
+      <location filename="../../CommandBody.cpp" line="667"/>
       <source>Move object to other body</source>
       <translation>Перемещение объекта в другое тело</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="664"/>
+      <location filename="../../CommandBody.cpp" line="668"/>
       <source>Moves the selected object to another body</source>
       <translation>Перемещает выделенный объект в другое тело</translation>
     </message>
@@ -453,17 +453,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="829"/>
+      <location filename="../../CommandBody.cpp" line="833"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="830"/>
+      <location filename="../../CommandBody.cpp" line="834"/>
       <source>Move object after other object</source>
       <translation>Изменить позицию в дереве</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="831"/>
+      <location filename="../../CommandBody.cpp" line="835"/>
       <source>Moves the selected object and insert it after another object</source>
       <translation>Перемещает выбранный объект и вставляет его позади другого объекта</translation>
     </message>
@@ -471,17 +471,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="527"/>
+      <location filename="../../CommandBody.cpp" line="531"/>
       <source>PartDesign</source>
       <translation>Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="528"/>
+      <location filename="../../CommandBody.cpp" line="532"/>
       <source>Set tip</source>
       <translation>Установить точку завершения расчёта тела</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="529"/>
+      <location filename="../../CommandBody.cpp" line="533"/>
       <source>Move the tip of the body</source>
       <translation>Переместить кончик тела</translation>
     </message>
@@ -883,8 +883,8 @@ so that self intersection is avoided.</source>
       <translation>Клонировать</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Make copy</source>
       <translation>Сделать копию</translation>
     </message>
@@ -909,33 +909,33 @@ so that self intersection is avoided.</source>
       <translation>Булева операция</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="190"/>
       <source>Add a Body</source>
       <translation>Добавить тело</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="430"/>
+      <location filename="../../CommandBody.cpp" line="434"/>
       <source>Migrate legacy part design features to Bodies</source>
       <translation>Преобразовать устаревшие элементы проектирования деталей в тела</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="575"/>
+      <location filename="../../CommandBody.cpp" line="579"/>
       <source>Move tip to selected feature</source>
       <translation>Переместить подсказку к выбранному объекту</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="620"/>
+      <location filename="../../CommandBody.cpp" line="624"/>
       <source>Duplicate a PartDesign object</source>
       <translation>Дублировать объект PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="743"/>
+      <location filename="../../CommandBody.cpp" line="747"/>
       <source>Move an object</source>
       <translation>Переместить объект</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="894"/>
+      <location filename="../../CommandBody.cpp" line="898"/>
       <source>Move an object inside tree</source>
       <translation>Переместить объект внутри дерева</translation>
     </message>
@@ -955,7 +955,7 @@ so that self intersection is avoided.</source>
       <translation>Круговой массив</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="391"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Scaled</source>
       <translation>Масштабирование</translation>
     </message>
@@ -1771,7 +1771,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="61"/>
       <source>Valid</source>
-      <translation>Действительный</translation>
+      <translation>Верно</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="62"/>
@@ -1866,7 +1866,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>Верно</translation>
+      <translation>Действительный</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
@@ -1913,7 +1913,7 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Выберите ссылку...</translation>
+      <translation>Выбрать ориентир...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2125,7 +2125,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="201"/>
       <source>Update view</source>
-      <translation>Обновить вид</translation>
+      <translation>Обновить</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
@@ -2231,7 +2231,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="244"/>
       <source>Error</source>
-      <translation>Ошибка</translation>
+      <translation>Ошибки</translation>
     </message>
   </context>
   <context>
@@ -2474,7 +2474,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="134"/>
       <source>Reversed</source>
-      <translation>Реверсивный</translation>
+      <translation>В обратную сторону</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="316"/>
@@ -2586,12 +2586,12 @@ measured along the specified direction</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Ориентация сечения</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Убрать</translation>
     </message>
@@ -2656,7 +2656,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
@@ -2699,12 +2699,12 @@ measured along the specified direction</source>
       <translation>Список может быть переупорядочен перетаскиванием</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Преобразование сечения</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Убрать</translation>
     </message>
@@ -2744,7 +2744,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
       <source>Up to face</source>
-      <translation>До грани</translation>
+      <translation>Поднять до грани</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="75"/>
@@ -2807,7 +2807,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="190"/>
       <source>Occurrences</source>
-      <translation>Вхождений</translation>
+      <translation>События</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="204"/>
@@ -2847,7 +2847,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="172"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="173"/>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
@@ -2858,19 +2858,19 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
       <source>Base X axis</source>
       <translation>Базовая ось X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base Y axis</source>
       <translation>Базовая ось Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Z axis</source>
       <translation>Базовая ось Z</translation>
     </message>
@@ -2886,7 +2886,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
       <source>Select reference...</source>
       <translation>Выберите ссылку...</translation>
     </message>
@@ -2912,8 +2912,8 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="136"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
@@ -2928,32 +2928,32 @@ measured along the specified direction</source>
       <translation>Параметры вращения</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="174"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
       <source>To last</source>
       <translation>К последнему</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="178"/>
       <source>Through all</source>
       <translation>Насквозь</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="179"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
       <source>To first</source>
       <translation>К первому</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Up to face</source>
       <translation>До грани</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
       <source>Two dimensions</source>
       <translation>Два размера</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="426"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
       <source>No face selected</source>
       <translation>Грань не выбрана</translation>
     </message>
@@ -2978,7 +2978,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="67"/>
       <source>Occurrences</source>
-      <translation>События</translation>
+      <translation>Вхождений</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="81"/>
@@ -3021,7 +3021,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="130"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
   </context>
   <context>
@@ -3157,7 +3157,7 @@ click again to end selection</source>
       <location filename="../../TaskTransformedParameters.cpp" line="271"/>
       <location filename="../../TaskTransformedParameters.cpp" line="307"/>
       <source>Select reference...</source>
-      <translation>Выбрать ориентир...</translation>
+      <translation>Выберите ссылку...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="298"/>
@@ -3173,14 +3173,6 @@ click again to end selection</source>
       <location filename="../../TaskTransformedParameters.cpp" line="300"/>
       <source>Base XZ plane</source>
       <translation>Базовая плоскость XZ</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderBody</name>
-    <message>
-      <location filename="../../ViewProviderBody.cpp" line="135"/>
-      <source>Toggle active body</source>
-      <translation>Сделать тело активным/неактивным</translation>
     </message>
   </context>
   <context>
@@ -3367,12 +3359,12 @@ click again to end selection</source>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="732"/>
+      <location filename="../../CommandBody.cpp" line="736"/>
       <source>Select body</source>
       <translation>Выберите тело</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="733"/>
+      <location filename="../../CommandBody.cpp" line="737"/>
       <source>Select a body from the list</source>
       <translation>Выберите тело из списка</translation>
     </message>
@@ -3380,27 +3372,27 @@ click again to end selection</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="885"/>
+      <location filename="../../CommandBody.cpp" line="889"/>
       <source>Select feature</source>
       <translation>Выбор элементов операции</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="886"/>
+      <location filename="../../CommandBody.cpp" line="890"/>
       <source>Select a feature from the list</source>
       <translation>Выбрать черту из списка</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="957"/>
+      <location filename="../../CommandBody.cpp" line="961"/>
       <source>Move tip</source>
       <translation>Переместить подсказку</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="958"/>
+      <location filename="../../CommandBody.cpp" line="962"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Перемещенная характеристика появляется после текущей подсказки.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="959"/>
+      <location filename="../../CommandBody.cpp" line="963"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Вы хотите, чтобы последняя характеристика (параметр) была новой подсказкой?</translation>
     </message>
@@ -3422,7 +3414,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="149"/>
       <location filename="../../Command.cpp" line="151"/>
       <source>Error</source>
-      <translation>Ошибки</translation>
+      <translation>Ошибка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="146"/>
@@ -3475,28 +3467,28 @@ click again to end selection</source>
       <translation>Пожалуйста, сначала создайте плоскость или выберите грань</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="95"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>Вы хотите закрыть этот диалог?</translation>
     </message>
@@ -3583,169 +3575,169 @@ click again to end selection</source>
       <translation>Пожалуйста, выберите только один элемент в активном теле.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="67"/>
+      <location filename="../../CommandBody.cpp" line="68"/>
       <source>Part creation failed</source>
       <translation>Ошибка создания детали</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="68"/>
+      <location filename="../../CommandBody.cpp" line="69"/>
       <source>Failed to create a part object.</source>
       <translation>Не удалось создать объект Деталь.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="115"/>
-      <location filename="../../CommandBody.cpp" line="120"/>
-      <location filename="../../CommandBody.cpp" line="133"/>
-      <location filename="../../CommandBody.cpp" line="182"/>
+      <location filename="../../CommandBody.cpp" line="116"/>
+      <location filename="../../CommandBody.cpp" line="121"/>
+      <location filename="../../CommandBody.cpp" line="134"/>
+      <location filename="../../CommandBody.cpp" line="183"/>
       <source>Bad base feature</source>
       <translation>Испорченный базовый элемент</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="116"/>
+      <location filename="../../CommandBody.cpp" line="117"/>
       <source>Body can't be based on a PartDesign feature.</source>
       <translation>Тело не может основываться на элементе "Проектирование детали".</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="121"/>
+      <location filename="../../CommandBody.cpp" line="122"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
       <translation>%1 уже принадлежит к телу, невозможно использовать его в качестве базового элемента для другого тела.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="134"/>
+      <location filename="../../CommandBody.cpp" line="135"/>
       <source>Base feature (%1) belongs to other part.</source>
       <translation>Базовый элемент (%1) принадлежит другой детали.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="158"/>
+      <location filename="../../CommandBody.cpp" line="159"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
       <translation>Выбранная фигура состоит из нескольких твердых тел.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="162"/>
+      <location filename="../../CommandBody.cpp" line="163"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
       <translation>Выбранная фигура состоит из нескольких оболочек.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="166"/>
+      <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
       <translation>Выбранная фигура состоит только из оболочки.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="170"/>
+      <location filename="../../CommandBody.cpp" line="171"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
       <translation>Выбранная форма состоит из нескольких твердых тел или оболочек.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="175"/>
+      <location filename="../../CommandBody.cpp" line="176"/>
       <source>Base feature</source>
       <translation>Базовый элемент</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="183"/>
+      <location filename="../../CommandBody.cpp" line="184"/>
       <source>Body may be based on no more than one feature.</source>
       <translation>Тело может быть основано не более, чем на одном элементе.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="197"/>
+      <location filename="../../CommandBody.cpp" line="198"/>
       <source>Body</source>
       <translation>Тело</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="343"/>
+      <location filename="../../CommandBody.cpp" line="347"/>
       <source>Nothing to migrate</source>
       <translation>Нечему мигрировать</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="344"/>
+      <location filename="../../CommandBody.cpp" line="348"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
       <translation>Не обнаружены функции PartDesign, которые не принадлежат к телу. Нечего мигрировать.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="492"/>
+      <location filename="../../CommandBody.cpp" line="496"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>Плоскость эскиза не может быть перенесена</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="493"/>
+      <location filename="../../CommandBody.cpp" line="497"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>Пожалуйста, отредактируйте '%1' и переопределите его, чтобы использовать базовую или опорную плоскость в качестве плоскости эскиза.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="555"/>
       <location filename="../../CommandBody.cpp" line="559"/>
-      <location filename="../../CommandBody.cpp" line="564"/>
-      <location filename="../../CommandBody.cpp" line="857"/>
-      <location filename="../../CommandBody.cpp" line="864"/>
+      <location filename="../../CommandBody.cpp" line="563"/>
+      <location filename="../../CommandBody.cpp" line="568"/>
+      <location filename="../../CommandBody.cpp" line="861"/>
+      <location filename="../../CommandBody.cpp" line="868"/>
       <source>Selection error</source>
       <translation>Ошибка выбора</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="556"/>
+      <location filename="../../CommandBody.cpp" line="560"/>
       <source>Select exactly one PartDesign feature or a body.</source>
       <translation>Выберите один элемент верстака "Проектирование детали" или тело.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="560"/>
+      <location filename="../../CommandBody.cpp" line="564"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
       <translation>Не удалось определить тело для выбранного элемента '%s'.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="565"/>
+      <location filename="../../CommandBody.cpp" line="569"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>Только твердый элемент может быть кончиком тела.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="683"/>
-      <location filename="../../CommandBody.cpp" line="705"/>
-      <location filename="../../CommandBody.cpp" line="720"/>
+      <location filename="../../CommandBody.cpp" line="687"/>
+      <location filename="../../CommandBody.cpp" line="709"/>
+      <location filename="../../CommandBody.cpp" line="724"/>
       <source>Features cannot be moved</source>
       <translation>Элементы не могут быть перемещены</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="684"/>
+      <location filename="../../CommandBody.cpp" line="688"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>Некоторые из выбранных элементов имеют зависимости в исходном теле</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="706"/>
+      <location filename="../../CommandBody.cpp" line="710"/>
       <source>Only features of a single source Body can be moved</source>
       <translation>Могут быть перемещены только элементы одного исходного тела</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="721"/>
+      <location filename="../../CommandBody.cpp" line="725"/>
       <source>There are no other bodies to move to</source>
       <translation>Других тел нет</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="858"/>
+      <location filename="../../CommandBody.cpp" line="862"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Невозможно переместить базовые элементы тела.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="865"/>
+      <location filename="../../CommandBody.cpp" line="869"/>
       <source>Select one or more features from the same body.</source>
       <translation>Выберите один или несколько элементов одного тела.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="878"/>
+      <location filename="../../CommandBody.cpp" line="882"/>
       <source>Beginning of the body</source>
       <translation>Начало тела</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="943"/>
+      <location filename="../../CommandBody.cpp" line="947"/>
       <source>Dependency violation</source>
       <translation>Нарушение зависимостей</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="944"/>
+      <location filename="../../CommandBody.cpp" line="948"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3764,19 +3756,19 @@ This may lead to unexpected results.</source>
       <translation>Невозможно создать субтрактивный элемент без базового элемента</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <location filename="../../TaskTransformedParameters.cpp" line="281"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикальная ось эскиза</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
       <location filename="../../TaskTransformedParameters.cpp" line="282"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Horizontal sketch axis</source>
       <translation>Горизонтальная ось эскиза</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
       <source>Construction line %1</source>
       <translation>Вспомогательная линия %1</translation>
     </message>
@@ -3825,10 +3817,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Для того, чтобы использовать этот элемент, он должен являться объектом типа деталь в документе.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="62"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <location filename="../../ViewProviderTransformed.cpp" line="76"/>
+      <location filename="../../ViewProvider.cpp" line="62"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
     </message>
@@ -4269,7 +4261,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>Обновить</translation>
+      <translation>Обновить вид</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4323,7 +4315,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
-      <translation>Стандартно</translation>
+      <translation>Стандарт</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
@@ -4485,7 +4477,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation>В обратную сторону</translation>
+      <translation>Реверсивный</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="629"/>
@@ -4786,17 +4778,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>Сбой слияния инструментов</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Результат не является твердотельным</translation>
     </message>
@@ -4811,22 +4803,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>Общая операция не удалась</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePad.cpp" line="233"/>
       <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
       <location filename="../../../App/FeaturePocket.cpp" line="191"/>
       <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Результат состоит из нескольких тел: это в настоящее время это не поддерживается.</translation>
     </message>
@@ -4889,8 +4881,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Угол канавки слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4901,14 +4893,14 @@ over 90: larger hole radius at the bottom</source>
   - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <source>Creating a face from sketch failed</source>
       <translation>Не удалось создать грань из эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Ось вращения пересекает эскиз</translation>
     </message>
@@ -4918,108 +4910,104 @@ over 90: larger hole radius at the bottom</source>
       <translation>Не удалось вырезать базовый элемент</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <source>Could not revolve the sketch!</source>
       <translation>Не удалось повернуть эскиз!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Не удалось создать грань из эскиза.
 Пересекающиеся объекты эскиза в эскизе не допускаются.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="128"/>
       <source>Error: Pitch too small</source>
       <translation>Ошибка: Слишком маленький шаг</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="129"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="130"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="144"/>
       <source>Error: height too small!</source>
       <translation>Ошибка: высота слишком мала!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="136"/>
       <source>Error: pitch too small!</source>
       <translation>Ошибка: шаг слишком мал!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="151"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="138"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="146"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="152"/>
       <source>Error: turns too small!</source>
       <translation>Ошибка: число оборотов мало!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="155"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>Ошибка: ни высота, ни нарастание не должны быть равны нулю!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="170"/>
       <source>Error: unsupported mode</source>
       <translation>Ошибка: неподдерживаемый режим</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="181"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="182"/>
       <source>Error: No valid sketch or face</source>
       <translation>Ошибка: нет допустимого эскиза или грани</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="191"/>
       <source>Error: Face must be planar</source>
       <translation>Ошибка: грань должна быть плоской</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="251"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
       <source>Error: Could not build</source>
       <translation>Ошибка: Не удалось собрать</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="263"/>
-      <source>Error: Could not make solid helix with open wire</source>
-      <translation>Ошибка: Не удалось создать сплошную спираль с открытой проволокой</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="297"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2161"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
       <source>Error: Result is not a solid</source>
       <translation>Ошибка: Результат не твердотельный</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="277"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Ошибка: Нечего вычитать</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="281"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="301"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="331"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="338"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="368"/>
       <source>Error: Result has multiple solids</source>
       <translation>Ошибка: Результат имеет несколько твердых частей</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="291"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="328"/>
       <source>Error: Adding the helix failed</source>
       <translation>Ошибка: добавление спирали не удалось</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="351"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Ошибка: пересечение спирали не удалось</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="321"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="358"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Ошибка: не удалось вычесть спираль</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="380"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Ошибка: Не удалось создать грань из эскиза</translation>
     </message>
@@ -5089,32 +5077,32 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Ошибка: не удалось добавить резьбу</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Не удалось выполнить булеву операцию</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Не удалось создать грань из эскиза.
 Создание выреза из эскиза с пересекающимися элементами или множественными контуры в эскизе невозможно.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2025"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2041"/>
       <source>Thread type out of range</source>
       <translation>Тип резьбы выходит за пределы допустимого диапазона</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2028"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2044"/>
       <source>Thread size out of range</source>
       <translation>Размер резьбы выходит за пределы допустимого диапазона</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2120"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
       <source>Error: Thread could not be built</source>
       <translation>Ошибка: резьба не может быть построена</translation>
     </message>
@@ -5522,6 +5510,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Только добавляемые и вычитаемые признаки могут быть преобразованы</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderBody</name>
+    <message>
+      <location filename="../../ViewProviderBody.cpp" line="136"/>
+      <source>Active body</source>
+      <translation type="unfinished">Active body</translation>
     </message>
   </context>
 </TS>

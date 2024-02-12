@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Créer une pièce avec l'atelier Part Design</translation>
+      <translation>Créer une pièce avec l'atelier PartDesign</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>Create an architecture project</source>
-      <translation>Créer un projet d'architecture</translation>
+      <translation>Créer un projet avec l'atelier Arch/BIM</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -106,7 +106,8 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>définissez le nombre de fichiers récemment ouverts à montrer ici à partir du menu Édition → Préférences → Général → Taille de la liste des fichiers récents.</translation>
+      <translation>définissez  le nombre de fichiers récemment ouverts à montrer ici à partir du menu :
+Édition → Préférences → Général → Taille de la liste des fichiers récents.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -191,7 +192,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Voici les derniers changements ajoutés au &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;code source FreeCAD&lt;/a&gt;. Ces changements ne se reflèteront peut-être pas encore dans la version de FreeCAD que vous utilisez actuellement. Vérifiez les &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;versions disponibles&lt;/a&gt; si vous souhaitez obtenir une version de développement.</translation>
+      <translation>Voici les derniers changements ajoutés au &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;code source FreeCAD&lt;/a&gt;. Il se peut que ces changements ne soient pas encore présents dans la version de FreeCAD que vous utilisez actuellement. Vérifiez les &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;versions disponibles&lt;/a&gt; si vous souhaitez obtenir une version de développement.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
@@ -206,12 +207,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Ci-dessous une liste des ateliers supplémentaires disponibles qui peuvent être ajoutés à votre installation de FreeCAD. Parcourez et installez-les à partir du menu Outils → Gestionnaire des extensions. Vous pouvez en savoir plus sur chacun d'entre eux en cliquant sur les liens ci-dessous.</translation>
+      <translation>Ci-dessous une liste des ateliers supplémentaires disponibles qui peuvent être ajoutés à votre installation de FreeCAD. Parcourez et installez-les à partir du menu : Outils → Gestionnaire des extensions. Vous pouvez en savoir plus sur chacun d'entre eux en cliquant sur les liens ci-dessous.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Si elle n'est pas fournie avec votre version de FreeCAD, installez la documentation hors-ligne de FreeCAD pour obtenir les différentes documentations, l'aide des ateliers et la documentation des commandes individuelles sans connexion internet.</translation>
+      <translation>si elle n'est pas fournie avec votre version de FreeCAD, installez la documentation hors-ligne de FreeCAD pour obtenir les différentes documentations, l'aide des ateliers et la documentation de chaque commande sans connexion internet.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
@@ -231,7 +232,8 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici à partir du menu Édition → Préférences → Start → Afficher un dossier supplémentaire</translation>
+      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici à partir du menu :
+Édition → Préférences → Start → Afficher un dossier supplémentaire</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="134"/>
@@ -261,7 +263,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Pour ouvrir un des liens ci-dessus dans votre navigateur, faites un clic droit -&gt; Ouvrir dans un navigateur externe</translation>
+      <translation>pour ouvrir un des liens ci-dessus dans votre navigateur, faites un clic droit → Ouvrir dans un navigateur externe</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="147"/>

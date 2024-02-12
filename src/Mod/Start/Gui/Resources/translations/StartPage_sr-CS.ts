@@ -592,12 +592,12 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="20"/>
       <source>Custom HTML Template</source>
-      <translation type="unfinished">Custom HTML Template</translation>
+      <translation>Sopstveni HTML šablon</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Sopstveni HTML šablon koji će biti korišćen umesto podrazumevane početne strane.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
@@ -607,7 +607,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ovde možete nalepiti Vaš sopstveni CSS koji će se primeniti na izgledu Početne strane. Ako Vas interesuje kako možete prilagoditi izgled Početne strane, morate znati HTML i CSS:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
