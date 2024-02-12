@@ -48,7 +48,6 @@ ParamGroup = (
         'ItemBackground',
         'ItemBackgroundPadding',
         'ResizableColumn',
-        'CheckBoxesSelection',
         'HideColumn',
         'HideScrollBar',
         'HideHeaderView',
