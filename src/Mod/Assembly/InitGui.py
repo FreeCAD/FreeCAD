@@ -56,7 +56,6 @@ class AssemblyWorkbench(Workbench):
         self.__class__.ToolTip = "Assembly workbench"
 
     def Initialize(self):
-        print("Initializing Assembly workbench...")
         global AssemblyCommandGroup
 
         translate = FreeCAD.Qt.translate
@@ -103,8 +102,6 @@ class AssemblyWorkbench(Workbench):
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
             cmdList + cmdListMenuOnly + ["Separator"] + cmdListJoints,
         )
-
-        print("Assembly workbench loaded")
 
     def Activated(self):
         # update the translation engine

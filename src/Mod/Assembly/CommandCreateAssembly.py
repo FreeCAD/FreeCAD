@@ -49,7 +49,7 @@ class CommandCreateAssembly:
             "Accel": "A",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateAssembly",
-                "Create an assembly object in the current document or if in the current active assembly if any. One root assembly per file max.",
+                "Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.",
             ),
             "CmdType": "ForEdit",
         }
