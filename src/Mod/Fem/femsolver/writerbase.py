@@ -166,6 +166,8 @@ class FemInputWriter():
             for femobj in femobjs:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
                 the_obj = femobj["Object"]
+                if hasattr(the_obj, "Suppressed") and the_obj.Suppressed:
+                    continue
                 the_file.write("** {}\n".format(the_obj.Label))
                 con_module.write_meshdata_constraint(the_file, femobj, the_obj, self)
             if write_after != "":
@@ -214,6 +216,8 @@ class FemInputWriter():
         for femobj in femobjs:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             the_obj = femobj["Object"]
+            if hasattr(the_obj, "Suppressed") and the_obj.Suppressed:
+                continue
             f.write("** {}\n".format(the_obj.Label))
             con_module.write_constraint(f, femobj, the_obj, self)
         if write_after != "":

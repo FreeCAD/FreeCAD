@@ -109,6 +109,8 @@ Constraint::Constraint()
     Normals.setValues(std::vector<Base::Vector3d>());
 
     References.setScope(App::LinkScope::Global);
+
+    App::SuppressibleExtension::initExtension(this);
 }
 
 Constraint::~Constraint() = default;
