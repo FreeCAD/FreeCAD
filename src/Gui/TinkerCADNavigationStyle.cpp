@@ -142,15 +142,18 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = true;
             }
-            else if (!press && curmode == NavigationStyle::DRAGGING && hasDragged) {
+            // Don't show the context menu after dragging, panning or zooming
+            else if (!press && (hasDragged || hasPanned || hasZoomed)) {
                 processed = true;
             }
-            else if (!press && curmode == NavigationStyle::DRAGGING && !hasDragged) {
+            else if (!press) {
                 newmode = NavigationStyle::IDLE;
                 if (!viewer->isEditing()) {
-                    // If we are in drag mode but mouse hasn't been moved open the context-menu
-                    if (this->isPopupMenuEnabled()) {
-                        this->openPopupMenu(event->getPosition());
+                    if (this->currentmode != NavigationStyle::ZOOMING &&
+                        this->currentmode != NavigationStyle::PANNING) {
+                        if (this->isPopupMenuEnabled()) {
+                            this->openPopupMenu(event->getPosition());
+                        }
                     }
                     processed = true;
                 }
@@ -228,6 +231,17 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     default:
         break;
+    }
+
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down)) {
+        processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
     }
 
     if (newmode != curmode) {
