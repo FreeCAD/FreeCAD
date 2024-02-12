@@ -286,7 +286,7 @@ template<>
 void DSHPolygonController::firstKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value + 1);
+    toolWidget->setParameterWithoutPassingFocus(WParameter::First, value + 1);
 }
 
 template<>
@@ -294,7 +294,7 @@ void DSHPolygonController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
     if (value > 3.0) {  // NOLINT
-        toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
+        toolWidget->setParameterWithoutPassingFocus(WParameter::First, value - 1);
     }
 }
 
