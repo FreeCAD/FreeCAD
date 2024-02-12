@@ -405,6 +405,12 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
         for (std::vector<App::DocumentObject*>::const_iterator it = views.begin();
              it != views.end(); ++it) {
             TechDraw::DrawView* featView = dynamic_cast<TechDraw::DrawView*>(*it);
+
+            // If the child view appoints a parent, skip it
+            if (featView && featView->claimParent()) {
+                continue;
+            }
+
             App::DocumentObject* docObj = *it;
             //DrawRichAnno with no parent is child of Page
             TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*>(*it);

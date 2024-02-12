@@ -155,8 +155,8 @@ public:
     static int exactFontSize(std::string fontFamily, double nominalSize);
 
     virtual void removeChild(QGIView* child);
-
     virtual void addArbitraryItem(QGraphicsItem* qgi);
+    virtual void switchParentItem(QGIView *targetParent);
 
     // Mouse handling
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

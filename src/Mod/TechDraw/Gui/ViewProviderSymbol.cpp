@@ -44,15 +44,17 @@ ViewProviderSymbol::~ViewProviderSymbol()
 
 void ViewProviderSymbol::updateData(const App::Property* prop)
 {
-    if (prop == &getViewObject()->Scale) {
-        onGuiRepaint(getViewObject());
-    } else if (prop == &getViewObject()->Rotation) {
-        onGuiRepaint(getViewObject());
-    } else if (prop == &getViewObject()->Symbol) {
-        onGuiRepaint(getViewObject());
-    } else if (prop == &getViewObject()->EditableTexts) {
-        onGuiRepaint(getViewObject());
+    TechDraw::DrawViewSymbol *obj = getViewObject();
+    if (prop == &obj->Scale
+        || prop == &obj->Rotation
+        || prop == &obj->Symbol
+        || prop == &obj->EditableTexts) {
+        onGuiRepaint(obj);
     }
+    else if (prop == &obj->Owner) {
+        switchOwnerProperty(obj->Owner);
+    }
+
     ViewProviderDrawingView::updateData(prop);
 }
 

@@ -347,6 +347,8 @@ class TechDrawExport Face
         ~Face();
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
+
+        Base::Vector3d getCenter() const;
 };
 using FacePtr = std::shared_ptr<Face>;
 

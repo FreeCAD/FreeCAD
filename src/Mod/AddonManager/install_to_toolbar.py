@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
+# *   Copyright (c) 2022-2024 The FreeCAD Project Association AISBL         *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -217,6 +217,28 @@ def install_toolbar_button(repo: Addon) -> None:
         FreeCAD.Console.PrintMessage("In the end, no custom toolbar was set, bailing out\n")
 
 
+def find_installed_icon(repo: Addon) -> str:
+    """The icon the macro specifies is usually not the actual installed icon, but rather a cached
+    copy. This function looks for a file with the same name located in the macro installation
+    path."""
+    macro_repo_dir = FreeCAD.getUserMacroDir(True)
+    if repo.macro.icon:
+        basename = os.path.basename(repo.macro.icon)
+        # Simple case first: the file is just in the macro directory...
+        if os.path.isfile(os.path.join(macro_repo_dir, basename)):
+            return os.path.join(macro_repo_dir, basename)
+        # More complex: search for it
+        for root, dirs, files in os.walk(macro_repo_dir):
+            for name in files:
+                if name == basename:
+                    return os.path.join(root, name)
+        return ""
+    elif repo.macro.xpm:
+        return os.path.normpath(os.path.join(macro_repo_dir, repo.macro.name + "_icon.xpm"))
+    else:
+        return ""
+
+
 def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
     """Adds an icon for the given macro to the given toolbar."""
     menuText = repo.display_name
@@ -233,20 +255,7 @@ def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
         + " "
         + repo.display_name
     )
-    if repo.macro.icon:
-        if os.path.isabs(repo.macro.icon):
-            pixmapText = os.path.normpath(repo.macro.icon)
-        else:
-            macro_repo_dir = FreeCAD.getUserMacroDir(True)
-            pixmapText = os.path.normpath(os.path.join(macro_repo_dir, repo.macro.icon))
-    elif repo.macro.xpm:
-        macro_repo_dir = FreeCAD.getUserMacroDir(True)
-        icon_file = os.path.normpath(os.path.join(macro_repo_dir, repo.macro.name + "_icon.xpm"))
-        with open(icon_file, "w", encoding="utf-8") as f:
-            f.write(repo.macro.xpm)
-        pixmapText = icon_file
-    else:
-        pixmapText = None
+    pixmapText = find_installed_icon(repo)
 
     # Add this command to that toolbar
     command_name = FreeCADGui.Command.createCustomCommand(
