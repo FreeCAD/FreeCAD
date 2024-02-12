@@ -52,9 +52,6 @@ True if Draft_rc.__name__ else False
 class Move(gui_base_original.Modifier):
     """Gui Command for the Move tool."""
 
-    def __init__(self):
-        super(Move, self).__init__()
-
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
@@ -65,9 +62,9 @@ class Move(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Move, self).Activated(name="Move",
-                                    is_subtool=isinstance(App.activeDraftCommand,
-                                                          SubelementHighlight))
+        super().Activated(name="Move",
+                          is_subtool=isinstance(App.activeDraftCommand,
+                                                SubelementHighlight))
         if not self.ui:
             return
         self.ghosts = []
@@ -111,11 +108,11 @@ class Move(gui_base_original.Modifier):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        super().finish()
         for ghost in self.ghosts:
             ghost.finalize()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             todo.ToDo.delayAfter(self.Activated, [])
-        super(Move, self).finish()
 
     def action(self, arg):
         """Handle the 3D scene events.

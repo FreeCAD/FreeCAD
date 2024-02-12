@@ -227,6 +227,7 @@ class Polygon(gui_base_original.Creator):
                          'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
                          'Draft.autogroup(pol)',
+                         'Draft.select(pol)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Polygon (Part)"),
                         _cmd_list)

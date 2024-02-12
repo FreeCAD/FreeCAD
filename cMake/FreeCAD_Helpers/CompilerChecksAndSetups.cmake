@@ -89,9 +89,7 @@ macro(CompilerChecksAndSetups)
             endif()
             add_definitions(-DGL_SILENCE_DEPRECATION)
         elseif (UNIX)
-            if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
-            endif()
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
         endif()
 
         # older boost.preprocessor turn off variadics for clang

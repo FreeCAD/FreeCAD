@@ -91,7 +91,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         nl = "\n"
         self.docobj.Path = Path.Path(path)
         postables = [self.docobj]
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
@@ -104,7 +104,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         else:
             self.docobj.Path = Path.Path([])
         postables = [self.docobj]
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
@@ -132,12 +132,12 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         postables = [self.docobj]
 
         args = "--axis-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[3], "G0 Y30.000")
 
         args = "--no-axis-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
 
@@ -182,7 +182,7 @@ G21
         self.docobj.Path = Path.Path([c])
         postables = [self.docobj]
         args = "--comments"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[4], "(comment)")
 
@@ -197,14 +197,14 @@ G21
         postables = [self.docobj]
 
         args = ""
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
         self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.407")
 
         args = "--feed-precision=2"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
@@ -224,7 +224,7 @@ G21
         # The header contains a time stamp that messes up unit testing.
         # Only test the length of the line that contains the time.
         args = "--comments --header"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
@@ -250,13 +250,13 @@ G21
 (Begin postamble)
 """
         args = "--comments --no-header"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode, expected)
 
         # Test without comments with header.
         args = "--no-comments --header"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
@@ -274,7 +274,7 @@ G21
 G21
 """
         args = "--no-comments --no-header"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode, expected)
 
@@ -296,7 +296,7 @@ G21
         self.docobj.Path = Path.Path([c])
         postables = [self.docobj]
         args = "--inches"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[1], "G20")
         self.assertEqual(
@@ -316,11 +316,11 @@ G21
         self.docobj.Path = Path.Path([c, c1])
         postables = [self.docobj]
         args = "--modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[3], "X10.000 Y30.000 Z30.000")
         args = "--no-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
 
@@ -395,7 +395,7 @@ G21
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
         gcode: str = postprocessor.export(
-            postables, "gcode.tmp", "--output_all_arguments"
+            postables, "-", "--output_all_arguments"
         )
         # The argparse help routine turns out to be sensitive to the
         # number of columns in the terminal window that the tests
@@ -421,7 +421,7 @@ G21
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
         args = "--postamble='G0 Z50\nM2'"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[-2], "G0 Z50")
         self.assertEqual(gcode.splitlines()[-1], "M2")
@@ -433,7 +433,7 @@ G21
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
         args = "--preamble='G18 G55'"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "G18 G55")
 
@@ -467,14 +467,14 @@ G21
         self.docobj.Path = Path.Path([c, c2])
         postables = [self.docobj]
         args = "--tlo"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M6 T2")
         self.assertEqual(gcode.splitlines()[3], "G43 H2")
         self.assertEqual(gcode.splitlines()[4], "M3 S3000")
         # suppress TLO
         args = "--no-tlo"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M6 T2")
         self.assertEqual(gcode.splitlines()[3], "M3 S3000")
@@ -488,12 +488,12 @@ G21
         self.docobj.Path = Path.Path([c, c2])
         postables = [self.docobj]
         args = "--tool_change"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M6 T2")
         self.assertEqual(gcode.splitlines()[3], "M3 S3000")
         args = "--comments --no-tool_change"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[5], "( M6 T2 )")
         self.assertEqual(gcode.splitlines()[6], "M3 S3000")
@@ -506,11 +506,11 @@ G21
         self.docobj.Path = Path.Path([c])
         postables = [self.docobj]
         args = ""
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M3 S3000")
         args = "--wait-for-spindle=1.23456"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M3 S3000")
         self.assertEqual(gcode.splitlines()[3], "G4 P1.23456")
@@ -520,11 +520,11 @@ G21
         # This also tests that the default for --wait-for-spindle
         # goes back to 0.0 (no wait)
         args = ""
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M4 S3000")
         args = "--wait-for-spindle=1.23456"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        gcode = postprocessor.export(postables, "-", args)
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[2], "M4 S3000")
         self.assertEqual(gcode.splitlines()[3], "G4 P1.23456")

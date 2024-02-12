@@ -205,7 +205,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
-      <translation>No fue elegido ningún punto</translation>
+      <translation>No se ha elegido ningún punto</translation>
     </message>
   </context>
   <context>

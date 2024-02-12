@@ -634,251 +634,246 @@ Leave blank to use all objects from the document</source>
       <translation>일반 설정</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="26"/>
+      <location filename="../ui/preferences-arch.ui" line="20"/>
       <source>Object creation</source>
       <translation>객체 생성</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="32"/>
+      <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Auto-join walls</source>
       <translation>자동 결합 벽</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="48"/>
+      <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
       <translation>이를 선택하면, 2개의 유사한 벽이 연결될 때 기본 스케치가 하나로 결합되고 두 개의 벽이 하나가 된다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="51"/>
-      <source>Join walls base sketches when possible</source>
-      <translation>가능한 경우 벽 결합 스케치</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="64"/>
+      <location filename="../ui/preferences-arch.ui" line="58"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
       <translation>순환 종속성을 피하기 위한 두 가지 전략: 하나 이상의 오브젝트(선택되지 않은)를 생성하거나 기준 스케치(선택된)의 지오메트리를 제거한다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="67"/>
-      <source>Remove external geometry of base sketches when needed</source>
-      <translation>필요한 경우 기본 스케치의 외부 지오메트리 제거</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="80"/>
+      <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
       <translation>이것을 선택하면, 객체는 Arch 객체의 뺄셈 또는 덧셈이 되면, 초안 작성 색상을 받게 됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="83"/>
+      <location filename="../ui/preferences-arch.ui" line="96"/>
       <source>Apply Draft construction style to subcomponents</source>
       <translation>하위 구성요소에 초안 작성 스타일 적용</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="114"/>
-      <source>Do not compute areas for object with more than:</source>
-      <translation>다음보다 큰 개체의 영역을 계산하지 마십시오:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="121"/>
+      <location filename="../ui/preferences-arch.ui" line="157"/>
       <source> faces</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="157"/>
+      <location filename="../ui/preferences-arch.ui" line="180"/>
       <source>Interval between file checks for references</source>
       <translation>참조에 대한 파일 검사 간격</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="164"/>
+      <location filename="../ui/preferences-arch.ui" line="187"/>
       <source> seconds</source>
       <translation> 초</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="188"/>
+      <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
       <translation>기본적으로 새 개체의 "호스트와 함께 이동" 속성은 False로 설정됩니다. 즉, 호스트 개체가 이동될 때 이동하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="191"/>
+      <location filename="../ui/preferences-arch.ui" line="112"/>
       <source>Set "Move with host" property to True by default</source>
       <translation>기본적으로 "호스트와 함께 이동" 속성을 True로 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="207"/>
+      <location filename="../ui/preferences-arch.ui" line="128"/>
       <source>Set "Move base" property to True by default</source>
       <translation>기본적으로 "기본 이동" 속성을 True로 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="223"/>
+      <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
       <translation>이것을 선택하면 Arch 객체에 재료가 있을 때 객체가 재료의 색상을 취하게 됩니다. 이 값은 각 개체에 대해 재정의할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="226"/>
+      <location filename="../ui/preferences-arch.ui" line="77"/>
       <source>Use material color as shape color</source>
       <translation>재료 색상을 형태 색상으로 사용</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="260"/>
+      <location filename="../ui/preferences-arch.ui" line="209"/>
       <source>IFC version</source>
       <translation>IFC 버전</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="280"/>
+      <location filename="../ui/preferences-arch.ui" line="216"/>
       <source>The IFC version will change which attributes and products are supported</source>
       <translation>IFC 버전은 지원되는 특성 및 제품을 변경합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="290"/>
+      <location filename="../ui/preferences-arch.ui" line="226"/>
       <source>IFC4</source>
       <translation>IFC4</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="295"/>
+      <location filename="../ui/preferences-arch.ui" line="231"/>
       <source>IFC2X3</source>
       <translation>IFC2X3</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="308"/>
+      <location filename="../ui/preferences-arch.ui" line="242"/>
       <source>Mesh to Shape Conversion</source>
       <translation>메쉬-형상 변환</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="316"/>
+      <location filename="../ui/preferences-arch.ui" line="248"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>이 옵션을 선택하면 변환이 더 빠르지만 결과에 삼각형 면이 포함될 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="319"/>
+      <location filename="../ui/preferences-arch.ui" line="251"/>
       <source>Fast conversion</source>
       <translation>빠른 변환</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="335"/>
-      <source>Tolerance:</source>
-      <translation>공차:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="345"/>
+      <location filename="../ui/preferences-arch.ui" line="327"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>인접한 면 2개가 평면인지 확인할때 사용하는 공차 값</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="368"/>
+      <location filename="../ui/preferences-arch.ui" line="270"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>이 옵션을 선택하면 평평한 면 그룹이 강제로 평평해져 간격이 생기고 견고하지 못한 경우가 발생합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="371"/>
+      <location filename="../ui/preferences-arch.ui" line="45"/>
+      <source>Join base sketches of walls if possible</source>
+      <translation type="unfinished">Join base sketches of walls if possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-arch.ui" line="61"/>
+      <source>Remove external geometry of base sketches if needed</source>
+      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-arch.ui" line="144"/>
+      <source>Do not compute areas for objects with more than</source>
+      <translation type="unfinished">Do not compute areas for objects with more than</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-arch.ui" line="273"/>
       <source>Force flat faces</source>
       <translation>평면 강제 적용</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="388"/>
+      <location filename="../ui/preferences-arch.ui" line="289"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation>이 옵션을 선택하면 면의 구멍은 와이어 방향의 사용이 아닌 감산을 통해 생깁니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="391"/>
+      <location filename="../ui/preferences-arch.ui" line="292"/>
       <source>Cut method</source>
       <translation>절단 방법</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="412"/>
+      <location filename="../ui/preferences-arch.ui" line="311"/>
+      <source>Tolerance</source>
+      <translation>공차</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-arch.ui" line="359"/>
       <source>2D rendering</source>
       <translation>2D 렌더링</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="420"/>
+      <location filename="../ui/preferences-arch.ui" line="365"/>
       <source>Show debug information during 2D rendering</source>
       <translation>2D 렌더링 중 디버그 정보 표시</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="423"/>
+      <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>Show renderer debug messages</source>
       <translation>렌더러 디버그 메시지 표시</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="456"/>
+      <location filename="../ui/preferences-arch.ui" line="381"/>
       <source>Cut areas line thickness ratio</source>
       <translation>절단 영역 선 굵기 비율</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="476"/>
+      <location filename="../ui/preferences-arch.ui" line="388"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>절단선에 표시된 선 굵기를 적용해야 하는 횟수를 지정합니다</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="512"/>
+      <location filename="../ui/preferences-arch.ui" line="411"/>
       <source>Symbol line thickness ratio</source>
       <translation>기호선 굵기 비율</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="565"/>
+      <location filename="../ui/preferences-arch.ui" line="431"/>
       <source>Hidden geometry pattern</source>
       <translation>숨겨진 기하학적 패턴</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="585"/>
+      <location filename="../ui/preferences-arch.ui" line="444"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>숨겨진 개체의 투영에 적용할 SVG 스트로크-대시배열 속성입니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="625"/>
+      <location filename="../ui/preferences-arch.ui" line="461"/>
       <source>Pattern scale</source>
       <translation>계단식 패턴</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="645"/>
+      <location filename="../ui/preferences-arch.ui" line="468"/>
       <source>Scaling factor for patterns used by object that have
 a Footprint display mode</source>
       <translation>발자국 표시 모드가 있는 객체에서 사용하는 패턴의 스케일링 팩터</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="673"/>
+      <location filename="../ui/preferences-arch.ui" line="497"/>
       <source>Bim server</source>
       <translation>Bim 서버</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="681"/>
+      <location filename="../ui/preferences-arch.ui" line="503"/>
       <source>Address</source>
       <translation>주소</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="688"/>
+      <location filename="../ui/preferences-arch.ui" line="510"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
       <translation>연결할 bim 서버 인스턴스(www.bimserver.org)의 URL입니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="691"/>
-      <source>http://localhost:8082</source>
-      <translation>http://localhost:8082</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="708"/>
+      <location filename="../ui/preferences-arch.ui" line="526"/>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
       <translation>이 항목을 선택한 경우, "Open BimServer in browser" 버튼은 FreeCAD 웹 작업대 대신 외부 브라우저에서 빔 서버 인터페이스를 열 것입니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="713"/>
+      <location filename="../ui/preferences-arch.ui" line="531"/>
       <source>Open in external browser</source>
       <translation>외부 브라우저에서 열기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="731"/>
+      <location filename="../ui/preferences-arch.ui" line="547"/>
       <source>Survey</source>
       <translation>탐색</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="739"/>
+      <location filename="../ui/preferences-arch.ui" line="553"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
       <translation>이 옵션을 선택하면 클립보드에 있는 텍스트에 단위가 포함됩니다. 그렇지 않으면 내부 단위(밀리미터) 로 표시되는 단순한 숫자가 될 것입니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="742"/>
+      <location filename="../ui/preferences-arch.ui" line="556"/>
       <source>Include unit when sending measurements to clipboard</source>
       <translation>측정값을 클립보드로 보낼 때 단위 포함</translation>
     </message>
@@ -888,213 +883,140 @@ instead of the FreeCAD web workbench</source>
       <translation>기본값</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="26"/>
-      <source>Walls</source>
-      <translation>벽들</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="34"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="211"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="452"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="702"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="859"/>
-      <source>Width:</source>
-      <translation>너비:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="41"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="80"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="179"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="218"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="257"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="340"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="379"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="462"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="504"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="546"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="670"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="709"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="748"/>
-      <source> mm</source>
-      <translation> mm</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="73"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="250"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="494"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="741"/>
-      <source>Height:</source>
-      <translation>높이:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="103"/>
-      <source>Use sketches</source>
-      <translation>스케치 사용</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="132"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="293"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="415"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="941"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="1044"/>
-      <source>Color:</source>
-      <translation>색상:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="139"/>
-      <source>This is the default color for new Wall objects</source>
-      <translation>새 Wall 개체의 기본 색상입니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="164"/>
-      <source>Structures</source>
-      <translation>구조</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="172"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="663"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="820"/>
-      <source>Length:</source>
-      <translation>길이:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="300"/>
-      <source>This is the default color for new Structure objects</source>
-      <translation>새 Structure 개체의 기본 색상입니다</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="325"/>
-      <source>Rebars</source>
-      <translation>철근</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="333"/>
-      <source>Diameter</source>
-      <translation>직경</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="372"/>
-      <source>Offset</source>
-      <translation>오프셋</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="444"/>
-      <source>Windows</source>
-      <translation>창</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="459"/>
-      <source>The default width for new windows</source>
-      <translation>새 창의 기본 너비</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="501"/>
-      <source>The default height for new windows</source>
-      <translation>새 창의 기본 높이</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="536"/>
-      <source>Thickness:</source>
-      <translation>두께:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="543"/>
-      <source>The default thickness for new windows</source>
-      <translation>새 창의 기본 두꼐</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="582"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
-      <source>Transparency:</source>
-      <translation>투명도:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="602"/>
-      <source>Frame color:</source>
-      <translation>프레임 색상:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="626"/>
-      <source>Glass color:</source>
-      <translation>유리 색상:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="655"/>
-      <source>Stairs</source>
-      <translation>계단</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="784"/>
-      <source>Number of steps:</source>
-      <translation>단계 개수:</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="812"/>
-      <source>Panels</source>
-      <translation>패널</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="827"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="866"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="905"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="985"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="331"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="370"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="396"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="422"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="448"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="474"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="898"/>
-      <source>Thickness</source>
-      <translation>두께</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="20"/>
+      <source>Visual</source>
+      <translation type="unfinished">Visual</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="970"/>
-      <source>Pipes</source>
-      <translation>파이프</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="26"/>
+      <source>Wall color</source>
+      <translation type="unfinished">Wall color</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="978"/>
-      <source>Diameter:</source>
-      <translation>직경:</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="57"/>
+      <source>Structure color</source>
+      <translation type="unfinished">Structure color</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1025"/>
-      <source>Helpers (grids, axes, etc...)</source>
-      <translation>도우미 (그리드, 축 등)</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="81"/>
+      <source>Rebar color</source>
+      <translation type="unfinished">Rebar color</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
-      <source>Spaces</source>
-      <translation>공간</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="105"/>
+      <source>Window glass transparency</source>
+      <translation type="unfinished">Window glass transparency</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1118"/>
-      <source>Line style:</source>
-      <translation>선 스타일:</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="118"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="216"/>
+      <source> %</source>
+      <translation type="unfinished"> %</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="137"/>
+      <source>Window glass color</source>
+      <translation type="unfinished">Window glass color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="161"/>
+      <source>Panel color</source>
+      <translation type="unfinished">Panel color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="185"/>
+      <source>Helper color (grids, axes, etc.)</source>
+      <translation type="unfinished">Helper color (grids, axes, etc.)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="209"/>
+      <source>Space transparency</source>
+      <translation type="unfinished">Space transparency</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="235"/>
+      <source>Space line style</source>
+      <translation type="unfinished">Space line style</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="252"/>
       <source>Solid</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="257"/>
       <source>Dashed</source>
       <translation>점선(Dashed)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1145"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="262"/>
       <source>Dotted</source>
       <translation>점선(Dotted)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1150"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="267"/>
       <source>Dashdot</source>
       <translation>점선(Dashdot)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="1158"/>
-      <source>Line color</source>
-      <translation>선 색</translation>
+      <location filename="../ui/preferences-archdefaults.ui" line="275"/>
+      <source>Space line color</source>
+      <translation type="unfinished">Space line color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="302"/>
+      <source>Other</source>
+      <translation>기타</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="308"/>
+      <source>Use sketches for walls</source>
+      <translation type="unfinished">Use sketches for walls</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="324"/>
+      <source>Pipe diameter</source>
+      <translation type="unfinished">Pipe diameter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="357"/>
+      <source>Rebar diameter</source>
+      <translation type="unfinished">Rebar diameter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="389"/>
+      <source>Rebar offset</source>
+      <translation type="unfinished">Rebar offset</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="415"/>
+      <source>Stair length</source>
+      <translation type="unfinished">Stair length</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="441"/>
+      <source>Stair width</source>
+      <translation type="unfinished">Stair width</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="467"/>
+      <source>Stair height</source>
+      <translation type="unfinished">Stair height</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="493"/>
+      <source>Number of stair steps</source>
+      <translation type="unfinished">Number of stair steps</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
@@ -1354,8 +1276,8 @@ are placed in a 'Group' instead.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>내보내기 옵션</translation>
     </message>
@@ -1728,13 +1650,13 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
-      <location filename="../../ArchStructure.py" line="434"/>
+      <location filename="../../ArchStructure.py" line="433"/>
       <source>Beam</source>
       <translation>빔</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
-      <location filename="../../ArchStructure.py" line="435"/>
+      <location filename="../../ArchStructure.py" line="434"/>
       <source>Column</source>
       <translation>기둥</translation>
     </message>
@@ -1764,221 +1686,221 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
       <translation>축 객체를 적어도 하나 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="301"/>
-      <location filename="../../ArchStructure.py" line="345"/>
+      <location filename="../../ArchStructure.py" line="300"/>
+      <location filename="../../ArchStructure.py" line="344"/>
       <source>Create Structure</source>
       <translation>구조 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="326"/>
+      <location filename="../../ArchStructure.py" line="325"/>
       <source>First point of the beam</source>
       <translation>보의 첫번째 지점</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="328"/>
+      <location filename="../../ArchStructure.py" line="327"/>
       <source>Base point of column</source>
       <translation>기둥의 기준점</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="341"/>
+      <location filename="../../ArchStructure.py" line="340"/>
       <location filename="../../ArchWall.py" line="386"/>
       <source>Next point</source>
       <translation>다음 지점</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="429"/>
+      <location filename="../../ArchStructure.py" line="428"/>
       <source>Structure options</source>
       <translation>구조 옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="433"/>
+      <location filename="../../ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
       <translation>그리기 모드</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1634"/>
-      <location filename="../../ArchProfile.py" line="152"/>
-      <location filename="../../ArchStructure.py" line="445"/>
+      <location filename="../../ArchStructure.py" line="444"/>
+      <location filename="../../ArchProfile.py" line="153"/>
+      <location filename="../../ArchCommands.py" line="1628"/>
       <source>Category</source>
       <translation>카테고리</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="213"/>
-      <location filename="../../ArchProfile.py" line="159"/>
-      <location filename="../../ArchStructure.py" line="452"/>
-      <location filename="../../ArchWindow.py" line="411"/>
+      <location filename="../../ArchStructure.py" line="451"/>
+      <location filename="../../ArchProfile.py" line="160"/>
+      <location filename="../../ArchWindow.py" line="410"/>
+      <location filename="../../ArchPanel.py" line="214"/>
       <source>Preset</source>
       <translation>프리셋</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="223"/>
-      <location filename="../../ArchPrecast.py" line="1411"/>
-      <location filename="../../ArchStructure.py" line="461"/>
+      <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchPrecast.py" line="1412"/>
+      <location filename="../../ArchPanel.py" line="224"/>
       <location filename="../../ArchWall.py" line="511"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Length</source>
       <translation>거리</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="230"/>
-      <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchStructure.py" line="471"/>
+      <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPrecast.py" line="1413"/>
+      <location filename="../../ArchPanel.py" line="231"/>
       <location filename="../../ArchWall.py" line="517"/>
       <source>Width</source>
       <translation>너비</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../ArchStructure.py" line="478"/>
+      <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchPrecast.py" line="1414"/>
       <location filename="../../ArchWall.py" line="523"/>
       <source>Height</source>
       <translation>높이</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="488"/>
+      <location filename="../../ArchStructure.py" line="487"/>
       <source>Switch L/H</source>
       <translation>L/H 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="490"/>
+      <location filename="../../ArchStructure.py" line="489"/>
       <source>Switch L/W</source>
       <translation>L/W 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="248"/>
-      <location filename="../../ArchStructure.py" line="494"/>
+      <location filename="../../ArchStructure.py" line="493"/>
+      <location filename="../../ArchPanel.py" line="249"/>
       <location filename="../../ArchWall.py" line="537"/>
       <source>Con&amp;tinue</source>
       <translation>계속</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="774"/>
+      <location filename="../../ArchStructure.py" line="773"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>오류: 이 도구 객체를 따라 기본 모양을 압출할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="800"/>
+      <location filename="../../ArchStructure.py" line="799"/>
       <location filename="../../ArchWall.py" line="963"/>
       <source>This mesh is an invalid solid</source>
       <translation>이 메시는 유효하지 않은 솔리드입니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="523"/>
-      <location filename="../../ArchStructure.py" line="864"/>
+      <location filename="../../ArchStructure.py" line="863"/>
+      <location filename="../../ArchPanel.py" line="524"/>
       <source>Facemaker returned an error</source>
       <translation>페이스메이커가 오류를 반환했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1179"/>
+      <location filename="../../ArchStructure.py" line="1178"/>
       <source>Node Tools</source>
       <translation>노드 도구</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1184"/>
+      <location filename="../../ArchStructure.py" line="1183"/>
       <source>Reset nodes</source>
       <translation>노드 재설정</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1191"/>
+      <location filename="../../ArchStructure.py" line="1190"/>
       <source>Edit nodes</source>
       <translation>노드 수정</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1197"/>
+      <location filename="../../ArchStructure.py" line="1196"/>
       <source>Extend nodes</source>
       <translation>노드 확장</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1198"/>
+      <location filename="../../ArchStructure.py" line="1197"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>이 엘리먼트의 노드를 확장하여 다른 엘리먼트의 노드에 도달합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1204"/>
+      <location filename="../../ArchStructure.py" line="1203"/>
       <source>Connect nodes</source>
       <translation>노드 연결</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1205"/>
+      <location filename="../../ArchStructure.py" line="1204"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>이 엘리먼트의 노드를 다른 엘리먼트의 노드와 연결합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1211"/>
+      <location filename="../../ArchStructure.py" line="1210"/>
       <source>Toggle all nodes</source>
       <translation>모든 노드 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1212"/>
+      <location filename="../../ArchStructure.py" line="1211"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>문서의 모든 구조 노드를 켜기/끄기 합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1217"/>
+      <location filename="../../ArchStructure.py" line="1216"/>
       <source>Extrusion Tools</source>
       <translation>압출 도구</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1222"/>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="1221"/>
+      <location filename="../../ArchStructure.py" line="1355"/>
       <source>Select tool...</source>
       <translation>도구 선택...</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1223"/>
+      <location filename="../../ArchStructure.py" line="1222"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
       <translation>도구로 사용할 객체 또는 모서리 선택(압출 경로)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1246"/>
-      <location filename="../../ArchStructure.py" line="1278"/>
+      <location filename="../../ArchStructure.py" line="1245"/>
+      <location filename="../../ArchStructure.py" line="1277"/>
       <source>Choose another Structure object:</source>
       <translation>다른 구조 객체를 선택하세요:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1251"/>
-      <location filename="../../ArchStructure.py" line="1283"/>
+      <location filename="../../ArchStructure.py" line="1250"/>
+      <location filename="../../ArchStructure.py" line="1282"/>
       <source>The chosen object is not a Structure</source>
       <translation>선택한 객체가 구조가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1254"/>
-      <location filename="../../ArchStructure.py" line="1286"/>
+      <location filename="../../ArchStructure.py" line="1253"/>
+      <location filename="../../ArchStructure.py" line="1285"/>
       <source>The chosen object has no structural nodes</source>
       <translation>선택한 객체에 구조적 노드가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1257"/>
-      <location filename="../../ArchStructure.py" line="1289"/>
+      <location filename="../../ArchStructure.py" line="1256"/>
+      <location filename="../../ArchStructure.py" line="1288"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>이 객체들 중 하나에 노드가 2개 이상 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1264"/>
-      <location filename="../../ArchStructure.py" line="1296"/>
+      <location filename="../../ArchStructure.py" line="1263"/>
+      <location filename="../../ArchStructure.py" line="1295"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>적합한 교차점을 찾을 수 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1267"/>
+      <location filename="../../ArchStructure.py" line="1266"/>
       <source>Intersection found.
 </source>
       <translation>교차점을 찾았습니다.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1299"/>
+      <location filename="../../ArchStructure.py" line="1298"/>
       <source>Intersection found.</source>
       <translation>교차점을 찾았습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1335"/>
+      <location filename="../../ArchStructure.py" line="1334"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="755"/>
-      <location filename="../../ArchStructure.py" line="1440"/>
+      <location filename="../../ArchStructure.py" line="1439"/>
+      <location filename="../../ArchPanel.py" line="756"/>
       <source>Couldn't compute a shape</source>
       <translation>모양을 계산할 수 없습니다</translation>
     </message>
@@ -2028,54 +1950,54 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
       <translation>뷰 3개 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="206"/>
+      <location filename="../../ArchBuildingPart.py" line="208"/>
       <source>BuildingPart</source>
       <translation>빌딩 부품</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="221"/>
-      <location filename="../../ArchFloor.py" line="89"/>
+      <location filename="../../ArchBuildingPart.py" line="223"/>
+      <location filename="../../ArchFloor.py" line="91"/>
       <source>Floor</source>
       <translation>바닥</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="302"/>
+      <location filename="../../ArchBuildingPart.py" line="304"/>
       <source>Create BuildingPart</source>
       <translation>빌딩 부품 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="908"/>
+      <location filename="../../ArchBuildingPart.py" line="913"/>
       <source>Deactivate</source>
       <translation>비활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="910"/>
+      <location filename="../../ArchBuildingPart.py" line="915"/>
       <source>Activate</source>
       <translation>활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="918"/>
+      <location filename="../../ArchBuildingPart.py" line="923"/>
       <source>Set working plane</source>
       <translation>작업면 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="926"/>
+      <location filename="../../ArchBuildingPart.py" line="931"/>
       <source>Write camera position</source>
       <translation>카메라 위치 쓰기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="933"/>
+      <location filename="../../ArchBuildingPart.py" line="938"/>
       <source>Create group...</source>
       <translation>그룹 만들기...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="940"/>
-      <location filename="../../ArchMaterial.py" line="221"/>
+      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchMaterial.py" line="223"/>
       <source>Reorder children alphabetically</source>
       <translation>Children 알파벳 순으로 재정렬</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="947"/>
+      <location filename="../../ArchBuildingPart.py" line="952"/>
       <source>Clone level up</source>
       <translation>클론 레벨업</translation>
     </message>
@@ -2085,27 +2007,27 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
       <translation>아치</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="140"/>
+      <location filename="../../ArchProfile.py" line="141"/>
       <source>Create profile</source>
       <translation>프로필 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="148"/>
+      <location filename="../../ArchProfile.py" line="149"/>
       <source>Profile settings</source>
       <translation>프로필 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="194"/>
+      <location filename="../../ArchProfile.py" line="195"/>
       <source>Create Profile</source>
       <translation>프로필 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="610"/>
+      <location filename="../../ArchProfile.py" line="611"/>
       <source>Profile</source>
       <translation>프로필</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="74"/>
+      <location filename="../../ArchSite.py" line="75"/>
       <source>Site</source>
       <translation>사이트</translation>
     </message>
@@ -2153,9 +2075,9 @@ Site creation aborted.</source>
       <translation>지붕을 만들 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1659"/>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchSpace.py" line="255"/>
+      <location filename="../../ArchComponent.py" line="1661"/>
+      <location filename="../../ArchSpace.py" line="256"/>
       <source>Please select a base object</source>
       <translation>기본 객체를 선택 하십시오</translation>
     </message>
@@ -2226,57 +2148,83 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>높이(mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="510"/>
+      <location filename="../../ArchWindowPresets.py" line="519"/>
       <source>Door</source>
       <translation>문</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="195"/>
+      <location filename="../../ArchWindowPresets.py" line="522"/>
+      <source>Opening</source>
+      <translation type="unfinished">Opening</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="176"/>
+      <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order
+</source>
+      <translation type="unfinished">Select two objects, an object to be cut and an object defining a cutting plane, in that order
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="179"/>
+      <source>The first object does not have a shape
+</source>
+      <translation type="unfinished">The first object does not have a shape
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="182"/>
+      <source>The second object does not define a plane
+</source>
+      <translation type="unfinished">The second object does not define a plane
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="216"/>
       <source>Cutting</source>
       <translation>절단</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="223"/>
+      <location filename="../../ArchCutPlane.py" line="242"/>
       <source>Cut Plane</source>
       <translation>절단면</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="224"/>
+      <location filename="../../ArchCutPlane.py" line="243"/>
       <source>Cut Plane options</source>
       <translation>절단면 옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="225"/>
+      <location filename="../../ArchCutPlane.py" line="244"/>
       <source>Which side to cut</source>
       <translation>자를 면 선택</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="226"/>
+      <location filename="../../ArchCutPlane.py" line="245"/>
       <source>Behind</source>
       <translation>후방</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="227"/>
+      <location filename="../../ArchCutPlane.py" line="245"/>
       <source>Front</source>
       <translation>정면</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="64"/>
+      <location filename="../../ArchReference.py" line="66"/>
       <source>External Reference</source>
       <translation>외부 참조</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="510"/>
+      <location filename="../../ArchReference.py" line="512"/>
       <source>Reload reference</source>
       <translation>참조 다시 로드</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="518"/>
+      <location filename="../../ArchReference.py" line="520"/>
       <source>Open reference</source>
       <translation>참조 열기</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="772"/>
+      <location filename="../../ArchReference.py" line="774"/>
       <source>Create external reference</source>
       <translation>외부 참조 만들기</translation>
     </message>
@@ -2327,22 +2275,22 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>오류: 다운로드할 수 없습니다:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="153"/>
+      <location filename="../../importSHP.py" line="151"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation>Shapefile 모듈을 다운로드할 수 없습니다. 중단 중입니다.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="156"/>
+      <location filename="../../importSHP.py" line="154"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation>Shapefile 모듈이 다운로드되지 않았습니다. 중단 중입니다.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="159"/>
+      <location filename="../../importSHP.py" line="157"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation>Shape 모듈을 찾을 수 없습니다. 중단 중입니다.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="160"/>
+      <location filename="../../importSHP.py" line="158"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation>Shapefile 라이브러리는 다음 URL에서 다운로드하여 매크로 폴더에 설치할 수 있습니다:</translation>
     </message>
@@ -2352,214 +2300,214 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>작업창</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="212"/>
-      <location filename="../../ArchWindow.py" line="231"/>
-      <location filename="../../ArchWindow.py" line="276"/>
+      <location filename="../../ArchWindow.py" line="211"/>
+      <location filename="../../ArchWindow.py" line="230"/>
+      <location filename="../../ArchWindow.py" line="275"/>
       <source>Create Window</source>
       <translation>창 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="247"/>
+      <location filename="../../ArchWindow.py" line="246"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>기존 개체의 면을 선택하거나 프리셋을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="300"/>
+      <location filename="../../ArchWindow.py" line="299"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>창이 스케치에 기반하지 않았습니다. 창이 정렬되거나 크기가 조정되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="310"/>
+      <location filename="../../ArchWindow.py" line="309"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>창 스케치에 너비 및/또는 높이 제약이 없습니다. 창 크기가 조정되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="313"/>
+      <location filename="../../ArchWindow.py" line="312"/>
       <source>No window found. Cannot continue.</source>
       <translation>창을 찾을 수 없습니다. 계속할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="370"/>
+      <location filename="../../ArchWindow.py" line="369"/>
       <source>Window options</source>
       <translation>창 옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="374"/>
+      <location filename="../../ArchWindow.py" line="373"/>
       <source>Auto include in host object</source>
       <translation>호스트 객체에 자동 포함</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="380"/>
+      <location filename="../../ArchWindow.py" line="379"/>
       <source>Sill height</source>
       <translation>턱 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1337"/>
       <source>This window has no defined opening</source>
       <translation>이 창에는 정의된 열림이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1610"/>
-      <location filename="../../ArchWindow.py" line="1659"/>
-      <location filename="../../ArchWindow.py" line="1820"/>
+      <location filename="../../ArchWindow.py" line="1614"/>
+      <location filename="../../ArchWindow.py" line="1663"/>
+      <location filename="../../ArchWindow.py" line="1824"/>
       <source>Get selected edge</source>
       <translation>선택한 모서리 가져오기</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1759"/>
+      <location filename="../../ArchWindow.py" line="1763"/>
       <source>Unable to create component</source>
       <translation>구성 요소를 만들 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1797"/>
+      <location filename="../../ArchWindow.py" line="1801"/>
       <source>Window elements</source>
       <translation>창 엘리먼트</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1798"/>
+      <location filename="../../ArchWindow.py" line="1802"/>
       <source>Hole wire</source>
       <translation>홀 와이어</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1799"/>
+      <location filename="../../ArchWindow.py" line="1803"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>호스트 객체에 구멍을 정의하는 와이어의 수입니다. 값이 0이면 가장 큰 와이어가 자동으로 채택됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1800"/>
+      <location filename="../../ArchWindow.py" line="1804"/>
       <source>Pick selected</source>
       <translation>선택</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="805"/>
+      <location filename="../../ArchWindow.py" line="1805"/>
       <location filename="../../ArchAxisSystem.py" line="372"/>
-      <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSectionPlane.py" line="1375"/>
+      <location filename="../../ArchAxis.py" line="807"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <location filename="../../ArchSpace.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1801"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchWindow.py" line="1806"/>
       <location filename="../../ArchAxisSystem.py" line="373"/>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchSpace.py" line="793"/>
-      <location filename="../../ArchWindow.py" line="1802"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="634"/>
-      <location filename="../../ArchAxisSystem.py" line="252"/>
-      <location filename="../../ArchComponent.py" line="1501"/>
-      <location filename="../../ArchGrid.py" line="323"/>
+      <location filename="../../ArchSite.py" line="932"/>
+      <location filename="../../ArchReference.py" line="504"/>
+      <location filename="../../ArchWindow.py" line="1807"/>
       <location filename="../../ArchIFCView.py" line="56"/>
-      <location filename="../../ArchMaterial.py" line="493"/>
-      <location filename="../../ArchMaterial.py" line="787"/>
-      <location filename="../../ArchReference.py" line="502"/>
-      <location filename="../../ArchSchedule.py" line="451"/>
-      <location filename="../../ArchSectionPlane.py" line="1189"/>
-      <location filename="../../ArchSite.py" line="933"/>
-      <location filename="../../ArchWindow.py" line="1803"/>
+      <location filename="../../ArchAxisSystem.py" line="252"/>
+      <location filename="../../ArchMaterial.py" line="495"/>
+      <location filename="../../ArchMaterial.py" line="789"/>
+      <location filename="../../ArchGrid.py" line="323"/>
+      <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchAxis.py" line="636"/>
+      <location filename="../../ArchComponent.py" line="1503"/>
+      <location filename="../../ArchSectionPlane.py" line="1191"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1804"/>
+      <location filename="../../ArchWindow.py" line="1808"/>
       <source>Create/update component</source>
       <translation>구성 요소 만들기/갱신</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1805"/>
+      <location filename="../../ArchWindow.py" line="1809"/>
       <source>Base 2D object</source>
       <translation>기본 2D 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1806"/>
-      <location filename="../../ArchWindow.py" line="1811"/>
+      <location filename="../../ArchWindow.py" line="1810"/>
+      <location filename="../../ArchWindow.py" line="1815"/>
       <source>Wires</source>
       <translation>와이어</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
-      <location filename="../../ArchWindow.py" line="1807"/>
+      <location filename="../../ArchWindow.py" line="1811"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Components</source>
       <translation>구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1808"/>
+      <location filename="../../ArchWindow.py" line="1812"/>
       <source>Create new component</source>
       <translation>새 구성 요소 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="869"/>
-      <location filename="../../ArchMaterial.py" line="888"/>
-      <location filename="../../ArchWindow.py" line="1809"/>
+      <location filename="../../ArchWindow.py" line="1813"/>
+      <location filename="../../ArchMaterial.py" line="871"/>
+      <location filename="../../ArchMaterial.py" line="890"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1636"/>
-      <location filename="../../ArchComponent.py" line="2008"/>
-      <location filename="../../ArchWindow.py" line="1810"/>
+      <location filename="../../ArchWindow.py" line="1814"/>
+      <location filename="../../ArchComponent.py" line="2010"/>
+      <location filename="../../ArchCommands.py" line="1630"/>
       <source>Type</source>
       <translation>유형</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="869"/>
-      <location filename="../../ArchMaterial.py" line="888"/>
-      <location filename="../../ArchPanel.py" line="237"/>
-      <location filename="../../ArchWindow.py" line="1812"/>
+      <location filename="../../ArchWindow.py" line="1816"/>
+      <location filename="../../ArchMaterial.py" line="871"/>
+      <location filename="../../ArchMaterial.py" line="890"/>
+      <location filename="../../ArchPanel.py" line="238"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1417"/>
-      <location filename="../../ArchWindow.py" line="1813"/>
+      <location filename="../../ArchWindow.py" line="1817"/>
+      <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1814"/>
+      <location filename="../../ArchWindow.py" line="1818"/>
       <source>Hinge</source>
       <translation>경첩</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1815"/>
+      <location filename="../../ArchWindow.py" line="1819"/>
       <source>Opening mode</source>
       <translation>열기모드</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1816"/>
-      <location filename="../../ArchWindow.py" line="1818"/>
+      <location filename="../../ArchWindow.py" line="1820"/>
+      <location filename="../../ArchWindow.py" line="1822"/>
       <source>+ default</source>
       <translation>+ 기본값</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1817"/>
+      <location filename="../../ArchWindow.py" line="1821"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>이 옵션을 선택하면 이 창의 기본 프레임값이 여기에 입력된 값에 추가됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1819"/>
+      <location filename="../../ArchWindow.py" line="1823"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>이 옵션을 선택하면 이 창의 기본 오프셋 값이 여기에 입력된 값에 추가됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1821"/>
+      <location filename="../../ArchWindow.py" line="1825"/>
       <source>Press to retrieve the selected edge</source>
       <translation>선택한 에지를 얻으려면 누르세요</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1263"/>
-      <location filename="../../ArchWindow.py" line="1822"/>
+      <location filename="../../ArchWindow.py" line="1267"/>
+      <location filename="../../ArchWindow.py" line="1826"/>
       <source>Invert opening direction</source>
       <translation>역개구 방향</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1272"/>
-      <location filename="../../ArchWindow.py" line="1823"/>
+      <location filename="../../ArchWindow.py" line="1276"/>
+      <location filename="../../ArchWindow.py" line="1827"/>
       <source>Invert hinge position</source>
       <translation>역힌지 위치</translation>
     </message>
@@ -2584,10 +2532,10 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>축을 하나 이상 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="68"/>
-      <location filename="../../ArchAxis.py" line="804"/>
       <location filename="../../ArchAxisSystem.py" line="371"/>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchAxis.py" line="70"/>
+      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Axes</source>
       <translation>축</translation>
     </message>
@@ -2598,9 +2546,9 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
     </message>
     <message>
       <location filename="../../importJSON.py" line="61"/>
+      <location filename="../../importWebGL.py" line="874"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
       <source>Successfully written</source>
       <translation>작성을 성공했습니다</translation>
     </message>
@@ -2610,8 +2558,8 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>트러스</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="113"/>
       <location filename="../../ArchTruss.py" line="94"/>
+      <location filename="../../ArchCurtainWall.py" line="114"/>
       <source>Please select only one base object or none</source>
       <translation>기본 객체를 하나만 선택하거나 선택하지 마십시오</translation>
     </message>
@@ -2667,59 +2615,59 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>난간</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="219"/>
+      <location filename="../../ArchStairs.py" line="218"/>
       <source>Create Stairs</source>
       <translation>계단 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="428"/>
+      <location filename="../../ArchStairs.py" line="427"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
       <translation>'OutlineWireLeft' 및 'OutlineWireRight' 속성을 제거하고 'RailingLeft' 및 'RailingRight' 속성을 추가했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="442"/>
+      <location filename="../../ArchStairs.py" line="441"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
       <translation>속성의 유형을 'Railing Left'와 'Railing Right'로 변경했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="123"/>
+      <location filename="../../ArchMaterial.py" line="125"/>
       <source>Create material</source>
       <translation>재료 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="157"/>
+      <location filename="../../ArchMaterial.py" line="159"/>
       <source>Create multi-material</source>
       <translation>복합재료 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="214"/>
+      <location filename="../../ArchMaterial.py" line="216"/>
       <source>Merge duplicates</source>
       <translation>중복 병합</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="56"/>
-      <location filename="../../ArchMaterial.py" line="869"/>
-      <location filename="../../ArchMaterial.py" line="888"/>
+      <location filename="../../ArchMaterial.py" line="58"/>
+      <location filename="../../ArchMaterial.py" line="871"/>
+      <location filename="../../ArchMaterial.py" line="890"/>
       <source>Material</source>
       <translation>재료</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="88"/>
+      <location filename="../../ArchMaterial.py" line="90"/>
       <source>MultiMaterial</source>
       <translation>다중 재료</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="920"/>
+      <location filename="../../ArchMaterial.py" line="921"/>
       <source>New layer</source>
       <translation>새 레이어</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="957"/>
+      <location filename="../../ArchMaterial.py" line="958"/>
       <source>Total thickness</source>
       <translation>총 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="971"/>
+      <location filename="../../ArchMaterial.py" line="972"/>
       <source>depends on the object</source>
       <translation>객체에 따라 다릅니다</translation>
     </message>
@@ -2735,12 +2683,12 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>오류: '%s' 공간에 영역이 없습니다. 중단 중입니다.</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="58"/>
+      <location filename="../../importDAE.py" line="60"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada를 찾을 수 없습니다. collada 지원이 비활성화되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="313"/>
+      <location filename="../../importDAE.py" line="311"/>
       <source>file %s successfully created.</source>
       <translation>%s 파일 생성 성공.</translation>
     </message>
@@ -2826,178 +2774,178 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>열</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1004"/>
+      <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Precast elements</source>
       <translation>미리 만든 엘리먼트</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1005"/>
+      <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Slab type</source>
       <translation>슬래브 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1006"/>
+      <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Chamfer</source>
       <translation>모따기</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1007"/>
+      <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent length</source>
       <translation>덴트 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1008"/>
+      <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent width</source>
       <translation>덴트 폭</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1009"/>
+      <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Dent height</source>
       <translation>함몰높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1010"/>
+      <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Slab base</source>
       <translation>슬래브 베이스</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1011"/>
+      <location filename="../../ArchPrecast.py" line="1012"/>
       <source>Number of holes</source>
       <translation>구멍의 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1012"/>
+      <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Major diameter of holes</source>
       <translation>구멍의 주요 직경</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1013"/>
+      <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Minor diameter of holes</source>
       <translation>구멍의 작은 직경</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1014"/>
+      <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Spacing between holes</source>
       <translation>구멍간의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1015"/>
+      <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Number of grooves</source>
       <translation>홈의 개수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1016"/>
+      <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Depth of grooves</source>
       <translation>홈의 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1017"/>
+      <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Height of grooves</source>
       <translation>홈의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1018"/>
+      <location filename="../../ArchPrecast.py" line="1019"/>
       <source>Spacing between grooves</source>
       <translation>홈간 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1019"/>
+      <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Number of risers</source>
       <translation>라이저 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1020"/>
+      <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Length of down floor</source>
       <translation>바닥의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1021"/>
+      <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Height of risers</source>
       <translation>라이저의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1022"/>
+      <location filename="../../ArchPrecast.py" line="1023"/>
       <source>Depth of treads</source>
       <translation>디딤판 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1407"/>
+      <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Precast options</source>
       <translation>프리캐스트 옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1408"/>
+      <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Dents list</source>
       <translation>덴트 목록</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1409"/>
+      <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Add dent</source>
       <translation>덴트 더하기</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1410"/>
+      <location filename="../../ArchPrecast.py" line="1411"/>
       <source>Remove dent</source>
       <translation>덴트 삭제</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1414"/>
+      <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Slant</source>
       <translation>기울기</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1415"/>
+      <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Level</source>
       <translation>레벨</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1416"/>
+      <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Rotation</source>
       <translation>회전</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="83"/>
+      <location filename="../../ArchPanel.py" line="85"/>
       <source>Panel</source>
       <translation>패널</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="105"/>
+      <location filename="../../ArchPanel.py" line="107"/>
       <source>View of</source>
       <translation>보기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="120"/>
+      <location filename="../../ArchPanel.py" line="122"/>
       <source>PanelSheet</source>
       <translation>패널 시트</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="157"/>
-      <location filename="../../ArchPanel.py" line="186"/>
+      <location filename="../../ArchPanel.py" line="158"/>
+      <location filename="../../ArchPanel.py" line="187"/>
       <source>Create Panel</source>
       <translation>패널 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchPanel.py" line="210"/>
       <source>Panel options</source>
       <translation>패널 옵션</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="244"/>
+      <location filename="../../ArchPanel.py" line="245"/>
       <source>Rotate</source>
       <translation>회전하기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="333"/>
+      <location filename="../../ArchPanel.py" line="334"/>
       <source>Create Panel Cut</source>
       <translation>패널 절단 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="359"/>
+      <location filename="../../ArchPanel.py" line="360"/>
       <source>Create Panel Sheet</source>
       <translation>패널 시트 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="727"/>
+      <location filename="../../ArchPanel.py" line="728"/>
       <source>Error computing shape of</source>
       <translation>모양 에러 계산</translation>
     </message>
@@ -3017,172 +2965,172 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>면이 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="83"/>
+      <location filename="../../ArchCurtainWall.py" line="84"/>
       <source>Curtain Wall</source>
       <translation>외벽</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="117"/>
-      <location filename="../../ArchCurtainWall.py" line="144"/>
+      <location filename="../../ArchCurtainWall.py" line="118"/>
+      <location filename="../../ArchCurtainWall.py" line="145"/>
       <source>Create Curtain Wall</source>
       <translation>외벽 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="59"/>
+      <location filename="../../ArchPipe.py" line="61"/>
       <source>Pipe</source>
       <translation>파이프</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="90"/>
+      <location filename="../../ArchPipe.py" line="91"/>
       <source>Connector</source>
       <translation>커넥터</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="123"/>
-      <location filename="../../ArchPipe.py" line="130"/>
+      <location filename="../../ArchPipe.py" line="124"/>
+      <location filename="../../ArchPipe.py" line="131"/>
       <source>Create Pipe</source>
       <translation>파이프 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="160"/>
+      <location filename="../../ArchPipe.py" line="161"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
       <translation>파이프 객체를 정확히 2개 또는 3개 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="165"/>
+      <location filename="../../ArchPipe.py" line="166"/>
       <source>Please select only Pipe objects</source>
       <translation>파이프 객체만 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="169"/>
+      <location filename="../../ArchPipe.py" line="170"/>
       <source>Create Connector</source>
       <translation>새 연결기 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="225"/>
+      <location filename="../../ArchPipe.py" line="226"/>
       <source>Unable to build the base path</source>
       <translation>기본 경로를 빌드할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="241"/>
+      <location filename="../../ArchPipe.py" line="242"/>
       <source>Unable to build the profile</source>
       <translation>프로파일을 빌드할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="273"/>
+      <location filename="../../ArchPipe.py" line="274"/>
       <source>Unable to build the pipe</source>
       <translation>파이프를 빌드할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="292"/>
+      <location filename="../../ArchPipe.py" line="293"/>
       <source>The base object is not a Part</source>
       <translation>기본 객체가 부품이 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="295"/>
+      <location filename="../../ArchPipe.py" line="296"/>
       <source>Too many wires in the base shape</source>
       <translation>기본 형상에 와이어가 너무 많음</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="298"/>
+      <location filename="../../ArchPipe.py" line="299"/>
       <source>The base wire is closed</source>
       <translation>베이스 와이어가 닫혀 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="312"/>
+      <location filename="../../ArchPipe.py" line="313"/>
       <source>The profile is not a 2D Part</source>
       <translation>프로필이 2D 부품이 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="315"/>
+      <location filename="../../ArchPipe.py" line="316"/>
       <source>The profile is not closed</source>
       <translation>프로필이 닫히지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="386"/>
+      <location filename="../../ArchPipe.py" line="387"/>
       <source>Only the 3 first wires will be connected</source>
       <translation>3개의 첫 번째 와이어만 연결됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="406"/>
-      <location filename="../../ArchPipe.py" line="453"/>
+      <location filename="../../ArchPipe.py" line="407"/>
+      <location filename="../../ArchPipe.py" line="454"/>
       <source>Common vertex not found</source>
       <translation>공통 정점을 찾을 수 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="425"/>
+      <location filename="../../ArchPipe.py" line="426"/>
       <source>Pipes are already aligned</source>
       <translation>파이프가 이미 정렬되어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="465"/>
+      <location filename="../../ArchPipe.py" line="466"/>
       <source>At least 2 pipes must align</source>
       <translation>2개 이상의 파이프가 정렬되어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="117"/>
+      <location filename="../../ArchSchedule.py" line="119"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
       <translation>속성 'Result'를 제거하고 속성 'AutoUpdate'를 추가했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="119"/>
+      <location filename="../../ArchSchedule.py" line="121"/>
       <source>added property 'Schedule'</source>
       <translation>속성 'Schedule'을 추가했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="360"/>
+      <location filename="../../ArchSchedule.py" line="362"/>
       <source>Unable to retrieve value from object</source>
       <translation>객체에서 값을 얻을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="460"/>
+      <location filename="../../ArchSchedule.py" line="462"/>
       <source>Remove spreadsheet</source>
       <translation>스프레드시트 삭제</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="462"/>
+      <location filename="../../ArchSchedule.py" line="464"/>
       <source>Attach spreadsheet</source>
       <translation>스프레드시트 첨부</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="588"/>
+      <location filename="../../ArchSchedule.py" line="589"/>
       <source>Import CSV file</source>
       <translation>CSV 파일 가져오기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="621"/>
+      <location filename="../../ArchSchedule.py" line="622"/>
       <source>Export CSV file</source>
       <translation>CSV 파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1104"/>
+      <location filename="../../ArchCommands.py" line="1099"/>
       <source>Export CSV File</source>
       <translation>CSV 파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="642"/>
+      <location filename="../../ArchSchedule.py" line="643"/>
       <source>Unable to recognize that file type</source>
       <translation>해당 파일 형식을 인식할 수 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1015"/>
-      <location filename="../../ArchSchedule.py" line="664"/>
-      <location filename="../../ArchSchedule.py" line="682"/>
+      <location filename="../../ArchSchedule.py" line="665"/>
+      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1637"/>
-      <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchSchedule.py" line="664"/>
-      <location filename="../../ArchSchedule.py" line="682"/>
+      <location filename="../../ArchSchedule.py" line="665"/>
+      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchComponent.py" line="2011"/>
+      <location filename="../../ArchCommands.py" line="1631"/>
       <source>Value</source>
       <translation>값</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1638"/>
-      <location filename="../../ArchSchedule.py" line="664"/>
-      <location filename="../../ArchSchedule.py" line="682"/>
+      <location filename="../../ArchSchedule.py" line="665"/>
+      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchCommands.py" line="1632"/>
       <source>Unit</source>
       <translation>단위</translation>
     </message>
@@ -3192,7 +3140,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>일정</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="154"/>
+      <location filename="../../ArchFloor.py" line="155"/>
       <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
 
 Floor object is not allowed to accept Site, Building, or Floor objects.
@@ -3209,7 +3157,7 @@ Floor 객체는 Site, Building 또는 Floor 객체를 허용할 수 없습니다
 기본 설정에서 변경할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="158"/>
+      <location filename="../../ArchFloor.py" line="159"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
@@ -3218,37 +3166,37 @@ Floor creation aborted.</source>
 바닥 생성이 중단되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="165"/>
+      <location filename="../../ArchFloor.py" line="166"/>
       <source>Create Floor</source>
       <translation>바닥 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="99"/>
+      <location filename="../../ArchAxis.py" line="101"/>
       <source>Create Axis</source>
       <translation>축 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="807"/>
+      <location filename="../../ArchAxis.py" line="809"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>축간 거리(mm) 및 각도(도)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchAxis.py" line="810"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="809"/>
+      <location filename="../../ArchAxis.py" line="811"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="810"/>
+      <location filename="../../ArchAxis.py" line="812"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="811"/>
+      <location filename="../../ArchAxis.py" line="813"/>
       <source>Label</source>
       <translation>레이블</translation>
     </message>
@@ -3263,248 +3211,248 @@ Floor creation aborted.</source>
       <translation>가져오기 성공</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="928"/>
+      <location filename="../../ArchComponent.py" line="930"/>
       <source>Error computing the shape of this object</source>
       <translation>이 개체의 모양을 계산하는 데에 오류가 생겼습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="949"/>
+      <location filename="../../ArchComponent.py" line="951"/>
       <source>has no solid</source>
       <translation>솔리드가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="956"/>
+      <location filename="../../ArchComponent.py" line="958"/>
       <source>has an invalid shape</source>
       <translation>유효하지 않은 도형이 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="958"/>
-      <location filename="../../ArchPrecast.py" line="128"/>
-      <location filename="../../ArchPrecast.py" line="244"/>
-      <location filename="../../ArchPrecast.py" line="322"/>
-      <location filename="../../ArchPrecast.py" line="454"/>
-      <location filename="../../ArchPrecast.py" line="582"/>
-      <location filename="../../ArchPrecast.py" line="679"/>
+      <location filename="../../ArchPrecast.py" line="130"/>
+      <location filename="../../ArchPrecast.py" line="246"/>
+      <location filename="../../ArchPrecast.py" line="324"/>
+      <location filename="../../ArchPrecast.py" line="456"/>
+      <location filename="../../ArchPrecast.py" line="584"/>
+      <location filename="../../ArchPrecast.py" line="681"/>
+      <location filename="../../ArchComponent.py" line="960"/>
       <source>has a null shape</source>
       <translation>널 모양이 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1510"/>
-      <location filename="../../ArchSite.py" line="941"/>
+      <location filename="../../ArchSite.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="1512"/>
       <source>Toggle subcomponents</source>
       <translation>하위 구성요소 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1636"/>
+      <location filename="../../ArchComponent.py" line="1638"/>
       <source>Closing Sketch edit</source>
       <translation>스케치 편집 종료</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="216"/>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchCommands.py" line="214"/>
       <source>Component</source>
       <translation>구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Components of this object</source>
       <translation>이 객체의 구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Base component</source>
       <translation>기본 구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Additions</source>
       <translation>추가</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Subtractions</source>
       <translation>감산</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Objects</source>
       <translation>오브젝트</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1954"/>
+      <location filename="../../ArchComponent.py" line="1956"/>
       <source>Fixtures</source>
       <translation>설치물</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1955"/>
+      <location filename="../../ArchComponent.py" line="1957"/>
       <source>Group</source>
       <translation>그룹</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1956"/>
+      <location filename="../../ArchComponent.py" line="1958"/>
       <source>Hosts</source>
       <translation>호스트</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1957"/>
+      <location filename="../../ArchComponent.py" line="1959"/>
       <source>Edit IFC properties</source>
       <translation>IFC 속성 편집</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1958"/>
+      <location filename="../../ArchComponent.py" line="1960"/>
       <source>Edit standard code</source>
       <translation>표준코드 편집</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2007"/>
+      <location filename="../../ArchComponent.py" line="2009"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2012"/>
+      <location filename="../../ArchComponent.py" line="2014"/>
       <source>Add property...</source>
       <translation>속성 추가하기...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2013"/>
+      <location filename="../../ArchComponent.py" line="2015"/>
       <source>Add property set...</source>
       <translation>속성 집합 추가...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2014"/>
+      <location filename="../../ArchComponent.py" line="2016"/>
       <source>New...</source>
       <translation>새로 만들기...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2152"/>
+      <location filename="../../ArchComponent.py" line="2154"/>
       <source>New property</source>
       <translation>새로운 속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2187"/>
+      <location filename="../../ArchComponent.py" line="2189"/>
       <source>New property set</source>
       <translation>새로운 속성 집합</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="64"/>
+      <location filename="../../ArchRebar.py" line="65"/>
       <source>Rebar</source>
       <translation>철근</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="130"/>
-      <location filename="../../ArchRebar.py" line="151"/>
+      <location filename="../../ArchRebar.py" line="131"/>
+      <location filename="../../ArchRebar.py" line="152"/>
       <source>Create Rebar</source>
       <translation>보강 철근 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="158"/>
+      <location filename="../../ArchRebar.py" line="159"/>
       <source>Please select a base face on a structural object</source>
       <translation>구조물 객체의 기본 면을 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="68"/>
+      <location filename="../../ArchSectionPlane.py" line="70"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="844"/>
+      <location filename="../../ArchSectionPlane.py" line="846"/>
       <source>Create Section Plane</source>
       <translation>단면 평면을 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1199"/>
       <source>Toggle Cutview</source>
       <translation>절단 뷰 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1374"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Section plane settings</source>
       <translation>단면 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1376"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>위 목록에서 강조 표시된 객체 제거</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1377"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Add selected</source>
       <translation>선택한 항목 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1378"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>선택한 객체를 이 섹션 평면의 범위에 추가합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1379"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Objects seen by this section plane:</source>
       <translation>이 섹션 평면에서 볼 수 있는 객체:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1380"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Section plane placement:</source>
       <translation>단면 배치:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1381"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Rotate X</source>
       <translation>X 회전하기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1382"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <source>Rotates the plane along the X axis</source>
       <translation>X축을 따라 평면을 회전시킵니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1383"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Rotate Y</source>
       <translation>Y 회전하기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1384"/>
+      <location filename="../../ArchSectionPlane.py" line="1386"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Y축을 따라 평면을 회전시킵니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1385"/>
+      <location filename="../../ArchSectionPlane.py" line="1387"/>
       <source>Rotate Z</source>
       <translation>Z 회전하기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1386"/>
+      <location filename="../../ArchSectionPlane.py" line="1388"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Z축을 따라 평면을 회전시킵니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1387"/>
+      <location filename="../../ArchSectionPlane.py" line="1389"/>
       <source>Resize</source>
       <translation>사이즈 변경</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1388"/>
+      <location filename="../../ArchSectionPlane.py" line="1390"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>위 목록의 객체에 맞게 평면 크기를 조정합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1389"/>
+      <location filename="../../ArchSectionPlane.py" line="1391"/>
       <location filename="../../ArchWall.py" line="531"/>
       <source>Center</source>
       <translation>센터</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1390"/>
+      <location filename="../../ArchSectionPlane.py" line="1392"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>위 목록의 객체에 맞게 평면을 중앙에 맞춥니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="204"/>
-      <location filename="../../ArchBuildingPart.py" line="231"/>
+      <location filename="../../ArchBuildingPart.py" line="233"/>
+      <location filename="../../ArchBuilding.py" line="206"/>
       <source>Building</source>
       <translation>빌딩</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="246"/>
+      <location filename="../../ArchBuilding.py" line="247"/>
       <source>You can put anything but Site and Building objects in a Building object.
 
 Building object is not allowed to accept Site and Building objects.
@@ -3521,7 +3469,7 @@ Site 및 Building 객체가 선택 항목에서 제거됩니다.
 기본 설정에서 변경할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="250"/>
+      <location filename="../../ArchBuilding.py" line="251"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
@@ -3530,17 +3478,17 @@ Building creation aborted.</source>
 빌딩 생성이 중단되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="257"/>
+      <location filename="../../ArchBuilding.py" line="258"/>
       <source>Create Building</source>
       <translation>건물 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="186"/>
+      <location filename="../../ArchSpace.py" line="187"/>
       <source>Space</source>
       <translation>공간</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="241"/>
+      <location filename="../../ArchSpace.py" line="242"/>
       <source>Create Space</source>
       <translation>공간 만들기</translation>
     </message>
@@ -3555,12 +3503,12 @@ Building creation aborted.</source>
       <translation>공간 경계</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="111"/>
+      <location filename="../../ArchWall.py" line="112"/>
       <source>Wall</source>
       <translation>벽</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="118"/>
+      <location filename="../../ArchWall.py" line="119"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>벽은 Part 또는 Mesh 객체만 기준으로 할 수 있습니다</translation>
     </message>
@@ -3643,149 +3591,149 @@ Building creation aborted.</source>
       <translation>오류: 이 벽의 기본 객체를 수정할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1742"/>
+      <location filename="../../ArchWall.py" line="1752"/>
       <source>Flip direction</source>
       <translation>방향 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="410"/>
+      <location filename="../../ArchCommands.py" line="408"/>
       <source>Invalid cutplane</source>
       <translation>절단면이 유효하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="696"/>
+      <location filename="../../ArchCommands.py" line="691"/>
       <source>is not closed</source>
       <translation>가 닫히지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="698"/>
+      <location filename="../../ArchCommands.py" line="693"/>
       <source>is not valid</source>
       <translation>유효하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="700"/>
+      <location filename="../../ArchCommands.py" line="695"/>
       <source>doesn't contain any solid</source>
       <translation>모든 솔리드를 포함 하지 않는다</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="706"/>
+      <location filename="../../ArchCommands.py" line="701"/>
       <source>contains a non-closed solid</source>
       <translation>닫히지 않은 솔리드가 포함되어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="708"/>
+      <location filename="../../ArchCommands.py" line="703"/>
       <source>contains faces that are not part of any solid</source>
       <translation>모든 솔리드에 속하지 않는 면을 포함</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Survey</source>
       <translation>탐색</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Set description</source>
       <translation>설명 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Length</source>
       <translation>길이 복사</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Copy Area</source>
       <translation>범위 복사</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1014"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Export CSV</source>
       <translation>CSV로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1017"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Area</source>
       <translation>면적</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1062"/>
+      <location filename="../../ArchCommands.py" line="1057"/>
       <source>Total</source>
       <translation>합계</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1142"/>
+      <location filename="../../ArchCommands.py" line="1137"/>
       <source>Object doesn't have settable IFCData</source>
       <translation>객체에 설정 가능한 IFCD 데이터가 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1148"/>
+      <location filename="../../ArchCommands.py" line="1143"/>
       <source>Disabling Brep force flag of object</source>
       <translation>객체의 Brep force 플래그 비활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1151"/>
-      <location filename="../../ArchCommands.py" line="1154"/>
+      <location filename="../../ArchCommands.py" line="1146"/>
+      <location filename="../../ArchCommands.py" line="1149"/>
       <source>Enabling Brep force flag of object</source>
       <translation>객체의 Brep force 플래그 활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1349"/>
+      <location filename="../../ArchCommands.py" line="1344"/>
       <source>Add space boundary</source>
       <translation>공간 경계 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1353"/>
+      <location filename="../../ArchCommands.py" line="1348"/>
       <source>Grouping</source>
       <translation>그룹화</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1381"/>
+      <location filename="../../ArchCommands.py" line="1376"/>
       <source>Remove space boundary</source>
       <translation>공간 경계 제거</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1385"/>
+      <location filename="../../ArchCommands.py" line="1380"/>
       <source>Ungrouping</source>
       <translation>그룹 해제</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1416"/>
+      <location filename="../../ArchCommands.py" line="1411"/>
       <source>Split Mesh</source>
       <translation>메쉬 분할</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1456"/>
+      <location filename="../../ArchCommands.py" line="1450"/>
       <source>Mesh to Shape</source>
       <translation>메쉬에서 모양으로</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1537"/>
+      <location filename="../../ArchCommands.py" line="1531"/>
       <source>All good! No problems found</source>
       <translation>완벽합니다! 문제 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1589"/>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Create Component</source>
       <translation>구성 요소 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1635"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Key</source>
       <translation>키</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1645"/>
+      <location filename="../../ArchCommands.py" line="1639"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>객체에 IfcProperties 특성이 없습니다. 객체에 대한 스프레드시트 생성을 취소합니다:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1663"/>
+      <location filename="../../ArchCommands.py" line="1657"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC 속성 스프레드시트 만들기</translation>
     </message>
@@ -3832,140 +3780,140 @@ Building creation aborted.</source>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchStructure.py" line="675"/>
-      <location filename="../../ArchStructure.py" line="1352"/>
+      <location filename="../../ArchStructure.py" line="674"/>
+      <location filename="../../ArchStructure.py" line="1351"/>
       <source>An optional extrusion path for this element</source>
       <translation>이 엘리먼트의 선택 가능한 압출 경로</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="677"/>
+      <location filename="../../ArchStructure.py" line="676"/>
       <source>The computed length of the extrusion path</source>
       <translation>돌출 경로의 계산된 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="679"/>
+      <location filename="../../ArchStructure.py" line="678"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>돌출 경로를 따라 거리 띄우기 시작(양수: 확장, 음수: 축소)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="681"/>
+      <location filename="../../ArchStructure.py" line="680"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>돌출 경로를 따라 거리 띄우기 종료(양수: 확장, 음수: 축소)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="683"/>
+      <location filename="../../ArchStructure.py" line="682"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
       <translation>구조물의 바닥면을 도구 축에 수직으로 자동 정렬</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="685"/>
+      <location filename="../../ArchStructure.py" line="684"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>바닥면 원점과 도구 축 사이의 X 오프셋 (도구에 수직인 바닥면이 참인 경우에만 사용됨)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="687"/>
+      <location filename="../../ArchStructure.py" line="686"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>바닥면 원점과 도구 축 사이의 Y 오프셋 (도구에 수직인 바닥면이 참인 경우에만 사용됨)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="689"/>
+      <location filename="../../ArchStructure.py" line="688"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Y 축을 따라 베이스를 미러링합니다(BasePerpendicularToTool 이 참인 경우에만 사용)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="691"/>
+      <location filename="../../ArchStructure.py" line="690"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>공구 축을 중심으로 한 베이스 회전(BasePerpendicularToTool 이 참인 경우에만 사용)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="391"/>
-      <location filename="../../ArchStructure.py" line="693"/>
+      <location filename="../../ArchStructure.py" line="692"/>
+      <location filename="../../ArchPanel.py" line="392"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>프로파일에서 지원하지 않는 경우, 엘리먼트의 길이임.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="393"/>
-      <location filename="../../ArchStructure.py" line="695"/>
+      <location filename="../../ArchStructure.py" line="694"/>
+      <location filename="../../ArchPanel.py" line="394"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>프로파일에서 지원하지 않는 경우, 엘리먼트의 폭임.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="697"/>
+      <location filename="../../ArchStructure.py" line="696"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>엘리먼트의 높이 또는 돌출 깊이, 자동은 0를 유지합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="420"/>
-      <location filename="../../ArchStructure.py" line="699"/>
+      <location filename="../../ArchStructure.py" line="698"/>
+      <location filename="../../ArchPanel.py" line="421"/>
       <location filename="../../ArchWall.py" line="757"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>객체의 일반적인 돌출 방향(자동의 경우 (0,0,0) 를 유지)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="68"/>
-      <location filename="../../ArchStructure.py" line="701"/>
+      <location filename="../../ArchStructure.py" line="700"/>
+      <location filename="../../ArchPrecast.py" line="70"/>
       <source>The structural nodes of this element</source>
       <translation>이 원소의 구조적 노드</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="703"/>
+      <location filename="../../ArchStructure.py" line="702"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>이 엘리먼트의 기준이 되는 표준 프로파일에 대한 설명</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="705"/>
+      <location filename="../../ArchStructure.py" line="704"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>중심선과 노드 선 사이의 오프셋 거리</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="417"/>
-      <location filename="../../ArchStructure.py" line="707"/>
+      <location filename="../../ArchStructure.py" line="706"/>
+      <location filename="../../ArchPanel.py" line="418"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>이 객체의 프로파일을 작성하는 데 사용할 페이스메이커 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="710"/>
-      <location filename="../../ArchStructure.py" line="718"/>
+      <location filename="../../ArchStructure.py" line="709"/>
+      <location filename="../../ArchStructure.py" line="717"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
       <translation>기본적으로 기본 쉐이프의 모든 모서리를 사용하는 대신, 이 아치 구조의 모양을 만드는 데 사용할 기본 ArchSketch의 선택된 모서리(또는 모서리 그룹). 입력은 모서리 또는 그룹의 인덱스 번호입니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1043"/>
+      <location filename="../../ArchStructure.py" line="1042"/>
       <source>If the nodes are visible or not</source>
       <translation>노드가 표시되는지 여부</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1045"/>
+      <location filename="../../ArchStructure.py" line="1044"/>
       <source>The width of the nodes line</source>
       <translation>노드 선의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1047"/>
+      <location filename="../../ArchStructure.py" line="1046"/>
       <source>The size of the node points</source>
       <translation>노드 점의 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1050"/>
+      <location filename="../../ArchStructure.py" line="1049"/>
       <source>The color of the nodes line</source>
       <translation>노드 선의 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1053"/>
+      <location filename="../../ArchStructure.py" line="1052"/>
       <source>The type of structural node</source>
       <translation>구조 노드의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1387"/>
+      <location filename="../../ArchStructure.py" line="1386"/>
       <source>Axes systems this structure is built on</source>
       <translation>축 시스템은 이 구조물을 기반으로 합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1388"/>
+      <location filename="../../ArchStructure.py" line="1387"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>이 구조가 축을 기준으로 할 때 제외할 엘리먼트 번호</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1389"/>
+      <location filename="../../ArchStructure.py" line="1388"/>
       <source>If true the element are aligned with axes</source>
       <translation>참이면 엘리먼트가 축과 정렬됩니다</translation>
     </message>
@@ -3981,7 +3929,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="316"/>
-      <location filename="../../ArchMaterial.py" line="296"/>
+      <location filename="../../ArchMaterial.py" line="298"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>표준 코드(MasterFormat, OmniClass,...)</translation>
     </message>
@@ -3996,170 +3944,170 @@ Building creation aborted.</source>
       <translation>이 장비에 필요한 와트 단위 전력</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="280"/>
-      <location filename="../../ArchBuildingPart.py" line="232"/>
-      <location filename="../../ArchBuildingPart.py" line="256"/>
+      <location filename="../../ArchBuildingPart.py" line="234"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
       <translation>건물의 종류</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="331"/>
-      <location filename="../../ArchFloor.py" line="208"/>
+      <location filename="../../ArchBuildingPart.py" line="333"/>
+      <location filename="../../ArchFloor.py" line="209"/>
       <source>The height of this object</source>
       <translation>이 객체의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="333"/>
+      <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects</source>
       <translation>참이면 높이 값이 포함된 객체로 전파됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="336"/>
+      <location filename="../../ArchBuildingPart.py" line="338"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation>이 레벨의 (0,0,0) 지점의 레벨</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="338"/>
-      <location filename="../../ArchFloor.py" line="210"/>
+      <location filename="../../ArchBuildingPart.py" line="340"/>
+      <location filename="../../ArchFloor.py" line="211"/>
       <source>The computed floor area of this floor</source>
       <translation>이 층의 계산된 바닥 면적</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="340"/>
-      <location filename="../../ArchComponent.py" line="203"/>
+      <location filename="../../ArchBuildingPart.py" line="342"/>
+      <location filename="../../ArchComponent.py" line="205"/>
       <source>An optional description for this component</source>
       <translation>이 구성 요소에 대한 선택적 설명</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="342"/>
-      <location filename="../../ArchComponent.py" line="205"/>
+      <location filename="../../ArchBuildingPart.py" line="344"/>
+      <location filename="../../ArchComponent.py" line="207"/>
       <source>An optional tag for this component</source>
       <translation>이 구성 요소의 선택적 태그</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="344"/>
-      <location filename="../../ArchSectionPlane.py" line="865"/>
+      <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>The shape of this object</source>
       <translation>이 객체의 모양</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="346"/>
+      <location filename="../../ArchBuildingPart.py" line="348"/>
       <source>This property stores an inventor representation for this object</source>
       <translation>이 속성은 이 객체에 대한 발명가 표현을 저장합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="349"/>
+      <location filename="../../ArchBuildingPart.py" line="351"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
       <translation>참일 경우 다른 파일에서 참조할 때 이 객체가 솔리드만 수집합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="352"/>
+      <location filename="../../ArchBuildingPart.py" line="354"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
       <translation>재료 이름:SolidIndexesList 다른 파일에서 이 개체를 참조할 때 사용할 솔리드 인덱스와 재료 이름을 연관시키는 맵</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="551"/>
-      <location filename="../../ArchSectionPlane.py" line="954"/>
+      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchSectionPlane.py" line="956"/>
       <source>The line width of this object</source>
       <translation>이 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="554"/>
+      <location filename="../../ArchBuildingPart.py" line="556"/>
       <source>An optional unit to express levels</source>
       <translation>레벨들을 나타내는 추가적인 단위들</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="558"/>
       <source>A transformation to apply to the level mark</source>
       <translation>레벨 표시에 적용할 변환</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="561"/>
       <source>If true, show the level</source>
       <translation>참이면 레벨을 표시합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="562"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <source>If true, show the unit on the level tag</source>
       <translation>참일 경우 레벨 태그에 단위를 표시합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="566"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>참일 경우 디스플레이 오프셋이 원점 표시에도 영향을 미칩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, the object's label is displayed</source>
       <translation>참이면 객체의 레이블이 표시됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="571"/>
       <source>The font to be used for texts</source>
       <translation>문자열에 사용할 폰트</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="572"/>
+      <location filename="../../ArchBuildingPart.py" line="574"/>
       <source>The font size of texts</source>
       <translation>글자의 글꼴 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="575"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>The individual face colors</source>
       <translation>각각의 표면 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="579"/>
+      <location filename="../../ArchBuildingPart.py" line="581"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>참일 경우, 활성화되면 작업 평면이 자동으로 이 레벨에 맞춰집니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="582"/>
+      <location filename="../../ArchBuildingPart.py" line="584"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>True로 설정하면 작업 평면이 자동 모드로 유지됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="586"/>
       <source>Camera position data associated with this object</source>
       <translation>이 객체와 연관된 카메라 위치 데이터</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="587"/>
+      <location filename="../../ArchBuildingPart.py" line="589"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>설정된 경우 이 객체에 저장된 보기가 더블 클릭으로 복원됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="589"/>
+      <location filename="../../ArchBuildingPart.py" line="591"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>True인 경우 트리에서 이 객체를 두 번 클릭하면 활성화됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="593"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>이 옵션을 활성화하면 이 객체의 발명자 표현이 FreeCAD 파일에 저장되어 경량 모드로 다른 파일에서 참조할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="597"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>활성화된 경우 이 객체의 발명자 표현을 저장하는 슬롯</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="600"/>
+      <location filename="../../ArchBuildingPart.py" line="602"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>참일 경우, 이 빌딩 파트에 포함된 객체가 선, 색상 및 투명도 설정을 채택할 것임을 보여줍니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The line width of child objects</source>
       <translation>이 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="605"/>
+      <location filename="../../ArchBuildingPart.py" line="607"/>
       <source>The line color of child objects</source>
       <translation>자식 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="609"/>
+      <location filename="../../ArchBuildingPart.py" line="610"/>
       <source>The shape color of child objects</source>
       <translation>자식 객체의 모양 색상</translation>
     </message>
@@ -4169,59 +4117,49 @@ Building creation aborted.</source>
       <translation>자식 객체의 투명도</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="617"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>Cut the view above this level</source>
       <translation>이 레벨 위의 뷰 잘라내기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="620"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>레벨 평면과 절단선 사이의 거리</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="622"/>
+      <location filename="../../ArchBuildingPart.py" line="623"/>
       <source>Turn cutting on when activating this level</source>
       <translation>이 레벨을 활성화할 때 컷팅을 켜십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="626"/>
+      <location filename="../../ArchBuildingPart.py" line="627"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>[XMin,YMin,ZMin,XMax,YMax,ZMax]로 표현되는 새로 생성된 객체의 캡처 박스</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="628"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Turns auto group box on/off</source>
       <translation>자동 그룹 박스 켜기/끄기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>Automatically set size from contents</source>
       <translation>내용에서 자동으로 크기 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="632"/>
+      <location filename="../../ArchBuildingPart.py" line="633"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>자동 크기 설정 시 사용할 여유</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="268"/>
+      <location filename="../../ArchProfile.py" line="269"/>
       <source>Outside Diameter</source>
       <translation>바깥 지름</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="269"/>
+      <location filename="../../ArchProfile.py" line="270"/>
       <source>Wall thickness</source>
       <translation>벽 두께</translation>
-    </message>
-    <message>
-      <location filename="../../ArchProfile.py" line="293"/>
-      <location filename="../../ArchProfile.py" line="327"/>
-      <location filename="../../ArchProfile.py" line="351"/>
-      <location filename="../../ArchProfile.py" line="384"/>
-      <location filename="../../ArchProfile.py" line="414"/>
-      <location filename="../../ArchProfile.py" line="441"/>
-      <source>Width of the beam</source>
-      <translation>빔의 너비</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="294"/>
@@ -4230,38 +4168,48 @@ Building creation aborted.</source>
       <location filename="../../ArchProfile.py" line="385"/>
       <location filename="../../ArchProfile.py" line="415"/>
       <location filename="../../ArchProfile.py" line="442"/>
+      <source>Width of the beam</source>
+      <translation>빔의 너비</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProfile.py" line="295"/>
+      <location filename="../../ArchProfile.py" line="329"/>
+      <location filename="../../ArchProfile.py" line="353"/>
+      <location filename="../../ArchProfile.py" line="386"/>
+      <location filename="../../ArchProfile.py" line="416"/>
+      <location filename="../../ArchProfile.py" line="443"/>
       <source>Height of the beam</source>
       <translation>빔 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="295"/>
-      <location filename="../../ArchProfile.py" line="443"/>
+      <location filename="../../ArchProfile.py" line="296"/>
+      <location filename="../../ArchProfile.py" line="444"/>
       <source>Thickness of the web</source>
       <translation>웹의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="296"/>
-      <location filename="../../ArchProfile.py" line="444"/>
+      <location filename="../../ArchProfile.py" line="297"/>
+      <location filename="../../ArchProfile.py" line="445"/>
       <source>Thickness of the flanges</source>
       <translation>플랜지 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="353"/>
+      <location filename="../../ArchProfile.py" line="354"/>
       <source>Thickness of the sides</source>
       <translation>변의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="386"/>
+      <location filename="../../ArchProfile.py" line="387"/>
       <source>Thickness of the webs</source>
       <translation>웹의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="387"/>
+      <location filename="../../ArchProfile.py" line="388"/>
       <source>Thickness of the flange</source>
       <translation>플랜지 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="416"/>
+      <location filename="../../ArchProfile.py" line="417"/>
       <source>Thickness of the legs</source>
       <translation>다리의 두께</translation>
     </message>
@@ -4317,20 +4265,20 @@ Building creation aborted.</source>
       <translation>매핑 웹 사이트에 이 사이트를 표시하는 URL</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="199"/>
       <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchComponent.py" line="201"/>
       <source>Other shapes that are appended to this object</source>
       <translation>이 객체에 덧붙인 다른 모양</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="201"/>
       <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchComponent.py" line="203"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>이 객체에서 뺀 다른 모양</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="224"/>
       <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>XY 평면 위에 이 오브젝트의 투영 면적</translation>
     </message>
@@ -4365,8 +4313,8 @@ Building creation aborted.</source>
       <translation>모형 (0,0,0) 원점과 지오 좌표로 표시된 점 사이의 선택적 오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="70"/>
       <location filename="../../ArchSite.py" line="643"/>
+      <location filename="../../ArchIFC.py" line="70"/>
       <source>The type of this object</source>
       <translation>이 객체의 유형</translation>
     </message>
@@ -4481,32 +4429,32 @@ Building creation aborted.</source>
       <translation>지붕 방향을 뒤집어야 하는지 여부를 지정합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="93"/>
+      <location filename="../../ArchReference.py" line="95"/>
       <source>The base file this component is built upon</source>
       <translation>이 구성 요소가 구축된 기본 파일</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="95"/>
+      <location filename="../../ArchReference.py" line="97"/>
       <source>The part to use from the base file</source>
       <translation>기본 파일에서 사용할 부분</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="97"/>
+      <location filename="../../ArchReference.py" line="99"/>
       <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
       <translation>참조된 객체가 현재 문서에 포함된 방식입니다. 'Normal'은 모양을 포함하고, 'Transient'는 개체를 끌 때 모양을 버립니다(파일 크기가 작습니다), 'Lightweight'는 모양을 가져오지 않고 OpenInventor 표현만 가져옵니다</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="105"/>
+      <location filename="../../ArchReference.py" line="107"/>
       <source>Fuse objects of same material</source>
       <translation>동일한 재료의 퓨즈 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="390"/>
+      <location filename="../../ArchReference.py" line="392"/>
       <source>The latest time stamp of the linked file</source>
       <translation>연결된 파일의 최신 타임스탬프</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="393"/>
+      <location filename="../../ArchReference.py" line="395"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>참인 경우 링크된 파일의 색상은 계속 업데이트됩니다</translation>
     </message>
@@ -4551,92 +4499,92 @@ Building creation aborted.</source>
       <translation>참이면 지오메트리가 융합되고 그렇지 않으면 컴파운드가 됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="599"/>
+      <location filename="../../ArchWindow.py" line="594"/>
       <source>The objects that host this window</source>
       <translation>이 창을 호스트하는 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="601"/>
+      <location filename="../../ArchWindow.py" line="596"/>
       <source>The components of this window</source>
       <translation>이 창의 구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="604"/>
+      <location filename="../../ArchWindow.py" line="599"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>이 창이 호스트 객체에 만드는 구멍의 깊이입니다. 0인 경우 값이 자동으로 계산됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="606"/>
+      <location filename="../../ArchWindow.py" line="601"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>이 창의 호스트에서 뺄 볼륨을 정의하는 선택적 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="608"/>
+      <location filename="../../ArchWindow.py" line="603"/>
       <source>The width of this window</source>
       <translation>이 창의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="610"/>
+      <location filename="../../ArchWindow.py" line="605"/>
       <source>The height of this window</source>
       <translation>이 창의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="612"/>
+      <location filename="../../ArchWindow.py" line="607"/>
       <source>The normal direction of this window</source>
       <translation>이 창의 법선 방향</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="614"/>
+      <location filename="../../ArchWindow.py" line="609"/>
       <source>The preset number this window is based on</source>
       <translation>이 창에 기반한 사전 설정 번호</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="617"/>
+      <location filename="../../ArchWindow.py" line="612"/>
       <source>The frame size of this window</source>
       <translation>이 창의 프레임 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="619"/>
+      <location filename="../../ArchWindow.py" line="614"/>
       <source>The offset size of this window</source>
       <translation>이 창의 오프셋 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="621"/>
+      <location filename="../../ArchWindow.py" line="616"/>
       <source>The area of this window</source>
       <translation>이 창의 영역</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="623"/>
+      <location filename="../../ArchWindow.py" line="618"/>
       <source>The width of louvre elements</source>
       <translation>루브르 엘리먼트의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="625"/>
+      <location filename="../../ArchWindow.py" line="620"/>
       <source>The space between louvre elements</source>
       <translation>루브르 엘리먼트 사이의 공간</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="627"/>
+      <location filename="../../ArchWindow.py" line="622"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>힌지가 정의된 하위 구성 요소를 엽니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="629"/>
+      <location filename="../../ArchWindow.py" line="624"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>홀을 정의하는 와이어의 수. 0인 경우 값이 자동으로 계산됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="631"/>
+      <location filename="../../ArchWindow.py" line="626"/>
       <source>Shows plan opening symbols if available</source>
       <translation>사용 가능한 경우 평면 열림 기호 표시</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="633"/>
+      <location filename="../../ArchWindow.py" line="628"/>
       <source>Show elevation opening symbols if available</source>
       <translation>사용 가능한 경우 고도 열림 기호 표시</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1549"/>
+      <location filename="../../ArchWindow.py" line="1553"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>구멍을 정의하는 와이어의 수. 값이 0이면 자동입니다</translation>
     </message>
@@ -4726,159 +4674,159 @@ Building creation aborted.</source>
       <translation>로드 그리는 방법</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="265"/>
+      <location filename="../../ArchStairs.py" line="264"/>
       <source>The length of these stairs, if no baseline is defined</source>
       <translation>기준선이 정의되지 않은 경우 이 계단의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="267"/>
+      <location filename="../../ArchStairs.py" line="266"/>
       <source>The width of these stairs</source>
       <translation>이 계단의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="269"/>
+      <location filename="../../ArchStairs.py" line="268"/>
       <source>The total height of these stairs</source>
       <translation>계단 전체 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="271"/>
+      <location filename="../../ArchStairs.py" line="270"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
       <translation>해당되는 경우 기준선에 맞춘 계단의 정렬</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="276"/>
+      <location filename="../../ArchStairs.py" line="275"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
       <translation>랜딩의 너비(두 번째 모서리와 첫 번째 모서리는 너비 속성을 따릅니다)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="281"/>
+      <location filename="../../ArchStairs.py" line="280"/>
       <source>The number of risers in these stairs</source>
       <translation>이 계단의 라이저 수</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="283"/>
+      <location filename="../../ArchStairs.py" line="282"/>
       <source>The depth of the treads of these stairs</source>
       <translation>이 계단 트레드의 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="286"/>
+      <location filename="../../ArchStairs.py" line="285"/>
       <source>The height of the risers of these stairs</source>
       <translation>이 계단의 라이저 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="289"/>
+      <location filename="../../ArchStairs.py" line="288"/>
       <source>The size of the nosing</source>
       <translation>계단 코의 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="291"/>
+      <location filename="../../ArchStairs.py" line="290"/>
       <source>The thickness of the treads</source>
       <translation>트레드의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="293"/>
+      <location filename="../../ArchStairs.py" line="292"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
       <translation>Blondel 비율은 편안한 계단을 나타내며 62 ~ 64cm 또는 24.5 ~ 25.5인치여야 합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="297"/>
+      <location filename="../../ArchStairs.py" line="296"/>
       <source>The thickness of the risers</source>
       <translation>라이저의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="300"/>
+      <location filename="../../ArchStairs.py" line="299"/>
       <source>The depth of the landing of these stairs</source>
       <translation>이 계단의 랜딩 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="303"/>
+      <location filename="../../ArchStairs.py" line="302"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
       <translation>이 계단의 트레드 깊이 - 길이 또는 모서리의 길이에 관계없이 적용됨</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="305"/>
+      <location filename="../../ArchStairs.py" line="304"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
       <translation>계단의 라이저 높이 - 높이 또는 가장자리 높이에 관계없이 적용</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="308"/>
+      <location filename="../../ArchStairs.py" line="307"/>
       <source>The direction of flight after landing</source>
       <translation>착륙 후 비행방향</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="315"/>
+      <location filename="../../ArchStairs.py" line="314"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
       <translation>계단의 '절대' 꼭대기 층</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="318"/>
-      <location filename="../../ArchStairs.py" line="321"/>
+      <location filename="../../ArchStairs.py" line="317"/>
+      <location filename="../../ArchStairs.py" line="320"/>
       <source>The 'left outline' of stairs</source>
       <translation>계단의 '왼쪽 윤곽'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="342"/>
+      <location filename="../../ArchStairs.py" line="341"/>
       <source>The 'left outline' of all segments of stairs</source>
       <translation>계단의 모든 부분의 '왼쪽 윤곽'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="345"/>
+      <location filename="../../ArchStairs.py" line="344"/>
       <source>The 'right outline' of all segments of stairs</source>
       <translation>계단의 모든 부분의 '오른쪽 윤곽'</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="371"/>
+      <location filename="../../ArchStairs.py" line="370"/>
       <source>The type of landings of these stairs</source>
       <translation>이 계단의 랜딩 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="374"/>
+      <location filename="../../ArchStairs.py" line="373"/>
       <source>The type of winders in these stairs</source>
       <translation>이 계단의 와인더 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="377"/>
+      <location filename="../../ArchStairs.py" line="376"/>
       <source>The type of structure of these stairs</source>
       <translation>이 계단의 구조 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="380"/>
+      <location filename="../../ArchStairs.py" line="379"/>
       <source>The thickness of the massive structure or of the stringers</source>
       <translation>거대한 구조물 또는 스트링어의 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="382"/>
+      <location filename="../../ArchStairs.py" line="381"/>
       <source>The width of the stringers</source>
       <translation>스트링어의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="384"/>
+      <location filename="../../ArchStairs.py" line="383"/>
       <source>The offset between the border of the stairs and the structure</source>
       <translation>계단 경계와 구조물 사이의 오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="386"/>
-      <location filename="../../ArchStairs.py" line="1124"/>
+      <location filename="../../ArchStairs.py" line="385"/>
+      <location filename="../../ArchStairs.py" line="1123"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>트레드 바닥 위에 있는 스트링어의 겹침</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="388"/>
+      <location filename="../../ArchStairs.py" line="387"/>
       <source>The thickness of the lower floor slab</source>
       <translation>저층 슬래브 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="390"/>
+      <location filename="../../ArchStairs.py" line="389"/>
       <source>The thickness of the upper floor slab</source>
       <translation>상층 슬래브 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="392"/>
+      <location filename="../../ArchStairs.py" line="391"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
       <translation>저층 슬래브와 계단 시작부의 연결 형태</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="395"/>
+      <location filename="../../ArchStairs.py" line="394"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
       <translation>계단의 끝과 위층 슬래브 사이의 연결 형태</translation>
     </message>
@@ -4913,43 +4861,43 @@ Building creation aborted.</source>
       <translation>참이면 울타리는 원래 기둥과 섹션처럼 색칠될 것입니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="294"/>
-      <location filename="../../ArchMaterial.py" line="742"/>
+      <location filename="../../ArchMaterial.py" line="296"/>
+      <location filename="../../ArchMaterial.py" line="744"/>
       <source>A description for this material</source>
       <translation>이 재질에 대한 설명</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="298"/>
+      <location filename="../../ArchMaterial.py" line="300"/>
       <source>A URL where to find information about this material</source>
       <translation>이 자료에 대한 정보를 찾을 수 있는 URL</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="300"/>
+      <location filename="../../ArchMaterial.py" line="302"/>
       <source>The transparency value of this material</source>
       <translation>이 재질의 투명도</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="302"/>
+      <location filename="../../ArchMaterial.py" line="304"/>
       <source>The color of this material</source>
       <translation>색깔</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="304"/>
+      <location filename="../../ArchMaterial.py" line="306"/>
       <source>The color of this material when cut</source>
       <translation>자를 때 이 재료의 색</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="745"/>
       <source>The list of layer names</source>
       <translation>레이어 이름 목록</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="744"/>
+      <location filename="../../ArchMaterial.py" line="746"/>
       <source>The list of layer materials</source>
       <translation>레이어 재료 목록</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="745"/>
+      <location filename="../../ArchMaterial.py" line="747"/>
       <source>The list of layer thicknesses</source>
       <translation>레이어 두께 목록</translation>
     </message>
@@ -4970,237 +4918,237 @@ Building creation aborted.</source>
       <translation>IFC 속성에 대한 설명이 아직 구현되지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="62"/>
+      <location filename="../../ArchPrecast.py" line="64"/>
       <source>The length of this element</source>
       <translation>이 엘리먼트의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="64"/>
+      <location filename="../../ArchPrecast.py" line="66"/>
       <source>The width of this element</source>
       <translation>이 엘리먼트의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="66"/>
+      <location filename="../../ArchPrecast.py" line="68"/>
       <source>The height of this element</source>
       <translation>이 엘리먼트의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="96"/>
-      <location filename="../../ArchPrecast.py" line="284"/>
-      <location filename="../../ArchPrecast.py" line="425"/>
+      <location filename="../../ArchPrecast.py" line="98"/>
+      <location filename="../../ArchPrecast.py" line="286"/>
+      <location filename="../../ArchPrecast.py" line="427"/>
       <source>The size of the chamfer of this element</source>
       <translation>이 엘리먼트의 챔퍼 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="98"/>
+      <location filename="../../ArchPrecast.py" line="100"/>
       <source>The dent length of this element</source>
       <translation>이 엘리먼트의 덴트 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="100"/>
-      <location filename="../../ArchPrecast.py" line="429"/>
+      <location filename="../../ArchPrecast.py" line="102"/>
+      <location filename="../../ArchPrecast.py" line="431"/>
       <source>The dent height of this element</source>
       <translation>이 엘리먼트의 덴트 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="102"/>
-      <location filename="../../ArchPrecast.py" line="294"/>
+      <location filename="../../ArchPrecast.py" line="104"/>
+      <location filename="../../ArchPrecast.py" line="296"/>
       <source>The dents of this element</source>
       <translation>이 엘리먼트의 덴트</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="218"/>
+      <location filename="../../ArchPrecast.py" line="220"/>
       <source>The chamfer length of this element</source>
       <translation>이 엘리먼트의 챔퍼 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="220"/>
+      <location filename="../../ArchPrecast.py" line="222"/>
       <source>The base length of this element</source>
       <translation>이 엘리먼트의 기본 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="286"/>
+      <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove depth of this element</source>
       <translation>이 엘리먼트의 홈 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="288"/>
+      <location filename="../../ArchPrecast.py" line="290"/>
       <source>The groove height of this element</source>
       <translation>이 엘리먼트의 홈 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="290"/>
+      <location filename="../../ArchPrecast.py" line="292"/>
       <source>The spacing between the grooves of this element</source>
       <translation>이 엘리먼트의 홈 사이 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="292"/>
+      <location filename="../../ArchPrecast.py" line="294"/>
       <source>The number of grooves of this element</source>
       <translation>이 엘리먼트의 홈 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="427"/>
+      <location filename="../../ArchPrecast.py" line="429"/>
       <source>The dent width of this element</source>
       <translation>이 엘리먼트의 덴트 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="536"/>
+      <location filename="../../ArchPrecast.py" line="538"/>
       <source>The type of this slab</source>
       <translation>이 슬래브의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="539"/>
+      <location filename="../../ArchPrecast.py" line="541"/>
       <source>The size of the base of this element</source>
       <translation>이 엘리먼트의 밑면 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="541"/>
+      <location filename="../../ArchPrecast.py" line="543"/>
       <source>The number of holes in this element</source>
       <translation>이 엘리먼트의 구멍 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="543"/>
+      <location filename="../../ArchPrecast.py" line="545"/>
       <source>The major radius of the holes of this element</source>
       <translation>이 엘리먼트의 구멍의 주요 반지름</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="545"/>
+      <location filename="../../ArchPrecast.py" line="547"/>
       <source>The minor radius of the holes of this element</source>
       <translation>이 엘리먼트의 구멍의 작은 반지름</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="547"/>
+      <location filename="../../ArchPrecast.py" line="549"/>
       <source>The spacing between the holes of this element</source>
       <translation>이 엘리먼트의 구멍 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="647"/>
+      <location filename="../../ArchPrecast.py" line="649"/>
       <source>The length of the down floor of this element</source>
       <translation>이 엘리먼트의 아래쪽 바닥 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="649"/>
+      <location filename="../../ArchPrecast.py" line="651"/>
       <source>The number of risers in this element</source>
       <translation>이 엘리먼트의 라이저 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="651"/>
+      <location filename="../../ArchPrecast.py" line="653"/>
       <source>The riser height of this element</source>
       <translation>이 엘리먼트의 라이저 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="653"/>
+      <location filename="../../ArchPrecast.py" line="655"/>
       <source>The tread depth of this element</source>
       <translation>이 엘리먼트의 트레드 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="395"/>
+      <location filename="../../ArchPanel.py" line="396"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>이 엘리먼트의 두께 또는 돌출 깊이</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="397"/>
+      <location filename="../../ArchPanel.py" line="398"/>
       <source>The number of sheets to use</source>
       <translation>사용할 시트 수</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="400"/>
+      <location filename="../../ArchPanel.py" line="401"/>
       <source>The offset between this panel and its baseline</source>
       <translation>이 패널과 기준선 사이의 오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="402"/>
+      <location filename="../../ArchPanel.py" line="403"/>
       <source>The length of waves for corrugated elements</source>
       <translation>파형엘리먼트의 파형의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="404"/>
+      <location filename="../../ArchPanel.py" line="405"/>
       <source>The height of waves for corrugated elements</source>
       <translation>파형엘리먼트의 파형의 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="406"/>
+      <location filename="../../ArchPanel.py" line="407"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>파형엘리먼트의 파형의 수평오프셋</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="408"/>
+      <location filename="../../ArchPanel.py" line="409"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>파형엘리먼트의 파형의 방향</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="410"/>
+      <location filename="../../ArchPanel.py" line="411"/>
       <source>The type of waves for corrugated elements</source>
       <translation>파형요소에 대한 파형의 종류</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="413"/>
+      <location filename="../../ArchPanel.py" line="414"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>파동이 아래쪽에도 영향을 미치는 경우</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="415"/>
+      <location filename="../../ArchPanel.py" line="416"/>
       <source>The area of this panel</source>
       <translation>이 패널의 영역</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="822"/>
+      <location filename="../../ArchPanel.py" line="823"/>
       <source>The linked object</source>
       <translation>연결된 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="827"/>
+      <location filename="../../ArchPanel.py" line="828"/>
       <location filename="../../ArchPanel.py" line="1108"/>
       <source>The size of the tag text</source>
       <translation>태그 텍스트의 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="834"/>
+      <location filename="../../ArchPanel.py" line="835"/>
       <location filename="../../ArchPanel.py" line="1115"/>
       <source>The font of the tag text</source>
       <translation>태그 텍스트의 글꼴</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="824"/>
+      <location filename="../../ArchPanel.py" line="825"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>표시할 텍스트. 패널 태그 또는 레이블을 표시하려면 %tag%, %label% 또는 %description%가 될 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="830"/>
+      <location filename="../../ArchPanel.py" line="831"/>
       <location filename="../../ArchPanel.py" line="1111"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>그 텍스트의 위치. 중앙 위치는 (0,0,0) 유지</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="832"/>
+      <location filename="../../ArchPanel.py" line="833"/>
       <location filename="../../ArchPanel.py" line="1113"/>
       <source>The rotation of the tag text</source>
       <translation>태그 텍스트의 회전</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="837"/>
+      <location filename="../../ArchPanel.py" line="838"/>
       <location filename="../../ArchPanel.py" line="1127"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>참인 경우 객체는 가능하면 페이스로 렌더링됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="839"/>
+      <location filename="../../ArchPanel.py" line="840"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>시트에 올려놓을 때 이 객체가 회전할 수 있는 허용 각도</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="842"/>
+      <location filename="../../ArchPanel.py" line="843"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>절단면을 중심점에서 이동할 오프셋 값</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1015"/>
+      <location filename="../../ArchPanel.py" line="1016"/>
       <location filename="../../ArchPanel.py" line="1279"/>
       <source>A margin inside the boundary</source>
       <translation>경계 내부의 여백</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1017"/>
+      <location filename="../../ArchPanel.py" line="1018"/>
       <location filename="../../ArchPanel.py" line="1281"/>
       <source>Turns the display of the margin on/off</source>
       <translation>여백 표시를 켜기/끄기</translation>
@@ -5214,11 +5162,6 @@ Building creation aborted.</source>
       <location filename="../../ArchPanel.py" line="1106"/>
       <source>The tag text to display</source>
       <translation>표시할 태그 텍스트</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="1116"/>
-      <source>The font file</source>
-      <translation>글꼴 파일</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1118"/>
@@ -5371,461 +5314,461 @@ Building creation aborted.</source>
       <translation>이 객체가 수직/수평 방향을 추론할 때 사용하는 수직 방향 기준. 커튼월의 실제 수직 방향에 가깝게 유지합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="199"/>
+      <location filename="../../ArchPipe.py" line="200"/>
       <source>The diameter of this pipe, if not based on a profile</source>
       <translation>프로파일을 기반으로 하지 않는 경우 이 파이프의 지름</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="201"/>
+      <location filename="../../ArchPipe.py" line="202"/>
       <source>The length of this pipe, if not based on an edge</source>
       <translation>파이프의 가장자리를 기준으로 하지 않을 경우 파이프의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="203"/>
+      <location filename="../../ArchPipe.py" line="204"/>
       <source>An optional closed profile to base this pipe on</source>
       <translation>이 파이프의 선택 가능한 닫힌 프로파일</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="205"/>
+      <location filename="../../ArchPipe.py" line="206"/>
       <source>Offset from the start point</source>
       <translation>시작점에서부터 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="207"/>
+      <location filename="../../ArchPipe.py" line="208"/>
       <source>Offset from the end point</source>
       <translation>끝점에서부터 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="209"/>
+      <location filename="../../ArchPipe.py" line="210"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
       <translation>프로파일을 기반으로 하지 않을 경우 이 파이프의 벽 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="360"/>
+      <location filename="../../ArchPipe.py" line="361"/>
       <source>The curvature radius of this connector</source>
       <translation>이 커넥터의 곡률 반경</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="362"/>
+      <location filename="../../ArchPipe.py" line="363"/>
       <source>The pipes linked by this connector</source>
       <translation>이 커넥터에 연결된 파이프</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="364"/>
+      <location filename="../../ArchPipe.py" line="365"/>
       <source>The type of this connector</source>
       <translation>이 커넥터의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="124"/>
+      <location filename="../../ArchSchedule.py" line="126"/>
       <source>The description column</source>
       <translation>설명 열</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="126"/>
+      <location filename="../../ArchSchedule.py" line="128"/>
       <source>The values column</source>
       <translation>값 열</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="128"/>
+      <location filename="../../ArchSchedule.py" line="130"/>
       <source>The units column</source>
       <translation>단위 열</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="130"/>
+      <location filename="../../ArchSchedule.py" line="132"/>
       <source>The objects column</source>
       <translation>객체 열</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="132"/>
+      <location filename="../../ArchSchedule.py" line="134"/>
       <source>The filter column</source>
       <translation>필터 열</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="134"/>
+      <location filename="../../ArchSchedule.py" line="136"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
       <translation>참인 경우 결과가 포함된 스프레드시트가 필요할 때 다시 생성됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="138"/>
+      <location filename="../../ArchSchedule.py" line="140"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
       <translation>참인 경우, 문서가 재계산될 때마다 일정 및 관련 스프레드시트가 업데이트됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="150"/>
+      <location filename="../../ArchSchedule.py" line="152"/>
       <source>The Arch Schedule that uses this spreadsheet</source>
       <translation>이 스프레드시트를 사용하는 아치 스케줄</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="136"/>
+      <location filename="../../ArchSchedule.py" line="138"/>
       <source>If True, additional lines with each individual object are added to the results</source>
       <translation>참인 경우 각 개별 개체가 있는 추가 선이 결과에 추가됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="213"/>
-      <location filename="../../ArchSectionPlane.py" line="863"/>
+      <location filename="../../ArchFloor.py" line="214"/>
+      <location filename="../../ArchSectionPlane.py" line="865"/>
       <source>The placement of this object</source>
       <translation>이 객체의 배치</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="123"/>
+      <location filename="../../ArchAxis.py" line="125"/>
       <source>The intervals between axes</source>
       <translation>축 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="125"/>
+      <location filename="../../ArchAxis.py" line="127"/>
       <source>The angles of each axis</source>
       <translation>각 축의 각도</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="127"/>
+      <location filename="../../ArchAxis.py" line="129"/>
       <source>The label of each axis</source>
       <translation>각 축의 레이블</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="129"/>
+      <location filename="../../ArchAxis.py" line="131"/>
       <source>An optional custom bubble number</source>
       <translation>선택적 사용자 지정 버블 번호</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="131"/>
+      <location filename="../../ArchAxis.py" line="133"/>
       <source>The length of the axes</source>
       <translation>축의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="138"/>
+      <location filename="../../ArchAxis.py" line="140"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
       <translation>0이 아닌 경우 축은 하나의 전체 선이 아니라 주어진 길이의 두 줄로 표시됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="230"/>
+      <location filename="../../ArchAxis.py" line="232"/>
       <source>The size of the axis bubbles</source>
       <translation>축 버블의 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="233"/>
+      <location filename="../../ArchAxis.py" line="235"/>
       <source>The numbering style</source>
       <translation>번호 매기기 스타일</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="237"/>
+      <location filename="../../ArchAxis.py" line="239"/>
       <source>The type of line to draw this axis</source>
       <translation>이 축을 그리는 선의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="241"/>
+      <location filename="../../ArchAxis.py" line="243"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>이 축에 버블을 추가할 위치: 시작, 끝, 둘 다 또는 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="244"/>
+      <location filename="../../ArchAxis.py" line="246"/>
       <source>The line width to draw this axis</source>
       <translation>이 축을 그리는 선의 너비</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="247"/>
+      <location filename="../../ArchAxis.py" line="249"/>
       <source>The color of this axis</source>
       <translation>이 축의 색깔</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="250"/>
+      <location filename="../../ArchAxis.py" line="252"/>
       <source>The number of the first axis</source>
       <translation>첫 번째 축의 수</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="253"/>
+      <location filename="../../ArchAxis.py" line="255"/>
       <source>The font to use for texts</source>
       <translation>텍스트에 사용할 글꼴</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="256"/>
+      <location filename="../../ArchAxis.py" line="258"/>
       <source>The font size</source>
       <translation>글꼴 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="259"/>
+      <location filename="../../ArchAxis.py" line="261"/>
       <source>If true, show the labels</source>
       <translation>참이면 레이블을 표시합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="261"/>
+      <location filename="../../ArchAxis.py" line="263"/>
       <source>A transformation to apply to each label</source>
       <translation>각 레이블에 적용할 변환</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="195"/>
+      <location filename="../../ArchComponent.py" line="197"/>
       <source>The base object this component is built upon</source>
       <translation>이 구성 요소가 구축된 기본 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="197"/>
+      <location filename="../../ArchComponent.py" line="199"/>
       <source>The object this component is cloning</source>
       <translation>이 구성 요소가 복제 중인 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="207"/>
+      <location filename="../../ArchComponent.py" line="209"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
       <translation>이 구성요소에 대한 선택적 표준(OmniClass 등) 코드</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="209"/>
+      <location filename="../../ArchComponent.py" line="211"/>
       <source>A material for this object</source>
       <translation>이 객체의 재질</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="215"/>
+      <location filename="../../ArchComponent.py" line="217"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>이 객체를 이동할 때 베이스가 이동하는지 여부를 지정합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="218"/>
+      <location filename="../../ArchComponent.py" line="220"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>호스트가 이동될 때 이 객체를 함께 이동해야 하는지 여부를 지정합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="221"/>
+      <location filename="../../ArchComponent.py" line="223"/>
       <source>The area of all vertical faces of this object</source>
       <translation>이 객체의 모든 수직면의 면적</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="227"/>
+      <location filename="../../ArchComponent.py" line="229"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>수평 면적의 둘레 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>이 객체에 대한 고해상도 메쉬 또는 모양(선택 사항)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="232"/>
+      <location filename="../../ArchComponent.py" line="234"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>이 객체를 복제해야 하는 선택적 축 또는 축 시스템</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1176"/>
+      <location filename="../../ArchComponent.py" line="1178"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>사용 가능한 경우 재료 색상을 이 객체의 모양 색상으로 사용합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The diameter of the bar</source>
       <translation>막대 지름</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>빔의 경계와 첫 번째 막대(콘크리트 덮개) 사이의 거리.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="183"/>
+      <location filename="../../ArchRebar.py" line="184"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>빔의 경계와 마지막 막대(콘크리트 덮개) 사이의 거리.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="185"/>
+      <location filename="../../ArchRebar.py" line="186"/>
       <source>The amount of bars</source>
       <translation>막대의 양</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="187"/>
+      <location filename="../../ArchRebar.py" line="188"/>
       <source>The spacing between the bars</source>
       <translation>막대 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>철근에 걸쳐지는 총 거리. 호스트 모양 크기를 자동으로 사용하려면 0을 유지합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>막대를 펼 때 사용하는 방향. 자동 방향은 (0,0,0) 을 유지합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>베이스 프로파일의 각도에 적용할 필렛. 이 값에 막대 직경을 곱합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>List of placement of all the bars</source>
       <translation>모든 막대 배치 목록</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="198"/>
+      <location filename="../../ArchRebar.py" line="199"/>
       <source>The structure object that hosts this rebar</source>
       <translation>이 보강 철근을 호스트하는 구조 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="200"/>
+      <location filename="../../ArchRebar.py" line="201"/>
       <source>The custom spacing of rebar</source>
       <translation>철근의 사용자 정의 간격</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>Length of a single rebar</source>
       <translation>단일 철근의 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="205"/>
+      <location filename="../../ArchRebar.py" line="206"/>
       <source>Total length of all rebars</source>
       <translation>모든 철근의 총 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="212"/>
+      <location filename="../../ArchRebar.py" line="213"/>
       <source>The rebar mark</source>
       <translation>철근 표시</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="506"/>
+      <location filename="../../ArchRebar.py" line="507"/>
       <source>Shape of rebar</source>
       <translation>철근의 모양</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="869"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>이 단면 평면에서 고려해야 하는 객체입니다. 비어 있음은 문서 전체를 의미합니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="869"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>거짓일 경우, 솔리드가 아닌 것도 절단되어 잘못된 결과가 발생할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="872"/>
+      <location filename="../../ArchSectionPlane.py" line="874"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>참인 경우 결과 뷰가 단면 평면 영역으로 클립됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="874"/>
+      <location filename="../../ArchSectionPlane.py" line="876"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>참인 경우 객체 재료의 색상은 절단된 영역을 채우는 데 사용됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="879"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>이 값보다 더 먼 지오메트리는 절단됩니다. 무제한을 위해 0을 유지하십시오.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="936"/>
+      <location filename="../../ArchSectionPlane.py" line="938"/>
       <source>The display length of this section plane</source>
       <translation>이 단면 평면의 표시 길이</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="942"/>
+      <location filename="../../ArchSectionPlane.py" line="944"/>
       <source>The display height of this section plane</source>
       <translation>이 단면 평면의 표시 높이</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="948"/>
+      <location filename="../../ArchSectionPlane.py" line="950"/>
       <source>The size of the arrows of this section plane</source>
       <translation>이 단면 평면의 화살표 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="951"/>
+      <location filename="../../ArchSectionPlane.py" line="953"/>
       <source>The transparency of this object</source>
       <translation>이 객체의 투명도</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
-      <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchSectionPlane.py" line="959"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
       <source>Show the cut in the 3D view</source>
       <translation>3D 뷰에서 절단을 보여줍니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="959"/>
+      <location filename="../../ArchSectionPlane.py" line="961"/>
       <source>The color of this object</source>
       <translation>이 객체의 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>절단면과 실제 뷰 절단면 사이의 거리(이 값은 0이 아닌 매우 작게 유지)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Show the label in the 3D view</source>
       <translation>3D 뷰에서 레이블을 보여줍니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The name of the font</source>
       <translation>글꼴 이름</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <location filename="../../ArchSpace.py" line="521"/>
       <source>The size of the text font</source>
       <translation>텍스트 글꼴 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="275"/>
+      <location filename="../../ArchSpace.py" line="276"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>이 공간 객체의 경계를 이루는 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="277"/>
+      <location filename="../../ArchSpace.py" line="278"/>
       <source>The computed floor area of this space</source>
       <translation>이 공간의 계산된 바닥 면적</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="279"/>
+      <location filename="../../ArchSpace.py" line="280"/>
       <source>The finishing of the floor of this space</source>
       <translation>이 공간의 바닥 끝</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="281"/>
+      <location filename="../../ArchSpace.py" line="282"/>
       <source>The finishing of the walls of this space</source>
       <translation>이 공간의 벽 끝</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="283"/>
+      <location filename="../../ArchSpace.py" line="284"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>이 공간의 천장 끝</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="285"/>
+      <location filename="../../ArchSpace.py" line="286"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>가구와 같이 이 공간 안에 포함된 객체</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="287"/>
+      <location filename="../../ArchSpace.py" line="288"/>
       <source>The type of this space</source>
       <translation>이 공간의 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="290"/>
+      <location filename="../../ArchSpace.py" line="291"/>
       <source>The thickness of the floor finish</source>
       <translation>바닥 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="292"/>
+      <location filename="../../ArchSpace.py" line="293"/>
       <source>The number of people who typically occupy this space</source>
       <translation>일반적으로 이 공간을 차지하는 사람들의 수</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="294"/>
+      <location filename="../../ArchSpace.py" line="295"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>이 공간을 밝히는 데 필요한 와트 단위 전력</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="296"/>
+      <location filename="../../ArchSpace.py" line="297"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>이 공간의 장비에 필요한 와트 단위 전력</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="298"/>
+      <location filename="../../ArchSpace.py" line="299"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>참이면 이 공간에 포함된 장비에 의해 장비 파워가 자동으로 채워집니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="300"/>
+      <location filename="../../ArchSpace.py" line="301"/>
       <source>The type of air conditioning of this space</source>
       <translation>이 공간의 공기 조절 유형</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="303"/>
+      <location filename="../../ArchSpace.py" line="304"/>
       <source>Specifies if this space is internal or external</source>
       <translation>이 공간이 내부인지 외부인지 지정합니다</translation>
     </message>
@@ -5958,8 +5901,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1500"/>
-      <location filename="../../ArchStructure.py" line="1503"/>
+      <location filename="../../ArchStructure.py" line="1499"/>
+      <location filename="../../ArchStructure.py" line="1502"/>
       <source>Structure tools</source>
       <translation>구조 도구</translation>
     </message>
@@ -5993,12 +5936,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_BuildingPart</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="287"/>
+      <location filename="../../ArchBuildingPart.py" line="289"/>
       <source>BuildingPart</source>
       <translation>빌딩 부품</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="291"/>
+      <location filename="../../ArchBuildingPart.py" line="293"/>
       <source>Creates a BuildingPart including selected objects</source>
       <translation>선택한 객체를 포함하는 BuildingPart를 만듭니다</translation>
     </message>
@@ -6006,7 +5949,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="991"/>
+      <location filename="../../ArchBuildingPart.py" line="996"/>
       <source>Writing camera position</source>
       <translation>카메라 위치 쓰기</translation>
     </message>
@@ -6039,67 +5982,67 @@ Building creation aborted.</source>
       <translation>파이프 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="152"/>
+      <location filename="../../InitGui.py" line="151"/>
       <source>Rebar tools</source>
       <translation>철근 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="167"/>
+      <location filename="../../InitGui.py" line="166"/>
       <source>Arch tools</source>
       <translation>아치 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="170"/>
+      <location filename="../../InitGui.py" line="169"/>
       <source>Draft creation tools</source>
       <translation>초안 생성 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="173"/>
+      <location filename="../../InitGui.py" line="172"/>
       <source>Draft annotation tools</source>
       <translation>초안 주석 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="176"/>
+      <location filename="../../InitGui.py" line="175"/>
       <source>Draft modification tools</source>
       <translation>초안 수정 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="179"/>
+      <location filename="../../InitGui.py" line="178"/>
       <source>Draft snap</source>
       <translation>초안 스냅</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="188"/>
+      <location filename="../../InitGui.py" line="183"/>
+      <location filename="../../InitGui.py" line="187"/>
       <source>&amp;Arch</source>
       <translation>&amp;아치</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
-      <location filename="../../InitGui.py" line="204"/>
+      <location filename="../../InitGui.py" line="184"/>
+      <location filename="../../InitGui.py" line="203"/>
       <source>Utilities</source>
       <translation>유틸리티</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="191"/>
-      <location filename="../../InitGui.py" line="195"/>
-      <location filename="../../InitGui.py" line="199"/>
-      <location filename="../../InitGui.py" line="203"/>
+      <location filename="../../InitGui.py" line="190"/>
+      <location filename="../../InitGui.py" line="194"/>
+      <location filename="../../InitGui.py" line="198"/>
+      <location filename="../../InitGui.py" line="202"/>
       <source>&amp;Draft</source>
       <translation>&amp;초안</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="192"/>
+      <location filename="../../InitGui.py" line="191"/>
       <source>Creation</source>
       <translation>생성</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="196"/>
+      <location filename="../../InitGui.py" line="195"/>
       <source>Annotation</source>
       <translation>주석</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="200"/>
+      <location filename="../../InitGui.py" line="199"/>
       <source>Modification</source>
       <translation>수정</translation>
     </message>
@@ -6107,12 +6050,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="144"/>
+      <location filename="../../InitGui.py" line="143"/>
       <source>Rebar tools</source>
       <translation>철근 도구</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="149"/>
+      <location filename="../../InitGui.py" line="148"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
       <translation>U자형, L자형, 등자 등 다양한 형태의 철근 만들기</translation>
     </message>
@@ -6120,12 +6063,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../ArchProfile.py" line="124"/>
+      <location filename="../../ArchProfile.py" line="125"/>
       <source>Profile</source>
       <translation>프로필</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="128"/>
+      <location filename="../../ArchProfile.py" line="129"/>
       <source>Creates a profile</source>
       <translation>프로필 만들기</translation>
     </message>
@@ -6133,12 +6076,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="512"/>
+      <location filename="../../ArchSite.py" line="513"/>
       <source>Site</source>
       <translation>사이트</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="516"/>
+      <location filename="../../ArchSite.py" line="517"/>
       <source>Creates a site including selected objects.</source>
       <translation>선택한 객체를 포함하는 사이트를 만듭니다.</translation>
     </message>
@@ -6157,27 +6100,14 @@ Building creation aborted.</source>
     </message>
   </context>
   <context>
-    <name>Arch_CutLine</name>
-    <message>
-      <location filename="../../ArchCutPlane.py" line="116"/>
-      <source>Cut with line</source>
-      <translation>선으로 자르기</translation>
-    </message>
-    <message>
-      <location filename="../../ArchCutPlane.py" line="119"/>
-      <source>Cut an object with a line</source>
-      <translation>선으로 객체 자르기</translation>
-    </message>
-  </context>
-  <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="137"/>
+      <location filename="../../ArchCutPlane.py" line="165"/>
       <source>Cut with plane</source>
       <translation>평면으로 자르기</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="140"/>
+      <location filename="../../ArchCutPlane.py" line="168"/>
       <source>Cut an object with a plane</source>
       <translation>평면으로 객체 자르기</translation>
     </message>
@@ -6185,12 +6115,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="761"/>
+      <location filename="../../ArchReference.py" line="763"/>
       <source>External reference</source>
       <translation>외부 참조</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="765"/>
+      <location filename="../../ArchReference.py" line="767"/>
       <source>Creates an external reference object</source>
       <translation>외부 참조 객체를 만듭니다</translation>
     </message>
@@ -6211,12 +6141,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="164"/>
+      <location filename="../../ArchWindow.py" line="163"/>
       <source>Window</source>
       <translation>작업창</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="168"/>
+      <location filename="../../ArchWindow.py" line="167"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>선택한 객체(와이어, 직사각형 또는 스케치) 에서 창 객체를 만듭니다</translation>
     </message>
@@ -6276,12 +6206,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchSpace.py" line="231"/>
+      <location filename="../../ArchSpace.py" line="232"/>
       <source>Space</source>
       <translation>공간</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="235"/>
+      <location filename="../../ArchSpace.py" line="236"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>선택한 경계 객체에서 공백 객체를 만듭니다</translation>
     </message>
@@ -6302,12 +6232,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="116"/>
+      <location filename="../../ArchMaterial.py" line="118"/>
       <source>Material</source>
       <translation>재료</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="120"/>
+      <location filename="../../ArchMaterial.py" line="122"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>선택한 객체의 재료 정의를 만들거나 편집합니다.</translation>
     </message>
@@ -6315,12 +6245,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="150"/>
+      <location filename="../../ArchMaterial.py" line="152"/>
       <source>Multi-Material</source>
       <translation>다중 재료</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="154"/>
+      <location filename="../../ArchMaterial.py" line="156"/>
       <source>Creates or edits multi-materials</source>
       <translation>다중 재료를 만들거나 편집합니다</translation>
     </message>
@@ -6410,12 +6340,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="135"/>
+      <location filename="../../ArchPanel.py" line="137"/>
       <source>Panel</source>
       <translation>패널</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="139"/>
+      <location filename="../../ArchPanel.py" line="141"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>처음부터 또는 선택한 객체(스케치, 와이어, 페이스 또는 솔리드) 에서 패널 객체를 만듭니다</translation>
     </message>
@@ -6423,12 +6353,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="322"/>
+      <location filename="../../ArchPanel.py" line="323"/>
       <source>Panel Cut</source>
       <translation>패널 절단</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="326"/>
+      <location filename="../../ArchPanel.py" line="327"/>
       <source>Creates 2D views of selected panels</source>
       <translation>선택한 패널의 2D 보기를 만듭니다</translation>
     </message>
@@ -6436,12 +6366,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="349"/>
+      <location filename="../../ArchPanel.py" line="350"/>
       <source>Panel Sheet</source>
       <translation>패널 시트</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="353"/>
+      <location filename="../../ArchPanel.py" line="354"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>패널 컷을 포함할 수 있는 2D 시트를 만듭니다</translation>
     </message>
@@ -6471,12 +6401,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="101"/>
+      <location filename="../../ArchCurtainWall.py" line="102"/>
       <source>Curtain Wall</source>
       <translation>외벽</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="105"/>
+      <location filename="../../ArchCurtainWall.py" line="106"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>선택한 선 또는 처음부터 커튼월 객체를 생성합니다</translation>
     </message>
@@ -6484,12 +6414,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../ArchPipe.py" line="108"/>
+      <location filename="../../ArchPipe.py" line="109"/>
       <source>Pipe</source>
       <translation>파이프</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="112"/>
+      <location filename="../../ArchPipe.py" line="113"/>
       <source>Creates a pipe object from a given Wire or Line</source>
       <translation>지정된 와이어 또는 선에서 파이프 객체를 생성합니다</translation>
     </message>
@@ -6497,12 +6427,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../ArchPipe.py" line="147"/>
+      <location filename="../../ArchPipe.py" line="148"/>
       <source>Connector</source>
       <translation>커넥터</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="151"/>
+      <location filename="../../ArchPipe.py" line="152"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>선택한 2개 또는 3개의 파이프 사이에 커넥터를 만듭니다</translation>
     </message>
@@ -6510,8 +6440,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../ArchPipe.py" line="520"/>
-      <location filename="../../ArchPipe.py" line="523"/>
+      <location filename="../../ArchPipe.py" line="521"/>
+      <location filename="../../ArchPipe.py" line="524"/>
       <source>Pipe tools</source>
       <translation>파이프 도구들</translation>
     </message>
@@ -6519,12 +6449,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../ArchSchedule.py" line="60"/>
+      <location filename="../../ArchSchedule.py" line="62"/>
       <source>Schedule</source>
       <translation>일정</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="65"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>모형에서 데이터를 수집할 일람표를 작성합니다</translation>
     </message>
@@ -6532,12 +6462,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="116"/>
+      <location filename="../../ArchFloor.py" line="118"/>
       <source>Level</source>
       <translation>레벨</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="120"/>
+      <location filename="../../ArchFloor.py" line="122"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
       <translation>선택한 객체를 포함하여 레벨을 나타내는 Building Part 객체를 만듭니다</translation>
     </message>
@@ -6545,12 +6475,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="93"/>
+      <location filename="../../ArchAxis.py" line="95"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="97"/>
+      <location filename="../../ArchAxis.py" line="99"/>
       <source>Creates a set of axes</source>
       <translation>축 집합을 만듭니다</translation>
     </message>
@@ -6558,8 +6488,8 @@ Building creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="824"/>
-      <location filename="../../ArchAxis.py" line="827"/>
+      <location filename="../../ArchAxis.py" line="826"/>
+      <location filename="../../ArchAxis.py" line="829"/>
       <source>Axis tools</source>
       <translation>축 툴</translation>
     </message>
@@ -6567,12 +6497,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="110"/>
+      <location filename="../../ArchRebar.py" line="111"/>
       <source>Custom Rebar</source>
       <translation>사용자 정의 철근</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="114"/>
+      <location filename="../../ArchRebar.py" line="115"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>선택한 솔리드 객체의 면 및/또는 스케치로부터 보강 막대를 만듭니다</translation>
     </message>
@@ -6580,12 +6510,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="828"/>
+      <location filename="../../ArchSectionPlane.py" line="830"/>
       <source>Section Plane</source>
       <translation>단면</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="831"/>
+      <location filename="../../ArchSectionPlane.py" line="833"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>선택한 객체를 포함하여 횡단면 객체를 만듭니다</translation>
     </message>
@@ -6593,12 +6523,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Building</name>
     <message>
-      <location filename="../../ArchBuilding.py" line="219"/>
+      <location filename="../../ArchBuilding.py" line="221"/>
       <source>Building</source>
       <translation>빌딩</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="223"/>
+      <location filename="../../ArchBuilding.py" line="225"/>
       <source>Creates a building object including selected objects.</source>
       <translation>선택한 개체를 포함하는 빌딩 개체를 만듭니다.</translation>
     </message>
@@ -6606,12 +6536,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../ArchWall.py" line="285"/>
+      <location filename="../../ArchWall.py" line="286"/>
       <source>Wall</source>
       <translation>벽</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="289"/>
+      <location filename="../../ArchWall.py" line="290"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>처음부터 또는 선택한 객체(와이어, 면 또는 솔리드) 에서 벽 객체를 작성합니다</translation>
     </message>
@@ -6632,12 +6562,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <source>Add component</source>
       <translation>구성 요소 추가</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1343"/>
+      <location filename="../../ArchCommands.py" line="1338"/>
       <source>Adds the selected components to the active object</source>
       <translation>선택한 구성 요소를 활성 객체에 추가합니다</translation>
     </message>
@@ -6645,12 +6575,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1372"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Remove component</source>
       <translation>구성 요소 제거</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1375"/>
+      <location filename="../../ArchCommands.py" line="1370"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>선택한 구성 요소를 상위에서 제거하거나 구성 요소에 구멍을 내십시오</translation>
     </message>
@@ -6658,12 +6588,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1407"/>
+      <location filename="../../ArchCommands.py" line="1402"/>
       <source>Split Mesh</source>
       <translation>메쉬 분할</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1410"/>
+      <location filename="../../ArchCommands.py" line="1405"/>
       <source>Splits selected meshes into independent components</source>
       <translation>선택한 메쉬를 독립적인 구성 요소로 분할</translation>
     </message>
@@ -6671,12 +6601,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1432"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Mesh to Shape</source>
       <translation>메쉬에서 모양으로</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1435"/>
+      <location filename="../../ArchCommands.py" line="1430"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>선택한 메쉬를 Part Shape 객체로 바꿉니다</translation>
     </message>
@@ -6684,12 +6614,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1461"/>
       <source>Select non-manifold meshes</source>
       <translation>매니폴드가 아닌 메쉬 선택</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1470"/>
+      <location filename="../../ArchCommands.py" line="1464"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>문서 또는 선택한 그룹에서 매니폴드가 아닌 메쉬를 선택합니다</translation>
     </message>
@@ -6697,12 +6627,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
+      <location filename="../../ArchCommands.py" line="1490"/>
       <source>Remove Shape from Arch</source>
       <translation>아치에서 모양 제거</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1499"/>
+      <location filename="../../ArchCommands.py" line="1493"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>아치 구성요소에서 입방체 모양을 제거합니다</translation>
     </message>
@@ -6710,12 +6640,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1511"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Close holes</source>
       <translation>구멍 닫기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1514"/>
+      <location filename="../../ArchCommands.py" line="1508"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>열린 모양에서 구멍을 닫아 솔리드로 바꿉니다</translation>
     </message>
@@ -6723,12 +6653,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1528"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Check</source>
       <translation>체크</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1531"/>
+      <location filename="../../ArchCommands.py" line="1525"/>
       <source>Checks the selected objects for problems</source>
       <translation>선택한 객체에 문제가 있는지 확인합니다</translation>
     </message>
@@ -6736,12 +6666,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1549"/>
+      <location filename="../../ArchCommands.py" line="1543"/>
       <source>Survey</source>
       <translation>탐색</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1552"/>
+      <location filename="../../ArchCommands.py" line="1546"/>
       <source>Starts survey</source>
       <translation>설문조사를 시작합니다</translation>
     </message>
@@ -6749,12 +6679,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1564"/>
+      <location filename="../../ArchCommands.py" line="1558"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep 플래그 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1567"/>
+      <location filename="../../ArchCommands.py" line="1561"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>개체를 Brep로 내보내거나 내보내지 않음</translation>
     </message>
@@ -6762,12 +6692,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1579"/>
+      <location filename="../../ArchCommands.py" line="1573"/>
       <source>Component</source>
       <translation>구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Creates an undefined architectural component</source>
       <translation>정의되지 않은 아키텍처 구성 요소를 만듭니다</translation>
     </message>
@@ -6775,12 +6705,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1604"/>
+      <location filename="../../ArchCommands.py" line="1598"/>
       <source>Clone component</source>
       <translation>구성요소 복제</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1608"/>
+      <location filename="../../ArchCommands.py" line="1602"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>객체를 정의되지 않은 아키텍처 구성 요소로 복제</translation>
     </message>
@@ -6788,12 +6718,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1654"/>
+      <location filename="../../ArchCommands.py" line="1648"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFC 스프레드시트 만들기...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1658"/>
+      <location filename="../../ArchCommands.py" line="1652"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>객체의 IFC 속성을 저장하는 스프레드시트를 만듭니다.</translation>
     </message>
@@ -6801,12 +6731,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1680"/>
+      <location filename="../../ArchCommands.py" line="1674"/>
       <source>Toggle subcomponents</source>
       <translation>하위 구성요소 전환</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1683"/>
+      <location filename="../../ArchCommands.py" line="1677"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>이 객체의 하위 구성 요소를 표시하거나 숨깁니다</translation>
     </message>
@@ -6814,9 +6744,9 @@ Building creation aborted.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchAxis.py" line="646"/>
+      <location filename="../../ArchSite.py" line="952"/>
       <location filename="../../ArchIFCView.py" line="68"/>
-      <location filename="../../ArchSite.py" line="953"/>
+      <location filename="../../ArchAxis.py" line="648"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
@@ -6824,24 +6754,24 @@ Building creation aborted.</source>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../InitGui.py" line="212"/>
       <location filename="../../InitGui.py" line="213"/>
-      <location filename="../../InitGui.py" line="214"/>
       <source>Arch</source>
       <translation>아치</translation>
     </message>
     <message>
+      <location filename="../../InitGui.py" line="218"/>
       <location filename="../../InitGui.py" line="219"/>
       <location filename="../../InitGui.py" line="220"/>
       <location filename="../../InitGui.py" line="221"/>
       <location filename="../../InitGui.py" line="222"/>
-      <location filename="../../InitGui.py" line="223"/>
       <source>Draft</source>
       <translation>흘수</translation>
     </message>
     <message>
+      <location filename="../../InitGui.py" line="262"/>
       <location filename="../../InitGui.py" line="263"/>
       <location filename="../../InitGui.py" line="264"/>
-      <location filename="../../InitGui.py" line="265"/>
       <source>Import-Export</source>
       <translation>가져오기 내보내기</translation>
     </message>

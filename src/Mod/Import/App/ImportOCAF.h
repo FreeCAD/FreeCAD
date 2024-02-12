@@ -94,7 +94,6 @@ private:
     bool merge {true};
     std::string default_name;
     std::set<int> myRefShapes;
-    static const int HashUpper = INT_MAX;
 };
 
 class ImportExport ImportOCAFCmd: public ImportOCAF

@@ -226,5 +226,21 @@ TEST_F(Quantity, TestSafeUserString)
     QString result = quantity.getSafeUserString();
 
     EXPECT_EQ(result.toStdString(), "1 mm");
+
+    Base::UnitsApi::setSchema(Base::UnitSystem::Imperial1);
+
+    quantity = Base::Quantity {304.8, Base::Unit::Length};
+    quantity.setFormat(format);
+
+    result = quantity.getSafeUserString();
+
+    EXPECT_EQ(result.toStdString(), "1.0 \\'");
+
+    quantity = Base::Quantity {25.4, Base::Unit::Length};
+    quantity.setFormat(format);
+
+    result = quantity.getSafeUserString();
+
+    EXPECT_EQ(result.toStdString(), "1.0 \\\"");
 }
 // NOLINTEND

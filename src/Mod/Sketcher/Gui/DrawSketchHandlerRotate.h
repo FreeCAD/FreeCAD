@@ -456,7 +456,7 @@ template<>
 void DSHRotateController::firstKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value + 1);
+    toolWidget->setParameterWithoutPassingFocus(WParameter::First, value + 1);
 }
 
 template<>
@@ -464,7 +464,7 @@ void DSHRotateController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
     if (value > 0.0) {
-        toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
+        toolWidget->setParameterWithoutPassingFocus(WParameter::First, value - 1);
     }
 }
 

@@ -29,7 +29,6 @@
 
 
 #include <BRepBuilderAPI_MakeWire.hxx>
-#include <modelRefine.h>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
@@ -61,6 +60,7 @@
 #   include <OSD_Parallel.hxx>
 #endif
 
+#include "modelRefine.h"
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeCache.h"

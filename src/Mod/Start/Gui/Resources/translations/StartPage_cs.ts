@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Vytvoří díl s pracovním plostředím pro návrh dílu</translation>
+      <translation>Vytvořit díl s pracovním prostředím pro návrh dílu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>

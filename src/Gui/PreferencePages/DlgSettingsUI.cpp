@@ -93,56 +93,49 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     ResizableColumn->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
-    CheckBoxesSelection = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(CheckBoxesSelection, 3, 0);
-    CheckBoxesSelection->setChecked(Gui::TreeParams::defaultCheckBoxesSelection());
-    CheckBoxesSelection->setEntryName("CheckBoxesSelection");
-    CheckBoxesSelection->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
     HideColumn = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideColumn, 4, 0);
+    layoutTreeview->addWidget(HideColumn, 3, 0);
     HideColumn->setChecked(Gui::TreeParams::defaultHideColumn());
     HideColumn->setEntryName("HideColumn");
     HideColumn->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     HideScrollBar = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideScrollBar, 5, 0);
+    layoutTreeview->addWidget(HideScrollBar, 4, 0);
     HideScrollBar->setChecked(Gui::TreeParams::defaultHideScrollBar());
     HideScrollBar->setEntryName("HideScrollBar");
     HideScrollBar->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     HideHeaderView = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideHeaderView, 6, 0);
+    layoutTreeview->addWidget(HideHeaderView, 5, 0);
     HideHeaderView->setChecked(Gui::TreeParams::defaultHideHeaderView());
     HideHeaderView->setEntryName("HideHeaderView");
     HideHeaderView->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelIconSize = new QLabel(this);
-    layoutTreeview->addWidget(labelIconSize, 7, 0);
+    layoutTreeview->addWidget(labelIconSize, 6, 0);
     IconSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(IconSize, 7, 1);
+    layoutTreeview->addWidget(IconSize, 6, 1);
     IconSize->setValue(Gui::TreeParams::defaultIconSize());
     IconSize->setEntryName("IconSize");
     IconSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelFontSize = new QLabel(this);
-    layoutTreeview->addWidget(labelFontSize, 8, 0);
+    layoutTreeview->addWidget(labelFontSize, 7, 0);
     FontSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(FontSize, 8, 1);
+    layoutTreeview->addWidget(FontSize, 7, 1);
     FontSize->setValue(Gui::TreeParams::defaultFontSize());
     FontSize->setEntryName("FontSize");
     FontSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelItemSpacing = new QLabel(this);
-    layoutTreeview->addWidget(labelItemSpacing, 9, 0);
+    layoutTreeview->addWidget(labelItemSpacing, 8, 0);
     ItemSpacing = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemSpacing, 9, 1);
+    layoutTreeview->addWidget(ItemSpacing, 8, 1);
     ItemSpacing->setValue(Gui::TreeParams::defaultItemSpacing());
     ItemSpacing->setEntryName("ItemSpacing");
     ItemSpacing->setParamGrpPath("TreeView");
@@ -449,7 +442,6 @@ void DlgSettingsUI::saveSettings()
     ItemBackground->onSave();
     ItemBackgroundPadding->onSave();
     ResizableColumn->onSave();
-    CheckBoxesSelection->onSave();
     HideColumn->onSave();
     HideScrollBar->onSave();
     HideHeaderView->onSave();
@@ -490,7 +482,6 @@ void DlgSettingsUI::loadSettings()
     ItemBackground->onRestore();
     ItemBackgroundPadding->onRestore();
     ResizableColumn->onRestore();
-    CheckBoxesSelection->onRestore();
     HideColumn->onRestore();
     HideScrollBar->onRestore();
     HideHeaderView->onRestore();
@@ -537,8 +528,6 @@ void DlgSettingsUI::retranslateUi()
     labelItemBackgroundPadding->setToolTip(ItemBackgroundPadding->toolTip());
     ResizableColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docResizableColumn()));
     ResizableColumn->setText(QObject::tr("Resizable columns"));
-    CheckBoxesSelection->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docCheckBoxesSelection()));
-    CheckBoxesSelection->setText(QObject::tr("Show item checkbox"));
     HideColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideColumn()));
     HideColumn->setText(QObject::tr("Hide extra column"));
     HideScrollBar->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideScrollBar()));

@@ -1332,12 +1332,12 @@ GeomBSplineCurve::GeomBSplineCurve( const std::vector<Base::Vector3d>& poles, co
     TColStd_Array1OfReal k(1,knots.size());
     TColStd_Array1OfInteger m(1,knots.size());
 
-    for (int index = 1; index <= poles.size(); index++) {
+    for (std::size_t index = 1; index <= poles.size(); index++) {
         p.SetValue(index, gp_Pnt(poles[index -1].x,poles[index -1].y,poles[index -1].z));
         w.SetValue(index, weights[index -1]);
     }
 
-    for (int index = 1; index <= knots.size(); index++) {
+    for (std::size_t index = 1; index <= knots.size(); index++) {
         k.SetValue(index, knots[index -1]);
         m.SetValue(index, multiplicities[index -1]);
     }

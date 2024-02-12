@@ -1187,7 +1187,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
       <source>Cube</source>
-      <translation>Kocka</translation>
+      <translation>Kvadar</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>

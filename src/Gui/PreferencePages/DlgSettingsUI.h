@@ -78,7 +78,6 @@ private:
     QLabel *labelItemBackgroundPadding = nullptr;
     Gui::PrefSpinBox *ItemBackgroundPadding = nullptr;
     Gui::PrefCheckBox *ResizableColumn = nullptr;
-    Gui::PrefCheckBox *CheckBoxesSelection = nullptr;
     Gui::PrefCheckBox *HideColumn = nullptr;
     Gui::PrefCheckBox *HideScrollBar = nullptr;
     Gui::PrefCheckBox *HideHeaderView = nullptr;

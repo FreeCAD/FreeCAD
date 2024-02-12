@@ -329,6 +329,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         }
 
         pages->addWidget(page);
+        addSizeHint(page);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
@@ -337,6 +338,29 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
     catch (const std::exception& e) {
         Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
+}
+
+void DlgPreferencesImp::addSizeHint(QWidget* page)
+{
+    _sizeHintOfPages = _sizeHintOfPages.expandedTo(page->minimumSizeHint());
+}
+
+int DlgPreferencesImp::minimumPageWidth() const
+{
+    return _sizeHintOfPages.width();
+}
+
+int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
+{
+    QSize size = ui->groupWidgetStack->sizeHint();
+    int diff = pageWidth - size.width();
+    int dw = width();
+    if (diff > 0) {
+        const int offset = 2;
+        dw += diff + offset;
+    }
+
+    return dw;
 }
 
 void DlgPreferencesImp::updatePageDependentWidgets()
@@ -734,6 +758,20 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
         resize(width(), maxStartHeight);
         move(x(), heightDifference / 2);
     }
+
+    expandToMinimumDialogWidth();
+}
+
+void DlgPreferencesImp::expandToMinimumDialogWidth()
+{
+    auto screen = windowHandle()->screen();
+    auto availableSize = screen->availableSize();
+
+    // if the expanded dialog occupies less than 50% of the screen
+    int mw = minimumDialogWidth(minimumPageWidth());
+    if (availableSize.width() > 2 * mw) {
+        resize(mw, height());
+    }
 }
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
@@ -848,8 +886,10 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             }
         }
 
+        expandToMinimumDialogWidth();
         updatePageDependentWidgets();
-    } else {
+    }
+    else {
         QWidget::changeEvent(e);
     }
 }

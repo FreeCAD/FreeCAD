@@ -48,6 +48,7 @@ from draftutils.translate import translate
 if App.GuiUp:
     import FreeCADGui as Gui
     from pivy import coin
+    from PySide import QtCore
     from PySide import QtGui
     # from PySide import QtSvg  # for load_texture
 
@@ -855,5 +856,23 @@ def get_bbox(obj, debug=False):
     xmax, ymax, zmax = bb.getMax().getValue()
 
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
+
+
+# Code by Chris Hennes (chennes).
+# See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
+# Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
+def end_all_events():
+    class DelayEnder:
+        def __init__(self):
+            self.delay_is_done = False
+        def stop(self):
+            self.delay_is_done = True
+    ender = DelayEnder()
+    timer = QtCore.QTimer()
+    timer.timeout.connect(ender.stop)
+    timer.setSingleShot(True)
+    timer.start(100)  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
+    while not ender.delay_is_done:
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
 
 ## @}

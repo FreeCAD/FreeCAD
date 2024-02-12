@@ -63,8 +63,8 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_MaterialsEditor)
     , _material(std::make_shared<Materials::Material>())
-    , _edited(false)
     , _rendered(nullptr)
+    , _edited(false)
     , _recentMax(0)
 {
     ui->setupUi(this);

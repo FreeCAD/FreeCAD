@@ -54,6 +54,7 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "DrawSketchHandlerTranslate.h"
 #include "DrawSketchHandlerOffset.h"
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
@@ -2622,6 +2623,39 @@ bool CmdSketcherScale::isActive()
     return isCommandActive(getActiveGuiDocument(), true);
 }
 
+// Translate / rectangular pattern tool =======================================================
+
+DEF_STD_CMD_A(CmdSketcherTranslate)
+
+CmdSketcherTranslate::CmdSketcherTranslate()
+    : Command("Sketcher_Translate")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Array transform");
+    sToolTipText = QT_TR_NOOP("Translate selected geometries. Enable creation of i * j copies.");
+    sWhatsThis = "Sketcher_Translate";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Translate";
+    sAccel = "W";
+    eType = ForEdit;
+}
+
+void CmdSketcherTranslate::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
+
+    if (!listOfGeoIds.empty()) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerTranslate(listOfGeoIds));
+    }
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherTranslate::isActive()
+{
+    return isCommandActive(getActiveGuiDocument(), true);
+}
 
 void CreateSketcherCommandsConstraintAccel()
 {
@@ -2638,6 +2672,7 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherTranslate());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
     rcCmdMgr.addCommand(new CmdSketcherRotate());
     rcCmdMgr.addCommand(new CmdSketcherScale());

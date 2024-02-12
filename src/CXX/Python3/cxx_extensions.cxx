@@ -152,7 +152,7 @@ PyMethodDef *MethodTable::table()
 //================================================================================
 ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
-#if defined( Py_LIMITED_API )
+#if defined( Py_LIMITED_API ) || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12)
 , m_full_module_name( m_module_name )
 #else
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )

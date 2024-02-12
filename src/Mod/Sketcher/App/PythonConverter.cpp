@@ -560,7 +560,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
              [](const Sketcher::Constraint* constr,
                 std::string& geoId1,
                 std::string& geoId2,
-                std::string& geoId3) {
+                [[maybe_unused]] std::string& geoId3) {
                  if (constr->Second == GeoEnum::GeoUndef) {
                      return boost::str(boost::format("Sketcher.Constraint('DistanceX', %s, %f)")
                                        % geoId1 % constr->getValue());

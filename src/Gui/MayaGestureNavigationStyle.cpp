@@ -308,8 +308,40 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //all mode-dependent stuff is within this switch.
     switch(curmode){
-    case NavigationStyle::IDLE:
     case NavigationStyle::SELECTION:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (!press && button == SoMouseButtonEvent::BUTTON1) {
+                    setViewingMode(NavigationStyle::IDLE);
+                    break;
+                }
+            }
+
+            if (this->button1down) {
+                break;
+            }
+        }
+        [[fallthrough]];
+    case NavigationStyle::IDLE:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (press && button == SoMouseButtonEvent::BUTTON1 && !this->altdown) {
+                    setViewingMode(NavigationStyle::SELECTION);
+                    break;
+                }
+            }
+        }
+        [[fallthrough]];
     case NavigationStyle::INTERACT: {
         //idle and interaction
 
