@@ -217,6 +217,12 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+          auto view = dynamic_cast<TechDraw::DrawView *>(*it);
+          if (view && view->claimParent() == getViewPart()) {
+              temp.push_back(view);
+              continue;
+          }
+
           if((*it)->isDerivedFrom<TechDraw::DrawViewDimension>()) {
               //TODO: make a list, then prune it.  should be faster?
               bool skip = false;
