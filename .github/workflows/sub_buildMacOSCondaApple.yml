@@ -68,11 +68,11 @@ jobs:
 
     steps:
       - name: Checking out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
