@@ -98,7 +98,7 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
 
 
     SoMaterialBinding* pcMatBinding = new SoMaterialBinding;
-    // pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+
     pcMatBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
     pcColorMat = new SoMaterial;
     pcColorMat->diffuseColor.set1Value(0, 1, 1, 0);
@@ -118,10 +118,6 @@ void ViewProviderMeshTransformDemolding::attach(App::DocumentObject* pcFeat)
     calcMaterialIndex(SbRotation());
     // getting center point
     center = static_cast<Feature*>(pcObject)->Mesh.getValue().getKernel().GetBoundBox().GetCenter();
-
-    // SoGetBoundingBoxAction  boxAction;
-    // pcHighlight->getBoundingBox(&boxAction);
-    // SbVector3f Center = boxAction->getCenter();
 }
 
 void ViewProviderMeshTransformDemolding::calcNormalVector()
@@ -145,18 +141,6 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot
     for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end();
          ++it, i++) {
         rot.multVec(*it, result);
-
-        float Angle = acos((result.dot(Up)) / (result.length() * Up.length())) * (180 / M_PI);
-
-        if (Angle < 87.0) {
-            //      pcMeshFaces->materialIndex .set1Value(i, 2);
-        }
-        else if (Angle > 90.0) {
-            //      pcMeshFaces->materialIndex .set1Value(i, 1 );
-        }
-        else {
-            //      pcMeshFaces->materialIndex .set1Value(i, 0 );
-        }
     }
 }
 
@@ -180,13 +164,8 @@ void ViewProviderMeshTransformDemolding::DragEndCallback()
 
 void ViewProviderMeshTransformDemolding::valueChangedCallback()
 {
-    // Base::Console().Log("Value change Callback\n");
-    // setTransformation(pcTrackballDragger->getMotionMatrix());
-    // pcTransform->rotation = pcTrackballDragger->rotation;
     SbMatrix temp;
     SbRotation rot = pcTrackballDragger->rotation.getValue();
-
-    // calcMaterialIndex(rot);
 
     temp.setTransform(SbVec3f(0, 0, 0),                        // no transformation
                       rot,                                     // rotation from the dragger
