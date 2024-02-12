@@ -57,6 +57,7 @@ Params = [
     ParamUInt('TreeEditColor',  0x929200ff, on_change=True),
     ParamUInt('SelectingGroupColor',  0x408081ff, on_change=True),
     ParamBool('TreeActiveBold', True, on_change=True),
+    ParamInt('TreeActiveFontWeight', 70),
     ParamBool('TreeActiveItalic', False, on_change=True),
     ParamBool('TreeActiveUnderlined', False, on_change=True),
     ParamBool('TreeActiveOverlined', False, on_change=True),
