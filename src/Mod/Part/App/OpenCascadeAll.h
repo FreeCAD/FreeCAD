@@ -112,6 +112,7 @@
 
 #include <BRepAlgo.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Defeaturing.hxx>
@@ -150,6 +151,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFill.hxx>
 #include <BRepFill_Filling.hxx>
+#include <BRepFill_Generator.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepGProp.hxx>

@@ -25,24 +25,18 @@ import os
 
 import FreeCAD
 import FreeCADGui
+from addonmanager_git import initialize_git
 
 from PySide import QtWidgets, QtCore
 
 translate = FreeCAD.Qt.translate
-
-try:
-    import git
-
-    NO_GIT = False
-except Exception:
-    NO_GIT = True
 
 
 class ChangeBranchDialog(QtWidgets.QWidget):
 
     branch_changed = QtCore.Signal(str)
 
-    def __init__(self, path: os.PathLike, parent=None):
+    def __init__(self, path: str, parent=None):
         super().__init__(parent)
 
         self.ui = FreeCADGui.PySideUic.loadUi(
@@ -56,21 +50,20 @@ class ChangeBranchDialog(QtWidgets.QWidget):
         self.item_model = ChangeBranchDialogModel(path, self)
         self.item_filter.setSourceModel(self.item_model)
         self.ui.tableView.sortByColumn(
-            4, QtCore.Qt.DescendingOrder
+            2, QtCore.Qt.DescendingOrder
         )  # Default to sorting by remote last-changed date
 
         # Figure out what row gets selected:
+        git_manager = initialize_git()
         row = 0
-        current_ref = self.item_model.repo.head.ref
+        current_ref = git_manager.current_branch(path)
         selection_model = self.ui.tableView.selectionModel()
-        for ref in self.item_model.refs:
-            if ref == current_ref:
+        for ref in self.item_model.branches:
+            if ref["ref_name"] == current_ref:
                 index = self.item_filter.mapFromSource(self.item_model.index(row, 0))
                 selection_model.select(index, QtCore.QItemSelectionModel.ClearAndSelect)
                 selection_model.select(index.siblingAtColumn(1), QtCore.QItemSelectionModel.Select)
                 selection_model.select(index.siblingAtColumn(2), QtCore.QItemSelectionModel.Select)
-                selection_model.select(index.siblingAtColumn(3), QtCore.QItemSelectionModel.Select)
-                selection_model.select(index.siblingAtColumn(4), QtCore.QItemSelectionModel.Select)
                 break
             row += 1
 
@@ -85,7 +78,7 @@ class ChangeBranchDialog(QtWidgets.QWidget):
             index = self.item_filter.mapToSource(selection[0])
             ref = self.item_model.data(index, ChangeBranchDialogModel.RefAccessRole)
 
-            if ref == self.item_model.repo.head.ref:
+            if ref["ref_name"] == self.item_model.current_branch:
                 # This is the one we are already on... just return
                 return
 
@@ -94,20 +87,24 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 translate("AddonsInstaller", "DANGER: Developer feature"),
                 translate(
                     "AddonsInstaller",
-                    "DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?",
+                    "DANGER: Switching branches is intended for developers and beta testers, "
+                    "and may result in broken, non-backwards compatible documents, instability, "
+                    "crashes, and/or the premature heat death of the universe. Are you sure you "
+                    "want to continue?",
                 ),
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
                 QtWidgets.QMessageBox.Cancel,
             )
             if result == QtWidgets.QMessageBox.Cancel:
                 return
-            if self.item_model.repo.is_dirty():
+            if self.item_model.dirty:
                 result = QtWidgets.QMessageBox.critical(
                     self,
                     translate("AddonsInstaller", "There are local changes"),
                     translate(
                         "AddonsInstaller",
-                        "WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?",
+                        "WARNING: This repo has uncommitted local changes. Are you sure you want "
+                        "to change branches (bringing the changes with you)?",
                     ),
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
                     QtWidgets.QMessageBox.Cancel,
@@ -115,93 +112,41 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 if result == QtWidgets.QMessageBox.Cancel:
                     return
 
-            if isinstance(ref, git.TagReference):
-                # Detach the head
-                self.item_model.repo.head.reference = ref
-                self.item_model.repo.head.reset(index=True, working_tree=True)
-            elif isinstance(ref, git.RemoteReference):
-                # Set up a local tracking branch
-                slash_index = ref.name.find("/")
-                if slash_index != -1:
-                    local_name = ref.name[slash_index + 1 :]
-                else:
-                    local_name = ref.name
-                self.item_model.repo.create_head(local_name, ref)
-                self.item_model.repo.heads[local_name].set_tracking_branch(ref)
-                self.item_model.repo.heads[local_name].checkout()
+            gm = initialize_git()
+            remote_name = ref["ref_name"]
+            _, _, local_name = ref["ref_name"].rpartition("/")
+            if ref["upstream"]:
+                gm.checkout(self.item_model.path, remote_name)
             else:
-                # It's already a local branch, just check it out
-                ref.checkout()
-
-            self.branch_changed.emit(ref.name)
+                gm.checkout(self.item_model.path, remote_name, args=["-b", local_name])
+            self.branch_changed.emit(local_name)
 
 
 class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
 
-    refs = []
-    display_data = []
+    branches = []
     DataSortRole = QtCore.Qt.UserRole
     RefAccessRole = QtCore.Qt.UserRole + 1
 
-    def __init__(self, path: os.PathLike, parent=None) -> None:
+    def __init__(self, path: str, parent=None) -> None:
         super().__init__(parent)
-        self.repo = git.Repo(path)
 
-        self.refs = []
-        tracking_refs = []
-        for ref in self.repo.refs:
-            row = ["", None, None, None, None]
-            if "HEAD" in ref.name:
-                continue
-            if isinstance(ref, git.RemoteReference):
-                if ref.name in tracking_refs:
-                    # Already seen, it's the remote part of a remote tracking branch
-                    continue
-                else:
-                    # Just a remote branch, not tracking:
-                    row[0] = translate("AddonsInstaller", "Branch", "git terminology")
-                    row[2] = ref.name
-                    if hasattr(ref, "commit") and hasattr(ref.commit, "committed_date"):
-                        row[4] = ref.commit.committed_date
-                    else:
-                        row[4] = ref.log_entry(0).time[0]
-            elif isinstance(ref, git.TagReference):
-                # Tags are simple, there is no tracking to worry about
-                row[0] = translate("AddonsInstaller", "Tag", "git terminology")
-                row[1] = ref.name
-                row[3] = ref.commit.committed_date
-            elif isinstance(ref, git.Head):
-                if hasattr(ref, "tracking_branch") and ref.tracking_branch():
-                    # This local branch tracks a remote: we have all five pieces of data...
-                    row[0] = translate("AddonsInstaller", "Branch", "git terminology")
-                    row[1] = ref.name
-                    row[2] = ref.tracking_branch().name
-                    row[3] = ref.commit.committed_date
-                    row[4] = ref.tracking_branch().commit.committed_date
-                    tracking_refs.append(ref.tracking_branch().name)
-                else:
-                    # Just a local branch, no remote tracking:
-                    row[0] = translate("AddonsInstaller", "Branch", "git terminology")
-                    row[1] = ref.name
-                    if hasattr(ref, "commit") and hasattr(ref.commit, "committed_date"):
-                        row[3] = ref.commit.committed_date
-                    else:
-                        row[3] = ref.log_entry(0).time[0]
-            else:
-                continue
-
-            self.display_data.append(row.copy())
-            self.refs.append(ref)
+        gm = initialize_git()
+        self.path = path
+        self.branches = gm.get_branches_with_info(path)
+        self.current_branch = gm.current_branch(path)
+        self.dirty = gm.dirty(path)
+        self._remove_tracking_duplicates()
 
     def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
         if parent.isValid():
             return 0
-        return len(self.refs)
+        return len(self.branches)
 
     def columnCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
         if parent.isValid():
             return 0
-        return 5  # Type, local name, tracking name, local update, and remote update
+        return 3  # Local name, remote name, date
 
     def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.DisplayRole):
         if not index.isValid():
@@ -209,31 +154,39 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
         row = index.row()
         column = index.column()
         if role == QtCore.Qt.ToolTipRole:
-            tooltip = ""
-            # TODO: What should the tooltip be for these items? Last commit message?
+            tooltip = self.branches[row]["author"] + ": " + self.branches[row]["subject"]
             return tooltip
         elif role == QtCore.Qt.DisplayRole:
-            dd = self.display_data[row]
-            if column == 3 or column == 4:
-                if dd[column] is not None:
-                    qdate = QtCore.QDateTime.fromTime_t(dd[column])
-                    return QtCore.QLocale().toString(qdate, QtCore.QLocale.ShortFormat)
-            elif column < len(dd):
-                return dd[column]
+            dd = self.branches[row]
+            if column == 2:
+                if dd["date"] is not None:
+                    q_date = QtCore.QDateTime.fromString(
+                        dd["date"], QtCore.Qt.DateFormat.RFC2822Date
+                    )
+                    return QtCore.QLocale().toString(q_date, QtCore.QLocale.ShortFormat)
+                return None
+            elif column == 0:
+                return dd["ref_name"]
+            elif column == 1:
+                return dd["upstream"]
             else:
                 return None
         elif role == ChangeBranchDialogModel.DataSortRole:
-            if column == 0:
-                if self.refs[row] in self.repo.heads:
-                    return 0
-                else:
-                    return 1
-            elif column < len(self.display_data[row]):
-                return self.display_data[row][column]
+            if column == 2:
+                if self.branches[row]["date"] is not None:
+                    q_date = QtCore.QDateTime.fromString(
+                        self.branches[row]["date"], QtCore.Qt.DateFormat.RFC2822Date
+                    )
+                    return q_date
+                return None
+            elif column == 0:
+                return self.branches[row]["ref_name"]
+            elif column == 1:
+                return self.branches[row]["upstream"]
             else:
                 return None
         elif role == ChangeBranchDialogModel.RefAccessRole:
-            return self.refs[row]
+            return self.branches[row]
 
     def headerData(
         self,
@@ -248,31 +201,37 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
         if section == 0:
             return translate(
                 "AddonsInstaller",
-                "Kind",
-                "Table header for git ref type (e.g. either Tag or Branch)",
+                "Local",
+                "Table header for local git ref name",
             )
-        elif section == 1:
-            return translate("AddonsInstaller", "Local name", "Table header for git ref name")
+        if section == 1:
+            return translate(
+                "AddonsInstaller",
+                "Remote tracking",
+                "Table header for git remote tracking branch name",
+            )
         elif section == 2:
             return translate(
                 "AddonsInstaller",
-                "Tracking",
-                "Table header for git remote tracking branch name name",
-            )
-        elif section == 3:
-            return translate(
-                "AddonsInstaller",
-                "Local updated",
-                "Table header for git update time of local branch",
-            )
-        elif section == 4:
-            return translate(
-                "AddonsInstaller",
-                "Remote updated",
-                "Table header for git update time of remote branch",
+                "Last Updated",
+                "Table header for git update date",
             )
         else:
             return None
+
+    def _remove_tracking_duplicates(self):
+        remote_tracking_branches = []
+        branches_to_keep = []
+        for branch in self.branches:
+            if branch["upstream"]:
+                remote_tracking_branches.append(branch["upstream"])
+        for branch in self.branches:
+            if (
+                "HEAD" not in branch["ref_name"]
+                and branch["ref_name"] not in remote_tracking_branches
+            ):
+                branches_to_keep.append(branch)
+        self.branches = branches_to_keep
 
 
 class ChangeBranchDialogFilter(QtCore.QSortFilterProxyModel):

@@ -1,4 +1,4 @@
-// dxf.cpp
+﻿// dxf.cpp
 // Copyright (c) 2009, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
@@ -1813,8 +1813,16 @@ CDxfRead::CDxfRead(const std::string& filepath)
 CDxfRead::~CDxfRead()
 {
     delete m_ifs;
+    // Delete the Layer objects which are referenced by pointer from the Layers table.
+    for (auto& pair : Layers) {
+        delete pair.second;
+    }
 }
 
+// Static member initializers
+const std::string CDxfRead::LineTypeByLayer("BYLAYER");     // NOLINT(runtime/string)
+const std::string CDxfRead::LineTypeByBlock("BYBLOCK");     // NOLINT(runtime/string)
+const std::string CDxfRead::DefaultLineType("CONTINUOUS");  // NOLINT(runtime/string)
 
 //
 //  Setup for ProcessCommonEntityAttribute
@@ -1841,6 +1849,12 @@ void CDxfRead::SetupScaledDoubleIntoList(eDXFGroupCode_t x_record_type, list<dou
 {
     m_coordinate_attributes.emplace(x_record_type,
                                     std::pair(&ProcessScaledDoubleIntoList, &destination));
+}
+void CDxfRead::Setup3DDirectionAttribute(eDXFGroupCode_t x_record_type, Base::Vector3d& destination)
+{
+    SetupValueAttribute((eDXFGroupCode_t)(x_record_type + eXOffset), destination.x);
+    SetupValueAttribute((eDXFGroupCode_t)(x_record_type + eYOffset), destination.y);
+    SetupValueAttribute((eDXFGroupCode_t)(x_record_type + eZOffset), destination.z);
 }
 void CDxfRead::SetupStringAttribute(eDXFGroupCode_t x_record_type, std::string& destination)
 {
@@ -1908,16 +1922,6 @@ void CDxfRead::InitializeAttributes()
 {
     m_coordinate_attributes.clear();
 }
-void CDxfRead::InitializeCommonEntityAttributes()
-{
-    InitializeAttributes();
-    m_layer_name.clear();
-    m_LineType.clear();
-    m_ColorIndex = ColorBylayer;
-    SetupStringAttribute(eLinetypeName, m_LineType);
-    SetupStringAttribute(eLayerName, m_layer_name);
-    SetupValueAttribute(eColor, m_ColorIndex);
-}
 bool CDxfRead::ProcessAttribute()
 {
     auto found = m_coordinate_attributes.find(m_record_type);
@@ -1934,6 +1938,59 @@ void CDxfRead::ProcessAllAttributes()
     }
     repeat_last_record();
 }
+void CDxfRead::ProcessAllEntityAttributes()
+{
+    ProcessAllAttributes();
+    ResolveEntityAttributes();
+}
+void CDxfRead::ResolveEntityAttributes()
+{
+    m_entityAttributes.ResolveBylayerAttributes(*this);
+    // TODO: Look at the space and layer (hidden/frozen?) and options and return false if the entity
+    // is not needed.
+    // TODO: INSERT must not call this because an INSERT on a hidden layer should always be
+    // honoured.
+
+    // Calculate the net entity transformation.
+
+    // This is to handle the Object Coordinate System used in many DXF records. Note that versions
+    // before R13 used the term ECS (Entity Coordinate System) instead. Here's who uses OCS: Lines
+    // and Points use WCS except they can be extruded (have nonzero Thickness (39)) which occurs in
+    // the OCS Z direction all 3D objects use WCS entirely Dimensions use a mix of OCS and WCS,
+    // Circle, Arc, Dolid, Trace, Text, Attib, Attdef, Shape, Insert, (lw)Polyline/Vertex, hatch,
+    // image all use the OCS
+    //
+    // The transformed Z axis is in EntityNormalVector, but we rescale it in case the DXF contains
+    // an unnormalized value
+    if (EntityNormalVector.IsNull()) {
+        ImportError("Entity has zero-length extrusion direction\n");
+    }
+    EntityNormalVector.Normalize();
+    // Apply the Arbitrary Axis Algorithm to determine the X and Y directions
+    // The purpose of this algorithm is to calculate a conventional 3d orientation based only on a Z
+    // direction, while avoiding taking the cross product of two vectors that are nearly parallel,
+    // which would be subject to a lot of numerical inaccuracy. In this case, "close to" the Z axis
+    // means the X and Y components of EntityNormalVector are less than 1/64, a value chosen because
+    // it is exactly representable in all binary floating-point systems.
+    Base::Vector3d xDirection;
+    if (EntityNormalVector.x < ArbitraryAxisAlgorithmThreshold
+        && EntityNormalVector.y < ArbitraryAxisAlgorithmThreshold) {
+        // The Z axis is close to the UCS Z axis, the X direction is UCSY × OCSZ
+        static const Base::Vector3d UCSYAxis(0, 1, 0);
+        xDirection = UCSYAxis % EntityNormalVector;
+    }
+    else {
+        // otherwise, the X direction is UCSZ × OCSZ
+        static const Base::Vector3d UCSZAxis(0, 0, 1);
+        xDirection = UCSZAxis % EntityNormalVector;
+    }
+    OCSOrientationTransform.setCol(0, xDirection);
+    // In all cases the Y direction is the Zdirection × XDirection which gives a right-hand
+    // orthonormal coordinate system
+    OCSOrientationTransform.setCol(1, EntityNormalVector % xDirection);
+    // and EntityNormalVector is of course the direction of the Z axis in the UCS.
+    OCSOrientationTransform.setCol(2, EntityNormalVector);
+}
 
 //
 //  The individual Entity reader functions
@@ -1944,7 +2001,7 @@ bool CDxfRead::ReadLine()
     Base::Vector3d end;
     Setup3DVectorAttribute(ePrimaryPoint, start);
     Setup3DVectorAttribute(ePoint2, end);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadLine(start, end, LineTypeIsHidden());
     return true;
@@ -1954,7 +2011,7 @@ bool CDxfRead::ReadPoint()
 {
     Base::Vector3d location;
     Setup3DVectorAttribute(ePrimaryPoint, location);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadPoint(location);
     return true;
@@ -1973,7 +2030,7 @@ bool CDxfRead::ReadArc()
     SetupValueAttribute(eAngleDegrees1, start_angle_degrees);
     SetupValueAttribute(eAngleDegrees2, end_angle_degrees);
     Setup3DVectorAttribute(eExtrusionDirection, extrusionDirection);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadArc(start_angle_degrees,
               end_angle_degrees,
@@ -2005,7 +2062,7 @@ bool CDxfRead::ReadSpline()
     Setup3DCoordinatesIntoLists(ePoint2, sd.fitx, sd.fity, sd.fitz);
     Setup3DCoordinatesIntoLists(ePoint3, sd.starttanx, sd.starttany, sd.starttanz);
     Setup3DCoordinatesIntoLists(ePoint4, sd.endtanx, sd.endtany, sd.endtanz);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadSpline(sd);
     return true;
@@ -2018,7 +2075,7 @@ bool CDxfRead::ReadCircle()
 
     Setup3DVectorAttribute(ePrimaryPoint, centre);
     SetupScaledDoubleAttribute(eFloat1, radius);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadCircle(centre, radius, LineTypeIsHidden());
     return true;
@@ -2054,6 +2111,7 @@ bool CDxfRead::ReadText()
             }
         }
     }
+    ResolveEntityAttributes();
 
     if ((this->*stringToUTF8)(textPrefix)) {
         OnReadText(insertionPoint, height * 25.4 / 72.0, textPrefix, rotation);
@@ -2079,7 +2137,7 @@ bool CDxfRead::ReadEllipse()
     SetupValueAttribute(eFloat1, eccentricity);
     SetupValueAttribute(eFloat2, startAngleRadians);
     SetupValueAttribute(eFloat3, endAngleRadians);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     OnReadEllipse(centre, majorAxisEnd, eccentricity, startAngleRadians, endAngleRadians);
     return true;
@@ -2130,6 +2188,8 @@ bool CDxfRead::ReadLwPolyLine()
         vertices.push_back(currentVertex);
     }
 
+    ResolveEntityAttributes();
+
     OnReadPolyline(vertices, flags);
     repeat_last_record();
     return true;
@@ -2142,7 +2202,7 @@ bool CDxfRead::ReadPolyLine()
     int flags = 0;
 
     SetupValueAttribute(eInteger1, flags);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     // We are now followed by a series of VERTEX entities followed by ENDSEQ.
     // To avoid eating and discarding the rest of the entieies if ENDSEQ is missing,
@@ -2153,7 +2213,7 @@ bool CDxfRead::ReadPolyLine()
         // Set vertex defaults
         currentVertex.location = Base::Vector3d();
         currentVertex.bulge = 0.0;
-        ProcessAllAttributes();
+        ProcessAllEntityAttributes();
         vertices.push_back(currentVertex);
     }
     if (!IsObjectName("SEQEND")) {
@@ -2178,7 +2238,7 @@ bool CDxfRead::ReadInsert()
     SetupValueAttribute(eFloat4, scale.z);
     SetupValueAttribute(eAngleDegrees1, rotationDegrees);
     SetupStringAttribute(eName, blockName);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
     OnReadInsert(center, scale, blockName, Base::toRadians(rotationDegrees));
     return (true);
 }
@@ -2206,7 +2266,7 @@ bool CDxfRead::ReadDimension()
     Setup3DVectorAttribute(ePoint2, textPosition);        // OCS
     SetupValueAttribute(eAngleDegrees1, rotation);
     SetupValueAttribute(eInteger1, dimensionType);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
 
     dimensionType &= eTypeMask;  //  Remove flags
     switch ((eDimensionType_t)dimensionType) {
@@ -2224,41 +2284,27 @@ bool CDxfRead::ReadDimension()
 bool CDxfRead::ReadUnknownEntity()
 {
     UnsupportedFeature("Entity type '%s'", m_record_data);
-    ProcessAllAttributes();
+    ProcessAllEntityAttributes();
     return true;
 }
 
 bool CDxfRead::ReadBlockInfo()
 {
     int blockType = 0;
+    std::string blockName;
     InitializeAttributes();
     // Both 2 and 3 are the block name.
-    SetupStringAttribute(eName, m_block_name);
-    SetupStringAttribute(eExtraText, m_block_name);
+    SetupStringAttribute(eName, blockName);
+    SetupStringAttribute(eExtraText, blockName);
     SetupValueAttribute(eInteger1, blockType);
     ProcessAllAttributes();
 
-    // Read the entities in the block definition.
-    // These are processed just like in-drawing entities but the code can
-    // recognize that we are in the BLOCKS section, and which block we are defining,
-    // by looking at the result of LayerName()
-    // Note that the Layer Name in the block entities is ignored even though it
-    // should be used to resolve BYLAYER attributes and also for placing the entity
-    // when the block is inserted.
-    if ((blockType & 0x04) != 0) {
-        // Note that this doesn't mean there are not entities in the block. I don't
-        // know if the external reference can be cached because there are two other bits
-        // here, 0x10 and 0x20, that seem to handle "resolved" external references.
-        UnsupportedFeature("External (xref) BLOCK");
-    }
-    while (get_next_record() && m_record_type != eObjectType && !IsObjectName("ENDBLK")) {
-        if ((blockType & 0x01) != 0) {
-            // It is an anonymous block used to build dimensions, hatches, etc so we don't need it
-            // and don't want to complaining about unhandled entity types.
-            while (get_next_record() && m_record_type != eObjectType) {}
-            repeat_last_record();
-        }
-        else if (IgnoreErrors()) {
+    return OnReadBlock(blockName, blockType);
+}
+bool CDxfRead::ReadBlockContents()
+{
+    while (get_next_record() && m_record_type == eObjectType && !IsObjectName("ENDBLK")) {
+        if (IgnoreErrors()) {
             try {
                 if (!ReadEntity()) {
                     return false;
@@ -2271,6 +2317,22 @@ bool CDxfRead::ReadBlockInfo()
             if (!ReadEntity()) {
                 return false;
             }
+        }
+    }
+    return true;
+}
+bool CDxfRead::SkipBlockContents()
+{
+    while (get_next_record() && m_record_type == eObjectType && !IsObjectName("ENDBLK")) {
+        if (IgnoreErrors()) {
+            try {
+                ProcessAllAttributes();
+            }
+            catch (...) {
+            }
+        }
+        else {
+            ProcessAllAttributes();
         }
     }
     return true;
@@ -2336,7 +2398,7 @@ void CDxfRead::repeat_last_record()
 //
 //  Intercepts for On... calls to derived class
 //  (These have distinct signatures from the ones they call)
-bool CDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
+bool CDxfRead::ExplodePolyline(std::list<VertexInfo>& vertices, int flags)
 {
     if (vertices.size() < 2) {
         // TODO: Warning
@@ -2372,6 +2434,8 @@ bool CDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
                 OnReadLine(startVertex->location, endVertex->location, false);
             }
         }
+        // elsethis is the first loop iteration on an open shape, endVertex is the first point, and
+        // there is no closure line to draw engin there.
         startVertex = endVertex;
     }
     return true;
@@ -2564,6 +2628,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
         return;
     }
 
+    StartImport();
     // Loop reading the sections.
     while (get_next_record()) {
         if (m_record_type != eObjectType) {
@@ -2583,7 +2648,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
             return;
         }
     }
-    AddGraphics();
+    FinishImport();
 
     // FLush out any unsupported features messages
     if (!m_unsupportedFeaturesNoted.empty()) {
@@ -2621,10 +2686,32 @@ bool CDxfRead::ReadSection()
     }
     return ReadIgnoredSection();
 }
-
+void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
+{
+    if (object->Layers.count(object->m_record_data) == 0) {
+        object->ImportError("First reference to missing Layer '%s'", object->m_record_data);
+        // Synthesize the Layer so we don't get the same error again.
+        // We need to take copies of the string arguments because MakeLayer uses them as move
+        // inputs.
+        object->Layers[object->m_record_data] =
+            object->MakeLayer(object->m_record_data, DefaultColor, std::string(DefaultLineType));
+    }
+    *static_cast<Layer**>(target) = object->Layers.at(object->m_record_data);
+}
 bool CDxfRead::ReadEntity()
 {
-    InitializeCommonEntityAttributes();
+    InitializeAttributes();
+    m_entityAttributes.SetDefaults();
+    EntityNormalVector.Set(0, 0, 1);
+    Setup3DVectorAttribute(eExtrusionDirection, EntityNormalVector);
+    SetupStringAttribute(eLinetypeName, m_entityAttributes.m_LineType);
+    m_coordinate_attributes.emplace(eLayerName,
+                                    std::pair(&ProcessLayerReference, &m_entityAttributes.m_Layer));
+    SetupValueAttribute(
+        eCoordinateSpace,
+        m_entityAttributes.m_paperSpace);  // TODO: Ensure the stream is noboolalpha (for that
+                                           // matter ensure the stream has the "C" locale
+    SetupValueAttribute(eColor, m_entityAttributes.m_Color);
     // The entity record is already the current record and is already checked as a type 0 record
     if (IsObjectName("LINE")) {
         return ReadLine();
@@ -2800,7 +2887,6 @@ bool CDxfRead::ReadBlocksSection()
         if (!ReadBlockInfo()) {
             ImportError("CDxfRead::DoRead() Failed to read block\n");
         }
-        m_block_name.clear();
     }
 
     return false;
@@ -2840,13 +2926,15 @@ bool CDxfRead::ReadEntitiesSection()
 bool CDxfRead::ReadLayer()
 {
     std::string layername;
-    ColorIndex_t layerColor = 0;
+    ColorIndex_t layerColor = DefaultColor;
     int layerFlags = 0;
+    std::string lineTypeName(DefaultLineType);
     InitializeAttributes();
 
     SetupStringAttribute(eName, layername);
     SetupValueAttribute(eColor, layerColor);
     SetupValueAttribute(eInteger1, layerFlags);
+    SetupStringAttribute(eLinetypeName, lineTypeName);
     ProcessAllAttributes();
     if (layername.empty()) {
         ImportError("CDxfRead::ReadLayer() - no layer name\n");
@@ -2859,11 +2947,16 @@ bool CDxfRead::ReadLayer()
     }
     if (layerColor < 0) {
         UnsupportedFeature("Hidden layers");
-        layerColor = -layerColor;
     }
-    m_layer_ColorIndex_map[layername] = layerColor;
+    Layers[layername] = MakeLayer(layername, layerColor, std::move(lineTypeName));
     return true;
 }
+CDxfRead::Layer*
+CDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType)
+{
+    return new Layer(name, color, std::move(lineType));
+}
+
 bool CDxfRead::ReadLayerTable()
 {
     // Read to the next TABLE record indicating another table in the TABLES section, or to the
@@ -2902,24 +2995,6 @@ bool CDxfRead::ReadIgnoredTable()
     return false;
 }
 
-std::string CDxfRead::LayerName() const
-{
-    std::string result;
-
-    if (!m_block_name.empty()) {
-        result.append("BLOCKS ");
-        result.append(m_block_name);
-        result.append(" ");
-    }
-
-    else if (!m_layer_name.empty()) {
-        result.append("ENTITIES ");
-        result.append(m_layer_name);
-    }
-
-    return (result);
-}
-
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 inline static double level(int distance, double blackLevel)
 {
@@ -2951,20 +3026,8 @@ inline static App::Color wheel(int hue, double blackLevel, double multiplier = 1
                       (float)(level(hue - 8, blackLevel) * multiplier),
                       (float)(level(hue - 16, blackLevel) * multiplier));
 }
-App::Color CDxfRead::ObjectColor() const
+App::Color CDxfRead::ObjectColor(ColorIndex_t index)
 {
-    int index = m_ColorIndex;
-    if (index == ColorBylayer)  // if color = layer color, replace by color from layer
-    {
-        // We could just use [] to find the color except this will make an entry with value 0 if
-        // there is none (rather than just returning 0 on each such call), and this my cause a
-        // problem if we try to evaluate color reading BLOCK definitions, since these appear before
-        // the LAYER table. Note that we shouldn't be evaluating color during block definition but
-        // this might be happening already.
-        index = m_layer_ColorIndex_map.count(m_layer_name) > 0
-            ? m_layer_ColorIndex_map.at(m_layer_name)
-            : 0;
-    }
     // TODO: If it is ColorByBlock we need to use the color of the INSERT entity.
     // This is tricky because a block can itself contain INSERT entities and we don't currently
     // record the required information. IIRC INSERT in a block will do something strange like

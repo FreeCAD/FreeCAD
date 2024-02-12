@@ -317,6 +317,21 @@ public:
                                    double* angle,
                                    int tagId = 0,
                                    bool driving = true);
+    int addConstraintAngleViaPointAndParam(Curve& crv1,
+                                           Curve& crv2,
+                                           Point& p,
+                                           double* cparam,
+                                           double* angle,
+                                           int tagId = 0,
+                                           bool driving = true);
+    int addConstraintAngleViaPointAndTwoParams(Curve& crv1,
+                                               Curve& crv2,
+                                               Point& p,
+                                               double* cparam1,
+                                               double* cparam2,
+                                               double* angle,
+                                               int tagId = 0,
+                                               bool driving = true);
     int addConstraintMidpointOnLine(Line& l1, Line& l2, int tagId = 0, bool driving = true);
     int addConstraintMidpointOnLine(Point& l1p1,
                                     Point& l1p2,
@@ -501,6 +516,10 @@ public:
 
     double calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p) const;
     double calculateAngleViaPoint(const Curve& crv1, const Curve& crv2, Point& p1, Point& p2) const;
+    double calculateAngleViaParams(const Curve& crv1,
+                                   const Curve& crv2,
+                                   double* param1,
+                                   double* param2) const;
     void calculateNormalAtPoint(const Curve& crv, const Point& p, double& rtnX, double& rtnY) const;
 
     // Calculates errors of all constraints which have a tag equal to

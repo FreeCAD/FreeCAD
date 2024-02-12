@@ -865,3 +865,16 @@ bool SketcherGui::areColinear(const Base::Vector2d& p1,
 
     return false;
 }
+
+int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
+{
+    if (elem == GeoEnum::GeoUndef) {
+        return GeoEnum::GeoUndef;
+    }
+    for (size_t i = 0; i < vec.size(); i++) {
+        if (vec[i] == elem) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}

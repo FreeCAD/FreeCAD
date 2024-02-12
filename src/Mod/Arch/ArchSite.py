@@ -1038,26 +1038,27 @@ class _ViewProviderSite:
         """
 
         if not hasattr(self, "terrain_switches"):
-            main_switch = vobj.RootNode.getChild(2) # The display mode switch.
-            if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
-                from pivy import coin
-                self.terrain_switches = []
-                for node in tuple(main_switch.getChildren()):
-                    new_switch = coin.SoSwitch()
-                    sep1 = coin.SoSeparator()
-                    sep1.setName("NoTerrain")
-                    sep2 = coin.SoSeparator()
-                    sep2.setName("Terrain")
-                    child_list = list(node.getChildren())
-                    for child in child_list:
-                        sep2.addChild(child)
-                    new_switch.addChild(sep1)
-                    new_switch.addChild(sep2)
-                    new_switch.whichChild = 0
-                    node.addChild(new_switch)
-                    for i in range(len(child_list)):
-                        node.removeChild(0) # Remove the original children.
-                    self.terrain_switches.append(new_switch)
+            if vobj.RootNode.getNumChildren() > 2:
+                main_switch = vobj.RootNode.getChild(2) # The display mode switch.
+                if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
+                    from pivy import coin
+                    self.terrain_switches = []
+                    for node in tuple(main_switch.getChildren()):
+                        new_switch = coin.SoSwitch()
+                        sep1 = coin.SoSeparator()
+                        sep1.setName("NoTerrain")
+                        sep2 = coin.SoSeparator()
+                        sep2.setName("Terrain")
+                        child_list = list(node.getChildren())
+                        for child in child_list:
+                            sep2.addChild(child)
+                        new_switch.addChild(sep1)
+                        new_switch.addChild(sep2)
+                        new_switch.whichChild = 0
+                        node.addChild(new_switch)
+                        for i in range(len(child_list)):
+                            node.removeChild(0) # Remove the original children.
+                        self.terrain_switches.append(new_switch)
 
     def updateDisplaymodeTerrainSwitches(self,vobj):
         """Updates the 'terrain' switches."""

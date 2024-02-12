@@ -27,7 +27,8 @@ from typing import Optional
 
 import FreeCAD
 from PySide import QtCore
-import addonmanager_utilities as utils
+import NetworkManager
+import time
 
 translate = FreeCAD.Qt.translate
 
@@ -42,32 +43,49 @@ class ConnectionChecker(QtCore.QThread):
 
     def __init__(self):
         QtCore.QThread.__init__(self)
+        self.done = False
+        self.request_id = None
+        self.data = None
 
     def run(self):
-        """Not generally called directly: create a new ConnectionChecker object and
-        call start() on it to spawn a child thread."""
+        """Not generally called directly: create a new ConnectionChecker object and call start()
+        on it to spawn a child thread."""
 
         FreeCAD.Console.PrintLog("Checking network connection...\n")
-        result = self.check_network_connection()
-        if QtCore.QThread.currentThread().isInterruptionRequested():
-            FreeCAD.Console.PrintLog("Connection check cancelled\n")
-            return
-        if not result:
+        url = "https://api.github.com/zen"
+        self.done = False
+        NetworkManager.AM_NETWORK_MANAGER.completed.connect(self.connection_data_received)
+        self.request_id = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(url)
+        while not self.done:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                FreeCAD.Console.PrintLog("Connection check cancelled\n")
+                NetworkManager.AM_NETWORK_MANAGER.abort(self.request_id)
+                self.disconnect_network_manager()
+                return
+            QtCore.QCoreApplication.processEvents()
+            time.sleep(0.1)
+        if not self.data:
             self.failure.emit(
                 translate(
                     "AddonsInstaller",
-                    "Unable to read data from GitHub: check your internet connection and proxy settings and try again.",
+                    "Unable to read data from GitHub: check your internet connection and proxy "
+                    "settings and try again.",
                 )
             )
+            self.disconnect_network_manager()
             return
-        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
+        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {self.data.decode('utf-8')}\n")
+        self.disconnect_network_manager()
         self.success.emit()
 
-    def check_network_connection(self) -> Optional[str]:
-        """The main work of this object: returns the decoded result of the connection request, or
-        None if the request failed"""
-        url = "https://api.github.com/zen"
-        result = utils.blocking_get(url)
-        if result:
-            return result.decode("utf8")
-        return None
+    def connection_data_received(self, id: int, status: int, data: QtCore.QByteArray):
+        if self.request_id is not None and self.request_id == id:
+            if status == 200:
+                self.data = data.data()
+            else:
+                FreeCAD.Console.PrintWarning(f"No data received: status returned was {status}\n")
+                self.data = None
+            self.done = True
+
+    def disconnect_network_manager(self):
+        NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.connection_data_received)

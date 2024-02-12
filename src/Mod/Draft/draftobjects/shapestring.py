@@ -132,18 +132,20 @@ class ShapeString(DraftObject):
 
             fill = obj.MakeFace
             if fill is True:
-                # test a simple letter to know if we have a sticky font or not
-                # if font is sticky change fill to `False`
-                test_wire = Part.makeWireString("L", obj.FontFile, obj.Size, obj.Tracking)[0][0]
-                if test_wire.isClosed:
-                    try:
-                        test_face = Part.Face(test_wire)
-                    except Part.OCCError:
-                        fill = False
-                    else:
-                        fill = test_face.isValid() and test_face.Area > 1e-7
-                else:
+                # Test a simple letter to know if we have a sticky font or not.
+                # If the font is sticky change fill to `False`.
+                # The 0.03 total area minimum is based on tests with:
+                # 1CamBam_Stick_0.ttf and 1CamBam_Stick_0C.ttf.
+                # See the make_faces function for more information.
+                char = Part.makeWireString("L", obj.FontFile, 1, 0)[0]
+                shapes = self.make_faces(char)  # char is list of wires
+                if not shapes:
                     fill = False
+                else:
+                    fill = sum([shape.Area for shape in shapes]) > 0.03\
+                            and math.isclose(Part.Compound(char).BoundBox.DiagonalLength,
+                                             Part.Compound(shapes).BoundBox.DiagonalLength,
+                                             rel_tol=1e-7)
 
             chars = Part.makeWireString(obj.String, obj.FontFile, obj.Size, obj.Tracking)
             shapes = []
@@ -154,7 +156,7 @@ class ShapeString(DraftObject):
                 elif char:
                     shapes.extend(self.make_faces(char))
             if shapes:
-                if obj.MakeFace and obj.Fuse:
+                if fill and obj.Fuse:
                     ss_shape = shapes[0].fuse(shapes[1:])
                     ss_shape = faces.concatenate(ss_shape)
                 else:

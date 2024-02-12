@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <BRepPrimAPI_MakeBox.hxx>
+
 #include "PartTestHelpers.h"
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
@@ -13,6 +15,21 @@ double getVolume(const TopoDS_Shape& shape)
     BRepGProp::VolumeProperties(shape, prop);
     return prop.Mass();
 }
+
+double getArea(const TopoDS_Shape& shape)
+{
+    GProp_GProps prop;
+    BRepGProp::SurfaceProperties(shape, prop);
+    return prop.Mass();
+}
+
+double getLength(const TopoDS_Shape& shape)
+{
+    GProp_GProps prop;
+    BRepGProp::LinearProperties(shape, prop);
+    return prop.Mass();
+}
+
 
 void PartTestHelperClass::createTestDoc()
 {
@@ -48,7 +65,8 @@ _getFilletEdges(const std::vector<int>& edges, double startRadius, double endRad
     return filletElements;
 }
 
-void executePython(const std::vector<std::string>& python)
+
+void ExecutePython(const std::vector<std::string>& python)
 {
     Base::InterpreterSingleton is = Base::InterpreterSingleton();
 
@@ -68,16 +86,33 @@ void rectangle(double height, double width, char* name)
         boost::str(boost::format("V4 = FreeCAD.Vector(0, %d, 0)") % width),
         "P1 = Part.makePolygon([V1, V2, V3, V4],True)",
         "F1 = Part.Face(P1)",  // Make the face or the volume calc won't work right.
-        // "L1 = Part.LineSegment(V1, V2)",
-        // "L2 = Part.LineSegment(V2, V3)",
-        // "L3 = Part.LineSegment(V3, V4)",
-        // "L4 = Part.LineSegment(V4, V1)",
-        // "S1 = Part.Shape([L1,L2,L3,L4])",
-        // "W1 = Part.Wire(S1.Edges)",
-        // "F1 = Part.Face(W1)",  // Make the face or the volume calc won't work right.
         boost::str(boost::format("Part.show(F1,'%s')") % name),
     };
-    executePython(rectstring);
+    ExecutePython(rectstring);
+}
+
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge>
+CreateRectFace(float len, float wid)
+{
+    auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(len, 0.0, 0.0)).Edge();
+    auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(len, 0.0, 0.0), gp_Pnt(len, wid, 0.0)).Edge();
+    auto edge3 = BRepBuilderAPI_MakeEdge(gp_Pnt(len, wid, 0.0), gp_Pnt(0.0, wid, 0.0)).Edge();
+    auto edge4 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, wid, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge();
+    auto wire1 = BRepBuilderAPI_MakeWire({edge1, edge2, edge3, edge4}).Wire();
+    auto face1 = BRepBuilderAPI_MakeFace(wire1).Face();
+    return {face1, wire1, edge1, edge2, edge3, edge4};
+}
+
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire>
+CreateFaceWithRoundHole(float len, float wid, float radius)
+{
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(len, wid);
+    auto circ1 =
+        GC_MakeCircle(gp_Pnt(len / 2.0, wid / 2.0, 0), gp_Dir(0.0, 0.0, 1.0), radius).Value();
+    auto edge5 = BRepBuilderAPI_MakeEdge(circ1).Edge();
+    auto wire2 = BRepBuilderAPI_MakeWire(edge5).Wire();
+    auto face2 = BRepBuilderAPI_MakeFace(face1, wire2).Face();
+    return {face2, wire1, wire2};
 }
 
 testing::AssertionResult
@@ -92,6 +127,32 @@ boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
         << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
         << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
         << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ << ")";
+}
+
+std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
+{
+    std::map<IndexedName, MappedName> result {};
+    auto elements = shape.getElementMap();
+    for (auto const& entry : elements) {
+        result[entry.index] = entry.name;
+    }
+    return result;
+}
+
+std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes()
+{
+    auto boxMaker1 = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
+    boxMaker1.Build();
+    auto box1 = boxMaker1.Shape();
+
+    auto boxMaker2 = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
+    boxMaker2.Build();
+    auto box2 = boxMaker2.Shape();
+    auto transform = gp_Trsf();
+    transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
+    box2.Location(TopLoc_Location(transform));
+
+    return {box1, box2};
 }
 
 }  // namespace PartTestHelpers

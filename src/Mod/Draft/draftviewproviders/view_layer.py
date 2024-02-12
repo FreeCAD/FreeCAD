@@ -39,7 +39,6 @@ import FreeCADGui as Gui
 from draftobjects.layer import Layer
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg
 from draftutils.translate import translate
 
 
@@ -539,12 +538,9 @@ class ViewProviderLayerContainer:
                     base.Group = base_group
                 to_delete.append(layer)
             elif layer.Label != base_label:
-                _msg(translate("draft", "Relabeling layer:")
-                        + " '{}' -> '{}'".format(layer.Label, base_label))
                 layer.Label = base_label
 
         for layer in to_delete:
-            _msg(translate("draft", "Merging layer:") + " '{}'".format(layer.Label))
             doc.removeObject(layer.Name)
 
         doc.recompute()
@@ -557,7 +553,8 @@ class ViewProviderLayerContainer:
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Add new layer"))
 
-        Draft.make_layer()
+        Draft.make_layer(name=None, line_color=None, shape_color=None,
+                         line_width=None, draw_style=None, transparency=None)
 
         doc.recompute()
         doc.commitTransaction()

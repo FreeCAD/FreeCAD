@@ -444,7 +444,7 @@ TEST_F(ComplexGeoDataTest, saveDocFileWithNoElementMap)
 {
     // Arrange
     Base::StringWriter writer;
-    cgd().resetElementMap();
+    cgd().resetElementMap(nullptr, Data::AllowNoMap);  // Force undefined map
 
     // Act
     cgd().SaveDocFile(writer);

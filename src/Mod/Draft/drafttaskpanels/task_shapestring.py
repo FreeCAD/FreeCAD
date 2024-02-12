@@ -35,7 +35,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 from draftguitools import gui_tool_utils
-from draftutils.messages import _err, _msg
+from draftutils.messages import _err
 from draftutils.params import get_param
 from draftutils.translate import translate
 from DraftVecUtils import toString
@@ -149,10 +149,9 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
 
     def createObject(self):
         """Create object in the current document."""
-        dquote = '"'
-        String = self.form.leString.text()
-        String = dquote + String.replace(dquote, '\\"') + dquote
-        FFile = dquote + str(self.fileSpec) + dquote
+        String = self.form.leString.text().replace('\\', '\\\\').replace('"', '\\"')
+        String = '"' + String + '"'
+        FFile = '"' + str(self.fileSpec) + '"'
 
         Size = str(App.Units.Quantity(self.form.sbHeight.text()).Value)
         Tracking = str(0.0)
@@ -163,13 +162,13 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         try:
             qr, sup, points, fil = self.sourceCmd.getStrings()
             Gui.addModule("Draft")
-            self.sourceCmd.commit(translate("draft", "Create ShapeString"),
-                                  ['ss=Draft.make_shapestring(String=' + String + ', FontFile=' + FFile + ', Size=' + Size + ', Tracking=' + Tracking + ')',
-                                   'plm=FreeCAD.Placement()',
-                                   'plm.Base=' + toString(ssBase),
-                                   'plm.Rotation.Q=' + qr,
-                                   'ss.Placement=plm',
-                                   'ss.Support=' + sup,
+            self.sourceCmd.commit(translate('draft', 'Create ShapeString'),
+                                  ['ss = Draft.make_shapestring(String=' + String + ', FontFile=' + FFile + ', Size=' + Size + ', Tracking=' + Tracking + ')',
+                                   'plm = FreeCAD.Placement()',
+                                   'plm.Base = ' + toString(ssBase),
+                                   'plm.Rotation.Q = ' + qr,
+                                   'ss.Placement = plm',
+                                   'ss.Support = ' + sup,
                                    'Draft.autogroup(ss)',
                                    'FreeCAD.ActiveDocument.recompute()'])
         except Exception:

@@ -21,10 +21,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <QMetaType>
 #include <QUuid>
+#endif
+
 
 #include <App/Application.h>
 #include <Gui/MetaTypes.h>
@@ -491,6 +491,19 @@ void Material::clearModels()
     _appearance.clear();
 }
 
+void Material::clearInherited()
+{
+    _allUuids.clear();
+
+    // Rebuild the UUID lists without the inherited UUIDs
+    for (auto& uuid : _physicalUuids) {
+        _allUuids << uuid;
+    }
+    for (auto& uuid : _appearanceUuids) {
+        _allUuids << uuid;
+    }
+}
+
 void Material::setName(const QString& name)
 {
     _name = name;
@@ -599,14 +612,7 @@ void Material::removePhysical(const QString& uuid)
     }
 
     // If it's an inherited model, do nothing
-    bool inherited = true;
-    for (const auto& it : qAsConst(_physicalUuids)) {
-        if (it == uuid) {
-            inherited = false;
-            break;
-        }
-    }
-    if (inherited) {
+    if (isInherited(uuid)) {
         return;
     }
 
@@ -677,14 +683,7 @@ void Material::removeAppearance(const QString& uuid)
     }
 
     // If it's an inherited model, do nothing
-    bool inherited = true;
-    for (const auto& it : qAsConst(_appearanceUuids)) {
-        if (it == uuid) {
-            inherited = false;
-            break;
-        }
-    }
-    if (inherited) {
+    if (isInherited(uuid)) {
         return;
     }
 
@@ -986,6 +985,18 @@ bool Material::hasAppearanceProperty(const QString& name) const
         return false;
     }
     return true;
+}
+
+bool Material::isInherited(const QString& uuid) const
+{
+    if (_physicalUuids.contains(uuid)) {
+        return false;
+    }
+    if (_appearanceUuids.contains(uuid)) {
+        return false;
+    }
+
+    return _allUuids.contains(uuid);
 }
 
 bool Material::hasModel(const QString& uuid) const

@@ -210,7 +210,7 @@ public:
 private:
     void LogModifications(const ModelRefine::FaceUniter& uniter);
 
-private:
+protected:
     TopTools_DataMapOfShapeListOfShape myModified;
     TopTools_ListOfShape myEmptyList;
     TopTools_ListOfShape myDeleted;

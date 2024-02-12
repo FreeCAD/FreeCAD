@@ -622,6 +622,17 @@ PropertyStiffness::PropertyStiffness()
 }
 
 //**************************************************************************
+// PropertyStiffnessDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyStiffnessDensity, App::PropertyQuantity)
+
+PropertyStiffnessDensity::PropertyStiffnessDensity()
+{
+    setUnit(Base::Unit::StiffnessDensity);
+}
+
+//**************************************************************************
 // PropertyTemperature
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

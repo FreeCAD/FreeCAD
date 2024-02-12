@@ -34,7 +34,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftobjects.fillet as fillet
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -47,55 +47,42 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 ## \addtogroup draftmake
 # @{
 
+def _extract_edge(obj):
+    """Extract the edge from an object, Draft line or Part.Edge."""
+    edge = None
+    if hasattr(obj, "PropertiesList"):
+        if "Proxy" in obj.PropertiesList:
+            if hasattr(obj.Proxy, "Type"):
+                if obj.Proxy.Type in ("Wire", "Fillet"):
+                    edge = obj.Shape.Edges[0]
+        elif "Shape" in obj.PropertiesList:
+            if obj.Shape.ShapeType in ("Wire", "Edge"):
+                edge = obj.Shape
+    elif hasattr(obj, "ShapeType"):
+        if obj.ShapeType in "Edge":
+            edge = obj
+    return edge
 
-def _print_obj_length(obj, edge, num=1):
-    if hasattr(obj, "Label"):
-        name = obj.Label
-    else:
-        name = num
 
-    _msg("({0}): {1}; {2} {3}".format(num, name,
-                                      translate("draft","length:"), edge.Length))
+def _preprocess(objs, radius, chamfer):
+    """Check the inputs and return the edges for the fillet."""
+    if len(objs) != 2:
+        _err(translate("draft", "Two objects are needed."))
+        return None
 
+    edge1 = _extract_edge(objs[0])
+    edge2 = _extract_edge(objs[1])
 
-def _extract_edges(objs):
-    """Extract the edges from the list of objects, Draft lines or Part.Edges.
+    if edge1 is None or edge2 is None:
+        _err(translate("draft", "One object is not valid."))
+        return None
 
-    Parameters
-    ----------
-    objs: list of Draft Lines or Part.Edges
-        The list of edges from which to create the fillet.
-    """
-    o1, o2 = objs
-    if hasattr(o1, "PropertiesList"):
-        if "Proxy" in o1.PropertiesList:
-            if hasattr(o1.Proxy, "Type"):
-                if o1.Proxy.Type in ("Wire", "Fillet"):
-                    e1 = o1.Shape.Edges[0]
-        elif "Shape" in o1.PropertiesList:
-            if o1.Shape.ShapeType in ("Wire", "Edge"):
-                e1 = o1.Shape
-    elif hasattr(o1, "ShapeType"):
-        if o1.ShapeType in "Edge":
-            e1 = o1
+    edges = DraftGeomUtils.fillet([edge1, edge2], radius, chamfer)
+    if len(edges) < 3:
+        _err(translate("draft", "Radius is too large") + ", r={}".format(radius))
+        return None
 
-    _print_obj_length(o1, e1, num=1)
-
-    if hasattr(o2, "PropertiesList"):
-        if "Proxy" in o2.PropertiesList:
-            if hasattr(o2.Proxy, "Type"):
-                if o2.Proxy.Type in ("Wire", "Fillet"):
-                    e2 = o2.Shape.Edges[0]
-        elif "Shape" in o2.PropertiesList:
-            if o2.Shape.ShapeType in ("Wire", "Edge"):
-                e2 = o2.Shape
-    elif hasattr(o2, "ShapeType"):
-        if o2.ShapeType in "Edge":
-            e2 = o2
-
-    _print_obj_length(o2, e2, num=2)
-
-    return e1, e2
+    return edges
 
 
 def make_fillet(objs, radius=100, chamfer=False, delete=False):
@@ -125,33 +112,18 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         The object of Proxy type `'Fillet'`.
         It returns `None` if it fails producing the object.
     """
-    _name = "make_fillet"
-    utils.print_header(_name, "Fillet")
 
-    if len(objs) != 2:
-        _err(translate("draft","Two elements are needed."))
-        return None
-
-    e1, e2 = _extract_edges(objs)
-
-    edges = DraftGeomUtils.fillet([e1, e2], radius, chamfer)
-    if len(edges) < 3:
-        _err(translate("draft","Radius is too large") + ", r={}".format(radius))
-        return None
-
-    lengths = [edges[0].Length, edges[1].Length, edges[2].Length]
-    _msg(translate("draft","Segment") + " 1, " + translate("draft","length:") + " {}".format(lengths[0]))
-    _msg(translate("draft","Segment") + " 2, " + translate("draft","length:") + " {}".format(lengths[1]))
-    _msg(translate("draft","Segment") + " 3, " + translate("draft","length:") + " {}".format(lengths[2]))
+    edges = _preprocess(objs, radius, chamfer)
+    if edges is None:
+        return
 
     try:
         wire = Part.Wire(edges)
     except Part.OCCError:
         return None
 
-    _doc = App.activeDocument()
-    obj = _doc.addObject("Part::Part2DObjectPython",
-                         "Fillet")
+    doc = App.activeDocument()
+    obj = doc.addObject("Part::Part2DObjectPython", "Fillet")
     fillet.Fillet(obj)
     obj.Shape = wire
     obj.Length = wire.Length
@@ -160,15 +132,13 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     obj.FilletRadius = radius
 
     if delete:
-        _doc.removeObject(objs[0].Name)
-        _doc.removeObject(objs[1].Name)
-        _msg(translate("draft","Removed original objects."))
+        doc.removeObject(objs[0].Name)
+        doc.removeObject(objs[1].Name)
 
     if App.GuiUp:
         view_fillet.ViewProviderFillet(obj.ViewObject)
         gui_utils.format_object(obj)
         gui_utils.select(obj)
-        gui_utils.autogroup(obj)
 
     return obj
 

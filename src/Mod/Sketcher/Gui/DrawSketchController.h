@@ -454,7 +454,7 @@ public:
     /// triggered by the controllable DSH after a mode change has been effected
     virtual void afterHandlerModeChanged()
     {
-        if (!handler->isState(SelectModeT::End) || handler->continuousMode) {
+        if (handler && (!handler->isState(SelectModeT::End) || handler->continuousMode)) {
             handler->mouseMove(prevCursorPosition);
         }
     }

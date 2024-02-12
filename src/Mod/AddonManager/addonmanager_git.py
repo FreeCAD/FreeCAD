@@ -29,7 +29,7 @@ import os
 import platform
 import shutil
 import subprocess
-from typing import List, Optional
+from typing import List, Dict, Optional
 import time
 
 import addonmanager_utilities as utils
@@ -44,6 +44,30 @@ class NoGitFound(RuntimeError):
 
 class GitFailed(RuntimeError):
     """The call to git returned an error of some kind"""
+
+
+def _ref_format_string() -> str:
+    return (
+        "--format=%(refname:lstrip=2)\t%(upstream:lstrip=2)\t%(authordate:rfc)\t%("
+        "authorname)\t%(subject)"
+    )
+
+
+def _parse_ref_table(text: str):
+    rows = text.splitlines()
+    result = []
+    for row in rows:
+        columns = row.split("\t")
+        result.append(
+            {
+                "ref_name": columns[0],
+                "upstream": columns[1],
+                "date": columns[2],
+                "author": columns[3],
+                "subject": columns[4],
+            }
+        )
+    return result
 
 
 class GitManager:
@@ -81,6 +105,36 @@ class GitManager:
         final_args.append(spec)
         self._synchronous_call_git(final_args)
         os.chdir(old_dir)
+
+    def dirty(self, local_path: str) -> bool:
+        """Check for local changes"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        result = False
+        final_args = ["diff-index", "HEAD"]
+        try:
+            stdout = self._synchronous_call_git(final_args)
+            if stdout:
+                result = True
+        except GitFailed:
+            result = False
+        os.chdir(old_dir)
+        return result
+
+    def detached_head(self, local_path: str) -> bool:
+        """Check for detached head state"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        result = False
+        final_args = ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "HEAD"]
+        try:
+            stdout = self._synchronous_call_git(final_args)
+            if stdout == "HEAD":
+                result = True
+        except GitFailed:
+            result = False
+        os.chdir(old_dir)
+        return result
 
     def update(self, local_path):
         """Fetches and pulls the local_path from its remote"""
@@ -258,6 +312,30 @@ class GitManager:
             branches.append(branch)
         return branches
 
+    def get_branches_with_info(self, local_path) -> List[Dict[str, str]]:
+        """Get a list of branches, where each entry is a dictionary with status information about
+        the branch."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(["branch", "-a", _ref_format_string()])
+            return _parse_ref_table(stdout)
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+
+    def get_tags_with_info(self, local_path) -> List[Dict[str, str]]:
+        """Get a list of branches, where each entry is a dictionary with status information about
+        the branch."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(["tag", "-l", _ref_format_string()])
+            return _parse_ref_table(stdout)
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+
     def get_last_committers(self, local_path, n=10):
         """Examine the last n entries of the commit history, and return a list of all
         the committers, their email addresses, and how many commits each one is
@@ -309,6 +387,30 @@ class GitManager:
                 result_dict[author]["count"] += 1
         return result_dict
 
+    def migrate_branch(self, local_path: str, old_branch: str, new_branch: str) -> None:
+        """Rename a branch (used when the remote branch name changed). Assumes that "origin"
+        exists."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            self._synchronous_call_git(["branch", "-m", old_branch, new_branch])
+            self._synchronous_call_git(["fetch", "origin"])
+            self._synchronous_call_git(["branch", "--unset-upstream"])
+            self._synchronous_call_git(["branch", f"--set-upstream-to=origin/{new_branch}"])
+            self._synchronous_call_git(["pull"])
+        except GitFailed as e:
+            fci.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Git branch rename failed with the following message:",
+                )
+                + str(e)
+                + "\n"
+            )
+            os.chdir(old_dir)
+            raise e
+        os.chdir(old_dir)
+
     def _find_git(self):
         # Find git. In preference order
         #   A) The value of the GitExecutable user preference
@@ -322,6 +424,9 @@ class GitManager:
             if "Windows" in platform.system():
                 git_exe += ".exe"
 
+        if platform.system() == "Darwin" and not self._xcode_command_line_tools_are_installed():
+            return
+
         if not git_exe or not os.path.exists(git_exe):
             git_exe = shutil.which("git")
 
@@ -330,6 +435,18 @@ class GitManager:
 
         prefs.SetString("GitExecutable", git_exe)
         self.git_exe = git_exe
+
+    def _xcode_command_line_tools_are_installed(self) -> bool:
+        """On Macs, there is *always* an executable called "git", but sometimes it's just a
+        script that tells the user to install XCode's Command Line tools. So the existence of git
+        on the Mac actually requires us to check for that installation."""
+        try:
+            subprocess.check_output(["xcode-select", "-p"])
+            fci.Console.PrintMessage("XCode command line tools are installed: git is available\n")
+            return True
+        except subprocess.CalledProcessError:
+            fci.Console.PrintMessage("XCode command line tools are not installed: not using git\n")
+            return False
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""

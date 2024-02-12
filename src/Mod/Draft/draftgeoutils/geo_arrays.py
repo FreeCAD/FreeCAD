@@ -150,8 +150,6 @@ def create_frames(obj, places):
     len_wires = len(obj.Shape.Wires)
     frames = list()
     profiles = list()
-    # _msg("{}: {} wires".format(obj.Label, len_wires))
-    # _msg("places: {}".format(len(places)))
 
     for i in places:
         frame = obj.Shape.copy()

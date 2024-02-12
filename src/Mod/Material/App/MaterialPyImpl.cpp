@@ -222,7 +222,7 @@ PyObject* MaterialPy::hasPhysicalModel(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasPhysicalModel(QString::fromStdString(uuid));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 PyObject* MaterialPy::hasAppearanceModel(PyObject* args)
@@ -233,7 +233,7 @@ PyObject* MaterialPy::hasAppearanceModel(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasAppearanceModel(QString::fromStdString(uuid));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 PyObject* MaterialPy::isPhysicalModelComplete(PyObject* args)
@@ -244,7 +244,7 @@ PyObject* MaterialPy::isPhysicalModelComplete(PyObject* args)
     }
 
     bool isComplete = getMaterialPtr()->isPhysicalModelComplete(QString::fromStdString(name));
-    return isComplete ? Py_True : Py_False;
+    return PyBool_FromLong(isComplete ? 1 : 0);
 }
 
 PyObject* MaterialPy::isAppearanceModelComplete(PyObject* args)
@@ -255,7 +255,7 @@ PyObject* MaterialPy::isAppearanceModelComplete(PyObject* args)
     }
 
     bool isComplete = getMaterialPtr()->isAppearanceModelComplete(QString::fromStdString(name));
-    return isComplete ? Py_True : Py_False;
+    return PyBool_FromLong(isComplete ? 1 : 0);
 }
 
 PyObject* MaterialPy::hasPhysicalProperty(PyObject* args)
@@ -266,7 +266,7 @@ PyObject* MaterialPy::hasPhysicalProperty(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasPhysicalProperty(QString::fromStdString(name));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 PyObject* MaterialPy::hasAppearanceProperty(PyObject* args)
@@ -277,7 +277,7 @@ PyObject* MaterialPy::hasAppearanceProperty(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasAppearanceProperty(QString::fromStdString(name));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 Py::Dict MaterialPy::getProperties() const

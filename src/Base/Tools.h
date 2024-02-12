@@ -297,6 +297,7 @@ struct BaseExport Tools
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
+    static std::string escapeQuotesFromString(const std::string& s);
 
     static QString escapeEncodeString(const QString& s);
     static std::string escapeEncodeString(const std::string& s);

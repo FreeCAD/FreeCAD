@@ -375,6 +375,11 @@ bool DrawView::isInClip()
     return false;
 }
 
+DrawView *DrawView::claimParent() const
+{
+    return nullptr;
+}
+
 DrawViewClip* DrawView::getClipGroup()
 {
     std::vector<App::DocumentObject*> parent = getInList();

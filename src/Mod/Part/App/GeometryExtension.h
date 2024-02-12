@@ -75,6 +75,8 @@ public:
     void Save(Base::Writer &/*writer*/) const;
     void Restore(Base::XMLReader &/*reader*/);
 
+    bool isSame(const GeometryPersistenceExtension &other) const;
+
 protected:
     virtual void restoreAttributes(Base::XMLReader &/*reader*/);
     virtual void saveAttributes(Base::Writer &writer) const;

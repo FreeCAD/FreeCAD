@@ -3146,6 +3146,59 @@ void TopoShape::sewShape(double tolerance)
     this->_Shape = sew.SewedShape();
 }
 
+bool TopoShape::fix()
+{
+    if (this->_Shape.IsNull()) {
+        return false;
+    }
+
+    // First, we do fix regardless if the current shape is valid or not,
+    // because not all problems that are handled by ShapeFix_Shape can be
+    // recognized by BRepCheck_Analyzer.
+    //
+    // Second, for some reason, a failed fix (i.e. a fix that produces invalid shape)
+    // will affect the input shape. (See // https://github.com/realthunder/FreeCAD/issues/585,
+    // BTW, the file attached in the issue also shows that ShapeFix_Shape may
+    // actually make a valid input shape invalid). So, it actually change the
+    // underlying shape data. Therefore, we try with a copy first.
+    auto copy = makeElementCopy();
+    ShapeFix_Shape fix(copy._Shape);
+    fix.Perform();
+
+    if (fix.Shape().IsSame(copy._Shape)) {
+        return false;
+    }
+
+    BRepCheck_Analyzer aChecker(fix.Shape());
+    if (!aChecker.IsValid()) {
+        return false;
+    }
+
+    // If the above fix produces a valid shape, then we fix the original shape,
+    // because BRepBuilderAPI_Copy has some undesired side effect (e.g. flatten
+    // underlying shape, and thus break internal shape sharing).
+    ShapeFix_Shape fixThis(this->_Shape);
+    fixThis.Perform();
+
+    aChecker.Init(fixThis.Shape());
+    if (aChecker.IsValid()) {
+        // Must call makESHAPE() (which calls mapSubElement()) to remap element
+        // names because ShapeFix_Shape may delete (e.g. small edges) or modify
+        // the input shape.
+        //
+        // See https://github.com/realthunder/FreeCAD/issues/595. Sketch001
+        // has small edges. Simply recompute the sketch to trigger call of fix()
+        // through makEWires(), and it will remove those edges. Without
+        // remapping, there will be invalid index jumpping in reference in
+        // Sketch002.ExternalEdge5.
+        makeShapeWithElementMap(fixThis.Shape(), MapperHistory(fixThis), {*this});
+    }
+    else {
+        makeShapeWithElementMap(fix.Shape(), MapperHistory(fix), {copy});
+    }
+    return true;
+}
+
 bool TopoShape::fix(double precision, double mintol, double maxtol)
 {
     if (this->_Shape.IsNull())
@@ -4042,12 +4095,15 @@ TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
-TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail) {
+TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, RefineFail no_fail)
+{
     (void)op;
     _Shape.Nullify();
+
     if(shape.isNull()) {
-        if(!no_fail)
+        if (no_fail == RefineFail::throwException) {
             HANDLE_NULL_SHAPE;
+        }
         return *this;
     }
     try {
@@ -4055,7 +4111,9 @@ TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no
         _Shape = mkRefine.Shape();
         return *this;
     }catch (Standard_Failure &) {
-        if(!no_fail) throw;
+        if(no_fail == RefineFail::throwException ) {
+            throw;
+        }
     }
     *this = shape;
     return *this;

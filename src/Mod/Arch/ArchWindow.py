@@ -94,7 +94,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     if baseobj:
         obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
         obj.Base = baseobj
-    if parts:
+    if parts is not None:
         obj.WindowParts = parts
     else:
         if baseobj:
@@ -512,40 +512,41 @@ class _CommandWindow:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
             elif i in [1,8]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i == 6:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i in [2,4,7]:
+                self.im.load(":/ui/ParametersWindowDouble.svg")
             elif i == 3:
                 self.im.load(":/ui/ParametersWindowStash.svg")
             elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
+            elif i == 6:
+                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i == 9:
+                self.im.load(":/ui/ParametersOpening.svg")
             else:
-                if i >= len(WindowPresets):
-                    # From Library
-                    self.im.hide()
-                    path = self.librarypresets[i-len(WindowPresets)][1]
-                    if path.lower().endswith(".fcstd"):
-                        try:
-                            import tempfile
-                            import zipfile
-                        except Exception:
-                            pass
-                        else:
-                            zfile = zipfile.ZipFile(path)
-                            files = zfile.namelist()
-                            # check for meta-file if it's really a FreeCAD document
-                            if files[0] == "Document.xml":
-                                image="thumbnails/Thumbnail.png"
-                                if image in files:
-                                    image = zfile.read(image)
-                                    thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                                    thumb = open(thumbfile,"wb")
-                                    thumb.write(image)
-                                    thumb.close()
-                                    im = QtGui.QPixmap(thumbfile)
-                                    self.pic.setPixmap(im)
-                                    self.pic.show()
-                else:
-                    self.im.load(":/ui/ParametersWindowDouble.svg")
+                # From Library
+                self.im.hide()
+                path = self.librarypresets[i-len(WindowPresets)][1]
+                if path.lower().endswith(".fcstd"):
+                    try:
+                        import tempfile
+                        import zipfile
+                    except Exception:
+                        pass
+                    else:
+                        zfile = zipfile.ZipFile(path)
+                        files = zfile.namelist()
+                        # check for meta-file if it's really a FreeCAD document
+                        if files[0] == "Document.xml":
+                            image="thumbnails/Thumbnail.png"
+                            if image in files:
+                                image = zfile.read(image)
+                                thumbfile = tempfile.mkstemp(suffix='.png')[1]
+                                thumb = open(thumbfile,"wb")
+                                thumb.write(image)
+                                thumb.close()
+                                im = QtGui.QPixmap(thumbfile)
+                                self.pic.setPixmap(im)
+                                self.pic.show()
             #for param in self.wparams:
             #    getattr(self,"val"+param).setEnabled(True)
         else:
@@ -642,7 +643,7 @@ class _Window(ArchComponent.Component):
 
         if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
             setattr(self,prop,getattr(obj,prop))
-        if prop in ["Height","Width"]:
+        if prop in ["Height","Width"] and obj.CloneOf is None:
             self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
     def onChanged(self,obj,prop):
@@ -912,7 +913,7 @@ class _Window(ArchComponent.Component):
                         if shapes:
                             base = Part.makeCompound(shapes)
                     elif not obj.WindowParts:
-                        if not obj.Base.Shape.isNull():
+                        if obj.Base.Shape.Solids:
                             base = obj.Base.Shape.copy()
                             # obj placement is already added by applyShape() below
                             #if not DraftGeomUtils.isNull(pl):
@@ -941,6 +942,8 @@ class _Window(ArchComponent.Component):
                     #base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
                 obj.Placement = pl
+        else:
+            obj.Shape = Part.Shape()
         if hasattr(obj,"Area"):
             obj.Area = obj.Width.Value * obj.Height.Value
 
@@ -1174,9 +1177,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
                     typ = obj.WindowParts[typeidx]
-                    if typ == WindowPartTypes[0]:  # "Frame"
-                        ccol = ArchCommands.getDefaultColor("")
-                    elif typ == WindowPartTypes[2]:  # "Glass panel"
+                    if typ == WindowPartTypes[2]:  # "Glass panel"
                         ccol = ArchCommands.getDefaultColor("WindowGlass")
             if not ccol:
                 ccol = base

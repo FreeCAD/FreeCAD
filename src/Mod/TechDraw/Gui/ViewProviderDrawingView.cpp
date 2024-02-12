@@ -442,3 +442,23 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
+
+void ViewProviderDrawingView::switchOwnerProperty(App::PropertyLink &prop)
+{
+    QGIView *qv = getQView();
+    if (!qv) {
+        return;
+    }
+
+    QGIView *targetParent = nullptr;
+    auto owner = dynamic_cast<TechDraw::DrawView *>(prop.getValue());
+    if (owner) {
+        auto vp = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(owner));
+        if (vp) {
+            targetParent = vp->getQView();
+        }
+    }
+
+    qv->switchParentItem(targetParent);
+    qv->updateView();
+}

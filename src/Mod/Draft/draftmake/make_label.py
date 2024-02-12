@@ -35,7 +35,7 @@ from draftobjects import label
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _wrn, _err
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -188,14 +188,12 @@ def make_label(target_point=App.Vector(0, 0, 0),
         If there is a problem it will return `None`.
     """
     _name = "make_label"
-    utils.print_header(_name, "Label")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    _msg("target_point: {}".format(target_point))
     if not target_point:
         target_point = App.Vector(0, 0, 0)
     try:
@@ -204,7 +202,6 @@ def make_label(target_point=App.Vector(0, 0, 0),
         _err(translate("draft","Wrong input: must be a vector."))
         return None
 
-    _msg("placement: {}".format(placement))
     if not placement:
         placement = App.Placement()
     try:
@@ -220,26 +217,18 @@ def make_label(target_point=App.Vector(0, 0, 0),
         placement = App.Placement(placement, App.Rotation())
     elif isinstance(placement, App.Rotation):
         placement = App.Placement(App.Vector(), placement)
-
-    if isinstance(target_object, str):
-        target_object_str = target_object
-
+        
     if target_object:
         if isinstance(target_object, (list, tuple)):
-            _msg("target_object: {}".format(target_object))
-            _err(translate("draft","Wrong input: object must not be a list."))
+            _err(translate("draft","Wrong input: target_object must not be a list."))
             return None
 
         found, target_object = utils.find_object(target_object, doc)
         if not found:
-            _msg("target_object: {}".format(target_object_str))
-            _err(translate("draft","Wrong input: object not in document."))
+            _err(translate("draft","Wrong input: target_object not in document."))
             return None
 
-        _msg("target_object: {}".format(target_object.Label))
-
     if target_object and subelements:
-        _msg("subelements: {}".format(subelements))
         try:
             # Make a list
             if isinstance(subelements, str):
@@ -248,7 +237,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
             utils.type_check([(subelements, (list, tuple, str))],
                              name=_name)
         except TypeError:
-            _err(translate("draft","Wrong input: must be a list or tuple of strings, or a single string."))
+            _err(translate("draft","Wrong input: subelements must be a list or tuple of strings, or a single string."))
             return None
 
         # The subelements list is used to build a special list
@@ -259,11 +248,9 @@ def make_label(target_point=App.Vector(0, 0, 0),
         for sub in subelements:
             _sub = target_object.getSubObject(sub)
             if not _sub:
-                _err("subelement: {}".format(sub))
-                _err(translate("draft","Wrong input: subelement not in object."))
+                _err(translate("draft","Wrong input: subelement {} not in object.").format(sub))
                 return None
 
-    _msg("label_type: {}".format(label_type))
     if not label_type:
         label_type = "Custom"
     try:
@@ -277,7 +264,6 @@ def make_label(target_point=App.Vector(0, 0, 0),
         _err(translate("draft", "Wrong input: label_type must be one of the following: ") + str(types).strip("[]"))
         return None
 
-    _msg("custom_text: {}".format(custom_text))
     if not custom_text:
         custom_text = "Label"
     try:
@@ -291,7 +277,6 @@ def make_label(target_point=App.Vector(0, 0, 0),
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    _msg("direction: {}".format(direction))
     if not direction:
         direction = "Horizontal"
     try:
@@ -304,7 +289,6 @@ def make_label(target_point=App.Vector(0, 0, 0),
         _err(translate("draft","Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'."))
         return None
 
-    _msg("distance: {}".format(distance))
     if not distance:
         distance = 1
     try:
@@ -314,9 +298,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
         return None
 
     if points:
-        _msg("points: {}".format(points))
-
-        _err_msg = translate("draft","Wrong input: must be a list of at least two vectors.")
+        _err_msg = translate("draft","Wrong input: points {} must be a list of at least two vectors.").format(points)
         try:
             utils.type_check([(points, (tuple, list))], name=_name)
         except TypeError:

@@ -50,6 +50,6 @@ class SelectPlaneTaskPanel:
 
     def getStandardButtons(self):
         """Execute to set the standard buttons."""
-        return 2097152  # int(QtGui.QDialogButtonBox.Close)
+        return 2097152  # int(QtWidgets.QDialogButtonBox.Close)
 
 ## @}

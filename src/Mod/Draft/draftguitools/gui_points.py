@@ -65,7 +65,6 @@ class Point(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         super().Activated(name="Point")
-        self.stack = []
         if self.ui:
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
             self.ui.isRelative.hide()
@@ -108,39 +107,30 @@ class Point(gui_base_original.Creator):
                 event.getButton() != event.BUTTON1):
                 return
         if self.point:
-            self.stack.append(self.point)
-            if len(self.stack) == 1:
-                # The command to run is built as a series of text strings
-                # to be committed through the `draftutils.todo.ToDo` class.
-                commitlist = []
-                Gui.addModule("Draft")
-                if params.get_param("UsePartPrimitives"):
-                    # Insert a Part::Primitive object
-                    _cmd = 'FreeCAD.ActiveDocument.'
-                    _cmd += 'addObject("Part::Vertex", "Point")'
-                    _cmd_list = ['point = ' + _cmd,
-                                 'point.X = ' + str(self.stack[0][0]),
-                                 'point.Y = ' + str(self.stack[0][1]),
-                                 'point.Z = ' + str(self.stack[0][2]),
-                                 'Draft.autogroup(point)',
-                                 'FreeCAD.ActiveDocument.recompute()']
-                    commitlist.append((translate("draft", "Create Point"),
-                                       _cmd_list))
-                else:
-                    # Insert a Draft point
-                    _cmd = 'Draft.make_point'
-                    _cmd += '('
-                    _cmd += str(self.stack[0][0]) + ', '
-                    _cmd += str(self.stack[0][1]) + ', '
-                    _cmd += str(self.stack[0][2])
-                    _cmd += ')'
-                    _cmd_list = ['point = ' + _cmd,
-                                 'Draft.autogroup(point)',
-                                 'FreeCAD.ActiveDocument.recompute()']
-                    commitlist.append((translate("draft", "Create Point"),
-                                       _cmd_list))
-                todo.ToDo.delayCommit(commitlist)
-                Gui.Snapper.off()
+            Gui.addModule("Draft")
+            if params.get_param("UsePartPrimitives"):
+                # Insert a Part::Primitive object
+                _cmd = 'FreeCAD.ActiveDocument.'
+                _cmd += 'addObject("Part::Vertex", "Point")'
+                _cmd_list = ['point = ' + _cmd,
+                             'point.X = ' + str(self.point[0]),
+                             'point.Y = ' + str(self.point[1]),
+                             'point.Z = ' + str(self.point[2]),
+                             'Draft.autogroup(point)',
+                             'FreeCAD.ActiveDocument.recompute()']
+                self.commit(translate("draft", "Create Point"), _cmd_list)
+            else:
+                # Insert a Draft point
+                _cmd = 'Draft.make_point'
+                _cmd += '('
+                _cmd += str(self.point[0]) + ', '
+                _cmd += str(self.point[1]) + ', '
+                _cmd += str(self.point[2])
+                _cmd += ')'
+                _cmd_list = ['point = ' + _cmd,
+                             'Draft.autogroup(point)',
+                             'FreeCAD.ActiveDocument.recompute()']
+                self.commit(translate("draft", "Create Point"), _cmd_list)
             self.finish(cont=None)
 
     def finish(self, cont=False):
@@ -152,11 +142,11 @@ class Point(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super().finish()
         if self.callbackClick:
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
             self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 

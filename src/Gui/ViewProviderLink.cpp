@@ -225,7 +225,7 @@ public:
     }
 
     const char *getLinkedName() const {
-        return pcLinked->getObject()->getNameInDocument();
+        return pcLinked->getObject()->getDagKey();
     }
 
     const char *getLinkedLabel() const {
