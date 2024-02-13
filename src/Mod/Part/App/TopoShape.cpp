@@ -346,6 +346,7 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
     if(index <= 0) {
         if(silent)
             return {};
+        // TODO: Is this message clear?  Should we complain about the negative index instead
         Standard_Failure::Raise("Unsupported sub-shape type");
     }
 

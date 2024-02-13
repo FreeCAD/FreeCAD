@@ -224,10 +224,39 @@ public:
                                 std::vector<Base::Vector3d>& PointNormals,
                                 std::vector<Facet>& faces) const override;
     //@}
-    /// get the Topo"sub"Shape with the given name
+    /**
+     * Locate the TopoDS_Shape associated with a Topo"sub"Shape of the given name
+     * @param Type      The complete name of the subshape - for example "Face2"
+     * @param silent    True to suppress the exception throw if the shape isn't found
+     * @return          The shape or a null TopoDS_Shape
+     */
     TopoDS_Shape getSubShape(const char* Type, bool silent = false) const;
+    /**
+     * Locate a subshape's TopoDS_Shape by type enum and index.  See doc above.
+     * @param type      Shape type enum value
+     * @param idx       Index number of the subshape within the shape
+     * @param silent    True to suppress the exception throw
+     * @return  The shape, or a null TopoShape.
+     */
     TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent = false) const;
+    /**
+     * Locate a subshape by name within this shape.  If null or empty Type specified, try my own
+     * shapeType; if I'm not a COMPOUND OR COMPSOLID, return myself; otherwise, look to see if I
+     * have any singular SOLID, SHELL, FACE, WIRE, EDGE or VERTEX and return that.
+     * If a Type is specified, then treat it as the complete name of the subshape - for example
+     * "Face3" and try to find and return that shape.
+     * @param Type      The Shape name
+     * @param silent    True to suppress the exception throw if the shape isn't found.
+     * @return          The shape or a null TopoShape.
+     */
     TopoShape getSubTopoShape(const char* Type, bool silent = false) const;
+    /**
+     * Locate a subshape by type enum and index.  See doc above.
+     * @param type      Shape type enum value
+     * @param idx       Index number of the subshape within the shape
+     * @param silent    True to suppress the exception throw
+     * @return  The shape, or a null TopoShape.
+     */
     TopoShape getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent = false) const;
     std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;
     std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;

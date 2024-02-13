@@ -1291,6 +1291,7 @@ void addShapesToBuilder(const std::vector<TopoShape>& shapes,
 }
 }  // namespace
 
+// TODO: Can this be consolidated with getSubShape()?  Empty Parm Logic is a little different.
 TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
 {
     if (!Type || !Type[0]) {
@@ -1340,6 +1341,7 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
     return getSubTopoShape(res.first, res.second, silent);
 }
 
+// TODO: Can this be consolidated with getSubShape()?  We use ancestry; other uses current shape.
 TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent) const
 {
     if (isNull()) {

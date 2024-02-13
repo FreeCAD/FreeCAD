@@ -532,6 +532,74 @@ TEST_F(TopoShapeExpansionTest, splitWires)
 // splitWires with all four reorientation values NoReorient, ReOrient, ReorientForward,
 // ReorientReversed
 
+TEST_F(TopoShapeExpansionTest, getSubTopoShapeByEnum)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1};
+    cube1TS.Tag = 1L;
+
+    // Act
+    auto subShape = cube1TS.getSubTopoShape(TopAbs_FACE, 1);
+    auto subShape2 = cube1TS.getSubTopoShape(TopAbs_FACE, 2);
+    auto subShape3 = cube1TS.getSubTopoShape(TopAbs_FACE, 6);
+    auto noshape1 = cube1TS.getSubTopoShape(TopAbs_FACE, 7, true);
+    // Assert
+    EXPECT_EQ(subShape.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_EQ(subShape2.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_EQ(subShape2.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_TRUE(noshape1.isNull());
+    EXPECT_THROW(cube1TS.getSubTopoShape(TopAbs_FACE, 7), Base::IndexError);  // Out of range
+}
+
+TEST_F(TopoShapeExpansionTest, getSubTopoShapeByStringDefaults)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    Part::TopoShape cube1TS {cube1};
+    cube1TS.Tag = 1L;
+    const float Len = 3;
+    const float Wid = 2;
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
+    TopoDS_Compound compound1;
+    TopoDS_Builder builder {};
+    builder.MakeCompound(compound1);
+    builder.Add(compound1, face1);
+    TopoShape topoShape {compound1, 2L};
+    // Act
+    auto subShape = cube1TS.getSubTopoShape(nullptr);
+    auto subShape1 = cube1TS.getSubTopoShape("");
+    auto subShape2 = topoShape.getSubTopoShape(nullptr);
+    // Assert
+    EXPECT_TRUE(subShape.getShape().IsEqual(cube1TS.getShape()));
+    EXPECT_EQ(subShape.getShape().ShapeType(), TopAbs_SOLID);
+    EXPECT_TRUE(subShape1.getShape().IsEqual(cube1TS.getShape()));
+    EXPECT_EQ(subShape1.getShape().ShapeType(), TopAbs_SOLID);
+    EXPECT_TRUE(subShape2.getShape().IsEqual(face1));
+    EXPECT_EQ(subShape2.getShape().ShapeType(), TopAbs_FACE);
+}
+
+TEST_F(TopoShapeExpansionTest, getSubTopoShapeByStringNames)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1};
+    cube1TS.Tag = 1;
+
+    // Act
+    auto subShape = cube1TS.getSubTopoShape("Face1");
+    auto subShape2 = cube1TS.getSubTopoShape("Face2");
+    auto subShape3 = cube1TS.getSubTopoShape("Face3");
+    auto noshape1 = cube1TS.getSubTopoShape("Face7", true);  // Out of range
+    // Assert
+    EXPECT_EQ(subShape.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_EQ(subShape2.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_EQ(subShape3.getShape().ShapeType(), TopAbs_FACE);
+    EXPECT_TRUE(noshape1.isNull());
+    EXPECT_THROW(cube1TS.getSubTopoShape("Face7"), Base::IndexError);          // Out of range
+    EXPECT_THROW(cube1TS.getSubTopoShape("WOOHOO", false), Base::ValueError);  // Invalid
+}
+
 TEST_F(TopoShapeExpansionTest, mapSubElementInvalidParm)
 {
     // Arrange
