@@ -87,7 +87,7 @@ dependencies:
 - pre-commit
 - pybind11
 - pyside2
-- python
+- python==3.11.*
 - pyyaml
 - qt
 - qt-main
