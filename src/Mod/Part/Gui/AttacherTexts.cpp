@@ -245,7 +245,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                               qApp->translate("Attacher1D", "Line that passes through two vertices.","AttachmentLine mode tooltip"));
         case mm1Intersection:
             return TwoStrings(qApp->translate("Attacher1D", "Intersection","AttachmentLine mode caption"),
-                              qApp->translate("Attacher1D", "Not implemented.","AttachmentLine mode tooltip"));
+                              qApp->translate("Attacher1D", "Intersection of two faces.","AttachmentLine mode tooltip"));
         case mm1Proximity:
             return TwoStrings(qApp->translate("Attacher1D", "Proximity line","AttachmentLine mode caption"),
                               qApp->translate("Attacher1D", "Line that spans the shortest distance between shapes.","AttachmentLine mode tooltip"));
