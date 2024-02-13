@@ -47,6 +47,7 @@
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintPy.h"
 
 
 using namespace FemGui;
@@ -214,6 +215,15 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
             ViewProviderGeometryObject::unsetEdit(ModNum);
         }
     }
+}
+
+PyObject* ViewProviderFemConstraint::getPyObject()
+{
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemConstraintPy(this);
+    }
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 /*
 // Create a local coordinate system with the z-axis given in dir
