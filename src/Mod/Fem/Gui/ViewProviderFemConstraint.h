@@ -72,9 +72,16 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
+    PyObject* getPyObject() override;
+
     /// Highlight the references that have been selected
     virtual void highlightReferences(const bool /* on */)
     {}
+
+    SoSeparator* getSymbolSeparator() const
+    {
+        return pShapeSep;
+    }
 
     static std::string gethideMeshShowPartStr();
     static std::string gethideMeshShowPartStr(const std::string showConstr);
