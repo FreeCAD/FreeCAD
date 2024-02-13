@@ -77,7 +77,7 @@ dependencies:
 - matplotlib
 - ninja
 - numpy
-- occt==7.6.3
+- occt
 - openssl
 - pcl==1.13.1
 - pip
