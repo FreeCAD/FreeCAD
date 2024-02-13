@@ -129,7 +129,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute()
             if(shapes.back().isNull())
                 return new App::DocumentObjectExecReturn("Invalid link.");
         }
-        TopoShape res(0);//, getDocument()->getStringHasher());
+        TopoShape res(0);
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
         return Part::Feature::execute();
@@ -306,6 +306,24 @@ App::DocumentObjectExecReturn *Loft::execute()
         return new App::DocumentObjectExecReturn("No sections linked.");
 
     try {
+#ifdef FC_USE_TNP_FIX
+        std::vector<TopoShape> shapes;
+        for(auto &obj : Sections.getValues()) {
+            shapes.emplace_back(getTopoShape(obj));
+            if(shapes.back().isNull())
+                return new App::DocumentObjectExecReturn("Invalid section link");
+        }
+        Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isClosed = Closed.getValue() ? Standard_True : Standard_False;
+        int degMax = MaxDegree.getValue();
+        TopoShape result(0,getDocument()->getStringHasher());
+        result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
+        if (Linearize.getValue())
+            result.linearize(true, false);
+        this->Shape.setValue(result);
+        return Part::Feature::execute();
+#else
         TopTools_ListOfShape profiles;
         const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
         std::vector<App::DocumentObject*>::const_iterator it;
@@ -372,6 +390,7 @@ App::DocumentObjectExecReturn *Loft::execute()
         TopoShape myShape;
         this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled, isClosed, degMax));
         return App::DocumentObject::StdReturn;
+#endif
     }
     catch (Standard_Failure& e) {
 
@@ -420,6 +439,41 @@ App::DocumentObjectExecReturn *Sweep::execute()
 {
     if (Sections.getSize() == 0)
         return new App::DocumentObjectExecReturn("No sections linked.");
+#ifdef FC_USE_TNP_FIX
+    if(!Spine.getValue())
+        return new App::DocumentObjectExecReturn("No spine");
+    TopoShape spine = getTopoShape(Spine.getValue());
+    const auto &subs = Spine.getSubValues();
+    if(spine.isNull())
+        return new App::DocumentObjectExecReturn("Invalid spine");
+    if(subs.size()) {
+        std::vector<TopoShape> spineShapes;
+        for(auto sub : subs) {
+            auto shape = spine.getSubTopoShape(sub.c_str());
+            if(shape.isNull())
+                return new App::DocumentObjectExecReturn("Invalid spine");
+            spineShapes.push_back(shape);
+        }
+        spine = TopoShape().makeElementCompound(spineShapes,0,false);
+    }
+    std::vector<TopoShape> shapes;
+    shapes.push_back(spine);
+    for(auto &obj : Sections.getValues()) {
+        shapes.emplace_back(getTopoShape(obj));
+        if(shapes.back().isNull())
+            return new App::DocumentObjectExecReturn("Invalid section link");
+    }
+    Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
+    Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
+    auto transMode = static_cast<TopoShape::TransitionMode>(Transition.getValue());
+    try {
+        TopoShape result(0,getDocument()->getStringHasher());
+        result.makeElementPipeShell(shapes,isSolid,isFrenet,transMode,Part::OpCodes::Sweep);
+        if (Linearize.getValue())
+            result.linearize(true, false);
+        this->Shape.setValue(result);
+        return App::DocumentObject::StdReturn;
+#else
     App::DocumentObject* spine = Spine.getValue();
     if (!spine)
         return new App::DocumentObjectExecReturn("No spine linked.");
@@ -574,6 +628,7 @@ App::DocumentObjectExecReturn *Sweep::execute()
 
         this->Shape.setValue(mkPipeShell.Shape());
         return App::DocumentObject::StdReturn;
+#endif
     }
     catch (Standard_Failure& e) {
 
@@ -639,6 +694,19 @@ void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
 App::DocumentObjectExecReturn *Thickness::execute()
 {
+#ifdef FC_USE_TNP_FIX
+    std::vector<TopoShape> shapes;
+    auto base = getTopoShape(Faces.getValue());
+    if(base.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source shape");
+    if(base.countSubShapes(TopAbs_SOLID)!=1)
+        return new App::DocumentObjectExecReturn("Source shape is not single solid.");
+    for(auto &sub : Faces.getSubValues(true)) {
+        shapes.push_back(base.getSubTopoShape(sub.c_str()));
+        if(shapes.back().getShape().ShapeType()!=TopAbs_FACE)
+            return new App::DocumentObjectExecReturn("Invalid face selection");
+    }
+#else
     App::DocumentObject* source = Faces.getValue();
     if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
@@ -661,7 +729,7 @@ App::DocumentObjectExecReturn *Thickness::execute()
         TopoDS_Face face = TopoDS::Face(shape.getSubShape(it.c_str()));
         closingFaces.Append(face);
     }
-
+#endif
     double thickness = Value.getValue();
     double tol = Precision::Confusion();
     bool inter = Intersection.getValue();
@@ -669,11 +737,18 @@ App::DocumentObjectExecReturn *Thickness::execute()
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
 
+#ifdef FC_USE_TNP_FIX
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makeElementThickSolid(
+        base,shapes,thickness,tol,inter,self,mode,
+        static_cast<TopoShape::JoinType>(join)));
+    return Part::Feature::execute();
+#else
     if (fabs(thickness) > 2*tol)
         this->Shape.setValue(shape.makeThickSolid(closingFaces, thickness, tol, inter, self, mode, join));
     else
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;
+#endif
 }
 
 // ----------------------------------------------------------------------------
