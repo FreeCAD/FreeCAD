@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKMEASURE_H
-#define GUI_TASKMEASURE_H
 
 #include "PreCompiled.h"
 
@@ -410,6 +408,3 @@ App::MeasureType* TaskMeasure::getMeasureType() {
     }
     return nullptr;
 }
-
-
-#endif //GUI_TASKMEASURE_H

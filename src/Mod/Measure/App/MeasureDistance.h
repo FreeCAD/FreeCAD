@@ -26,13 +26,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <functional>
-#include <string.h>
-#include <map>
-#include <tuple>
-
 #include <TopoDS_Shape.hxx>
-#include <gp_Pnt.hxx>
 
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>

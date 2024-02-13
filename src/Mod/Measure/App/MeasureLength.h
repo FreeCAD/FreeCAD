@@ -26,17 +26,6 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <functional>
-#include <string.h>
-#include <map>
-#include <tuple>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <TopExp.hxx>
-
 #include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 #include <App/GeoFeature.h>

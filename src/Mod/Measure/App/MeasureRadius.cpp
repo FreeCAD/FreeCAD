@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <tuple>
 
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>

@@ -26,9 +26,8 @@
 #include <App/PropertyContainer.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <tuple>
 #include <Base/Tools.h>
-# include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
 
 #include "MeasureDistance.h"
 
@@ -104,6 +103,9 @@ bool MeasureDistance::isValidSelection(const App::MeasureSelection& selection){
 }
 
 bool MeasureDistance::isPrioritizedSelection(const App::MeasureSelection& selection) {
+
+    (void)selection;
+
     // TODO: Check if Elements ar parallel
     // if (selection.size() == 2) {
     //     return true;

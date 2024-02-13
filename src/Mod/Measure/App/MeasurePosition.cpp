@@ -26,7 +26,6 @@
 #include <App/PropertyContainer.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <tuple>
 
 #include "MeasurePosition.h"
 

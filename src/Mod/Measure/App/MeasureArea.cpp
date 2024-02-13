@@ -23,16 +23,8 @@
 
 #include "PreCompiled.h"
 
-#include <tuple>
-
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
-
 #include <App/Application.h>
 #include <App/Document.h>
-
-#include <Mod/Part/App/PartFeature.h>
 
 #include "MeasureArea.h"
 

@@ -27,15 +27,12 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
-#include <tuple>
-// #include <App/Measure.h>
-#include <functional>
-#include <string.h>
-#include <map>
+
 #include <QTextStream>
 
 #include <Mod/Measure/MeasureGlobal.h>
 #include "MeasureBase.h"
+
 
 namespace Measure
 {

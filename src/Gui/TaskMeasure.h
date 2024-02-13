@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <tuple>
-#include <string.h>
 
 #include <qcolumnview.h>
 #include <QString>

@@ -26,6 +26,8 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <QString>
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
@@ -33,9 +35,7 @@
 #include <App/FeaturePython.h>
 #include <Base/Quantity.h>
 #include <Base/Placement.h>
-#include <QString>
 #include <Base/Interpreter.h>
-#include <App/FeaturePython.h>
 
 
 namespace Measure
