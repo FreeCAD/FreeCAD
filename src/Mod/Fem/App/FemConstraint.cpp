@@ -91,6 +91,19 @@ Constraint::Constraint()
                       App::PropertyType(App::Prop_Output),
                       "Scale used for drawing constraints");  // OvG: Add scale parameter inherited
                                                               // by all derived constraints
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "Constraint",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+                      "Points where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "Constraint",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
+                      "Normals where symbols are drawn");
+
+    Points.setValues(std::vector<Base::Vector3d>());
+    Normals.setValues(std::vector<Base::Vector3d>());
 
     References.setScope(App::LinkScope::Global);
 }
@@ -164,6 +177,16 @@ void Constraint::onChanged(const App::Property* prop)
                     break;
                 }
             }
+        }
+
+        std::vector<Base::Vector3d> points;
+        std::vector<Base::Vector3d> normals;
+        int scale = 1;
+        if (getPoints(points, normals, &scale)) {
+            Points.setValues(points);
+            Normals.setValues(normals);
+            Scale.setValue(scale);
+            Points.touch();
         }
     }
 
