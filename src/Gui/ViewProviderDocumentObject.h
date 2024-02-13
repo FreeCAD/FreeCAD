@@ -64,6 +64,9 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
+    // Hidden properties
+    App::PropertyInteger TreeRank;
+
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
     void update(const App::Property*) override;

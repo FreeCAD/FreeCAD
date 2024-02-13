@@ -310,6 +310,8 @@ public:
      * */
     virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const;
+    /* Check whether the object accept reordering of its children during drop.*/
+    virtual bool acceptReorderingObjects() const { return false; };
 
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return {}; }

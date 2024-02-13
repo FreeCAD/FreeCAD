@@ -140,6 +140,18 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    struct TargetItemInfo {
+        QTreeWidgetItem* targetItem = nullptr; //target may be the parent of underMouse
+        QTreeWidgetItem* underMouseItem = nullptr;
+        App::Document* targetDoc = nullptr;
+        QPoint pos;
+        bool inBottomHalf = false;
+        bool inThresholdZone = false;
+    };
+    TargetItemInfo getTargetInfo(QEvent* ev);
+    bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items);
+    bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items);
+    void sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App::DocumentObject*> draggedObjects);
     //@}
     bool event(QEvent *e) override;
     void keyPressEvent(QKeyEvent *event) override;
@@ -291,6 +303,7 @@ public:
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
+    void sortObjectItems();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select, bool force=false);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
@@ -439,10 +452,14 @@ public:
     int isParentGroup() const;
 
     DocumentObjectItem *getParentItem() const;
+    DocumentObjectItem *getNextSibling() const;
+    DocumentObjectItem *getPreviousSibling() const;
     TreeWidget *getTree() const;
 
 private:
     void setCheckState(bool checked);
+    void getExpandedSnapshot(std::vector<bool>& snapshot) const;
+    void applyExpandedSnapshot(const std::vector<bool>& snapshot, std::vector<bool>::const_iterator& from);
 
     QBrush bgBrush;
     DocumentItem *myOwner;
