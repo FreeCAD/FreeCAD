@@ -1341,7 +1341,7 @@ void StdCmdDelete::activated(int iMsg)
         ViewProviderDocumentObject *vpedit = nullptr;
         if(editDoc)
             vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
-        if(vpedit) {
+        if(vpedit && !vpedit->acceptDeletionsInEdit()) {
             for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                 if(sel.getObject() == vpedit->getObject()) {
                     if (!sel.getSubNames().empty()) {

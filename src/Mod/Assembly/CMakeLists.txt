@@ -8,7 +8,9 @@ set(Assembly_Scripts
     Init.py
     CommandCreateAssembly.py
     CommandInsertLink.py
+    CommandSolveAssembly.py
     CommandCreateJoint.py
+    CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py
     Preferences.py
@@ -64,4 +66,10 @@ INSTALL(
         ${AssemblyTests_SRCS}
     DESTINATION
         Mod/Assembly/AssemblyTests
+)
+INSTALL(
+    FILES
+        ${AssemblyScripts_SRCS}
+    DESTINATION
+        Mod/Assembly/Assembly
 )

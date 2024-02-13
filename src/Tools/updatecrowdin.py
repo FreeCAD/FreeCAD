@@ -112,6 +112,11 @@ locations = [
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
     ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
     [
+        "Assembly",
+        "../Mod/Assembly/Gui/Resources/translations",
+        "../Mod/Assembly/Gui/Resources/Assembly.qrc",
+    ],
+    [
         "draft",
         "../Mod/Draft/Resources/translations",
         "../Mod/Draft/Resources/Draft.qrc",

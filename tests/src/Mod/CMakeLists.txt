@@ -1,3 +1,6 @@
+if(BUILD_ASSEMBLY)
+  add_subdirectory(Assembly)
+endif(BUILD_ASSEMBLY)
 if(BUILD_MATERIAL)
   add_subdirectory(Material)
 endif(BUILD_MATERIAL)

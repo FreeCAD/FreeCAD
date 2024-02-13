@@ -316,4 +316,16 @@ TEST(Vector, TestIsParallelShortVectors)
     EXPECT_FALSE(vec.IsParallel(Base::Vector3d(0.01, 0.02, 0.04), 0.02));
 }
 
+TEST(Vector, TestAngleOriented)
+{
+    Base::Vector3d vec1(0.000001, 0, 0);
+    Base::Vector3d vec2(0, 0.000001, 0);
+    Base::Vector3d norm(0, 0, 0.000001);
+    double angle = vec1.GetAngleOriented(vec2, norm);
+    EXPECT_EQ(angle, Base::float_traits<double>::pi() * 0.5);
+    angle = vec2.GetAngleOriented(vec1, norm);
+    EXPECT_EQ(angle, Base::float_traits<double>::pi() * 1.5);
+}
+
 // NOLINTEND
+

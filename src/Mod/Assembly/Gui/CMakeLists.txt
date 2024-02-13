@@ -1,9 +1,13 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${OCC_INCLUDE_DIR}
 )
 
 set(AssemblyGui_LIBS
+    Assembly
+    PartDesign
+    PartGui
     FreeCADGui
 )
 
@@ -17,8 +21,23 @@ qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC}
 
 SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
+generate_from_xml(ViewProviderAssemblyPy)
+
+SET(Python_SRCS
+    ViewProviderAssemblyPy.xml
+    ViewProviderAssemblyPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(AssemblyGui_SRCS_Module
+    AppAssemblyGui.cpp
+    AppAssemblyGuiPy.cpp
+    PreCompiled.cpp
+    PreCompiled.h
+    ViewProviderAssembly.cpp
+    ViewProviderAssembly.h
+    ViewProviderJointGroup.cpp
+    ViewProviderJointGroup.h
     ${Assembly_QRC_SRCS}
 )
 
@@ -29,8 +48,14 @@ SET(AssemblyGui_SRCS
     ${AssemblyResource_SRCS}
     ${AssemblyGui_UIC_HDRS}
     ${AssemblyGui_SRCS_Module}
+    ${Python_SRCS}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${AssemblyGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(AssemblyGuiIcon_SVG
     Resources/icons/AssemblyWorkbench.svg

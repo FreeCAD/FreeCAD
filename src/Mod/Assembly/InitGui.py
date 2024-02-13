@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,7 +19,7 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 import Assembly_rc
 
@@ -49,7 +49,6 @@ class AssemblyWorkbench(Workbench):
     "Assembly workbench"
 
     def __init__(self):
-        print("Loading Assembly workbench...")
         self.__class__.Icon = (
             FreeCAD.getResourceDir() + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
         )
@@ -57,7 +56,6 @@ class AssemblyWorkbench(Workbench):
         self.__class__.ToolTip = "Assembly workbench"
 
     def Initialize(self):
-        print("Initializing Assembly workbench...")
         global AssemblyCommandGroup
 
         translate = FreeCAD.Qt.translate
@@ -65,7 +63,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint
+        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT
         from Preferences import PreferencesPage
 
         # from Preferences import preferences
@@ -76,27 +74,34 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
 
         # build commands list
-        cmdlist = ["Assembly_CreateAssembly", "Assembly_InsertLink"]
+        cmdList = [
+            "Assembly_CreateAssembly",
+            "Assembly_InsertLink",
+            "Assembly_SolveAssembly",
+        ]
+
+        cmdListMenuOnly = [
+            "Assembly_ExportASMT",
+        ]
+
         cmdListJoints = [
+            "Assembly_ToggleGrounded",
+            "Separator",
             "Assembly_CreateJointFixed",
             "Assembly_CreateJointRevolute",
             "Assembly_CreateJointCylindrical",
             "Assembly_CreateJointSlider",
             "Assembly_CreateJointBall",
-            "Assembly_CreateJointPlanar",
-            "Assembly_CreateJointParallel",
-            "Assembly_CreateJointTangent",
+            "Assembly_CreateJointDistance",
         ]
 
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
-            cmdlist + ["Separator"] + cmdListJoints,
+            cmdList + cmdListMenuOnly + ["Separator"] + cmdListJoints,
         )
-
-        print("Assembly workbench loaded")
 
     def Activated(self):
         # update the translation engine
