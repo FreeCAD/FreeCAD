@@ -328,4 +328,3 @@ TEST(Vector, TestAngleOriented)
 }
 
 // NOLINTEND
-
