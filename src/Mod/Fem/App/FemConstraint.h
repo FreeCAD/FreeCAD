@@ -102,6 +102,10 @@ public:
      */
     App::PropertyInteger Scale;
 
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyVectorList Points;
+    App::PropertyVectorList Normals;
+
     /**
      * @brief Updates @ref NormalDirection.
      *
