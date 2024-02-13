@@ -308,7 +308,7 @@ def circleFrom2PointsRadius(p1, p2, radius):
         return None
 
     p1_p2 = Part.LineSegment(p1, p2).toShape()
-    dist_p1p2 = DraftVecUtils.dist(p1, p1)
+    dist_p1p2 = DraftVecUtils.dist(p1, p2)
     mid = findMidpoint(p1_p2)
 
     if dist_p1p2 == 2*radius:
