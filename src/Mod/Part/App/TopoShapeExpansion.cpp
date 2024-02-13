@@ -1811,6 +1811,45 @@ TopoShape& TopoShape::makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
     return makeShapeWithElementMap(mkShape.Solid(), MapperMaker(mkShape), {source}, op);
 }
 
+TopoShape &TopoShape::makeElementDraft(const TopoShape &shape, const std::vector<TopoShape> &_faces,
+                                const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                                bool retry, const char *op)
+{
+    if(!op) op = Part::OpCodes::Draft;
+
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+
+    std::vector<TopoShape> faces(_faces);
+    bool done = true;
+    BRepOffsetAPI_DraftAngle mkDraft;
+    do {
+        if(faces.empty())
+            FC_THROWM(Base::CADKernelError,"no faces can be used");
+
+        mkDraft.Init(shape.getShape());
+        done = true;
+        for(auto it=faces.begin();it!=faces.end();++it) {
+            // TODO: What is the flag for?
+            mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
+            if (!mkDraft.AddDone()) {
+                // Note: the function ProblematicShape returns the face on which the error occurred
+                // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
+                //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                //       The only solution is to discard mkDraft and start over without the current face
+                // mkDraft.Remove(face);
+                FC_ERR("Failed to add some face for drafting, skip");
+                done = false;
+                faces.erase(it);
+                break;
+            }
+        }
+    }while(retry && !done);
+
+    mkDraft.Build();
+    return makeElementShape(mkDraft,shape,op);
+}
+
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
                                       const char* maker,
