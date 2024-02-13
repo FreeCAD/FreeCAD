@@ -1991,7 +1991,6 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
     builder.MakeCompound(holes);
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-    int holePointsListSize = 0;
     std::vector<gp_Pnt> holePointsList;
     for (int i = 1; i <= edgeMap.Extent(); i++) {
         bool dupCenter = false;

@@ -180,7 +180,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
-      <translation>Napravi</translation>
+      <translation>Spakuj</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>

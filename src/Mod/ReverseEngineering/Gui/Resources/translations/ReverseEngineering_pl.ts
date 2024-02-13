@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>Approximate a cylinder</source>
-      <translation>Przybliżenie cylindra</translation>
+      <translation>Przybliżenie walca</translation>
     </message>
   </context>
   <context>

@@ -957,8 +957,8 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
-      <source>Change to branch or tag:</source>
-      <translation>ჭდეზე ან ბრენჩზე შეცვლა:</translation>
+      <source>Change to branch:</source>
+      <translation type="unfinished">Change to branch:</translation>
     </message>
   </context>
   <context>
@@ -1236,18 +1236,18 @@ installed addons will be checked for available updates
       <translation>მაკროს შესრულების შეცდომა. მეტი დეტალებისთვის იხილეთ კონსოლი.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>წამყვანი პროგრამისტი</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>ავტორი</translation>
     </message>
@@ -1268,7 +1268,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="245"/>
-      <location filename="../../package_details.py" line="872"/>
+      <location filename="../../package_details.py" line="613"/>
       <source>Update</source>
       <translation>განახლება</translation>
     </message>
@@ -1344,213 +1344,187 @@ installed addons will be checked for available updates
       <translation>წაშლის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="63"/>
-      <source>Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</source>
-      <translation>დამატებების მმართველის გაფრთხლება: QtWebEngineWidgets-ის შემოტანის სეცდომა -- README-ის მონაცემები ტექსტურად გამოჩნდება</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="177"/>
+      <location filename="../../package_details.py" line="139"/>
       <source>Version {version} installed on {date}</source>
       <translation>დაყენებული ვერსია {version}. თარიღი {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="184"/>
+      <location filename="../../package_details.py" line="146"/>
       <source>Version {version} installed</source>
       <translation>დაყენებული ვერსია {version}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="188"/>
+      <location filename="../../package_details.py" line="150"/>
       <source>Installed on {date}</source>
       <translation>ინსტალაციის თარიღი {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="191"/>
+      <location filename="../../package_details.py" line="153"/>
       <location filename="../../package_list.py" line="435"/>
-      <location filename="../../package_list.py" line="483"/>
-      <location filename="../../package_list.py" line="770"/>
+      <location filename="../../package_list.py" line="485"/>
+      <location filename="../../package_list.py" line="772"/>
       <source>Installed</source>
       <translation>დაყენებულია</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="200"/>
+      <location filename="../../package_details.py" line="167"/>
+      <source>Currently on branch {}, name changed to {}</source>
+      <translation type="unfinished">Currently on branch {}, name changed to {}</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.py" line="176"/>
       <source>On branch {}, update available to version</source>
       <translation>ხელმისაწვდომი განახლება ბრენჩზე {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="207"/>
+      <location filename="../../package_details.py" line="183"/>
       <source>Update available to version</source>
       <translation>ხელმისაწვდომია განახლება ვერსიამდე</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="218"/>
+      <location filename="../../package_details.py" line="194"/>
       <source>An update is available</source>
       <translation>განახლება ხელმისაწვდომია</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="236"/>
+      <location filename="../../package_details.py" line="214"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>Git ჭდით &apos;{}&apos; შემოწმდა. განახლებები ხელმიუწვდომელია</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="244"/>
+      <location filename="../../package_details.py" line="222"/>
       <source>This is the latest version available for branch {}</source>
       <translation>ეს ბრენჩის {} უახლესი ვერსიაა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="249"/>
+      <location filename="../../package_details.py" line="227"/>
       <source>Updated, please restart FreeCAD to use</source>
       <translation>განახლდა. გამოსაყენებლად გთხოვთ გადატვირთოთ FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="256"/>
+      <location filename="../../package_details.py" line="234"/>
       <source>Update check in progress</source>
       <translation>მიმდინარეობს განახლებების შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="260"/>
+      <location filename="../../package_details.py" line="238"/>
       <source>Automatic update checks disabled</source>
       <translation>განახლებების ავტომატური შემოწმება გამორთულია</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="278"/>
+      <location filename="../../package_details.py" line="256"/>
       <source>Installation location</source>
       <translation>დაყენების ადგილი</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="323"/>
+      <location filename="../../package_details.py" line="301"/>
       <source>WARNING: This addon is obsolete</source>
       <translation>გაფრთხილება: ეს დამატება მოძველებულია</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="331"/>
+      <location filename="../../package_details.py" line="309"/>
       <source>WARNING: This addon is Python 2 Only</source>
       <translation>გაფრთხილება: ეს დამატება მუშაობს მხოლოდ Python v2-ზე</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="339"/>
+      <location filename="../../package_details.py" line="317"/>
       <source>WARNING: This addon requires FreeCAD </source>
       <translation>გაფრთხილება: ამ დამატებას სჭირდება FreeCAD </translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="351"/>
+      <location filename="../../package_details.py" line="329"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation>გაფრთხილება: ეს დამატება ამჟამად დაყენებულია, მაგრამ გამორთული. ჩასართავად გამოიყენეთ &apos;ჩართვის&apos; ღილაკი.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="476"/>
-      <location filename="../../package_details.py" line="487"/>
-      <source>No URL or wiki page provided by this macro</source>
-      <translation>მაკრო არ შეიცავს ბმულს ან wiki-ის გვერდს</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="589"/>
-      <source>Could not load README data from URL {}</source>
-      <translation>URL {}-დან README ფაილის ჩატვირთვის შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="617"/>
+      <location filename="../../package_details.py" line="447"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>ეს დამატება მხოლოდ FreeCAD-ის მორიგი რესტარტის შემდეგ ჩაირთვება.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="635"/>
+      <location filename="../../package_details.py" line="465"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>ეს დამატება მხოლოდ FreeCAD-ის მორიგი რესტარტის შემდეგ გაითიშება.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="899"/>
-      <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation>QtWebEngine-ის Python-ზე მიბმები დაყენებული არაა -- გამოიყენება README-ის სარეზერვო ჩვენება.</translation>
-    </message>
-    <message>
+      <location filename="../../package_details.py" line="474"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>წარმატება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="648"/>
+      <location filename="../../package_details.py" line="478"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation>ბრენჩი წარმატებით შეიცვალა. ახალი ვერსიის გამოსაყენებლად საჭიროა გადატვირთვა.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="667"/>
+      <location filename="../../package_details.py" line="497"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
       <translation>Git ref შეიცვალა &apos;{}&apos; - დამატებით გამოსაყენებლად გადატვირთეთ.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="713"/>
-      <source>Page JavaScript reported</source>
-      <translation>გვერდის ჯავასკრიპტის პატაკი</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="866"/>
+      <location filename="../../package_details.py" line="607"/>
       <source>Install</source>
       <translation>დაყენება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="869"/>
+      <location filename="../../package_details.py" line="610"/>
       <source>Uninstall</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="875"/>
+      <location filename="../../package_details.py" line="616"/>
       <source>Check for Update</source>
       <translation>განახლების შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="878"/>
+      <location filename="../../package_details.py" line="619"/>
       <source>Run Macro</source>
       <translation>მაკროს გაშვება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="881"/>
+      <location filename="../../package_details.py" line="622"/>
       <source>Change Branch</source>
       <translation>ბრენჩის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="884"/>
+      <location filename="../../package_details.py" line="625"/>
       <source>Enable</source>
       <translation>ჩართვა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="887"/>
+      <location filename="../../package_details.py" line="628"/>
       <source>Disable</source>
       <translation>გამორთვა</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="890"/>
+      <location filename="../../package_details.py" line="631"/>
       <source>Return to package list</source>
       <translation>პაკეტების სიასთან დაბრუნება</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="907"/>
-      <source>The page is taking a long time to load... showing the data we have so far...</source>
-      <translation>გვერდის ჩატვირთვას მეტისმეტად დიდი დრო სჭირდება... ნაჩვენები იქნება მონაცემები, რისი მიღებაც მოვასწარით...</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_connection_checker.py" line="68"/>
+      <location filename="../../addonmanager_connection_checker.py" line="70"/>
       <source>Checking connection</source>
       <translation>შეერთების შემოწმება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="69"/>
+      <location filename="../../addonmanager_connection_checker.py" line="71"/>
       <source>Checking for connection to GitHub...</source>
       <translation>GitHub-მდე კავშირის შემოწმება...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="93"/>
+      <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
       <translation>დაკავშირება ვერ მოხერხდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="99"/>
+      <location filename="../../addonmanager_connection_checker.py" line="100"/>
       <source>Missing dependency</source>
       <translation>აკლია დამოკიდებულება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="103"/>
+      <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork-ის შემოტანის შეცდომა -- დეტალებისთვის იხილეთ ანგარიში. დამატებების მმართველი ხელმიუწვდომელია.</translation>
     </message>
@@ -1571,14 +1545,21 @@ installed addons will be checked for available updates
       <translation>ახალი ლიცენზიის ფაილის მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="348"/>
+      <location filename="../../addonmanager_installer.py" line="354"/>
       <source>Received {} response code from server</source>
       <translation>სერვერიდან მიღებულია პასუხის კოდი {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="497"/>
+      <location filename="../../addonmanager_installer.py" line="503"/>
       <source>Failed to install macro {}</source>
       <translation>მაკრო {} დაყენების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer.py" line="537"/>
+      <source>Failed to create installation manifest file:
+</source>
+      <translation type="unfinished">Failed to create installation manifest file:
+</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
@@ -1596,9 +1577,9 @@ installed addons will be checked for available updates
       <translation>აირჩიეთ ხატულას ფაილი ამ შემცველობის ელემენტისთვის</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} -ი {}-ის ქვესაქაღალდეს არ წარმოადგენს</translation>
     </message>
@@ -1810,7 +1791,7 @@ installed addons will be checked for available updates
       <translation>გაშვება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_utility.py" line="61"/>
+      <location filename="../../addonmanager_workers_utility.py" line="74"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>GitHub-დან მონაცემების წაკითხვა შეუძლებელია. შეამოწმეთ ინტერნეტთან შეერთებისა და პროქსის პარამეტრებ და თავიდან სცადეთ.</translation>
     </message>
@@ -1960,26 +1941,26 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../package_list.py" line="437"/>
-      <location filename="../../package_list.py" line="487"/>
+      <location filename="../../package_list.py" line="489"/>
       <source>Up-to-date</source>
       <translation>განახლებულია</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="439"/>
-      <location filename="../../package_list.py" line="491"/>
-      <location filename="../../package_list.py" line="778"/>
+      <location filename="../../package_list.py" line="493"/>
+      <location filename="../../package_list.py" line="780"/>
       <source>Update available</source>
       <translation>განახლება ხელმისაწვდომია</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
-      <location filename="../../package_list.py" line="497"/>
+      <location filename="../../package_list.py" line="499"/>
       <source>Pending restart</source>
       <translation>რესტარტის მოლოდინი</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
-      <location filename="../../package_list.py" line="500"/>
+      <location filename="../../package_list.py" line="502"/>
       <source>DISABLED</source>
       <translation>გათიშულია</translation>
     </message>
@@ -1989,133 +1970,107 @@ installed addons will be checked for available updates
       <translation>დაყენებული ვერსია</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="465"/>
+      <location filename="../../package_list.py" line="468"/>
       <source>Unknown version</source>
       <translation>უცნობი ვერსია</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="467"/>
+      <location filename="../../package_list.py" line="470"/>
       <source>Installed on</source>
       <translation>დაყენების დრო</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="477"/>
+      <location filename="../../package_list.py" line="479"/>
       <source>Available version</source>
       <translation>ხელმისაწვდომი ვერსია</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="747"/>
+      <location filename="../../package_list.py" line="749"/>
       <source>Show Addons containing:</source>
       <translation>იმ გაფ-ების ჩვენება, რომლებიც შეიცავენ:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="750"/>
+      <location filename="../../package_list.py" line="752"/>
       <source>All</source>
       <translation>ყველა</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="753"/>
+      <location filename="../../package_list.py" line="755"/>
       <source>Workbenches</source>
       <translation>სამუშაო მაგიდები</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="756"/>
+      <location filename="../../package_list.py" line="758"/>
       <source>Macros</source>
       <translation>მაკროები</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="759"/>
+      <location filename="../../package_list.py" line="761"/>
       <source>Preference Packs</source>
       <translation>პარამეტრების პაკეტები</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="763"/>
+      <location filename="../../package_list.py" line="765"/>
       <source>Status:</source>
       <translation>მდგომარეობა:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="766"/>
+      <location filename="../../package_list.py" line="768"/>
       <source>Any</source>
       <translation>ნებისმიერი</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="774"/>
+      <location filename="../../package_list.py" line="776"/>
       <source>Not installed</source>
       <translation>არ არის დაყენებული</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="782"/>
+      <location filename="../../package_list.py" line="784"/>
       <source>Filter</source>
       <translation>ფილტრი</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="785"/>
+      <location filename="../../package_list.py" line="787"/>
       <source>OK</source>
       <translation>დიახ</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="87"/>
       <source>DANGER: Developer feature</source>
       <translation>საშიშროება: პროგრამისტისთვის საჭირო თვისება</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="98"/>
+      <location filename="../../change_branch.py" line="94"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>საშიშროება: ბრენჩებს შორის გადართვა განკუთვნილია პროგრამისტებისა და ბეტა ტესტერებისთვის და შეიძლება ყველაფერი გაფუჭებული, არათავსებადი დოკუმენტებით და არასტაბილურობით ან/და სამყაროს გადაცხელებით. დარწმუნებული ბრძანდებით, რომ გაგრძელება გნებავთ?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="107"/>
+      <location filename="../../change_branch.py" line="103"/>
       <source>There are local changes</source>
       <translation>გაქვთ ადგილობრივი ცვლილებები</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="111"/>
+      <location filename="../../change_branch.py" line="108"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>გაფრთხილება: ამ რეპოს დაუკომიტებელი ლოკალური ცვლილებები გააჩნია. დარწმუნებული ბრძანდებით, რომ გნებავთ შეცვალოთ ბრენჩი (და თან წაიყოლოთ თქვენი ცვლილებები)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="163"/>
-      <location filename="../../change_branch.py" line="177"/>
-      <location filename="../../change_branch.py" line="185"/>
-      <source>Branch</source>
-      <comment>git terminology</comment>
-      <translation>ბრენჩი</translation>
+      <location filename="../../change_branch.py" line="207"/>
+      <source>Local</source>
+      <comment>Table header for local git ref name</comment>
+      <translation type="unfinished">Local</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="171"/>
-      <source>Tag</source>
-      <comment>git terminology</comment>
-      <translation>ჭდე</translation>
+      <location filename="../../change_branch.py" line="213"/>
+      <source>Remote tracking</source>
+      <comment>Table header for git remote tracking branch name</comment>
+      <translation type="unfinished">Remote tracking</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="254"/>
-      <source>Kind</source>
-      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation>ტიპი</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="256"/>
-      <source>Local name</source>
-      <comment>Table header for git ref name</comment>
-      <translation>ლოკალური სახელი</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="262"/>
-      <source>Tracking</source>
-      <comment>Table header for git remote tracking branch name name</comment>
-      <translation>ტრეკინგი</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="268"/>
-      <source>Local updated</source>
-      <comment>Table header for git update time of local branch</comment>
-      <translation>ლოკალურები განახლებულია</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="274"/>
-      <source>Remote updated</source>
-      <comment>Table header for git update time of remote branch</comment>
-      <translation>დაშორებული შემცველობა განახლდა</translation>
+      <location filename="../../change_branch.py" line="219"/>
+      <source>Last Updated</source>
+      <comment>Table header for git update date</comment>
+      <translation type="unfinished">Last Updated</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
@@ -2168,53 +2123,53 @@ installed addons will be checked for available updates
       <translation>ხატულა გადმოწერილია {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="148"/>
+      <location filename="../../addonmanager_macro.py" line="151"/>
       <source>Unable to open macro wiki page at {}</source>
       <translation>მაკროების ვიკის გვერდის {} გახსნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="161"/>
+      <location filename="../../addonmanager_macro.py" line="164"/>
       <source>Unable to fetch the code of this macro.</source>
       <translation>მაკროს კოდის მოპოვება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="176"/>
+      <location filename="../../addonmanager_macro.py" line="179"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
       <translation>ვიკიდან მაკროს {} აღწერის მიღება შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="209"/>
+      <location filename="../../addonmanager_macro.py" line="212"/>
       <source>Unable to open macro code URL {}</source>
       <translation>მაკროს კოდის URL-ის ({}) გახსნა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="364"/>
+      <location filename="../../addonmanager_macro.py" line="373"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
       <translation>შეცდომა მაკროსთვის-მითითებული ფაილის {} {}-დან გამოთხოვისას</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="372"/>
+      <location filename="../../addonmanager_macro.py" line="381"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
       <translation>მაკროს მიერ მითითებული ფაილის {} პოვნა შეუძლებელია (ველოდი მისამართზე {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="348"/>
+      <location filename="../../Addon.py" line="359"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: უცნობი შიდა სამუშაო დაფა &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="381"/>
+      <location filename="../../Addon.py" line="392"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>დამატების პროგრამისტის გაფრთხილება: რეპოს URL, რომელიც დაყენებულია დამატების {} ({}) package.xml ფაილში, არ ემთხვევა URL-ს, საიდანაც ის გადმოვწერეთ ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="389"/>
+      <location filename="../../Addon.py" line="400"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>დამატების პროგრამისტის გაფრთხილება: რეპოს ბრენჩი, რომელიც დაყენებულია დამატების {} ({}) package.xml ფაილში, არ ემთხვევა ბრენჩს, საიდანაც ის გადმოვწერეთ ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="767"/>
-      <location filename="../../Addon.py" line="783"/>
+      <location filename="../../Addon.py" line="776"/>
+      <location filename="../../Addon.py" line="792"/>
       <source>Got an error when trying to import {}</source>
       <translation>შეცდომა {}-ის შემოტანის მცდელობისას</translation>
     </message>
@@ -2244,7 +2199,7 @@ installed addons will be checked for available updates
       <translation>შეცდომა დამატებითი დაყენებული ფაილის {} წაშლის მცდელობისას</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller.py" line="245"/>
+      <location filename="../../addonmanager_uninstaller.py" line="248"/>
       <source>Error while trying to remove macro file {}: </source>
       <translation>შეცდომა მაკროს ფაილის {} წაშლისას: </translation>
     </message>
@@ -2301,74 +2256,74 @@ installed addons will be checked for available updates
       <translation>ვიკისთან დაკავშირების შეცდომა. FreeCAD-ს ამჟამად ვკიდან მაკროების სიის მიღება არ შეუძლია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="593"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>სამუშაო მაგიდის {} განახლებების git-დან მიღება შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="606"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git status-ის შეცდომა {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="651"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
       <translation>მეტამონაცემების {name}-დან კითხვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="674"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>მაკროს &apos;{name}&apos; კოდის გამოთხოვის შეცდომა;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="727"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
       <translation>მაკროს კოდის კეშირება...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="750"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>დამატებების მმართველი: დამხმარე პროცესის შეცდომა {name}-ის გადმოწერისას</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="765"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>{num_macros} მაკროდან {num_failed}-ის დამუშავების ვადა გავიდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="787"/>
+      <location filename="../../addonmanager_workers_startup.py" line="806"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>დამატებების მმართველი: დამხმარე პროცესის შეჩერების შეცდომა ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="826"/>
+      <location filename="../../addonmanager_workers_startup.py" line="845"/>
       <source>Getting metadata from macro {}</source>
       <translation>მაკროდან {} მეტამონაცემების მიღება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="840"/>
+      <location filename="../../addonmanager_workers_startup.py" line="859"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>მაკროს {} მეტამონაცემების გამოთხოვნის ვადა გავიდა</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="851"/>
+      <location filename="../../addonmanager_workers_startup.py" line="870"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>მაკროს {} პროცესის მოკვლა შეუძლებელია!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving macro description...</source>
       <translation>მაკროს აღწერის მიღება...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="874"/>
+      <location filename="../../addonmanager_workers_startup.py" line="895"/>
       <source>Retrieving info from git</source>
       <translation>ინფორმაციის git-დან მიღება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="877"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
       <translation>ინფორმაციის wiki-დან მიღება</translation>
     </message>
@@ -2385,19 +2340,24 @@ installed addons will be checked for available updates
       <translation>ბრენჩის სახელი</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="99"/>
+      <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic git update failed with the following message:</source>
       <translation>ჩვეულებრივი git update ავარიულად შემდეგი შეტყობინებით დასრულდა:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="107"/>
+      <location filename="../../addonmanager_git.py" line="161"/>
       <source>Backing up the original directory and re-cloning</source>
       <translation>საწყისი საქაღალდის მარქაფი და თავიდან კლონირება</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="212"/>
+      <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using git</source>
       <translation>{}-ის git-ით {}-ში კლონირების შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_git.py" line="407"/>
+      <source>Git branch rename failed with the following message:</source>
+      <translation type="unfinished">Git branch rename failed with the following message:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
@@ -2423,6 +2383,16 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
       <translation>ზოგიერთი განახლებ შეიძლება განახლდა</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_readme_viewer.py" line="60"/>
+      <source>Loading README data...</source>
+      <translation type="unfinished">Loading README data...</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_readme_viewer.py" line="84"/>
+      <source>Failed to download data from {} -- received response code {}.</source>
+      <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
     </message>
   </context>
   <context>

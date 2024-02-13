@@ -24,8 +24,8 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayoutCoord">
-      <item>
+       <layout class="QGridLayout" name="gridLayoutCoord">
+        <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
           <property name="toolTip">
            <string>Main coordinate system will always be shown in
@@ -45,7 +45,7 @@ lower right corner within opened files</string>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="0" column="1">
          <spacer name="horizontalSpacerCoord">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -57,7 +57,7 @@ lower right corner within opened files</string>
           </property>
          </spacer>
         </item>
-        <item>
+        <item row="0" column="2">
          <widget class="QLabel" name="labelCoordSize">
           <property name="text">
            <string>Relative size :   </string>
@@ -67,7 +67,7 @@ lower right corner within opened files</string>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="0" column="3">
          <widget class="Gui::PrefSpinBox" name="SpinBox_CornerCoordSystemSize">
           <property name="toolTip">
            <string>Size of main coordinate system representation
@@ -87,6 +87,33 @@ in the corner -- in % of height/width of viewport</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CornerCoordSystemSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="axisLetterColorLabel">
+          <property name="text">
+           <string>Letter color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="Gui::PrefColorButton" name="axisLetterColor">
+          <property name="toolTip">
+           <string>Axis letter color</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AxisLetterColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -542,7 +569,7 @@ bounding box size of the 3D object that is currently displayed.</string>
         </property>
        </widget>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="Gui::PrefRadioButton" name="radioOrthographic">
         <property name="toolTip">
          <string>Objects will be projected in orthographic projection</string>
@@ -561,7 +588,7 @@ bounding box size of the 3D object that is currently displayed.</string>
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
@@ -676,6 +703,12 @@ bounding box size of the 3D object that is currently displayed.</string>
    <sender>CheckBox_CornerCoordSystem</sender>
    <signal>toggled(bool)</signal>
    <receiver>SpinBox_CornerCoordSystemSize</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>CheckBox_CornerCoordSystem</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>axisLetterColor</receiver>
    <slot>setEnabled(bool)</slot>
   </connection>
  </connections>

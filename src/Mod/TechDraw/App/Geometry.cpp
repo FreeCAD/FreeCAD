@@ -36,6 +36,7 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
@@ -43,6 +44,7 @@
 # include <GC_MakeEllipse.hxx>
 # include <gce_MakeCirc.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
+# include <GProp_GProps.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_Circle.hxx>
@@ -156,6 +158,14 @@ TopoDS_Face Face::toOccFace() const
         return mkFace.Face();
     }
     return TopoDS_Face();
+}
+
+//**** Face
+Base::Vector3d Face::getCenter() const {
+    GProp_GProps faceProps;
+    BRepGProp::SurfaceProperties(toOccFace(), faceProps);
+
+    return DrawUtil::toVector3d(faceProps.CentreOfMass());
 }
 
 Face::~Face()

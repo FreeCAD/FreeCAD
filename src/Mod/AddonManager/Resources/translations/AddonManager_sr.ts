@@ -957,8 +957,8 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
-      <source>Change to branch or tag:</source>
-      <translation>Промени у грану или ознаку:</translation>
+      <source>Change to branch:</source>
+      <translation type="unfinished">Change to branch:</translation>
     </message>
   </context>
   <context>
@@ -1236,18 +1236,18 @@ installed addons will be checked for available updates
       <translation>Извршавање макроа није успело. Погледај конзолу за детаље о грешкама.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Програмер задужен за одржавање</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Аутор</translation>
     </message>
@@ -1268,7 +1268,7 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="245"/>
-      <location filename="../../package_details.py" line="872"/>
+      <location filename="../../package_details.py" line="613"/>
       <source>Update</source>
       <translation>Ажурирање</translation>
     </message>
@@ -1344,213 +1344,187 @@ installed addons will be checked for available updates
       <translation>Деинсталирање није успело</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="63"/>
-      <source>Addon Manager Warning: Could not import QtWebEngineWidgets -- README data will display as text-only</source>
-      <translation>Упозорење менаџера додатака: Није могуће увести QtWebEngineWidgets -- README подаци ће се приказати само као текст</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="177"/>
+      <location filename="../../package_details.py" line="139"/>
       <source>Version {version} installed on {date}</source>
       <translation>Дана {date} инсталирана је верзија {version}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="184"/>
+      <location filename="../../package_details.py" line="146"/>
       <source>Version {version} installed</source>
       <translation>Инсталирана је верзија {version}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="188"/>
+      <location filename="../../package_details.py" line="150"/>
       <source>Installed on {date}</source>
       <translation>Инсталирано {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="191"/>
+      <location filename="../../package_details.py" line="153"/>
       <location filename="../../package_list.py" line="435"/>
-      <location filename="../../package_list.py" line="483"/>
-      <location filename="../../package_list.py" line="770"/>
+      <location filename="../../package_list.py" line="485"/>
+      <location filename="../../package_list.py" line="772"/>
       <source>Installed</source>
       <translation>Инсталирано</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="200"/>
+      <location filename="../../package_details.py" line="167"/>
+      <source>Currently on branch {}, name changed to {}</source>
+      <translation type="unfinished">Currently on branch {}, name changed to {}</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.py" line="176"/>
       <source>On branch {}, update available to version</source>
       <translation>На грани {} доступно је ажурирање за верзију</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="207"/>
+      <location filename="../../package_details.py" line="183"/>
       <source>Update available to version</source>
       <translation>Доступно је ажурирање за верзију</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="218"/>
+      <location filename="../../package_details.py" line="194"/>
       <source>An update is available</source>
       <translation>Доступно је ажурирање</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="236"/>
+      <location filename="../../package_details.py" line="214"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>Git ознака &apos;{}&apos; checked out, ажурирања нису могућа</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="244"/>
+      <location filename="../../package_details.py" line="222"/>
       <source>This is the latest version available for branch {}</source>
       <translation>Ово је најновија верзија доступна за грану {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="249"/>
+      <location filename="../../package_details.py" line="227"/>
       <source>Updated, please restart FreeCAD to use</source>
       <translation>Ажурирано, поново покрените FreeCAD да бисте га користили</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="256"/>
+      <location filename="../../package_details.py" line="234"/>
       <source>Update check in progress</source>
       <translation>У току је провера ажурирања</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="260"/>
+      <location filename="../../package_details.py" line="238"/>
       <source>Automatic update checks disabled</source>
       <translation>Аутоматске провере ажурирања су онемогућене</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="278"/>
+      <location filename="../../package_details.py" line="256"/>
       <source>Installation location</source>
       <translation>Локација инсталације</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="323"/>
+      <location filename="../../package_details.py" line="301"/>
       <source>WARNING: This addon is obsolete</source>
       <translation>УПОЗОРЕЊЕ: Овај додатак је застарео</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="331"/>
+      <location filename="../../package_details.py" line="309"/>
       <source>WARNING: This addon is Python 2 Only</source>
       <translation>УПОЗОРЕЊЕ: Овај додатак је само за Python 2</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="339"/>
+      <location filename="../../package_details.py" line="317"/>
       <source>WARNING: This addon requires FreeCAD </source>
       <translation>УПОЗОРЕЊЕ: Овај додатак захтева FreeCAD </translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="351"/>
+      <location filename="../../package_details.py" line="329"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
       <translation>УПОЗОРЕЊЕ: Овај додатак је тренутно инсталиран, али онемогућен. Користи &apos;омогући&apos; дугме да би поново омогућио.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="476"/>
-      <location filename="../../package_details.py" line="487"/>
-      <source>No URL or wiki page provided by this macro</source>
-      <translation>Овај макро не даје URL или wiki страницу</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="589"/>
-      <source>Could not load README data from URL {}</source>
-      <translation>Није могуће учитати README податке са URL-а {}</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="617"/>
+      <location filename="../../package_details.py" line="447"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>Овај Додатак ће бити омогућен следећи пут када поново покренеш FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="635"/>
+      <location filename="../../package_details.py" line="465"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>Овај Додатак ће бити онемогућен следећи пут када поново покренеш FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="899"/>
-      <source>QtWebEngine Python bindings not installed -- using fallback README display.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
-    </message>
-    <message>
+      <location filename="../../package_details.py" line="474"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Успешно</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="648"/>
+      <location filename="../../package_details.py" line="478"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation>Промена гране је успела, поново покрени да би користио нову верзију.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="667"/>
+      <location filename="../../package_details.py" line="497"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
       <translation>Промењено у git ref &apos;{}&apos; -- поново покрени да би користио Додатак.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="713"/>
-      <source>Page JavaScript reported</source>
-      <translation>Пријављен JavaScript на страници</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="866"/>
+      <location filename="../../package_details.py" line="607"/>
       <source>Install</source>
       <translation>Инсталирај</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="869"/>
+      <location filename="../../package_details.py" line="610"/>
       <source>Uninstall</source>
       <translation>Деинсталирај</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="875"/>
+      <location filename="../../package_details.py" line="616"/>
       <source>Check for Update</source>
       <translation>Провери ажурирања</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="878"/>
+      <location filename="../../package_details.py" line="619"/>
       <source>Run Macro</source>
       <translation>Покрени макро</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="881"/>
+      <location filename="../../package_details.py" line="622"/>
       <source>Change Branch</source>
       <translation>Промени грану</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="884"/>
+      <location filename="../../package_details.py" line="625"/>
       <source>Enable</source>
       <translation>Омогући</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="887"/>
+      <location filename="../../package_details.py" line="628"/>
       <source>Disable</source>
       <translation>Онемогући</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="890"/>
+      <location filename="../../package_details.py" line="631"/>
       <source>Return to package list</source>
       <translation>Врати се на листу пакета</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="907"/>
-      <source>The page is taking a long time to load... showing the data we have so far...</source>
-      <translation>Страница се дуго учитава... приказује податке које имамо до сада...</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_connection_checker.py" line="68"/>
+      <location filename="../../addonmanager_connection_checker.py" line="70"/>
       <source>Checking connection</source>
       <translation>Проверава се веза</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="69"/>
+      <location filename="../../addonmanager_connection_checker.py" line="71"/>
       <source>Checking for connection to GitHub...</source>
       <translation>Проверава се веза са GitHub-ом...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="93"/>
+      <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
       <translation>Веза није успостављена</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="99"/>
+      <location filename="../../addonmanager_connection_checker.py" line="100"/>
       <source>Missing dependency</source>
       <translation>Недостаје зависност</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_connection_checker.py" line="103"/>
+      <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>Није могуће увести QtNetwork – погледај Прегледач објава за детаље. Менаджер додатака није доступан.</translation>
     </message>
@@ -1571,14 +1545,21 @@ installed addons will be checked for available updates
       <translation>Локација за нову лиценцну датотеку</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="348"/>
+      <location filename="../../addonmanager_installer.py" line="354"/>
       <source>Received {} response code from server</source>
       <translation>Примљен {} код одговора са сервера</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="497"/>
+      <location filename="../../addonmanager_installer.py" line="503"/>
       <source>Failed to install macro {}</source>
       <translation>Инсталирање макро-а {} није успело</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer.py" line="537"/>
+      <source>Failed to create installation manifest file:
+</source>
+      <translation type="unfinished">Failed to create installation manifest file:
+</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
@@ -1596,9 +1577,9 @@ installed addons will be checked for available updates
       <translation>Изабери датотеку иконе за ову ставку садржаја</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} није подфасцикла {}</translation>
     </message>
@@ -1810,7 +1791,7 @@ installed addons will be checked for available updates
       <translation>Покрени</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_utility.py" line="61"/>
+      <location filename="../../addonmanager_workers_utility.py" line="74"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>Није могуће прочитати податке са GitHub-а: провери интернет везу и подешавања проксија и покушај поново.</translation>
     </message>
@@ -1960,26 +1941,26 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../package_list.py" line="437"/>
-      <location filename="../../package_list.py" line="487"/>
+      <location filename="../../package_list.py" line="489"/>
       <source>Up-to-date</source>
       <translation>Ажурирано</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="439"/>
-      <location filename="../../package_list.py" line="491"/>
-      <location filename="../../package_list.py" line="778"/>
+      <location filename="../../package_list.py" line="493"/>
+      <location filename="../../package_list.py" line="780"/>
       <source>Update available</source>
       <translation>Доступно је ажурирање</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
-      <location filename="../../package_list.py" line="497"/>
+      <location filename="../../package_list.py" line="499"/>
       <source>Pending restart</source>
       <translation>Поновно покретање на чекању</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
-      <location filename="../../package_list.py" line="500"/>
+      <location filename="../../package_list.py" line="502"/>
       <source>DISABLED</source>
       <translation>ОНЕМОГУЋЕНО</translation>
     </message>
@@ -1989,133 +1970,107 @@ installed addons will be checked for available updates
       <translation>Инсталирана верзија</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="465"/>
+      <location filename="../../package_list.py" line="468"/>
       <source>Unknown version</source>
       <translation>Непозната верзија</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="467"/>
+      <location filename="../../package_list.py" line="470"/>
       <source>Installed on</source>
       <translation>Инсталиран на</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="477"/>
+      <location filename="../../package_list.py" line="479"/>
       <source>Available version</source>
       <translation>Доступна верзија</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="747"/>
+      <location filename="../../package_list.py" line="749"/>
       <source>Show Addons containing:</source>
       <translation>Прикажи Додатке који садрже:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="750"/>
+      <location filename="../../package_list.py" line="752"/>
       <source>All</source>
       <translation>Сва</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="753"/>
+      <location filename="../../package_list.py" line="755"/>
       <source>Workbenches</source>
       <translation>Радна окружења</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="756"/>
+      <location filename="../../package_list.py" line="758"/>
       <source>Macros</source>
       <translation>Макро-и</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="759"/>
+      <location filename="../../package_list.py" line="761"/>
       <source>Preference Packs</source>
       <translation>Пакети подешавања</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="763"/>
+      <location filename="../../package_list.py" line="765"/>
       <source>Status:</source>
       <translation>Статус:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="766"/>
+      <location filename="../../package_list.py" line="768"/>
       <source>Any</source>
       <translation>Било који</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="774"/>
+      <location filename="../../package_list.py" line="776"/>
       <source>Not installed</source>
       <translation>Није инсталирано</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="782"/>
+      <location filename="../../package_list.py" line="784"/>
       <source>Filter</source>
       <translation>Филтер</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="785"/>
+      <location filename="../../package_list.py" line="787"/>
       <source>OK</source>
       <translation>У реду</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="87"/>
       <source>DANGER: Developer feature</source>
       <translation>ОПАСНОСТ: Функција за програмере</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="98"/>
+      <location filename="../../change_branch.py" line="94"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>ОПАСНОСТ: Пребацивање грана је намењено програмерима и бета тестерима и може да доведе до оштећених докумената који нису компатибилни уназад, нестабилности, кварова и/или прераног топлотног колапса универзума. Да ли си сигуран да желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="107"/>
+      <location filename="../../change_branch.py" line="103"/>
       <source>There are local changes</source>
       <translation>Постоје локалне промене</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="111"/>
+      <location filename="../../change_branch.py" line="108"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>УПОЗОРЕЊЕ: Ово спремиште има неповезане локалне промене. Да ли си сигуран да желиш да промениш гране (доносећи промене са собом)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="163"/>
-      <location filename="../../change_branch.py" line="177"/>
-      <location filename="../../change_branch.py" line="185"/>
-      <source>Branch</source>
-      <comment>git terminology</comment>
-      <translation>Грана</translation>
+      <location filename="../../change_branch.py" line="207"/>
+      <source>Local</source>
+      <comment>Table header for local git ref name</comment>
+      <translation type="unfinished">Local</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="171"/>
-      <source>Tag</source>
-      <comment>git terminology</comment>
-      <translation type="unfinished">Tag</translation>
+      <location filename="../../change_branch.py" line="213"/>
+      <source>Remote tracking</source>
+      <comment>Table header for git remote tracking branch name</comment>
+      <translation type="unfinished">Remote tracking</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="254"/>
-      <source>Kind</source>
-      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation>Врста</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="256"/>
-      <source>Local name</source>
-      <comment>Table header for git ref name</comment>
-      <translation>Локално име</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="262"/>
-      <source>Tracking</source>
-      <comment>Table header for git remote tracking branch name name</comment>
-      <translation>Растојање међу словима</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="268"/>
-      <source>Local updated</source>
-      <comment>Table header for git update time of local branch</comment>
-      <translation>Локално ажурирано</translation>
-    </message>
-    <message>
-      <location filename="../../change_branch.py" line="274"/>
-      <source>Remote updated</source>
-      <comment>Table header for git update time of remote branch</comment>
-      <translation>Даљински је ажуриран</translation>
+      <location filename="../../change_branch.py" line="219"/>
+      <source>Last Updated</source>
+      <comment>Table header for git update date</comment>
+      <translation type="unfinished">Last Updated</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
@@ -2168,53 +2123,53 @@ installed addons will be checked for available updates
       <translation>Преузета икона за {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="148"/>
+      <location filename="../../addonmanager_macro.py" line="151"/>
       <source>Unable to open macro wiki page at {}</source>
       <translation>Није могуће отворити макро wiki страницу на {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="161"/>
+      <location filename="../../addonmanager_macro.py" line="164"/>
       <source>Unable to fetch the code of this macro.</source>
       <translation>Није могуће преузети код овог макроа.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="176"/>
+      <location filename="../../addonmanager_macro.py" line="179"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
       <translation>Није могуће преузети опис са wiki-ја за макро {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="209"/>
+      <location filename="../../addonmanager_macro.py" line="212"/>
       <source>Unable to open macro code URL {}</source>
       <translation>Није могуће отворити URL адресу кода макроа {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="364"/>
+      <location filename="../../addonmanager_macro.py" line="373"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
       <translation>Није могуће преузети датотеку {} наведену макроом из {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="372"/>
+      <location filename="../../addonmanager_macro.py" line="381"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
       <translation>Није могуће лоцирати датотеку наведену макро-ом {} (требала је бити у {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="348"/>
+      <location filename="../../Addon.py" line="359"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Непрепознато унутрашње радно окружење &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="381"/>
+      <location filename="../../Addon.py" line="392"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Упозорење за програмере додатака: URL адреса спремишта задата у package.xml датотеци за додатак {} ({}) не одговара URL адреси са које је преузет ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="389"/>
+      <location filename="../../Addon.py" line="400"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Упозорење за програмере додатака: Грана спремишта постављена у package.xml датотеци за додатак {} ({}) се не подудара са граном из које је преузета ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="767"/>
-      <location filename="../../Addon.py" line="783"/>
+      <location filename="../../Addon.py" line="776"/>
+      <location filename="../../Addon.py" line="792"/>
       <source>Got an error when trying to import {}</source>
       <translation>Грешка при покушају увоза {}</translation>
     </message>
@@ -2244,7 +2199,7 @@ installed addons will be checked for available updates
       <translation>Грешка при покушају уклањања додатно инсталиране датотеке {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_uninstaller.py" line="245"/>
+      <location filename="../../addonmanager_uninstaller.py" line="248"/>
       <source>Error while trying to remove macro file {}: </source>
       <translation>Грешка при покушају уклањања датотеке макро-а {}: </translation>
     </message>
@@ -2301,74 +2256,74 @@ installed addons will be checked for available updates
       <translation>Грешка при повезивању на Wiki, FreeCAD тренутно не може да преузме Wiki листу макро-а</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="593"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Није могуће преузети git ажурирања за радно окружење {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="606"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git преузимање није успело за {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="651"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Читање метаподатака са {name} није успело</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="674"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Није успело преузимање кода за &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="727"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
       <translation>Кеширање кода макро-а...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="750"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Менаџер додатака: радни процес није успео да се заврши током преузимања {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="765"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>За {num_macros} макро је прекорачен је временски лимит, {num_failed} током обраде</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="787"/>
+      <location filename="../../addonmanager_workers_startup.py" line="806"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Менаџер додатака: радни процес није успео да се заустави ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="826"/>
+      <location filename="../../addonmanager_workers_startup.py" line="845"/>
       <source>Getting metadata from macro {}</source>
       <translation>Преузимање метаподатака из макро-а {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="840"/>
+      <location filename="../../addonmanager_workers_startup.py" line="859"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Истекло је време за преузимање метаподатака за макро {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="851"/>
+      <location filename="../../addonmanager_workers_startup.py" line="870"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Убијање процеса за макро {} није успело!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving macro description...</source>
       <translation>Преузимање описа макро-а...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="874"/>
+      <location filename="../../addonmanager_workers_startup.py" line="895"/>
       <source>Retrieving info from git</source>
       <translation>Преузимање информација са git-а</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="877"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
       <translation>Преузимање информација са wiki-ја</translation>
     </message>
@@ -2385,19 +2340,24 @@ installed addons will be checked for available updates
       <translation>Име гране</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="99"/>
+      <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic git update failed with the following message:</source>
       <translation>Основно ажурирање git-а није успело са следећом поруком:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="107"/>
+      <location filename="../../addonmanager_git.py" line="161"/>
       <source>Backing up the original directory and re-cloning</source>
       <translation>Прављење резервне копије оригиналне фасцикле и поновно клонирање</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_git.py" line="212"/>
+      <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using git</source>
       <translation>Клонирање помоћу git-а {} у {} није успело</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_git.py" line="407"/>
+      <source>Git branch rename failed with the following message:</source>
+      <translation type="unfinished">Git branch rename failed with the following message:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
@@ -2423,6 +2383,16 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
       <translation>неки додаци су можда ажурирани</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_readme_viewer.py" line="60"/>
+      <source>Loading README data...</source>
+      <translation type="unfinished">Loading README data...</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_readme_viewer.py" line="84"/>
+      <source>Failed to download data from {} -- received response code {}.</source>
+      <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
     </message>
   </context>
   <context>

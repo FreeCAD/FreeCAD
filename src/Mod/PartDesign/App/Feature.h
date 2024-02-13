@@ -55,6 +55,10 @@ public:
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
 
+    App::PropertyBool   Suppressed;
+
+    App::DocumentObjectExecReturn* recompute() override;
+
     short mustExecute() const override;
 
     /// Check whether the given feature is a datum feature

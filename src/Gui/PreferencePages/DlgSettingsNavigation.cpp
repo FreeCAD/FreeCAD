@@ -96,6 +96,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
     ui->naviCubeBaseColor->onSave();
+    ui->naviCubeInactiveOpacity->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -141,6 +142,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
     ui->naviCubeBaseColor->onRestore();
+    ui->naviCubeInactiveOpacity->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

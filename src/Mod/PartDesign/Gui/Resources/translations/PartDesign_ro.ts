@@ -4,44 +4,44 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="72"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="73"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
       <translation>Punctul central al helixului, derivat din axa de referință.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="74"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="75"/>
       <source>The helix' direction; derived from the reference axis.</source>
       <translation>Direcția helix; derivată din axa de referință.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="76"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="77"/>
       <source>The reference axis of the helix.</source>
       <translation>Axa de referință a helixului.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="78"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="79"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Modul de intrare helix specifică ce proprietăți sunt setate de către utilizator.
 Proprietățile dependente sunt apoi calculate.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="82"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="83"/>
       <source>The axial distance between two turns.</source>
       <translation>Distanţa axială dintre două rânduri.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="84"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="85"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
       <translation>Înălțimea căii helixului, care nu ține seama de amploarea profilului.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="86"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="87"/>
       <source>The number of turns in the helix.</source>
       <translation>Numărul de rotaţii în helix.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="89"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="90"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
@@ -50,31 +50,31 @@ Valorile non-zero transformă helixul într-o spirală conică.
 Valorile pozitive fac ca raza să crească, să se micşoreze nevatiga.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="94"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="95"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Creșterea razei helix pe rând.
 Valorile non-zero transformă helixul într-o spirală conică.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="97"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Setează direcția de întoarcere la stânga,
 adică, în sens invers acelor de ceasornic când se mișcă de-a lungul axei sale.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="100"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
       <translation>Determină dacă helixul indică în direcţia opusă a axei.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="102"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="103"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
       <translation>Dacă este setat, rezultatul va fi intersecția profilului și a organismului preexistent.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="104"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Dacă este fals, instrumentul va propune o valoare inițială pentru pas pe baza casetei de încadrare a profilului,
@@ -183,17 +183,17 @@ astfel încât intersecția de sine să fie evitată.</translation>
   <context>
     <name>CmdPartDesignBody</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="85"/>
+      <location filename="../../CommandBody.cpp" line="86"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="86"/>
+      <location filename="../../CommandBody.cpp" line="87"/>
       <source>Create body</source>
       <translation>Crează corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="87"/>
+      <location filename="../../CommandBody.cpp" line="88"/>
       <source>Create a new body and make it active</source>
       <translation>Creaţi un nou corp și a-l face activ</translation>
     </message>
@@ -293,17 +293,17 @@ Creati noi coordonate in sistemul local</translation>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="606"/>
+      <location filename="../../CommandBody.cpp" line="610"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="607"/>
+      <location filename="../../CommandBody.cpp" line="611"/>
       <source>Duplicate selected object</source>
       <translation>Duplicați Obiectul selectat</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="608"/>
+      <location filename="../../CommandBody.cpp" line="612"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>Duplicați obiectul selectat şi adaugă-l la corpul activ</translation>
     </message>
@@ -401,17 +401,17 @@ Creati noi coordonate in sistemul local</translation>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="312"/>
+      <location filename="../../CommandBody.cpp" line="316"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="313"/>
+      <location filename="../../CommandBody.cpp" line="317"/>
       <source>Migrate</source>
       <translation>Migra</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="314"/>
+      <location filename="../../CommandBody.cpp" line="318"/>
       <source>Migrate document to the modern PartDesign workflow</source>
       <translation>Migrați documentul către metodologia modernă Part Design</translation>
     </message>
@@ -437,17 +437,17 @@ Creati noi coordonate in sistemul local</translation>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="662"/>
+      <location filename="../../CommandBody.cpp" line="666"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="663"/>
+      <location filename="../../CommandBody.cpp" line="667"/>
       <source>Move object to other body</source>
       <translation>Mutare obiect spre un alt corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="664"/>
+      <location filename="../../CommandBody.cpp" line="668"/>
       <source>Moves the selected object to another body</source>
       <translation>Se mută obiectul selectat la un alt corp</translation>
     </message>
@@ -455,17 +455,17 @@ Creati noi coordonate in sistemul local</translation>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="829"/>
+      <location filename="../../CommandBody.cpp" line="833"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="830"/>
+      <location filename="../../CommandBody.cpp" line="834"/>
       <source>Move object after other object</source>
       <translation>Muta obiectul după alt obiect</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="831"/>
+      <location filename="../../CommandBody.cpp" line="835"/>
       <source>Moves the selected object and insert it after another object</source>
       <translation>Deplasează obiectul selectat și inserează-l după alt obiect</translation>
     </message>
@@ -473,17 +473,17 @@ Creati noi coordonate in sistemul local</translation>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="527"/>
+      <location filename="../../CommandBody.cpp" line="531"/>
       <source>PartDesign</source>
       <translation>Design Componente</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="528"/>
+      <location filename="../../CommandBody.cpp" line="532"/>
       <source>Set tip</source>
       <translation>Proiectat ca o entitate finală</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="529"/>
+      <location filename="../../CommandBody.cpp" line="533"/>
       <source>Move the tip of the body</source>
       <translation>Muta vârful corpului</translation>
     </message>
@@ -885,8 +885,8 @@ Creati noi coordonate in sistemul local</translation>
       <translation>Creare clonă</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Make copy</source>
       <translation>Fă o copie</translation>
     </message>
@@ -911,33 +911,33 @@ Creati noi coordonate in sistemul local</translation>
       <translation>Create Boolean</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="190"/>
       <source>Add a Body</source>
       <translation>Adaugă un corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="430"/>
+      <location filename="../../CommandBody.cpp" line="434"/>
       <source>Migrate legacy part design features to Bodies</source>
       <translation>Migrați caracteristicile de design ale pieselor moștenite la corpuri</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="575"/>
+      <location filename="../../CommandBody.cpp" line="579"/>
       <source>Move tip to selected feature</source>
       <translation>Mută bacșișul la caracteristica selectată</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="620"/>
+      <location filename="../../CommandBody.cpp" line="624"/>
       <source>Duplicate a PartDesign object</source>
       <translation>Duplică un obiect PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="743"/>
+      <location filename="../../CommandBody.cpp" line="747"/>
       <source>Move an object</source>
       <translation>Mută un obiect</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="894"/>
+      <location filename="../../CommandBody.cpp" line="898"/>
       <source>Move an object inside tree</source>
       <translation>Mută un obiect în interiorul arborelui</translation>
     </message>
@@ -957,7 +957,7 @@ Creati noi coordonate in sistemul local</translation>
       <translation>PolarPattern</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="391"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Scaled</source>
       <translation>Scalat</translation>
     </message>
@@ -1915,7 +1915,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Selectați o referință...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2590,12 +2590,12 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="535"/>
+      <location filename="../../TaskPipeParameters.cpp" line="534"/>
       <source>Section orientation</source>
       <translation>Orientarea Secțiunii</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="561"/>
+      <location filename="../../TaskPipeParameters.cpp" line="560"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -2660,7 +2660,7 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="521"/>
+      <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>
@@ -2703,12 +2703,12 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Lista poate fi reordonată prin tragere</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="803"/>
+      <location filename="../../TaskPipeParameters.cpp" line="802"/>
       <source>Section transformation</source>
       <translation>Transformarea Secţiunii</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="819"/>
+      <location filename="../../TaskPipeParameters.cpp" line="818"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -2851,7 +2851,7 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="172"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="173"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
@@ -2862,19 +2862,19 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
       <source>Base X axis</source>
       <translation>Axa X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base Y axis</source>
       <translation>Axa Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Z axis</source>
       <translation>Axa Z</translation>
     </message>
@@ -2890,7 +2890,7 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="225"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
       <source>Select reference...</source>
       <translation>Selectați o referință...</translation>
     </message>
@@ -2916,8 +2916,8 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="136"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -2932,32 +2932,32 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Parametrii de revoluţie</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="174"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
       <source>To last</source>
       <translation>Spre ultimul</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="178"/>
       <source>Through all</source>
       <translation>Prin toate</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="179"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
       <source>To first</source>
       <translation>Spre primul</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Up to face</source>
       <translation>Până la față</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
       <source>Two dimensions</source>
       <translation>Două dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="426"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
       <source>No face selected</source>
       <translation>Nici o faţă selectată</translation>
     </message>
@@ -3160,7 +3160,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="271"/>
       <location filename="../../TaskTransformedParameters.cpp" line="307"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Selectați o referință...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="298"/>
@@ -3176,14 +3176,6 @@ faceți clic din nou pentru a încheia selecția</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="300"/>
       <source>Base XZ plane</source>
       <translation>Plan XZ</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderBody</name>
-    <message>
-      <location filename="../../ViewProviderBody.cpp" line="135"/>
-      <source>Toggle active body</source>
-      <translation>Activează/dezactivează corpurile</translation>
     </message>
   </context>
   <context>
@@ -3370,12 +3362,12 @@ faceți clic din nou pentru a încheia selecția</translation>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="732"/>
+      <location filename="../../CommandBody.cpp" line="736"/>
       <source>Select body</source>
       <translation>Selectaţi corpurile</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="733"/>
+      <location filename="../../CommandBody.cpp" line="737"/>
       <source>Select a body from the list</source>
       <translation>Selectează un corp din lista</translation>
     </message>
@@ -3383,27 +3375,27 @@ faceți clic din nou pentru a încheia selecția</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="885"/>
+      <location filename="../../CommandBody.cpp" line="889"/>
       <source>Select feature</source>
       <translation>Selectaţi funcţia</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="886"/>
+      <location filename="../../CommandBody.cpp" line="890"/>
       <source>Select a feature from the list</source>
       <translation>Selectaţi o funcție din lista</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="957"/>
+      <location filename="../../CommandBody.cpp" line="961"/>
       <source>Move tip</source>
       <translation>Mutați vârful</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="958"/>
+      <location filename="../../CommandBody.cpp" line="962"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Funcția mutată apare după sfatul setat în prezent.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="959"/>
+      <location filename="../../CommandBody.cpp" line="963"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Doriți ca ultima caracteristică să fie noul sfaturi?</translation>
     </message>
@@ -3478,28 +3470,28 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Vă rugăm să creaţi mai întâi un plan, sau selectează o faţă pe care se aplică schiţa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="95"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
@@ -3586,165 +3578,165 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Vă rugăm să selectaţi un singur fisier într-un corp activ.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="67"/>
+      <location filename="../../CommandBody.cpp" line="68"/>
       <source>Part creation failed</source>
       <translation>Crearea piesei a eșuat</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="68"/>
+      <location filename="../../CommandBody.cpp" line="69"/>
       <source>Failed to create a part object.</source>
       <translation>A eșuat crearea unui obiect piesă.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="115"/>
-      <location filename="../../CommandBody.cpp" line="120"/>
-      <location filename="../../CommandBody.cpp" line="133"/>
-      <location filename="../../CommandBody.cpp" line="182"/>
+      <location filename="../../CommandBody.cpp" line="116"/>
+      <location filename="../../CommandBody.cpp" line="121"/>
+      <location filename="../../CommandBody.cpp" line="134"/>
+      <location filename="../../CommandBody.cpp" line="183"/>
       <source>Bad base feature</source>
       <translation>Funcție de bază invalidă</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="116"/>
+      <location filename="../../CommandBody.cpp" line="117"/>
       <source>Body can't be based on a PartDesign feature.</source>
       <translation>Corpul nu se poate baza pe o caracteristică de PartDesign.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="121"/>
+      <location filename="../../CommandBody.cpp" line="122"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
       <translation>%1 deja face parte dintr-un corp, nu se poate folosi ca baza pentru un alt corp.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="134"/>
+      <location filename="../../CommandBody.cpp" line="135"/>
       <source>Base feature (%1) belongs to other part.</source>
       <translation>Funcția de bază (%1) aparține unei alte piese.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="158"/>
+      <location filename="../../CommandBody.cpp" line="159"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
       <translation>Forma selectată constă din mai multe solide. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="162"/>
+      <location filename="../../CommandBody.cpp" line="163"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
       <translation>Forma selectată constă din mai multe cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="166"/>
+      <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
       <translation>Forma selectată constă dintr-o singură cochilie. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="170"/>
+      <location filename="../../CommandBody.cpp" line="171"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
       <translation>Forma selectată este format din mai multe solide sau cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="175"/>
+      <location filename="../../CommandBody.cpp" line="176"/>
       <source>Base feature</source>
       <translation>Caracteristica de bază</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="183"/>
+      <location filename="../../CommandBody.cpp" line="184"/>
       <source>Body may be based on no more than one feature.</source>
       <translation>Corpul se poate baza pe cel mult o caracteristică.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="197"/>
+      <location filename="../../CommandBody.cpp" line="198"/>
       <source>Body</source>
       <translation>Corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="343"/>
+      <location filename="../../CommandBody.cpp" line="347"/>
       <source>Nothing to migrate</source>
       <translation>Nimic de migrat</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="344"/>
+      <location filename="../../CommandBody.cpp" line="348"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
       <translation>Nu au fost găsite caracteristici PartDesign care nu aparțin unui corp. Nimic de migrat.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="492"/>
+      <location filename="../../CommandBody.cpp" line="496"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>Schita plan nu poate fi migrată</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="493"/>
+      <location filename="../../CommandBody.cpp" line="497"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>Vă rugăm să editaţi '%1' şi să redefinească pentru a utiliza un Plan de bază sau de referință ale ca plan de schiţă.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="555"/>
       <location filename="../../CommandBody.cpp" line="559"/>
-      <location filename="../../CommandBody.cpp" line="564"/>
-      <location filename="../../CommandBody.cpp" line="857"/>
-      <location filename="../../CommandBody.cpp" line="864"/>
+      <location filename="../../CommandBody.cpp" line="563"/>
+      <location filename="../../CommandBody.cpp" line="568"/>
+      <location filename="../../CommandBody.cpp" line="861"/>
+      <location filename="../../CommandBody.cpp" line="868"/>
       <source>Selection error</source>
       <translation>Eroare de selecție</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="556"/>
+      <location filename="../../CommandBody.cpp" line="560"/>
       <source>Select exactly one PartDesign feature or a body.</source>
       <translation>Selectaţi numai o caracteristică PartDesign sau un corp.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="560"/>
+      <location filename="../../CommandBody.cpp" line="564"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
       <translation>Nu a putut determina un corp pentru funcţia selectată '%s '.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="565"/>
+      <location filename="../../CommandBody.cpp" line="569"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>Doar o funcție solidă poate fi funcția rezultantă a unui corp.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="683"/>
-      <location filename="../../CommandBody.cpp" line="705"/>
-      <location filename="../../CommandBody.cpp" line="720"/>
+      <location filename="../../CommandBody.cpp" line="687"/>
+      <location filename="../../CommandBody.cpp" line="709"/>
+      <location filename="../../CommandBody.cpp" line="724"/>
       <source>Features cannot be moved</source>
       <translation>Caracteristici nu pot fi mutate</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="684"/>
+      <location filename="../../CommandBody.cpp" line="688"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>Unele dintre funcțiile selectate au dependențe în corpul sursă</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="706"/>
+      <location filename="../../CommandBody.cpp" line="710"/>
       <source>Only features of a single source Body can be moved</source>
       <translation>Pot fi mutate doar de caracteristici de o singură sursă de corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="721"/>
+      <location filename="../../CommandBody.cpp" line="725"/>
       <source>There are no other bodies to move to</source>
       <translation>Nu este nici un alt corp spre care să se deplaseze</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="858"/>
+      <location filename="../../CommandBody.cpp" line="862"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Imposibil de a deplasa caracteristica de bază a unui corp.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="865"/>
+      <location filename="../../CommandBody.cpp" line="869"/>
       <source>Select one or more features from the same body.</source>
       <translation>Selectați una sau mai multe funcții în același corp.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="878"/>
+      <location filename="../../CommandBody.cpp" line="882"/>
       <source>Beginning of the body</source>
       <translation>Începutul corpului</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="943"/>
+      <location filename="../../CommandBody.cpp" line="947"/>
       <source>Dependency violation</source>
       <translation>Încălcarea dependenței</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="944"/>
+      <location filename="../../CommandBody.cpp" line="948"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3763,19 +3755,19 @@ This may lead to unexpected results.</source>
       <translation>Nu este posibil să se creeze o funcție substractivă fără prezența unei funcții de bază</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <location filename="../../TaskTransformedParameters.cpp" line="281"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
       <source>Vertical sketch axis</source>
       <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
       <location filename="../../TaskTransformedParameters.cpp" line="282"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Horizontal sketch axis</source>
       <translation>Axa orizontală a schiţei</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
       <source>Construction line %1</source>
       <translation>%1 linie de construcție</translation>
     </message>
@@ -3822,10 +3814,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Pentru a utiliza această funcție, ea trebuie să aparțină unei piese din document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="62"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <location filename="../../ViewProviderTransformed.cpp" line="76"/>
+      <location filename="../../ViewProvider.cpp" line="62"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <source>Edit %1</source>
       <translation>Editare %1</translation>
     </message>
@@ -4785,17 +4777,17 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Fuziunea uneltelor a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Forma rezultată nu este solidă</translation>
     </message>
@@ -4810,22 +4802,22 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Operație comună eșuată</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePad.cpp" line="233"/>
       <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
       <location filename="../../../App/FeaturePocket.cpp" line="191"/>
       <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Rezultatul are mai multe solide: acest lucru nu este suportat în prezent.</translation>
     </message>
@@ -4888,8 +4880,8 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Unghiul de canelă prea mic</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4900,14 +4892,14 @@ peste 90: rază mai mare la partea de jos</translation>
   - schița selectată nu aparține Organismului activ.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <source>Creating a face from sketch failed</source>
       <translation>Crearea unei fațete din schiță a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Axa Revolve intersectează schița</translation>
     </message>
@@ -4917,108 +4909,104 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Nu s-a reușit decuparea funcției de bază</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nu s-a putut revolta schița!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nu s-a putut crea fața din schiță.
 Entitățile de schiță intersectate dintr-o schiță nu sunt permise.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="127"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="128"/>
       <source>Error: Pitch too small</source>
       <translation>Eroare: Pitch prea mic</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="129"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="143"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="130"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="144"/>
       <source>Error: height too small!</source>
       <translation>Eroare: înălțime prea mică!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="135"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="136"/>
       <source>Error: pitch too small!</source>
       <translation>Eroare: pas prea mic!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="137"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="145"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="151"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="138"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="146"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="152"/>
       <source>Error: turns too small!</source>
       <translation>Eroare: se transformă prea mic!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="155"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="156"/>
       <source>Error: either height or growth must not be zero!</source>
       <translation>Eroare: fie înălțimea sau creșterea nu trebuie să fie zero!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="169"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="170"/>
       <source>Error: unsupported mode</source>
       <translation>Eroare: mod neacceptat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="181"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="182"/>
       <source>Error: No valid sketch or face</source>
       <translation>Eroare: Nici o schita sau fata valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="190"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="191"/>
       <source>Error: Face must be planar</source>
       <translation>Eroare: Fața trebuie să fie plană</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="251"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
       <source>Error: Could not build</source>
       <translation>Eroare: Nu s-a putut construi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="263"/>
-      <source>Error: Could not make solid helix with open wire</source>
-      <translation type="unfinished">Error: Could not make solid helix with open wire</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="297"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="327"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2161"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
       <source>Error: Result is not a solid</source>
       <translation>Eroare: Rezultatul nu este solid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="277"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Eroare: Nu există nimic de diminuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="281"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="301"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="331"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="338"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="368"/>
       <source>Error: Result has multiple solids</source>
       <translation>Eroare: Rezultatul are mai multe solide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="291"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="328"/>
       <source>Error: Adding the helix failed</source>
       <translation>Eroare: Adăugarea helixului a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="351"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Eroare: Intersectarea helixului a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="321"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="358"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Eroare: scăderea helix a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="380"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Eroare: Nu s-a putut crea fața din schiță</translation>
     </message>
@@ -5088,32 +5076,32 @@ Entitățile de schiță intersectate dintr-o schiță nu sunt permise.</transla
       <translation>Eroare: Adăugarea temei de discuţie a eşuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Operația Booleană a eșuat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nu s-a putut crea fața din schiță.
 Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu sunt permise pentru a face un buzunar până la o față.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2025"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2041"/>
       <source>Thread type out of range</source>
       <translation>Tipul de subiect din afara intervalului</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2028"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2044"/>
       <source>Thread size out of range</source>
       <translation>Dimensiune discutie in afara intervalului</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2120"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
       <source>Error: Thread could not be built</source>
       <translation>Eroare: discuchar@@0ia nu a putut fi construitchar@@1</translation>
     </message>
@@ -5521,6 +5509,14 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
       <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Numai funcțiile aditive și substractive pot fi transformate</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderBody</name>
+    <message>
+      <location filename="../../ViewProviderBody.cpp" line="136"/>
+      <source>Active body</source>
+      <translation type="unfinished">Active body</translation>
     </message>
   </context>
 </TS>

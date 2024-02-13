@@ -1150,14 +1150,14 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2355"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="2356"/>
       <location filename="../../Command.cpp" line="2357"/>
-      <location filename="../../Command.cpp" line="2358"/>
-      <location filename="../../Command.cpp" line="2360"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>Box selection</source>
       <translation>Seçim kutusu</translation>
     </message>
@@ -1165,17 +1165,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2065"/>
+      <location filename="../../Command.cpp" line="2064"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2066"/>
+      <location filename="../../Command.cpp" line="2065"/>
       <source>Check Geometry</source>
       <translation>Geometriyi Kontrol Edin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2066"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>Hatalar için Geometriyi Analiz Ediyor</translation>
     </message>
@@ -1183,17 +1183,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2097"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2098"/>
       <source>Color per face</source>
       <translation>Yüzey rengi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2100"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Set the color of each individual face of the selected object.</source>
       <translation>Seçili nesnenin her bir ayrı yüzünün rengini ayarla.</translation>
     </message>
@@ -1201,17 +1201,17 @@
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2167"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Measure Angular</source>
       <translation>Açısal Ölçüm</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2170"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Measure the angle between two edges.</source>
       <translation>İki kenar arasındaki açıyı ölçün.</translation>
     </message>
@@ -1219,17 +1219,17 @@
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2227"/>
+      <location filename="../../Command.cpp" line="2226"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2228"/>
+      <location filename="../../Command.cpp" line="2227"/>
       <source>Clear All</source>
       <translation>Hepsini temizle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2229"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>Clear all dimensions from the active 3D view.</source>
       <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
     </message>
@@ -1237,17 +1237,17 @@
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2137"/>
+      <location filename="../../Command.cpp" line="2136"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Measure Linear</source>
       <translation>Doğrusal Olarak Ölç</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2138"/>
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
@@ -1259,17 +1259,17 @@ iki köşe noktası arası ölçülecektir.</translation>
   <context>
     <name>CmdMeasureRefresh</name>
     <message>
-      <location filename="../../Command.cpp" line="2197"/>
+      <location filename="../../Command.cpp" line="2196"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2198"/>
+      <location filename="../../Command.cpp" line="2197"/>
       <source>Refresh</source>
       <translation>Yenile</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2199"/>
+      <location filename="../../Command.cpp" line="2198"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
       <translation>Ölçülen noktalar taşınmışsa
@@ -1279,17 +1279,17 @@ boyutları yeniden hesapla.</translation>
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2292"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2294"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Toggle 3D</source>
       <translation>3B'ye geçiş yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2295"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
       <translation>Yüzeye dik durmdaki tüm boyutları açıp kapatın,
@@ -1299,17 +1299,17 @@ açısal dahil.</translation>
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2255"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Toggle All</source>
       <translation>Tümünü Aç / Kapat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2258"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
       <translation>Şu anda görünür olan tüm dik, ortogonal ve açısal boyutları açıp kapatın.</translation>
@@ -1318,17 +1318,17 @@ direct, orthogonal, and angular.</source>
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2323"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2324"/>
       <source>Toggle Delta</source>
       <translation>Delta'ya Geçiş Yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
@@ -1338,17 +1338,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1247"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1249"/>
+      <location filename="../../Command.cpp" line="1248"/>
       <source>Boolean...</source>
       <translation>Mantıksal...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1249"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>Seçilen iki şekille bir mantıksal işlem çalıştırın</translation>
     </message>
@@ -1376,17 +1376,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Box fix 1</source>
       <translation>Sabit kutu 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="132"/>
       <source>Create a box solid without dialog</source>
       <translation>Diyalog olmadan katı bir kutu oluştur</translation>
     </message>
@@ -1394,17 +1394,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Box fix 2</source>
       <translation>Sabit kutu 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Create a box solid without dialog</source>
       <translation>Diyalog olmadan katı bir kutu oluştur</translation>
     </message>
@@ -1412,17 +1412,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1538"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>Shape builder...</source>
       <translation>Şekil oluşturucu...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Advanced utility to create shapes</source>
       <translation>Şekiller oluşturmak için gelişmiş yardımcı program</translation>
     </message>
@@ -1430,17 +1430,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1444"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer...</source>
       <translation>Pah...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1446"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Şeklin seçilen kenarlarına pah kır</translation>
     </message>
@@ -1448,17 +1448,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="359"/>
       <source>Intersection</source>
       <translation>Kesişim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Make an intersection of two shapes</source>
       <translation>İki şeklin kesişimini oluştur</translation>
     </message>
@@ -1466,17 +1466,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Compound tools</source>
       <translation>Birleşik araçları</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="737"/>
       <source>Compound tools: working with lists of shapes.</source>
       <translation>Bileşik araçlar: şekil listeleriyle çalışma.</translation>
     </message>
@@ -1484,17 +1484,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Join objects...</source>
       <translation>Nesnelere katıl...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Join walled objects</source>
       <translation>Duvarlı nesnelere katıl</translation>
     </message>
@@ -1502,17 +1502,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Offset:</source>
       <translation type="unfinished">Offset:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1740"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Şekilleri dengelemek için kullanılan araçlar (paralel şekiller oluşturun)</translation>
     </message>
@@ -1520,17 +1520,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Split objects...</source>
       <translation>Nesneleri böl...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Shape splitting and Compsolid creation tools.</source>
       <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
@@ -1538,17 +1538,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="843"/>
       <source>Make compound</source>
       <translation>Bileşik yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Make a compound of several shapes</source>
       <translation>Birkaç şekilden oluşan bir bileşik yapın</translation>
     </message>
@@ -1576,17 +1576,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1499"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections...</source>
       <translation>Kesitler...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Cross-sections</source>
       <translation>Kesit</translation>
     </message>
@@ -1594,17 +1594,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Cut</source>
       <translation>Kes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>Make a cut of two shapes</source>
       <translation>İki şeklin kesimini oluştur</translation>
     </message>
@@ -1632,17 +1632,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="411"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Defeaturing</source>
       <translation>Özelliği / işlevi kaldır</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="414"/>
+      <location filename="../../CommandSimple.cpp" line="413"/>
       <source>Remove feature from a shape</source>
       <translation>Bir şekilden özelliği kaldır</translation>
     </message>
@@ -1650,17 +1650,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="323"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Create shape element copy</source>
       <translation>Şekil öğesi kopyası oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="326"/>
+      <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create a non-parametric copy of the selected shape element</source>
       <translation>Seçili şekil öğesinin parametrik olmayan bir kopyasını oluşturun</translation>
     </message>
@@ -1668,17 +1668,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1011"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1012"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Export CAD...</source>
       <translation>CAD'ı dışarı aktar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Exports to a CAD file</source>
       <translation>Bir CAD dosyasına aktarır</translation>
     </message>
@@ -1686,17 +1686,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1279"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Extrude...</source>
       <translation>Uzat...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Extrude a selected sketch</source>
       <translation>Seçili bir eskize kalınlık ver</translation>
     </message>
@@ -1704,17 +1704,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Fillet...</source>
       <translation>Dolgula...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1417"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>Bir şeklin seçili kenarlarını dolgulayın</translation>
     </message>
@@ -1722,17 +1722,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Union</source>
       <translation>Birleştir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Make a union of several shapes</source>
       <translation>Çeşitli şekillerin birleşimini oluştur</translation>
     </message>
@@ -1740,17 +1740,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Import CAD...</source>
       <translation>CAD'i içeri aktar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Imports a CAD file</source>
       <translation>Bir CAD dosyasını içeri aktarır</translation>
     </message>
@@ -1758,17 +1758,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1058"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>Import curve network...</source>
       <translation>Eğri ağı içeri aktar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1061"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Import a curve network</source>
       <translation>Eğri bir ağı içeri aktar</translation>
     </message>
@@ -1776,17 +1776,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1567"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1568"/>
       <source>Loft...</source>
       <translation>Çatıla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1570"/>
+      <location filename="../../Command.cpp" line="1569"/>
       <source>Utility to loft</source>
       <translation>Çatılama için Yardımcı araçlar</translation>
     </message>
@@ -1794,17 +1794,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Make face from wires</source>
       <translation>Tellerden yüzey yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
       <translation>Kablo kümelerinden yüzey oluştur (örneğin bir taslaktan)</translation>
     </message>
@@ -1812,17 +1812,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1108"/>
+      <location filename="../../Command.cpp" line="1107"/>
       <source>Convert to solid</source>
       <translation>Katı hale dönüştür</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1109"/>
+      <location filename="../../Command.cpp" line="1108"/>
       <source>Create solid from a shell or compound</source>
       <translation>Bir kabuk veya bileşkeden katı cisim oluştur</translation>
     </message>
@@ -1830,17 +1830,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1472"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1473"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Mirroring...</source>
       <translation>Aynala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1474"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Mirroring a selected shape</source>
       <translation>Seçili bir şekli aynala</translation>
     </message>
@@ -1848,17 +1848,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1626"/>
+      <location filename="../../Command.cpp" line="1625"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>3D Offset...</source>
       <translation>3D Ofset...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1628"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Utility to offset in 3D</source>
       <translation>3D konumlandırma için yardımcı araçlar</translation>
     </message>
@@ -1866,17 +1866,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1683"/>
+      <location filename="../../Command.cpp" line="1682"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1684"/>
+      <location filename="../../Command.cpp" line="1683"/>
       <source>2D Offset...</source>
       <translation>2D Ofset...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1685"/>
+      <location filename="../../Command.cpp" line="1684"/>
       <source>Utility to offset planar shapes</source>
       <translation>Düzlemsel şekilleri konumlandırmak için yardımcı araçlar</translation>
     </message>
@@ -1884,17 +1884,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Pick curve network</source>
       <translation>Eğri ağı seç</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Pick a curve network</source>
       <translation>Bir eğri ağı seç</translation>
     </message>
@@ -1902,17 +1902,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="135"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Create points object from geometry</source>
       <translation type="unfinished">Create points object from geometry</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="136"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create selectable points object from selected geometric object</source>
       <translation type="unfinished">Create selectable points object from selected geometric object</translation>
     </message>
@@ -1920,17 +1920,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Create primitives...</source>
       <translation>Temel öğeleri oluştur...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>Değişkenlerle tanımlanmış geometrik temel öğelerin oluşumu</translation>
     </message>
@@ -1938,17 +1938,17 @@ into its X, Y, and Z components.</source>
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2385"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>Create projection on surface...</source>
       <translation>Yüzeyde izdüşüm oluşturun...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Project edges, wires, or faces of one object
 onto a face of another object.
 The camera view determines the direction
@@ -1960,17 +1960,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="351"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Refine shape</source>
       <translation>Şekli arıt (incelt)</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="354"/>
+      <location filename="../../CommandSimple.cpp" line="353"/>
       <source>Refine the copy of a shape</source>
       <translation>Şeklin kopyasını hassaslaştırın</translation>
     </message>
@@ -1978,17 +1978,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Reverse shapes</source>
       <translation>Şekilleri ters çevir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Reverse orientation of shapes</source>
       <translation>Şekillerin dizilimini ters çevir</translation>
     </message>
@@ -1996,17 +1996,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1387"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1389"/>
+      <location filename="../../Command.cpp" line="1388"/>
       <source>Revolve...</source>
       <translation>Döndür...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1389"/>
       <source>Revolve a selected shape</source>
       <translation>Seçili bir şekli döndür</translation>
     </message>
@@ -2014,17 +2014,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1960"/>
+      <location filename="../../Command.cpp" line="1959"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1961"/>
+      <location filename="../../Command.cpp" line="1960"/>
       <source>Create ruled surface</source>
       <translation>Düzenli yüzey oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1962"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>İki Kenardan veya iki telden bir çizgili yüzey oluşturun</translation>
     </message>
@@ -2032,17 +2032,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="899"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="900"/>
       <source>Section</source>
       <translation>Kesişim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="901"/>
       <source>Make a section of two shapes</source>
       <translation>İki şeklin kesişimini oluştur</translation>
     </message>
@@ -2050,12 +2050,12 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2420"/>
+      <location filename="../../Command.cpp" line="2419"/>
       <source>Persistent section cut</source>
       <translation type="unfinished">Persistent section cut</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2421"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Creates a persistent section cut of visible part objects</source>
       <translation type="unfinished">Creates a persistent section cut of visible part objects</translation>
     </message>
@@ -2063,17 +2063,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="104"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="106"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Create shape from mesh...</source>
       <translation>Örgü formu oluştur...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="107"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Create shape from selected mesh object</source>
       <translation>Seçilen örgü nesnesinden şekil oluştur</translation>
     </message>
@@ -2081,17 +2081,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Create simple copy</source>
       <translation>Basit bir kopya oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="223"/>
+      <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create a simple non-parametric copy</source>
       <translation>Parametrik olmayan basit bir kopyasını oluşturun</translation>
     </message>
@@ -2099,17 +2099,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="54"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="56"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Create Cylinder...</source>
       <translation>Silindir oluştur...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="57"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create a Cylinder</source>
       <translation>Bir silindir oluştur</translation>
     </message>
@@ -2137,17 +2137,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Sweep...</source>
       <translation>Süpür...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1599"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Utility to sweep</source>
       <translation>Süpürme yardımı</translation>
     </message>
@@ -2155,27 +2155,27 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1829"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1830"/>
       <source>Thickness...</source>
       <translation>Kalınlık...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1831"/>
       <source>Utility to apply a thickness</source>
       <translation>Kalınlığı uygulamada yarar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1881"/>
+      <location filename="../../Command.cpp" line="1880"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1882"/>
+      <location filename="../../Command.cpp" line="1881"/>
       <source>Selected shape is not a solid</source>
       <translation>Seçilen şekil katı değil</translation>
     </message>
@@ -2203,17 +2203,17 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="295"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Create transformed copy</source>
       <translation>Dönüştürülen kopya oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="298"/>
+      <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create a non-parametric copy with transformed placement</source>
       <translation>Dönüştürülen yerleşimle parametrik olmayan bir kopya oluşturun</translation>
     </message>
@@ -2221,93 +2221,93 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="182"/>
       <source>Part Box Create</source>
       <translation>Parça Kutusu Oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Part Cut</source>
       <translation>Parça Kesme</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Common</source>
       <translation>Ortak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Fusion</source>
       <translation>Kaynaşma</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Compound</source>
       <translation>Bileşik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="922"/>
       <source>Section</source>
       <translation>Kesişim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Import Part</source>
       <translation>Parça İçe Aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1082"/>
+      <location filename="../../Command.cpp" line="1081"/>
       <source>Part Import Curve Net</source>
       <translation>Yerleştirilen Eğri Parçasının Neti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1198"/>
       <source>Reverse</source>
       <translation>Ters çevir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Make face</source>
       <translation>Yüz yapın</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1650"/>
+      <location filename="../../Command.cpp" line="1649"/>
       <source>Make Offset</source>
       <translation>Öteleme Yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Make 2D Offset</source>
       <translation>2B Öteleme Yap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1888"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Make Thickness</source>
       <translation>Kalınlık Ver</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2039"/>
       <source>Create ruled surface</source>
       <translation>Düzenli yüzey oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="70"/>
+      <location filename="../../CommandSimple.cpp" line="69"/>
       <source>Create Part Cylinder</source>
       <translation>Parça Silindiri Oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="181"/>
+      <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Points from geometry</source>
       <translation type="unfinished">Points from geometry</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="369"/>
+      <location filename="../../CommandSimple.cpp" line="368"/>
       <source>Refine shape</source>
       <translation>Şekli arıt (incelt)</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="426"/>
+      <location filename="../../CommandSimple.cpp" line="425"/>
       <source>Defeaturing</source>
       <translation>Özelliği / işlevi kaldır</translation>
     </message>
@@ -2363,7 +2363,7 @@ Kamera görünümü, izdüşüm yönünü belirler.</translation>
       <translation>Süpür</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="211"/>
+      <location filename="../../ViewProviderMirror.cpp" line="210"/>
       <source>Edit Mirror</source>
       <translation>Aynalamayı Düzenle</translation>
     </message>
@@ -5663,12 +5663,12 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
       <translation>Adalı delikli düzlemsel yüzlerin oluşturulmasını destekler.</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="175"/>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
       <source>Simple</source>
       <translation>Basit</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="180"/>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Ayrı düzlemi yüzünü her telden bağımsız olarak yapar. Delikler için destek yok; teller farklı düzlemlerde olabilir.</translation>
     </message>
@@ -5698,89 +5698,89 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>%1'i düzenle</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="235"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Part and Part Design workbench</source>
       <translation>Part and Part Design Çalışma Tezgahı</translation>
     </message>
     <message>
+      <location filename="../../AppPartGui.cpp" line="235"/>
       <location filename="../../AppPartGui.cpp" line="236"/>
       <location filename="../../AppPartGui.cpp" line="237"/>
       <location filename="../../AppPartGui.cpp" line="238"/>
-      <location filename="../../AppPartGui.cpp" line="239"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
+      <location filename="../../AppPartGui.cpp" line="239"/>
       <location filename="../../AppPartGui.cpp" line="240"/>
-      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Import-Export</source>
       <translation>İçe-Dışa Aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="390"/>
-      <location filename="../../Command.cpp" line="466"/>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="914"/>
-      <location filename="../../Command.cpp" line="2035"/>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
-      <location filename="../../Command.cpp" line="915"/>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="914"/>
       <source>Select two shapes please.</source>
       <translation>İki şekli seçin lütfen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="476"/>
+      <source>Non-solids selected</source>
+      <translation>Katılar seçilmedi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <location filename="../../Command.cpp" line="401"/>
       <location filename="../../Command.cpp" line="477"/>
-      <source>Non-solids selected</source>
-      <translation>Katılar seçilmedi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="326"/>
-      <location filename="../../Command.cpp" line="402"/>
-      <location filename="../../Command.cpp" line="478"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>Boole işlemleri için katı olmayanların kullanılması beklenmedik sonuçlara neden olabilir.
 Devam etmek istiyor musun?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>İki şekil seçin veya daha fazla, lütfen. Veya ortak arasında hesaplamak için iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="467"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>İki şekil seçin veya daha fazla, lütfen. Veya kaynaştırılacak iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="858"/>
+      <location filename="../../Command.cpp" line="857"/>
       <source>Select one shape or more, please.</source>
       <translation>Bir şekil seçin veya daha fazla, lütfen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1072"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>All CAD Files</source>
       <translation>Tüm CAD Dosyaları</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1077"/>
+      <location filename="../../Command.cpp" line="1076"/>
       <source>All Files</source>
       <translation>Tüm Dosyalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2036"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>İki kenarı veya iki çizgiyi seçtiniz.</translation>
     </message>
@@ -5791,20 +5791,20 @@ Devam etmek istiyor musun?</translation>
       <translation>Seçilen referans yok</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Kenar</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6126,27 +6126,27 @@ Devam etmek istiyor musun?</translation>
       <translation>Renkleri ayarla...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="85"/>
+      <location filename="../../ViewProviderMirror.cpp" line="84"/>
       <source>Edit mirror plane</source>
       <translation>Ayna düzlemini düzenle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="295"/>
+      <location filename="../../ViewProviderMirror.cpp" line="294"/>
       <source>Edit fillet edges</source>
       <translation>Dolgu kenarlarını düzenleme</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="405"/>
+      <location filename="../../ViewProviderMirror.cpp" line="404"/>
       <source>Edit chamfer edges</source>
       <translation>Kenarların pahını düzenle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="541"/>
+      <location filename="../../ViewProviderMirror.cpp" line="540"/>
       <source>Edit offset</source>
       <translation>Ofseti düzenle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="623"/>
+      <location filename="../../ViewProviderMirror.cpp" line="622"/>
       <source>Edit thickness</source>
       <translation>Kalınlığı düzenleme</translation>
     </message>
@@ -6166,12 +6166,12 @@ Devam etmek istiyor musun?</translation>
       <translation type="unfinished">Create tube</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Distance in parameter space</source>
       <translation type="unfinished">Distance in parameter space</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="174"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation type="unfinished">Enter distance:</translation>
     </message>
@@ -6832,17 +6832,17 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Part</source>
       <translation>Parça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Scale...</source>
       <translation>Ölçeklendir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1309"/>
+      <location filename="../../Command.cpp" line="1308"/>
       <source>Scale a selected shape</source>
       <translation type="unfinished">Scale a selected shape</translation>
     </message>

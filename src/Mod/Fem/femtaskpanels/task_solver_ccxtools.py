@@ -104,6 +104,11 @@ class _TaskPanel:
             self.runCalculix
         )
         QtCore.QObject.connect(
+            self.form.pb_run_ccx,
+            QtCore.SIGNAL("clicked()"),
+            self.stopCalculix
+        )
+        QtCore.QObject.connect(
             self.form.rb_static_analysis,
             QtCore.SIGNAL("clicked()"),
             self.select_static_analysis
@@ -145,7 +150,7 @@ class _TaskPanel:
         )
         QtCore.QObject.connect(
             self.Calculix,
-            QtCore.SIGNAL("finished(int)"),
+            QtCore.SIGNAL("finished(int, QProcess::ExitStatus)"),
             self.calculixFinished
         )
         QtCore.QObject.connect(
@@ -245,7 +250,7 @@ class _TaskPanel:
         else:
             self.femConsoleMessage("Problems.")
 
-    def calculixFinished(self, exitCode):
+    def calculixFinished(self, exitCode, exitStatus):
         # print("calculixFinished(), exit code: {}".format(exitCode))
         FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
 
@@ -254,12 +259,16 @@ class _TaskPanel:
 
         self.Timer.stop()
 
+        self.form.pb_run_ccx.setText("Re-run CalculiX")
+
+        if exitStatus != QtCore.QProcess.ExitStatus.NormalExit:
+            return
+
         if self.printCalculiXstdout():
             self.calculixNoError()
         else:
             self.calculixError()
 
-        self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         self.fea.reset_mesh_purge_results_checked()
@@ -354,45 +363,50 @@ class _TaskPanel:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
-        if self.fea.ccx_binary_present is False:
-            self.femConsoleMessage(
-                "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
-                .format(self.fea.ccx_binary)
+        if self.Calculix.state() == QtCore.QProcess.ProcessState.NotRunning:
+            if self.fea.ccx_binary_present is False:
+                self.femConsoleMessage(
+                    "CalculiX can not be started. Missing or incorrect CalculiX binary: {}"
+                    .format(self.fea.ccx_binary)
+                )
+                # TODO deactivate the run button
+                return
+            # print("runCalculix")
+            self.Start = time.time()
+
+            self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
+            self.femConsoleMessage("CalculiX input file: {}".format(self.fea.inp_file_name))
+            self.femConsoleMessage("Run CalculiX...")
+
+            FreeCAD.Console.PrintMessage(
+                "run CalculiX at: {} with: {}\n"
+                .format(self.fea.ccx_binary, self.fea.inp_file_name)
             )
-            # TODO deactivate the run button
-            return
-        # print("runCalculix")
-        self.Start = time.time()
+            # change cwd because ccx may crash if directory has no write permission
+            # there is also a limit of the length of file names so jump to the document directory
 
-        self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
-        self.femConsoleMessage("CalculiX input file: {}".format(self.fea.inp_file_name))
-        self.femConsoleMessage("Run CalculiX...")
+            # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
+            ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
+            env = QtCore.QProcessEnvironment.systemEnvironment()
+            num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
+            if num_cpu_pref > 1:
+                env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
+            else:
+                cpu_count = os.cpu_count()
+                if cpu_count is not None and cpu_count > 1:
+                    env.insert("OMP_NUM_THREADS", str(cpu_count))
+            self.Calculix.setProcessEnvironment(env)
 
-        FreeCAD.Console.PrintMessage(
-            "run CalculiX at: {} with: {}\n"
-            .format(self.fea.ccx_binary, self.fea.inp_file_name)
-        )
-        # change cwd because ccx may crash if directory has no write permission
-        # there is also a limit of the length of file names so jump to the document directory
+            self.cwd = QtCore.QDir.currentPath()
+            fi = QtCore.QFileInfo(self.fea.inp_file_name)
+            QtCore.QDir.setCurrent(fi.path())
+            self.Calculix.start(self.fea.ccx_binary, ["-i", fi.baseName()])
 
-        # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
-        ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
-        env = QtCore.QProcessEnvironment.systemEnvironment()
-        num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
-        if num_cpu_pref > 1:
-            env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
-        else:
-            cpu_count = os.cpu_count()
-            if cpu_count is not None and cpu_count > 1:
-                env.insert("OMP_NUM_THREADS", str(cpu_count))
-        self.Calculix.setProcessEnvironment(env)
+            QApplication.restoreOverrideCursor()
 
-        self.cwd = QtCore.QDir.currentPath()
-        fi = QtCore.QFileInfo(self.fea.inp_file_name)
-        QtCore.QDir.setCurrent(fi.path())
-        self.Calculix.start(self.fea.ccx_binary, ["-i", fi.baseName()])
-
-        QApplication.restoreOverrideCursor()
+    def stopCalculix(self):
+        if self.Calculix.state() == QtCore.QProcess.ProcessState.Running:
+            self.Calculix.kill()
 
     def select_analysis_type(self, analysis_type):
         if self.fea.solver.AnalysisType != analysis_type:

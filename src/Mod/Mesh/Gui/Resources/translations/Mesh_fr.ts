@@ -898,7 +898,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
       <source>Refresh</source>
-      <translation>Actualiser</translation>
+      <translation>Rafraîchir</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
@@ -1426,10 +1426,10 @@ est utilisée lors de l'écriture d'un fichier au format AMF</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation>Un rendu du côté inférieur de la surface sera généré de la même manière que le côté supérieur.
-Si non cochée, cela dépend de l'option "Activer la couleur de rétroéclairage"
-(section Préférences Affichage -&gt; Vue 3D). Soit la couleur de rétroéclairage
-sera utilisée soit du noir.</translation>
+      <translation>La face inférieure d'une surface recevra le même rendu que la face supérieure.
+Si cette option n'est pas cochée, elle dépend de l'option "Couleur du rétroéclairage"
+(préférences section Affichage → Vue 3D). Soit la couleur du rétroéclairage
+sera utilisée, soit ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>

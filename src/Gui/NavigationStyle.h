@@ -261,6 +261,7 @@ protected:
     float zoomStep;
     SbBool hasDragged;
     SbBool hasPanned;
+    SbBool hasZoomed;
 
     /** @name Mouse model */
     //@{

@@ -461,6 +461,19 @@ void DlgSettingsGeneral::saveDockWindowVisibility()
     bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", false);
     bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
     bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", true);
+
+    int index = -1;
+    if (propertyView || treeView) {
+        index = 1;
+    }
+    else if (comboView) {
+        index = 0;
+    }
+
+    if (index != ui->treeMode->currentIndex()) {
+        requireRestart();
+    }
+
     switch (ui->treeMode->currentIndex()) {
     case 0:
         comboView = true;

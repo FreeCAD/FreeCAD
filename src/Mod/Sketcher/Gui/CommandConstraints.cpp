@@ -1235,27 +1235,27 @@ public:
         case Reference:
             al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension_Driven"));
             //al[1] is the separator
-            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
-            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
-            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
-            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
             al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
             al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam_Driven"));
-            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
             getAction()->setIcon(al[index]->icon());
             break;
         case Driving:
             al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Dimension"));
             //al[1] is the separator
-            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
-            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
-            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
-            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
+            al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
+            al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
+            al[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
             al[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
             al[7]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
-            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radiam"));
-            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            al[8]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
+            al[9]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
             getAction()->setIcon(al[index]->icon());
             break;
         }
@@ -2843,7 +2843,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         }
     }
 
-    if (edgegeoids.empty() && pointgeoids.empty()) {
+    if (edgegeoids.empty() && pointgeoids.size() < 2) {
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Impossible constraint"),
@@ -3213,7 +3213,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     std::vector<int> GeoId;
     std::vector<Sketcher::PointPos> PosId;
@@ -3498,7 +3498,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // Check that the solver does not report redundant/conflicting constraints
     if (Obj->getLastSolverStatus() != GCS::Success || Obj->getLastHasConflicts()
@@ -3515,11 +3515,10 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     std::vector<int> GeoId;
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : SubNames) {
         int GeoIdt;
         Sketcher::PointPos PosIdt;
-        getIdsFromName((*it), Obj, GeoIdt, PosIdt);
+        getIdsFromName(subname, Obj, GeoIdt, PosIdt);
 
         if (isVertex(GeoIdt, PosIdt) || GeoIdt < 0) {
             if (selection.size() == 1) {
@@ -3823,7 +3822,7 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // count curves and points
     std::vector<SelIdPair> points;
@@ -4325,7 +4324,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(Obj,
@@ -4946,7 +4945,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(
@@ -5249,7 +5248,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 2) {
         Gui::TranslatedUserWarning(
@@ -5545,33 +5544,19 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         return;
     }
 
-    // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
-
-    if (SubNames.size() < 2) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("Select at least two lines from the sketch."));
-        return;
-    }
-
     std::vector<int> ids;
     bool hasAlreadyExternal = false;
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : selection[0].getSubNames()) {
 
         int GeoId;
         Sketcher::PointPos PosId;
-        getIdsFromName(*it, Obj, GeoId, PosId);
+        getIdsFromName(subname, Obj, GeoId, PosId);
 
         if (!isEdge(GeoId, PosId)) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select a valid line."));
-            return;
+            continue;
         }
         else if (isPointOrSegmentFixed(Obj, GeoId)) {
             if (hasAlreadyExternal) {
@@ -5586,13 +5571,20 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         // Check that the curve is a line segment
         const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-        if (! isLineSegment(*geo)) {
+        if (!isLineSegment(*geo)) {
             Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("The selected edge is not a valid line."));
+                QObject::tr("Wrong selection"),
+                QObject::tr("One selected edge is not a valid line."));
             return;
         }
         ids.push_back(GeoId);
+    }
+
+    if (ids.size() < 2) {
+        Gui::TranslatedUserWarning(Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select at least two lines from the sketch."));
+        return;
     }
 
     // undo command open
@@ -5736,7 +5728,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
         Gui::TranslatedUserWarning(Obj,
@@ -6568,7 +6560,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 2 && SubNames.size() != 3) {
         Gui::TranslatedUserWarning(Obj,
@@ -7349,7 +7341,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
         Gui::TranslatedUserWarning(
@@ -7366,17 +7358,16 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     bool poles = false;
     bool nonpoles = false;
 
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : SubNames) {
         bool issegmentfixed = false;
         int GeoId;
 
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+            GeoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
             issegmentfixed = isPointOrSegmentFixed(Obj, GeoId);
         }
-        else if (it->size() > 4 && it->substr(0, 12) == "ExternalEdge") {
-            GeoId = -std::atoi(it->substr(12, 4000).c_str()) - 2;
+        else if (subname.size() > 4 && subname.substr(0, 12) == "ExternalEdge") {
+            GeoId = -std::atoi(subname.substr(12, 4000).c_str()) - 2;
             issegmentfixed = true;
         }
         else {
@@ -7713,7 +7704,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
         Gui::TranslatedUserWarning(
@@ -7727,17 +7718,16 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     std::vector<std::pair<int, double>> geoIdDiameterMap;
     std::vector<std::pair<int, double>> externalGeoIdDiameterMap;
 
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : SubNames) {
         bool issegmentfixed = false;
         int GeoId;
 
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+            GeoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
             issegmentfixed = isPointOrSegmentFixed(Obj, GeoId);
         }
-        else if (it->size() > 4 && it->substr(0, 12) == "ExternalEdge") {
-            GeoId = -std::atoi(it->substr(12, 4000).c_str()) - 2;
+        else if (subname.size() > 4 && subname.substr(0, 12) == "ExternalEdge") {
+            GeoId = -std::atoi(subname.substr(12, 4000).c_str()) - 2;
             issegmentfixed = true;
         }
         else {
@@ -8033,7 +8023,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
         Gui::TranslatedUserWarning(
@@ -8050,17 +8040,16 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     bool poles = false;
     bool nonpoles = false;
 
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : SubNames) {
         bool issegmentfixed = false;
         int GeoId;
 
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+            GeoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
             issegmentfixed = isPointOrSegmentFixed(Obj, GeoId);
         }
-        else if (it->size() > 4 && it->substr(0, 12) == "ExternalEdge") {
-            GeoId = -std::atoi(it->substr(12, 4000).c_str()) - 2;
+        else if (subname.size() > 4 && subname.substr(0, 12) == "ExternalEdge") {
+            GeoId = -std::atoi(subname.substr(12, 4000).c_str()) - 2;
             issegmentfixed = true;
         }
         else {
@@ -8577,7 +8566,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty() || SubNames.size() > 3) {
         Gui::TranslatedUserWarning(
@@ -9017,7 +9006,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
 
@@ -9033,12 +9022,11 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
          hasAlreadyExternal = false;
     bool hyperbSel = false, parabSel = false, weightSel = false;
 
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
+    for (auto& subname : SubNames) {
 
         int GeoId;
         Sketcher::PointPos PosId;
-        getIdsFromName(*it, Obj, GeoId, PosId);
+        getIdsFromName(subname, Obj, GeoId, PosId);
 
         if (!isEdge(GeoId, PosId)) {
             Gui::TranslatedUserWarning(Obj,
@@ -9276,7 +9264,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 3 && SubNames.size() != 2) {
         Gui::TranslatedUserWarning(Obj,
@@ -9617,7 +9605,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
 
     if (SubNames.size() != 3) {
@@ -9852,10 +9840,9 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
             return;
         }
 
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (auto& subname : SubNames) {
             // see if we have constraints, if we do it is not a mode change, but a toggle.
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
+            if (subname.size() > 10 && subname.substr(0, 10) == "Constraint") {
                 modeChange = false;
             }
         }
@@ -9894,11 +9881,10 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
         int successful = SubNames.size();
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (auto& subname : SubNames) {
             // only handle constraints
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
+            if (subname.size() > 10 && subname.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subname);
                 try {
                     // issue the actual commands to toggle
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleDriving(%d)", ConstrId);
@@ -9983,11 +9969,10 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
 
         int successful = SubNames.size();
 
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (auto& subname : SubNames) {
 
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
+            if (subname.size() > 10 && subname.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subname);
                 try {
                     // issue the actual commands to toggle
                     Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleActive(%d)", ConstrId);

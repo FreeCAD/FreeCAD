@@ -160,7 +160,7 @@ struct Vertex
     }
 };
 
-const double Vertex::deflection = gp::Resolution();
+const double Vertex::deflection = 10 * std::numeric_limits<double>::epsilon();
 
 // ----------------------------------------------------------------------------
 

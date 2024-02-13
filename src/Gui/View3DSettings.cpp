@@ -73,6 +73,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
     OnChange(*hGrp,"CornerCoordSystemSize");
+    OnChange(*hGrp,"AxisLetterColor");
     OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseNavigationAnimations");
     OnChange(*hGrp,"UseSpinningAnimations");
@@ -290,6 +291,15 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 10));
         }
     }
+    else if (strcmp(Reason,"AxisLetterColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("AxisLetterColor", 0x00000000); // default color (black)
+        float transparency;
+        SbColor color;
+        color.setPackedValue((uint32_t)backlight, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->setAxisLetterColor(color);
+        }
+    }
     else if (strcmp(Reason,"ShowAxisCross") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross", false));
@@ -479,6 +489,7 @@ void NaviCubeSettings::applySettings()
     parameterChanged("FontWeight");
     parameterChanged("FontStretch");
     parameterChanged("ShowCS");
+    parameterChanged("InactiveOpacity");
     parameterChanged("TextFront"); // Updates all labels
 }
 
@@ -538,6 +549,10 @@ void NaviCubeSettings::parameterChanged(const char* Name)
     }
     else if (strcmp(Name, "ShowCS") == 0) {
         nc->setShowCS(hGrp->GetBool("ShowCS", true));
+    }
+    else if (strcmp(Name, "InactiveOpacity") == 0) {
+        float opacity = static_cast<float>(hGrp->GetInt("InactiveOpacity", 50)) / 100;
+        nc->setInactiveOpacity(opacity);
     }
     else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
              || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0

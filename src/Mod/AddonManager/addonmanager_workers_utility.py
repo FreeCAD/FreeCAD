@@ -44,7 +44,7 @@ class ConnectionChecker(QtCore.QThread):
     def __init__(self):
         QtCore.QThread.__init__(self)
         self.done = False
-        self.request_id = 0
+        self.request_id = None
         self.data = None
 
     def run(self):
@@ -74,18 +74,18 @@ class ConnectionChecker(QtCore.QThread):
             )
             self.disconnect_network_manager()
             return
-        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {self.data.decode}\n")
+        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {self.data.decode('utf-8')}\n")
         self.disconnect_network_manager()
         self.success.emit()
 
     def connection_data_received(self, id: int, status: int, data: QtCore.QByteArray):
-        if self.request_id and self.request_id == id:
+        if self.request_id is not None and self.request_id == id:
             if status == 200:
-                self.data = data
+                self.data = data.data()
             else:
                 FreeCAD.Console.PrintWarning(f"No data received: status returned was {status}\n")
                 self.data = None
-        self.done = True
+            self.done = True
 
     def disconnect_network_manager(self):
         NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.connection_data_received)

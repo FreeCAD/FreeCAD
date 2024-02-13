@@ -92,7 +92,6 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
-#include "CornerCrossLetters.h"
 #include "Document.h"
 #include "GLPainter.h"
 #include "MainWindow.h"
@@ -3427,6 +3426,40 @@ void View3DInventorViewer::setViewing(bool enable)
     inherited::setViewing(enable);
 }
 
+unsigned char View3DInventorViewer::XPM_pixel_data[XPM_WIDTH * XPM_HEIGHT * XPM_BYTES_PER_PIXEL + 1] = {};
+unsigned char View3DInventorViewer::YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1] = {};
+unsigned char View3DInventorViewer::ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1] = {};
+
+void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
+{
+    unsigned packed = color.getPackedValue();
+
+    auto recolor =
+        [&](const unsigned char* mask,
+            unsigned char* data,
+            unsigned width,
+            unsigned height,
+            unsigned bitdepth) {
+            for (unsigned y = 0; y < height; y++) {
+                for (unsigned x = 0; x < width; x++) {
+                    unsigned offset = (y * width + x) * bitdepth;
+                    
+                    const unsigned char* src = &mask[offset];
+                    unsigned char* dst = &data[offset];
+
+                    dst[0] = (packed >> 24) & 0xFF;  // RR - from color
+                    dst[1] = (packed >> 16) & 0xFF;  // GG - from color
+                    dst[2] = (packed >> 8) & 0xFF;   // BB - from color
+                    dst[3] = src[3];                 // AA - from mask
+                }
+            }
+        };
+
+    recolor(XPM_PIXEL_MASK, XPM_pixel_data, XPM_WIDTH, XPM_HEIGHT, XPM_BYTES_PER_PIXEL);
+    recolor(YPM_PIXEL_MASK, YPM_pixel_data, YPM_WIDTH, YPM_HEIGHT, YPM_BYTES_PER_PIXEL);
+    recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
+}
+
 void View3DInventorViewer::drawAxisCross()
 {
     // NOLINTBEGIN
@@ -3584,11 +3617,11 @@ void View3DInventorViewer::drawAxisCross()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glPixelZoom((float)axiscrossSize / 30, (float)axiscrossSize / 30); // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
     glRasterPos2d(xpos[0], xpos[1]);
-    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_PIXEL_DATA);
+    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_pixel_data);
     glRasterPos2d(ypos[0], ypos[1]);
-    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_PIXEL_DATA);
+    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_pixel_data);
     glRasterPos2d(zpos[0], zpos[1]);
-    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_PIXEL_DATA);
+    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_pixel_data);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
     glPopMatrix();

@@ -123,6 +123,7 @@ class Ellipse(gui_base_original.Creator):
                              'pl.Base = ' + DraftVecUtils.toString(center),
                              'ellipse.Placement = pl',
                              'Draft.autogroup(ellipse)',
+                             'Draft.select(ellipse)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Ellipse"),
                             _cmd_list)

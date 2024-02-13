@@ -106,7 +106,7 @@ void ViewProviderDatumCoordinateSystem::attach ( App::DocumentObject *obj ) {
     material->diffuseColor.set1Value(0, SbColor(0.f, 0.f, 0.f));
     material->diffuseColor.set1Value(1, SbColor(1.f, 0.f, 0.f));
     material->diffuseColor.set1Value(2, SbColor(0.f, 0.6f, 0.f));
-    material->diffuseColor.set1Value(3, SbColor(0.f, 0.f, 1.f));
+    material->diffuseColor.set1Value(3, SbColor(0.f, 0.f, 0.8f));
     SoMaterialBinding* binding = new SoMaterialBinding();
     binding->value = SoMaterialBinding::PER_FACE_INDEXED;
 
@@ -115,29 +115,29 @@ void ViewProviderDatumCoordinateSystem::attach ( App::DocumentObject *obj ) {
     getShapeRoot ()->addChild(binding);
     getShapeRoot ()->addChild(material);
 
-    coord->point.setNum(4);
+    coord->point.setNum(7);
 
     ViewProviderDatum::setExtents ( defaultBoundBox () );
 
     getShapeRoot ()->addChild(coord);
 
     SoDrawStyle* style = new SoDrawStyle ();
-    style->lineWidth = 1.5f;
+    style->lineWidth = 2.0f;
     getShapeRoot ()->addChild(style);
 
     PartGui::SoBrepEdgeSet* lineSet = new PartGui::SoBrepEdgeSet();
     lineSet->coordIndex.setNum(9);
     // X
-    lineSet->coordIndex.set1Value(0, 0);
-    lineSet->coordIndex.set1Value(1, 1);
+    lineSet->coordIndex.set1Value(0, 1);
+    lineSet->coordIndex.set1Value(1, 2);
     lineSet->coordIndex.set1Value(2, SO_END_LINE_INDEX);
     // Y
-    lineSet->coordIndex.set1Value(3, 0);
-    lineSet->coordIndex.set1Value(4, 2);
+    lineSet->coordIndex.set1Value(3, 3);
+    lineSet->coordIndex.set1Value(4, 4);
     lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
     // Z
-    lineSet->coordIndex.set1Value(6, 0);
-    lineSet->coordIndex.set1Value(7, 3);
+    lineSet->coordIndex.set1Value(6, 5);
+    lineSet->coordIndex.set1Value(7, 6);
     lineSet->coordIndex.set1Value(8, SO_END_LINE_INDEX);
 
     lineSet->materialIndex.setNum(3);
@@ -212,6 +212,8 @@ void ViewProviderDatumCoordinateSystem::onChanged(const App::Property *prop) {
 void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
     // Axis length of the CS is 1/3 of maximum bbox dimension, any smarter sizing will make it only worse
     double axisLength;
+    // Empty gap at the origin of the coordinate system, this is a nice experimental value
+    double centerGap;
 
     if(Zoom.getValue()) {
         axisLength = 6 * Zoom.getValue();
@@ -220,10 +222,15 @@ void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
         axisLength *= (1 + marginFactor ()) / 3;
     }
 
+    centerGap = axisLength / 8.;
+    
     coord->point.set1Value ( 0, 0, 0, 0 );
-    coord->point.set1Value ( 1, axisLength, 0, 0 );
-    coord->point.set1Value ( 2, 0, axisLength, 0 );
-    coord->point.set1Value ( 3, 0, 0, axisLength );
+    coord->point.set1Value ( 1, centerGap, 0, 0  );    
+    coord->point.set1Value ( 2, axisLength, 0, 0 );
+    coord->point.set1Value ( 3, 0, centerGap, 0  );
+    coord->point.set1Value ( 4, 0, axisLength, 0 );
+    coord->point.set1Value ( 5, 0, 0, centerGap  );
+    coord->point.set1Value ( 6, 0, 0, axisLength );
 
     double labelPos = axisLength;
     double labelOffset = 0;

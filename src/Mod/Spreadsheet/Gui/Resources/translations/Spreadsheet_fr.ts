@@ -970,7 +970,7 @@ Par défaut : %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caractère utilisé pour séparer les chaînes de caractères, en général c'est un simple guillemet (') ou un double guillemet (&amp;quot;). Ce doit être un seul caractère.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Caractère utilisé pour séparer les chaînes de caractères, en général c'est un simple guillemet (') ou un double guillemet ("). Ce doit être un seul caractère.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>

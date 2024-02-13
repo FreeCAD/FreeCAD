@@ -5,13 +5,13 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation>Standar (mm, kg, s, derajat)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
-      <translation>MKS (m, kg, s, derajat)</translation>
+      <source>MKS (m, kg, s, °)</source>
+      <translation type="unfinished">MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -40,8 +40,8 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperial untuk Teknik Sipil (ft, ft/detik)</translation>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
+      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>

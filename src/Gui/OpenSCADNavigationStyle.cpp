@@ -140,17 +140,16 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
             // to pass the event to the base class.
             this->lockrecenter = true;
             this->button2down = press;
-            if (!viewer->isEditing()) {
-                // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events
-                if ((curmode != NavigationStyle::ZOOMING &&
-                    curmode != NavigationStyle::PANNING &&
-                    curmode != NavigationStyle::DRAGGING) ||
-                    (curmode == NavigationStyle::PANNING && !hasPanned)) {
+
+            // Don't show the context menu after dragging, panning or zooming
+            if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                processed = true;
+            }
+            else if (!press && !viewer->isEditing()) {
+                if (this->currentmode != NavigationStyle::ZOOMING &&
+                    this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
-                        if (!press) { // release right mouse button
-                            this->openPopupMenu(event->getPosition());
-                        }
+                        this->openPopupMenu(event->getPosition());
                     }
                 }
             }
@@ -164,9 +163,6 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
             else if (!press && (curmode == NavigationStyle::DRAGGING)) {
                 newmode = NavigationStyle::IDLE;
-                processed = true;
-            }
-            else if (!press && curmode == NavigationStyle::PANNING && hasPanned) {
                 processed = true;
             }
             break;
@@ -261,6 +257,17 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     default:
         break;
+    }
+
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down)) {
+        processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
     }
 
     if (newmode != curmode) {

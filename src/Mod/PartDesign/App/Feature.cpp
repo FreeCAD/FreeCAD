@@ -54,10 +54,29 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(nullptr));
+    ADD_PROPERTY(Suppressed,(false));
     ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
+    Suppressed.setStatus(App::Property::Hidden, true);
+}
+
+App::DocumentObjectExecReturn* Feature::recompute()
+{
+    try {
+        auto baseShape = getBaseShape();
+        if (Suppressed.getValue()) {
+            this->Shape.setValue(baseShape);
+            return StdReturn;
+        }
+    }
+    catch (Base::Exception& e) {
+        //invalid BaseShape
+        Suppressed.setValue(false);
+    }
+
+    return DocumentObject::recompute();
 }
 
 short Feature::mustExecute() const

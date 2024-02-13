@@ -882,20 +882,26 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
     if (iCurrentShape.empty())
         return;
 
+    auto height = ui->doubleSpinBoxExtrudeHeight->value();
+
     for ( auto &itCurrentShape : iCurrentShape )
     {
       if (itCurrentShape.aProjectedFace.IsNull()) continue;;
-      auto height = ui->doubleSpinBoxExtrudeHeight->value();
-      if (itCurrentShape.exrudeValue == height) continue;;
+      if (itCurrentShape.extrudeValue == height) continue;;
 
-      gp_Vec directionToExtrude(itCurrentShape.aProjectionDir.XYZ());
-      directionToExtrude.Reverse();
+      itCurrentShape.extrudeValue = height;
       if (height == 0)
-          return;
-      directionToExtrude.Multiply(height);
-      BRepPrimAPI_MakePrism extrude(itCurrentShape.aProjectedFace, directionToExtrude);
-      itCurrentShape.aProjectedSolid = extrude.Shape();
-      itCurrentShape.exrudeValue = height;
+      {
+        itCurrentShape.aProjectedSolid.Nullify();
+      }
+      else
+      {
+        gp_Vec directionToExtrude(itCurrentShape.aProjectionDir.XYZ());
+        directionToExtrude.Reverse();
+        directionToExtrude.Multiply(height);
+        BRepPrimAPI_MakePrism extrude(itCurrentShape.aProjectedFace, directionToExtrude);
+        itCurrentShape.aProjectedSolid = extrude.Shape();
+      }
     }
   }
   catch (const Standard_Failure& error)

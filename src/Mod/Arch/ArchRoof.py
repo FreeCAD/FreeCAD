@@ -308,6 +308,11 @@ class _Roof(ArchComponent.Component):
                             "Flip",
                             "Roof",
                             QT_TRANSLATE_NOOP("App::Property", "Specifies if the direction of the roof should be flipped"))
+        if not "Subvolume" in pl:
+            obj.addProperty("App::PropertyLink",
+                            "Subvolume",
+                            "Roof",
+                            QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"))
         self.Type = "Roof"
 
     def onDocumentRestored(self, obj):
@@ -825,21 +830,26 @@ class _Roof(ArchComponent.Component):
 
     def getSubVolume(self, obj):
         '''returns a volume to be subtracted'''
-        if obj.Base:
-            if hasattr(obj.Base, "Shape"):
-                if obj.Base.Shape.Solids:
-                    return obj.Shape
-                else :
-                    if hasattr(self, "sub"):
-                        if self.sub:
-                            return self.sub
-                        else :
-                            self.execute(obj)
-                            return self.sub
-                    else :
-                        self.execute(obj)
-                        return self.sub
-        return None
+        custom_subvolume = getattr(obj, 'Subvolume', None)
+        if custom_subvolume:
+            return custom_subvolume.Shape
+
+        if not obj.Base:
+            return None
+
+        if not hasattr(obj.Base, "Shape"):
+            return None
+
+        if obj.Base.Shape.Solids:
+            return obj.Shape
+
+        # self.sub is auto-generated subvolume for wire-based roof
+        sub_field = getattr(self, 'sub', None)
+        if not sub_field:
+            self.execute(obj)
+
+        return self.sub
+
 
     def computeAreas(self, obj):
         '''computes border and ridge roof edges length'''

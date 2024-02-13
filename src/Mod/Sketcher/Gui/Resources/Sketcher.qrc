@@ -239,6 +239,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Periodic_BSplineByInterpolation.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_PointFillet.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_Translate.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Offset.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Rotate.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Scale.svg</file>
@@ -302,6 +303,7 @@
         <file>icons/tools/Sketcher_Offset.svg</file>
         <file>icons/tools/Sketcher_OffsetArc.svg</file>
         <file>icons/tools/Sketcher_OffsetIntersection.svg</file>
+        <file>icons/tools/Sketcher_Translate.svg</file>
     </qresource>
     <qresource>
         <file>icons/dialogs/Sketcher_Settings.svg</file>

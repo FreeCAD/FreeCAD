@@ -251,7 +251,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QGroupBox" name="groupBox_6">
+    <widget class="QGroupBox" name="groupBox_7">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
        <horstretch>0</horstretch>

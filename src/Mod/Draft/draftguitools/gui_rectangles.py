@@ -61,9 +61,6 @@ class Rectangle(gui_base_original.Creator):
             self.refpoint = None
             self.ui.pointUi(title=translate("draft", "Rectangle"), icon="Draft_Rectangle")
             self.ui.extUi()
-            if params.get_param("UsePartPrimitives"):
-                self.fillstate = self.ui.hasFill.isChecked()
-                self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
             _toolmsg(translate("draft", "Pick first point"))
@@ -77,11 +74,11 @@ class Rectangle(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        if self.ui and hasattr(self, "fillstate"):
+            self.ui.hasFill.setChecked(self.fillstate)
+            del self.fillstate
         super().finish()
         if self.ui:
-            if hasattr(self, "fillstate"):
-                self.ui.hasFill.setChecked(self.fillstate)
-                del self.fillstate
             self.rect.off()
             self.rect.finalize()
         if cont or (cont is None and self.ui and self.ui.continueMode):
@@ -124,6 +121,7 @@ class Rectangle(gui_base_original.Creator):
                              'pl.Base = ' + DraftVecUtils.toString(base),
                              'plane.Placement = pl',
                              'Draft.autogroup(plane)',
+                             'Draft.select(plane)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Plane"),
                             _cmd_list)

@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="317"/>
@@ -44,7 +44,7 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -574,7 +574,7 @@ Seleccioneu una forma diferent, si us plau.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desembolica la malla</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -587,7 +587,7 @@ Seleccioneu una forma diferent, si us plau.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Desembolica la cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

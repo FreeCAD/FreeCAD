@@ -50,7 +50,7 @@ private:
 class FemGuiExport ViewProviderFemAnalysis: public Gui::ViewProviderDocumentObjectGroup
 {
     Q_DECLARE_TR_FUNCTIONS(FemGui::ViewProviderFemAnalysis)
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderAnalysis);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemAnalysis);
 
 public:
     /// constructor

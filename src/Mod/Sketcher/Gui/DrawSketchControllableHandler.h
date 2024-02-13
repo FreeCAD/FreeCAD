@@ -183,6 +183,14 @@ private:
             toolWidgetManager.secondKeyShortcut();
         }
 
+        if (key == SoKeyboardEvent::R && !pressed && !this->isLastState()) {
+            toolWidgetManager.thirdKeyShortcut();
+        }
+
+        if (key == SoKeyboardEvent::F && !pressed && !this->isLastState()) {
+            toolWidgetManager.fourthKeyShortcut();
+        }
+
         if (key == SoKeyboardEvent::TAB && !pressed) {
             toolWidgetManager.tabShortcut();
         }

@@ -1150,14 +1150,14 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2355"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="2356"/>
       <location filename="../../Command.cpp" line="2357"/>
-      <location filename="../../Command.cpp" line="2358"/>
-      <location filename="../../Command.cpp" line="2360"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>Box selection</source>
       <translation>Sélectionner par une boîte</translation>
     </message>
@@ -1165,17 +1165,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2065"/>
+      <location filename="../../Command.cpp" line="2064"/>
       <source>Part</source>
-      <translation>Pièce</translation>
+      <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2066"/>
+      <location filename="../../Command.cpp" line="2065"/>
       <source>Check Geometry</source>
       <translation>Vérifier la géométrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2066"/>
       <source>Analyzes Geometry For Errors</source>
       <translation>Analyse la géométrie</translation>
     </message>
@@ -1183,17 +1183,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2097"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2098"/>
       <source>Color per face</source>
       <translation>Couleur par face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2100"/>
+      <location filename="../../Command.cpp" line="2099"/>
       <source>Set the color of each individual face of the selected object.</source>
       <translation>Définir la couleur de chaque face de l’objet sélectionné.</translation>
     </message>
@@ -1201,17 +1201,17 @@
   <context>
     <name>CmdMeasureAngular</name>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2167"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2169"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Measure Angular</source>
       <translation>Mesure angulaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2170"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Measure the angle between two edges.</source>
       <translation>Mesurer l'angle entre deux arêtes.</translation>
     </message>
@@ -1219,17 +1219,17 @@
   <context>
     <name>CmdMeasureClearAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2227"/>
+      <location filename="../../Command.cpp" line="2226"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2228"/>
+      <location filename="../../Command.cpp" line="2227"/>
       <source>Clear All</source>
       <translation>Tout effacer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2229"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>Clear all dimensions from the active 3D view.</source>
       <translation>Effacer toutes les dimensions de la vue 3D active.</translation>
     </message>
@@ -1237,17 +1237,17 @@
   <context>
     <name>CmdMeasureLinear</name>
     <message>
-      <location filename="../../Command.cpp" line="2137"/>
+      <location filename="../../Command.cpp" line="2136"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Measure Linear</source>
       <translation>Mesure linéaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2139"/>
+      <location filename="../../Command.cpp" line="2138"/>
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
@@ -1259,97 +1259,96 @@ entre deux de leurs sommets.</translation>
   <context>
     <name>CmdMeasureRefresh</name>
     <message>
-      <location filename="../../Command.cpp" line="2197"/>
+      <location filename="../../Command.cpp" line="2196"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2198"/>
+      <location filename="../../Command.cpp" line="2197"/>
       <source>Refresh</source>
       <translation>Rafraîchir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2199"/>
+      <location filename="../../Command.cpp" line="2198"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
-      <translation>Recalculer les mesures si les points mesurés ont été déplacés.</translation>
+      <translation>Recalculer les dimensions si les points mesurés ont été déplacés.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2292"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2294"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Toggle 3D</source>
       <translation>Activer/désactiver les mesures dans la 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2295"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation>Activer/désactiver toutes les mesures directes y compris angulaires.</translation>
+      <translation>Afficher/masquer toutes les dimensions directes y compris angulaires.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2255"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Toggle All</source>
       <translation>Tout basculer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2258"/>
+      <location filename="../../Command.cpp" line="2257"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation>Basculer toutes les mesures actuellement visibles,
-directes, orthogonales et angulaires.</translation>
+      <translation>Afficher/masquer toutes les dimensions actuellement
+visibles, directes, orthogonales et angulaires.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2323"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2324"/>
       <source>Toggle Delta</source>
       <translation>Basculer vers les mesures selon le repère global</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation>Basculer toutes les mesures orthogonales,
-ce qui signifie qu’une mesure directe sera 
-décomposée en ses composantes X, Y et Z.</translation>
+      <translation>Afficher/masquer toutes les dimensions orthogonales, cela signifie qu’une
+dimension directe sera décomposée en ses composantes X, Y et Z.</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1247"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1249"/>
+      <location filename="../../Command.cpp" line="1248"/>
       <source>Boolean...</source>
       <translation>Opération booléenne...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1249"/>
       <source>Run a boolean operation with two shapes selected</source>
       <translation>Exécuter une opération booléenne sur deux formes sélectionnées</translation>
     </message>
@@ -1377,17 +1376,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Box fix 1</source>
       <translation>Boîte correctif 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="132"/>
       <source>Create a box solid without dialog</source>
       <translation>Créer une boîte solide sans boîte de dialogue</translation>
     </message>
@@ -1395,17 +1394,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Box fix 2</source>
       <translation>Boîte correctif 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Create a box solid without dialog</source>
       <translation>Créer une boîte solide sans boîte de dialogue</translation>
     </message>
@@ -1413,17 +1412,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1538"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>Shape builder...</source>
       <translation>Générateur de forme...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Advanced utility to create shapes</source>
       <translation>Utilitaire avancé de création de formes</translation>
     </message>
@@ -1431,17 +1430,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1444"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer...</source>
       <translation>Chanfreiner...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1446"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Chanfreiner les arêtes sélectionnées d'une forme</translation>
     </message>
@@ -1449,17 +1448,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="359"/>
       <source>Intersection</source>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Make an intersection of two shapes</source>
       <translation>Exécuter une intersection entre deux formes</translation>
     </message>
@@ -1467,17 +1466,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="736"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="737"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Compound tools</source>
       <translation>Outils pour des composés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="737"/>
       <source>Compound tools: working with lists of shapes.</source>
       <translation>Outils pour des composés : travailler avec des listes de formes.</translation>
     </message>
@@ -1485,17 +1484,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Join objects...</source>
       <translation>Joindre les objets...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Join walled objects</source>
       <translation>Joindre les objets à paroi</translation>
     </message>
@@ -1503,17 +1502,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Offset:</source>
       <translation>Décalage :</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1740"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Outils pour décaler des formes (construire des formes parallèles)</translation>
     </message>
@@ -1521,17 +1520,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Split objects...</source>
       <translation>Éclater des objets...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Shape splitting and Compsolid creation tools.</source>
       <translation>Outils pour éclater des formes et créer des composés.</translation>
     </message>
@@ -1539,17 +1538,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="843"/>
       <source>Make compound</source>
       <translation>Créer un composé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Make a compound of several shapes</source>
       <translation>Créer un composé à partir de plusieurs formes</translation>
     </message>
@@ -1577,17 +1576,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1499"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections...</source>
       <translation>Coupes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Cross-sections</source>
       <translation>Coupes</translation>
     </message>
@@ -1595,17 +1594,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Cut</source>
       <translation>Soustraction</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>Make a cut of two shapes</source>
       <translation>Exécuter une soustraction sur deux formes</translation>
     </message>
@@ -1633,17 +1632,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="411"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Defeaturing</source>
       <translation>Supprimer la fonctionnalité</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="414"/>
+      <location filename="../../CommandSimple.cpp" line="413"/>
       <source>Remove feature from a shape</source>
       <translation>Supprimer la fonction d’une forme</translation>
     </message>
@@ -1651,17 +1650,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="323"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Create shape element copy</source>
       <translation>Copie de l'élément de forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="326"/>
+      <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create a non-parametric copy of the selected shape element</source>
       <translation>Copie non-paramétrique de l'élément de forme sélectionné</translation>
     </message>
@@ -1669,17 +1668,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1011"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1012"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Export CAD...</source>
       <translation>Exporter un fichier de CAO...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1013"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Exports to a CAD file</source>
       <translation>Exporte vers un fichier dans un format de CAO</translation>
     </message>
@@ -1687,17 +1686,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1279"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1279"/>
       <source>Extrude...</source>
       <translation>Extruder...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Extrude a selected sketch</source>
       <translation>Extrusion d'une esquisse sélectionnée</translation>
     </message>
@@ -1705,17 +1704,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Fillet...</source>
       <translation>Créer un congé...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1417"/>
       <source>Fillet the selected edges of a shape</source>
       <translation>Créer un congé sur les arêtes sélectionnées d'une forme</translation>
     </message>
@@ -1723,17 +1722,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Union</source>
       <translation>Union</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Make a union of several shapes</source>
       <translation>Exécuter l'union de plusieurs formes</translation>
     </message>
@@ -1741,17 +1740,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Import CAD...</source>
       <translation>Importation CAO...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Imports a CAD file</source>
       <translation>Importe un fichier CAO</translation>
     </message>
@@ -1759,17 +1758,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1058"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1059"/>
       <source>Import curve network...</source>
       <translation>Importer réseau de courbes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1061"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>Import a curve network</source>
       <translation>Importer un réseau de courbes</translation>
     </message>
@@ -1777,17 +1776,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1567"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1568"/>
       <source>Loft...</source>
       <translation>Lissage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1570"/>
+      <location filename="../../Command.cpp" line="1569"/>
       <source>Utility to loft</source>
       <translation>Lissage d'une série de profils</translation>
     </message>
@@ -1795,17 +1794,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Make face from wires</source>
       <translation>Créer une face à partir de polylignes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
       <translation>Créer une face à partir d'un ensemble de polylignes (par exemple, à partir d’une esquisse)</translation>
     </message>
@@ -1813,17 +1812,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1108"/>
+      <location filename="../../Command.cpp" line="1107"/>
       <source>Convert to solid</source>
       <translation>Convertir en solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1109"/>
+      <location filename="../../Command.cpp" line="1108"/>
       <source>Create solid from a shell or compound</source>
       <translation>Créer un solide à partir d'une coque ou d'un composé</translation>
     </message>
@@ -1831,17 +1830,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1472"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1473"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Mirroring...</source>
       <translation>Mettre en miroir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1474"/>
+      <location filename="../../Command.cpp" line="1473"/>
       <source>Mirroring a selected shape</source>
       <translation>Mettre en miroir la forme sélectionnée</translation>
     </message>
@@ -1849,17 +1848,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1626"/>
+      <location filename="../../Command.cpp" line="1625"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>3D Offset...</source>
       <translation>Décaler en 3D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1628"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Utility to offset in 3D</source>
       <translation>Utilitaire pour décaler en 3D</translation>
     </message>
@@ -1867,17 +1866,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1683"/>
+      <location filename="../../Command.cpp" line="1682"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1684"/>
+      <location filename="../../Command.cpp" line="1683"/>
       <source>2D Offset...</source>
       <translation>Décaler en 2D...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1685"/>
+      <location filename="../../Command.cpp" line="1684"/>
       <source>Utility to offset planar shapes</source>
       <translation>Utilitaire pour décaler des formes planaires</translation>
     </message>
@@ -1885,17 +1884,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Pick curve network</source>
       <translation>Choisir un réseau de courbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Pick a curve network</source>
       <translation>Choisir un réseau de courbes</translation>
     </message>
@@ -1903,17 +1902,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="135"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Create points object from geometry</source>
       <translation>Créer un objet points à partir d'une géométrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="136"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create selectable points object from selected geometric object</source>
       <translation>Créer un objet points sélectionnable à partir de l'objet géométrie sélectionné</translation>
     </message>
@@ -1921,17 +1920,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Create primitives...</source>
       <translation>Créer des primitives...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="214"/>
       <source>Creation of parametrized geometric primitives</source>
       <translation>Créer des primitives géométriques paramétrées</translation>
     </message>
@@ -1939,17 +1938,17 @@ décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2385"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>Create projection on surface...</source>
       <translation>Projeter sur une surface...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Project edges, wires, or faces of one object
 onto a face of another object.
 The camera view determines the direction
@@ -1961,17 +1960,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="351"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Refine shape</source>
       <translation>Affiner la forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="354"/>
+      <location filename="../../CommandSimple.cpp" line="353"/>
       <source>Refine the copy of a shape</source>
       <translation>Affiner la copie d'une forme</translation>
     </message>
@@ -1979,17 +1978,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Reverse shapes</source>
       <translation>Inverser les formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Reverse orientation of shapes</source>
       <translation>Inverser l'orientation des formes</translation>
     </message>
@@ -1997,17 +1996,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1387"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1389"/>
+      <location filename="../../Command.cpp" line="1388"/>
       <source>Revolve...</source>
       <translation>Révolution...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1390"/>
+      <location filename="../../Command.cpp" line="1389"/>
       <source>Revolve a selected shape</source>
       <translation>Appliquer une révolution à une forme sélectionnée</translation>
     </message>
@@ -2015,17 +2014,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1960"/>
+      <location filename="../../Command.cpp" line="1959"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1961"/>
+      <location filename="../../Command.cpp" line="1960"/>
       <source>Create ruled surface</source>
       <translation>Créer une surface réglée</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1962"/>
+      <location filename="../../Command.cpp" line="1961"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
       <translation>Créer une surface réglée à partir de deux arêtes ou de deux polylignes</translation>
     </message>
@@ -2033,17 +2032,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="899"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="900"/>
       <source>Section</source>
       <translation>Section</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="901"/>
       <source>Make a section of two shapes</source>
       <translation>Faire une section de deux formes</translation>
     </message>
@@ -2051,12 +2050,12 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2420"/>
+      <location filename="../../Command.cpp" line="2419"/>
       <source>Persistent section cut</source>
       <translation>Coupe persistante</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2421"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Creates a persistent section cut of visible part objects</source>
       <translation>Crée une coupe persistante des objets de la partie visible</translation>
     </message>
@@ -2064,17 +2063,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="104"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="106"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Create shape from mesh...</source>
       <translation>Créer une forme à partir d'un maillage...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="107"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Create shape from selected mesh object</source>
       <translation>Créer une forme à partir du maillage sélectionné</translation>
     </message>
@@ -2082,17 +2081,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Create simple copy</source>
       <translation>Copie simple</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="223"/>
+      <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create a simple non-parametric copy</source>
       <translation>Créer une copie simple non-paramétrique</translation>
     </message>
@@ -2100,17 +2099,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="54"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="56"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Create Cylinder...</source>
       <translation>Créer un cylindre...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="57"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create a Cylinder</source>
       <translation>Créer un cylindre</translation>
     </message>
@@ -2138,17 +2137,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Sweep...</source>
       <translation>Balayage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1599"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Utility to sweep</source>
       <translation>Balayer une ou plusieurs section(s) le long d'un chemin</translation>
     </message>
@@ -2156,27 +2155,27 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1829"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1830"/>
       <source>Thickness...</source>
       <translation>Évider...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1831"/>
       <source>Utility to apply a thickness</source>
       <translation>Évider le solide sélectionné</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1881"/>
+      <location filename="../../Command.cpp" line="1880"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1882"/>
+      <location filename="../../Command.cpp" line="1881"/>
       <source>Selected shape is not a solid</source>
       <translation>La forme sélectionnée n'est pas un solide</translation>
     </message>
@@ -2204,17 +2203,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="295"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Create transformed copy</source>
       <translation>Copie transformée</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="298"/>
+      <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create a non-parametric copy with transformed placement</source>
       <translation>Créer une copie non paramétrique avec un placement transformé</translation>
     </message>
@@ -2222,93 +2221,93 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="182"/>
       <source>Part Box Create</source>
       <translation>Créer un Part cube</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Part Cut</source>
       <translation>Part Soustraction</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Common</source>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Fusion</source>
       <translation>Fusion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Compound</source>
       <translation>Composés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="922"/>
       <source>Section</source>
       <translation>Section</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="975"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Import Part</source>
       <translation>Importer une pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1082"/>
+      <location filename="../../Command.cpp" line="1081"/>
       <source>Part Import Curve Net</source>
       <translation>Part Réseau de courbe d'importation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1198"/>
       <source>Reverse</source>
       <translation>Inverser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Make face</source>
       <translation>Réaliser une face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1650"/>
+      <location filename="../../Command.cpp" line="1649"/>
       <source>Make Offset</source>
       <translation>Créer un décalage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Make 2D Offset</source>
       <translation>Créer un décalage en 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1888"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Make Thickness</source>
       <translation>Créer une épaisseur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2039"/>
       <source>Create ruled surface</source>
       <translation>Créer une surface réglée</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="70"/>
+      <location filename="../../CommandSimple.cpp" line="69"/>
       <source>Create Part Cylinder</source>
       <translation>Créer un Part cylindre</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="181"/>
+      <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Points from geometry</source>
       <translation>Points depuis la géométrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="369"/>
+      <location filename="../../CommandSimple.cpp" line="368"/>
       <source>Refine shape</source>
       <translation>Affiner la forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="426"/>
+      <location filename="../../CommandSimple.cpp" line="425"/>
       <source>Defeaturing</source>
       <translation>Supprimer la fonctionnalité</translation>
     </message>
@@ -2340,7 +2339,7 @@ La vue caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="304"/>
       <source>Wire</source>
-      <translation>Polyligne</translation>
+      <translation>Fil</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="356"/>
@@ -2364,7 +2363,7 @@ La vue caméra détermine la direction de la projection.</translation>
       <translation>Balayage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="211"/>
+      <location filename="../../ViewProviderMirror.cpp" line="210"/>
       <source>Edit Mirror</source>
       <translation>Editer le miroir</translation>
     </message>
@@ -3064,7 +3063,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3272,7 +3271,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Importation</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -3382,7 +3381,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -3435,7 +3434,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
@@ -3465,12 +3464,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -3630,13 +3629,13 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>Paramètres</translation>
+      <translation>Paramètre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
@@ -3660,7 +3659,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="485"/>
@@ -3949,17 +3948,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="186"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="213"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
@@ -4039,7 +4038,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4366,10 +4365,10 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>Un rendu du côté inférieur de la surface sera généré de la même manière que le côté supérieur.
-Si non cochée, cela dépend de l'option "Couleur de rétroéclairage"
-(section Préférences Affichage -&gt; Vue 3D). Soit la couleur de rétroéclairage
-sera utilisée soit du noir.</translation>
+      <translation>La face inférieure d'une surface recevra le même rendu que la face supérieure.
+Si cette option n'est pas cochée, elle dépend de l'option "Couleur du rétroéclairage"
+(préférences section Affichage → Vue 3D). Soit la couleur du rétroéclairage
+sera utilisée, soit ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="334"/>
@@ -4769,7 +4768,7 @@ seules les coupes créées seront visibles</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection incorrecte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4882,7 +4881,7 @@ seules les coupes créées seront visibles</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5439,7 +5438,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Créer un solide</translation>
+      <translation>Créer le solide</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5458,7 +5457,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5514,7 +5513,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Faces </translation>
+      <translation>Faces</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5601,7 +5600,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Créer le solide</translation>
+      <translation>Créer un solide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5625,7 +5624,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
       <source>Parameter</source>
-      <translation>Paramètre</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
@@ -5640,7 +5639,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -5681,12 +5680,12 @@ in the 3D view for the sweep path.</source>
       <translation>Supporte la création de faces planaires avec des îlots.</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="175"/>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
       <source>Simple</source>
       <translation>Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="180"/>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Construit des faces planes séparées à partir de chaque polyligne indépendamment. Les trous ne sont pas pris en charge. Les polylignes peuvent être sur différents plans.</translation>
     </message>
@@ -5716,89 +5715,89 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="235"/>
+      <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Part and Part Design workbench</source>
-      <translation>Ateliers Part et Part Design</translation>
+      <translation>Ateliers Part et PartDesign</translation>
     </message>
     <message>
+      <location filename="../../AppPartGui.cpp" line="235"/>
       <location filename="../../AppPartGui.cpp" line="236"/>
       <location filename="../../AppPartGui.cpp" line="237"/>
       <location filename="../../AppPartGui.cpp" line="238"/>
-      <location filename="../../AppPartGui.cpp" line="239"/>
       <source>Part/Part Design</source>
-      <translation>Part/Part Design</translation>
+      <translation>Part/PartDesign</translation>
     </message>
     <message>
+      <location filename="../../AppPartGui.cpp" line="239"/>
       <location filename="../../AppPartGui.cpp" line="240"/>
-      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Import-Export</source>
       <translation>Importer/Exporter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="390"/>
-      <location filename="../../Command.cpp" line="466"/>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="914"/>
-      <location filename="../../Command.cpp" line="2035"/>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
-      <location filename="../../Command.cpp" line="915"/>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="914"/>
       <source>Select two shapes please.</source>
       <translation>Sélectionner deux formes.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="476"/>
+      <source>Non-solids selected</source>
+      <translation>Formes non-pleines sélectionnées</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <location filename="../../Command.cpp" line="401"/>
       <location filename="../../Command.cpp" line="477"/>
-      <source>Non-solids selected</source>
-      <translation>Formes non-pleines sélectionnées</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="326"/>
-      <location filename="../../Command.cpp" line="402"/>
-      <location filename="../../Command.cpp" line="478"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
       <translation>L'utilisation de formes non-pleines pour les opérations booléennes peut entraîner des résultats indésirables.
 Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
       <translation>Sélectionner deux formes ou plus, ou bien, sélectionner un composé contenant deux formes ou plus pour calculer leur intersection.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="467"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
       <translation>Sélectionner deux formes ou plus, ou bien, sélectionner un composé contenant deux formes ou plus pour calculer leur union.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="858"/>
+      <location filename="../../Command.cpp" line="857"/>
       <source>Select one shape or more, please.</source>
       <translation>Veuillez sélectionner au moins une forme.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1072"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>All CAD Files</source>
       <translation>Tous les fichiers CAO</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1077"/>
+      <location filename="../../Command.cpp" line="1076"/>
       <source>All Files</source>
       <translation>Tous les fichiers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2036"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>You have to select either two edges or two wires.</source>
       <translation>Vous devez sélectionner deux arêtes ou deux fils.</translation>
     </message>
@@ -5809,27 +5808,27 @@ Voulez-vous continuer ?</translation>
       <translation>Aucune référence sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Composés</translation>
+      <translation>Composé</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -5849,7 +5848,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
-      <translation>Fil</translation>
+      <translation>Polyligne</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
@@ -6126,17 +6125,17 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1507"/>
       <source>Toggle direct dimensions</source>
-      <translation>Afficher/masquer les cotes directes</translation>
+      <translation>Afficher/masquer les dimensions directes</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1512"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation>Afficher/masquer les cotes orthogonales</translation>
+      <translation>Afficher/masquer les dimensions orthogonales</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1517"/>
       <source>Clear all dimensions</source>
-      <translation>Effacer toutes les cotes</translation>
+      <translation>Effacer toutes les dimensions</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="853"/>
@@ -6144,27 +6143,27 @@ Voulez-vous continuer ?</translation>
       <translation>Définir les couleurs...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="85"/>
+      <location filename="../../ViewProviderMirror.cpp" line="84"/>
       <source>Edit mirror plane</source>
       <translation>Éditer le plan du miroir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="295"/>
+      <location filename="../../ViewProviderMirror.cpp" line="294"/>
       <source>Edit fillet edges</source>
       <translation>Modifier les arêtes du congé</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="405"/>
+      <location filename="../../ViewProviderMirror.cpp" line="404"/>
       <source>Edit chamfer edges</source>
       <translation>Modifier les arêtes du chanfrein</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="541"/>
+      <location filename="../../ViewProviderMirror.cpp" line="540"/>
       <source>Edit offset</source>
       <translation>Modifier le décalage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="623"/>
+      <location filename="../../ViewProviderMirror.cpp" line="622"/>
       <source>Edit thickness</source>
       <translation>Modifier l'épaisseur</translation>
     </message>
@@ -6184,12 +6183,12 @@ Voulez-vous continuer ?</translation>
       <translation>Tube</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Distance in parameter space</source>
       <translation>Distance dans l'espace des paramètres</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="174"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation>Entrer une distance :</translation>
     </message>
@@ -6244,7 +6243,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Composé</translation>
+      <translation>Composés</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6254,7 +6253,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Mesure</translation>
+      <translation>Mesures</translation>
     </message>
   </context>
   <context>
@@ -6375,7 +6374,7 @@ Voulez-vous continuer ?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation>Sélection non valide</translation>
+      <translation>Mauvaise sélection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6458,7 +6457,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>Sélection non valide</translation>
     </message>
   </context>
   <context>
@@ -6604,7 +6603,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
       <source>Faces</source>
-      <translation>Faces</translation>
+      <translation>Faces </translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
@@ -6845,17 +6844,17 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Scale...</source>
       <translation>Mettre à l'échelle...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1309"/>
+      <location filename="../../Command.cpp" line="1308"/>
       <source>Scale a selected shape</source>
       <translation>Mettre à l'échelle une forme sélectionnée</translation>
     </message>

@@ -448,8 +448,15 @@ QGIView* QGSPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation* annoFeat)
 QGIView* QGSPage::addDrawViewSymbol(TechDraw::DrawViewSymbol* symbolFeat)
 {
     auto qview(new QGIViewSymbol);
-
     qview->setViewFeature(symbolFeat);
+
+    auto owner = dynamic_cast<TechDraw::DrawView *>(symbolFeat->Owner.getValue());
+    if (owner) {
+        auto parent = dynamic_cast<QGIView *>(findQViewForDocObj(owner));
+        if (parent) {
+            qview->switchParentItem(parent);
+        }
+    }
 
     addQView(qview);
     return qview;

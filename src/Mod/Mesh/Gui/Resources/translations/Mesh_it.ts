@@ -221,7 +221,7 @@
       <location filename="../../Command.cpp" line="1524"/>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Fill holes of the mesh</source>
-      <translation>Riempie i buchi della mesh</translation>
+      <translation>Riempi i buchi della mesh</translation>
     </message>
   </context>
   <context>

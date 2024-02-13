@@ -110,11 +110,6 @@ void ViewProviderFemAnalysis::attach(App::DocumentObject* obj)
 {
     Gui::ViewProviderDocumentObjectGroup::attach(obj);
     extension.attach(this);
-    // activate analysis if currently active workbench is FEM
-    auto* workbench = Gui::WorkbenchManager::instance()->active();
-    if (workbench->name() == "FemWorkbench") {
-        doubleClicked();
-    }
 }
 
 void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject* view)
