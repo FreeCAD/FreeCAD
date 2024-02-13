@@ -36,7 +36,7 @@ using namespace App;
 // Material
 //===========================================================================
 Material::Material()
-  : shininess{0.2000f}
+  : shininess{0.9000f}
   , transparency{}
 {
     setType(STEEL);
@@ -44,14 +44,14 @@ Material::Material()
 }
 
 Material::Material(const char* MatName)
-  : shininess{0.2000f}
+  : shininess{0.9000f}
   , transparency{}
 {
     set(MatName);
 }
 
 Material::Material(const MaterialType MatType)
-  : shininess{0.2000f}
+  : shininess{0.9000f}
   , transparency{}
 {
     setType(MatType);
@@ -326,11 +326,11 @@ void Material::setType(const MaterialType MatType)
     case USER_DEFINED:
         break;
     default:
-        ambientColor .set(0.2000f,0.2000f,0.2000f);
-        diffuseColor .set(0.8000f,0.8000f,0.8000f);
-        specularColor.set(0.0000f,0.0000f,0.0000f);
+        ambientColor.set(0.8000f, 0.8000f, 0.8000f);
+        diffuseColor .set(0.8000f,0.8000f,0.9000f);
+        specularColor.set(0.8000f, 0.8000f, 0.8000f);
         emissiveColor.set(0.0000f,0.0000f,0.0000f);
-        shininess    = 0.2000f;
+        shininess = 0.9000f;
         transparency = 0.0000f;
         break;
     }
