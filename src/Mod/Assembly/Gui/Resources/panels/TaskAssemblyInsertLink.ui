@@ -42,8 +42,34 @@
      </item>
     </layout>
    </item>
+   <item row="3" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_InsertInParts">
+     <property name="toolTip">
+      <string>If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</string>
+     </property>
+     <property name="text">
+      <string>Insert as part</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>InsertInParts</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
    </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

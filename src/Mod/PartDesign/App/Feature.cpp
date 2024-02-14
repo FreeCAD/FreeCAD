@@ -156,6 +156,9 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 const TopoDS_Shape& Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
+    if (!BaseObject)
+        throw Base::ValueError("Base feature's shape is not defined");
+
     if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
         BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
     {

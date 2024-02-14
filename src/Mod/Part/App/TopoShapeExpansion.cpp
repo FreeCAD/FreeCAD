@@ -1318,6 +1318,91 @@ void addShapesToBuilder(const std::vector<TopoShape>& shapes,
 }
 }  // namespace
 
+// TODO: Can this be consolidated with getSubShape()?  Empty Parm Logic is a little different.
+TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
+{
+    if (!Type || !Type[0]) {
+        switch (shapeType(true)) {
+            case TopAbs_COMPOUND:
+            case TopAbs_COMPSOLID:
+                if (countSubShapes(TopAbs_SOLID) == 1) {
+                    return getSubTopoShape(TopAbs_SOLID, 1);
+                }
+                if (countSubShapes(TopAbs_SHELL) == 1) {
+                    return getSubTopoShape(TopAbs_SHELL, 1);
+                }
+                if (countSubShapes(TopAbs_FACE) == 1) {
+                    return getSubTopoShape(TopAbs_FACE, 1);
+                }
+                if (countSubShapes(TopAbs_WIRE) == 1) {
+                    return getSubTopoShape(TopAbs_WIRE, 1);
+                }
+                if (countSubShapes(TopAbs_EDGE) == 1) {
+                    return getSubTopoShape(TopAbs_EDGE, 1);
+                }
+                if (countSubShapes(TopAbs_VERTEX) == 1) {
+                    return getSubTopoShape(TopAbs_VERTEX, 1);
+                }
+                break;
+            default:
+                break;
+        }
+        return *this;
+    }
+
+    Data::MappedElement mapped = getElementName(Type);
+    if (!mapped.index && boost::starts_with(Type, elementMapPrefix())) {
+        if (!silent) {
+            FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
+        }
+        return TopoShape();
+    }
+
+    auto res = shapeTypeAndIndex(Type);
+    if (res.second <= 0) {
+        if (!silent) {
+            FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
+        }
+        return TopoShape();
+    }
+    return getSubTopoShape(res.first, res.second, silent);
+}
+
+// TODO: Can this be consolidated with getSubShape()?  We use ancestry; other uses current shape.
+TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent) const
+{
+    if (isNull()) {
+        if (!silent) {
+            FC_THROWM(NullShapeException, "null shape");
+        }
+        return TopoShape();
+    }
+    if (idx <= 0) {
+        if (!silent) {
+            FC_THROWM(Base::ValueError, "Invalid shape index " << idx);
+        }
+        return TopoShape();
+    }
+    if (type < 0 || type > TopAbs_SHAPE) {
+        if (!silent) {
+            FC_THROWM(Base::ValueError, "Invalid shape type " << type);
+        }
+        return TopoShape();
+    }
+    initCache();
+    auto& shapeMap = _cache->getAncestry(type);
+    if (idx > shapeMap.count()) {
+        if (!silent) {
+            FC_THROWM(Base::IndexError,
+                      "Shape index " << idx << " out of bound " << shapeMap.count());
+        }
+        return TopoShape();
+    }
+
+    return shapeMap.getTopoShape(*this, idx);
+}
+
+
 TopoShape& TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
                                           const char* op,
                                           SingleShapeCompoundCreationPolicy policy)

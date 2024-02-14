@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,10 +19,12 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 import FreeCAD
 import FreeCADGui
+
+translate = FreeCAD.Qt.translate
 
 
 def preferences():
@@ -34,7 +36,15 @@ class PreferencesPage:
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/Assembly.ui")
 
     def saveSettings(self):
-        pass
+        pref = preferences()
+        pref.SetBool("LeaveEditWithEscape", self.form.checkBoxEnableEscape.isChecked())
+        pref.SetInt("GroundFirstPart", self.form.groundFirstPart.currentIndex())
 
     def loadSettings(self):
-        pass
+        pref = preferences()
+        self.form.checkBoxEnableEscape.setChecked(pref.GetBool("LeaveEditWithEscape", True))
+        self.form.groundFirstPart.clear()
+        self.form.groundFirstPart.addItem(translate("Assembly", "Ask"))
+        self.form.groundFirstPart.addItem(translate("Assembly", "Always"))
+        self.form.groundFirstPart.addItem(translate("Assembly", "Never"))
+        self.form.groundFirstPart.setCurrentIndex(pref.GetInt("GroundFirstPart", 0))

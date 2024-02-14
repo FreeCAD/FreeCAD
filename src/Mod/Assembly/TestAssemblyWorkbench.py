@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,13 +19,12 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 import TestApp
 
 from AssemblyTests.TestCore import TestCore
 
 
-# dummy usage to get flake8 and lgtm quiet
-False if TestCore.__name__ else True
-False if TestApp.__name__ else True
+# Use the modules so that code checkers don't complain (flake8)
+True if TestCore else False

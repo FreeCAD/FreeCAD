@@ -621,7 +621,7 @@ class Addon:
         wbName = self.get_workbench_name()
 
         # Add the wb to the list of disabled if it was not already
-        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench")
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
         # print(f"start disabling {disabled_wbs}")
         disabled_wbs_list = disabled_wbs.split(",")
         if not (wbName in disabled_wbs_list):
@@ -652,7 +652,7 @@ class Addon:
     def remove_from_disabled_wbs(self, wbName: str):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
 
-        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench")
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
         # print(f"start enabling : {disabled_wbs}")
         disabled_wbs_list = disabled_wbs.split(",")
         disabled_wbs = ""
