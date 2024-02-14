@@ -255,55 +255,23 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
-    // Initialize or end the dragging of parts
+    // Initialize or cancel the dragging of parts
     if (canStartDragging) {
         canStartDragging = false;
 
         if (enableMovement && getSelectedObjectsWithinAssembly()) {
-            dragMode = findDragMode();
-
-            if (dragMode == DragMode::None) {
-                return false;
-            }
-
-            SbVec3f vec;
-            if (dragMode == DragMode::RotationOnPlane
-                || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
-                vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
-                initialPositionRot = Base::Vector3d(vec[0], vec[1], vec[2]);
-            }
-
-            if (dragMode == DragMode::TranslationOnAxis
-                || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
-                Base::Vector3d zAxis =
-                    jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
-                Base::Vector3d pos = jcsGlobalPlc.getPosition();
-                SbVec3f axisCenter(pos.x, pos.y, pos.z);
-                SbVec3f axis(zAxis.x, zAxis.y, zAxis.z);
-                vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
-                initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
-            }
-            else if (dragMode != DragMode::RotationOnPlane) {
-                vec = viewer->getPointOnFocalPlane(cursorPos);
-                initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
-                prevPosition = initialPosition;
-            }
-
-            initMove();
+            initMove(cursorPos, viewer);
         }
     }
 
     // Do the dragging of parts
     if (partMoving) {
         Base::Vector3d newPos, newPosRot;
-        if (dragMode == DragMode::RotationOnPlane
-            || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
+        if (dragMode == DragMode::RotationOnPlane) {
             SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
             newPosRot = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
-
-        if (dragMode == DragMode::TranslationOnAxis
-            || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
+        else if (dragMode == DragMode::TranslationOnAxis) {
             Base::Vector3d zAxis = jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
             Base::Vector3d pos = jcsGlobalPlc.getPosition();
             SbVec3f axisCenter(pos.x, pos.y, pos.z);
@@ -311,7 +279,22 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
             SbVec3f vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
-        else if (dragMode != DragMode::RotationOnPlane) {
+        else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
+            SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+            newPosRot = Base::Vector3d(vec[0], vec[1], vec[2]);
+
+            Base::Vector3d zAxis = jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
+            Base::Vector3d pos = jcsGlobalPlc.getPosition();
+            SbVec3f axisCenter(pos.x, pos.y, pos.z);
+            SbVec3f axis(zAxis.x, zAxis.y, zAxis.z);
+            vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
+            newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
+        }
+        else if (dragMode == DragMode::TranslationOnPlane) {
+            SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+            newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
+        }
+        else {
             SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
@@ -364,6 +347,10 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                         newJcsGlobalPlc * Base::Placement(Base::Vector3d(), zRotation);
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * newJcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
+                }
+                else if (dragMode == DragMode::TranslationOnPlane) {
+                    Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
+                    plc.setPosition(pos);
                 }
                 else {  // DragMode::Translation
                     Base::Vector3d delta = newPos - prevPosition;
@@ -640,25 +627,62 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         }
         else if (jointType == JointType::Distance) {
             //  depends on the type of distance. For example plane-plane:
-            // return DragMode::TranslationOnPlane;
+            DistanceType distanceType = AssemblyObject::getDistanceType(movingJoint);
+            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::Other) {
+                return DragMode::TranslationOnPlane;
+            }
         }
     }
     return DragMode::Translation;
 }
 
-void ViewProviderAssembly::initMove()
+void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    dragMode = findDragMode();
+    if (dragMode == DragMode::None) {
+        return;
+    }
+
+    SbVec3f vec;
+    if (dragMode == DragMode::RotationOnPlane) {
+        vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+        initialPositionRot = Base::Vector3d(vec[0], vec[1], vec[2]);
+    }
+    else if (dragMode == DragMode::TranslationOnAxis) {
+        Base::Vector3d zAxis = jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
+        Base::Vector3d pos = jcsGlobalPlc.getPosition();
+        SbVec3f axisCenter(pos.x, pos.y, pos.z);
+        SbVec3f axis(zAxis.x, zAxis.y, zAxis.z);
+        vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
+        initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+    }
+    else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
+        vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+        initialPositionRot = Base::Vector3d(vec[0], vec[1], vec[2]);
+
+        Base::Vector3d zAxis = jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
+        Base::Vector3d pos = jcsGlobalPlc.getPosition();
+        SbVec3f axisCenter(pos.x, pos.y, pos.z);
+        SbVec3f axis(zAxis.x, zAxis.y, zAxis.z);
+        vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
+        initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+    }
+    else if (dragMode == DragMode::TranslationOnPlane) {
+        vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+        initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+    }
+    else {
+        vec = viewer->getPointOnFocalPlane(cursorPos);
+        initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+        prevPosition = initialPosition;
+    }
+
+
     Gui::Command::openCommand(tr("Move part").toStdString().c_str());
     partMoving = true;
 
     // prevent selection while moving
-    auto* view = dynamic_cast<Gui::View3DInventor*>(
-        Gui::Application::Instance->editDocument()->getActiveView());
-    if (view) {
-        Gui::View3DInventorViewer* viewerNotConst;
-        viewerNotConst = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        viewerNotConst->setSelectionEnabled(false);
-    }
+    viewer->setSelectionEnabled(false);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly");
