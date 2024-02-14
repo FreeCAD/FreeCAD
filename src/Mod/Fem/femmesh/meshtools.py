@@ -2508,4 +2508,22 @@ def compact_mesh(
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)
 
+# ************************************************************************************************
+def use_B32R_for_pipe_section(
+    fileName
+):
+    # replace B32 elements with B32R elements for pipe beam section
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") == -1:
+            f.write(line)
+        else:
+            dummy = line.replace("B32", "B32R")
+            f.write(dummy)
+    f.truncate()
+    f.close()
+
+
 ##  @}
