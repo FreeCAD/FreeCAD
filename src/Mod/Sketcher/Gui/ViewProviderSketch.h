@@ -764,8 +764,6 @@ private:
 
     /// give projecting line of position
     void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
-
-    Base::Vector3d getCamCenterInSketchCoordinates(const Gui::View3DInventorViewer* viewer) const;
     //@}
 
     /** @name preselection functions */

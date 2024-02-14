@@ -3343,27 +3343,6 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     vp->onCameraChanged(cam);
 }
 
-Base::Vector3d ViewProviderSketch::getCamCenterInSketchCoordinates(const Gui::View3DInventorViewer* viewer) const
-{
-    Base::Vector3d xaxis(1, 0, 0), yaxis(0, 1, 0);
-
-    Base::Placement plm = getEditingPlacement();
-    Base::Rotation rot(plm.getRotation());
-    Base::Vector3d pos(plm.getPosition());
-
-    rot.multVec(xaxis, xaxis);
-    rot.multVec(yaxis, yaxis);
-
-    float x,y,z;
-    viewer->getCenterPointOnFocalPlane().getValue(x, y, z);
-
-    Base::Vector3d center (x,y,z);
-
-    center.TransformToCoordinateSystem(pos, xaxis, yaxis);
-
-    return center;
-}
-
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)
 {
     auto rotSk = Base::Rotation(getDocument()->getEditingTransform());// sketch orientation
@@ -3393,15 +3372,25 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
+        const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
 
-        // Add 50% to be sure the whole viewport is covered.
-        const float halfAxisLength = 1.5f * viewer->getMaxDimension() / 2.f;
-        Base::Vector3d camCenter = getCamCenterInSketchCoordinates(viewer);
+        SbVec2s size = vp.getViewportSizePixels();
+        Base::Placement plm = getEditingPlacement();
 
-        editCoinManager->updateAxesLength({
-                camCenter.x - halfAxisLength, camCenter.y - halfAxisLength,
-                camCenter.x + halfAxisLength, camCenter.y + halfAxisLength
-        });
+        SbVec3f p0 = viewer->getPointOnXYPlaneOfPlacement({0, 0}, plm);
+        SbVec3f p1 = viewer->getPointOnXYPlaneOfPlacement({size[0], 0}, plm);
+        SbVec3f p2 = viewer->getPointOnXYPlaneOfPlacement({0, size[1]}, plm);
+        SbVec3f p3 = viewer->getPointOnXYPlaneOfPlacement({size[0], size[1]}, plm);
+        // Build the bounding box of the projected viewport rectangle on the sketcher
+        // plane.
+        Base::BoundBox2d vpBBox;
+        vpBBox.SetVoid();
+        vpBBox.Add({p0[0], p0[1]});
+        vpBBox.Add({p1[0], p1[1]});
+        vpBBox.Add({p2[0], p2[1]});
+        vpBBox.Add({p3[0], p3[1]});
+
+        editCoinManager->updateAxesLength(vpBBox);
     }
 
     drawGrid(true);
