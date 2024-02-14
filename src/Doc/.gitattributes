@@ -1,4 +1,3 @@
-sphinx    export-ignore
 BuildDocDoxy.cfg.in    export-ignore
 BuildDocDoxyFull.cfg    export-ignore
 BuildSourceDoc.bat    export-ignore
