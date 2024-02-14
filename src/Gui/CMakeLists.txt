@@ -373,7 +373,6 @@ SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 SET(Command_CPP_SRCS
     Action.cpp
     ActionFunction.cpp
-    Command.cpp
     CommandDoc.cpp
     CommandFeat.cpp
     CommandMacro.cpp
@@ -392,7 +391,6 @@ SET(Command_SRCS
     ${Command_CPP_SRCS}
     Action.h
     ActionFunction.h
-    Command.h
     CommandT.h
     ShortcutManager.h
     CommandCompleter.h
