@@ -532,7 +532,6 @@ SET(Dialog_Customize_CPP_SRCS
     DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
-    QListWidgetCustom.cpp
     ListWidgetDragBugFix.cpp
 )
 SET(Dialog_Customize_HPP_SRCS
@@ -542,7 +541,6 @@ SET(Dialog_Customize_HPP_SRCS
     DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
-    QListWidgetCustom.h
     ListWidgetDragBugFix.h
 )
 SET(Dialog_Customize_SRCS
