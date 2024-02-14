@@ -41,6 +41,8 @@
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepLib.hxx>
+#include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
@@ -68,7 +70,6 @@
 #include "FaceMaker.h"
 
 #include <App/ElementNamingUtils.h>
-#include <BRepLib.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -1818,7 +1819,7 @@ TopoShape &TopoShape::makeElementDraft(const TopoShape &shape, const std::vector
     if(!op) op = Part::OpCodes::Draft;
 
     if(shape.isNull())
-        HANDLE_NULL_SHAPE;
+        FC_THROWM(NullShapeException, "Null shape");
 
     std::vector<TopoShape> faces(_faces);
     bool done = true;
