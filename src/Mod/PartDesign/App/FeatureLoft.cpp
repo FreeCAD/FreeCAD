@@ -38,6 +38,7 @@
 #include <boost/core/ignore_unused.hpp>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
@@ -73,21 +74,32 @@ App::DocumentObjectExecReturn *Loft::execute()
 {
     auto getSectionShape =
         [](App::DocumentObject* feature, const std::vector<std::string> &subs) -> TopoDS_Shape {
-            if (!feature ||
-                !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+            if (!feature)
                 throw Base::TypeError("Loft: Invalid profile/section");
+
+            App::DocumentObject* linkedObj = feature;
+            // If the object is a link try to resolve it first.
+            if (feature->isDerivedFrom<App::Link>()) {
+                linkedObj = static_cast<App::Link*>(feature)->getLinkedObject(true);
+                if (!linkedObj)
+                    throw Base::TypeError("Loft: Invalid profile/section");
+            }
+
+            if (!linkedObj->isDerivedFrom<Part::Feature>())
+                throw Base::TypeError("Loft: All sections need to be part features");
 
             auto subName = subs.empty() ? "" : subs.front();
 
-            // only take the entire shape when we have a sketch selected, but
-            // not a point of the sketch
-            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
-                subName.compare(0, 6, "Vertex") != 0)
-                return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
+            // Only take the entire shape when we have a sketch selected, but not a point
+            // of the sketch.
+            if (linkedObj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+                    subName.compare(0, 6, "Vertex") != 0) {
+                return Feature::getTopoShape(feature).getShape();
+            }
             else {
                 if(subName.empty())
                     throw Base::ValueError("No valid subelement linked in Part::Feature");
-                return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubShape(subName.c_str());
+                return Feature::getTopoShape(feature, subName.c_str(), true /*need element*/).getShape();
             }
         };
 
@@ -157,9 +169,6 @@ App::DocumentObjectExecReturn *Loft::execute()
 
         size_t subSetCnt=0;
         for (const auto & subSet : multisections) {
-            if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: All sections need to be part features"));
-
             // if the selected subvalue is a point, pick that even if we have a sketch
             TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
             if (shape.IsNull())
