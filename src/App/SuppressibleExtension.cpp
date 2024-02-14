@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Florian Foinant-Willig <ffw@2f2v.fr>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,31 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+#include <Base/Tools.h>
 
-namespace Gui {
+#include "Extension.h"
+#include "SuppressibleExtension.h"
+#include "SuppressibleExtensionPy.h"
 
-    /// highlight modes for the tree items
-    enum class HighlightMode {
-        Underlined,
-        Italic,
-        Overlined,
-        StrikeOut,
-        Bold,
-        Blue,
-        LightBlue,
-        UserDefined
-    };
 
-    /// highlight modes for the tree items
-    enum class TreeItemMode {
-        ExpandItem,
-        ExpandPath,
-        CollapseItem,
-        ToggleItem
-    };
+namespace App {
+
+EXTENSION_PROPERTY_SOURCE(App::SuppressibleExtension, App::DocumentObjectExtension)
+
+
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::SuppressibleExtensionPython, App::SuppressibleExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
+
+
+SuppressibleExtension::SuppressibleExtension()
+{
+    initExtensionType(SuppressibleExtension::getExtensionClassTypeId());
+    EXTENSION_ADD_PROPERTY_TYPE(Suppressed, (false), "Base", PropertyType(Prop_None), "Is object suppressed");
 }
 
-#endif // GUI_TREEITEMMODE_H
+SuppressibleExtension::~SuppressibleExtension() = default;
+
+PyObject* SuppressibleExtension::getExtensionPyObject() {
+
+    if (ExtensionPythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        auto ext = new SuppressibleExtensionPy(this);
+        ExtensionPythonObject = Py::Object(ext,true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
+}
+
+} //namespace App
