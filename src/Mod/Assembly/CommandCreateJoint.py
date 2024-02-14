@@ -66,7 +66,7 @@ class CommandCreateJointFixed:
                 "Assembly_CreateJointFixed",
                 "Create a Fixed Joint",
             ),
-            "Accel": "J",
+            "Accel": "F",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
@@ -212,6 +212,12 @@ class CommandCreateJointDistance:
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointDistance",
                 "Create a Distance Joint: Fix the distance between the selected objects.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointDistance",
+                "It can be used to create a lot of different joints based on the selection."
+                "For example a distance of 0 between a plane and a cylinder is a tangent. A distance of 0 between planes will make them coplanar. And so on.",
             )
             + "</p>",
             "CmdType": "ForEdit",
