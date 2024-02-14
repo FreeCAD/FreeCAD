@@ -67,7 +67,6 @@
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
 #include "SoMouseWheelEvent.h"
-#include "SoNavigationDragger.h"
 #include "SoTextLabel.h"
 #include "SoDatumLabel.h"
 #include "Inventor/MarkerBitmaps.h"
