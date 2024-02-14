@@ -38,7 +38,35 @@ whether you are a hobbyist, programmer, experienced CAD user, student or teacher
     * **Coin3D library** Open Inventor-compliant 3D scene representation model
     * **Python** FreeCAD offers a broad Python API
     * **Qt** Graphical user interface built with Qt
-
+      
+* **Features**
+    * **Full Parametric Model** All objects are natively parametric meaning that the shape is based
+      on properties or depend on other objects
+    * **Modular Architechture** this allows plugin extensions that add functionality to the core app.
+      It allows access to any part of the software with the built in Python interpeter
+    * **Import/Export to standard formats** the tool lets you easily use files from other cad software with
+      suppor for files formats such as STEP, IGES, OBJ, STL, DXF, SVG, DAE, IFC, OFF, NASTRAN, and VRML. The
+      software also has its own file format called FCStd.
+    * **Sketcher** There is a sketcher with a built in constraint solver which gives the user the ability to
+      make geometry constrained 2D shapes.
+    * **Technical Drawing Module** This has options for detailed views, cross section views, dimensioning,
+      and other types of views as well. This is very helpful to have since it allows the user to create
+      2D views of 3D models that have already been made.
+    * **Architecture Module** This module allows a BIM like workflow with IFC compatibility which helps the
+      user create models for professional architechture purposes.
+    * **Path Module** This path module is one that is dedicated to mechanical machining for computer aided
+      manufacturing. It lets you output display and adjust the G Codes which is very helpful since they are
+      used to control the target machine.
+    * **Integrated Spreadsheet and Expression Parser** this is used to create models that are bases on formulas
+      and also organize the model data in a central location
+    * **multi-platform** unlike many other cad software, FreeCad is multi-platform which means that it will
+      behave the same on macos, windows and Linux.
+    * **full GUI application** FreeCad features a gui based on the Qt framework with a 3D viewer sourced
+      from Open Inventor. This makes rendering accessible and fast.
+    * **Command Line support** FreeCad can be run without an interface using command line controls which means
+      it can be used in a server enviroment.
+    * **Workbench Concept** Tools are grouped in workbenches which is a good feature since you only need to
+      display the tools that you need for a certain task.
 
 Installing
 ----------
