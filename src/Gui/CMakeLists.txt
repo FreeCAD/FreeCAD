@@ -651,7 +651,6 @@ SET(Dock_Windows_HPP_SRCS
     ToolBox.h
     Tree.h
     TreeView.h
-    ProjectView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
