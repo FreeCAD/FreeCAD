@@ -1,6 +1,9 @@
 macro(SetupShibokenAndPyside)
 # -------------------------------- Shiboken/PySide ------------------------
 
+    option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" ON)
+    option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." ON)
+
     if(DEFINED MACPORTS_PREFIX)
         find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
@@ -113,11 +116,9 @@ macro(SetupShibokenAndPyside)
     endif()
 
     # If shiboken cannot be found the build option will be set to OFF
-    if(SHIBOKEN_INCLUDE_DIR)
-        option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" ON)
-    else()
+    if(NOT SHIBOKEN_INCLUDE_DIR)
         message(WARNING "Shiboken${PYSIDE_MAJOR_VERSION} include files not found, FREECAD_USE_SHIBOKEN automatically set to OFF")
-        option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" OFF)
+        set(FREECAD_USE_SHIBOKEN OFF)
     endif()
 
     # Now try to import the shiboken Python module and print a warning if it can't be loaded
@@ -141,11 +142,9 @@ macro(SetupShibokenAndPyside)
     endif()
 
     # If PySide cannot be found the build option will be set to OFF
-    if(PYSIDE_INCLUDE_DIR)
-        option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." ON)
-    else()
+    if(NOT PYSIDE_INCLUDE_DIR)
         message(WARNING "PySide${PYSIDE_MAJOR_VERSION} include files not found, FREECAD_USE_PYSIDE automatically set to OFF")
-        option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." OFF)
+        set(FREECAD_USE_PYSIDE OFF)
     endif()
 
     # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
