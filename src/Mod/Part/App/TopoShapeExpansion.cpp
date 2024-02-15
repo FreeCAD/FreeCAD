@@ -68,6 +68,7 @@
 #include "TopoShapeCache.h"
 #include "TopoShapeMapper.h"
 #include "FaceMaker.h"
+#include "Geometry.h"
 
 #include <App/ElementNamingUtils.h>
 
@@ -219,6 +220,248 @@ TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const
 {
     initCache();
     return _cache->findShape(_Shape, type, idx);
+}
+
+std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape& subshape,
+                                                 std::vector<std::string>* names,
+                                                 CheckGeometry checkGeometry,
+                                                 double tol,
+                                                 double atol) const
+{
+    std::vector<TopoShape> res;
+    if (subshape.isNull() || this->isNull()) {
+        return res;
+    }
+    double tol2 = tol * tol;
+    int i = 0;
+    TopAbs_ShapeEnum shapeType = subshape.shapeType();
+    switch (shapeType) {
+        case TopAbs_VERTEX:
+            // Vertex search will do comparison with tolerance to account for
+            // rounding error inccured through transformation.
+            for (auto& s : getSubTopoShapes(TopAbs_VERTEX)) {
+                ++i;
+                if (BRep_Tool::Pnt(TopoDS::Vertex(s.getShape()))
+                        .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape())))
+                    <= tol2) {
+                    if (names) {
+                        names->push_back(std::string("Vertex") + std::to_string(i));
+                    }
+                    res.push_back(s);
+                }
+            }
+            break;
+        case TopAbs_EDGE:
+        case TopAbs_FACE: {
+            std::unique_ptr<Geometry> g;
+            bool isLine = false;
+            bool isPlane = false;
+
+            std::vector<TopoDS_Shape> vertices;
+            TopoShape wire;
+            if (shapeType == TopAbs_FACE) {
+                wire = subshape.splitWires();
+                vertices = wire.getSubShapes(TopAbs_VERTEX);
+            }
+            else {
+                vertices = subshape.getSubShapes(TopAbs_VERTEX);
+            }
+
+            if (vertices.empty() || checkGeometry == CheckGeometry::checkGeometry) {
+                g = Geometry::fromShape(subshape.getShape());
+                if (!g) {
+                    return res;
+                }
+                if (shapeType == TopAbs_EDGE) {
+                    isLine = (g->isDerivedFrom(GeomLine::getClassTypeId())
+                              || g->isDerivedFrom(GeomLineSegment::getClassTypeId()));
+                }
+                else {
+                    isPlane = g->isDerivedFrom(GeomPlane::getClassTypeId());
+                }
+            }
+
+            auto compareGeometry = [&](const TopoShape& s, bool strict) {
+                std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
+                if (!g2) {
+                    return false;
+                }
+                if (isLine && !strict) {
+                    // For lines, don't compare geometry, just check the
+                    // vertices below instead, because the exact same edge
+                    // may have different geometrical representation.
+                    if (!g2->isDerivedFrom(GeomLine::getClassTypeId())
+                        && !g2->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                        return false;
+                    }
+                }
+                else if (isPlane && !strict) {
+                    // For planes, don't compare geometry either, so that
+                    // we don't need to worry about orientation and so on.
+                    // Just check the edges.
+                    if (!g2->isDerivedFrom(GeomPlane::getClassTypeId())) {
+                        return false;
+                    }
+                }
+                else if (!g2 || !g2->isSame(*g, tol, atol)) {
+                    return false;
+                }
+                return true;
+            };
+
+            if (vertices.empty()) {
+                // Probably an infinite shape, so we have to search by geometry
+                int idx = 0;
+                for (auto& s : getSubTopoShapes(shapeType)) {
+                    ++idx;
+                    if (!s.countSubShapes(TopAbs_VERTEX) && compareGeometry(s, true)) {
+                        if (names) {
+                            names->push_back(shapeName(shapeType) + std::to_string(idx));
+                        }
+                        res.push_back(s);
+                    }
+                }
+                break;
+            }
+
+            // The basic idea of shape search is about the same for both edge and face.
+            // * Search the first vertex, which is done with tolerance.
+            // * Find the ancestor shape of the found vertex
+            // * Compare each vertex of the ancestor shape and the input shape
+            // * Perform geometry comparison of the ancestor and input shape.
+            //      * For face, perform addition geometry comparison of each edges.
+            std::unordered_set<TopoShape,ShapeHasher,ShapeHasher> shapeSet;
+            for (auto& v : findSubShapesWithSharedVertex(vertices[0], nullptr, checkGeometry, tol, atol)) {
+                for (auto idx : findAncestors(v.getShape(), shapeType)) {
+                    auto s = getSubTopoShape(shapeType, idx);
+                    if (!shapeSet.insert(s).second) {
+                        continue;
+                    }
+                    TopoShape otherWire;
+                    std::vector<TopoDS_Shape> otherVertices;
+                    if (shapeType == TopAbs_FACE) {
+                        otherWire = s.splitWires();
+                        if (wire.countSubShapes(TopAbs_EDGE)
+                            != otherWire.countSubShapes(TopAbs_EDGE)) {
+                            continue;
+                        }
+                        otherVertices = otherWire.getSubShapes(TopAbs_VERTEX);
+                    }
+                    else {
+                        otherVertices = s.getSubShapes(TopAbs_VERTEX);
+                    }
+                    if (otherVertices.size() != vertices.size()) {
+                        continue;
+                    }
+                    if (checkGeometry == CheckGeometry::checkGeometry && !compareGeometry(s, false)) {
+                        continue;
+                    }
+                    unsigned i = 0;
+                    bool matched = true;
+                    for (auto& v : vertices) {
+                        bool found = false;
+                        for (unsigned j = 0; j < otherVertices.size(); ++j) {
+                            auto& v1 = otherVertices[i];
+                            if (++i == otherVertices.size()) {
+                                i = 0;
+                            }
+                            if (BRep_Tool::Pnt(TopoDS::Vertex(v))
+                                    .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(v1)))
+                                <= tol2) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            matched = false;
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        continue;
+                    }
+
+                    if (shapeType == TopAbs_FACE && checkGeometry == CheckGeometry::checkGeometry) {
+                        // Is it really necessary to check geometries of each edge of a face?
+                        // Right now we only do outer wire check
+                        auto otherEdges = otherWire.getSubShapes(TopAbs_EDGE);
+                        std::vector<std::unique_ptr<Geometry>> geos;
+                        geos.resize(otherEdges.size());
+                        bool matched = true;
+                        unsigned i = 0;
+                        auto edges = wire.getSubShapes(TopAbs_EDGE);
+                        for (auto& e : edges) {
+                            std::unique_ptr<Geometry> g(Geometry::fromShape(e));
+                            if (!g) {
+                                matched = false;
+                                break;
+                            }
+                            bool isLine = false;
+                            gp_Pnt pt1, pt2;
+                            if (g->isDerivedFrom(GeomLine::getClassTypeId())
+                                || g->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                                pt1 = BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(e)));
+                                pt2 = BRep_Tool::Pnt(TopExp::LastVertex(TopoDS::Edge(e)));
+                                isLine = true;
+                            }
+                            // We will tolerate on edge reordering
+                            bool found = false;
+                            for (unsigned j = 0; j < otherEdges.size(); j++) {
+                                auto& e1 = otherEdges[i];
+                                auto& g1 = geos[i];
+                                if (++i >= otherEdges.size()) {
+                                    i = 0;
+                                }
+                                if (!g1) {
+                                    g1 = Geometry::fromShape(e1);
+                                    if (!g1) {
+                                        break;
+                                    }
+                                }
+                                if (isLine) {
+                                    if (g1->isDerivedFrom(GeomLine::getClassTypeId())
+                                        || g1->isDerivedFrom(GeomLineSegment::getClassTypeId())) {
+                                        auto p1 =
+                                            BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(e1)));
+                                        auto p2 =
+                                            BRep_Tool::Pnt(TopExp::LastVertex(TopoDS::Edge(e1)));
+                                        if ((p1.SquareDistance(pt1) <= tol2
+                                             && p2.SquareDistance(pt2) <= tol2)
+                                            || (p1.SquareDistance(pt2) <= tol2
+                                                && p2.SquareDistance(pt1) <= tol2)) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    continue;
+                                }
+
+                                if (g1->isSame(*g, tol, atol)) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                matched = false;
+                                break;
+                            }
+                        }
+                        if (!matched) {
+                            continue;
+                        }
+                    }
+                    if (names) {
+                        names->push_back(shapeName(shapeType) + std::to_string(idx));
+                    }
+                    res.push_back(s);
+                }
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    return res;
 }
 
 int TopoShape::findAncestor(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const

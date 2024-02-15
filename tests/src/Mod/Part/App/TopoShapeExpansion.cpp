@@ -746,6 +746,129 @@ TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestors)
     EXPECT_TRUE(ancestorShapeList.back().IsEqual(topoShape6.getShape()));
 }
 
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexEverything)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {2};  // Silly big tolerance to get everything
+    double atol {2};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 6);
+    EXPECT_EQ(names.size(), 6);
+    EXPECT_STREQ(names[0].c_str(), "Face1");
+    EXPECT_STREQ(names[1].c_str(), "Face3");
+    EXPECT_STREQ(names[2].c_str(), "Face6");
+    EXPECT_STREQ(names[3].c_str(), "Face5");
+    EXPECT_STREQ(names[4].c_str(), "Face4");
+    EXPECT_STREQ(names[5].c_str(), "Face2");
+    EXPECT_EQ(shapes1.size(), 12);
+    EXPECT_EQ(names1.size(), 12);
+    EXPECT_EQ(shapes2.size(), 8);
+    EXPECT_EQ(names2.size(), 8);
+}
+
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexMid)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {1e-0};
+    double atol {1e-04};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 6);
+    EXPECT_EQ(names.size(), 6);
+    EXPECT_EQ(shapes1.size(), 7);
+    EXPECT_EQ(names1.size(), 7);
+    EXPECT_EQ(shapes2.size(), 4);
+    EXPECT_EQ(names2.size(), 4);
+}
+
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexClose)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {1e-02};
+    double atol {1e-04};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 1);
+    EXPECT_EQ(names.size(), 1);
+    EXPECT_EQ(shapes1.size(), 1);
+    EXPECT_EQ(names1.size(), 1);
+    EXPECT_EQ(shapes2.size(), 1);
+    EXPECT_EQ(names2.size(), 1);
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementShellInvalid)
 {
     // Arrange
