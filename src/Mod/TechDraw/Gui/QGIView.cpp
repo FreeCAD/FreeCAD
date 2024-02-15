@@ -669,16 +669,17 @@ void QGIView::switchParentItem(QGIView *targetParent)
     if (currentParent != targetParent) {
         if (targetParent) {
             targetParent->addToGroup(this);
+            targetParent->updateView();
+            if (currentParent) {
+                currentParent->updateView();
+            }
         }
         else {
-            currentParent->removeFromGroup(this);
-        }
-
-        if (currentParent) {
-            currentParent->updateView();
-        }
-        if (targetParent) {
-            targetParent->updateView();
+            while (currentParent) {
+                currentParent->removeFromGroup(this);
+                currentParent->updateView();
+                currentParent = dynamic_cast<QGIView *>(this->parentItem());
+            }
         }
     }
 }

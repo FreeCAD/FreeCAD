@@ -212,7 +212,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     //    - Leaders
     //    - Hatches
     //    - GeomHatches
-    //    - Leaders
+    //    - any drawing views declaring this view as their parent
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
@@ -242,8 +242,6 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
           } else if ((*it)->isDerivedFrom<TechDraw::DrawGeomHatch>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawViewBalloon>()) {
-              temp.push_back((*it));
-          } else if ((*it)->isDerivedFrom<TechDraw::DrawRichAnno>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
               temp.push_back((*it));
