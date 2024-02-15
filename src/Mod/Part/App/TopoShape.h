@@ -317,6 +317,10 @@ public:
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
     bool isPlanar(double tol = 1.0e-7) const;
+    /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
+    bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
+    /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
+    bool isPlanarFace(double tol=1e-7) const;
     //@}
 
     /** @name Boolean operation*/
@@ -679,6 +683,12 @@ public:
         return TopoShape().makeRefine(*this, op, no_fail);
     }
     //@}
+
+    /** Try to simplify geometry of any linear/planar subshape to line/plane
+     *
+     * @return Return true if the shape is modified
+     */
+    bool linearize(bool face, bool edge);
 
     static TopAbs_ShapeEnum shapeType(const char* type, bool silent = false);
     static TopAbs_ShapeEnum shapeType(char type, bool silent = false);
