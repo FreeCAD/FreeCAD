@@ -707,6 +707,7 @@ public:
      *
      * unlike findShape(), the input shape does not have to be an actual
      * sub-shape of this shape. The sub-shape is searched by shape geometry
+     * Note that subshape must be a Vertex, Edge, or Face.
      *
      * @param subshape: a sub shape to search
      * @param names: optional output of found sub shape indexed based name
@@ -714,11 +715,11 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-    // TODO: Implement this method and its tests later in Toponaming Phase 3.
-    // std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
-    //                                      std::vector<std::string> *names=nullptr,
-    //                                      bool checkGeometry=true,
-    //                                      double tol=1e-7, double atol=1e-12) const;
+    // TODO: Refactor this method and its tests later in Toponaming Phase 3.
+     std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
+                                          std::vector<std::string> *names=nullptr,
+                                          bool checkGeometry=true,
+                                          double tol=1e-7, double atol=1e-12) const;
     //@}
 
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
