@@ -13,7 +13,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
-#include <GC_MakeCircle.hxx>
+#include <gp_Pln.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 
@@ -933,6 +933,59 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
             "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
             "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementDraft)
+{  // Draft as in Draft Angle or sloped sides for removing shapes from a mold.
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    std::vector<TopoShape> faces {subShapes[0], subShapes[1], subShapes[2], subShapes[3]};
+    const gp_Dir pullDirection {0, 0, 1};
+    double angle {M_PI * 10
+                  / 8};  // Angle should be between Pi and Pi * 1.5 ( 180 and 270 degrees )
+    const gp_Pln plane {};
+    // Act
+    TopoShape& result = cube1TS.makeElementDraft(cube1TS, faces, pullDirection, angle, plane);
+    auto elements = elementMap(result);
+    // Assert
+    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
+    EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
+{
+    // Arrange
+    auto [cube1TS, cube2TS] = CreateTwoTopoShapeCubes();
+    const gp_Dir pullDirection {0, 0, 1};
+    double angle {M_PI * 10
+                  / 8};  // Angle should be between Pi and Pi * 1.5 ( 180 and 270 degrees )
+    const gp_Pln plane {};
+    // Act
+    TopoShape result3 = cube1TS.makeElementDraft(cube1TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Non Reference call type
+    TopoShape result2 = cube1TS.makeElementDraft(cube1TS,
+                                                 cube1TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Bad use of Reference call
+    TopoShape& result = cube1TS.makeElementDraft(cube2TS,
+                                                 cube2TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Correct usage
+    auto elements = elementMap((result));
+    // Assert
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 26);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:G;DFT;:He:7,F"));
+    EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+    EXPECT_EQ(result2.getElementMap().size(), 0);  // No element map in non reference call.
+    EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

@@ -59,4 +59,5 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape& shape);
 
 std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes();
 
+std::pair<TopoShape, TopoShape> CreateTwoTopoShapeCubes();
 }  // namespace PartTestHelpers

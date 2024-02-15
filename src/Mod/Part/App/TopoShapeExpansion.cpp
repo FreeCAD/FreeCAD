@@ -41,6 +41,8 @@
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepLib.hxx>
+#include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
@@ -57,7 +59,7 @@
 #endif
 
 #if OCC_VERSION_HEX >= 0x070500
-#   include <OSD_Parallel.hxx>
+#include <OSD_Parallel.hxx>
 #endif
 
 #include "modelRefine.h"
@@ -68,7 +70,6 @@
 #include "FaceMaker.h"
 
 #include <App/ElementNamingUtils.h>
-#include <BRepLib.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -600,12 +601,11 @@ struct NameKey
     long tag = 0;
     int shapetype = 0;
 
-    NameKey()
-    = default;
-    explicit NameKey(Data::MappedName  n)
+    NameKey() = default;
+    explicit NameKey(Data::MappedName n)
         : name(std::move(n))
     {}
-    NameKey(int type, Data::MappedName  n)
+    NameKey(int type, Data::MappedName n)
         : name(std::move(n))
     {
         // Order the shape type from vertex < edge < face < other.  We'll rely
@@ -795,9 +795,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
     // First, collect names from other shapes that generates or modifies the
     // new shape
-    for (auto& pinfo : infos) { // Walk Vertexes, then Edges, then Faces
+    for (auto& pinfo : infos) {  // Walk Vertexes, then Edges, then Faces
         auto& info = *pinfo;
-        for (const auto & incomingShape : shapes) {
+        for (const auto& incomingShape : shapes) {
             if (!canMapElement(incomingShape)) {
                 continue;
             }
@@ -810,7 +810,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 const auto& otherElement = otherMap.find(incomingShape._Shape, i);
                 // Find all new objects that are a modification of the old object
                 Data::ElementIDRefs sids;
-                NameKey key(info.type,
+                NameKey key(
+                    info.type,
                     incomingShape.getMappedName(Data::IndexedName::fromConst(info.shapetype, i),
                                                 true,
                                                 &sids));
@@ -850,7 +851,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         continue;
                     }
 
-                    Data::IndexedName element = Data::IndexedName::fromConst(newInfo.shapetype, newShapeIndex);
+                    Data::IndexedName element =
+                        Data::IndexedName::fromConst(newInfo.shapetype, newShapeIndex);
                     if (getMappedName(element)) {
                         continue;
                     }
@@ -1162,11 +1164,13 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
                 TopTools_IndexedMapOfShape submap;
                 TopExp::MapShapes(info.find(elementCounter), next.type, submap);
-                for (int submapIndex = 1, infoCounter = 1; submapIndex <= submap.Extent(); ++submapIndex) {
+                for (int submapIndex = 1, infoCounter = 1; submapIndex <= submap.Extent();
+                     ++submapIndex) {
                     ss.str("");
                     int elementIndex = next.find(submap(submapIndex));
                     assert(elementIndex);
-                    Data::IndexedName indexedName = Data::IndexedName::fromConst(next.shapetype, elementIndex);
+                    Data::IndexedName indexedName =
+                        Data::IndexedName::fromConst(next.shapetype, elementIndex);
                     if (getMappedName(indexedName)) {
                         continue;
                     }
@@ -1200,7 +1204,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
         bool hasUnnamed = false;
         for (size_t ifo = 1; ifo < infos.size(); ++ifo) {
             auto& info = *infos.at(ifo);
-            auto& prev = *infos.at(ifo-1);
+            auto& prev = *infos.at(ifo - 1);
             for (int i = 1; i <= info.count(); ++i) {
                 Data::IndexedName element = Data::IndexedName::fromConst(info.shapetype, i);
                 if (getMappedName(element)) {
@@ -1219,7 +1223,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 for (; xp.More(); xp.Next()) {
                     int previousElementIndex = prev.find(xp.Current());
                     assert(previousElementIndex);
-                    Data::IndexedName prevElement = Data::IndexedName::fromConst(prev.shapetype, previousElementIndex);
+                    Data::IndexedName prevElement =
+                        Data::IndexedName::fromConst(prev.shapetype, previousElementIndex);
                     if (!delayed && (newNames.count(prevElement) != 0U)) {
                         names.clear();
                         break;
@@ -1807,7 +1812,7 @@ struct MapperThruSections: MapperMaker
     const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
     {
         MapperMaker::generated(s);
-        if ( ! _res.empty()) {
+        if (!_res.empty()) {
             return _res;
         }
         try {
@@ -1896,6 +1901,54 @@ TopoShape& TopoShape::makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
     return makeShapeWithElementMap(mkShape.Solid(), MapperMaker(mkShape), {source}, op);
 }
 
+TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
+                                       const std::vector<TopoShape>& _faces,
+                                       const gp_Dir& pullDirection,
+                                       double angle,
+                                       const gp_Pln& neutralPlane,
+                                       bool retry,
+                                       const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Draft;
+    }
+
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    std::vector<TopoShape> faces(_faces);
+    bool done = true;
+    BRepOffsetAPI_DraftAngle mkDraft;
+    do {
+        if (faces.empty()) {
+            FC_THROWM(Base::CADKernelError, "no faces can be used");
+        }
+
+        mkDraft.Init(shape.getShape());
+        done = true;
+        for (auto it = faces.begin(); it != faces.end(); ++it) {
+            // TODO: What is the flag for?
+            mkDraft.Add(TopoDS::Face(it->getShape()), pullDirection, angle, neutralPlane);
+            if (!mkDraft.AddDone()) {
+                // Note: the function ProblematicShape returns the face on which the error occurred
+                // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
+                //       therefore unusable. See
+                //       http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341 The
+                //       only solution is to discard mkDraft and start over without the current face
+                // mkDraft.Remove(face);
+                FC_ERR("Failed to add some face for drafting, skip");
+                done = false;
+                faces.erase(it);
+                break;
+            }
+        }
+    } while (retry && !done);
+
+    mkDraft.Build();
+    return makeElementShape(mkDraft, shape, op);
+}
+
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
                                       const char* maker,
@@ -1972,18 +2025,20 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
     return *this;
 }
 
-class MyRefineMaker : public BRepBuilderAPI_RefineModel
+class MyRefineMaker: public BRepBuilderAPI_RefineModel
 {
 public:
-    explicit MyRefineMaker(const TopoDS_Shape &s)
-        :BRepBuilderAPI_RefineModel(s)
+    explicit MyRefineMaker(const TopoDS_Shape& s)
+        : BRepBuilderAPI_RefineModel(s)
     {}
 
-    void populate(ShapeMapper &mapper)
+    void populate(ShapeMapper& mapper)
     {
-        for (TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it(this->myModified); it.More(); it.Next())
-        {
-            if (it.Key().IsNull()) continue;
+        for (TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it(this->myModified); it.More();
+             it.Next()) {
+            if (it.Key().IsNull()) {
+                continue;
+            }
             mapper.populate(MappingStatus::Generated, it.Key(), it.Value());
         }
     }
@@ -2474,8 +2529,10 @@ bool TopoShape::fixSolidOrientation()
     return false;
 }
 
-TopoShape&
-TopoShape::makeElementBoolean(const char* maker, const TopoShape& shape, const char* op, double tolerance)
+TopoShape& TopoShape::makeElementBoolean(const char* maker,
+                                         const TopoShape& shape,
+                                         const char* op,
+                                         double tolerance)
 {
     return makeElementBoolean(maker, std::vector<TopoShape>(1, shape), op, tolerance);
 }
@@ -2658,8 +2715,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 #if OCC_VERSION_HEX >= 0x070500
     // -1/22/2024 Removing the parameter.
     // if (PartParams::getParallelRunThreshold() > 0) {
-        mk->SetRunParallel(Standard_True);
-        OSD_Parallel::SetUseOcctThreads(Standard_True);
+    mk->SetRunParallel(Standard_True);
+    OSD_Parallel::SetUseOcctThreads(Standard_True);
     // }
 #else
     // 01/22/2024 This will be an extremely rare case, since we don't

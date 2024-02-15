@@ -997,6 +997,43 @@ public:
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementDraft(const TopoShape &source, const std::vector<TopoShape> &faces,
+                         const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                         bool retry=true, const char *op=nullptr);
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementDraft(const std::vector<TopoShape> &faces,
+                        const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                        bool retry=true, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op);
+    }
 
     /* Make a shell using this shape
      * @param silent: whether to throw exception on failure
