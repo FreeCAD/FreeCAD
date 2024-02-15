@@ -136,6 +136,31 @@ void DrawView::checkScale()
     }
 }
 
+void DrawView::touchTreeOwner(App::DocumentObject *owner) const
+{
+    auto ownerView = dynamic_cast<DrawView *>(owner);
+    if (ownerView) {
+        ownerView->touch();
+    }
+    else { // If no owner is specified, touch all parent pages
+        for (auto page : findAllParentPages()) {
+            page->touch();
+        }
+    }
+}
+
+void DrawView::onBeforeChange(const App::Property *prop)
+{
+    // To avoid keeping the previous parent in some extra variable, we will mark
+    // the previous owner for update before the property is actually changed.
+    App::PropertyLink *ownerProp = getOwnerProperty();
+    if (ownerProp && prop == ownerProp  && !isRestoring()) {
+        touchTreeOwner(ownerProp->getValue());
+    }
+
+    App::DocumentObject::onBeforeChange(prop);
+}
+
 void DrawView::onChanged(const App::Property* prop)
 {
 //Coding note: calling execute, recompute or recomputeFeature inside an onChanged
@@ -190,6 +215,11 @@ void DrawView::onChanged(const App::Property* prop)
         //X,Y changes are only interesting to DPGI and Gui side
         X.purgeTouched();
         Y.purgeTouched();
+    }
+
+    App::PropertyLink *ownerProp = getOwnerProperty();
+    if (ownerProp && prop == ownerProp) {
+        touchTreeOwner(ownerProp->getValue());
     }
 
     App::DocumentObject::onChanged(prop);
@@ -377,6 +407,11 @@ bool DrawView::isInClip()
 
 DrawView *DrawView::claimParent() const
 {
+    App::PropertyLink *ownerProp = const_cast<DrawView *>(this)->getOwnerProperty();
+    if (ownerProp) {
+        return dynamic_cast<DrawView *>(ownerProp->getValue());
+    }
+
     return nullptr;
 }
 
