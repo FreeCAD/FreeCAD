@@ -786,6 +786,31 @@ public:
         }
     };
 
+    /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
+     *
+     * @param sources: the source shapes. The first shape is used as the spine,
+     *                 and the rest as sections. The sections can be of any
+     *                 type, but only wires are used. The first and last
+     *                 section may be vertex.
+     * @param isSolid: whether to make a solid
+     * @param isRuled: If true, then the faces generated between the edges of
+     *                 two consecutive section wires are ruled surfaces. If
+     *                 false, then they are smoothed out by approximation
+     * @param isClosed: If true, then the first section is duplicated to close
+     *                  the loft as the last section
+     * @param maxDegree: define the maximal U degree of the result surface
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makELoft(const std::vector<TopoShape> &sources,
+                        Standard_Boolean isSolid, Standard_Boolean isRuled, Standard_Boolean isClosed=Standard_False,
+                        Standard_Integer maxDegree=5, const char *op=nullptr);
+
     /** Make a ruled surface
      *
      * @param sources: the source shapes, each of which must contain either a

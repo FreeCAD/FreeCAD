@@ -1840,6 +1840,38 @@ TopoShape& TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
     return *this;
 }
 
+static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shapes,size_t offset=0) {
+    std::vector<TopoShape> ret;
+    for(size_t i=offset;i<shapes.size();++i) {
+        auto sh = shapes[i];
+        if(sh.isNull())
+            HANDLE_NULL_INPUT;
+        auto shape = sh.getShape();
+        // Allow compounds with a single face, wire or vertex or
+        // if there are only edges building one wire
+        if (shape.ShapeType() == TopAbs_COMPOUND) {
+            sh = sh.makEWires();
+            if(sh.isNull())
+                HANDLE_NULL_INPUT;
+            shape = sh.getShape();
+        }
+        if (shape.ShapeType() == TopAbs_FACE) {
+            shape = sh.splitWires().getShape();
+        } else if (shape.ShapeType() == TopAbs_WIRE) {
+            // do nothing
+        } else if (shape.ShapeType() == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
+            shape = mkWire.Wire();
+        } else if (shape.ShapeType() != TopAbs_VERTEX) {
+            FC_THROWM(Base::CADKernelError,"Profile shape is not a vertex, edge, wire nor face.");
+        }
+        ret.push_back(shape);
+    }
+    if(ret.empty())
+        FC_THROWM(Base::CADKernelError,"No profile");
+    return ret;
+}
+
 TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
                                        const char* op,
                                        double tol,
@@ -2306,6 +2338,62 @@ TopoShape& TopoShape::makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
         op = Part::OpCodes::HalfSpace;
     }
     return makeShapeWithElementMap(mkShape.Solid(), MapperMaker(mkShape), {source}, op);
+}
+
+TopoShape &TopoShape::makeElementLoft(const std::vector<TopoShape> &shapes,
+                               Standard_Boolean isSolid,
+                               Standard_Boolean isRuled,
+                               Standard_Boolean isClosed,
+                               Standard_Integer maxDegree,
+                               const char *op)
+{
+    if(!op) op = Part::OpCodes::Loft;
+
+    // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
+    BRepOffsetAPI_ThruSections aGenerator (isSolid,isRuled);
+    aGenerator.SetMaxDegree(maxDegree);
+
+    auto profiles = prepareProfiles(shapes);
+    if (shapes.size() < 2)
+        FC_THROWM(Base::CADKernelError,"Need at least two vertices, edges or wires to create loft face");
+
+    for(auto &sh : profiles) {
+        const auto &shape = sh.getShape();
+        if(shape.ShapeType() == TopAbs_VERTEX)
+            aGenerator.AddVertex(TopoDS::Vertex (shape));
+        else
+            aGenerator.AddWire(TopoDS::Wire (shape));
+    }
+    // close loft by duplicating initial profile as last profile.  not perfect.
+    if (isClosed) {
+        /* can only close loft in certain combinations of Vertex/Wire(Edge):
+            - V1-W1-W2-W3-V2  ==> V1-W1-W2-W3-V2-V1  invalid closed
+            - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
+            - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
+            - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
+        if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
+            Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+        }
+        else {
+            // repeat Add logic above for first profile
+            const TopoDS_Shape& firstProfile = profiles.front().getShape();
+            if (firstProfile.ShapeType() == TopAbs_VERTEX)  {
+                aGenerator.AddVertex(TopoDS::Vertex (firstProfile));
+            }
+            else if (firstProfile.ShapeType() == TopAbs_EDGE)  {
+                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(firstProfile)).Wire());
+            }
+            else if (firstProfile.ShapeType() == TopAbs_WIRE)  {
+                aGenerator.AddWire(TopoDS::Wire (firstProfile));
+            }
+        }
+    }
+
+    Standard_Boolean anIsCheck = Standard_True;
+    aGenerator.CheckCompatibility (anIsCheck);   // use BRepFill_CompatibleWires on profiles. force #edges, orientation, "origin" to match.
+
+    aGenerator.Build();
+    return makeShapeWithElementMap(aGenerator.Shape(),MapperThruSections(aGenerator,profiles),shapes,op);
 }
 
 TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
