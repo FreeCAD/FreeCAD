@@ -646,7 +646,7 @@ def parse(pathobj):
                         commandlist.append(param + str(int(c.Parameters["S"])))
                     else:
                         if (
-                            (not REPEAT_ARGUMENTS)
+                            (not REPEAT_ARGUMENTS and c.Name not in ["G81", "G82", "G83"])
                             and (param in currLocation)
                             and (currLocation[param] == c.Parameters[param])
                         ):
