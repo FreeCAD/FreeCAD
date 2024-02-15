@@ -3316,7 +3316,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setupEditingRoot();
 
     cameraSensor.setData(new VPRender {this, viewer->getSoRenderManager()});
-    cameraSensor.attach(viewer->getSoRenderManager()->getSceneGraph());
+    cameraSensor.attach(camera);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
