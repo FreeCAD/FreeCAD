@@ -59,10 +59,11 @@ namespace Part
 struct ShapeHasher;
 class TopoShape;
 class TopoShapeCache;
-typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
+using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
 
 /* A special sub-class to indicate null shapes
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport NullShapeException: public Base::ValueError
 {
 public:
@@ -76,6 +77,7 @@ public:
 
 /* A special sub-class to indicate boolean failures
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport BooleanException: public Base::CADKernelError
 {
 public:
@@ -89,6 +91,7 @@ public:
 
 class PartExport ShapeSegment: public Data::Segment
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
@@ -124,17 +127,32 @@ enum class CheckGeometry
     ignoreGeometry,
     checkGeometry
 };
+
+enum class LinearizeFace
+{
+    noFaces,
+    linearizeFaces
+};
+
+enum class LinearizeEdge
+{
+    noEdges,
+    linearizeEdges
+};
+
 /** The representation for a CAD Shape
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport TopoShape: public Data::ComplexGeoData
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    TopoShape(long Tag=0,
+    TopoShape(long Tag=0,   // NOLINT google-explicit-constructor
               App::StringHasherRef hasher=App::StringHasherRef(),
               const TopoDS_Shape &shape=TopoDS_Shape());  // Cannot be made explicit
-    TopoShape(const TopoDS_Shape&,
+    TopoShape(const TopoDS_Shape&,  // NOLINT google-explicit-constructor
               long Tag=0,
               App::StringHasherRef hasher=App::StringHasherRef());  // Cannot be made explicit
     TopoShape(const TopoShape&);
@@ -203,7 +221,7 @@ public:
                   uint16_t flags = 0) const override;
     void setFaces(const std::vector<Base::Vector3d>& Points,
                   const std::vector<Facet>& faces,
-                  double tolerance = 1.0e-06);
+                  double tolerance = 1.0e-06);  // NOLINT
     void getDomains(std::vector<Domain>&) const;
     //@}
 
@@ -219,13 +237,13 @@ public:
     std::vector<const char*> getElementTypes() const override;
     unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
+    Data::Segment* getSubElement(const char* Type, unsigned long index) const override;
     /** Get lines from segment */
-    void getLinesFromSubElement(const Data::Segment*,
+    void getLinesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Line>& lines) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(const Data::Segment*,
+    void getFacesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Base::Vector3d>& PointNormals,
                                 std::vector<Facet>& faces) const override;
@@ -273,7 +291,7 @@ public:
     /// get the Topo"sub"Shape with the given name
     PyObject* getPySubShape(const char* Type, bool silent = false) const;
     PyObject* getPyObject() override;
-    void setPyObject(PyObject*) override;
+    void setPyObject(PyObject* obj) override;
 
     /** @name Save/restore */
     //@{
@@ -688,7 +706,7 @@ public:
      *
      * @return Return true if the shape is modified
      */
-    bool linearize(bool face, bool edge);
+    bool linearize(LinearizeFace face, LinearizeEdge edge);
 
     static TopAbs_ShapeEnum shapeType(const char* type, bool silent = false);
     static TopAbs_ShapeEnum shapeType(char type, bool silent = false);

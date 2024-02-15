@@ -7,12 +7,17 @@
 
 #include "PartTestHelpers.h"
 
+#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
+#include <GC_MakeCircle.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
 #include <gp_Pln.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
@@ -1110,5 +1115,47 @@ TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
     EXPECT_EQ(result2.getElementMap().size(), 0);  // No element map in non reference call.
     EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
 }
+
+TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
+{
+    // Arrange
+    TColgp_Array1OfPnt points {1, 2};
+    points.SetValue(1, gp_Pnt(0.0, 0.0, 0.0));
+    points.SetValue(2, gp_Pnt(1.0, 0.0, 0.0));
+    auto line1 = new Geom_BezierCurve(points);
+    auto edge1 = BRepBuilderAPI_MakeEdge(line1).Edge();
+    TopoShape topoShape1 {edge1, 1L};
+    // Act
+    auto edges = topoShape1.getSubTopoShapes(TopAbs_EDGE);
+    BRepAdaptor_Curve curve(TopoDS::Edge(edges.front().getShape()));
+    topoShape1.linearize(LinearizeFace::noFaces, LinearizeEdge::linearizeEdges);
+    auto edges2 = topoShape1.getSubTopoShapes(TopAbs_EDGE);
+    BRepAdaptor_Curve curve2(TopoDS::Edge(edges2.front().getShape()));
+    // Assert
+    EXPECT_EQ(curve.GetType(), GeomAbs_BezierCurve);
+    EXPECT_EQ(curve2.GetType(), GeomAbs_Line);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
+{
+    TColgp_Array2OfPnt points2 {1, 2, 1, 2};
+    points2.SetValue(1, 1, gp_Pnt(0.0, 0.0, 0.0));
+    points2.SetValue(2, 1, gp_Pnt(1.0, 0.0, 0.0));
+    points2.SetValue(1, 2, gp_Pnt(0.0, 1.0, 0.0));
+    points2.SetValue(2, 2, gp_Pnt(1.0, 1.0, 0.0));
+    auto face1 = new Geom_BezierSurface(points2);
+    auto surf1 = BRepBuilderAPI_MakeFace(face1, 0.1).Face();
+    TopoShape topoShape2 {surf1, 2L};
+    // Act
+    auto faces = topoShape2.getSubTopoShapes(TopAbs_FACE);
+    BRepAdaptor_Surface surface(TopoDS::Face(faces.front().getShape()));
+    topoShape2.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
+    auto faces2 = topoShape2.getSubTopoShapes(TopAbs_FACE);
+    BRepAdaptor_Surface surface2(TopoDS::Face(faces.front().getShape()));
+    // Assert
+    EXPECT_EQ(surface.GetType(), GeomAbs_BezierSurface);
+    EXPECT_EQ(surface2.GetType(), GeomAbs_Plane);
+}
+
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

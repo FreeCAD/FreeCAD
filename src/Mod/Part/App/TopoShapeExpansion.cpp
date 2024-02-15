@@ -2521,13 +2521,14 @@ bool TopoShape::isPlanarFace(double tol) const
                                  tol);
 }
 
-bool TopoShape::linearize(bool face, bool edge)
+// TODO:  Refactor this into two methods.  Totally separate concerns here.
+bool TopoShape::linearize(LinearizeFace do_face, LinearizeEdge do_edge)
 {
     bool touched = false;
     BRep_Builder builder;
     // Note: changing edge geometry seems to mess up with face (or shell, or solid)
     // Probably need to do some fix afterwards.
-    if (edge) {
+    if (do_edge == LinearizeEdge::linearizeEdges) {
         for (auto& edge : getSubTopoShapes(TopAbs_EDGE)) {
             TopoDS_Edge e = TopoDS::Edge(edge.getShape());
             BRepAdaptor_Curve curve(e);
@@ -2546,7 +2547,7 @@ bool TopoShape::linearize(bool face, bool edge)
             }
         }
     }
-    if (face) {
+    if (do_face == LinearizeFace::linearizeFaces) {
         for (auto& face : getSubTopoShapes(TopAbs_FACE)) {
             TopoDS_Face f = TopoDS::Face(face.getShape());
             BRepAdaptor_Surface surf(f);
