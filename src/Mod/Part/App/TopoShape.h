@@ -118,6 +118,12 @@ enum class RefineFail
     throwException
 };
 
+/// Behavior of findSubShapesWithSharedVertex.
+enum class CheckGeometry
+{
+    ignoreGeometry,
+    checkGeometry
+};
 /** The representation for a CAD Shape
  */
 class PartExport TopoShape: public Data::ComplexGeoData
@@ -703,8 +709,10 @@ public:
     std::vector<int> findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
     std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape& subshape,
                                                   TopAbs_ShapeEnum type) const;
-    /** Search sub shape
+    /** Find sub shapes with shared Vertexes.
      *
+     * Renamed: searchSubShape -> findSubShapesWithSharedVertex
+     * 
      * unlike findShape(), the input shape does not have to be an actual
      * sub-shape of this shape. The sub-shape is searched by shape geometry
      * Note that subshape must be a Vertex, Edge, or Face.
@@ -715,10 +723,9 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-    // TODO: Refactor this method and its tests later in Toponaming Phase 3.
-     std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
+     std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
                                           std::vector<std::string> *names=nullptr,
-                                          bool checkGeometry=true,
+                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
                                           double tol=1e-7, double atol=1e-12) const;
     //@}
 

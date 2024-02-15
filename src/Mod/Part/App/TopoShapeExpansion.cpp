@@ -221,9 +221,9 @@ TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const
     return _cache->findShape(_Shape, type, idx);
 }
 
-std::vector<TopoShape> TopoShape::searchSubShape(const TopoShape& subshape,
+std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape& subshape,
                                                  std::vector<std::string>* names,
-                                                 bool checkGeometry,
+                                                 CheckGeometry checkGeometry,
                                                  double tol,
                                                  double atol) const
 {
@@ -266,7 +266,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(const TopoShape& subshape,
                 vertices = subshape.getSubShapes(TopAbs_VERTEX);
             }
 
-            if (vertices.empty() || checkGeometry) {
+            if (vertices.empty() || checkGeometry == CheckGeometry::checkGeometry) {
                 g = Geometry::fromShape(subshape.getShape());
                 if (!g) {
                     return res;
@@ -330,7 +330,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(const TopoShape& subshape,
             // * Perform geometry comparison of the ancestor and input shape.
             //      * For face, perform addition geometry comparison of each edges.
             std::unordered_set<TopoShape,ShapeHasher,ShapeHasher> shapeSet;
-            for (auto& v : searchSubShape(vertices[0], nullptr, checkGeometry, tol, atol)) {
+            for (auto& v : findSubShapesWithSharedVertex(vertices[0], nullptr, checkGeometry, tol, atol)) {
                 for (auto idx : findAncestors(v.getShape(), shapeType)) {
                     auto s = getSubTopoShape(shapeType, idx);
                     if (!shapeSet.insert(s).second) {
@@ -352,7 +352,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(const TopoShape& subshape,
                     if (otherVertices.size() != vertices.size()) {
                         continue;
                     }
-                    if (checkGeometry && !compareGeometry(s, false)) {
+                    if (checkGeometry == CheckGeometry::checkGeometry && !compareGeometry(s, false)) {
                         continue;
                     }
                     unsigned i = 0;
@@ -380,7 +380,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(const TopoShape& subshape,
                         continue;
                     }
 
-                    if (shapeType == TopAbs_FACE && checkGeometry) {
+                    if (shapeType == TopAbs_FACE && checkGeometry == CheckGeometry::checkGeometry) {
                         // Is it really necessary to check geometries of each edge of a face?
                         // Right now we only do outer wire check
                         auto otherEdges = otherWire.getSubShapes(TopAbs_EDGE);
