@@ -45,6 +45,7 @@
 #include <Mod/Part/App/ArcOfEllipsePy.h>
 #include <Mod/Part/App/ArcOfHyperbolaPy.h>
 #include <Mod/Part/App/ArcOfParabolaPy.h>
+#include <Mod/Part/App/BezierCurvePy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 #include <Mod/Part/App/CirclePy.h>
 #include <Mod/Part/App/EllipsePy.h>
@@ -98,6 +99,7 @@ void Sketch::clear()
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
     BSplines.clear();
+    Beziers.clear();
     resolveAfterGeometryUpdated = false;
 
     // deleting the doubles allocated with new
@@ -672,6 +674,8 @@ const char* nameByType(Sketch::GeoType type)
             return "arcofparabola";
         case Sketch::BSpline:
             return "bspline";
+        case Sketch::BezierCurve:
+            return "bezier";
         case Sketch::None:
         default:
             return "unknown";
@@ -731,6 +735,16 @@ int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
         // geometry
         resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
+    }
+    else if (geo->is<GeomBezierCurve>()) {  // add a bezier
+        const GeomBezierCurve* bez = static_cast<const GeomBezierCurve*>(geo);
+
+        // FIXME: Confirm this is valid for Bezier curves
+        // Current Bezier implementation relies on OCCT calculations, so a second solve
+        // is necessary to update actual solver implementation to account for changes in B-Spline
+        // geometry
+        resolveAfterGeometryUpdated = true;
+        return addBezierCurve(*bez, fixed);
     }
     else {
         throw Base::TypeError(
@@ -1576,6 +1590,13 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
     return Geoms.size() - 1;
 }
 
+int Sketch::addBezierCurve(const Part::GeomBezierCurve& bezier, bool fixed)
+{
+    // FIXME: THIS NEEDS TO BE FILLED
+    // return the position of the newly added geometry
+    return Geoms.size() - 1;
+}
+
 int Sketch::addCircle(const Part::GeomCircle& cir, bool fixed)
 {
     std::vector<double*>& params = fixed ? FixParameters : Parameters;
@@ -1797,6 +1818,10 @@ Py::Tuple Sketch::getPyGeometry() const
             GeomBSplineCurve* bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
             tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
         }
+        else if (it->type == BezierCurve) {
+            GeomBezierCurve* bsp = static_cast<GeomBezierCurve*>(it->geo->clone());
+            tuple[i] = Py::asObject(new BezierCurvePy(bsp));
+        }
         else {
             // not implemented type in the sketch!
         }
@@ -1842,6 +1867,9 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             break;
         case BSpline:
             return &BSplines[Geoms[geoId].index];
+            break;
+        case BezierCurve:
+            return &Beziers[Geoms[geoId].index];
             break;
         default:
             return nullptr;
@@ -2873,6 +2901,11 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
+        else if (Geoms[geoId2].type == BezierCurve) {
+            Base::Console().Error("Direct tangency constraint between line and Bezier curve is not "
+                                  "supported. Use tangent-via-point instead.");
+            return -1;
+        }
     }
     else if (Geoms[geoId1].type == Circle) {
         GCS::Circle& c = Circles[Geoms[geoId1].index];
@@ -2898,6 +2931,12 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
+        else if (Geoms[geoId2].type == BezierCurve) {
+            Base::Console().Error(
+                "Direct tangency constraint between circle and Bezier curve is not "
+                "supported. Use tangent-via-point instead.");
+            return -1;
+        }
     }
     else if (Geoms[geoId1].type == Ellipse) {
         if (Geoms[geoId2].type == Circle) {
@@ -2913,6 +2952,12 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         else if (Geoms[geoId2].type == BSpline) {
             Base::Console().Error("Direct tangency constraint between ellipse and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
+            return -1;
+        }
+        else if (Geoms[geoId2].type == BezierCurve) {
+            Base::Console().Error(
+                "Direct tangency constraint between ellipse and Bezier curve is not "
+                "supported. Use tangent-via-point instead.");
             return -1;
         }
     }
@@ -2940,9 +2985,19 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
+        else if (Geoms[geoId2].type == BezierCurve) {
+            Base::Console().Error("Direct tangency constraint between arc and Bezier curve is not "
+                                  "supported. Use tangent-via-point instead.");
+            return -1;
+        }
     }
     else if (Geoms[geoId1].type == BSpline) {
         Base::Console().Error("Direct tangency constraint including B-splines is not "
+                              "supported. Use tangent-via-point instead.");
+        return -1;
+    }
+    else if (Geoms[geoId2].type == BezierCurve) {
+        Base::Console().Error("Direct tangency constraint including Bezier curves is not "
                               "supported. Use tangent-via-point instead.");
         return -1;
     }
@@ -4216,6 +4271,12 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
         GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
         return ConstraintsCounter;
     }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentBezierControlPoint(int geoId1, int geoId2, int poleindex)
+{
+    // FIXME: Needs implementation
     return -1;
 }
 
