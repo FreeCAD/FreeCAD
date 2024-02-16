@@ -3315,8 +3315,10 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setupEditingRoot();
 
-    cameraSensor.setData(new VPRender {this, viewer->getSoRenderManager()});
-    cameraSensor.attach(viewer->getSoRenderManager()->getSceneGraph());
+    auto *camSensorData = new VPRender {this, viewer->getSoRenderManager()};
+    cameraSensor.setData(camSensorData);
+    cameraSensor.setDeleteCallback(&ViewProviderSketch::camSensDeleteCB, camSensorData);
+    cameraSensor.attach(viewer->getCamera());
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3324,11 +3326,28 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
     delete dataPtr;
     cameraSensor.setData(nullptr);
+    cameraSensor.setDeleteCallback(nullptr, nullptr);
     cameraSensor.detach();
 
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     viewer->setSelectionEnabled(true);
+}
+
+void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)
+{
+    auto *proxyVPrdr = static_cast<VPRender*>(data);
+    if (!proxyVPrdr)
+        return;
+
+    // The camera object the observer was attached to is gone, try to re-attach the sensor
+    // to the new camera.
+    // This happens i.e. when the user switches the camera type from orthographic to
+    // perspective.
+    SoCamera *camera = proxyVPrdr->renderMgr->getCamera();
+    if (camera) {
+        static_cast<SoNodeSensor *>(s)->attach(camera);
+    }
 }
 
 void ViewProviderSketch::camSensCB(void* data, SoSensor*)
