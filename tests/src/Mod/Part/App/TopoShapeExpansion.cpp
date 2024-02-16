@@ -7,6 +7,8 @@
 
 #include "PartTestHelpers.h"
 
+#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -14,6 +16,9 @@
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GC_MakeCircle.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
+#include <gp_Pln.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 
@@ -746,6 +751,129 @@ TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestors)
     EXPECT_TRUE(ancestorShapeList.back().IsEqual(topoShape6.getShape()));
 }
 
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexEverything)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {2};  // Silly big tolerance to get everything
+    double atol {2};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 6);
+    EXPECT_EQ(names.size(), 6);
+    EXPECT_STREQ(names[0].c_str(), "Face1");
+    EXPECT_STREQ(names[1].c_str(), "Face3");
+    EXPECT_STREQ(names[2].c_str(), "Face6");
+    EXPECT_STREQ(names[3].c_str(), "Face5");
+    EXPECT_STREQ(names[4].c_str(), "Face4");
+    EXPECT_STREQ(names[5].c_str(), "Face2");
+    EXPECT_EQ(shapes1.size(), 12);
+    EXPECT_EQ(names1.size(), 12);
+    EXPECT_EQ(shapes2.size(), 8);
+    EXPECT_EQ(names2.size(), 8);
+}
+
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexMid)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {1e-0};
+    double atol {1e-04};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 6);
+    EXPECT_EQ(names.size(), 6);
+    EXPECT_EQ(shapes1.size(), 7);
+    EXPECT_EQ(names1.size(), 7);
+    EXPECT_EQ(shapes2.size(), 4);
+    EXPECT_EQ(names2.size(), 4);
+}
+
+TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexClose)
+{
+    // Arrange
+    auto [box1, box2] = CreateTwoCubes();
+    TopoShape box1TS {box1};
+    std::vector<std::string> names;
+    std::vector<std::string> names1;
+    std::vector<std::string> names2;
+    double tol {1e-02};
+    double atol {1e-04};
+
+    TopExp_Explorer exp(box1, TopAbs_FACE);
+    auto face = exp.Current();
+    exp.Init(box1, TopAbs_EDGE);
+    auto edge = exp.Current();
+    exp.Init(box1, TopAbs_VERTEX);
+    auto vertex = exp.Current();
+    // Act
+    auto shapes =
+        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
+                                                        &names1,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
+                                                        &names2,
+                                                        CheckGeometry::checkGeometry,
+                                                        tol,
+                                                        atol);
+    //  Assert
+    EXPECT_EQ(shapes.size(), 1);
+    EXPECT_EQ(names.size(), 1);
+    EXPECT_EQ(shapes1.size(), 1);
+    EXPECT_EQ(names1.size(), 1);
+    EXPECT_EQ(shapes2.size(), 1);
+    EXPECT_EQ(names2.size(), 1);
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementShellInvalid)
 {
     // Arrange
@@ -933,6 +1061,128 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
             "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
             "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementDraft)
+{  // Draft as in Draft Angle or sloped sides for removing shapes from a mold.
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    std::vector<TopoShape> faces {subShapes[0], subShapes[1], subShapes[2], subShapes[3]};
+    const gp_Dir pullDirection {0, 0, 1};
+    double angle {M_PI * 10
+                  / 8};  // Angle should be between Pi and Pi * 1.5 ( 180 and 270 degrees )
+    const gp_Pln plane {};
+    // Act
+    TopoShape& result = cube1TS.makeElementDraft(cube1TS, faces, pullDirection, angle, plane);
+    auto elements = elementMap(result);
+    // Assert
+    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
+    EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
+{
+    // Arrange
+    auto [cube1TS, cube2TS] = CreateTwoTopoShapeCubes();
+    const gp_Dir pullDirection {0, 0, 1};
+    double angle {M_PI * 10
+                  / 8};  // Angle should be between Pi and Pi * 1.5 ( 180 and 270 degrees )
+    const gp_Pln plane {};
+    // Act
+    TopoShape result3 = cube1TS.makeElementDraft(cube1TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Non Reference call type
+    TopoShape result2 = cube1TS.makeElementDraft(cube1TS,
+                                                 cube1TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Bad use of Reference call
+    TopoShape& result = cube1TS.makeElementDraft(cube2TS,
+                                                 cube2TS.getSubTopoShapes(TopAbs_FACE),
+                                                 pullDirection,
+                                                 angle,
+                                                 plane);  // Correct usage
+    auto elements = elementMap((result));
+    // Assert
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 26);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:G;DFT;:He:7,F"));
+    EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+    EXPECT_EQ(result2.getElementMap().size(), 0);  // No element map in non reference call.
+    EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
+{
+    // Arrange
+    TColgp_Array1OfPnt points {1, 2};
+    points.SetValue(1, gp_Pnt(0.0, 0.0, 0.0));
+    points.SetValue(2, gp_Pnt(1.0, 0.0, 0.0));
+    auto line1 = new Geom_BezierCurve(points);
+    auto edge1 = BRepBuilderAPI_MakeEdge(line1).Edge();
+    TopoShape topoShape1 {edge1, 1L};
+    // Act
+    auto edges = topoShape1.getSubTopoShapes(TopAbs_EDGE);
+    BRepAdaptor_Curve curve(TopoDS::Edge(edges.front().getShape()));
+    topoShape1.linearize(LinearizeFace::noFaces, LinearizeEdge::linearizeEdges);
+    auto edges2 = topoShape1.getSubTopoShapes(TopAbs_EDGE);
+    BRepAdaptor_Curve curve2(TopoDS::Edge(edges2.front().getShape()));
+    // Assert
+    EXPECT_EQ(curve.GetType(), GeomAbs_BezierCurve);
+    EXPECT_EQ(curve2.GetType(), GeomAbs_Line);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
+{
+    TColgp_Array2OfPnt points2 {1, 2, 1, 2};
+    points2.SetValue(1, 1, gp_Pnt(0.0, 0.0, 0.0));
+    points2.SetValue(2, 1, gp_Pnt(1.0, 0.0, 0.0));
+    points2.SetValue(1, 2, gp_Pnt(0.0, 1.0, 0.0));
+    points2.SetValue(2, 2, gp_Pnt(1.0, 1.0, 0.0));
+    auto face1 = new Geom_BezierSurface(points2);
+    auto surf1 = BRepBuilderAPI_MakeFace(face1, 0.1).Face();
+    TopoShape topoShape2 {surf1, 2L};
+    // Act
+    auto faces = topoShape2.getSubTopoShapes(TopAbs_FACE);
+    BRepAdaptor_Surface surface(TopoDS::Face(faces.front().getShape()));
+    topoShape2.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
+    auto faces2 = topoShape2.getSubTopoShapes(TopAbs_FACE);
+    BRepAdaptor_Surface surface2(TopoDS::Face(faces.front().getShape()));
+    // Assert
+    EXPECT_EQ(surface.GetType(), GeomAbs_BezierSurface);
+    EXPECT_EQ(surface2.GetType(), GeomAbs_Plane);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subEdges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    std::vector<TopoShape> shapes2 = {subEdges[0], subEdges[1]};
+    // Act
+    TopoShape result2 = cube1TS.makeElementRuledSurface(shapes2, 0);  // TODO: direction as enum?
+    // Assert
+    EXPECT_EQ(result2.countSubElements("Wire"), 1);
+    EXPECT_FLOAT_EQ(getArea(result2.getShape()), 0.32953611);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subWires = cube1TS.getSubTopoShapes(TopAbs_WIRE);
+    std::vector<TopoShape> shapes = {subWires[0], subWires[1]};
+    // Act
+    TopoShape result = cube1TS.makeElementRuledSurface(shapes, 0);  // TODO: direction as enum?
+    // Assert
+    EXPECT_EQ(result.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 2.023056);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
