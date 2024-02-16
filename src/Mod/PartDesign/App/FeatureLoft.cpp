@@ -86,7 +86,8 @@ App::DocumentObjectExecReturn *Loft::execute()
             }
 
             if (!linkedObj->isDerivedFrom<Part::Feature>())
-                throw Base::TypeError("Loft: All sections need to be part features");
+                throw Base::TypeError(QT_TRANSLATE_NOOP("Exception",
+                            "Loft: All sections need to be part features"));
 
             auto subName = subs.empty() ? "" : subs.front();
 
