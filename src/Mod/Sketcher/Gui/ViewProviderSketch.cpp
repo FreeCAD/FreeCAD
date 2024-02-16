@@ -3391,8 +3391,9 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     // Stretch the axes to cover the whole viewport.
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
     if (view) {
+        Base::Placement plc = getEditingPlacement();
         const Base::BoundBox2d vpBBox = view->getViewer()
-                ->getViewportOnXYPlaneOfPlacement(getEditingPlacement());
+                ->getViewportOnXYPlaneOfPlacement(plc);
         editCoinManager->updateAxesLength(vpBBox);
     }
 
