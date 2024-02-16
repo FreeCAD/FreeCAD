@@ -2592,6 +2592,7 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     return *this;
 }
 
+
 /**
  *  Encode and set an element name in the elementMap.  If a hasher is defined, apply it to the name.
  *
