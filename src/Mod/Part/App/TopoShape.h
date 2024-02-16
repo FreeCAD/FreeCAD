@@ -194,6 +194,14 @@ enum class MapElement
     map
 };
 
+/// Defines how to fill the holes that may appear after offset two adjacent faces
+enum class JoinType
+{
+    Arc,
+    Tangent,
+    Intersection,
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -779,6 +787,53 @@ public:
         return TopoShape().makeRefine(*this, op, no_fail);
     }
     //@}
+
+    /** Make a hollowed solid by removing some faces from a given solid
+     *
+     * @param source: input shape
+     * @param faces: list of faces to remove, must be sub shape of the input shape
+     * @param offset: thickness of the walls
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel.
+     * @param selfInter: whether to eliminate self intersection.
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementThickSolid(const TopoShape &source, const std::vector<TopoShape> &faces,
+                              double offset, double tol, bool intersection = false, bool selfInter = false,
+                              short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr);
+
+    /** Make a hollowed solid by removing some faces from a given solid
+     *
+     * @param source: input shape
+     * @param faces: list of faces to remove, must be sub shape of the input shape
+     * @param offset: thickness of the walls
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel
+     *                      (OCCT document states the option is not fully implemented)
+     * @param selfInter: whether to eliminate self intersection
+     *                   (OCCT document states the option is not implemented)
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     *                    (OCCT document states the option is not implemented)
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementThickSolid(const std::vector<TopoShape> &faces,
+                             double offset, double tol, bool intersection = false, bool selfInter = false,
+                             short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
+                                                   offsetMode,join,op);
+    }
 
     /* Make a shell or solid by sweeping profile wire along a spine
      *
