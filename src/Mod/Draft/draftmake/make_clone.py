@@ -34,7 +34,6 @@ from draftutils import utils
 from draftutils import gui_utils
 
 if App.GuiUp:
-    from draftutils.todo import ToDo
     from draftviewproviders.view_clone import ViewProviderClone
 
 

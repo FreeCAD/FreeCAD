@@ -74,13 +74,11 @@ class Rectangle(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        if self.ui and hasattr(self, "fillstate"):
-            self.ui.hasFill.setChecked(self.fillstate)
-            del self.fillstate
-        super().finish()
+        self.end_callbacks(self.call)
         if self.ui:
             self.rect.off()
             self.rect.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 

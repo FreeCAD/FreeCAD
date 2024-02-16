@@ -49,7 +49,6 @@ using ExpressionPtr = std::unique_ptr<Expression>;
 
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
 AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = nullptr);
-AppExport Base::Quantity parseQuantityFromText(std::string text);
 
 // Map of depending objects to a map of depending property name to the full referencing object identifier
 using ExpressionDeps = std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > >;

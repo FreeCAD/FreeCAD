@@ -39,8 +39,6 @@ public:
 
     App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

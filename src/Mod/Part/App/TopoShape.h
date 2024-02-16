@@ -59,10 +59,11 @@ namespace Part
 struct ShapeHasher;
 class TopoShape;
 class TopoShapeCache;
-typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
+using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
 
 /* A special sub-class to indicate null shapes
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport NullShapeException: public Base::ValueError
 {
 public:
@@ -76,6 +77,7 @@ public:
 
 /* A special sub-class to indicate boolean failures
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport BooleanException: public Base::CADKernelError
 {
 public:
@@ -89,6 +91,7 @@ public:
 
 class PartExport ShapeSegment: public Data::Segment
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
@@ -118,17 +121,38 @@ enum class RefineFail
     throwException
 };
 
+/// Behavior of findSubShapesWithSharedVertex.
+enum class CheckGeometry
+{
+    ignoreGeometry,
+    checkGeometry
+};
+
+enum class LinearizeFace
+{
+    noFaces,
+    linearizeFaces
+};
+
+enum class LinearizeEdge
+{
+    noEdges,
+    linearizeEdges
+};
+
 /** The representation for a CAD Shape
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport TopoShape: public Data::ComplexGeoData
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    TopoShape(long Tag=0,
+    TopoShape(long Tag=0,   // NOLINT google-explicit-constructor
               App::StringHasherRef hasher=App::StringHasherRef(),
               const TopoDS_Shape &shape=TopoDS_Shape());  // Cannot be made explicit
-    TopoShape(const TopoDS_Shape&,
+    TopoShape(const TopoDS_Shape&,  // NOLINT google-explicit-constructor
               long Tag=0,
               App::StringHasherRef hasher=App::StringHasherRef());  // Cannot be made explicit
     TopoShape(const TopoShape&);
@@ -197,7 +221,7 @@ public:
                   uint16_t flags = 0) const override;
     void setFaces(const std::vector<Base::Vector3d>& Points,
                   const std::vector<Facet>& faces,
-                  double tolerance = 1.0e-06);
+                  double tolerance = 1.0e-06);  // NOLINT
     void getDomains(std::vector<Domain>&) const;
     //@}
 
@@ -213,13 +237,13 @@ public:
     std::vector<const char*> getElementTypes() const override;
     unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
+    Data::Segment* getSubElement(const char* Type, unsigned long index) const override;
     /** Get lines from segment */
-    void getLinesFromSubElement(const Data::Segment*,
+    void getLinesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Line>& lines) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(const Data::Segment*,
+    void getFacesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Base::Vector3d>& PointNormals,
                                 std::vector<Facet>& faces) const override;
@@ -267,7 +291,7 @@ public:
     /// get the Topo"sub"Shape with the given name
     PyObject* getPySubShape(const char* Type, bool silent = false) const;
     PyObject* getPyObject() override;
-    void setPyObject(PyObject*) override;
+    void setPyObject(PyObject* obj) override;
 
     /** @name Save/restore */
     //@{
@@ -311,6 +335,10 @@ public:
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
     bool isPlanar(double tol = 1.0e-7) const;
+    /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
+    bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
+    /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
+    bool isPlanarFace(double tol=1e-7) const;
     //@}
 
     /** @name Boolean operation*/
@@ -674,6 +702,12 @@ public:
     }
     //@}
 
+    /** Try to simplify geometry of any linear/planar subshape to line/plane
+     *
+     * @return Return true if the shape is modified
+     */
+    bool linearize(LinearizeFace face, LinearizeEdge edge);
+
     static TopAbs_ShapeEnum shapeType(const char* type, bool silent = false);
     static TopAbs_ShapeEnum shapeType(char type, bool silent = false);
     TopAbs_ShapeEnum shapeType(bool silent = false) const;
@@ -703,10 +737,13 @@ public:
     std::vector<int> findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
     std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape& subshape,
                                                   TopAbs_ShapeEnum type) const;
-    /** Search sub shape
+    /** Find sub shapes with shared Vertexes.
      *
+     * Renamed: searchSubShape -> findSubShapesWithSharedVertex
+     * 
      * unlike findShape(), the input shape does not have to be an actual
      * sub-shape of this shape. The sub-shape is searched by shape geometry
+     * Note that subshape must be a Vertex, Edge, or Face.
      *
      * @param subshape: a sub shape to search
      * @param names: optional output of found sub shape indexed based name
@@ -714,11 +751,10 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-    // TODO: Implement this method and its tests later in Toponaming Phase 3.
-    // std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
-    //                                      std::vector<std::string> *names=nullptr,
-    //                                      bool checkGeometry=true,
-    //                                      double tol=1e-7, double atol=1e-12) const;
+     std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
+                                          std::vector<std::string> *names=nullptr,
+                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          double tol=1e-7, double atol=1e-12) const;
     //@}
 
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
@@ -749,6 +785,21 @@ public:
             return _res;
         }
     };
+
+    /** Make a ruled surface
+     *
+     * @param sources: the source shapes, each of which must contain either a
+     *                 single edge or a single wire.
+     * @param orientation: A Qt::Orientation, where Qt::Horizontal is 1 and Qt::Vertical is 2.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementRuledSurface(const std::vector<TopoShape> &source, int orientation=0, const char *op=nullptr);
 
     /** Core function to generate mapped element names from shape history
      *
@@ -996,6 +1047,43 @@ public:
     makeElementBoolean(const char* maker, const char* op = nullptr, double tol = 0.0) const
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
+    }
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementDraft(const TopoShape &source, const std::vector<TopoShape> &faces,
+                         const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                         bool retry=true, const char *op=nullptr);
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementDraft(const std::vector<TopoShape> &faces,
+                        const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                        bool retry=true, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op);
     }
 
     /* Make a shell using this shape

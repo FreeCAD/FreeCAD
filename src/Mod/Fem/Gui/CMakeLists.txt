@@ -35,10 +35,13 @@ set(FemGui_LIBS
     PartGui
 )
 
+generate_from_xml(ViewProviderFemConstraintPy)
 generate_from_xml(ViewProviderFemMeshPy)
 generate_from_xml(ViewProviderFemPostPipelinePy)
 
 SET(Python_SRCS
+    ViewProviderFemConstraintPy.xml
+    ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMeshPy.xml
     ViewProviderFemMeshPyImp.cpp
     ViewProviderFemPostPipelinePy.xml

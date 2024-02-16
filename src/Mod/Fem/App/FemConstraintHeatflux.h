@@ -45,9 +45,6 @@ public:
     App::PropertyFloat DFlux;
     App::PropertyEnumeration ConstraintType;
 
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
 
