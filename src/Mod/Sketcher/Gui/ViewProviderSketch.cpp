@@ -3316,7 +3316,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setupEditingRoot();
 
     cameraSensor.setData(new VPRender {this, viewer->getSoRenderManager()});
-    cameraSensor.attach(camera);
+    cameraSensor.attach(viewer->getSoRenderManager()->getSceneGraph());
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3369,27 +3369,11 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
 
+    // Stretch the axes to cover the whole viewport.
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
     if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
-
-        SbVec2s size = vp.getViewportSizePixels();
-        Base::Placement plm = getEditingPlacement();
-
-        SbVec3f p0 = viewer->getPointOnXYPlaneOfPlacement({0, 0}, plm);
-        SbVec3f p1 = viewer->getPointOnXYPlaneOfPlacement({size[0], 0}, plm);
-        SbVec3f p2 = viewer->getPointOnXYPlaneOfPlacement({0, size[1]}, plm);
-        SbVec3f p3 = viewer->getPointOnXYPlaneOfPlacement({size[0], size[1]}, plm);
-        // Build the bounding box of the projected viewport rectangle on the sketcher
-        // plane.
-        Base::BoundBox2d vpBBox;
-        vpBBox.SetVoid();
-        vpBBox.Add({p0[0], p0[1]});
-        vpBBox.Add({p1[0], p1[1]});
-        vpBBox.Add({p2[0], p2[1]});
-        vpBBox.Add({p3[0], p3[1]});
-
+        const Base::BoundBox2d vpBBox = view->getViewer()
+                ->getViewportOnXYPlaneOfPlacement(getEditingPlacement());
         editCoinManager->updateAxesLength(vpBBox);
     }
 
