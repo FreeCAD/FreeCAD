@@ -1229,4 +1229,29 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;LFT;:H1:4,E"));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
+{
+    // Arrange
+    const float Len = 5;
+    const float Wid = 5;
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
+    auto edge5 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, -8.0)).Edge();
+    auto wire2 = BRepBuilderAPI_MakeWire({edge5}).Wire();
+    TopoShape face1ts {face1, 1L};
+    TopoShape edge5ts {edge5, 2L};
+    std::vector<TopoShape> shapes = {face1ts, edge5ts};
+    // Act
+    auto& topoShape = (new TopoShape())->makeElementPipeShell(shapes, MakeSolid::noSolid, false);
+    auto elements = elementMap((topoShape));
+    // Assert that we haven't broken the basic Loft functionality
+    EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 160);
+    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 133.33334);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 24);
+    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

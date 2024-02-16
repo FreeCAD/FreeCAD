@@ -97,7 +97,7 @@ TEST_F(TopoShapeMakeShapeTests, thruSections)
     // Assert
     EXPECT_EQ(elements.size(), 24);
     EXPECT_EQ(elements.count(IndexedName("Vertex", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;TRU;:H1:4,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;TRU;:H1:4,V"));  // NOLINT
     EXPECT_EQ(getVolume(result.getShape()), 4);
 }
 

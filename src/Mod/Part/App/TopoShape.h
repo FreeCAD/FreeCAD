@@ -95,8 +95,8 @@ class PartExport ShapeSegment: public Data::Segment
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit ShapeSegment(const TopoDS_Shape& ShapeIn)
-        : Shape(ShapeIn)
+    explicit ShapeSegment(TopoDS_Shape ShapeIn)
+        : Shape(std::move(ShapeIn))
     {}
     ShapeSegment() = default;
     std::string getName() const override;
@@ -134,7 +134,8 @@ enum class LinearizeFace
     linearizeFaces
 };
 
-enum class LinearizeEdge {
+enum class LinearizeEdge
+{
     noEdges,
     linearizeEdges
 };
@@ -158,7 +159,8 @@ enum class IsClosed
 };
 
 /// Option to manage discontinuity in pipe sweeping
-enum class TransitionMode {
+enum class TransitionMode
+{
     /** Discontinuities are treated by modification of the sweeping mode.
      * The pipe is "transformed" at the fractures of the spine. This mode
      * assumes building a self-intersected shell.
@@ -176,8 +178,14 @@ enum class TransitionMode {
      * through the point of the spine's fracture. This axis is based on
      * cross product of directions tangent to the adjacent segments of the
      * spine at their common point.
-    */
+     */
     RoundCorner
+};
+
+enum class MakeSolid
+{
+    noSolid,
+    makeSolid
 };
 
 /** The representation for a CAD Shape
@@ -374,11 +382,11 @@ public:
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
-    bool isPlanar(double tol = 1.0e-7) const;
+    bool isPlanar(double tol = 1.0e-7) const;   // NOLINT
     /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
     bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
     /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
-    bool isPlanarFace(double tol=1e-7) const;
+    bool isPlanarFace(double tol=1e-7) const;   // NOLINT
     //@}
 
     /** @name Boolean operation*/
@@ -763,9 +771,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEPipeShell(const std::vector<TopoShape> &sources, const Standard_Boolean makeSolid,
-                             const Standard_Boolean isFrenet, TransitionMode transition=TransitionMode::Transformed,
-                             const char *op=nullptr, double tol3d=0.0, double tolBound=0.0, double tolAngluar=0.0);
+    TopoShape& makeElementPipeShell(const std::vector<TopoShape>& sources,
+                                    const MakeSolid makeSolid,
+                                    const Standard_Boolean isFrenet,
+                                    TransitionMode transition = TransitionMode::Transformed,
+                                    const char* op = nullptr,
+                                    double tol3d = 0.0,
+                                    double tolBound = 0.0,
+                                    double tolAngluar = 0.0);
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
