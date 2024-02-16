@@ -276,7 +276,7 @@ class Joint:
         """Do something when a property has changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
-        if prop == "Rotation" or prop == "Offset" or prop == "Distance":
+        if prop == "Rotation" or prop == "Offset":
             # during loading the onchanged may be triggered before full init.
             if hasattr(joint, "Vertex1"):  # so we check Vertex1
                 self.updateJCSPlacements(joint)
@@ -296,6 +296,11 @@ class Joint:
                     solveIfAllowed(self.getAssembly(joint))
                 else:
                     self.updateJCSPlacements(joint)
+
+        if prop == "Distance":
+            # during loading the onchanged may be triggered before full init.
+            if hasattr(joint, "Vertex1"):  # so we check Vertex1
+                solveIfAllowed(self.getAssembly(joint))
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -343,13 +348,15 @@ class Joint:
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
-            self.preSolve(
-                joint,
-                current_selection[0]["object"],
-                joint.Part1,
-                current_selection[1]["object"],
-                joint.Part2,
-            )
+            if joint.JointType != "Distance":
+                self.preSolve(
+                    joint,
+                    current_selection[0]["object"],
+                    joint.Part1,
+                    current_selection[1]["object"],
+                    joint.Part2,
+                )
+
             if isAssembly:
                 solveIfAllowed(assembly, True)
             else:
