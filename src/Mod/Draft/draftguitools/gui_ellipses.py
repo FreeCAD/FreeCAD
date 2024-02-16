@@ -79,10 +79,11 @@ class Ellipse(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super().finish(self)
+        self.end_callbacks(self.call)
         if self.ui:
             self.rect.off()
             self.rect.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 

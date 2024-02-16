@@ -81,7 +81,7 @@ class Trimex(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Trimex, self).Activated(name="Trimex")
+        super().Activated(name="Trimex")
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -545,7 +545,7 @@ class Trimex(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate the operation of the Trimex tool."""
-        super(Trimex, self).finish()
+        self.end_callbacks(self.call)
         self.force = None
         if self.ui:
             if self.linetrack:
@@ -559,7 +559,8 @@ class Trimex(gui_base_original.Modifier):
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:
                     self.obj.ViewObject.LineWidth = self.width
-            gui_utils.select(self.obj)
+                gui_utils.select(self.obj)
+        super().finish()
 
     def numericRadius(self, dist):
         """Validate the entry fields in the user interface.

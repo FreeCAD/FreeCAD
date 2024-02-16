@@ -155,6 +155,7 @@ class BSpline(gui_lines.Line):
         closed: bool, optional
             Close the spline if `True`.
         """
+        self.end_callbacks(self.call)
         if self.ui:
             self.bsplinetrack.finalize()
         if self.obj:

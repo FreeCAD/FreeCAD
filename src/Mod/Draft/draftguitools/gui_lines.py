@@ -134,6 +134,7 @@ class Line(gui_base_original.Creator):
         closed: bool, optional
             Close the line if `True`.
         """
+        self.end_callbacks(self.call)
         self.removeTemporaryObject()
 
         if len(self.node) > 1:
