@@ -58,6 +58,7 @@
 #include "DrawSketchHandlerOffset.h"
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
+#include "DrawSketchHandlerSymmetry.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -1092,7 +1093,7 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Symmetry");
     sToolTipText =
-        QT_TR_NOOP("Creates symmetric geometry with respect to the last selected line or point");
+        QT_TR_NOOP("Creates symmetric of selected geometry. After starting the tool select the reference line or point.");
     sWhatsThis = "Sketcher_Symmetry";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Symmetry";
@@ -1103,190 +1104,12 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
 void CmdSketcherSymmetry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
-    // Cancel any in-progress operation
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    SketcherGui::ReleaseHandler(doc);
-
-    // get the selection
-    std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
-
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) {
-        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("Select elements from a single sketch."));
-        return;
+    if (!listOfGeoIds.empty()) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSymmetry(listOfGeoIds));
     }
-
-    // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    if (SubNames.empty()) {
-        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("Select elements from a single sketch."));
-
-        return;
-    }
-
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     getSelection().clearSelection();
-
-    int LastGeoId = 0;
-    Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
-    const Part::Geometry* LastGeo;
-    using GeoType = enum { invalid = -1, line = 0, point = 1 };
-
-    GeoType lastgeotype = invalid;
-
-    // create python command with list of elements
-    std::stringstream stream;
-    int geoids = 0;
-
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
-        // only handle non-external edges
-        if ((it->size() > 4 && it->substr(0, 4) == "Edge")
-            || (it->size() > 12 && it->substr(0, 12) == "ExternalEdge")) {
-
-            if (it->substr(0, 4) == "Edge") {
-                LastGeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
-                LastPointPos = Sketcher::PointPos::none;
-            }
-            else {
-                LastGeoId = -std::atoi(it->substr(12, 4000).c_str()) - 2;
-                LastPointPos = Sketcher::PointPos::none;
-            }
-
-            // reference can be external or non-external
-            LastGeo = Obj->getGeometry(LastGeoId);
-            // Only for supported types
-            if (LastGeo->is<Part::GeomLineSegment>())
-                lastgeotype = line;
-            else
-                lastgeotype = invalid;
-
-            // lines to make symmetric (only non-external)
-            if (LastGeoId >= 0) {
-                geoids++;
-                stream << LastGeoId << ",";
-            }
-        }
-        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
-            // only if it is a GeomPoint
-            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
-            int GeoId;
-            Sketcher::PointPos PosId;
-            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-
-            if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
-                LastGeoId = GeoId;
-                LastPointPos = Sketcher::PointPos::start;
-                lastgeotype = point;
-
-                // points to make symmetric
-                if (LastGeoId >= 0) {
-                    geoids++;
-                    stream << LastGeoId << ",";
-                }
-            }
-        }
-    }
-
-    bool lastvertexoraxis = false;
-    // check if last selected element is a Vertex, not being a GeomPoint
-    if (SubNames.rbegin()->size() > 6 && SubNames.rbegin()->substr(0, 6) == "Vertex") {
-        int VtId = std::atoi(SubNames.rbegin()->substr(6, 4000).c_str()) - 1;
-        int GeoId;
-        Sketcher::PointPos PosId;
-        Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
-            LastGeoId = GeoId;
-            LastPointPos = PosId;
-            lastgeotype = point;
-            lastvertexoraxis = true;
-        }
-    }
-    // check if last selected element is horizontal axis
-    else if (SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0, 6) == "H_Axis") {
-        LastGeoId = Sketcher::GeoEnum::HAxis;
-        LastPointPos = Sketcher::PointPos::none;
-        lastgeotype = line;
-        lastvertexoraxis = true;
-    }
-    // check if last selected element is vertical axis
-    else if (SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0, 6) == "V_Axis") {
-        LastGeoId = Sketcher::GeoEnum::VAxis;
-        LastPointPos = Sketcher::PointPos::none;
-        lastgeotype = line;
-        lastvertexoraxis = true;
-    }
-    // check if last selected element is the root point
-    else if (SubNames.rbegin()->size() == 9 && SubNames.rbegin()->substr(0, 9) == "RootPoint") {
-        LastGeoId = Sketcher::GeoEnum::RtPnt;
-        LastPointPos = Sketcher::PointPos::start;
-        lastgeotype = point;
-        lastvertexoraxis = true;
-    }
-
-    if (geoids == 0 || (geoids == 1 && LastGeoId >= 0 && !lastvertexoraxis)) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("A symmetric construction requires "
-                                               "at least two geometric elements, "
-                                               "the last geometric element being the reference "
-                                               "for the symmetry construction."));
-        return;
-    }
-
-    if (lastgeotype == invalid) {
-        Gui::TranslatedUserWarning(Obj,
-                                   QObject::tr("Wrong selection"),
-                                   QObject::tr("The last element must be a point "
-                                               "or a line serving as reference "
-                                               "for the symmetry construction."));
-
-        return;
-    }
-
-    std::string geoIdList = stream.str();
-
-    // missing cases:
-    // 1- Last element is an edge, and is V or H axis
-    // 2- Last element is a point GeomPoint
-    // 3- Last element is a point (Vertex)
-
-    if (LastGeoId >= 0 && !lastvertexoraxis) {
-        // if LastGeoId was added remove the last element
-        int index = geoIdList.rfind(',');
-        index = geoIdList.rfind(',', index - 1);
-        geoIdList.resize(index);
-    }
-    else {
-        int index = geoIdList.rfind(',');
-        geoIdList.resize(index);
-    }
-
-    geoIdList.insert(0, 1, '[');
-    geoIdList.append(1, ']');
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create symmetric geometry"));
-
-    try {
-        Gui::cmdAppObjectArgs(Obj,
-                              "addSymmetric(%s, %d, %d)",
-                              geoIdList.c_str(),
-                              LastGeoId,
-                              static_cast<int>(LastPointPos));
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        Gui::NotifyUserError(
-            Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
-        Gui::Command::abortCommand();
-    }
-    tryAutoRecomputeIfNotSolve(Obj);
 }
 
 bool CmdSketcherSymmetry::isActive()
