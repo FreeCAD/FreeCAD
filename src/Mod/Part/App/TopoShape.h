@@ -140,6 +140,24 @@ enum class LinearizeEdge
     linearizeEdges
 };
 
+enum class IsSolid
+{
+    notSolid,
+    solid
+};
+
+enum class IsRuled
+{
+    notRuled,
+    ruled
+};
+
+enum class IsClosed
+{
+    notClosed,
+    closed
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -785,6 +803,31 @@ public:
             return _res;
         }
     };
+
+    /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
+     *
+     * @param sources: the source shapes. The first shape is used as the spine,
+     *                 and the rest as sections. The sections can be of any
+     *                 type, but only wires are used. The first and last
+     *                 section may be vertex.
+     * @param isSolid: whether to make a solid
+     * @param isRuled: if isRuled then the faces generated between the edges of
+     *                 two consecutive section wires are ruled surfaces. If
+     *                 notRuled, then they are smoothed out by approximation
+     * @param isClosed: If isClosed, then the first section is duplicated to close
+     *                  the loft as the last section
+     * @param maxDegree: define the maximal U degree of the result surface
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementLoft(const std::vector<TopoShape> &sources,
+                        IsSolid isSolid, IsRuled isRuled, IsClosed isClosed=IsClosed::notClosed,
+                        Standard_Integer maxDegree=5, const char *op=nullptr);
 
     /** Make a ruled surface
      *

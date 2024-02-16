@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <TopExp_Explorer.hxx>
-
 #include "PartTestHelpers.h"
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
