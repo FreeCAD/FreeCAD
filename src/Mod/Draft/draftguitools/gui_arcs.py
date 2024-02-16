@@ -96,10 +96,11 @@ class Arc(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super().finish()
+        self.end_callbacks(self.call)
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
@@ -595,8 +596,8 @@ class Arc_3Points(gui_base.GuiCommandBase):
             `ui.continueMode` is `True`.
         """
         App.activeDraftCommand = None
-        super().finish()
         self.tracker.finalize()
+        super().finish()
         if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
             self.Activated()
 

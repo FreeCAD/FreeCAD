@@ -87,9 +87,10 @@ class Label(gui_base_original.Creator):
 
     def finish(self, cont=False):
         """Finish the command."""
-        super().finish()
+        self.end_callbacks(self.call)
         if self.ghost:
             self.ghost.finalize()
+        super().finish()
 
     def create(self):
         """Create the actual object."""

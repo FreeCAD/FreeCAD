@@ -61,19 +61,20 @@ class Shape2DView(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Shape2DView, self).Activated(name="Project 2D view")
+        super().Activated(name="Project 2D view")
+        if not self.ui:
+            return
         if not Gui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi(on_close_call=self.finish)
-                _msg(translate("draft", "Select an object to project"))
-                self.call = self.view.addEventCallback(
-                    "SoEvent",
-                    gui_tool_utils.selectObject)
+            self.ui.selectUi(on_close_call=self.finish)
+            _msg(translate("draft", "Select an object to project"))
+            self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
+        if self.call is not None:
+            self.end_callbacks(self.call)
         faces = []
         objs = []
         vec = Gui.ActiveDocument.ActiveView.getViewDirection().negative()
