@@ -328,7 +328,8 @@ public:
     /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
     SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
 
-    Base::BoundBox2d View3DInventorViewer::getViewportOnXYPlaneOfPlacement(Base::Placement& plc) const;
+    /** Returns the bounding box on the XY plane of a placement to the given 2d point. */
+    Base::BoundBox2d getViewportOnXYPlaneOfPlacement(Base::Placement& plc) const;
 
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;
