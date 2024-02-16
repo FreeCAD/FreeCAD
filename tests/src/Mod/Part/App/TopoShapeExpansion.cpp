@@ -1157,5 +1157,32 @@ TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
     EXPECT_EQ(surface2.GetType(), GeomAbs_Plane);
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subEdges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    std::vector<TopoShape> shapes2 = {subEdges[0], subEdges[1]};
+    // Act
+    TopoShape result2 = cube1TS.makeElementRuledSurface(shapes2, 0);  // TODO: direction as enum?
+    // Assert
+    EXPECT_EQ(result2.countSubElements("Wire"), 1);
+    EXPECT_FLOAT_EQ(getArea(result2.getShape()), 0.32953611);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subWires = cube1TS.getSubTopoShapes(TopAbs_WIRE);
+    std::vector<TopoShape> shapes = {subWires[0], subWires[1]};
+    // Act
+    TopoShape result = cube1TS.makeElementRuledSurface(shapes, 0);  // TODO: direction as enum?
+    // Assert
+    EXPECT_EQ(result.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 2.023056);
+}
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
