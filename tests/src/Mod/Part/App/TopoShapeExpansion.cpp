@@ -1185,4 +1185,48 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
     EXPECT_FLOAT_EQ(getArea(result.getShape()), 2.023056);
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementLoft)
+{
+    // Loft must have either all open or all closed sections to work, we'll do two closed.
+    // Arrange
+    const float Len = 5;
+    const float Wid = 5;
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
+    auto transform {gp_Trsf()};
+    transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 10.0));
+    auto wire2 = wire1;  // Shallow copy
+    wire2.Move(TopLoc_Location(transform));
+    TopoShape wire1ts {wire1,
+                       1L};  // One of these shapes should have a tag or we won't get an Element Map
+    TopoShape wire2ts {
+        wire2,
+        2L};  // If you change either tag or eliminate one it changes the resulting name.
+    std::vector<TopoShape> shapes = {wire1ts, wire2ts};
+    // Act
+    auto& topoShape =
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
+    auto& topoShape2 =
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
+    auto& topoShape3 =
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
+    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
+    auto& topoShape5 =
+        (new TopoShape())
+            ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled, IsClosed::closed);
+    auto elements = elementMap((topoShape));
+    // Assert that we haven't broken the basic Loft functionality
+    EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 200);
+    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 166.66667);
+    EXPECT_FLOAT_EQ(getVolume(topoShape2.getShape()), 250);
+    EXPECT_FLOAT_EQ(getVolume(topoShape3.getShape()), 166.66667);
+    EXPECT_FLOAT_EQ(getVolume(topoShape4.getShape()), 250);
+    EXPECT_NEAR(getVolume(topoShape5.getShape()), 0, 1e-07);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 24);
+    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;LFT;:H1:4,E"));
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
