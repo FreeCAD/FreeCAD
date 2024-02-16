@@ -52,6 +52,7 @@
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
+#include <BRepOffsetAPI_MakeThickSolid.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
@@ -2053,6 +2054,76 @@ TopoShape& TopoShape::makeElementPipeShell(const std::vector<TopoShape>& shapes,
     return makeElementShape(mkPipeShell, shapes, op);
 }
 
+TopoShape& TopoShape::makeElementThickSolid(const TopoShape& shape,
+                                            const std::vector<TopoShape>& faces,
+                                            double offset,
+                                            double tol,
+                                            bool intersection,
+                                            bool selfInter,
+                                            short offsetMode,
+                                            JoinType join,
+                                            const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Thicken;
+    }
+
+    // we do not offer tangent join type
+    switch (join) {
+        case JoinType::Arc:
+        case JoinType::Intersection:
+            break;
+        default:
+            join = JoinType::Intersection;
+    }
+
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (faces.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+
+    if (fabs(offset) <= 2 * tol) {
+        *this = shape;
+        return *this;
+    }
+
+    TopTools_ListOfShape remFace;
+    for (auto& face : faces) {
+        if (face.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        if (!shape.findShape(face.getShape())) {
+            FC_THROWM(Base::CADKernelError, "face does not belong to the shape");
+        }
+        remFace.Append(face.getShape());
+    }
+#if OCC_VERSION_HEX < 0x070200
+    BRepOffsetAPI_MakeThickSolid mkThick(shape.getShape(),
+                                         remFace,
+                                         offset,
+                                         tol,
+                                         BRepOffset_Mode(offsetMode),
+                                         intersection ? Standard_True : Standard_False,
+                                         selfInter ? Standard_True : Standard_False,
+                                         GeomAbs_JoinType(join));
+#else
+    BRepOffsetAPI_MakeThickSolid mkThick;
+    mkThick.MakeThickSolidByJoin(shape.getShape(),
+                                 remFace,
+                                 offset,
+                                 tol,
+                                 BRepOffset_Mode(offsetMode),
+                                 intersection ? Standard_True : Standard_False,
+                                 selfInter ? Standard_True : Standard_False,
+                                 GeomAbs_JoinType(join));
+#endif
+    return makeElementShape(mkThick, shape, op);
+}
+
+
 TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
                                        const char* op,
                                        double tol,
@@ -2065,7 +2136,11 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
     if (shapes.size() == 1) {
         return makeElementWires(shapes[0], op, tol, policy, output);
     }
-    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes), op, tol, policy, output);
+    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes),
+                            op,
+                            tol,
+                            policy,
+                            output);
 }
 
 
