@@ -34,6 +34,7 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -71,6 +72,8 @@
 #include "Geometry.h"
 
 #include <App/ElementNamingUtils.h>
+#include <BRepLib.hxx>
+#include "Geometry.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -2488,6 +2491,82 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
         }
     }
     return TopoShape {};
+}
+
+bool TopoShape::isLinearEdge(Base::Vector3d* dir, Base::Vector3d* base) const
+{
+    if (isNull() || getShape().ShapeType() != TopAbs_EDGE) {
+        return false;
+    }
+
+    if (!GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve(),
+                             dir,
+                             base)) {
+        return false;
+    }
+
+    // BRep_Tool::Curve() will transform the returned geometry, so no need to
+    // check the shape's placement.
+    return true;
+}
+
+bool TopoShape::isPlanarFace(double tol) const
+{
+    if (isNull() || getShape().ShapeType() != TopAbs_FACE) {
+        return false;
+    }
+
+    return GeomSurface::isPlanar(BRepAdaptor_Surface(TopoDS::Face(getShape())).Surface().Surface(),
+                                 nullptr,
+                                 tol);
+}
+
+// TODO:  Refactor this into two methods.  Totally separate concerns here.
+bool TopoShape::linearize(LinearizeFace do_face, LinearizeEdge do_edge)
+{
+    bool touched = false;
+    BRep_Builder builder;
+    // Note: changing edge geometry seems to mess up with face (or shell, or solid)
+    // Probably need to do some fix afterwards.
+    if (do_edge == LinearizeEdge::linearizeEdges) {
+        for (auto& edge : getSubTopoShapes(TopAbs_EDGE)) {
+            TopoDS_Edge e = TopoDS::Edge(edge.getShape());
+            BRepAdaptor_Curve curve(e);
+            if (curve.GetType() == GeomAbs_Line || !edge.isLinearEdge()) {
+                continue;
+            }
+            std::unique_ptr<Geometry> geo(
+                Geometry::fromShape(e.Located(TopLoc_Location()).Oriented(TopAbs_FORWARD)));
+            std::unique_ptr<Geometry> gline(static_cast<GeomCurve*>(geo.get())->toLine());
+            if (gline) {
+                touched = true;
+                builder.UpdateEdge(e,
+                                   Handle(Geom_Curve)::DownCast(gline->handle()),
+                                   e.Location(),
+                                   BRep_Tool::Tolerance(e));
+            }
+        }
+    }
+    if (do_face == LinearizeFace::linearizeFaces) {
+        for (auto& face : getSubTopoShapes(TopAbs_FACE)) {
+            TopoDS_Face f = TopoDS::Face(face.getShape());
+            BRepAdaptor_Surface surf(f);
+            if (surf.GetType() == GeomAbs_Plane || !face.isPlanarFace()) {
+                continue;
+            }
+            std::unique_ptr<Geometry> geo(
+                Geometry::fromShape(f.Located(TopLoc_Location()).Oriented(TopAbs_FORWARD)));
+            std::unique_ptr<Geometry> gplane(static_cast<GeomSurface*>(geo.get())->toPlane());
+            if (gplane) {
+                touched = true;
+                builder.UpdateFace(f,
+                                   Handle(Geom_Surface)::DownCast(gplane->handle()),
+                                   f.Location(),
+                                   BRep_Tool::Tolerance(f));
+            }
+        }
+    }
+    return touched;
 }
 
 struct MapperFill: Part::TopoShape::Mapper
