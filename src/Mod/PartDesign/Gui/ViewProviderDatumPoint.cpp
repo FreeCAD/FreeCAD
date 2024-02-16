@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoVertexProperty.h>
