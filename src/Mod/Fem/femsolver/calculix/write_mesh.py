@@ -52,7 +52,9 @@ def write_mesh(ccxwriter):
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         # Check to see if pipe beam sections are in analysis and use B32R element type
-        if ccxwriter.member.geos_beamsection.SectionType == "Pipe":
+        if ccxwriter.member.geos_beamsection:
+            beamsec_obj = ccxwriter.member.geos_beamsection[0]["Object"]
+            if beamsec_obj.SectionType == "Pipe":
             meshtools.use_B32R_for_pipe_section(ccxwriter.femmesh_file)
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
@@ -74,7 +76,9 @@ def write_mesh(ccxwriter):
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         # Check to see if pipe beam sections are in analysis and use B32R element type
-        if ccxwriter.member.geos_beamsection.SectionType == "Pipe":
+        if ccxwriter.member.geos_beamsection:
+            beamsec_obj = ccxwriter.member.geos_beamsection[0]["Object"]
+            if beamsec_obj.SectionType == "Pipe":
             meshtools.use_B32R_for_pipe_section(ccxwriter.femmesh_file)
 
         # reopen file with "append" to add all the rest
