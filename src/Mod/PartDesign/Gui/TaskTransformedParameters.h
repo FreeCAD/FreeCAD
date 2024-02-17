@@ -38,6 +38,8 @@
 
 class QListWidget;
 
+class Ui_TaskTransformedParameters;
+
 namespace Part {
 class Feature;
 }
@@ -177,10 +179,12 @@ protected Q_SLOTS:
     virtual void onSubTaskButtonOK() {}
     void onButtonAddFeature(const bool checked);
     void onButtonRemoveFeature(const bool checked);
-    virtual void onFeatureDeleted() = 0;
+    void onFeatureDeleted();
     void indexesMoved();
 
 protected:
+    void setupUI();
+
     /**
      * Returns the base transformation
      * For stand alone features it will be objects associated with the view provider
@@ -205,14 +209,18 @@ protected:
 
     void checkVisibility();
 
+private:
+    virtual void setupParameterUI(QWidget* widget) = 0;
+    virtual void retranslateParameterUI(QWidget* widget) = 0;
+
 protected:
     virtual void addObject(App::DocumentObject*);
     virtual void removeObject(App::DocumentObject*);
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
-    void changeEvent(QEvent *e) override = 0;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override = 0;
-    virtual void clearButtons()=0;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void clearButtons();
     static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
     void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
@@ -233,6 +241,9 @@ protected:
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
+
+private:
+    std::unique_ptr<Ui_TaskTransformedParameters> ui;
 };
 
 /// simulation dialog for the TaskView

@@ -50,7 +50,7 @@ public:
     /// Constructor for task with ViewProvider
     explicit TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
     ~TaskPolarPatternParameters() override;
 
     void apply() override;
@@ -64,14 +64,9 @@ private Q_SLOTS:
     void onOffset(const double a);
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
 
 protected:
-    void addObject(App::DocumentObject*) override;
-    void removeObject(App::DocumentObject*) override;
-    void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const std::string getStdAxis() const;
     const std::string getAxis() const;
@@ -80,8 +75,9 @@ protected:
     unsigned getOccurrences() const;
 
 private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void connectSignals();
-    void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;
     void adaptVisibilityToMode();

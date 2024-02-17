@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
 # include <QMessageBox>
 # include <QTimer>
 #endif
@@ -57,104 +56,22 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskLinearPatternParameters)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    this->groupLayout()->addWidget(proxy);
-
-    ui->buttonOK->hide();
-    ui->checkBoxUpdateView->setEnabled(true);
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
-TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
+TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget)
         : TaskTransformedParameters(parentTask), ui(new Ui_TaskLinearPatternParameters)
 {
-    proxy = new QWidget(parentTask);
-    ui->setupUi(proxy);
-    connect(ui->buttonOK, &QToolButton::pressed,
-            parentTask, &TaskLinearPatternParameters::onSubTaskButtonOK);
+    setupParameterUI(parameterWidget);
+}
+
+void TaskLinearPatternParameters::setupParameterUI(QWidget *widget)
+{
+    ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    layout->addWidget(proxy);
-
-    ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
-    ui->checkBoxUpdateView->hide();
-
-    selectionMode = none;
-
-    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
-    blockUpdate = false;
-    setupUI();
-}
-
-void TaskLinearPatternParameters::connectSignals()
-{
-    connect(ui->buttonAddFeature, &QToolButton::toggled,
-            this, &TaskLinearPatternParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
-            this, &TaskLinearPatternParameters::onButtonRemoveFeature);
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, &QAction::triggered, this, &TaskLinearPatternParameters::onFeatureDeleted);
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
-            this, &TaskLinearPatternParameters::indexesMoved);
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout,
-            this, &TaskLinearPatternParameters::onUpdateViewTimer);
-
-    connect(ui->comboDirection, qOverload<int>(&QComboBox::activated),
-            this, &TaskLinearPatternParameters::onDirectionChanged);
-    connect(ui->checkReverse, &QCheckBox::toggled,
-            this, &TaskLinearPatternParameters::onCheckReverse);
-    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
-            this, &TaskLinearPatternParameters::onModeChanged);
-    connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskLinearPatternParameters::onLength);
-    connect(ui->spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskLinearPatternParameters::onOffset);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-            this, &TaskLinearPatternParameters::onOccurrences);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            this, &TaskLinearPatternParameters::onUpdateView);
-}
-
-void TaskLinearPatternParameters::setupUI()
-{
     // Get the feature data
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (auto obj : originals) {
-        if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
 
     ui->spinLength->bind(pcLinearPattern->Length);
     ui->spinOffset->bind(pcLinearPattern->Offset);
@@ -198,7 +115,30 @@ void TaskLinearPatternParameters::setupUI()
     }
 
     adaptVisibilityToMode();
-    connectSignals();
+
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+    connect(updateViewTimer, &QTimer::timeout,
+            this, &TaskLinearPatternParameters::onUpdateViewTimer);
+
+    connect(ui->comboDirection, qOverload<int>(&QComboBox::activated),
+            this, &TaskLinearPatternParameters::onDirectionChanged);
+    connect(ui->checkReverse, &QCheckBox::toggled,
+            this, &TaskLinearPatternParameters::onCheckReverse);
+    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
+            this, &TaskLinearPatternParameters::onModeChanged);
+    connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskLinearPatternParameters::onLength);
+    connect(ui->spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskLinearPatternParameters::onOffset);
+    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
+            this, &TaskLinearPatternParameters::onOccurrences);
+}
+
+void TaskLinearPatternParameters::retranslateParameterUI(QWidget* widget)
+{
+    ui->retranslateUi(widget);
 }
 
 void TaskLinearPatternParameters::updateUI()
@@ -255,23 +195,6 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
-void TaskLinearPatternParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskLinearPatternParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -301,12 +224,6 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             }
         }
     }
-}
-
-void TaskLinearPatternParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskLinearPatternParameters::onCheckReverse(const bool on) {
@@ -406,22 +323,6 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskLinearPatternParameters::onFeatureDeleted()
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign LinearPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
-}
-
 void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     const App::PropertyLinkSub &lnk = dirLinks.getCurrentLink();
@@ -468,17 +369,6 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
     }
     catch (const Base::Exception &ex) {
         Base::Console().Error ("%s\n", ex.what () );
-    }
-
-    if (proxy)
-        delete proxy;
-}
-
-void TaskLinearPatternParameters::changeEvent(QEvent *e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(proxy);
     }
 }
 

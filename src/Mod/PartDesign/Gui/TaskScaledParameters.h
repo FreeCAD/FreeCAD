@@ -49,7 +49,7 @@ public:
     /// Constructor for task with ViewProvider
     explicit TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskScaledParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
     ~TaskScaledParameters() override;
 
     void apply() override;
@@ -58,17 +58,14 @@ private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
     double getFactor() const;
     unsigned getOccurrences() const;
 
 private:
-    void setupUI();
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
 
 private:

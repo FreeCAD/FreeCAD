@@ -49,7 +49,7 @@ public:
     /// Constructor for task with ViewProvider
     explicit TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
 
     ~TaskMirroredParameters() override;
 
@@ -60,17 +60,13 @@ public:
 private Q_SLOTS:
     void onPlaneChanged(int num);
     void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
 
 protected:
-    void addObject(App::DocumentObject*) override;
-    void removeObject(App::DocumentObject*) override;
-    void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
 
 private:
-    void setupUI();
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
     ComboLinks planeLinks;
 

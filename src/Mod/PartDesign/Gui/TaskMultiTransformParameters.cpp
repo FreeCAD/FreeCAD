@@ -60,33 +60,16 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     , subTask(nullptr)
     , subFeature(nullptr)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
+    setupUI();
+}
+
+void TaskMultiTransformParameters::setupParameterUI(QWidget *widget)
+{
+    ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
-    this->groupLayout()->addWidget(proxy);
-
-    connect(ui->buttonAddFeature, &QToolButton::toggled,
-            this, &TaskMultiTransformParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
-            this, &TaskMultiTransformParameters::onButtonRemoveFeature);
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, &QAction::triggered,
-            this, &TaskMultiTransformParameters::onFeatureDeleted);
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
-            this, &TaskMultiTransformParameters::indexesMoved);
 
     // Create a context menu for the listview of transformation features
-    action = new QAction(tr("Edit"), ui->listTransformFeatures);
+    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, &QAction::triggered,
                     this, &TaskMultiTransformParameters::onTransformEdit);
     ui->listTransformFeatures->addAction(action);
@@ -119,11 +102,13 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
                     this, &TaskMultiTransformParameters::onMoveDown);
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            this, &TaskMultiTransformParameters::onUpdateView);
 
     connect(ui->listTransformFeatures, &QListWidget::activated,
             this, &TaskMultiTransformParameters::onTransformActivated);
+
+    connect(ui->buttonOK, &QToolButton::pressed,
+            this, &TaskMultiTransformParameters::onSubTaskButtonOK);
+    ui->buttonOK->hide();
 
     // Get the transformFeatures data
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
@@ -144,66 +129,11 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         ui->listTransformFeatures->addItem(tr("Right-click to add"));
         editHint = true;
     }
-
-    // Get the Originals data
-    std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (auto obj : originals) {
-        if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
 }
 
-void TaskMultiTransformParameters::addObject(App::DocumentObject* obj)
+void TaskMultiTransformParameters::retranslateParameterUI(QWidget* widget)
 {
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskMultiTransformParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
-void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (originalSelected(msg)) {
-        exitSelectionMode();
-    }
-}
-
-void TaskMultiTransformParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
-}
-
-void TaskMultiTransformParameters::onFeatureDeleted()
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0){
-        Base::Console().Error("PartDesign Multitransform: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
+    ui->retranslateUi(widget);
 }
 
 void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
@@ -216,8 +146,16 @@ void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocu
 void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
+        ui->buttonOK->hide();
+
+        // Remove all parameter ui widgets and layout
+        ui->subFeatureWidget->setUpdatesEnabled(false);
+        qDeleteAll(ui->subFeatureWidget->findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly));
+        qDeleteAll(ui->subFeatureWidget->findChildren<QLayout*>(QString(), Qt::FindDirectChildrenOnly));
+        ui->subFeatureWidget->setUpdatesEnabled(true);
+
+
         exitSelectionMode();
-        disconnect(ui->checkBoxUpdateView, nullptr, subTask, nullptr);
         delete subTask;
         subTask = nullptr;
     }
@@ -260,20 +198,20 @@ void TaskMultiTransformParameters::onTransformEdit()
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     subFeature = static_cast<PartDesign::Transformed*>(transformFeatures[row]);
-    if (transformFeatures[row]->is<PartDesign::Mirrored>())
-        subTask = new TaskMirroredParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->is<PartDesign::LinearPattern>())
-        subTask = new TaskLinearPatternParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->is<PartDesign::PolarPattern>())
-        subTask = new TaskPolarPatternParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->is<PartDesign::Scaled>())
-        subTask = new TaskScaledParameters(this, ui->verticalLayout);
+    if (subFeature->is<PartDesign::Mirrored>())
+        subTask = new TaskMirroredParameters(this, ui->subFeatureWidget);
+    else if (subFeature->is<PartDesign::LinearPattern>())
+        subTask = new TaskLinearPatternParameters(this, ui->subFeatureWidget);
+    else if (subFeature->is<PartDesign::PolarPattern>())
+        subTask = new TaskPolarPatternParameters(this, ui->subFeatureWidget);
+    else if (subFeature->is<PartDesign::Scaled>())
+        subTask = new TaskScaledParameters(this, ui->subFeatureWidget);
     else
         return; // TODO: Show an error?
 
+    ui->buttonOK->show();
+
     subTask->setEnabledTransaction(isEnabledTransaction());
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            subTask, &TaskTransformedParameters::onUpdateView);
 }
 
 void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index)
@@ -532,16 +470,6 @@ TaskMultiTransformParameters::~TaskMultiTransformParameters()
     catch (const Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
-    }
-    if (proxy)
-        delete proxy;
-}
-
-void TaskMultiTransformParameters::changeEvent(QEvent *e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(proxy);
     }
 }
 

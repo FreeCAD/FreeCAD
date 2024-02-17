@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QAction>
 # include <QTimer>
 #endif
 
@@ -64,103 +63,22 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskPolarPatternParameters)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    this->groupLayout()->addWidget(proxy);
-
-    ui->buttonOK->hide();
-    ui->checkBoxUpdateView->setEnabled(true);
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
-TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
+TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget)
         : TaskTransformedParameters(parentTask), ui(new Ui_TaskPolarPatternParameters)
 {
-    proxy = new QWidget(parentTask);
-    ui->setupUi(proxy);
-    connect(ui->buttonOK, &QToolButton::pressed,
-            parentTask, &TaskMultiTransformParameters::onSubTaskButtonOK);
+    setupParameterUI(parameterWidget);
+}
+
+void TaskPolarPatternParameters::setupParameterUI(QWidget *widget)
+{
+    ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    layout->addWidget(proxy);
-
-    ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
-    ui->checkBoxUpdateView->hide();
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
-    setupUI();
-}
-
-void TaskPolarPatternParameters::connectSignals()
-{
-    connect(ui->buttonAddFeature, &QToolButton::toggled,
-            this, &TaskPolarPatternParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
-            this, &TaskPolarPatternParameters::onButtonRemoveFeature);
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, &QAction::triggered,
-            this, &TaskPolarPatternParameters::onFeatureDeleted);
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
-            this, &TaskPolarPatternParameters::indexesMoved);
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout,
-            this, &TaskPolarPatternParameters::onUpdateViewTimer);
-    connect(ui->comboAxis, qOverload<int>(&QComboBox::activated),
-            this, &TaskPolarPatternParameters::onAxisChanged);
-    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
-            this, &TaskPolarPatternParameters::onModeChanged);
-    connect(ui->checkReverse, &QCheckBox::toggled,
-            this, &TaskPolarPatternParameters::onCheckReverse);
-    connect(ui->polarAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPolarPatternParameters::onAngle);
-    connect(ui->angleOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPolarPatternParameters::onOffset);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-            this, &TaskPolarPatternParameters::onOccurrences);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            this, &TaskPolarPatternParameters::onUpdateView);
-}
-
-void TaskPolarPatternParameters::setupUI()
-{
     // Get the feature data
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (auto obj : originals) {
-        if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
     ui->angleOffset->bind(pcPolarPattern->Offset);
@@ -200,7 +118,29 @@ void TaskPolarPatternParameters::setupUI()
 
     adaptVisibilityToMode();
     updateUI();
-    connectSignals();
+
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+    connect(updateViewTimer, &QTimer::timeout,
+            this, &TaskPolarPatternParameters::onUpdateViewTimer);
+    connect(ui->comboAxis, qOverload<int>(&QComboBox::activated),
+            this, &TaskPolarPatternParameters::onAxisChanged);
+    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
+            this, &TaskPolarPatternParameters::onModeChanged);
+    connect(ui->checkReverse, &QCheckBox::toggled,
+            this, &TaskPolarPatternParameters::onCheckReverse);
+    connect(ui->polarAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPolarPatternParameters::onAngle);
+    connect(ui->angleOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPolarPatternParameters::onOffset);
+    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
+            this, &TaskPolarPatternParameters::onOccurrences);
+}
+
+void TaskPolarPatternParameters::retranslateParameterUI(QWidget* widget)
+{
+    ui->retranslateUi(widget);
 }
 
 void TaskPolarPatternParameters::updateUI()
@@ -254,23 +194,6 @@ void TaskPolarPatternParameters::adaptVisibilityToMode()
     ui->angleOffsetWrapper->setVisible(mode == PartDesign::PolarPatternMode::offset);
 }
 
-void TaskPolarPatternParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskPolarPatternParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -295,12 +218,6 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             exitSelectionMode();
         }
     }
-}
-
-void TaskPolarPatternParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskPolarPatternParameters::onCheckReverse(const bool on) {
@@ -400,22 +317,6 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskPolarPatternParameters::onFeatureDeleted()
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign PolarPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
-}
-
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     const App::PropertyLinkSub &lnk = axesLinks.getCurrentLink();
@@ -452,17 +353,6 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
         }
     } catch (const Base::Exception &ex) {
         Base::Console().Error ("%s\n", ex.what () );
-    }
-
-    if (proxy)
-        delete proxy;
-}
-
-void TaskPolarPatternParameters::changeEvent(QEvent *e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(proxy);
     }
 }
 

@@ -80,18 +80,12 @@ private Q_SLOTS:
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
     void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-protected:
-    void addObject(App::DocumentObject*) override;
-    void removeObject(App::DocumentObject*) override;
-    void changeEvent(QEvent *e) override;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
-
 private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
     void closeSubTask();
     void moveTransformFeature(const int increment);

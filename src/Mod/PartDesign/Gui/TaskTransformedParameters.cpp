@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 # include <QListWidget>
 #endif
 
@@ -40,6 +41,7 @@
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 
+#include "ui_TaskTransformedParameters.h"
 #include "TaskTransformedParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "ReferenceSelection.h"
@@ -60,6 +62,7 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
     , parentTask(nullptr)
     , insideMultiTransform(false)
     , blockUpdate(false)
+    , ui(new Ui_TaskTransformedParameters)
 {
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
@@ -82,12 +85,85 @@ TaskTransformedParameters::~TaskTransformedParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+
+    if (proxy)
+        delete proxy;
+}
+
+void TaskTransformedParameters::setupUI()
+{
+    // we need a separate container widget to add all controls to
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->buttonAddFeature, &QToolButton::toggled, this, &TaskTransformedParameters::onButtonAddFeature);
+    connect(ui->buttonRemoveFeature, &QToolButton::toggled, this, &TaskTransformedParameters::onButtonRemoveFeature);
+
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    action->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, &QAction::triggered, this, &TaskTransformedParameters::onFeatureDeleted);
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskTransformedParameters::indexesMoved);
+
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskTransformedParameters::onUpdateView);
+
+    // Get the feature data
+    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+
+    // Fill data into dialog elements
+    for (auto obj : originals) {
+        if (obj) {
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setText(QString::fromUtf8(obj->Label.getValue()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(item);
+        }
+    }
+
+    setupParameterUI(ui->featureUI); // create parameter UI widgets
+    this->groupLayout()->addWidget(proxy);
 }
 
 void TaskTransformedParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     if (TransformedView == &Obj)
         TransformedView = nullptr;
+}
+
+void TaskTransformedParameters::changeEvent(QEvent *e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange && proxy) {
+        ui->retranslateUi(proxy);
+        retranslateParameterUI(ui->featureUI);
+    }
+}
+
+void TaskTransformedParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (originalSelected(msg)) {
+        exitSelectionMode();
+    }
+}
+
+void TaskTransformedParameters::clearButtons()
+{
+    if (insideMultiTransform) {
+        parentTask->clearButtons();
+    } else {
+        ui->buttonAddFeature->setChecked(false);
+        ui->buttonRemoveFeature->setChecked(false);
+    }
 }
 
 bool TaskTransformedParameters::isViewUpdated() const
@@ -100,12 +176,21 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
-void TaskTransformedParameters::addObject(App::DocumentObject*)
+void TaskTransformedParameters::addObject(App::DocumentObject* obj)
 {
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(label);
+    item->setData(Qt::UserRole, objectName);
+    ui->listWidgetFeatures->addItem(item);
 }
 
-void TaskTransformedParameters::removeObject(App::DocumentObject*)
+void TaskTransformedParameters::removeObject(App::DocumentObject* obj)
 {
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    removeItemFromListWidget(ui->listWidgetFeatures, label);
 }
 
 bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
@@ -191,6 +276,8 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
     } else {
         exitSelectionMode();
     }
+
+    ui->buttonRemoveFeature->setDisabled(checked);
 }
 
 // Make sure only some feature before the given one is visible
@@ -221,6 +308,24 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
     } else {
         exitSelectionMode();
     }
+
+    ui->buttonAddFeature->setDisabled(checked);
+}
+
+void TaskTransformedParameters::onFeatureDeleted()
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0) {
+        Base::Console().Error("PartDesign Pattern: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
+    recomputeFeature();
 }
 
 void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const QString& itemstr)
