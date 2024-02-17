@@ -84,7 +84,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskPolarPatternParameters> ui;
-    QTimer* updateViewTimer;
+    QTimer* updateViewTimer = nullptr;
 
     ComboLinks axesLinks;
 };

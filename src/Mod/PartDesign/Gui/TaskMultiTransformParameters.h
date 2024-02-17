@@ -94,9 +94,9 @@ private:
 private:
     std::unique_ptr<Ui_TaskMultiTransformParameters> ui;
     /// The subTask and subFeature currently active in the UI
-    TaskTransformedParameters* subTask;
-    PartDesign::Transformed* subFeature;
-    bool editHint;
+    TaskTransformedParameters* subTask = nullptr;
+    PartDesign::Transformed* subFeature = nullptr;
+    bool editHint = false;
 };
 
 

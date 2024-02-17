@@ -57,8 +57,6 @@ using namespace Gui;
 TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskMultiTransformParameters)
-    , subTask(nullptr)
-    , subFeature(nullptr)
 {
     setupUI();
 }

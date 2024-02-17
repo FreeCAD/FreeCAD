@@ -67,7 +67,8 @@ public:
      * will go out of sync, and crashes may result.
      */
     explicit ComboLinks(QComboBox &combo);
-    ComboLinks() {_combo = nullptr; doc = nullptr;}
+    ComboLinks() = default;
+
     void setCombo(QComboBox &combo) {assert(!_combo); this->_combo = &combo; _combo->clear();}
 
     /**
@@ -104,8 +105,8 @@ public:
 
     ~ComboLinks() {_combo = nullptr; clear();}
 private:
-    QComboBox* _combo;
-    App::Document* doc;
+    QComboBox* _combo = nullptr;
+    App::Document* doc = nullptr;
     std::vector<App::PropertyLinkSub*> linksInList;
 };
 
@@ -227,8 +228,8 @@ protected:
     void fillPlanesCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
 
 protected:
-    QWidget* proxy;
-    ViewProviderTransformed *TransformedView;
+    QWidget* proxy = nullptr;
+    ViewProviderTransformed *TransformedView = nullptr;
     int transactionID = 0;
     bool enableTransaction = true;
 
@@ -241,11 +242,11 @@ protected:
     SelectionMode selectionMode = SelectionMode::None;
 
     /// The MultiTransform parent task of this task
-    TaskMultiTransformParameters* parentTask;
+    TaskMultiTransformParameters* parentTask = nullptr;
     /// Flag indicating whether this object is a container for MultiTransform
-    bool insideMultiTransform;
+    bool insideMultiTransform = false;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;
+    bool blockUpdate = false;
 
 private:
     std::unique_ptr<Ui_TaskTransformedParameters> ui;
@@ -268,9 +269,10 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+
 protected:
-    TaskTransformedParameters  *parameter;
-    TaskTransformedMessages  *message;
+    TaskTransformedParameters  *parameter = nullptr;
+    TaskTransformedMessages  *message = nullptr;
 };
 
 } //namespace PartDesignGui

@@ -57,11 +57,7 @@ using namespace Gui;
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap(TransformedView->featureIcon().c_str()),
               TransformedView->menuName, true, parent)
-    , proxy(nullptr)
     , TransformedView(TransformedView)
-    , parentTask(nullptr)
-    , insideMultiTransform(false)
-    , blockUpdate(false)
     , ui(new Ui_TaskTransformedParameters)
 {
     Gui::Document* doc = TransformedView->getDocument();
@@ -73,11 +69,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
     : TaskBox(QPixmap(), tr(""), true, parentTask),
-      proxy(nullptr),
-      TransformedView(nullptr),
       parentTask(parentTask),
-      insideMultiTransform(true),
-      blockUpdate(false)
+      insideMultiTransform(true)
 {
 }
 
@@ -553,7 +546,7 @@ void TaskTransformedParameters::indexesMoved()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_), parameter(nullptr)
+    : TaskDlgFeatureParameters(TransformedView_)
 {
     assert(vp);
     message = new TaskTransformedMessages(getTransformedView());
@@ -583,9 +576,8 @@ bool TaskDlgTransformedParameters::reject()
 
 
 ComboLinks::ComboLinks(QComboBox &combo)
-    : doc(nullptr)
+    : _combo(&combo)
 {
-    this->_combo = &combo;
     _combo->clear();
 }
 
