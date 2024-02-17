@@ -62,9 +62,7 @@ class Join(gui_base_original.Modifier):
         if not Gui.Selection.getSelection():
             self.ui.selectUi(on_close_call=self.finish)
             _msg(translate("draft", "Select an object to join"))
-            self.call = self.view.addEventCallback(
-                "SoEvent",
-                gui_tool_utils.selectObject)
+            self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
         else:
             self.proceed()
 
@@ -75,6 +73,8 @@ class Join(gui_base_original.Modifier):
         visually share a point. This is due to the underlying `joinWires`
         method not handling the points correctly.
         """
+        if self.call is not None:
+            self.end_callbacks(self.call)
         if Gui.Selection.getSelection():
             self.print_selection()
             Gui.addModule("Draft")

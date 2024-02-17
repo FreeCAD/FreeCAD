@@ -8,8 +8,6 @@
 #include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
 
-#include <BRepBuilderAPI_MakeVertex.hxx>
-
 using namespace Data;
 using namespace Part;
 using namespace PartTestHelpers;

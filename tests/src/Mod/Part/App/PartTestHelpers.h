@@ -9,12 +9,15 @@
 #include "Mod/Part/App/FeaturePartBox.h"
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include "Mod/Part/App/FeatureFillet.h"
-#include <BRepGProp.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepGProp.hxx>
+#include <BRepPrimAPI_MakeBox.hxx>
 #include <GC_MakeCircle.hxx>
 #include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
 
 namespace PartTestHelpers
 {

@@ -34,11 +34,11 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc  # include resources, icons, ui files
-import draftutils.todo as todo
-
+from draftguitools import gui_base
+from draftutils import gui_utils
+from draftutils import todo
 from draftutils.messages import _log
 from draftutils.translate import translate
-from draftguitools import gui_base
 from drafttaskpanels import task_orthoarray
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -49,7 +49,7 @@ class OrthoArray(gui_base.GuiCommandBase):
     """Gui command for the OrthoArray tool."""
 
     def __init__(self):
-        super(OrthoArray, self).__init__()
+        super().__init__()
         self.command_name = "Orthogonal array"
         # self.location = None
         self.mouse_event = None
@@ -115,6 +115,7 @@ class OrthoArray(gui_base.GuiCommandBase):
         #                                   self.callback_move)
         self.view.removeEventCallbackPivy(self.mouse_event,
                                           self.callback_click)
+        gui_utils.end_all_events()
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
             self.finish()
