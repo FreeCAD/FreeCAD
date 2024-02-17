@@ -95,8 +95,8 @@ class PartExport ShapeSegment: public Data::Segment
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit ShapeSegment(const TopoDS_Shape& ShapeIn)
-        : Shape(ShapeIn)
+    explicit ShapeSegment(TopoDS_Shape ShapeIn)
+        : Shape(std::move(ShapeIn))
     {}
     ShapeSegment() = default;
     std::string getName() const override;
@@ -156,6 +156,36 @@ enum class IsClosed
 {
     notClosed,
     closed
+};
+
+/// Option to manage discontinuity in pipe sweeping
+enum class TransitionMode
+{
+    /** Discontinuities are treated by modification of the sweeping mode.
+     * The pipe is "transformed" at the fractures of the spine. This mode
+     * assumes building a self-intersected shell.
+     */
+    Transformed,
+
+    /** Discontinuities are treated like right corner. Two pieces of the
+     * pipe corresponding to two adjacent segments of the spine are
+     * extended and intersected at a fracture of the spine.
+     */
+    RightCorner,
+
+    /** Discontinuities are treated like round corner. The corner is
+     * treated as rotation of the profile around an axis which passes
+     * through the point of the spine's fracture. This axis is based on
+     * cross product of directions tangent to the adjacent segments of the
+     * spine at their common point.
+     */
+    RoundCorner
+};
+
+enum class MakeSolid
+{
+    noSolid,
+    makeSolid
 };
 
 /** The representation for a CAD Shape
@@ -352,11 +382,11 @@ public:
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
-    bool isPlanar(double tol = 1.0e-7) const;
+    bool isPlanar(double tol = 1.0e-7) const;   // NOLINT
     /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
     bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
     /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
-    bool isPlanarFace(double tol=1e-7) const;
+    bool isPlanarFace(double tol=1e-7) const;   // NOLINT
     //@}
 
     /** @name Boolean operation*/
@@ -719,6 +749,36 @@ public:
         return TopoShape().makeRefine(*this, op, no_fail);
     }
     //@}
+
+    /* Make a shell or solid by sweeping profile wire along a spine
+     *
+     * @params sources: source shapes. The first shape is used as spine. The
+     *                  rest are used as section profiles. Can be of type edge,
+     *                  wire, face, or compound of those. For face, only outer
+     *                  wire is used.
+     * @params makeSolid: whether to create solid
+     * @param isFrenet: if true, then assume the profiles transition is Frenet,
+     *                  or else a corrected Frenet trihedron is used.
+     * @param transition: @sa TransitionMode
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol3d: 3D tolerance
+     * @param tolBound: boundary tolerance
+     * @param tolAngular: angular tolerance
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementPipeShell(const std::vector<TopoShape>& sources,
+                                    const MakeSolid makeSolid,
+                                    const Standard_Boolean isFrenet,
+                                    TransitionMode transition = TransitionMode::Transformed,
+                                    const char* op = nullptr,
+                                    double tol3d = 0.0,
+                                    double tolBound = 0.0,
+                                    double tolAngluar = 0.0);
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
