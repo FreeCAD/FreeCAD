@@ -188,6 +188,12 @@ enum class MakeSolid
     makeSolid
 };
 
+enum class MapElement
+{
+    noMap,
+    map
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -330,8 +336,32 @@ public:
      * @return  The shape, or a null TopoShape.
      */
     TopoShape getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent = false) const;
-    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;
-    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;
+    /**
+     * Locate all of the sub TopoShapes of a given type, while avoiding a given type
+     * @param type The type to find
+     * @param avoid The type to avoid
+     * @return The sub TopoShapes.
+     */
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    /**
+     * Locate all of the sub TopoDS_Shapes of a given type, while avoiding a given type
+     * @param type The type to find
+     * @param avoid The type to avoid
+     * @return The sub TopoDS_Shapes.
+     */
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    /**
+     * Locate all the Edges in the Wires of this shape
+     * @param mapElement If True, map the subelements ( Edges ) found
+     * @return Vector of the edges
+     */
+    std::vector<TopoShape> getOrderedEdges(MapElement mapElement=MapElement::map) const;
+    /**
+     * Locate all the Vertexes in the Wires of this shape
+     * @param mapElement If True, map the subelements ( Vertexes )  found
+     * @return Vector of the Vertexes
+     */
+    std::vector<TopoShape> getOrderedVertexes(MapElement mapElement=MapElement::map) const;
     unsigned long countSubShapes(const char* Type) const;
     unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
     bool hasSubShape(const char* Type) const;
