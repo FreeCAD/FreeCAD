@@ -504,26 +504,4 @@ bool TaskDlgMultiTransformParameters::accept()
     return TaskDlgFeatureParameters::accept ();
 }
 
-// FIXME: It seems all roll back is finely handled by abortCommand() in parent classes. On the other
-//        hand manual removal of objects may lead to segfault in dialog distructer of subtransformation
-//        due to TaskMultiTransformParameters::getSubFeature() returns already destroid object. So check
-//        that everything is fine and delete the method. (2015-07-31, Fat-Zer)
-//bool TaskDlgMultiTransformParameters::reject()
-//{
-//    // Get objects before view is invalidated
-//    // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
-//    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(vp->getObject());
-//    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
-//
-//    // Delete the transformation features - must happen before abortCommand()!
-//    for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
-//    {
-//        if ((*it) != NULL)
-//            Gui::Command::doCommand(
-//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
-//    }
-//
-//    return TaskDlgTransformedParameters::reject();
-//}
-
 #include "moc_TaskMultiTransformParameters.cpp"

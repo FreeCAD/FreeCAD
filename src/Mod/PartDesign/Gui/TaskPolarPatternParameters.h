@@ -97,7 +97,6 @@ class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
-    ~TaskDlgPolarPatternParameters() override = default;
 };
 
 } //namespace PartDesignGui

@@ -205,7 +205,6 @@ protected:
 
     void addReferenceSelectionGate(AllowSelectionFlags);
 
-    bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
 
     void checkVisibility();
@@ -259,7 +258,6 @@ class TaskDlgTransformedParameters : public PartDesignGui::TaskDlgFeatureParamet
 
 public:
     explicit TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
-    ~TaskDlgTransformedParameters() override = default;
 
     ViewProviderTransformed* getTransformedView() const
     { return static_cast<ViewProviderTransformed*>(vp); }

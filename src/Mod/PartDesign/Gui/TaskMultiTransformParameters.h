@@ -107,7 +107,6 @@ class TaskDlgMultiTransformParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView);
-    ~TaskDlgMultiTransformParameters() override = default;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)

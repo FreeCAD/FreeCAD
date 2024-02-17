@@ -159,11 +159,6 @@ void TaskTransformedParameters::clearButtons()
     }
 }
 
-bool TaskTransformedParameters::isViewUpdated() const
-{
-    return (blockUpdate == false);
-}
-
 int TaskTransformedParameters::getUpdateViewTimeout() const
 {
     return 500;
@@ -560,7 +555,6 @@ bool TaskDlgTransformedParameters::accept()
 {
     parameter->exitSelectionMode();
 
-    // Continue (usually in virtual method accept())
     return TaskDlgFeatureParameters::accept ();
 }
 

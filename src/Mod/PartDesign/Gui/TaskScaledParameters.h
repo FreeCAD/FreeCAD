@@ -50,7 +50,6 @@ public:
     explicit TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
-    ~TaskScaledParameters() override;
 
     void apply() override;
 
@@ -80,7 +79,6 @@ class TaskDlgScaledParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
-    ~TaskDlgScaledParameters() override = default;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)

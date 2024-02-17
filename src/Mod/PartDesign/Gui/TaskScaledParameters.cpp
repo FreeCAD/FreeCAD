@@ -141,10 +141,6 @@ unsigned TaskScaledParameters::getOccurrences() const
     return ui->spinOccurrences->value();
 }
 
-TaskScaledParameters::~TaskScaledParameters()
-{
-}
-
 void TaskScaledParameters::apply()
 {
     std::string name = TransformedView->getObject()->getNameInDocument();

@@ -97,7 +97,6 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
-    ~TaskDlgLinearPatternParameters() override = default;
 };
 
 } //namespace PartDesignGui
