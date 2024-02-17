@@ -2155,11 +2155,7 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
     if (shapes.size() == 1) {
         return makeElementWires(shapes[0], op, tol, policy, output);
     }
-    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes),
-                            op,
-                            tol,
-                            policy,
-                            output);
+    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes), op, tol, policy, output);
 }
 
 
