@@ -8,9 +8,6 @@ SET(PreferencePacks_Directories
 "Dark"
 "Darker"
 "Dark modern"
-"Dark behave"
-"Dark contrast"
-"ProDark"
 "Light"
 "Light modern"
 )
