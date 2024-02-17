@@ -554,6 +554,7 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 bool TaskDlgTransformedParameters::accept()
 {
     parameter->exitSelectionMode();
+    parameter->apply();
 
     return TaskDlgFeatureParameters::accept ();
 }
@@ -562,6 +563,7 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
+
     return TaskDlgFeatureParameters::reject ();
 }
 

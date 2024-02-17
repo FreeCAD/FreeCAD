@@ -53,10 +53,6 @@ public:
 
     ~TaskMirroredParameters() override;
 
-    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-
-    void apply() override;
-
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
@@ -67,7 +63,9 @@ private Q_SLOTS:
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
+    void doApply() override;
     void updateUI();
+    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
     ComboLinks planeLinks;
@@ -82,9 +80,6 @@ class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
 
 public:
     explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
-
-    /// is called by the framework if the dialog is accepted (Ok)
-    bool accept() override;
 };
 
 } //namespace PartDesignGui

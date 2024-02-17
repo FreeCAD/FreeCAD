@@ -372,17 +372,17 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
     }
 }
 
-void TaskLinearPatternParameters::apply()
+void TaskLinearPatternParameters::doApply()
 {
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    auto tobj = TransformedView->getObject();
+    auto tobj = getObject();
     FCMD_OBJ_CMD(tobj,"Direction = " << direction);
     FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
-
+    FCMD_OBJ_CMD(tobj,"Mode = " << getMode());
     ui->spinLength->apply();
     ui->spinOffset->apply();
     ui->spinOccurrences->apply();

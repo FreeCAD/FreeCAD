@@ -54,14 +54,10 @@ public:
     explicit TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = nullptr);
     ~TaskMultiTransformParameters() override;
 
-    const std::vector<App::DocumentObject*> getTransformFeatures() const;
-
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature() {
         return subFeature;
     }
-
-    void apply() override;
 
 private Q_SLOTS:
     /// User finished editing a subFeature
@@ -82,6 +78,7 @@ private Q_SLOTS:
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
+    void doApply() override;
 
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
@@ -108,8 +105,6 @@ class TaskDlgMultiTransformParameters : public TaskDlgTransformedParameters
 public:
     explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView);
 
-    /// is called by the framework if the dialog is accepted (Ok)
-    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     // virtual bool reject();
 };

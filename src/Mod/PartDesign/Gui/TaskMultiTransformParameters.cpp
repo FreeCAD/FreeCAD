@@ -145,6 +145,8 @@ void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
         ui->buttonOK->hide();
+        exitSelectionMode();
+        subTask->apply();
 
         // Remove all parameter ui widgets and layout
         ui->subFeatureWidget->setUpdatesEnabled(false);
@@ -152,8 +154,6 @@ void TaskMultiTransformParameters::closeSubTask()
         qDeleteAll(ui->subFeatureWidget->findChildren<QLayout*>(QString(), Qt::FindDirectChildrenOnly));
         ui->subFeatureWidget->setUpdatesEnabled(true);
 
-
-        exitSelectionMode();
         delete subTask;
         subTask = nullptr;
     }
@@ -450,14 +450,19 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
     }
 }
 
-const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures() const
+void TaskMultiTransformParameters::doApply()
 {
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    return pcMultiTransform->Transformations.getValues();
-}
-
-void TaskMultiTransformParameters::apply()
-{
+    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
+    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+    std::stringstream str;
+    str << Gui::Command::getObjectCmd(TransformedView->getObject()) << ".Transformations = [";
+    for (auto it : transformFeatures) {
+        if (it) {
+            str << Gui::Command::getObjectCmd(it) << ",";
+        }
+    }
+    str << "]";
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
 }
 
 TaskMultiTransformParameters::~TaskMultiTransformParameters()
@@ -483,25 +488,6 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
     parameter->setEnabledTransaction(false);
 
     Content.push_back(parameter);
-}
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgMultiTransformParameters::accept()
-{
-    // Set up transformations
-    TaskMultiTransformParameters* mtParameter = static_cast<TaskMultiTransformParameters*>(parameter);
-    std::vector<App::DocumentObject*> transformFeatures = mtParameter->getTransformFeatures();
-    std::stringstream str;
-    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Transformations = [";
-    for (auto it : transformFeatures) {
-        if (it) {
-            str << Gui::Command::getObjectCmd(it) << ",";
-        }
-    }
-    str << "]";
-    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-
-    return TaskDlgFeatureParameters::accept ();
 }
 
 #include "moc_TaskMultiTransformParameters.cpp"

@@ -329,6 +329,11 @@ bool TaskPolarPatternParameters::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
+int TaskPolarPatternParameters::getMode() const
+{
+    return ui->comboMode->currentIndex();
+}
+
 double TaskPolarPatternParameters::getAngle() const
 {
     return ui->polarAngle->value().getValue();
@@ -356,17 +361,19 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
     }
 }
 
-void TaskPolarPatternParameters::apply()
+void TaskPolarPatternParameters::doApply()
 {
-    auto tobj = TransformedView->getObject();
     std::vector<std::string> axes;
     App::DocumentObject* obj;
     getAxis(obj, axes);
     std::string axis = buildLinkSingleSubPythonStr(obj, axes);
 
+    auto tobj = getObject();
     FCMD_OBJ_CMD(tobj,"Axis = " << axis.c_str());
     FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
+    FCMD_OBJ_CMD(tobj,"Mode = " << getMode());
     ui->polarAngle->apply();
+    ui->angleOffset->apply();
     ui->spinOccurrences->apply();
 }
 

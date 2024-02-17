@@ -131,7 +131,11 @@ public:
     explicit TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
     ~TaskTransformedParameters() override;
 
-    virtual void apply() = 0;
+    /// Apply changes for python console
+    void apply()
+    {
+        doApply();
+    }
 
     /*!
      * \brief setEnabledTransaction
@@ -211,6 +215,9 @@ private:
 
     /// Change translation of the parameter UI
     virtual void retranslateParameterUI(QWidget* widget) = 0;
+
+    /// Implementation for apply()
+    virtual void doApply() = 0;
 
     void addObject(App::DocumentObject*);
     void removeObject(App::DocumentObject*);

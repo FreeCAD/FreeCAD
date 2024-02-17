@@ -27,6 +27,7 @@
 #endif
 
 #include <App/DocumentObject.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
@@ -141,11 +142,9 @@ unsigned TaskScaledParameters::getOccurrences() const
     return ui->spinOccurrences->value();
 }
 
-void TaskScaledParameters::apply()
+void TaskScaledParameters::doApply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
+    FCMD_OBJ_CMD(getObject(),"Factor = " << getFactor());
     ui->spinOccurrences->apply();
 }
 
@@ -160,15 +159,6 @@ TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
     parameter = new TaskScaledParameters(ScaledView);
 
     Content.push_back(parameter);
-}
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgScaledParameters::accept()
-{
-
-        parameter->apply();
-
-    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskScaledParameters.cpp"

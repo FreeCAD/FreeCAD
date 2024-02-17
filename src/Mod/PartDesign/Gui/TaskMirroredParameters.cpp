@@ -192,8 +192,14 @@ void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vect
     sub = lnk.getSubValues();
 }
 
-void TaskMirroredParameters::apply()
+void TaskMirroredParameters::doApply()
 {
+    std::vector<std::string> mirrorPlanes;
+    App::DocumentObject* obj;
+    getMirrorPlane(obj, mirrorPlanes);
+    std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
+
+    FCMD_OBJ_CMD(getObject(),"MirrorPlane = " << mirrorPlane);
 }
 
 TaskMirroredParameters::~TaskMirroredParameters()
@@ -223,20 +229,6 @@ TaskDlgMirroredParameters::TaskDlgMirroredParameters(ViewProviderMirrored *Mirro
     parameter = new TaskMirroredParameters(MirroredView);
 
     Content.push_back(parameter);
-}
-//==== calls from the TaskView ===============================================================
-
-bool TaskDlgMirroredParameters::accept()
-{
-    TaskMirroredParameters* mirrorParameter = static_cast<TaskMirroredParameters*>(parameter);
-    std::vector<std::string> mirrorPlanes;
-    App::DocumentObject* obj;
-    mirrorParameter->getMirrorPlane(obj, mirrorPlanes);
-    std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
-
-    FCMD_OBJ_CMD(vp->getObject(),"MirrorPlane = " << mirrorPlane);
-
-    return TaskDlgTransformedParameters::accept();
 }
 
 #include "moc_TaskMirroredParameters.cpp"
