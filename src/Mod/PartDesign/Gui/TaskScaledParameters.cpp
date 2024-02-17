@@ -44,28 +44,35 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskScaledParameters */
 
-TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
+TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed* TransformedView,
+                                           QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskScaledParameters)
 {
     setupUI();
 }
 
-TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget)
-        : TaskTransformedParameters(parentTask), ui(new Ui_TaskScaledParameters)
+TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters* parentTask,
+                                           QWidget* parameterWidget)
+    : TaskTransformedParameters(parentTask)
+    , ui(new Ui_TaskScaledParameters)
 {
     setupParameterUI(parameterWidget);
 }
 
-void TaskScaledParameters::setupParameterUI(QWidget *widget)
+void TaskScaledParameters::setupParameterUI(QWidget* widget)
 {
     ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->spinFactor, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskScaledParameters::onFactor);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-            this, &TaskScaledParameters::onOccurrences);
+    connect(ui->spinFactor,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskScaledParameters::onFactor);
+    connect(ui->spinOccurrences,
+            &Gui::UIntSpinBox::unsignedChanged,
+            this,
+            &TaskScaledParameters::onOccurrences);
 
     // Get the feature data
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
@@ -75,7 +82,7 @@ void TaskScaledParameters::setupParameterUI(QWidget *widget)
     ui->spinOccurrences->bind(pcScaled->Occurrences);
     ui->spinFactor->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
-    //ui->spinFactor->setDecimals(Base::UnitsApi::getDecimals());
+    // ui->spinFactor->setDecimals(Base::UnitsApi::getDecimals());
 
     updateUI();
 }
@@ -87,8 +94,9 @@ void TaskScaledParameters::retranslateParameterUI(QWidget* widget)
 
 void TaskScaledParameters::updateUI()
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
     blockUpdate = true;
 
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
@@ -104,8 +112,9 @@ void TaskScaledParameters::updateUI()
 
 void TaskScaledParameters::onFactor(const double f)
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Factor.setValue(f);
     recomputeFeature();
@@ -113,8 +122,9 @@ void TaskScaledParameters::onFactor(const double f)
 
 void TaskScaledParameters::onOccurrences(const uint n)
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Occurrences.setValue(n);
     recomputeFeature();
@@ -144,7 +154,7 @@ unsigned TaskScaledParameters::getOccurrences() const
 
 void TaskScaledParameters::doApply()
 {
-    FCMD_OBJ_CMD(getObject(),"Factor = " << getFactor());
+    FCMD_OBJ_CMD(getObject(), "Factor = " << getFactor());
     ui->spinOccurrences->apply();
 }
 
@@ -153,7 +163,7 @@ void TaskScaledParameters::doApply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
+TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled* ScaledView)
     : TaskDlgTransformedParameters(ScaledView)
 {
     parameter = new TaskScaledParameters(ScaledView);

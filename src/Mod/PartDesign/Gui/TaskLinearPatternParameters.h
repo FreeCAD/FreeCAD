@@ -30,27 +30,31 @@
 class QTimer;
 class Ui_TaskLinearPatternParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskLinearPatternParameters : public TaskTransformedParameters
+class TaskLinearPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskLinearPatternParameters(ViewProviderTransformed* TransformedView,
+                                         QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
+    TaskLinearPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
     ~TaskLinearPatternParameters() override;
 
 protected:
@@ -92,14 +96,14 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
+class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
+    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern* LinearPatternView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

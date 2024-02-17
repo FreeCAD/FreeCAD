@@ -29,27 +29,31 @@
 
 class Ui_TaskMirroredParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskMirroredParameters : public TaskTransformedParameters
+class TaskMirroredParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView,
+                                    QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
+    TaskMirroredParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
     ~TaskMirroredParameters() override;
 
@@ -74,14 +78,14 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
+class TaskDlgMirroredParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
+    explicit TaskDlgMirroredParameters(ViewProviderMirrored* MirroredView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

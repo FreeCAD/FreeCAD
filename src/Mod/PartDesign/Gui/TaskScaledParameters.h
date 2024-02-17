@@ -29,27 +29,31 @@
 
 class Ui_TaskScaledParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskScaledParameters : public TaskTransformedParameters
+class TaskScaledParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskScaledParameters(ViewProviderTransformed* TransformedView,
+                                  QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskScaledParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
+    TaskScaledParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
 private Q_SLOTS:
     void onFactor(const double f);
@@ -71,14 +75,14 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgScaledParameters : public TaskDlgTransformedParameters
+class TaskDlgScaledParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
+    explicit TaskDlgScaledParameters(ViewProviderScaled* ScaledView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

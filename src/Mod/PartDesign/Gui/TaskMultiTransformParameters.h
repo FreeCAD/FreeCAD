@@ -30,32 +30,37 @@
 class Ui_TaskMultiTransformParameters;
 class QModelIndex;
 
-namespace PartDesign {
+namespace PartDesign
+{
 class Transformed;
 }
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-
-class TaskMultiTransformParameters : public TaskTransformedParameters
+class TaskMultiTransformParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = nullptr);
+    explicit TaskMultiTransformParameters(ViewProviderTransformed* TransformedView,
+                                          QWidget* parent = nullptr);
     ~TaskMultiTransformParameters() override;
 
     /// Return the currently active subFeature
-    PartDesign::Transformed* getSubFeature() {
+    PartDesign::Transformed* getSubFeature()
+    {
         return subFeature;
     }
 
@@ -86,7 +91,7 @@ private:
     void updateUI();
     void closeSubTask();
     void moveTransformFeature(const int increment);
-    void finishAdd(std::string &newFeatName);
+    void finishAdd(std::string& newFeatName);
 
 private:
     std::unique_ptr<Ui_TaskMultiTransformParameters> ui;
@@ -98,17 +103,17 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgMultiTransformParameters : public TaskDlgTransformedParameters
+class TaskDlgMultiTransformParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView);
+    explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform* MultiTransformView);
 
     /// is called by the framework if the dialog is rejected (Cancel)
     // virtual bool reject();
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

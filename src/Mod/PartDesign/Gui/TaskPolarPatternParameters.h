@@ -30,27 +30,31 @@
 class QTimer;
 class Ui_TaskPolarPatternParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskPolarPatternParameters : public TaskTransformedParameters
+class TaskPolarPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskPolarPatternParameters(ViewProviderTransformed* TransformedView,
+                                        QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QWidget* parameterWidget);
+    TaskPolarPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
     ~TaskPolarPatternParameters() override;
 
 protected:
@@ -93,14 +97,14 @@ private:
 
 
 /// simulation dialog for the TaskView
-class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
+class TaskDlgPolarPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
+    explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern* PolarPatternView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H
