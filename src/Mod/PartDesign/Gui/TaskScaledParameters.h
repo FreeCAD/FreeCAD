@@ -58,14 +58,13 @@ private Q_SLOTS:
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
 
-protected:
-    double getFactor() const;
-    unsigned getOccurrences() const;
-
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
+
+    double getFactor() const;
+    unsigned getOccurrences() const;
 
 private:
     std::unique_ptr<Ui_TaskScaledParameters> ui;
@@ -80,7 +79,6 @@ class TaskDlgScaledParameters : public TaskDlgTransformedParameters
 public:
     explicit TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
 
-public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
 };

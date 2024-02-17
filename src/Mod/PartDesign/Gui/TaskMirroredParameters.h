@@ -57,20 +57,20 @@ public:
 
     void apply() override;
 
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
 private Q_SLOTS:
     void onPlaneChanged(int num);
     void onUpdateView(bool) override;
-
-protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
-    ComboLinks planeLinks;
 
 private:
+    ComboLinks planeLinks;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 
@@ -83,7 +83,6 @@ class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
 public:
     explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
 
-public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
 };

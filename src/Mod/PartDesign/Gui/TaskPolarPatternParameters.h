@@ -55,6 +55,9 @@ public:
 
     void apply() override;
 
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
@@ -65,22 +68,21 @@ private Q_SLOTS:
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
 
-protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
+
+    void connectSignals();
+    void updateUI();
+    void kickUpdateViewTimer() const;
+    void adaptVisibilityToMode();
+
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const std::string getStdAxis() const;
     const std::string getAxis() const;
     bool getReverse() const;
     double getAngle() const;
     unsigned getOccurrences() const;
-
-private:
-    void setupParameterUI(QWidget* widget) override;
-    void retranslateParameterUI(QWidget* widget) override;
-    void connectSignals();
-    void updateUI();
-    void kickUpdateViewTimer() const;
-    void adaptVisibilityToMode();
 
 private:
     std::unique_ptr<Ui_TaskPolarPatternParameters> ui;

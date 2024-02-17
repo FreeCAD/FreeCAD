@@ -55,6 +55,9 @@ public:
 
     void apply() override;
 
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
@@ -65,22 +68,21 @@ private Q_SLOTS:
     void onOccurrences(const uint n);
     void onUpdateView(bool) override;
 
-protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
+
+    void connectSignals();
+    void updateUI();
+    void adaptVisibilityToMode();
+    void kickUpdateViewTimer() const;
+
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
     int getMode() const;
     double getLength() const;
     double getOffset() const;
     unsigned getOccurrences() const;
-
-private:
-    void setupParameterUI(QWidget* widget) override;
-    void retranslateParameterUI(QWidget* widget) override;
-    void connectSignals();
-    void updateUI();
-    void adaptVisibilityToMode();
-    void kickUpdateViewTimer() const;
 
 private:
     std::unique_ptr<Ui_TaskLinearPatternParameters> ui;

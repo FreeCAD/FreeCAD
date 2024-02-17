@@ -63,11 +63,9 @@ public:
 
     void apply() override;
 
-public Q_SLOTS:
-    /// User finished editing a subFeature
-    void onSubTaskButtonOK() override;
-
 private Q_SLOTS:
+    /// User finished editing a subFeature
+    void onSubTaskButtonOK();
     void onTransformDelete();
     void onTransformEdit();
     void onTransformActivated(const QModelIndex& index);
@@ -80,12 +78,14 @@ private Q_SLOTS:
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
     void onUpdateView(bool) override;
-    /** Notifies when the object is about to be removed. */
-    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
+
+    /** Notifies when the object is about to be removed. */
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
+
     void updateUI();
     void closeSubTask();
     void moveTransformFeature(const int increment);
@@ -108,7 +108,6 @@ class TaskDlgMultiTransformParameters : public TaskDlgTransformedParameters
 public:
     explicit TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView);
 
-public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
