@@ -345,6 +345,8 @@ def add_attributes(obj, ccx_prefs):
     if not hasattr(obj, "MatrixSolverType"):
         known_ccx_solver_types = [
             "default",
+            "pastix",
+            "pardiso",
             "spooles",
             "iterativescaling",
             "iterativecholesky"
