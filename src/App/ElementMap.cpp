@@ -562,6 +562,11 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
         }
     }
 
+    // Originally in ComplexGeoData::setElementName
+    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+    // if(!_ElementMap)
+    //     resetElementMap(std::make_shared<ElementMap>());
+
     ElementIDRefs _sid;
     if (!sid) {
         sid = &_sid;
