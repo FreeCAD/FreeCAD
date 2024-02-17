@@ -120,7 +120,7 @@ void TaskMirroredParameters::updateUI()
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
 
         if (originalSelected(msg)) {
             exitSelectionMode();
@@ -132,7 +132,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             if (!selObj)
                     return;
 
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
+            if ( selectionMode == SelectionMode::Reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
                 setupTransaction();
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
                 recomputeFeature();
@@ -154,7 +154,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
             // enter reference selection mode
             hideObject();
             showBase();
-            selectionMode = reference;
+            selectionMode = SelectionMode::Reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(AllowSelection::FACE | AllowSelection::PLANAR);
         } else {

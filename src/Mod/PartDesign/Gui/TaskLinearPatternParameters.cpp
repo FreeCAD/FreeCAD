@@ -197,11 +197,11 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
 
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else if (selectionMode == reference) {
+        else if (selectionMode == SelectionMode::Reference) {
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
@@ -211,7 +211,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 getReferencedSelection(pcLinearPattern, msg, selObj, directions);
 
                 // Note: ReferenceSelection has already checked the selection for validity
-                if (selObj && (selectionMode == reference ||
+                if (selObj && (selectionMode == SelectionMode::Reference ||
                                selObj->isDerivedFrom(App::Line::getClassTypeId()) ||
                                selObj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
                                selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ||
@@ -288,7 +288,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
             // enter reference selection mode
             hideObject();
             showBase();
-            selectionMode = reference;
+            selectionMode = SelectionMode::Reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
         } else {

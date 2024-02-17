@@ -232,8 +232,13 @@ protected:
     int transactionID = 0;
     bool enableTransaction = true;
 
-    enum selectionModes { none, addFeature, removeFeature, reference };
-    selectionModes selectionMode = none;
+    enum class SelectionMode {
+        None,
+        AddFeature,
+        RemoveFeature,
+        Reference
+    };
+    SelectionMode selectionMode = SelectionMode::None;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;

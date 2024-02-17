@@ -196,7 +196,7 @@ void TaskPolarPatternParameters::adaptVisibilityToMode()
 
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
 
         if (originalSelected(msg)) {
             exitSelectionMode();
@@ -209,7 +209,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             if(!selObj)
                     return;
 
-            if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+            if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
                 setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
                 recomputeFeature();
@@ -283,7 +283,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             // enter reference selection mode
             hideObject();
             showBase();
-            selectionMode = reference;
+            selectionMode = SelectionMode::Reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::CIRCLE);
         } else {

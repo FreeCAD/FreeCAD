@@ -196,7 +196,7 @@ void TaskTransformedParameters::removeObject(App::DocumentObject* obj)
 bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
-                (selectionMode == addFeature) || (selectionMode == removeFeature))) {
+                (selectionMode == SelectionMode::AddFeature) || (selectionMode == SelectionMode::RemoveFeature))) {
 
         if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
@@ -208,7 +208,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
             std::vector<App::DocumentObject*>::iterator o = std::find(originals.begin(), originals.end(), selectedObject);
-            if (selectionMode == addFeature) {
+            if (selectionMode == SelectionMode::AddFeature) {
                 if (o == originals.end()) {
                     originals.push_back(selectedObject);
                     addObject(selectedObject);
@@ -271,7 +271,7 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
     if (checked) {
         hideObject();
         showBase();
-        selectionMode = addFeature;
+        selectionMode = SelectionMode::AddFeature;
         Gui::Selection().clearSelection();
     } else {
         exitSelectionMode();
@@ -303,7 +303,7 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 {
     if (checked) {
         checkVisibility();
-        selectionMode = removeFeature;
+        selectionMode = SelectionMode::RemoveFeature;
         Gui::Selection().clearSelection();
     } else {
         exitSelectionMode();
@@ -510,7 +510,7 @@ void TaskTransformedParameters::exitSelectionMode()
 {
     try {
         clearButtons();
-        selectionMode = none;
+        selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
         showObject();
     } catch(Base::Exception &e) {
