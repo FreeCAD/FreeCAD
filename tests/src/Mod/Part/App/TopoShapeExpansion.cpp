@@ -1231,15 +1231,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
 TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
 {
     // Arrange
-    auto [cube1, cube2] = CreateTwoCubes();
-    TopoShape cube1TS {cube1, 1L};
-    std::vector<TopoShape> subEdges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
-    std::vector<TopoShape> shapes2 = {subEdges[0], subEdges[1]};
+    auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 8.0)).Edge();
+    auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(2.5, 0.0, 0.0), gp_Pnt(2.5, 0.0, 8.0)).Edge();
+    TopoShape edge1ts {edge1, 2L};
+    TopoShape edge2ts {edge2, 3L};
+    TopoShape topoShape {1L};
     // Act
-    TopoShape result2 = cube1TS.makeElementRuledSurface(shapes2, 0);  // TODO: direction as enum?
+    topoShape.makeElementRuledSurface({edge1ts, edge2ts}, 0);  // TODO: orientation as enum?
+    auto elements = elementMap(topoShape);
     // Assert
-    EXPECT_EQ(result2.countSubElements("Wire"), 1);
-    EXPECT_FLOAT_EQ(getArea(result2.getShape()), 0.32953611);
+    EXPECT_EQ(topoShape.countSubElements("Wire"), 1);
+    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 20);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    // TODO: Revisit these when resetElementMap() is fully worked through.  Suspect that last loop
+    // of makeElementRuledSurface is dependent on this to create elementMaps.
+    //    EXPECT_EQ(elements.size(), 24);
+    //    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    //    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
@@ -1248,12 +1257,19 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
     auto [cube1, cube2] = CreateTwoCubes();
     TopoShape cube1TS {cube1, 1L};
     std::vector<TopoShape> subWires = cube1TS.getSubTopoShapes(TopAbs_WIRE);
-    std::vector<TopoShape> shapes = {subWires[0], subWires[1]};
     // Act
-    TopoShape result = cube1TS.makeElementRuledSurface(shapes, 0);  // TODO: direction as enum?
+    cube1TS.makeElementRuledSurface({subWires[0], subWires[1]}, 0);  // TODO: orientation as enum?
+    auto elements = elementMap(cube1TS);
     // Assert
-    EXPECT_EQ(result.countSubElements("Wire"), 4);
-    EXPECT_FLOAT_EQ(getArea(result.getShape()), 2.023056);
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 2.023056);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    // TODO: Revisit these when resetElementMap() is fully worked through.  Suspect that last loop
+    // of makeElementRuledSurface is dependent on this to create elementMaps.
+    //    EXPECT_EQ(elements.size(), 24);
+    //    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    //    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoft)
@@ -1324,6 +1340,28 @@ TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
     EXPECT_EQ(elements.size(), 24);
     EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subFaces = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    subFaces[0].Tag = 2L;
+    subFaces[1].Tag = 3L;
+    std::vector<TopoShape> shapes = {subFaces[0], subFaces[1]};
+    // Act
+    cube1TS.makeElementThickSolid(cube1TS, shapes, 0.1, 1e-07);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 16);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 9.4911509);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 74);
+    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge11;THK;:H1:4,E"));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
