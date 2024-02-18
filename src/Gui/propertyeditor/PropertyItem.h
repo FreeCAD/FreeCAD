@@ -1026,10 +1026,10 @@ class GuiExport PropertyMaterialItem : public PropertyItem
     void setSpecularColor(const QColor&);
     QColor getEmissiveColor() const;
     void setEmissiveColor(const QColor&);
-    float getShininess() const;
-    void setShininess(float);
-    float getTransparency() const;
-    void setTransparency(float);
+    int getShininess() const;
+    void setShininess(int);
+    int getTransparency() const;
+    void setTransparency(int);
 
 protected:
     PropertyMaterialItem();
@@ -1046,8 +1046,8 @@ private:
     PropertyColorItem* diffuse;
     PropertyColorItem* specular;
     PropertyColorItem* emissive;
-    PropertyFloatItem* shininess;
-    PropertyFloatItem* transparency;
+    PropertyIntegerConstraintItem* shininess;
+    PropertyIntegerConstraintItem* transparency;
 };
 
 class GuiExport PropertyMaterialListItem : public PropertyItem
