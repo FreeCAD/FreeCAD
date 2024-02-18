@@ -439,14 +439,6 @@ static inline std::vector<T> _getSubShapes(const TopoDS_Shape &s, TopAbs_ShapeEn
     return shapes;
 }
 
-std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
-    return _getSubShapes<TopoShape>(_Shape,type);
-}
-
-std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
-    return _getSubShapes<TopoDS_Shape>(_Shape,type);
-}
-
 static std::array<std::string,TopAbs_SHAPE> _ShapeNames;
 
 static void initShapeNameMap() {
