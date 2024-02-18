@@ -368,7 +368,7 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             "Output 3D results for 1D and 2D analysis "
         )
-        dimout = ccx_prefs.GetBool("BeamShellOutput", False)
+        dimout = ccx_prefs.GetBool("BeamShellOutput", True)
         obj.BeamShellResultOutput3D = dimout
 
 
