@@ -79,12 +79,12 @@ def get_scales(unit_system = 0):
     if unit_system == 0:
         param = App.ParamGet("User parameter:BaseApp/Preferences/Units")
         scale_units_system = param.GetInt("UserSchema", 0)
-        if scale_units_system in [0, 1, 4, 6]:
-            return draft_scales_metrics
-        elif scale_units_system in [2, 3, 5]:
+        if scale_units_system in [2, 3, 5]:
             return draft_scales_arch_imperial
         elif scale_units_system in [7]:
             return draft_scales_eng_imperial
+        else:
+            return draft_scales_metrics
     elif unit_system == 1:
         return draft_scales_metrics
     elif unit_system == 2:
