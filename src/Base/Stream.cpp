@@ -832,3 +832,65 @@ std::streambuf::pos_type Streambuf::seekpos(std::streambuf::pos_type pos,
 {
     return seekoff(pos, std::ios_base::beg);
 }
+
+// The custom string handler written by realthunder for the LinkStage3 toponaming code, to handle
+// reading multi-line strings directly into a std::string. Imported from LinkStage3 and refactored
+// during the TNP mitigation project in February 2024.
+ASCIIInputStream& ASCIIInputStream::operator>>(std::string& outputString)
+{
+    uint32_t numberOfLines;
+    char inputChar;
+    // The number of lines is followed by a colon as the delimiter. The string itself is then
+    // allowed to start with any character.
+    _in >> numberOfLines >> inputChar;
+
+    _ss.str("");
+    for (uint32_t lineNumber = 0; lineNumber < numberOfLines && _in; ++lineNumber) {
+        while (true) {
+            if (!_in.get(inputChar)) {
+                break;
+            }
+            // Normalize \r\n to \n
+            if (inputChar == '\r') {
+                if (!_in.get(inputChar)) {
+                    break;
+                }
+                if (inputChar == '\n') {
+                    break;
+                }
+                _ss.put('\r');
+                _ss.put(inputChar);
+            }
+            else {
+                _ss.put(inputChar);
+                if (inputChar == '\n') {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Reading the last line
+    while (_in.get(inputChar)) {
+        // Normalize \r\n to \n, but DO NOT insert '\n' into the extracted
+        // line, because the last '\n' is inserted by us (See OutputStream
+        // operator>>(const char*) above)
+        if (inputChar == '\r') {
+            if (!_in.get(inputChar)) {
+                break;
+            }
+            if (inputChar == '\n') {
+                break;
+            }
+            _ss.put('\r');
+        }
+        else if (inputChar == '\n') {
+            break;
+        }
+
+        _ss.put(inputChar);
+    }
+
+    outputString = _ss.str();
+    return *this;
+}
