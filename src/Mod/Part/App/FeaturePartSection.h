@@ -46,6 +46,7 @@ public:
     short mustExecute() const override;
 protected:
     BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
+    virtual const char *opCode() const;
     //@}
 };
 

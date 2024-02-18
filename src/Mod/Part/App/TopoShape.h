@@ -1451,172 +1451,15 @@ public:
         return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
     }
 
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepBuilderAPI_Sewing& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_ThruSections with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepOffsetAPI_ThruSections& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_MakePipeShell with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_MakePipeShell& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-
-    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepFeat_MakePrism& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const TopoShape& uptoface,
-                                const char* op);
-
-    /** Helper class to return the generated and modified shape given an input shape
-     *
-     * Shape history information is extracted using OCCT APIs
-     * BRepBuilderAPI_MakeShape::Generated/Modified(). However, there is often
-     * some glitches in various derived class. So we use this class as an
-     * abstraction, and create various derived classes to deal with the glitches.
+    /* Toponaming migration, February 2014:
+     * Note that the specialized versions of makeElementShape for operations that do not
+     * inherit from BRepBuilderAPI_MakeShape  ( like BRepBuilderAPI_Sewing ) have been removed.
+     * Rather than restore them, code that calls them should be changed to call
+     * makeShapeWithElementMap directly.  For example:
+     * makeElementShape(sewer, sources)
+     * makeShapeWithElementMap(sewer.SewedShape(), MapperSewing(sewer), sources, OpCodes::Sewing);
+     * Note that if op exists in the method, it should be checked for null and overriden with
+     * the appropriate operation if so.
      */
 
     friend class TopoShapeCache;
@@ -1782,6 +1625,15 @@ struct PartExport MapperMaker: TopoShape::Mapper
     {}
     const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
     const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
+};
+
+struct PartExport MapperSewing: TopoShape::Mapper
+{
+    BRepBuilderAPI_Sewing& maker;
+    explicit MapperSewing(BRepBuilderAPI_Sewing& maker)
+        : maker(maker)
+    {}
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
 };
 
 /** Shape mapper for BRepTools_History
