@@ -29,10 +29,10 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
-# if OCC_VERSION_HEX < 0x070600
-#   include <BRepAdaptor_HCurve.hxx>
-#   include <BRepAdaptor_HCompCurve.hxx>
-# endif
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
+#endif
 
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -240,10 +240,10 @@ TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const
 }
 
 std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape& subshape,
-                                                 std::vector<std::string>* names,
-                                                 CheckGeometry checkGeometry,
-                                                 double tol,
-                                                 double atol) const
+                                                                std::vector<std::string>* names,
+                                                                CheckGeometry checkGeometry,
+                                                                double tol,
+                                                                double atol) const
 {
     std::vector<TopoShape> res;
     if (subshape.isNull() || this->isNull()) {
@@ -347,8 +347,9 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
             // * Compare each vertex of the ancestor shape and the input shape
             // * Perform geometry comparison of the ancestor and input shape.
             //      * For face, perform addition geometry comparison of each edge.
-            std::unordered_set<TopoShape,ShapeHasher,ShapeHasher> shapeSet;
-            for (auto& vert : findSubShapesWithSharedVertex(vertices[0], nullptr, checkGeometry, tol, atol)) {
+            std::unordered_set<TopoShape, ShapeHasher, ShapeHasher> shapeSet;
+            for (auto& vert :
+                 findSubShapesWithSharedVertex(vertices[0], nullptr, checkGeometry, tol, atol)) {
                 for (auto idx : findAncestors(vert.getShape(), shapeType)) {
                     auto shape = getSubTopoShape(shapeType, idx);
                     if (!shapeSet.insert(shape).second) {
@@ -370,7 +371,8 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                     if (otherVertices.size() != vertices.size()) {
                         continue;
                     }
-                    if (checkGeometry == CheckGeometry::checkGeometry && !compareGeometry(shape, false)) {
+                    if (checkGeometry == CheckGeometry::checkGeometry
+                        && !compareGeometry(shape, false)) {
                         continue;
                     }
                     unsigned ind = 0;
@@ -821,36 +823,46 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     }
 }
 
-std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid) const {
+std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type,
+                                                  TopAbs_ShapeEnum avoid) const
+{
     std::vector<TopoDS_Shape> ret;
-    if(isNull())
+    if (isNull()) {
         return ret;
+    }
     if (avoid != TopAbs_SHAPE) {
-        for (TopExp_Explorer exp(getShape(), type, avoid); exp.More(); exp.Next())
+        for (TopExp_Explorer exp(getShape(), type, avoid); exp.More(); exp.Next()) {
             ret.push_back(exp.Current());
+        }
         return ret;
     }
     initCache();
-    auto &ancestry = _cache->getAncestry(type);
+    auto& ancestry = _cache->getAncestry(type);
     int count = ancestry.count();
     ret.reserve(count);
-    for(int i=1;i<=count;++i)
-        ret.push_back(ancestry.find(_Shape,i));
+    for (int i = 1; i <= count; ++i) {
+        ret.push_back(ancestry.find(_Shape, i));
+    }
     return ret;
 }
 
-std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid) const {
-    if(isNull())
+std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type,
+                                                   TopAbs_ShapeEnum avoid) const
+{
+    if (isNull()) {
         return std::vector<TopoShape>();
+    }
     initCache();
 
     auto res = _cache->getAncestry(type).getTopoShapes(*this);
     if (avoid != TopAbs_SHAPE && hasSubShape(avoid)) {
-        for (auto it = res.begin(); it != res.end(); ) {
-            if (_cache->findAncestor(_Shape, it->getShape(), avoid).IsNull())
+        for (auto it = res.begin(); it != res.end();) {
+            if (_cache->findAncestor(_Shape, it->getShape(), avoid).IsNull()) {
                 ++it;
-            else
+            }
+            else {
                 it = res.erase(it);
+            }
         }
     }
     return res;
@@ -858,8 +870,9 @@ std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type, TopAbs
 
 std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
 {
-    if(isNull())
+    if (isNull()) {
         return std::vector<TopoShape>();
+    }
 
     std::vector<TopoShape> shapes;
     if (shapeType() == TopAbs_WIRE) {
@@ -870,9 +883,9 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
         }
     }
     else {
-//        INIT_SHAPE_CACHE();
+        //        INIT_SHAPE_CACHE();
         initCache();
-        for (const auto &w : getSubShapes(TopAbs_WIRE)) {
+        for (const auto& w : getSubShapes(TopAbs_WIRE)) {
             BRepTools_WireExplorer xp(TopoDS::Wire(w));
             while (xp.More()) {
                 shapes.push_back(TopoShape(xp.Current()));
@@ -880,19 +893,21 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
             }
         }
     }
-    if (mapElement == MapElement::map)
+    if (mapElement == MapElement::map) {
         mapSubElementsTo(shapes);
+    }
     return shapes;
 }
 
 std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) const
 {
-    if(isNull())
+    if (isNull()) {
         return std::vector<TopoShape>();
+    }
 
     std::vector<TopoShape> shapes;
 
-    auto collect = [&](const TopoDS_Shape &s) {
+    auto collect = [&](const TopoDS_Shape& s) {
         auto wire = TopoDS::Wire(s);
         BRepTools_WireExplorer xp(wire);
         while (xp.More()) {
@@ -909,16 +924,19 @@ std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) cons
         }
     };
 
-    if (shapeType() == TopAbs_WIRE)
+    if (shapeType() == TopAbs_WIRE) {
         collect(getShape());
-    else {
-//        INIT_SHAPE_CACHE();
-        initCache();
-        for (const auto &s : getSubShapes(TopAbs_WIRE))
-            collect(s);
     }
-    if (mapElement == MapElement::map)
+    else {
+        //        INIT_SHAPE_CACHE();
+        initCache();
+        for (const auto& s : getSubShapes(TopAbs_WIRE)) {
+            collect(s);
+        }
+    }
+    if (mapElement == MapElement::map) {
         mapSubElementsTo(shapes);
+    }
     return shapes;
 }
 
@@ -1913,7 +1931,8 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
             }
         }
     }
-    // Use empty mapper and let makeShapeWithElementMap name the created surface with lower elements.
+    // Use empty mapper and let makeShapeWithElementMap name the created surface with lower
+    // elements.
     return makeShapeWithElementMap(res.getShape(), Mapper(), edges, op);
 }
 
@@ -2521,8 +2540,10 @@ TopoShape& TopoShape::makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
     return makeShapeWithElementMap(mkShape.Solid(), MapperMaker(mkShape), {source}, op);
 }
 
-TopoShape &TopoShape::makeElementShape(BRepOffsetAPI_MakePipeShell &mkShape,
-                                       const std::vector<TopoShape> &source, const char *op) {
+TopoShape& TopoShape::makeElementShape(BRepOffsetAPI_MakePipeShell& mkShape,
+                                       const std::vector<TopoShape>& source,
+                                       const char* op)
+{
     if (!op) {
         op = Part::OpCodes::PipeShell;
     }
