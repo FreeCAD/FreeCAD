@@ -976,9 +976,11 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVarian
         sb->setSingleStep(c->StepSize);
     }
     else {
-        sb->setMinimum(INT_MIN);
-        sb->setMaximum(INT_MAX);
+        sb->setMinimum(min);
+        sb->setMaximum(max);
+        sb->setSingleStep(steps);
     }
+
     sb->setValue(data.toInt());
 }
 
@@ -1167,8 +1169,9 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
         infield->setSingleStep(c->StepSize);
     }
     else {
-        infield->setMinimum((double)INT_MIN);
-        infield->setMaximum((double)INT_MAX);
+        infield->setMinimum(min);
+        infield->setMaximum(max);
+        infield->setSingleStep(steps);
     }
 }
 
@@ -1238,10 +1241,11 @@ void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant&
         sb->setSingleStep(c->StepSize);
     }
     else {
-        sb->setMinimum((double)INT_MIN);
-        sb->setMaximum((double)INT_MAX);
-        sb->setSingleStep(0.1);
+        sb->setMinimum(min);
+        sb->setMaximum(max);
+        sb->setSingleStep(steps);
     }
+
     sb->setValue(data.toDouble());
 }
 
