@@ -345,6 +345,16 @@
           </item>
           <item>
            <property name="text">
+            <string>PaStiX</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Pardiso</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Spooles</string>
            </property>
           </item>
