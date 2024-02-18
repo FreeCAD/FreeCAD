@@ -1309,32 +1309,38 @@ class Snapper:
             self.basepoint = basepoint
         delta = point.sub(self.basepoint)
 
-        # setting constraint axis
-        if self.mask:
-            self.affinity = self.mask
-        if not self.affinity:
-            self.affinity = App.DraftWorkingPlane.getClosestAxis(delta)
-        if isinstance(axis, App.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
-            self.constraintAxis = App.DraftWorkingPlane.u
-        elif axis == "y":
-            self.constraintAxis = App.DraftWorkingPlane.v
-        elif axis == "z":
-            self.constraintAxis = App.DraftWorkingPlane.axis
+        if Gui.draftToolBar.globalMode:
+            import WorkingPlane
+            wp = WorkingPlane.Plane()  # matches the global coordinate system
         else:
+            wp = App.DraftWorkingPlane
+
+        # setting constraint axis
+        if axis == "x":
+            self.constraintAxis = wp.u
+        elif axis == "y":
+            self.constraintAxis = wp.v
+        elif axis == "z":
+            self.constraintAxis = wp.axis
+        elif isinstance(axis, App.Vector):
+            self.constraintAxis = axis
+        else:
+            if self.mask is not None:
+                self.affinity = self.mask
+            if self.affinity is None:
+                self.affinity = wp.get_closest_axis(delta)
             if self.affinity == "x":
-                self.constraintAxis = App.DraftWorkingPlane.u
+                self.constraintAxis = wp.u
             elif self.affinity == "y":
-                self.constraintAxis = App.DraftWorkingPlane.v
+                self.constraintAxis = wp.v
             elif self.affinity == "z":
-                self.constraintAxis = App.DraftWorkingPlane.axis
+                self.constraintAxis = wp.axis
             elif isinstance(self.affinity, App.Vector):
                 self.constraintAxis = self.affinity
             else:
                 self.constraintAxis = None
 
-        if not self.constraintAxis:
+        if self.constraintAxis is None:
             return point
 
         # calculating constrained point
