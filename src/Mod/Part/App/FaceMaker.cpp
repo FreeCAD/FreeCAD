@@ -69,7 +69,7 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
             this->myInputFaces.push_back(sh);
         break;
         default:
-            throw Base::TypeError("Shape must be a wire, edge or compound. Something else was supplied.");
+            throw Base::TypeError(tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString());
         break;
     }
     this->mySourceShapes.push_back(shape);
@@ -259,12 +259,13 @@ TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic)
 
 std::string Part::FaceMakerSimple::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Simple"));
+    return {tr("Simple").toStdString()};
 }
 
 std::string Part::FaceMakerSimple::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Makes separate plane face from every wire independently. No support for holes; wires can be on different planes."));
+    return {tr("Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.").toStdString()};
+
 }
 
 void Part::FaceMakerSimple::Build_Essence()
