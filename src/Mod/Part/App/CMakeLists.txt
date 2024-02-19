@@ -200,6 +200,8 @@ SET(Features_SRCS
     PartFeature.h
     PartFeatureReference.cpp
     PartFeatureReference.h
+    PartParams.cpp
+    PartParams.h
     Part2DObject.cpp
     Part2DObject.h
     PrimitiveFeature.cpp
