@@ -150,6 +150,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionInsertDiameter";
     *tooldimensions << "TechDraw_ExtensionInsertSquare";
+    *tooldimensions << "TechDraw_ExtensionInsertRepetition";
     *tooldimensions << "TechDraw_ExtensionRemovePrefixChar";
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionIncreaseDecimal";
