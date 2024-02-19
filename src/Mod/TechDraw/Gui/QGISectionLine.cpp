@@ -33,6 +33,8 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include "QGISectionLine.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
@@ -73,7 +75,6 @@ QGISectionLine::QGISectionLine() :
     addToGroup(m_symbol2);
 
     setWidth(Rez::guiX(0.75));          //a default?
-    setStyle(getSectionStyle());
     setColor(getSectionColor());
 
 }
@@ -81,7 +82,7 @@ QGISectionLine::QGISectionLine() :
 void QGISectionLine::draw()
 {
     prepareGeometryChange();
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {                           //"ASME"/"ANSI"
         extensionEndsTrad();
     } else {
@@ -128,7 +129,7 @@ void QGISectionLine::makeSectionLine()
 
 void QGISectionLine::makeArrows()
 {
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {
         makeArrowsTrad();
     } else {
@@ -193,7 +194,7 @@ void QGISectionLine::makeArrowsTrad()
 
 void QGISectionLine::makeSymbols()
 {
-    int format = getPrefSectionStandard();
+    int format = Preferences::sectionLineConvention();
     if (format == ANSISTANDARD) {
         makeSymbolsTrad();
     } else {
@@ -470,25 +471,6 @@ QColor QGISectionLine::getSectionColor()
 {
     return PreferencesGui::sectionLineQColor();
 }
-
-//SectionLineStyle
-void QGISectionLine::setSectionStyle(int style)
-{
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (style);
-    setStyle(sectStyle);
-}
-
-Qt::PenStyle QGISectionLine::getSectionStyle()
-{
-    return PreferencesGui::sectionLineStyle();
-}
-
-//ASME("traditional") vs ISO("reference arrow method") arrows
-int QGISectionLine::getPrefSectionStandard()
-{
-    return Preferences::getPreferenceGroup("Standards")->GetInt("SectionLineStandard", ISOSTANDARD);
-}
-
 
 void QGISectionLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
