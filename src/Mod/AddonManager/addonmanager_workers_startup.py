@@ -93,7 +93,7 @@ class CreateAddonListWorker(QtCore.QThread):
     def _get_freecad_addon_repo_data(self):
         # update info lists
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
-            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json"
+            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json", 5000
         )
         if p:
             p = p.data().decode("utf8")
@@ -203,7 +203,7 @@ class CreateAddonListWorker(QtCore.QThread):
     def _get_official_addons(self):
         # querying official addons
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
-            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules"
+            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules", 5000
         )
         if not p:
             return
@@ -369,7 +369,7 @@ class CreateAddonListWorker(QtCore.QThread):
         """
 
         p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
-            "https://wiki.freecad.org/Macros_recipes"
+            "https://wiki.freecad.org/Macros_recipes", 5000
         )
         if not p:
             # The Qt Python translation extractor doesn't support splitting this string (yet)
@@ -859,7 +859,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 ).format(macro_name)
                 + "\n"
             )
-            worker.blockSignals(True)
+            # worker.blockSignals(True)
             worker.requestInterruption()
             worker.wait(100)
             if worker.isRunning():
@@ -871,8 +871,6 @@ class CacheMacroCodeWorker(QtCore.QThread):
                 )
             with self.lock:
                 self.failed.append(macro_name)
-                self.repo_queue.task_done()
-                self.counter += 1
 
 
 class GetMacroDetailsWorker(QtCore.QThread):
