@@ -122,7 +122,6 @@ if(PYCXX_FOUND)
     list(APPEND PYCXX_SOURCES ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
     add_definitions(-DPYCXX_6_2_COMPATIBILITY)
     #end old compatibility
-    
 else(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
 endif(PYCXX_FOUND)
