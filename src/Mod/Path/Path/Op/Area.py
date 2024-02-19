@@ -272,6 +272,10 @@ class ObjectOp(PathOp.ObjectOp):
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams["preamble"] = False
 
+        # disable path sorting for offset and zigzag-offset paths
+        if hasattr(obj, "OffsetPattern") and obj.OffsetPattern in ["ZigZagOffset", "Offset"] and hasattr(obj, "MinTravel") and not obj.MinTravel:
+            pathParams["sort_mode"] = 0
+
         if not self.areaOpRetractTool(obj):
             pathParams["threshold"] = 2.001 * self.radius
 
