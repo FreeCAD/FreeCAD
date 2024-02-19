@@ -624,7 +624,7 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
         std::remove_if(
             joints.begin(),
             joints.end(),
-            [&connectedParts, this](App::DocumentObject* joint) {
+            [&connectedParts](App::DocumentObject* joint) {
                 App::DocumentObject* obj1 = getLinkObjFromProp(joint, "Part1");
                 App::DocumentObject* obj2 = getLinkObjFromProp(joint, "Part2");
                 if ((connectedParts.find(obj1) == connectedParts.end())
@@ -1073,8 +1073,6 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
     std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
-    Base::Placement partPlc = getPlacementFromProp(part, "Placement");
-    Base::Placement objPlc = getPlacementFromProp(obj, "Placement");
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the
     // containing Part.

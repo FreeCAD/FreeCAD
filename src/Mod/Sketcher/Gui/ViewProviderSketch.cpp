@@ -1195,6 +1195,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Mode = STATUS_SELECT_Constraint;
                     }
                 }
+                default:
+                    break;
             }
         }
         else if (!pressed) {

@@ -1893,8 +1893,6 @@ protected:
     void makeCts_1Point1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
@@ -1986,8 +1984,6 @@ protected:
     void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
