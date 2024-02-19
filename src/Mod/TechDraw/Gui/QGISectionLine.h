@@ -62,7 +62,6 @@ public:
     void setDirection(Base::Vector3d dir);
     void setArrowDirections(Base::Vector3d dir1, Base::Vector3d dir2);
     void setFont(QFont f, double fsize);
-    void setSectionStyle(int style);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
     bool pathMode() { return m_pathMode; }
@@ -86,7 +85,6 @@ protected:
     void makeSymbolsISO();
     void makeChangePointMarks();
     void setTools();
-    int  getPrefSectionStandard();
     void extensionEndsISO();
     void extensionEndsTrad();
     double getArrowRotation(Base::Vector3d arrowDir);

@@ -124,6 +124,8 @@ public:
 
     static std::string currentLineDefFile();
     static std::string currentElementDefFile();
+
+    static int sectionLineConvention();
 };
 
 
