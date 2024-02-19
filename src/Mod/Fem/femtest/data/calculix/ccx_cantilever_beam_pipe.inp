@@ -17,7 +17,7 @@
 
 
 ** Edge elements
-*Element, TYPE=B32, ELSET=Eedges
+*Element, TYPE=B32R, ELSET=Eedges
 1, 1, 7, 3
 2, 3, 8, 4
 3, 4, 9, 5
