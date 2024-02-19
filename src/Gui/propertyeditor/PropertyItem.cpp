@@ -3618,12 +3618,16 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
     this->appendChild(emissive);
 
-    shininess = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    shininess = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    shininess->setRange(0, 100);
+    shininess->setStepSize(5);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
     this->appendChild(shininess);
 
-    transparency = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
+    transparency = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
+    transparency->setRange(0, 100);
+    transparency->setStepSize(5);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
     this->appendChild(transparency);
@@ -3779,7 +3783,7 @@ void PropertyMaterialListItem::setEmissiveColor(const QColor& color)
     setValue(list);
 }
 
-float PropertyMaterialListItem::getShininess() const
+int PropertyMaterialListItem::getShininess() const
 {
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<QVariantList>())
@@ -3793,10 +3797,10 @@ float PropertyMaterialListItem::getShininess() const
         return 0;
 
     auto mat = list[0].value<Material>();
-    return mat.shininess;
+    return int(100 * mat.shininess);
 }
 
-void PropertyMaterialListItem::setShininess(float s)
+void PropertyMaterialListItem::setShininess(int s)
 {
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<QVariantList>())
@@ -3810,12 +3814,12 @@ void PropertyMaterialListItem::setShininess(float s)
         return;
 
     auto mat = list[0].value<Material>();
-    mat.shininess = s;
+    mat.shininess = float(s) / 100.0F;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
 }
 
-float PropertyMaterialListItem::getTransparency() const
+int PropertyMaterialListItem::getTransparency() const
 {
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<QVariantList>())
@@ -3829,10 +3833,10 @@ float PropertyMaterialListItem::getTransparency() const
         return 0;
 
     auto mat = list[0].value<Material>();
-    return mat.transparency;
+    return int(100 * mat.transparency);
 }
 
-void PropertyMaterialListItem::setTransparency(float t)
+void PropertyMaterialListItem::setTransparency(int t)
 {
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<QVariantList>())
@@ -3846,7 +3850,7 @@ void PropertyMaterialListItem::setTransparency(float t)
         return;
 
     auto mat = list[0].value<Material>();
-    mat.transparency = t;
+    mat.transparency = float(t) / 100.0F;
     list[0] = QVariant::fromValue<Material>(mat);
     setValue(list);
 }
@@ -3920,8 +3924,8 @@ QVariant PropertyMaterialListItem::toolTip(const App::Property* prop) const
         .arg(ac.red()).arg(ac.green()).arg(ac.blue())
         .arg(sc.red()).arg(sc.green()).arg(sc.blue())
         .arg(ec.red()).arg(ec.green()).arg(ec.blue())
-        .arg(value.shininess)
-        .arg(value.transparency)
+        .arg(int(100 * value.shininess))
+        .arg(int(100 * value.transparency))
         ;
 
     return {data};
