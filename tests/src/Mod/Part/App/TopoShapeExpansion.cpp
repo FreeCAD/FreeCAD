@@ -1569,7 +1569,6 @@ TEST_F(TopoShapeExpansionTest, makeElementCut)
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
 }
 
-<<<<<<< HEAD
 TEST_F(TopoShapeExpansionTest, makeElementTransformWithoutMap)
 {
     // Arrange
@@ -1665,6 +1664,31 @@ TEST_F(TopoShapeExpansionTest, makeElementGTransformWithMap)
 // Not testing _makeElementTransform as it is a thin wrapper that calls the same places as the four
 // preceding tests.
 
-=======
->>>>>>> f6b3402577 (Toposhape/Part: Clean GeneralFuse, Fuse, Cut; add tests; tweak other tests)
+TEST_F(TopoShapeExpansionTest, makeElementSolid)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopExp_Explorer exp(topoShape1.getShape(), TopAbs_SHELL);
+    auto shell1 = exp.Current();
+    exp.Init(topoShape2.getShape(), TopAbs_SHELL);
+    auto shell2 = exp.Current();
+    TopoShape& topoShape3 = topoShape1.makeElementCompound({shell1, shell2});
+    TopoShape& result = topoShape1.makeElementSolid(topoShape3);  // Need the single parm form
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.5, 0.0, 1.5, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 2);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 52);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;SLD;:H1:4,F"));
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

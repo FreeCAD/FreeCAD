@@ -1665,7 +1665,8 @@ public:
      *         that multiple operations can be carried out for the same shape
      *         in the same line of code.
      */
-    TopoShape &makESolid(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+     // TODO: This does not appear to be called, and the implementation seems impossible
+//    TopoShape &makeElementSolid(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     /** Make a solid using shells or CompSolid
      *
      * @param shape: input shape of either a shell, a compound of shells, or a
@@ -1679,7 +1680,7 @@ public:
      *         that multiple operations can be carried out for the same shape
      *         in the same line of code.
      */
-    TopoShape &makESolid(const TopoShape &shape, const char *op=nullptr);
+    TopoShape &makeElementSolid(const TopoShape &shape, const char *op=nullptr);
     /** Make a solid using this shape
      *
      * @param op: optional string to be encoded into topo naming for indicating
@@ -1688,8 +1689,8 @@ public:
      * @return The function returns a new solid using the shell or CompSolid
      *         inside this shape. The shape itself is not modified.
      */
-    TopoShape makESolid(const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makESolid(*this,op);
+    TopoShape makeElementSolid(const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementSolid(*this,op);
     }
 
 

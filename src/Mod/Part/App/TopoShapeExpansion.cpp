@@ -50,6 +50,7 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
@@ -2641,99 +2642,61 @@ struct MapperThruSections: MapperMaker
     }
 };
 
-TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op) {
-    return makESolid(TopoShape().makECompound(shapes),op);
-}
+// TODO:  This method does not appear to ever be called in the codebase, and it is probably
+// broken, because using TopoShape() with no parameters means the result will not have an
+// element Map.
+//TopoShape& TopoShape::makeElementSolid(const std::vector<TopoShape>& shapes, const char* op)
+//{
+//    return makeElementSolid(TopoShape().makeElementCompound(shapes), op);
+//}
 
-bool TopoShape::fixSolidOrientation()
+TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
 {
-    if (isNull())
-        return false;
-
-    if (shapeType() == TopAbs_SOLID) {
-        TopoDS_Solid solid = TopoDS::Solid(_Shape);
-        BRepLib::OrientClosedSolid(solid);
-        if (solid.IsEqual(_Shape))
-            return false;
-        setShape(solid, false);
-        return true;
+    if (!op) {
+        op = Part::OpCodes::Solid;
     }
 
-    if (shapeType() == TopAbs_COMPOUND
-        || shapeType() == TopAbs_COMPSOLID)
-    {
-        auto shapes = getSubTopoShapes();
-        bool touched = false;
-        for (auto &s : shapes) {
-            if (s.fixSolidOrientation())
-                touched = true;
-        }
-        if (!touched)
-            return false;
-
-        BRep_Builder builder;
-        if (shapeType() == TopAbs_COMPOUND) {
-            TopoDS_Compound comp;
-            builder.MakeCompound(comp);
-            for(auto &s : shapes) {
-                if (!s.isNull())
-                    builder.Add(comp, s.getShape());
-            }
-            setShape(comp, false);
-        } else {
-            TopoDS_CompSolid comp;
-            builder.MakeCompSolid(comp);
-            for(auto &s : shapes) {
-                if (!s.isNull())
-                    builder.Add(comp, s.getShape());
-            }
-            setShape(comp, false);
-        }
-        return true;
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
     }
 
-    return false;
-}
-
-TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
-    if(!op) op = Part::OpCodes::Solid;
-
-    if(shape.isNull())
-        HANDLE_NULL_SHAPE;
-
-    //first, if we were given a compsolid, try making a solid out of it
+    // first, if we were given a compsolid, try making a solid out of it
     TopoDS_CompSolid compsolid;
-    int count=0;
-    for(const auto &s : shape.getSubShapes(TopAbs_COMPSOLID)) {
+    int count = 0;
+    for (const auto& s : shape.getSubShapes(TopAbs_COMPSOLID)) {
         ++count;
         compsolid = TopoDS::CompSolid(s);
-        if (count > 1)
+        if (count > 1) {
             break;
+        }
     }
     if (count == 0) {
-        //no compsolids. Get shells...
+        // no compsolids. Get shells...
         BRepBuilderAPI_MakeSolid mkSolid;
-        count=0;
-        for (const auto &s : shape.getSubShapes(TopAbs_SHELL)) {
+        count = 0;
+        for (const auto& s : shape.getSubShapes(TopAbs_SHELL)) {
             ++count;
             mkSolid.Add(TopoDS::Shell(s));
         }
 
-        if (count == 0)//no shells?
-            FC_THROWM(Base::CADKernelError,"No shells or compsolids found in shape");
+        if (count == 0) {  // no shells?
+            FC_THROWM(Base::CADKernelError, "No shells or compsolids found in shape");
+        }
 
-        makEShape(mkSolid,shape,op);
+        makeElementShape(mkSolid, shape, op);
 
         TopoDS_Solid solid = TopoDS::Solid(_Shape);
         BRepLib::OrientClosedSolid(solid);
         setShape(solid, false);
-
-    } else if (count == 1) {
+    }
+    else if (count == 1) {
         BRepBuilderAPI_MakeSolid mkSolid(compsolid);
-        makEShape(mkSolid,shape,op);
-    } else { // if (count > 1)
-        FC_THROWM(Base::CADKernelError,"Only one compsolid can be accepted. "
-                                        "Provided shape has more than one compsolid.");
+        makeElementShape(mkSolid, shape, op);
+    }
+    else {  // if (count > 1)
+        FC_THROWM(Base::CADKernelError,
+                  "Only one compsolid can be accepted. "
+                  "Provided shape has more than one compsolid.");
     }
     return *this;
 }
