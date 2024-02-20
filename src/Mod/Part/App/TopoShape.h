@@ -865,6 +865,74 @@ public:
                                     double tolBound = 0.0,
                                     double tolAngluar = 0.0);
 
+    /** Make shape using generalized fusion and return the modified sub shapes
+     *
+     * @param sources: the source shapes
+     * @param modified: return the modified sub shapes
+     * @param tol: tolerance
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makEGeneralFuse(const std::vector<TopoShape> &sources,
+                               std::vector<std::vector<TopoShape> > &modified, double tol=0, const char *op=nullptr);
+
+    /** Make a fusion of input shapes
+     *
+     * @param sources: the source shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makEFuse(const std::vector<TopoShape> &sources, const char *op=nullptr, double tol=0);
+    /** Make a fusion of this shape and an input shape
+     *
+     * @param source: the source shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makEFuse(const TopoShape &source, const char *op=nullptr, double tol=0) const {
+        return TopoShape(0,Hasher).makEFuse({*this,source},op,tol);
+    }
+
+    /** Make a boolean cut of this shape with an input shape
+     *
+     * @param source: the source shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makECut(const std::vector<TopoShape> &sources, const char *op=nullptr, double tol=0);
+    /** Make a boolean cut of this shape with an input shape
+     *
+     * @param source: the source shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makECut(const TopoShape &source, const char *op=nullptr, double tol=0) const {
+        return TopoShape(0,Hasher).makECut({*this,source},op,tol);
+    }
+
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
      * @return Return true if the shape is modified
@@ -1315,6 +1383,22 @@ public:
         return makeElementShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
     }
 
+    /** Make a planar face with the input wires or edges
+     *
+     * @param shapes: input shapes. Can be either edges, wires, or compound of
+     *                those two types
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param maker: optional type name of the face maker. If not given,
+     *               default to "Part::FaceMakerBullseye"
+     * @param plane: optional plane of the face.
+     *
+     * @return The function creates a planar face. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
     TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
                                const char* op = nullptr,
                                const char* maker = nullptr,

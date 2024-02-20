@@ -2544,6 +2544,73 @@ struct MapperThruSections: MapperMaker
     }
 };
 
+TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
+                                      std::vector<std::vector<TopoShape> > &modifies, double tol, const char *op)
+{
+#if OCC_VERSION_HEX < 0x060900
+    (void)_shapes;
+    (void)modifies;
+    (void)tol;
+    (void)op;
+    FC_THROWM(Base::NotImplementedError,"GFA is available only in OCC 6.9.0 and up.");
+#else
+    if(!op) op = Part::OpCodes::GeneralFuse;
+
+    if(_shapes.empty())
+        HANDLE_NULL_INPUT;
+
+    std::vector<TopoShape> shapes(_shapes);
+
+    BRepAlgoAPI_BuilderAlgo mkGFA;
+    mkGFA.SetRunParallel(true);
+    TopTools_ListOfShape GFAArguments;
+    for(auto &shape : shapes) {
+        if(shape.isNull())
+            HANDLE_NULL_INPUT;
+        if (tol > 0.0) {
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shape = shape.makECopy();
+        }
+        GFAArguments.Append(shape.getShape());
+    }
+    mkGFA.SetArguments(GFAArguments);
+    if (tol > 0.0)
+        mkGFA.SetFuzzyValue(tol);
+#if OCC_VERSION_HEX >= 0x070000
+    mkGFA.SetNonDestructive(Standard_True);
+#endif
+    mkGFA.Build();
+    if (!mkGFA.IsDone())
+        FC_THROWM(Base::CADKernelError,"GeneralFuse failed");
+    makEShape(mkGFA,shapes,op);
+    modifies.resize(shapes.size());
+    int i=0;
+    for(auto &s : shapes) {
+        auto &mod = modifies[i++];
+        for(TopTools_ListIteratorOfListOfShape it(mkGFA.Modified(s.getShape())); it.More(); it.Next()) {
+            TopoShape res(Tag);
+            res.setShape(it.Value());
+            mod.push_back(res);
+        }
+        mapSubElementsTo(mod);
+    }
+    return *this;
+#endif
+}
+
+TopoShape &TopoShape::makEFuse(const std::vector<TopoShape> &shapes,
+                               const char *op, double tol)
+{
+    return makEBoolean(Part::OpCodes::Fuse,shapes,op,tol);
+}
+
+TopoShape &TopoShape::makECut(const std::vector<TopoShape> &shapes,
+                              const char *op, double tol)
+{
+    return makEBoolean(Part::OpCodes::Cut,shapes,op,tol);
+}
+
+
 TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
                                        const TopoShape& source,
                                        const char* op)
