@@ -157,7 +157,6 @@ constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide2_QtGuiTypes;
 constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide2_QtWidgetsTypes;
 constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide2_QtPrintSupportTypes;
 constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide2_QtUiToolsTypes;
-constexpr const char* ModuleShiboken            = "shiboken2";
 constexpr const char* ModulePySide              = "PySide2";
 #else
 PyTypeObject** SbkPySide6_QtCoreTypes           = nullptr;
@@ -170,7 +169,6 @@ constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide6_QtGuiTypes;
 constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide6_QtWidgetsTypes;
 constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide6_QtPrintSupportTypes;
 constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide6_QtUiToolsTypes;
-constexpr const char* ModuleShiboken            = "shiboken6";
 constexpr const char* ModulePySide              = "PySide6";
 #endif
 #else
