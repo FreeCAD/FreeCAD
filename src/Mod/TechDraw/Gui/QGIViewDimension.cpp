@@ -630,10 +630,9 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
-    if (dim->goodReferenceGeometry()) {
+    if (dim->hasGoodReferences()) {
         m_refFlag->hide();
     } else {
-//        m_refFlag->setPos(datumLabel->pos());
         m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
         m_refFlag->show();
     }

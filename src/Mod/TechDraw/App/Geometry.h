@@ -446,6 +446,8 @@ class TechDrawExport GeometryUtils
         static bool getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc);
         static TopoDS_Edge asCircle(TopoDS_Edge occEdge, bool& arc);
         static bool isLine(TopoDS_Edge occEdge);
+        static TopoDS_Edge asLine(TopoDS_Edge occEdge);
+
 };
 
 } //end namespace TechDraw

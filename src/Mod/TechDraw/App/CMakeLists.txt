@@ -106,6 +106,8 @@ SET(Draw_SRCS
     DimensionFormatter.h
     GeometryMatcher.cpp
     GeometryMatcher.h
+    DimensionAutoCorrect.cpp
+    DimensionAutoCorrect.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
