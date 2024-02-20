@@ -551,13 +551,13 @@ void PropertyItem::setPropertyValue(const QString& value)
         else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
             auto obj = static_cast<App::DocumentObject*>(parent);
             App::Document* doc = obj->getDocument();
-            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         }
         else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<ViewProviderDocumentObject*>(parent)->getObject();
             App::Document* doc = obj->getDocument();
-            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         }
         else {
@@ -601,7 +601,7 @@ QVariant PropertyItem::data(int column, int role) const
                 && !propertyItems.front()->testStatus(App::Property::LockDynamic))
             {
                 return role==Qt::BackgroundRole
-                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
+                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99))
                     : QVariant::fromValue(QColor(0,0,0));
             }
             return {};
@@ -644,7 +644,7 @@ QVariant PropertyItem::data(int column, int role) const
             else if (role == Qt::DisplayRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
-            } 
+            }
             else if (role == Qt::ForegroundRole) {
                 if (hasExpression())
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
@@ -774,7 +774,7 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent, const QObject* receiv
         le->bind(getPath());
         le->setAutoApply(autoApply());
     }
-        
+
     return le;
 }
 
@@ -847,9 +847,9 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertySeparatorItem)
 
 QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Q_UNUSED(parent); 
-    Q_UNUSED(receiver); 
-    Q_UNUSED(method); 
+    Q_UNUSED(parent);
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     return nullptr;
 }
 
@@ -1040,7 +1040,15 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
 {
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(false);
-    sb->setDecimals(decimals());
+    const auto prop = static_cast
+        <const App::PropertyFloatConstraint*>(getFirstProperty());
+    if (prop->isIgnoreDecimals()) {
+        // it is not possible to set a QDoubleSpinBox to have unlimited decimals, so
+        // we will arbitrarily allow 10 digits
+        sb->setDecimals(10);
+    } else {
+        sb->setDecimals(decimals());
+    }
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
 
@@ -1110,14 +1118,14 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
-    
+
     //if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
         infield->bind(getPath());
         infield->setAutoApply(autoApply());
     }
 
-    
+
     QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
     return infield;
 }
@@ -1208,7 +1216,15 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
-    sb->setDecimals(decimals());
+    const auto prop = static_cast
+        <const App::PropertyFloatConstraint*>(getFirstProperty());
+    if (prop->isIgnoreDecimals()) {
+        // it is not possible to set a QDoubleSpinBox to have unlimited decimals, so
+        // we will arbitrarily allow 10 digits
+        sb->setDecimals(10);
+    } else {
+        sb->setDecimals(decimals());
+    }
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
@@ -1285,7 +1301,7 @@ PropertyBoolItem::PropertyBoolItem() = default;
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
     assert(prop && prop->isDerivedFrom<App::PropertyBool>());
-    
+
     bool value = static_cast<const App::PropertyBool*>(prop)->getValue();
     return {value};
 }
@@ -1673,7 +1689,7 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[") + 
+    QString data = QString::fromLatin1("[") +
            Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
@@ -2730,10 +2746,10 @@ void PropertyPlacementItem::propertyBound()
     if (isBound()) {
         m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
                                                   <<App::ObjectIdentifier::String("Angle"));
-   
+
         m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
                                                   <<App::ObjectIdentifier::String("Axis"));
-        
+
         m_p->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Base"));
     }
 }
@@ -2756,7 +2772,7 @@ PropertyEnumItem::PropertyEnumItem()
 
 void PropertyEnumItem::propertyBound()
 {
-    if (m_enum && isBound()) 
+    if (m_enum && isBound())
         m_enum->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Enum"));
 }
 
@@ -4239,7 +4255,7 @@ void LinkSelection::select()
 
 LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     : QWidget(parent), objProp(prop), dlg(nullptr)
-{   
+{
     auto layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(1);
@@ -4260,9 +4276,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFocusProxy(label);
-    
+
     // setLayout(layout);
-    
+
     connect(label, &QLabel::linkActivated,
             this, &LinkLabel::onLinkActivated);
     connect(editButton, &QPushButton::clicked,
