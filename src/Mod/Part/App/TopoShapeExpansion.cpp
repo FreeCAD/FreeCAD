@@ -2641,6 +2641,103 @@ struct MapperThruSections: MapperMaker
     }
 };
 
+TopoShape &TopoShape::makESolid(const std::vector<TopoShape> &shapes, const char *op) {
+    return makESolid(TopoShape().makECompound(shapes),op);
+}
+
+bool TopoShape::fixSolidOrientation()
+{
+    if (isNull())
+        return false;
+
+    if (shapeType() == TopAbs_SOLID) {
+        TopoDS_Solid solid = TopoDS::Solid(_Shape);
+        BRepLib::OrientClosedSolid(solid);
+        if (solid.IsEqual(_Shape))
+            return false;
+        setShape(solid, false);
+        return true;
+    }
+
+    if (shapeType() == TopAbs_COMPOUND
+        || shapeType() == TopAbs_COMPSOLID)
+    {
+        auto shapes = getSubTopoShapes();
+        bool touched = false;
+        for (auto &s : shapes) {
+            if (s.fixSolidOrientation())
+                touched = true;
+        }
+        if (!touched)
+            return false;
+
+        BRep_Builder builder;
+        if (shapeType() == TopAbs_COMPOUND) {
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        } else {
+            TopoDS_CompSolid comp;
+            builder.MakeCompSolid(comp);
+            for(auto &s : shapes) {
+                if (!s.isNull())
+                    builder.Add(comp, s.getShape());
+            }
+            setShape(comp, false);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
+    if(!op) op = Part::OpCodes::Solid;
+
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+
+    //first, if we were given a compsolid, try making a solid out of it
+    TopoDS_CompSolid compsolid;
+    int count=0;
+    for(const auto &s : shape.getSubShapes(TopAbs_COMPSOLID)) {
+        ++count;
+        compsolid = TopoDS::CompSolid(s);
+        if (count > 1)
+            break;
+    }
+    if (count == 0) {
+        //no compsolids. Get shells...
+        BRepBuilderAPI_MakeSolid mkSolid;
+        count=0;
+        for (const auto &s : shape.getSubShapes(TopAbs_SHELL)) {
+            ++count;
+            mkSolid.Add(TopoDS::Shell(s));
+        }
+
+        if (count == 0)//no shells?
+            FC_THROWM(Base::CADKernelError,"No shells or compsolids found in shape");
+
+        makEShape(mkSolid,shape,op);
+
+        TopoDS_Solid solid = TopoDS::Solid(_Shape);
+        BRepLib::OrientClosedSolid(solid);
+        setShape(solid, false);
+
+    } else if (count == 1) {
+        BRepBuilderAPI_MakeSolid mkSolid(compsolid);
+        makEShape(mkSolid,shape,op);
+    } else { // if (count > 1)
+        FC_THROWM(Base::CADKernelError,"Only one compsolid can be accepted. "
+                                        "Provided shape has more than one compsolid.");
+    }
+    return *this;
+}
+
 TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shapes,
                                              std::vector<std::vector<TopoShape>>& modifies,
                                              double tol,
