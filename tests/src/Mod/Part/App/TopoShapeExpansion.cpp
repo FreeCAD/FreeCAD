@@ -1569,6 +1569,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCut)
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
 }
 
+<<<<<<< HEAD
 TEST_F(TopoShapeExpansionTest, makeElementTransformWithoutMap)
 {
     // Arrange
@@ -1664,4 +1665,6 @@ TEST_F(TopoShapeExpansionTest, makeElementGTransformWithMap)
 // Not testing _makeElementTransform as it is a thin wrapper that calls the same places as the four
 // preceding tests.
 
+=======
+>>>>>>> f6b3402577 (Toposhape/Part: Clean GeneralFuse, Fuse, Cut; add tests; tweak other tests)
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
