@@ -1716,3 +1716,21 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
     }
     return false;
 }
+
+
+//! make a line Edge from BSpline Edge
+TopoDS_Edge GeometryUtils::asLine(TopoDS_Edge occEdge)
+{
+    BRepAdaptor_Curve c(occEdge);
+
+    // find the two ends
+    Handle(Geom_Curve) curve = c.Curve().Curve();
+    double first = c.FirstParameter();
+    double last = c.LastParameter();
+    gp_Pnt start = c.Value(first);
+    gp_Pnt end = c.Value(last);
+
+    TopoDS_Edge result = BRepBuilderAPI_MakeEdge(start, end);
+    return result;
+}
+

@@ -23,8 +23,6 @@
 #ifndef TechDraw_DrawViewDimension_h_
 #define TechDraw_DrawViewDimension_h_
 
-#include <tuple>
-
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
 #include <Mod/Part/App/PropertyTopoShapeList.h>
@@ -39,7 +37,8 @@
 
 class TopoDS_Shape;
 
-namespace Measure {
+namespace Measure
+{
 class Measurement;
 }
 namespace TechDraw
@@ -47,60 +46,63 @@ namespace TechDraw
 class DrawViewPart;
 class DimensionFormatter;
 class GeometryMatcher;
+class DimensionAutoCorrect;
 
-class TechDrawExport DrawViewDimension : public TechDraw::DrawView
+class TechDrawExport DrawViewDimension: public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
-
-// keep this enum synchronized with TypeEnums
-enum DimensionType {
-    Distance,
-    DistanceX,
-    DistanceY,
-    DistanceZ,
-    Radius,
-    Diameter,
-    Angle,
-    Angle3Pt
-};
+    // keep this enum synchronized with TypeEnums
+    enum DimensionType
+    {
+        Distance,
+        DistanceX,
+        DistanceY,
+        DistanceZ,
+        Radius,
+        Diameter,
+        Angle,
+        Angle3Pt
+    };
 
     /// Constructor
     DrawViewDimension();
     ~DrawViewDimension() override;
 
-    App::PropertyEnumeration        MeasureType;           //True/Projected
-    App::PropertyLinkSubList        References2D;          //Points to Projection SubFeatures
-    App::PropertyLinkSubList        References3D;          //Points to 3D Geometry SubFeatures
-    App::PropertyEnumeration        Type;                  //DistanceX, DistanceY, Diameter, etc.
+    App::PropertyEnumeration MeasureType;   // True/Projected
+    App::PropertyLinkSubList References2D;  // Points to Projection SubFeatures
+    App::PropertyLinkSubList References3D;  // Points to 3D Geometry SubFeatures
+    App::PropertyEnumeration Type;          // DistanceX, DistanceY, Diameter, etc.
 
-    App::PropertyBool               TheoreticalExact;
-    App::PropertyBool               Inverted;
-    App::PropertyString             FormatSpec;
-    App::PropertyString             FormatSpecOverTolerance;
-    App::PropertyString             FormatSpecUnderTolerance;
-    App::PropertyBool               Arbitrary;
-    App::PropertyBool               ArbitraryTolerances;
-    App::PropertyBool               EqualTolerance;
+    App::PropertyBool TheoreticalExact;
+    App::PropertyBool Inverted;
+    App::PropertyString FormatSpec;
+    App::PropertyString FormatSpecOverTolerance;
+    App::PropertyString FormatSpecUnderTolerance;
+    App::PropertyBool Arbitrary;
+    App::PropertyBool ArbitraryTolerances;
+    App::PropertyBool EqualTolerance;
     App::PropertyQuantityConstraint OverTolerance;
     App::PropertyQuantityConstraint UnderTolerance;
 
-    App::PropertyBool               AngleOverride;
-    App::PropertyAngle              LineAngle;
-    App::PropertyAngle              ExtensionAngle;
+    App::PropertyBool AngleOverride;
+    App::PropertyAngle LineAngle;
+    App::PropertyAngle ExtensionAngle;
 
-    Part::PropertyTopoShapeList     SavedGeometry;
+    Part::PropertyTopoShapeList SavedGeometry;
+    App::PropertyVectorList BoxCorners;
 
-    enum RefType{
-            invalidRef,
-            oneEdge,
-            twoEdge,
-            twoVertex,
-            vertexEdge,
-            threeVertex,
-            extent
-        };
+    enum RefType
+    {
+        invalidRef,
+        oneEdge,
+        twoEdge,
+        twoVertex,
+        vertexEdge,
+        threeVertex,
+        extent
+    };
 
 
     short mustExecute() const override;
@@ -108,23 +110,20 @@ enum DimensionType {
     virtual bool has3DReferences() const;
     bool hasOverUnderTolerance() const;
 
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
-    //@}
+    App::DocumentObjectExecReturn* execute() override;
 
-    /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "TechDrawGui::ViewProviderDimension";
     }
-    //return PyObject as DrawViewDimensionPy
-    PyObject *getPyObject() override;
+    // return PyObject as DrawViewDimensionPy
+    PyObject* getPyObject() override;
 
     virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
-    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
+    virtual std::string
+    formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
 
     virtual bool haveTolerance();
 
@@ -132,24 +131,51 @@ enum DimensionType {
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
-    QRectF getRect() const override { return {0, 0, 1, 1}; }          //pretend dimensions always fit!
-    virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
-    static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
+    QRectF getRect() const override
+    {
+        return {0, 0, 1, 1};
+    }                                // pretend dimensions always fit!
+    virtual int getRefType() const;  // Vertex-Vertex, Edge, Edge-Edge
+    static int
+    getRefTypeSubElements(const std::vector<std::string>&);  // Vertex-Vertex, Edge, Edge-Edge
 
     void setReferences2d(ReferenceVector refs);
     void setReferences3d(ReferenceVector refs);
     ReferenceVector getReferences2d() const;
     ReferenceVector getReferences3d() const;
+    bool hasGoodReferences() const
+    {
+        return m_referencesCorrect;
+    }
 
     void setAll3DMeasurement();
     void clear3DMeasurements();
     virtual bool checkReferences2D() const;
-    virtual pointPair getLinearPoints() const {return m_linearPoints; }
-    virtual void setLinearPoints(Base::Vector3d point0, Base::Vector3d point1) { m_linearPoints.first(point0);
-                                                                                 m_linearPoints.second(point1); };
-    virtual void setLinearPoints(pointPair newPair) { m_linearPoints = newPair; }
-    arcPoints getArcPoints() {return m_arcPoints; }
-    anglePoints getAnglePoints() {return m_anglePoints; }
+    bool hasBroken3dReferences() const;
+
+
+    virtual pointPair getLinearPoints() const
+    {
+        return m_linearPoints;
+    }
+    virtual void setLinearPoints(Base::Vector3d point0, Base::Vector3d point1)
+    {
+        m_linearPoints.first(point0);
+        m_linearPoints.second(point1);
+    };
+    virtual void setLinearPoints(pointPair newPair)
+    {
+        m_linearPoints = newPair;
+    }
+    arcPoints getArcPoints()
+    {
+        return m_arcPoints;
+    }
+    anglePoints getAnglePoints()
+    {
+        return m_anglePoints;
+    }
+
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
     bool isMultiValueSchema() const;
@@ -161,10 +187,27 @@ enum DimensionType {
     bool useDecimals() const;
     bool isExtentDim() const;
     virtual ReferenceVector getEffectiveReferences() const;
-    bool goodReferenceGeometry() const { return m_referencesCorrect; }
+
+    GeometryMatcher* getMatcher() const
+    {
+        return m_matcher;
+    }
+    DimensionAutoCorrect* getCorrector() const
+    {
+        return m_corrector;
+    }
+
+    // these should probably be static as they don't use the dimension at all
+    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
+    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
+
+    // autocorrect support methods
+    void saveFeatureBox();
+    Base::BoundBox3d getSavedBox();
+    Base::BoundBox3d getFeatureBox();
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
+    void handleChangedPropertyType(Base::XMLReader&, const char*, App::Property*) override;
     void Restore(Base::XMLReader& reader) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
@@ -182,13 +225,10 @@ protected:
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
-    Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector3d s1,
-                     Base::Vector3d e1,
-                     Base::Vector3d s2,
-                     Base::Vector3d e2) const;
-    pointPair closestPoints(TopoDS_Shape s1,
-                            TopoDS_Shape s2) const;
+    Measure::Measurement* measurement;
+    double
+    dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::Vector3d s2, Base::Vector3d e2) const;
+    pointPair closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) const;
 
     void resetLinear();
     void resetAngular();
@@ -196,36 +236,27 @@ protected:
 
     bool okToProceed();
     void updateSavedGeometry();
-    bool compareSavedGeometry();
-    bool fixExactMatch();
-    void handleNoExactMatch();
-    std::string recoverChangedEdge2d(int iReference);
-    std::string recoverChangedEdge3d(int iReference);
-    std::string recoverChangedVertex2d(int iReference);
-    std::string recoverChangedVertex3d(int iReference);
-    void replaceReferenceSubElement2d(int iRef, std::string &newSubelement);
-    void replaceReferenceSubElement3d(int iRef, std::string &newSubelement);
-
-    std::vector<Part::TopoShape> getEdges(const Part::TopoShape& inShape);
-    std::vector<Part::TopoShape> getVertexes(const Part::TopoShape& inShape);
 
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
     void dumpRefs2D(const char* text) const;
-    //Dimension "geometry"
-    pointPair   m_linearPoints;
-    pointPair   m_arrowPositions;
-    arcPoints   m_arcPoints;
+    // Dimension "geometry"
+    pointPair m_linearPoints;
+    pointPair m_arrowPositions;
+    arcPoints m_arcPoints;
     anglePoints m_anglePoints;
-    bool        m_hasGeometry;
+    bool m_hasGeometry;
 
     friend class DimensionFormatter;
     DimensionFormatter* m_formatter;
     GeometryMatcher* m_matcher;
+    DimensionAutoCorrect* m_corrector;
 
-    bool m_referencesCorrect;
+    bool m_referencesCorrect {false};
+
+    std::set<std::string> m_3dObjectCache;
 };
 
-} //namespace TechDraw
+}  // namespace TechDraw
 #endif
