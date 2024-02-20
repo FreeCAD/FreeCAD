@@ -149,8 +149,6 @@ public:
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
-    void redraw();
-
     SoCamera* getCamera() const;
     void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
     void translateCamera(const SbVec3f& translation);

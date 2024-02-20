@@ -238,10 +238,6 @@ public:
     //@{
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf) override;
-    /// set the transformation of the CasCade Shape
-    void setShapePlacement(const Base::Placement& rclTrf);
-    /// get the transformation of the CasCade Shape
-    Base::Placement getShapePlacement() const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform() const override;
     /// Bound box from the CasCade shape
