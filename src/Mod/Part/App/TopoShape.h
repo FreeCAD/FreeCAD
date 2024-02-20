@@ -1225,6 +1225,39 @@ public:
     }
 
 
+    /** Make a new shape with transformation that may contain non-uniform scaling
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape. If false, the
+     *              shape will still be copied if there is scaling.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementGTransform(const TopoShape &source, const Base::Matrix4D &mat,
+                              const char *op=nullptr, bool copy=false);
+
+    /** Make a new shape with transformation that may contain non-uniform scaling
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape. If false, the
+     *              shape will still be copied if there is scaling.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape makeElementGTransform(const Base::Matrix4D &mat, const char *op=nullptr, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makeElementGTransform(*this,mat,op,copy);
+    }
+
     /** Make a deep copy of the shape
      *
      * @param source: input shape
@@ -1313,6 +1346,109 @@ public:
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If false, and
+     *              checkScale is true, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return Returns true if scaling is performed.
+     *
+     * The original content of this TopoShape is discarded and replaced with
+     * the new transformed shape.
+     */
+    bool _makeElementTransform(const TopoShape &source, const Base::Matrix4D &mat,
+                        const char *op=nullptr, bool checkScale=false, bool copy=false);
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If false, and
+     *              checkScale is true, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementTransform(const TopoShape &source, const Base::Matrix4D &mat,
+                             const char *op=nullptr, bool checkScale=false, bool copy=false) {
+        _makeElementTransform(source,mat,op,checkScale,copy);
+        return *this;
+    }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If false, and
+     *              checkScale is true, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape makeElementTransform(const Base::Matrix4D &mat, const char *op=nullptr,
+                            bool checkScale=false, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makeElementTransform(*this,mat,op,checkScale,copy);
+    }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param trsf: OCCT transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If false, and
+     *              checkScale is true, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementTransform(const TopoShape &shape, const gp_Trsf &trsf,
+                             const char *op=nullptr, bool copy=false);
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param trsf: OCCT transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If false, and
+     *              checkScale is true, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape makeElementTransform(const gp_Trsf &trsf, const char *op=nullptr, bool copy=false) const {
+        return TopoShape(Tag,Hasher).makeElementTransform(*this,trsf,op,copy);
+    }
+
     /* Make draft shape
      *
      * @param source: the source shape
