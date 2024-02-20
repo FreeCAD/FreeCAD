@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport MultiTransform : public PartDesign::Transformed
+class PartDesignExport MultiTransform: public PartDesign::Transformed
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::MultiTransform);
 
@@ -39,30 +39,34 @@ public:
 
     App::PropertyLinkList Transformations;
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderMultiTransform";
     }
     //@}
 
-    std::vector<App::DocumentObject*> getOriginals() const { return Originals.getValues(); }
+    std::vector<App::DocumentObject*> getOriginals() const
+    {
+        return Originals.getValues();
+    }
 
     /** Apply all subfeature transformations
-      * Returns a list containing the shapes resulting from applying all transformations of
-      * the subfeatures, given by the Transformations property, after each other.
-      * Subfeatures can be Mirrored, LinearPattern, PolarPattern and Scaled.
-      */
+     * Returns a list containing the shapes resulting from applying all transformations of
+     * the subfeatures, given by the Transformations property, after each other.
+     * Subfeatures can be Mirrored, LinearPattern, PolarPattern and Scaled.
+     */
     std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 
 protected:
     void positionBySupport() override;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureMultiTransform_H
+#endif  // PARTDESIGN_FeatureMultiTransform_H

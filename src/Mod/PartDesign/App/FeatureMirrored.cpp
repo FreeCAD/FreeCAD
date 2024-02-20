@@ -23,12 +23,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 #endif
 
 #include <App/OriginFeature.h>
@@ -41,85 +41,106 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(MirrorPlane,
+                      (nullptr),
+                      "Mirrored",
+                      (App::PropertyType)(App::Prop_None),
+                      "Mirror plane");
 }
 
 short Mirrored::mustExecute() const
 {
-    if (MirrorPlane.isTouched())
+    if (MirrorPlane.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
 gp_Trsf Mirrored::calculateTransformation() const
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (!refObject)
+    if (!refObject) {
         throw Base::ValueError("No mirror plane reference specified");
+    }
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
-    if (subStrings.empty())
+    if (subStrings.empty()) {
         throw Base::ValueError("No mirror plane reference specified");
+    }
 
     gp_Pnt axbase;
     gp_Dir axdir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
-        if (subStrings[0] == "H_Axis")
+        if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
-        else if (subStrings[0] == "V_Axis")
+        }
+        else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0].empty())
+        }
+        else if (subStrings[0].empty()) {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+        }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
-            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+            int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
                 axis.setBase(axis.getBase() + 0.5 * axis.getDirection());
-                axis.setDirection(Base::Vector3d(-axis.getDirection().y, axis.getDirection().x, axis.getDirection().z));
+                axis.setDirection(Base::Vector3d(-axis.getDirection().y,
+                                                 axis.getDirection().x,
+                                                 axis.getDirection().z));
             }
         }
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
+    }
+    else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
         PartDesign::Plane const* plane = static_cast<PartDesign::Plane const*>(refObject);
         Base::Vector3d base = plane->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = plane->getNormal();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->isDerivedFrom<App::Plane>()) {
+    }
+    else if (refObject->isDerivedFrom<App::Plane>()) {
         App::Plane const* plane = static_cast<App::Plane const*>(refObject);
         Base::Vector3d base = plane->Placement.getValue().getPosition();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Rotation rot = plane->Placement.getValue().getRotation();
-        Base::Vector3d dir(0,0,1);
+        Base::Vector3d dir(0, 0, 1);
         rot.multVec(dir, dir);
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->isDerivedFrom<Part::Feature>()) {
-        if (subStrings[0].empty())
+    }
+    else if (refObject->isDerivedFrom<Part::Feature>()) {
+        if (subStrings[0].empty()) {
             throw Base::ValueError("No direction reference specified");
+        }
         Part::TopoShape baseShape = static_cast<Part::Feature const*>(refObject)->Shape.getShape();
         // TODO: Check for multiple mirror planes?
         TopoDS_Shape shape = baseShape.getSubShape(subStrings[0].c_str());
         TopoDS_Face face = TopoDS::Face(shape);
-        if (face.IsNull())
+        if (face.IsNull()) {
             throw Base::ValueError("Failed to extract mirror plane");
+        }
         BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
+        if (adapt.GetType() != GeomAbs_Plane) {
             throw Base::TypeError("Mirror face must be planar");
+        }
 
         axbase = getPointFromFace(face);
         axdir = adapt.Plane().Axis().Direction();
-    } else {
-        throw Base::ValueError("Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
+    }
+    else {
+        throw Base::ValueError(
+            "Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
     }
 
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
@@ -150,4 +171,4 @@ std::vector<TopoDS_Shape> Mirrored::applyTransformation(std::vector<TopoDS_Shape
     return shapes;
 }
 
-}
+}  // namespace PartDesign

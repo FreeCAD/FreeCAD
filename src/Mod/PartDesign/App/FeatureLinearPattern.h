@@ -29,55 +29,60 @@
 
 namespace PartDesign
 {
-enum class LinearPatternMode {
+enum class LinearPatternMode
+{
     length,
     offset
 };
 
-class PartDesignExport LinearPattern : public PartDesign::Transformed
+class PartDesignExport LinearPattern: public PartDesign::Transformed
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LinearPattern);
 
 public:
     LinearPattern();
 
-    App::PropertyLinkSub     Direction;
-    App::PropertyBool        Reversed;
+    App::PropertyLinkSub Direction;
+    App::PropertyBool Reversed;
     App::PropertyEnumeration Mode;
-    App::PropertyLength      Length;
-    App::PropertyLength      Offset;
+    App::PropertyLength Length;
+    App::PropertyLength Offset;
     App::PropertyIntegerConstraint Occurrences;
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderLinearPattern";
     }
     //@}
 
     /** Apply linear pattern
-      * Returns a list of (Occurrences * N) shapes. The first N shapes will be the untransformed
-      * original shapes.
-      *
-      * Depending on Mode selection the list will be constructed differently:
-      * 1. For "Overall Length" each transformation will move the shape it is applied to by the distance
-      *    (Length / (Occurrences - 1)) so that the transformations will cover the total Length.
-      * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in
-      *    the Offset parameter.
-      *
-      * If Direction contains a feature and a face name, then the transformation direction will be
-      *   the normal of the given face, which must be planar. If it contains an edge name, then the
-      *   transformation direction will be parallel to the given edge, which must be linear
-      *
-      * If Reversed is true, the direction of transformations will be opposite
-      */
+     * Returns a list of (Occurrences * N) shapes. The first N shapes will be the untransformed
+     * original shapes.
+     *
+     * Depending on Mode selection the list will be constructed differently:
+     * 1. For "Overall Length" each transformation will move the shape it is applied to by the
+     * distance (Length / (Occurrences - 1)) so that the transformations will cover the total
+     * Length.
+     * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in
+     *    the Offset parameter.
+     *
+     * If Direction contains a feature and a face name, then the transformation direction will be
+     *   the normal of the given face, which must be planar. If it contains an edge name, then the
+     *   transformation direction will be parallel to the given edge, which must be linear
+     *
+     * If Reversed is true, the direction of transformations will be opposite
+     */
     std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
 
     static const App::PropertyIntegerConstraint::Constraints intOccurrences;
@@ -89,7 +94,7 @@ private:
     std::vector<gp_Trsf> calculateTransformations() const;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureLinearPattern_H
+#endif  // PARTDESIGN_FeatureLinearPattern_H

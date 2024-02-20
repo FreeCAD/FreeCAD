@@ -31,37 +31,38 @@
 namespace PartDesign
 {
 
-class PartDesignExport Scaled : public PartDesign::Transformed
+class PartDesignExport Scaled: public PartDesign::Transformed
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Scaled);
 
 public:
     Scaled();
 
-    App::PropertyFloat   Factor;
+    App::PropertyFloat Factor;
     App::PropertyInteger Occurrences;
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderScaled";
     }
     //@}
 
     /** Apply scale transformation
-      * Returns a list containing the same number of shapes as given.
-      * Each shape will be scaled by an additional factor of (Factor / (Occurences - 1)).
-      * If there are less shapes than Occurences, not all factors will be present.
-      * If there are more shapes than Occurences, the factors will repeat.
-      * The centre point of the scaling is the centre of mass of each shape.
-      */
+     * Returns a list containing the same number of shapes as given.
+     * Each shape will be scaled by an additional factor of (Factor / (Occurences - 1)).
+     * If there are less shapes than Occurences, not all factors will be present.
+     * If there are more shapes than Occurences, the factors will repeat.
+     * The centre point of the scaling is the centre of mass of each shape.
+     */
     std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureScaled_H
+#endif  // PARTDESIGN_FeatureScaled_H

@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <Precision.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 #endif
 
 #include <App/OriginFeature.h>
@@ -44,25 +44,30 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = {1, INT_MAX, 1};
 
-const char* LinearPattern::ModeEnums[] = { "length", "offset", nullptr };
+const char* LinearPattern::ModeEnums[] = {"length", "offset", nullptr};
 
 LinearPattern::LinearPattern()
 {
     auto initialMode = LinearPatternMode::length;
 
-    ADD_PROPERTY_TYPE(Direction,(nullptr),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY(Reversed,(0));
+    ADD_PROPERTY_TYPE(Direction,
+                      (nullptr),
+                      "LinearPattern",
+                      (App::PropertyType)(App::Prop_None),
+                      "Direction");
+    ADD_PROPERTY(Reversed, (0));
     ADD_PROPERTY(Mode, (long(initialMode)));
-    ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY(Offset,(10.0));
-    ADD_PROPERTY(Occurrences,(3));
+    ADD_PROPERTY(Length, (100.0));
+    ADD_PROPERTY(Offset, (10.0));
+    ADD_PROPERTY(Occurrences, (3));
     Occurrences.setConstraints(&intOccurrences);
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(initialMode);
@@ -70,14 +75,11 @@ LinearPattern::LinearPattern()
 
 short LinearPattern::mustExecute() const
 {
-    if (Direction.isTouched() ||
-        Reversed.isTouched() ||
-        Mode.isTouched() ||
+    if (Direction.isTouched() || Reversed.isTouched() || Mode.isTouched() ||
         // Length and Offset are mutually exclusive, only one could be updated at once
-        Length.isTouched() || 
-        Offset.isTouched() || 
-        Occurrences.isTouched())
+        Length.isTouched() || Offset.isTouched() || Occurrences.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
@@ -91,24 +93,29 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
 {
     int const occurrences = Occurrences.getValue();
 
-    if (occurrences < 1)
+    if (occurrences < 1) {
         throw Base::ValueError("At least one occurrence required");
+    }
 
-    if (occurrences == 1)
+    if (occurrences == 1) {
         return {};
+    }
 
     double const distance = Length.getValue();
-    if (distance < Precision::Confusion())
+    if (distance < Precision::Confusion()) {
         throw Base::ValueError("Pattern length too small");
+    }
     bool const reversed = Reversed.getValue();
 
     App::DocumentObject const* refObject = Direction.getValue();
-    if (!refObject)
+    if (!refObject) {
         throw Base::ValueError("No direction reference specified");
+    }
 
     std::vector<std::string> const subStrings = Direction.getSubValues();
-    if (subStrings.empty())
+    if (subStrings.empty()) {
         throw Base::ValueError("No direction reference specified");
+    }
 
     gp_Dir dir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
@@ -127,7 +134,7 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
             axis *= refSketch->Placement.getValue();
         }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
-            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+            int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
                 axis *= refSketch->Placement.getValue();
@@ -137,11 +144,13 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
             Part::TopoShape refShape = refSketch->Shape.getShape();
             TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
+            if (refEdge.IsNull()) {
                 throw Base::ValueError("Failed to extract direction edge");
+            }
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
+            if (adapt.GetType() != GeomAbs_Line) {
                 throw Base::TypeError("Direction edge must be a straight line");
+            }
 
             gp_Pnt p = adapt.Line().Location();
             gp_Dir d = adapt.Line().Direction();
@@ -152,50 +161,63 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
             axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
         }
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
+    }
+    else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
         PartDesign::Plane const* plane = static_cast<PartDesign::Plane const*>(refObject);
         Base::Vector3d d = plane->getNormal();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
+    }
+    else if (refObject->isDerivedFrom<PartDesign::Line>()) {
         PartDesign::Line const* line = static_cast<PartDesign::Line const*>(refObject);
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->isDerivedFrom<App::Line>()) {
+    }
+    else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line const* line = static_cast<App::Line const*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
-        Base::Vector3d d(1,0,0);
+        Base::Vector3d d(1, 0, 0);
         rot.multVec(d, d);
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->isDerivedFrom<Part::Feature>()) {
-        if (subStrings[0].empty())
+    }
+    else if (refObject->isDerivedFrom<Part::Feature>()) {
+        if (subStrings[0].empty()) {
             throw Base::ValueError("No direction reference specified");
+        }
         Part::Feature const* refFeature = static_cast<Part::Feature const*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
 
         if (ref.ShapeType() == TopAbs_FACE) {
             TopoDS_Face refFace = TopoDS::Face(ref);
-            if (refFace.IsNull())
+            if (refFace.IsNull()) {
                 throw Base::ValueError("Failed to extract direction plane");
+            }
             BRepAdaptor_Surface adapt(refFace);
-            if (adapt.GetType() != GeomAbs_Plane)
+            if (adapt.GetType() != GeomAbs_Plane) {
                 throw Base::TypeError("Direction face must be planar");
+            }
 
             dir = adapt.Plane().Axis().Direction();
-        } else if (ref.ShapeType() == TopAbs_EDGE) {
+        }
+        else if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
+            if (refEdge.IsNull()) {
                 throw Base::ValueError("Failed to extract direction edge");
+            }
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
+            if (adapt.GetType() != GeomAbs_Line) {
                 throw Base::ValueError("Direction edge must be a straight line");
+            }
 
             dir = adapt.Line().Direction();
-        } else {
+        }
+        else {
             throw Base::ValueError("Direction reference must be edge or face");
         }
-    } else {
-        throw Base::ValueError("Direction reference must be edge/face of a feature or a datum line/plane");
+    }
+    else {
+        throw Base::ValueError(
+            "Direction reference must be edge/face of a feature or a datum line/plane");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     dir.Transform(invObjLoc.Transformation());
@@ -215,8 +237,9 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
             throw Base::ValueError("Invalid mode");
     }
 
-    if (reversed)
+    if (reversed) {
         offset.Reverse();
+    }
 
     std::vector<gp_Trsf> transformations;
     gp_Trsf trans;
@@ -244,10 +267,13 @@ std::vector<TopoDS_Shape> LinearPattern::applyTransformation(std::vector<TopoDS_
     return shapes;
 }
 
-void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader,
+                                              const char* TypeName,
+                                              App::Property* prop)
 // transforms properties that had been changed
 {
-    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    // property Occurrences had the App::PropertyInteger and was changed to
+    // App::PropertyIntegerConstraint
     if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger OccurrencesProperty;
         // restore the PropertyInteger to be able to set its value
@@ -281,4 +307,4 @@ void LinearPattern::onChanged(const App::Property* prop)
     Transformed::onChanged(prop);
 }
 
-}
+}  // namespace PartDesign

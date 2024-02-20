@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepGProp.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <GProp_GProps.hxx>
-# include <Precision.hxx>
+#include <BRepGProp.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #endif
 
 #include "FeatureScaled.h"
@@ -35,33 +35,36 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::Scaled, PartDesign::Transformed)
 
 Scaled::Scaled()
 {
-    ADD_PROPERTY(Factor,(2.0));
-    ADD_PROPERTY(Occurrences,(2));
+    ADD_PROPERTY(Factor, (2.0));
+    ADD_PROPERTY(Occurrences, (2));
 }
 
 short Scaled::mustExecute() const
 {
-    if (Factor.isTouched() ||
-        Occurrences.isTouched())
+    if (Factor.isTouched() || Occurrences.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
 std::vector<TopoDS_Shape> Scaled::applyTransformation(std::vector<TopoDS_Shape> shapes) const
 {
     double const factor = Factor.getValue();
-    if (factor < Precision::Confusion())
+    if (factor < Precision::Confusion()) {
         throw Base::ValueError("Scaling factor too small");
+    }
     int const occurrences = Occurrences.getValue();
-    if (occurrences < 2)
+    if (occurrences < 2) {
         throw Base::ValueError("At least two occurrences required");
+    }
 
     double const f = (factor - 1.0) / double(occurrences - 1);
 
@@ -82,10 +85,12 @@ std::vector<TopoDS_Shape> Scaled::applyTransformation(std::vector<TopoDS_Shape> 
         }
         result.push_back(mkScale);
 
-        if (++i == occurrences) i = 0;
+        if (++i == occurrences) {
+            i = 0;
+        }
     }
 
     return result;
 }
 
-}
+}  // namespace PartDesign

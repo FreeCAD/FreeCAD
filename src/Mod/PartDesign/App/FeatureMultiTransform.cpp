@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <Precision.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #endif
 
 #include "FeatureMultiTransform.h"
@@ -35,14 +35,15 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::MultiTransform, PartDesign::Transformed)
 
 MultiTransform::MultiTransform()
 {
-    ADD_PROPERTY(Transformations,(nullptr));
+    ADD_PROPERTY(Transformations, (nullptr));
     Transformations.setSize(0);
 }
 
@@ -51,8 +52,9 @@ void MultiTransform::positionBySupport()
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
     for (auto f : transFeatures) {
-        if (!(f->isDerivedFrom<PartDesign::Transformed>()))
+        if (!(f->isDerivedFrom<PartDesign::Transformed>())) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
+        }
         PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(f);
         transFeature->Placement.setValue(this->Placement.getValue());
 
@@ -66,12 +68,14 @@ void MultiTransform::positionBySupport()
 
 short MultiTransform::mustExecute() const
 {
-    if (Transformations.isTouched())
+    if (Transformations.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
-std::vector<TopoDS_Shape> MultiTransform::applyTransformation(std::vector<TopoDS_Shape> shapes) const
+std::vector<TopoDS_Shape>
+MultiTransform::applyTransformation(std::vector<TopoDS_Shape> shapes) const
 {
     std::vector<App::DocumentObject*> const transFeatures = Transformations.getValues();
 
@@ -87,4 +91,4 @@ std::vector<TopoDS_Shape> MultiTransform::applyTransformation(std::vector<TopoDS
     return shapes;
 }
 
-}
+}  // namespace PartDesign
