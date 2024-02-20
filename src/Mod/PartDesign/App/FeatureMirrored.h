@@ -49,13 +49,16 @@ public:
     }
     //@}
 
-    /** Create transformations
-      * Returns a list containing one transformation since the first, untransformed instance
-      * is not counted. The transformation will mirror the shape it is applied to on a plane
+    /** Apply mirrir transformation
+      * Returns a list containing the original shapes and mirrors of each one.
+      * The transformation will mirror a shape it is applied to on a plane
       * If MirrorPlane contains a feature and a face name, then the mirror plane will be
-      * the given face, which must be planar
+      * the given face, which must be planar.
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
+
+private:
+    gp_Trsf calculateTransformation() const;
 };
 
 } //namespace PartDesign

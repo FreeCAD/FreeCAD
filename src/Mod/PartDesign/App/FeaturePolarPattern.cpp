@@ -84,14 +84,14 @@ short PolarPattern::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
+std::vector<gp_Trsf> PolarPattern::calculateTransformations() const
 {
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
 
     if (occurrences == 1)
-        return {gp_Trsf()};
+        return {};
 
     bool reversed = Reversed.getValue();
 
@@ -195,18 +195,30 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     if (offset < Precision::Angular())
         throw Base::ValueError("Pattern angle too small");
 
-    std::list<gp_Trsf> transformations;
+    std::vector<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans);
 
-    // Note: The original feature is already included in the list of transformations!
-    // Therefore we start with occurrence number 1
+    // Note: The original shape is already included in the list of shapes!
+    // Therefore we  need no transformation for it and start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);
         transformations.push_back(trans);
     }
 
     return transformations;
+}
+
+std::vector<TopoDS_Shape> PolarPattern::applyTransformation(std::vector<TopoDS_Shape> shapes) const
+{
+    // the first orgSize shapes are the original untransformed shapes
+    int const orgSize = shapes.size();
+
+    for (auto const& transformation : calculateTransformations()) {
+        for (int idx = 0; idx < orgSize; ++idx) {
+            shapes.push_back(shapes[idx].Moved(transformation));
+        }
+    }
+    return shapes;
 }
 
 void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

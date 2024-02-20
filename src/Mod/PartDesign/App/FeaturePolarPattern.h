@@ -60,26 +60,27 @@ public:
     }
     //@}
 
-    /** Create transformations
-     * 
-      * Returns a list of (Occurrences - 1) transformations since the first, untransformed instance
-      * is not counted. Each transformation will rotate the shape it is applied to by the supplied angle.
-      * 
+    /** Apply polar pattern
+      *
+      * Returns a list of (Occurrences * N) shapes. The first N shapes will be the untransformed
+      * original shapes.
+      * Each transformation will rotate the shape it is applied to by the supplied angle.
+      *
       * Depending on Mode selection list will be constructed differently:
-      * 1. For "angle" mode each feature will be rotated by (Angle / (Occurrences - 1)) so 
-      * that the transformations will cover the total Angle. The only exception is Angle = 360 degrees in 
-      * which case the transformation angle will be (Angle / Occurrences) so that the last transformed shape 
-      * is not identical with the original shape. 
-      * 2. For "offset" mode each feature will be rotated using exact angle from Offset parameter. It can 
+      * 1. For "angle" mode each feature will be rotated by (Angle / (Occurrences - 1)) so
+      * that the transformations will cover the total Angle. The only exception is Angle = 360 degrees in
+      * which case the transformation angle will be (Angle / Occurrences) so that the last transformed shape
+      * is not identical with the original shape.
+      * 2. For "offset" mode each feature will be rotated using exact angle from Offset parameter. It can
       * potentially result in transformation that extends beyond full rotation or results in overlapping shapes.
       * This situations are considered as potential user errors and should be solved by user.
-      * 
+      *
       * If Axis contains a feature and an edge name, then the transformation axis will be
       * the given edge, which must be linear.
-      * 
+      *
       * If Reversed is true, the direction of rotation will be opposite.
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
@@ -92,6 +93,7 @@ private:
     static const char* ModeEnums[];
 
     void setReadWriteStatusForMode(PolarPatternMode mode);
+    std::vector<gp_Trsf> calculateTransformations() const;
 };
 
 } //namespace PartDesign

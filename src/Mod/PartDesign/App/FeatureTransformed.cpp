@@ -178,18 +178,6 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     this->positionBySupport();
 
-    // get transformations from subclass by calling virtual method
-    std::vector<gp_Trsf> transformations;
-    try {
-        std::list<gp_Trsf> t_list = getTransformations(originals);
-        transformations.insert(transformations.end(), t_list.begin(), t_list.end());
-    } catch (Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-
-    if (transformations.empty())
-        return App::DocumentObject::StdReturn; // No transformations defined, exit silently
-
     // Get the support
     Part::Feature* supportFeature;
 
@@ -214,31 +202,12 @@ App::DocumentObjectExecReturn *Transformed::execute()
     auto getTransformedCompShape = [&](const auto& origShape)
     {
         TopTools_ListOfShape shapeTools;
-        std::vector<TopoDS_Shape> shapes;
-
-        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
-
-        // First transformation is skipped since it should not be part of the toolShape.
-        ++transformIter;
-
-        for (; transformIter != transformations.end(); ++transformIter) {
-            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
-            // seems to be pretty broken
-            BRepBuilderAPI_Copy copy(origShape);
-
-            TopoDS_Shape shape = copy.Shape();
-
-            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
-            if (!mkTrf.IsDone()) {
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
-            }
-            shape = mkTrf.Shape();
-
-            shapes.emplace_back(shape);
+        auto shapes = applyTransformation({origShape});
+        auto iter = shapes.begin();
+        ++iter; // ignore first shape, it is always the original untransformed shape
+        for (; iter < shapes.end(); ++iter) {
+            shapeTools.Append(std::move(*iter));
         }
-
-        for (const auto& shape : shapes)
-            shapeTools.Append(shape);
 
         return shapeTools;
     };

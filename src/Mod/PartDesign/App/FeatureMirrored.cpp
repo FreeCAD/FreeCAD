@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx>
 # include <TopoDS.hxx>
@@ -57,7 +58,7 @@ short Mirrored::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
+gp_Trsf Mirrored::calculateTransformation() const
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (!refObject)
@@ -127,12 +128,26 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
     gp_Ax2 mirrorAxis(axbase, axdir);
 
-    std::list<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
     trans.SetMirror(mirrorAxis);
-    transformations.push_back(trans); // mirrored transformation
-    return transformations;
+    return trans;
+}
+
+std::vector<TopoDS_Shape> Mirrored::applyTransformation(std::vector<TopoDS_Shape> shapes) const
+{
+    BRepBuilderAPI_Transform mkMirror(calculateTransformation());
+
+    // the first orgSize shapes are the original untransformed shapes
+    int const orgSize = shapes.size();
+
+    for (int idx = 0; idx < orgSize; ++idx) {
+        mkMirror.Perform(shapes[idx]);
+        if (!mkMirror.IsDone()) {
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
+        }
+        shapes.push_back(mkMirror);
+    }
+    return shapes;
 }
 
 }

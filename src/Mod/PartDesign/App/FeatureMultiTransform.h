@@ -51,12 +51,12 @@ public:
 
     std::vector<App::DocumentObject*> getOriginals() const { return Originals.getValues(); }
 
-    /** Create transformations
-      * Returns a list containing the product of all transformations of the subfeatures given
-      * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
-      * Scaled.
+    /** Apply all subfeature transformations
+      * Returns a list containing the shapes resulting from applying all transformations of
+      * the subfeatures, given by the Transformations property, after each other.
+      * Subfeatures can be Mirrored, LinearPattern, PolarPattern and Scaled.
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals) override;
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 
 protected:
     void positionBySupport() override;

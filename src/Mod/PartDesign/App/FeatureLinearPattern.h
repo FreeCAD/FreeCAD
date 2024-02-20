@@ -58,23 +58,23 @@ public:
     }
     //@}
 
-    /** Create transformations
-      * Returns a list of (Occurrences - 1) transformations since the first, untransformed instance
-      * is not counted. 
-      * 
-      * Depending on Mode selection list will be constructed differently:
+    /** Apply linear pattern
+      * Returns a list of (Occurrences * N) shapes. The first N shapes will be the untransformed
+      * original shapes.
+      *
+      * Depending on Mode selection the list will be constructed differently:
       * 1. For "Overall Length" each transformation will move the shape it is applied to by the distance
       *    (Length / (Occurrences - 1)) so that the transformations will cover the total Length.
-      * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in 
+      * 2. For "Spacing" each transformation will move the shape by the distance explicitly given in
       *    the Offset parameter.
-      * 
+      *
       * If Direction contains a feature and a face name, then the transformation direction will be
       *   the normal of the given face, which must be planar. If it contains an edge name, then the
       *   transformation direction will be parallel to the given edge, which must be linear
-      * 
-      * If Reversed is true, the direction of transformation will be opposite
+      *
+      * If Reversed is true, the direction of transformations will be opposite
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> ) override;
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
@@ -86,6 +86,7 @@ private:
     static const char* ModeEnums[];
 
     void setReadWriteStatusForMode(LinearPatternMode mode);
+    std::vector<gp_Trsf> calculateTransformations() const;
 };
 
 } //namespace PartDesign

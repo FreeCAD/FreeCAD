@@ -63,10 +63,10 @@ public:
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
 
-    /// Get the list of transformations describing the members of the pattern
-    // Note: Only the Scaled feature requires the originals
-    virtual const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> /*originals*/) {
-        return std::list<gp_Trsf>(); // Default method
+    /// Apply this feature's transformation to the given shapes and return a list of new shapes
+    virtual std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const
+    {
+        return shapes;
     }
 
    /** @name methods override feature */

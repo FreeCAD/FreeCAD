@@ -87,14 +87,14 @@ void LinearPattern::setReadWriteStatusForMode(LinearPatternMode mode)
     Offset.setReadOnly(mode != LinearPatternMode::offset);
 }
 
-const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
+std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
 {
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
 
     if (occurrences == 1)
-        return {gp_Trsf()};
+        return {};
 
     double distance = Length.getValue();
     if (distance < Precision::Confusion())
@@ -217,18 +217,30 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     if (reversed)
         offset.Reverse();
 
-    std::list<gp_Trsf> transformations;
+    std::vector<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans);
 
-    // NOTE: The original feature is already included in the list of transformations!
-    // Therefore we start with occurrence number 1
+    // Note: The original shape is already included in the list of shapes!
+    // Therefore we  need no transformation for it and start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetTranslation(offset * i);
         transformations.push_back(trans);
     }
 
     return transformations;
+}
+
+std::vector<TopoDS_Shape> LinearPattern::applyTransformation(std::vector<TopoDS_Shape> shapes) const
+{
+    // the first orgSize shapes are the original untransformed shapes
+    int const orgSize = shapes.size();
+
+    for (auto const& transformation : calculateTransformations()) {
+        for (int idx = 0; idx < orgSize; ++idx) {
+            shapes.push_back(shapes[idx].Moved(transformation));
+        }
+    }
+    return shapes;
 }
 
 void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

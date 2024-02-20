@@ -51,16 +51,14 @@ public:
     }
     //@}
 
-    /** Create transformations
-      * Returns a list containing (Occurrences-1) transformation since the first, untransformed instance
-      * is not counted. Each transformation will scale the shape it is applied to by the factor
-      * (Factor / (Occurrences - 1))
-      * The centre point of the scaling (currently) is the centre of gravity of the first original shape
-      * for this reason we need to pass the list of originals into the feature
+    /** Apply scale transformation
+      * Returns a list containing the same number of shapes as given.
+      * Each shape will be scaled by an additional factor of (Factor / (Occurences - 1)).
+      * If there are less shapes than Occurences, not all factors will be present.
+      * If there are more shapes than Occurences, the factors will repeat.
+      * The centre point of the scaling is the centre of mass of each shape.
       */
-    // Note: We can't just use the Originals property because this will fail if the Scaled feature
-    // is being used inside a MultiTransform feature
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals) override;
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
 };
 
 } //namespace PartDesign
