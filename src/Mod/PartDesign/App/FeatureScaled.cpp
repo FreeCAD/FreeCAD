@@ -56,14 +56,14 @@ short Scaled::mustExecute() const
 
 std::vector<TopoDS_Shape> Scaled::applyTransformation(std::vector<TopoDS_Shape> shapes) const
 {
-    double factor = Factor.getValue();
+    double const factor = Factor.getValue();
     if (factor < Precision::Confusion())
         throw Base::ValueError("Scaling factor too small");
-    int occurrences = Occurrences.getValue();
+    int const occurrences = Occurrences.getValue();
     if (occurrences < 2)
         throw Base::ValueError("At least two occurrences required");
 
-    double f = (factor - 1.0) / double(occurrences - 1);
+    double const f = (factor - 1.0) / double(occurrences - 1);
 
     std::vector<TopoDS_Shape> result;
 

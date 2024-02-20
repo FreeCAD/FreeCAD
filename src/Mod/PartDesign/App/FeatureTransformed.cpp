@@ -108,7 +108,7 @@ App::DocumentObject* Transformed::getSketchObject() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
     if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
-        return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
+        return (static_cast<PartDesign::ProfileBased const*>(originals.front()))->getVerifiedSketch(true);
     }
     else if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::FeatureAddSub>()) {
         return nullptr;

@@ -68,7 +68,7 @@ Plane::Plane()
 
 Plane::~Plane() = default;
 
-Base::Vector3d Plane::getNormal()
+Base::Vector3d Plane::getNormal() const
 {
     Base::Rotation rot = Placement.getValue().getRotation();
     Base::Vector3d normal;

@@ -89,29 +89,30 @@ void LinearPattern::setReadWriteStatusForMode(LinearPatternMode mode)
 
 std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
 {
-    int occurrences = Occurrences.getValue();
+    int const occurrences = Occurrences.getValue();
+
     if (occurrences < 1)
         throw Base::ValueError("At least one occurrence required");
 
     if (occurrences == 1)
         return {};
 
-    double distance = Length.getValue();
+    double const distance = Length.getValue();
     if (distance < Precision::Confusion())
         throw Base::ValueError("Pattern length too small");
-    bool reversed = Reversed.getValue();
+    bool const reversed = Reversed.getValue();
 
-    App::DocumentObject* refObject = Direction.getValue();
+    App::DocumentObject const* refObject = Direction.getValue();
     if (!refObject)
         throw Base::ValueError("No direction reference specified");
 
-    std::vector<std::string> subStrings = Direction.getSubValues();
+    std::vector<std::string> const subStrings = Direction.getSubValues();
     if (subStrings.empty())
         throw Base::ValueError("No direction reference specified");
 
     gp_Dir dir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
-        Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
+        Part::Part2DObject const* refSketch = static_cast<Part::Part2DObject const*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
@@ -152,15 +153,15 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
         }
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
-        PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);
+        PartDesign::Plane const* plane = static_cast<PartDesign::Plane const*>(refObject);
         Base::Vector3d d = plane->getNormal();
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
-        PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
+        PartDesign::Line const* line = static_cast<PartDesign::Line const*>(refObject);
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<App::Line>()) {
-        App::Line* line = static_cast<App::Line*>(refObject);
+        App::Line const* line = static_cast<App::Line const*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
         Base::Vector3d d(1,0,0);
         rot.multVec(d, d);
@@ -168,7 +169,7 @@ std::vector<gp_Trsf> LinearPattern::calculateTransformations() const
     } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())
             throw Base::ValueError("No direction reference specified");
-        Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
+        Part::Feature const* refFeature = static_cast<Part::Feature const*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
 
