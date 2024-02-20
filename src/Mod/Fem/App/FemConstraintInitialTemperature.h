@@ -40,10 +40,6 @@ public:
     /// Constructor
     ConstraintInitialTemperature();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
     // Temperature parameters
     App::PropertyTemperature initialTemperature;
 

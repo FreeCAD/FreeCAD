@@ -71,39 +71,26 @@
 //
 #ifdef HAVE_SHIBOKEN2
 # define HAVE_SHIBOKEN
-# undef _POSIX_C_SOURCE
-# undef _XOPEN_SOURCE
-# include <basewrapper.h>
-# include <sbkconverter.h>
-# include <sbkmodule.h>
-# include <shiboken.h>
 # ifdef HAVE_PYSIDE2
-# define HAVE_PYSIDE
+#  define HAVE_PYSIDE
 
 // Since version 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
 // This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
 // compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
 
 // Do not use SHIBOKEN_MICRO_VERSION; it might contain a dot
-# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
-# if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-# define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-# endif
+#  define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
+#  if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+#   define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
+#  endif
 
-# ifndef HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-# include <pyside2_qtcore_python.h>
-# include <pyside2_qtgui_python.h>
-# include <pyside2_qtwidgets_python.h>
-# endif
-# include <signalmanager.h>
-PyTypeObject** SbkPySide2_QtCoreTypes = nullptr;
-PyTypeObject** SbkPySide2_QtGuiTypes = nullptr;
-PyTypeObject** SbkPySide2_QtWidgetsTypes = nullptr;
-PyTypeObject** SbkPySide2_QtPrintSupportTypes = nullptr;
-PyTypeObject** SbkPySide2_QtUiToolsTypes = nullptr;
+#  ifndef HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
+#   include <pyside2_qtcore_python.h>
+#   include <pyside2_qtgui_python.h>
+#   include <pyside2_qtwidgets_python.h>
+#  endif
 # endif // HAVE_PYSIDE2
 #endif // HAVE_SHIBOKEN2
-
 
 //-----------------------------------------------------------------------------
 //
@@ -114,24 +101,26 @@ PyTypeObject** SbkPySide2_QtUiToolsTypes = nullptr;
 //
 #ifdef HAVE_SHIBOKEN6
 # define HAVE_SHIBOKEN
+# ifdef HAVE_PYSIDE6
+#  define HAVE_PYSIDE
+#  define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
+# endif // HAVE_PYSIDE6
+#endif // HAVE_SHIBOKEN6
+
+//-----------------------------------------------------------------------------
+
+#ifdef HAVE_SHIBOKEN
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
 # include <basewrapper.h>
 # include <sbkconverter.h>
 # include <sbkmodule.h>
 # include <shiboken.h>
-# ifdef HAVE_PYSIDE6
-# define HAVE_PYSIDE
-# define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-# include <signalmanager.h>
-PyTypeObject** SbkPySide6_QtCoreTypes = nullptr;
-PyTypeObject** SbkPySide6_QtGuiTypes = nullptr;
-PyTypeObject** SbkPySide6_QtWidgetsTypes = nullptr;
-PyTypeObject** SbkPySide6_QtPrintSupportTypes = nullptr;
-PyTypeObject** SbkPySide6_QtUiToolsTypes = nullptr;
-# endif // HAVE_PYSIDE6
-#endif // HAVE_SHIBOKEN6
+#endif // HAVE_SHIBOKEN
 
+#ifdef HAVE_PYSIDE
+# include <signalmanager.h>
+#endif // HAVE_PYSIDE
 
 //-----------------------------------------------------------------------------
 
@@ -156,6 +145,49 @@ PyTypeObject** SbkPySide6_QtUiToolsTypes = nullptr;
 #include "UiLoader.h"
 #include "MetaTypes.h"
 
+#ifdef HAVE_SHIBOKEN
+#ifdef HAVE_SHIBOKEN2
+PyTypeObject** SbkPySide2_QtCoreTypes           = nullptr;
+PyTypeObject** SbkPySide2_QtGuiTypes            = nullptr;
+PyTypeObject** SbkPySide2_QtWidgetsTypes        = nullptr;
+PyTypeObject** SbkPySide2_QtPrintSupportTypes   = nullptr;
+PyTypeObject** SbkPySide2_QtUiToolsTypes        = nullptr;
+constexpr auto &SbkPySide_QtCoreTypes           = SbkPySide2_QtCoreTypes;
+constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide2_QtGuiTypes;
+constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide2_QtWidgetsTypes;
+constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide2_QtPrintSupportTypes;
+constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide2_QtUiToolsTypes;
+constexpr const char* ModuleShiboken            = "shiboken2";
+constexpr const char* ModulePySide              = "PySide2";
+#else
+PyTypeObject** SbkPySide6_QtCoreTypes           = nullptr;
+PyTypeObject** SbkPySide6_QtGuiTypes            = nullptr;
+PyTypeObject** SbkPySide6_QtWidgetsTypes        = nullptr;
+PyTypeObject** SbkPySide6_QtPrintSupportTypes   = nullptr;
+PyTypeObject** SbkPySide6_QtUiToolsTypes        = nullptr;
+constexpr auto &SbkPySide_QtCoreTypes           = SbkPySide6_QtCoreTypes;
+constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide6_QtGuiTypes;
+constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide6_QtWidgetsTypes;
+constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide6_QtPrintSupportTypes;
+constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide6_QtUiToolsTypes;
+constexpr const char* ModuleShiboken            = "shiboken6";
+constexpr const char* ModulePySide              = "PySide6";
+#endif
+#else
+static PyTypeObject** SbkPySide_DummyTypes;
+constexpr auto &SbkPySide_QtCoreTypes           = SbkPySide_DummyTypes;
+constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide_DummyTypes;
+constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide_DummyTypes;
+constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide_DummyTypes;
+constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide_DummyTypes;
+# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+constexpr const char* ModuleShiboken            = "shiboken2";
+constexpr const char* ModulePySide              = "PySide2";
+# else
+constexpr const char* ModuleShiboken            = "shiboken6";
+constexpr const char* ModulePySide              = "PySide6";
+# endif
+#endif
 
 using namespace Gui;
 
@@ -244,8 +276,71 @@ void registerTypes()
 // --------------------------------------------------------
 
 namespace Gui {
+
+static std::string getPySideModuleName(const std::string& moduleName)
+{
+    std::string name(ModulePySide);
+    name += '.';
+    name += moduleName;
+
+    return name;
+}
+
+static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& types)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    if (!types) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import(getPySideModuleName(moduleName).c_str()));
+        if (requiredModule.isNull())
+            return false;
+        types = Shiboken::Module::getTypes(requiredModule);
+    }
+#else
+    Q_UNUSED(moduleName)
+    Q_UNUSED(types)
+#endif
+    return true;
+}
+
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
 template<typename qttype>
-PyTypeObject *getPyTypeObjectForTypeName();
+#if defined (HAVE_SHIBOKEN2)
+SbkObjectType*
+#else
+PyTypeObject*
+#endif
+getPyTypeObjectForTypeName()
+{
+#if defined (HAVE_SHIBOKEN_TYPE_FOR_TYPENAME)
+# if defined (HAVE_SHIBOKEN2)
+    auto sbkType = Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
+    if (sbkType)
+        return reinterpret_cast<SbkObjectType*>&(sbkType->type);
+# else
+    return Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
+# endif
+#else
+# if defined (HAVE_SHIBOKEN2)
+    return reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<qttype>());
+# else
+    return Shiboken::SbkType<qttype>();
+# endif
+#endif
+}
+
+template<typename qttype>
+qttype* qt_getCppType(PyObject* pyobj)
+{
+    auto type = getPyTypeObjectForTypeName<qttype>();
+    if (type) {
+        if (Shiboken::Object::checkType(pyobj)) {
+            auto skbobj = reinterpret_cast<SbkObject *>(pyobj);
+            auto pytypeobj = reinterpret_cast<PyTypeObject *>(type);
+            return static_cast<qttype*>(Shiboken::Object::cppPointer(skbobj, pytypeobj));
+        }
+    }
+    return nullptr;
+}
 
 /*!
  * \brief The WrapperManager class
@@ -263,7 +358,6 @@ PyTypeObject *getPyTypeObjectForTypeName();
  */
 class WrapperManager : public QObject
 {
-
 
 public:
     static WrapperManager& instance()
@@ -292,13 +386,11 @@ public:
 
         auto destroyedFun = [pyobj](){
             Base::PyGILStateLocker lock;
-#if defined (HAVE_SHIBOKEN)
             auto sbk_ptr = reinterpret_cast <SbkObject *> (pyobj);
             if (sbk_ptr != nullptr)
                 Shiboken::Object::setValidCpp(sbk_ptr, false);
             else
                 Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
-#endif
             Py_DECREF (pyobj);
         };
 
@@ -316,19 +408,11 @@ private:
         // mw.style()
         // import gc
         // gc.collect()
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-        PyTypeObject * type = getPyTypeObjectForTypeName<QApplication>();
+        auto type = getPyTypeObjectForTypeName<QApplication>();
         if (type) {
-#if defined (HAVE_SHIBOKEN2)
-            auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
-#else
-            auto sbk_type = type;
-#endif
-            std::string typeName = "QApplication";
-            PyObject* pyobj = Shiboken::Object::newObject(sbk_type, qApp, false, false, typeName.c_str());
+            PyObject* pyobj = Shiboken::Object::newObject(type, qApp, false, false, "QApplication");
             addQObject(qApp, pyobj);
         }
-#endif
     }
 
     WrapperManager()
@@ -338,49 +422,67 @@ private:
     ~WrapperManager() override = default;
 };
 
-static std::string formatModuleError(std::string name)
+#else
+
+static std::string formatModuleError(const std::string& name)
 {
     std::string error = "Cannot load " + name + " module";
-    PyErr_Print();
     return error;
+}
+
+static PyObject* importShiboken()
+{
+    PyObject* obj = PyImport_ImportModule(ModuleShiboken);
+    if (obj) {
+        return obj;
+    }
+
+    throw Py::Exception(PyExc_ImportError, formatModuleError(ModuleShiboken));
+}
+
+static PyObject* importPySide(const std::string& moduleName)
+{
+    std::string name = getPySideModuleName(moduleName);
+    PyObject* obj = PyImport_ImportModule(name.c_str());
+    if (obj) {
+        return obj;
+    }
+
+    throw Py::Exception(PyExc_ImportError, formatModuleError(name));
+}
+
+template<typename qttype>
+qttype* qt_getCppType(PyObject* pyobj)
+{
+    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
+    Py::Module mainmod(importShiboken(), true);
+    Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+
+    Py::Tuple arguments(1);
+    arguments[0] = Py::asObject(pyobj); // PySide pointer
+    Py::Tuple result(func.apply(arguments));
+    return reinterpret_cast<qttype*>(PyLong_AsVoidPtr(result[0].ptr()));
 }
 
 template<typename qttype>
 Py::Object qt_wrapInstance(qttype object,
                            const std::string& className,
-                           const std::string& shiboken,
-                           const std::string& pyside,
-                           const std::string& wrap)
+                           const std::string& moduleName)
 {
-    PyObject* module = PyImport_ImportModule(shiboken.c_str());
-    if (!module) {
-        throw Py::Exception(PyExc_ImportError, formatModuleError(shiboken));
-    }
-
-    Py::Module mainmod(module, true);
-    Py::Callable func = mainmod.getDict().getItem(wrap);
+    Py::Module mainmod(importShiboken(), true);
+    Py::Callable func = mainmod.getDict().getItem("wrapInstance");
 
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr((void*)object));
 
-    module = PyImport_ImportModule(pyside.c_str());
-    if (!module) {
-        throw Py::Exception(PyExc_ImportError, formatModuleError(pyside));
-    }
-
-    Py::Module qtmod(module);
+    Py::Module qtmod(importPySide(moduleName));
     arguments[1] = qtmod.getDict().getItem(className);
     return func.apply(arguments);
 }
 
-const char* qt_identifyType(QObject* ptr, const std::string& pyside)
+const char* qt_identifyType(QObject* ptr, const std::string& moduleName)
 {
-    PyObject* module = PyImport_ImportModule(pyside.c_str());
-    if (!module) {
-        throw Py::Exception(PyExc_ImportError, formatModuleError(pyside));
-    }
-
-    Py::Module qtmod(module);
+    Py::Module qtmod(importPySide(moduleName));
     const QMetaObject* metaObject = ptr->metaObject();
     while (metaObject) {
         const char* className = metaObject->className();
@@ -392,101 +494,16 @@ const char* qt_identifyType(QObject* ptr, const std::string& pyside)
     return nullptr;
 }
 
-void* qt_getCppPointer(const Py::Object& pyobject, const std::string& shiboken, const std::string& unwrap)
-{
-    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
-    PyObject* module = PyImport_ImportModule(shiboken.c_str());
-    if (!module) {
-        throw Py::Exception(PyExc_ImportError, formatModuleError(shiboken));
-    }
-
-    Py::Module mainmod(module, true);
-    Py::Callable func = mainmod.getDict().getItem(unwrap);
-
-    Py::Tuple arguments(1);
-    arguments[0] = pyobject; //PySide pointer
-    Py::Tuple result(func.apply(arguments));
-    void* ptr = PyLong_AsVoidPtr(result[0].ptr());
-    return ptr;
-}
-
-
-template<typename qttype>
-PyTypeObject *getPyTypeObjectForTypeName()
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-#if defined (HAVE_SHIBOKEN_TYPE_FOR_TYPENAME)
-#if defined (HAVE_SHIBOKEN2)
-    SbkObjectType* sbkType = Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
-    if (sbkType)
-        return &(sbkType->type);
-#else
-    return Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
 #endif
-#else
-    return Shiboken::SbkType<qttype>();
-#endif
-#endif
-    return nullptr;
-}
-
-template<typename qttype>
-qttype* qt_getCppType(PyObject* pyobj, const std::string& shiboken)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    Q_UNUSED(shiboken)
-    PyTypeObject * type = getPyTypeObjectForTypeName<qttype>();
-    if (type) {
-        if (Shiboken::Object::checkType(pyobj)) {
-            auto sbkobject = reinterpret_cast<SbkObject *>(pyobj);
-            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
-            return static_cast<qttype*>(cppobject);
-        }
-    }
-#else
-    void* ptr = qt_getCppPointer(Py::asObject(pyobj), shiboken, "getCppPointer");
-    if (ptr)
-        return reinterpret_cast<qttype*>(ptr);
-#endif
-
-    return nullptr;
-}
-
-bool loadPySideModule(const std::string& moduleName, PyTypeObject**& types)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    if (!types) {
-        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import(moduleName.c_str()));
-        if (requiredModule.isNull())
-            return false;
-        types = Shiboken::Module::getTypes(requiredModule);
-    }
-#else
-    Q_UNUSED(moduleName)
-    Q_UNUSED(types)
-#endif
-    return true;
-}
 
 }
 
 // --------------------------------------------------------
 
-#ifdef HAVE_SHIBOKEN6
-std::string PythonWrapper::shiboken{"shiboken6"};
-std::string PythonWrapper::PySide{"PySide6"};
-#elif HAVE_SHIBOKEN2
-std::string PythonWrapper::shiboken{"shiboken2"};
-std::string PythonWrapper::PySide{"PySide2"};
-#else
-std::string PythonWrapper::shiboken{"shiboken"};
-std::string PythonWrapper::PySide{"PySide"};
-#endif
-
 PythonWrapper::PythonWrapper()
 {
 #if defined (HAVE_SHIBOKEN)
-    static bool init = false;
+    static bool init;
     if (!init) {
         init = true;
         registerTypes();
@@ -518,12 +535,12 @@ bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)
 
 QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
-    return qt_getCppType<QObject>(pyobject.ptr(), shiboken);
+    return qt_getCppType<QObject>(pyobject.ptr());
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
 {
-    return qt_getCppType<QGraphicsItem>(pyPtr, shiboken);
+    return qt_getCppType<QGraphicsItem>(pyPtr);
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(const Py::Object& pyobject)
@@ -533,7 +550,7 @@ QGraphicsItem* PythonWrapper::toQGraphicsItem(const Py::Object& pyobject)
 
 QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
 {
-    return qt_getCppType<QGraphicsObject>(pyPtr, shiboken);
+    return qt_getCppType<QGraphicsObject>(pyPtr);
 }
 
 QGraphicsObject* PythonWrapper::toQGraphicsObject(const Py::Object& pyobject)
@@ -544,77 +561,62 @@ QGraphicsObject* PythonWrapper::toQGraphicsObject(const Py::Object& pyobject)
 Py::Object PythonWrapper::fromQImage(const QImage& img)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-#if defined (HAVE_SHIBOKEN2)
-    PyObject* pyobj = Shiboken::Conversions::copyToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QImage>()),
-                              const_cast<QImage*>(&img));
-#else
     PyObject* pyobj = Shiboken::Conversions::copyToPython(getPyTypeObjectForTypeName<QImage>(),
                               const_cast<QImage*>(&img));
-#endif
     if (pyobj) {
         return Py::asObject(pyobj);
     }
+
+    throw Py::RuntimeError("Failed to wrap image");
 #else
     // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<const QImage*>(&img, "QImage", shiboken, PySide + ".QtGui", "wrapInstance");
+    return qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
 #endif
-    throw Py::RuntimeError("Failed to wrap icon");
 }
 
 QImage *PythonWrapper::toQImage(PyObject *pyobj)
 {
-    return qt_getCppType<QImage>(pyobj, shiboken);
+    return qt_getCppType<QImage>(pyobj);
 }
 
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
-#if defined (HAVE_SHIBOKEN2)
-    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QIcon>()),
-                              const_cast<QIcon*>(icon), true, false, typeName);
-#else
     PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QIcon>(),
                               const_cast<QIcon*>(icon), true, false, typeName);
-#endif
     if (pyobj)
         return Py::asObject(pyobj);
+
+    throw Py::RuntimeError("Failed to wrap icon");
 #else
     // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<const QIcon*>(icon, "QIcon", shiboken, PySide + ".QtGui", "wrapInstance");
+    return qt_wrapInstance<const QIcon*>(icon, "QIcon", "QtGui");
 #endif
-    throw Py::RuntimeError("Failed to wrap icon");
 }
 
 QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
 {
-    return qt_getCppType<QIcon>(pyobj, shiboken);
+    return qt_getCppType<QIcon>(pyobj);
 }
 
 Py::Object PythonWrapper::fromQDir(const QDir& dir)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     const char* typeName = typeid(dir).name();
-#if defined (HAVE_SHIBOKEN2)
-    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QDir>()),
-        const_cast<QDir*>(&dir), false, false, typeName);
-#else
     PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QDir>(),
         const_cast<QDir*>(&dir), false, false, typeName);
-#endif
     if (pyobj)
         return Py::asObject(pyobj);
 #else
     Q_UNUSED(dir)
 #endif
-    throw Py::RuntimeError("Failed to wrap icon");
+    throw Py::RuntimeError("Failed to wrap directory");
 }
 
 QDir* PythonWrapper::toQDir(PyObject* pyobj)
 {
-    return qt_getCppType<QDir>(pyobj, shiboken);
+    return qt_getCppType<QDir>(pyobj);
 }
 
 Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
@@ -623,26 +625,24 @@ Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
         return Py::None();
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
-    //
-    PyTypeObject * type = getPyTypeObjectForTypeName<QPrinter>();
+    auto type = getPyTypeObjectForTypeName<QPrinter>();
     if (!type) {
+        // XXX: Why is QPrinter special?
+#if defined (HAVE_SHIBOKEN2)
+        type = reinterpret_cast<SbkObjectType*>(Shiboken::Conversions::getPythonTypeObject("QPrinter"));
+#else
         type = Shiboken::Conversions::getPythonTypeObject("QPrinter");
+#endif
     }
     if (type) {
-#if defined (HAVE_SHIBOKEN2)
-        auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
-#else
-        auto sbk_type = type;
-#endif
-        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, printer, false, false, "QPrinter");
+        PyObject* pyobj = Shiboken::Object::newObject(type, printer, false, false, "QPrinter");
         return Py::asObject(pyobj);
     }
 
-    throw Py::RuntimeError("Failed to wrap object");
+    throw Py::RuntimeError("Failed to wrap printer");
 #else
     // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", shiboken, PySide + ".QtCore", "wrapInstance");
+    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "QtCore");
 #endif
 }
 
@@ -652,28 +652,26 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         return Py::None();
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
-    //
-    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
+    auto type = getPyTypeObjectForTypeName<QObject>();
     if (type) {
-#if defined (HAVE_SHIBOKEN2)
-        auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
-#else
-        auto sbk_type = type;
-#endif
         std::string typeName;
         if (className)
             typeName = className;
         else
             typeName = object->metaObject()->className();
-        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, object, false, false, typeName.c_str());
+        PyObject* pyobj = Shiboken::Object::newObject(type, object, false, false, typeName.c_str());
         WrapperManager::instance().addQObject(object, pyobj);
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap object");
 #else
     // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QObject*>(object, className, shiboken, PySide + ".QtCore", "wrapInstance");
+    std::string typeName;
+    if (className)
+        typeName = className;
+    else
+        typeName = object->metaObject()->className();
+    return qt_wrapInstance<QObject*>(object, typeName, "QtCore");
 #endif
 }
 
@@ -681,29 +679,26 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
-    //
-    PyTypeObject * type = getPyTypeObjectForTypeName<QWidget>();
+    auto type = getPyTypeObjectForTypeName<QWidget>();
     if (type) {
-#if defined (HAVE_SHIBOKEN2)
-        auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
-#else
-        auto sbk_type = type;
-#endif
         std::string typeName;
         if (className)
             typeName = className;
         else
             typeName = widget->metaObject()->className();
-        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, widget, false, false, typeName.c_str());
+        PyObject* pyobj = Shiboken::Object::newObject(type, widget, false, false, typeName.c_str());
         WrapperManager::instance().addQObject(widget, pyobj);
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap widget");
-
 #else
     // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QWidget*>(widget, className, shiboken, PySide + ".QtWidgets", "wrapInstance");
+    std::string typeName;
+    if (className)
+        typeName = className;
+    else
+        typeName = widget->metaObject()->className();
+    return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets");
 #endif
 }
 
@@ -734,52 +729,27 @@ const char* PythonWrapper::getWrapperName(QObject* obj) const
 
 bool PythonWrapper::loadCoreModule()
 {
-#if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)
-    return loadPySideModule(PySide + ".QtCore", SbkPySide2_QtCoreTypes);
-#elif defined (HAVE_SHIBOKEN6) && (HAVE_PYSIDE6)
-    return loadPySideModule(PySide + ".QtCore", SbkPySide6_QtCoreTypes);
-#endif
-    return true;
+    return loadPySideModule("QtCore", SbkPySide_QtCoreTypes);
 }
 
 bool PythonWrapper::loadGuiModule()
 {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-    return loadPySideModule(PySide + ".QtGui", SbkPySide2_QtGuiTypes);
-#elif defined (HAVE_SHIBOKEN6) && defined(HAVE_PYSIDE6)
-    return loadPySideModule(PySide + ".QtGui", SbkPySide6_QtGuiTypes);
-#endif
-    return true;
+    return loadPySideModule("QtGui", SbkPySide_QtGuiTypes);
 }
 
 bool PythonWrapper::loadWidgetsModule()
 {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-    return loadPySideModule(PySide + ".QtWidgets", SbkPySide2_QtWidgetsTypes);
-#elif defined (HAVE_SHIBOKEN6) && defined(HAVE_PYSIDE6)
-    return loadPySideModule(PySide + ".QtWidgets", SbkPySide6_QtWidgetsTypes);
-#endif
-    return true;
+    return loadPySideModule("QtWidgets", SbkPySide_QtWidgetsTypes);
 }
 
 bool PythonWrapper::loadPrintSupportModule()
 {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-    return loadPySideModule(PySide + ".QtPrintSupport", SbkPySide2_QtPrintSupportTypes);
-#elif defined (HAVE_SHIBOKEN6) && defined(HAVE_PYSIDE6)
-    return loadPySideModule(PySide + ".QtPrintSupport", SbkPySide6_QtPrintSupportTypes);
-#endif
-    return true;
+    return loadPySideModule("QtPrintSupport", SbkPySide_QtPrintSupportTypes);
 }
 
 bool PythonWrapper::loadUiToolsModule()
 {
-#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
-    return loadPySideModule(PySide + ".QtUiTools", SbkPySide2_QtUiToolsTypes);
-#elif defined (HAVE_SHIBOKEN6) && defined(HAVE_PYSIDE6)
-    return loadPySideModule(PySide + ".QtUiTools", SbkPySide6_QtUiToolsTypes);
-#endif
-    return true;
+    return loadPySideModule("QtUiTools", SbkPySide_QtUiToolsTypes);
 }
 
 void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object)
@@ -791,14 +761,10 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
             bool hasAttr = PyObject_HasAttrString(root, name.constData());
             if (!hasAttr) {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-#if defined (HAVE_SHIBOKEN2)
-                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QObject>()), child));
-#else
                 Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(getPyTypeObjectForTypeName<QObject>(), child));
-#endif
                 PyObject_SetAttrString(root, name.constData(), pyChild);
 #else
-                const char* className = qt_identifyType(child, PySide + ".QtWidgets");
+                const char* className = qt_identifyType(child, "QtWidgets");
                 if (!className) {
                     if (qobject_cast<QWidget*>(child))
                         className = "QWidget";
@@ -806,7 +772,7 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
                         className = "QObject";
                 }
 
-                Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, shiboken, PySide + ".QtWidgets", "wrapInstance"));
+                Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets"));
                 PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
 #endif
             }
@@ -820,11 +786,7 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (parent) {
-#if defined (HAVE_SHIBOKEN2)
-        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QWidget>()), parent));
-#else
         Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython(getPyTypeObjectForTypeName<QWidget>(), parent));
-#endif
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
 #else

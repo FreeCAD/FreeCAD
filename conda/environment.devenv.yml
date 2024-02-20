@@ -59,7 +59,7 @@ dependencies:
 - boost-cpp
 - ccache
 - cmake
-- coin3d==4.0.0
+- coin3d
 - compilers
 - conda
 - conda-devenv
@@ -77,7 +77,7 @@ dependencies:
 - matplotlib
 - ninja
 - numpy
-- occt==7.6.3
+- occt
 - openssl
 - pcl==1.13.1
 - pip
@@ -87,7 +87,7 @@ dependencies:
 - pre-commit
 - pybind11
 - pyside2
-- python
+- python==3.11.*
 - pyyaml
 - qt
 - qt-main

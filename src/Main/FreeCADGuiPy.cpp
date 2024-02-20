@@ -286,6 +286,8 @@ QWidget* setupMainWindow()
             return nullptr;
         }
 
+        Gui::initGuiAppPreMainWindow(true);
+
         Base::PyGILStateLocker lock;
         // It's sufficient to create the config key
         App::Application::Config()["DontOverrideStdIn"] = "";
@@ -297,69 +299,14 @@ QWidget* setupMainWindow()
             qApp->setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
         }
         mw->setWindowIcon(qApp->windowIcon());
-        QString appName = qApp->applicationName();
-        if (!appName.isEmpty()) {
-            mw->setWindowTitle(appName);
-        }
-        else {
-            mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
-        }
 
-        // set toolbar icon size
-        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("General");
-        int size = hGrp->GetInt("ToolbarIconSize", 0);
-        if (size >= 16) // must not be lower than this
-            mw->setIconSize(QSize(size,size));
-
-        if (!SoDB::isInitialized()) {
-            // init the Inventor subsystem
-            SoDB::init();
-            SIM::Coin3D::Quarter::Quarter::init();
-            Gui::SoFCDB::init();
+        try {
+            Gui::initGuiAppPostMainWindow(true, *qApp, *mw, nullptr);
+        }
+        catch (const Base::Exception& e) {
+            return nullptr;
         }
 
-        static bool init = false;
-        if (!init) {
-            try {
-                Base::Console().Log("Run Gui init script\n");
-                Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
-            }
-            catch (const Base::Exception& e) {
-                PyErr_Format(Base::PyExc_FC_GeneralError, "Error in FreeCADGuiInit.py: %s\n", e.what());
-                return nullptr;
-            }
-            init = true;
-        }
-
-        qApp->setActiveWindow(mw);
-
-        // Activate the correct workbench
-        std::string start = App::Application::Config()["StartWorkbench"];
-        Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-        std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                               GetASCII("AutoloadModule", start.c_str());
-        if ("$LastModule" == autoload) {
-            start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                   GetASCII("LastModule", start.c_str());
-        } else {
-            start = autoload;
-        }
-        // if the auto workbench is not visible then force to use the default workbech
-        // and replace the wrong entry in the parameters
-        QStringList wb = Gui::Application::Instance->workbenches();
-        if (!wb.contains(QString::fromLatin1(start.c_str()))) {
-            start = App::Application::Config()["StartWorkbench"];
-            if ("$LastModule" == autoload) {
-                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("LastModule", start.c_str());
-            } else {
-                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("AutoloadModule", start.c_str());
-            }
-        }
-
-        Gui::Application::Instance->activateWorkbench(start.c_str());
-        mw->loadWindowSettings();
     }
     else {
         Gui::getMainWindow()->show();

@@ -50,6 +50,7 @@ public:
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderRuledSurface";
+    void setupObject();
     }
     //@}
 
@@ -74,6 +75,7 @@ public:
     App::PropertyBool Solid;
     App::PropertyBool Ruled;
     App::PropertyBool Closed;
+    App::PropertyBool Linearize;
     App::PropertyIntegerConstraint MaxDegree;
 
     /** @name methods override feature */
@@ -84,6 +86,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderLoft";
     }
+    void setupObject();
     //@}
 
 protected:
@@ -104,6 +107,7 @@ public:
     App::PropertyLinkSub Spine;
     App::PropertyBool Solid;
     App::PropertyBool Frenet;
+    App::PropertyBool Linearize;
     App::PropertyEnumeration Transition;
 
     /** @name methods override feature */
@@ -114,6 +118,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSweep";
     }
+    void setupObject();
     //@}
 
 protected:

@@ -59,10 +59,11 @@ namespace Part
 struct ShapeHasher;
 class TopoShape;
 class TopoShapeCache;
-typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
+using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
 
 /* A special sub-class to indicate null shapes
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport NullShapeException: public Base::ValueError
 {
 public:
@@ -76,6 +77,7 @@ public:
 
 /* A special sub-class to indicate boolean failures
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport BooleanException: public Base::CADKernelError
 {
 public:
@@ -89,11 +91,12 @@ public:
 
 class PartExport ShapeSegment: public Data::Segment
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit ShapeSegment(const TopoDS_Shape& ShapeIn)
-        : Shape(ShapeIn)
+    explicit ShapeSegment(TopoDS_Shape ShapeIn)
+        : Shape(std::move(ShapeIn))
     {}
     ShapeSegment() = default;
     std::string getName() const override;
@@ -118,17 +121,100 @@ enum class RefineFail
     throwException
 };
 
+/// Behavior of findSubShapesWithSharedVertex.
+enum class CheckGeometry
+{
+    ignoreGeometry,
+    checkGeometry
+};
+
+enum class LinearizeFace
+{
+    noFaces,
+    linearizeFaces
+};
+
+enum class LinearizeEdge
+{
+    noEdges,
+    linearizeEdges
+};
+
+enum class IsSolid
+{
+    notSolid,
+    solid
+};
+
+enum class IsRuled
+{
+    notRuled,
+    ruled
+};
+
+enum class IsClosed
+{
+    notClosed,
+    closed
+};
+
+/// Option to manage discontinuity in pipe sweeping
+enum class TransitionMode
+{
+    /** Discontinuities are treated by modification of the sweeping mode.
+     * The pipe is "transformed" at the fractures of the spine. This mode
+     * assumes building a self-intersected shell.
+     */
+    Transformed,
+
+    /** Discontinuities are treated like right corner. Two pieces of the
+     * pipe corresponding to two adjacent segments of the spine are
+     * extended and intersected at a fracture of the spine.
+     */
+    RightCorner,
+
+    /** Discontinuities are treated like round corner. The corner is
+     * treated as rotation of the profile around an axis which passes
+     * through the point of the spine's fracture. This axis is based on
+     * cross product of directions tangent to the adjacent segments of the
+     * spine at their common point.
+     */
+    RoundCorner
+};
+
+enum class MakeSolid
+{
+    noSolid,
+    makeSolid
+};
+
+enum class MapElement
+{
+    noMap,
+    map
+};
+
+/// Defines how to fill the holes that may appear after offset two adjacent faces
+enum class JoinType
+{
+    Arc,
+    Tangent,
+    Intersection,
+};
+
 /** The representation for a CAD Shape
  */
+// NOLINTNEXTLINE cppcoreguidelines-special-member-functions
 class PartExport TopoShape: public Data::ComplexGeoData
 {
+    // NOLINTNEXTLINE cppcoreguidelines-avoid-non-const-global-variables
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    TopoShape(long Tag=0,
+    TopoShape(long Tag=0,   // NOLINT google-explicit-constructor
               App::StringHasherRef hasher=App::StringHasherRef(),
               const TopoDS_Shape &shape=TopoDS_Shape());  // Cannot be made explicit
-    TopoShape(const TopoDS_Shape&,
+    TopoShape(const TopoDS_Shape&,  // NOLINT google-explicit-constructor
               long Tag=0,
               App::StringHasherRef hasher=App::StringHasherRef());  // Cannot be made explicit
     TopoShape(const TopoShape&);
@@ -197,7 +283,7 @@ public:
                   uint16_t flags = 0) const override;
     void setFaces(const std::vector<Base::Vector3d>& Points,
                   const std::vector<Facet>& faces,
-                  double tolerance = 1.0e-06);
+                  double tolerance = 1.0e-06);  // NOLINT
     void getDomains(std::vector<Domain>&) const;
     //@}
 
@@ -213,13 +299,13 @@ public:
     std::vector<const char*> getElementTypes() const override;
     unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
+    Data::Segment* getSubElement(const char* Type, unsigned long index) const override;
     /** Get lines from segment */
-    void getLinesFromSubElement(const Data::Segment*,
+    void getLinesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Line>& lines) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(const Data::Segment*,
+    void getFacesFromSubElement(const Data::Segment* segment,
                                 std::vector<Base::Vector3d>& Points,
                                 std::vector<Base::Vector3d>& PointNormals,
                                 std::vector<Facet>& faces) const override;
@@ -258,8 +344,32 @@ public:
      * @return  The shape, or a null TopoShape.
      */
     TopoShape getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent = false) const;
-    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;
-    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type = TopAbs_SHAPE) const;
+    /**
+     * Locate all of the sub TopoShapes of a given type, while avoiding a given type
+     * @param type The type to find
+     * @param avoid The type to avoid
+     * @return The sub TopoShapes.
+     */
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    /**
+     * Locate all of the sub TopoDS_Shapes of a given type, while avoiding a given type
+     * @param type The type to find
+     * @param avoid The type to avoid
+     * @return The sub TopoDS_Shapes.
+     */
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    /**
+     * Locate all the Edges in the Wires of this shape
+     * @param mapElement If True, map the subelements ( Edges ) found
+     * @return Vector of the edges
+     */
+    std::vector<TopoShape> getOrderedEdges(MapElement mapElement=MapElement::map) const;
+    /**
+     * Locate all the Vertexes in the Wires of this shape
+     * @param mapElement If True, map the subelements ( Vertexes )  found
+     * @return Vector of the Vertexes
+     */
+    std::vector<TopoShape> getOrderedVertexes(MapElement mapElement=MapElement::map) const;
     unsigned long countSubShapes(const char* Type) const;
     unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
     bool hasSubShape(const char* Type) const;
@@ -267,7 +377,7 @@ public:
     /// get the Topo"sub"Shape with the given name
     PyObject* getPySubShape(const char* Type, bool silent = false) const;
     PyObject* getPyObject() override;
-    void setPyObject(PyObject*) override;
+    void setPyObject(PyObject* obj) override;
 
     /** @name Save/restore */
     //@{
@@ -310,7 +420,11 @@ public:
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
-    bool isPlanar(double tol = 1.0e-7) const;
+    bool isPlanar(double tol = 1.0e-7) const;   // NOLINT
+    /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
+    bool isLinearEdge(Base::Vector3d *dir = nullptr, Base::Vector3d *base = nullptr) const;
+    /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
+    bool isPlanarFace(double tol=1e-7) const;   // NOLINT
     //@}
 
     /** @name Boolean operation*/
@@ -674,6 +788,89 @@ public:
     }
     //@}
 
+    /** Make a hollowed solid by removing some faces from a given solid
+     *
+     * @param source: input shape
+     * @param faces: list of faces to remove, must be sub shape of the input shape
+     * @param offset: thickness of the walls
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel.
+     * @param selfInter: whether to eliminate self intersection.
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementThickSolid(const TopoShape &source, const std::vector<TopoShape> &faces,
+                              double offset, double tol, bool intersection = false, bool selfInter = false,
+                              short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr);
+
+    /** Make a hollowed solid by removing some faces from a given solid
+     *
+     * @param source: input shape
+     * @param faces: list of faces to remove, must be sub shape of the input shape
+     * @param offset: thickness of the walls
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel
+     *                      (OCCT document states the option is not fully implemented)
+     * @param selfInter: whether to eliminate self intersection
+     *                   (OCCT document states the option is not implemented)
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     *                    (OCCT document states the option is not implemented)
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementThickSolid(const std::vector<TopoShape> &faces,
+                             double offset, double tol, bool intersection = false, bool selfInter = false,
+                             short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
+                                                   offsetMode,join,op);
+    }
+
+    /* Make a shell or solid by sweeping profile wire along a spine
+     *
+     * @params sources: source shapes. The first shape is used as spine. The
+     *                  rest are used as section profiles. Can be of type edge,
+     *                  wire, face, or compound of those. For face, only outer
+     *                  wire is used.
+     * @params makeSolid: whether to create solid
+     * @param isFrenet: if true, then assume the profiles transition is Frenet,
+     *                  or else a corrected Frenet trihedron is used.
+     * @param transition: @sa TransitionMode
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol3d: 3D tolerance
+     * @param tolBound: boundary tolerance
+     * @param tolAngular: angular tolerance
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementPipeShell(const std::vector<TopoShape>& sources,
+                                    const MakeSolid makeSolid,
+                                    const Standard_Boolean isFrenet,
+                                    TransitionMode transition = TransitionMode::Transformed,
+                                    const char* op = nullptr,
+                                    double tol3d = 0.0,
+                                    double tolBound = 0.0,
+                                    double tolAngluar = 0.0);
+
+    /** Try to simplify geometry of any linear/planar subshape to line/plane
+     *
+     * @return Return true if the shape is modified
+     */
+    bool linearize(LinearizeFace face, LinearizeEdge edge);
+
     static TopAbs_ShapeEnum shapeType(const char* type, bool silent = false);
     static TopAbs_ShapeEnum shapeType(char type, bool silent = false);
     TopAbs_ShapeEnum shapeType(bool silent = false) const;
@@ -703,10 +900,13 @@ public:
     std::vector<int> findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
     std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape& subshape,
                                                   TopAbs_ShapeEnum type) const;
-    /** Search sub shape
+    /** Find sub shapes with shared Vertexes.
      *
+     * Renamed: searchSubShape -> findSubShapesWithSharedVertex
+     * 
      * unlike findShape(), the input shape does not have to be an actual
      * sub-shape of this shape. The sub-shape is searched by shape geometry
+     * Note that subshape must be a Vertex, Edge, or Face.
      *
      * @param subshape: a sub shape to search
      * @param names: optional output of found sub shape indexed based name
@@ -714,11 +914,10 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-    // TODO: Implement this method and its tests later in Toponaming Phase 3.
-    // std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
-    //                                      std::vector<std::string> *names=nullptr,
-    //                                      bool checkGeometry=true,
-    //                                      double tol=1e-7, double atol=1e-12) const;
+     std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
+                                          std::vector<std::string> *names=nullptr,
+                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          double tol=1e-7, double atol=1e-12) const;
     //@}
 
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
@@ -749,6 +948,46 @@ public:
             return _res;
         }
     };
+
+    /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
+     *
+     * @param sources: the source shapes. The first shape is used as the spine,
+     *                 and the rest as sections. The sections can be of any
+     *                 type, but only wires are used. The first and last
+     *                 section may be vertex.
+     * @param isSolid: whether to make a solid
+     * @param isRuled: if isRuled then the faces generated between the edges of
+     *                 two consecutive section wires are ruled surfaces. If
+     *                 notRuled, then they are smoothed out by approximation
+     * @param isClosed: If isClosed, then the first section is duplicated to close
+     *                  the loft as the last section
+     * @param maxDegree: define the maximal U degree of the result surface
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementLoft(const std::vector<TopoShape> &sources,
+                        IsSolid isSolid, IsRuled isRuled, IsClosed isClosed=IsClosed::notClosed,
+                        Standard_Integer maxDegree=5, const char *op=nullptr);
+
+    /** Make a ruled surface
+     *
+     * @param sources: the source shapes, each of which must contain either a
+     *                 single edge or a single wire.
+     * @param orientation: A Qt::Orientation, where Qt::Horizontal is 1 and Qt::Vertical is 2.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementRuledSurface(const std::vector<TopoShape> &source, int orientation=0, const char *op=nullptr);
 
     /** Core function to generate mapped element names from shape history
      *
@@ -997,6 +1236,43 @@ public:
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementDraft(const TopoShape &source, const std::vector<TopoShape> &faces,
+                         const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                         bool retry=true, const char *op=nullptr);
+    /* Make draft shape
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to make draft faces
+     * @param pullDirection: the pulling direction for making the draft
+     * @param angle: the angle of the draft
+     * @param neutralPlane: the neutral plane used as a reference to decide pulling direction
+     * @param retry: whether to keep going by skipping faces that failed to create draft
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementDraft(const std::vector<TopoShape> &faces,
+                        const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
+                        bool retry=true, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op);
+    }
 
     /* Make a shell using this shape
      * @param silent: whether to throw exception on failure
@@ -1175,172 +1451,15 @@ public:
         return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
     }
 
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepBuilderAPI_Sewing& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepBuilderAPI_Sewing& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_ThruSections with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_ThruSections& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_Sewing with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepOffsetAPI_ThruSections& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_MakePipeShell with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepOffsetAPI_MakePipeShell& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
-
-    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param source: source shape.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
-    /** Specialized shape making for BRepBuilderAPI_MakeHalfSpace with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return Returns the new shape built by the shape maker with mappend element
-     *         name generated using this shape as the source. The shape itself
-     *         is not modified.
-     */
-    TopoShape makeElementShape(BRepPrimAPI_MakeHalfSpace& mkShape, const char* op = nullptr) const
-    {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
-    }
-
-    /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
-     *
-     * @param mkShape: OCCT shape maker.
-     * @param sources: list of source shapes.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The original content of this TopoShape is discarded and replaced
-     *         with the new shape built by the shape maker. The function
-     *         returns the TopoShape itself as a self reference so that
-     *         multiple operations can be carried out for the same shape in the
-     *         same line of code.
-     */
-    TopoShape& makeElementShape(BRepFeat_MakePrism& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const TopoShape& uptoface,
-                                const char* op);
-
-    /** Helper class to return the generated and modified shape given an input shape
-     *
-     * Shape history information is extracted using OCCT APIs
-     * BRepBuilderAPI_MakeShape::Generated/Modified(). However, there is often
-     * some glitches in various derived class. So we use this class as an
-     * abstraction, and create various derived classes to deal with the glitches.
+    /* Toponaming migration, February 2014:
+     * Note that the specialized versions of makeElementShape for operations that do not
+     * inherit from BRepBuilderAPI_MakeShape  ( like BRepBuilderAPI_Sewing ) have been removed.
+     * Rather than restore them, code that calls them should be changed to call
+     * makeShapeWithElementMap directly.  For example:
+     * makeElementShape(sewer, sources)
+     * makeShapeWithElementMap(sewer.SewedShape(), MapperSewing(sewer), sources, OpCodes::Sewing);
+     * Note that if op exists in the method, it should be checked for null and overriden with
+     * the appropriate operation if so.
      */
 
     friend class TopoShapeCache;
@@ -1506,6 +1625,15 @@ struct PartExport MapperMaker: TopoShape::Mapper
     {}
     const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
     const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override;
+};
+
+struct PartExport MapperSewing: TopoShape::Mapper
+{
+    BRepBuilderAPI_Sewing& maker;
+    explicit MapperSewing(BRepBuilderAPI_Sewing& maker)
+        : maker(maker)
+    {}
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override;
 };
 
 /** Shape mapper for BRepTools_History

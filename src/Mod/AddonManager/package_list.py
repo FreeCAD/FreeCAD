@@ -37,27 +37,16 @@ from expanded_view import Ui_ExpandedView
 
 import addonmanager_utilities as utils
 from addonmanager_metadata import get_first_supported_freecad_version, Version
+from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar
+from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
+from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter, ContentFilter
+from Widgets.addonmanager_widget_progress_bar import WidgetProgressBar
+from addonmanager_licenses import get_license_manager, SPDXLicenseManager
 
 translate = FreeCAD.Qt.translate
 
 
 # pylint: disable=too-few-public-methods
-
-
-class ListDisplayStyle(IntEnum):
-    """The display mode of the list"""
-
-    COMPACT = 0
-    EXPANDED = 1
-
-
-class StatusFilter(IntEnum):
-    """Predefined filers"""
-
-    ANY = 0
-    INSTALLED = 1
-    NOT_INSTALLED = 2
-    UPDATE_AVAILABLE = 3
 
 
 class PackageList(QtWidgets.QWidget):
@@ -77,25 +66,18 @@ class PackageList(QtWidgets.QWidget):
         self.ui.listPackages.setItemDelegate(self.item_delegate)
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
-        self.ui.comboPackageType.currentIndexChanged.connect(self.update_type_filter)
-        self.ui.comboStatus.currentIndexChanged.connect(self.update_status_filter)
-        self.ui.lineEditFilter.textChanged.connect(self.update_text_filter)
-        self.ui.buttonCompactLayout.clicked.connect(
-            lambda: self.set_view_style(ListDisplayStyle.COMPACT)
-        )
-        self.ui.buttonExpandedLayout.clicked.connect(
-            lambda: self.set_view_style(ListDisplayStyle.EXPANDED)
-        )
-
-        # Only shows when the user types in a filter
-        self.ui.labelFilterValidity.hide()
+        self.ui.view_bar.view_changed.connect(self.set_view_style)
+        self.ui.view_bar.filter_changed.connect(self.update_status_filter)
+        self.ui.view_bar.search_changed.connect(self.item_filter.setFilterRegularExpression)
 
         # Set up the view the same as the last time:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         package_type = pref.GetInt("PackageTypeSelection", 1)
-        self.ui.comboPackageType.setCurrentIndex(package_type)
         status = pref.GetInt("StatusSelection", 0)
-        self.ui.comboStatus.setCurrentIndex(status)
+        self.ui.view_bar.filter_selector.set_contents_filter(package_type)
+        self.ui.view_bar.filter_selector.set_status_filter(status)
+        self.item_filter.setPackageFilter(package_type)
+        self.item_filter.setStatusFilter(status)
 
         # Pre-init of other members:
         self.item_model = None
@@ -107,16 +89,18 @@ class PackageList(QtWidgets.QWidget):
         self.item_filter.sort(0)
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        style = pref.GetInt("ViewStyle", ListDisplayStyle.EXPANDED)
+        style = pref.GetInt("ViewStyle", AddonManagerDisplayStyle.EXPANDED)
         self.set_view_style(style)
-        if style == ListDisplayStyle.EXPANDED:
-            self.ui.buttonExpandedLayout.setChecked(True)
-        else:
-            self.ui.buttonCompactLayout.setChecked(True)
+        self.ui.view_bar.view_selector.set_current_view(style)
 
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
-        self.item_filter.setHideNewerFreeCADRequired(pref.GetBool("HideNewerFreeCADRequired", True))
+        self.item_filter.setHideNonOSIApproved(pref.GetBool("HideNonOSIApproved", True))
+        self.item_filter.setHideNonFSFLibre(pref.GetBool("HideNonFSFFreeLibre", False))
+        self.item_filter.setHideNewerFreeCADRequired(
+            pref.GetBool("HideNewerFreeCADRequired", False)
+        )
+        self.item_filter.setHideUnlicensed(pref.GetBool("HideUnlicensed", False))
 
     def on_listPackages_clicked(self, index: QtCore.QModelIndex):
         """Determine what addon was selected and emit the itemSelected signal with it as
@@ -125,63 +109,22 @@ class PackageList(QtWidgets.QWidget):
         selected_repo = self.item_model.repos[source_selection.row()]
         self.itemSelected.emit(selected_repo)
 
-    def update_type_filter(self, type_filter: int) -> None:
-        """hide/show rows corresponding to the type filter
+    def update_status_filter(self, new_filter: Filter) -> None:
+        """hide/show rows corresponding to the specified filter"""
 
-        type_filter is an integer: 0 for all, 1 for workbenches, 2 for macros,
-        and 3 for preference packs
-
-        """
-
-        self.item_filter.setPackageFilter(type_filter)
+        self.item_filter.setStatusFilter(new_filter.status_filter)
+        self.item_filter.setPackageFilter(new_filter.content_filter)
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        pref.SetInt("PackageTypeSelection", type_filter)
+        pref.SetInt("StatusSelection", new_filter.status_filter)
+        pref.SetInt("PackageTypeSelection", new_filter.content_filter)
+        self.item_filter.invalidateFilter()
 
-    def update_status_filter(self, status_filter: int) -> None:
-        """hide/show rows corresponding to the status filter
-
-        status_filter is an integer: 0 for any, 1 for installed, 2 for not installed,
-        and 3 for update available
-
-        """
-
-        self.item_filter.setStatusFilter(status_filter)
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        pref.SetInt("StatusSelection", status_filter)
-
-    def update_text_filter(self, text_filter: str) -> None:
-        """filter name and description by the regex specified by text_filter"""
-
-        if text_filter:
-            if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
-                test_regex = QtCore.QRegularExpression(text_filter)
-            else:
-                test_regex = QtCore.QRegExp(text_filter)
-            if test_regex.isValid():
-                self.ui.labelFilterValidity.setToolTip(
-                    translate("AddonsInstaller", "Filter is valid")
-                )
-                icon = QtGui.QIcon.fromTheme("ok", QtGui.QIcon(":/icons/edit_OK.svg"))
-                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16, 16))
-            else:
-                self.ui.labelFilterValidity.setToolTip(
-                    translate("AddonsInstaller", "Filter regular expression is invalid")
-                )
-                icon = QtGui.QIcon.fromTheme("cancel", QtGui.QIcon(":/icons/edit_Cancel.svg"))
-                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16, 16))
-            self.ui.labelFilterValidity.show()
-        else:
-            self.ui.labelFilterValidity.hide()
-        if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
-            self.item_filter.setFilterRegularExpression(text_filter)
-        else:
-            self.item_filter.setFilterRegExp(text_filter)
-
-    def set_view_style(self, style: ListDisplayStyle) -> None:
+    def set_view_style(self, style: AddonManagerDisplayStyle) -> None:
         """Set the style (compact or expanded) of the list"""
         self.item_model.layoutAboutToBeChanged.emit()
         self.item_delegate.set_view(style)
-        if style == ListDisplayStyle.COMPACT:
+        # TODO: Update to support composite
+        if style == AddonManagerDisplayStyle.COMPACT:
             self.ui.listPackages.setSpacing(2)
         else:
             self.ui.listPackages.setSpacing(5)
@@ -324,12 +267,12 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.displayStyle = ListDisplayStyle.EXPANDED
+        self.displayStyle = AddonManagerDisplayStyle.EXPANDED
         self.expanded = ExpandedView()
         self.compact = CompactView()
         self.widget = self.expanded
 
-    def set_view(self, style: ListDisplayStyle) -> None:
+    def set_view(self, style: AddonManagerDisplayStyle) -> None:
         """Set the view of to style"""
         if not self.displayStyle == style:
             self.displayStyle = style
@@ -343,7 +286,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
     def update_content(self, index):
         """Creates the display of the content for a given index."""
         repo = index.data(PackageListItemModel.DataAccessRole)
-        if self.displayStyle == ListDisplayStyle.EXPANDED:
+        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             self.widget = self.expanded
             self.widget.ui.labelPackageName.setText(f"<h1>{repo.display_name}</h1>")
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QtCore.QSize(48, 48)))
@@ -353,23 +296,23 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QtCore.QSize(16, 16)))
 
         self.widget.ui.labelIcon.setText("")
-        if self.displayStyle == ListDisplayStyle.EXPANDED:
+        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             self.widget.ui.labelTags.setText("")
         if repo.metadata:
             self.widget.ui.labelDescription.setText(repo.metadata.description)
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.version}</i>")
-            if self.displayStyle == ListDisplayStyle.EXPANDED:
+            if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
                 self._setup_expanded_package(repo)
         elif repo.macro and repo.macro.parsed:
             self._setup_macro(repo)
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
-            if self.displayStyle == ListDisplayStyle.EXPANDED:
+            if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
                 self.widget.ui.labelMaintainer.setText("")
 
         # Update status
-        if self.displayStyle == ListDisplayStyle.EXPANDED:
+        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             self.widget.ui.labelStatus.setText(self.get_expanded_update_string(repo))
         else:
             self.widget.ui.labelStatus.setText(self.get_compact_update_string(repo))
@@ -417,7 +360,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 + repo.macro.date
             )
         self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
-        if self.displayStyle == ListDisplayStyle.EXPANDED:
+        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             if repo.macro.author:
                 caption = translate("AddonsInstaller", "Author")
                 self.widget.ui.labelMaintainer.setText(caption + ": " + repo.macro.author)
@@ -531,6 +474,9 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
         self.setSortCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.hide_obsolete = False
         self.hide_py2 = False
+        self.hide_non_OSI_approved = False
+        self.hide_non_FSF_libre = False
+        self.hide_unlicensed = False
         self.hide_newer_freecad_required = False
 
     def setPackageFilter(
@@ -555,6 +501,21 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
     def setHideObsolete(self, hide_obsolete: bool) -> None:
         """Sets whether to hide Addons marked obsolete"""
         self.hide_obsolete = hide_obsolete
+        self.invalidateFilter()
+
+    def setHideNonOSIApproved(self, hide: bool) -> None:
+        """Sets whether to hide Addons with non-OSI-approved licenses"""
+        self.hide_non_OSI_approved = hide
+        self.invalidateFilter()
+
+    def setHideNonFSFLibre(self, hide: bool) -> None:
+        """Sets whether to hide Addons with non-FSF-Libre licenses"""
+        self.hide_non_FSF_libre = hide
+        self.invalidateFilter()
+
+    def setHideUnlicensed(self, hide: bool) -> None:
+        """Sets whether to hide addons without a specified license"""
+        self.hide_unlicensed = hide
         self.invalidateFilter()
 
     def setHideNewerFreeCADRequired(self, hide_nfr: bool) -> None:
@@ -596,13 +557,58 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
             if data.status() != Addon.Status.UPDATE_AVAILABLE:
                 return False
 
-        # If it's not installed, check to see if it's Py2 only
-        if data.status() == Addon.Status.NOT_INSTALLED and self.hide_py2 and data.python2:
-            return False
+        license_manager = get_license_manager()
+        if data.status() == Addon.Status.NOT_INSTALLED:
 
-        # If it's not installed, check to see if it's marked obsolete
-        if data.status() == Addon.Status.NOT_INSTALLED and self.hide_obsolete and data.obsolete:
-            return False
+            # If it's not installed, check to see if it's Py2 only
+            if self.hide_py2 and data.python2:
+                return False
+
+            # If it's not installed, check to see if it's marked obsolete
+            if self.hide_obsolete and data.obsolete:
+                return False
+
+            if self.hide_unlicensed:
+                if not data.license or data.license in ["UNLICENSED", "UNLICENCED"]:
+                    FreeCAD.Console.PrintLog(f"Hiding {data.name} because it has no license set\n")
+                    return False
+
+            # If it is not an OSI-approved license, check to see if we are hiding those
+            if self.hide_non_OSI_approved or self.hide_non_FSF_libre:
+                if not data.license:
+                    return False
+                licenses_to_check = []
+                if type(data.license) is str:
+                    licenses_to_check.append(data.license)
+                elif type(data.license) is list:
+                    for license_id in data.license:
+                        if type(license_id) is str:
+                            licenses_to_check.append(license_id)
+                        else:
+                            licenses_to_check.append(license_id.name)
+                else:
+                    licenses_to_check.append(data.license.name)
+
+                fsf_libre = False
+                osi_approved = False
+                for license_id in licenses_to_check:
+                    if not osi_approved and license_manager.is_osi_approved(license_id):
+                        osi_approved = True
+                    if not fsf_libre and license_manager.is_fsf_libre(license_id):
+                        fsf_libre = True
+                if self.hide_non_OSI_approved and not osi_approved:
+                    FreeCAD.Console.PrintLog(
+                        f"Hiding addon {data.name} because its license, {licenses_to_check}, "
+                        f"is "
+                        f"not OSI approved\n"
+                    )
+                    return False
+                if self.hide_non_FSF_libre and not fsf_libre:
+                    FreeCAD.Console.PrintLog(
+                        f"Hiding addon {data.name} because its license, {licenses_to_check},  is "
+                        f"not FSF Libre\n"
+                    )
+                    return False
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD
         if (
@@ -665,65 +671,10 @@ class Ui_PackageList:
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.buttonCompactLayout = QtWidgets.QToolButton(form)
-        self.buttonCompactLayout.setObjectName("buttonCompactLayout")
-        self.buttonCompactLayout.setCheckable(True)
-        self.buttonCompactLayout.setAutoExclusive(True)
-        self.buttonCompactLayout.setIcon(
-            QtGui.QIcon.fromTheme("expanded_view", QtGui.QIcon(":/icons/compact_view.svg"))
-        )
 
-        self.horizontalLayout_6.addWidget(self.buttonCompactLayout)
-
-        self.buttonExpandedLayout = QtWidgets.QToolButton(form)
-        self.buttonExpandedLayout.setObjectName("buttonExpandedLayout")
-        self.buttonExpandedLayout.setCheckable(True)
-        self.buttonExpandedLayout.setChecked(True)
-        self.buttonExpandedLayout.setAutoExclusive(True)
-        self.buttonExpandedLayout.setIcon(
-            QtGui.QIcon.fromTheme("expanded_view", QtGui.QIcon(":/icons/expanded_view.svg"))
-        )
-
-        self.horizontalLayout_6.addWidget(self.buttonExpandedLayout)
-
-        self.labelPackagesContaining = QtWidgets.QLabel(form)
-        self.labelPackagesContaining.setObjectName("labelPackagesContaining")
-
-        self.horizontalLayout_6.addWidget(self.labelPackagesContaining)
-
-        self.comboPackageType = QtWidgets.QComboBox(form)
-        self.comboPackageType.addItem("")
-        self.comboPackageType.addItem("")
-        self.comboPackageType.addItem("")
-        self.comboPackageType.addItem("")
-        self.comboPackageType.setObjectName("comboPackageType")
-
-        self.horizontalLayout_6.addWidget(self.comboPackageType)
-
-        self.labelStatus = QtWidgets.QLabel(form)
-        self.labelStatus.setObjectName("labelStatus")
-
-        self.horizontalLayout_6.addWidget(self.labelStatus)
-
-        self.comboStatus = QtWidgets.QComboBox(form)
-        self.comboStatus.addItem("")
-        self.comboStatus.addItem("")
-        self.comboStatus.addItem("")
-        self.comboStatus.addItem("")
-        self.comboStatus.setObjectName("comboStatus")
-
-        self.horizontalLayout_6.addWidget(self.comboStatus)
-
-        self.lineEditFilter = QtWidgets.QLineEdit(form)
-        self.lineEditFilter.setObjectName("lineEditFilter")
-        self.lineEditFilter.setClearButtonEnabled(True)
-
-        self.horizontalLayout_6.addWidget(self.lineEditFilter)
-
-        self.labelFilterValidity = QtWidgets.QLabel(form)
-        self.labelFilterValidity.setObjectName("labelFilterValidity")
-
-        self.horizontalLayout_6.addWidget(self.labelFilterValidity)
+        self.view_bar = WidgetViewControlBar(form)
+        self.view_bar.setObjectName("ViewControlBar")
+        self.horizontalLayout_6.addWidget(self.view_bar)
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
@@ -739,49 +690,7 @@ class Ui_PackageList:
 
         self.verticalLayout.addWidget(self.listPackages)
 
-        self.retranslateUi(form)
+        self.progressBar = WidgetProgressBar()
+        self.verticalLayout.addWidget(self.progressBar)
 
         QtCore.QMetaObject.connectSlotsByName(form)
-
-    def retranslateUi(self, _):
-        self.labelPackagesContaining.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Show Addons containing:", None)
-        )
-        self.comboPackageType.setItemText(
-            0, QtCore.QCoreApplication.translate("AddonsInstaller", "All", None)
-        )
-        self.comboPackageType.setItemText(
-            1, QtCore.QCoreApplication.translate("AddonsInstaller", "Workbenches", None)
-        )
-        self.comboPackageType.setItemText(
-            2, QtCore.QCoreApplication.translate("AddonsInstaller", "Macros", None)
-        )
-        self.comboPackageType.setItemText(
-            3,
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Preference Packs", None),
-        )
-        self.labelStatus.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Status:", None)
-        )
-        self.comboStatus.setItemText(
-            StatusFilter.ANY,
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Any", None),
-        )
-        self.comboStatus.setItemText(
-            StatusFilter.INSTALLED,
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Installed", None),
-        )
-        self.comboStatus.setItemText(
-            StatusFilter.NOT_INSTALLED,
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Not installed", None),
-        )
-        self.comboStatus.setItemText(
-            StatusFilter.UPDATE_AVAILABLE,
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Update available", None),
-        )
-        self.lineEditFilter.setPlaceholderText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "Filter", None)
-        )
-        self.labelFilterValidity.setText(
-            QtCore.QCoreApplication.translate("AddonsInstaller", "OK", None)
-        )

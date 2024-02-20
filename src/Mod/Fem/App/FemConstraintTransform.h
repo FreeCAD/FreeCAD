@@ -40,8 +40,6 @@ public:
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyLinkSubList RefDispl;
     App::PropertyLinkList NameDispl;
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
     App::PropertyVector BasePoint;
     App::PropertyVector Axis;
     App::PropertyAngle X_rot;

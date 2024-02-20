@@ -7,8 +7,7 @@
 #include "src/App/InitApplication.h"
 #include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
-
-#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 using namespace Data;
 using namespace Part;
@@ -94,12 +93,13 @@ TEST_F(TopoShapeMakeShapeTests, thruSections)
     thruMaker.AddWire(wire2);
     TopoShape topoShape {};
     // Act
-    TopoShape& result = topoShape.makeElementShape(thruMaker, {wire1ts, wire2ts});
+    TopoShape& result =
+        topoShape.makeElementShape(thruMaker, {wire1ts, wire2ts}, OpCodes::ThruSections);
     auto elements = elementMap(result);
     // Assert
     EXPECT_EQ(elements.size(), 24);
     EXPECT_EQ(elements.count(IndexedName("Vertex", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;TRU;:H1:4,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;TRU;:H1:4,V"));  // NOLINT
     EXPECT_EQ(getVolume(result.getShape()), 4);
 }
 
@@ -118,7 +118,11 @@ TEST_F(TopoShapeMakeShapeTests, sewing)
     std::vector<TopoShape> sources {{face1, 1L}, {face2, 2L}};
     TopoShape topoShape {};
     // Act
-    TopoShape& result = topoShape.makeElementShape(sewer, sources);
+    TopoShape& result = topoShape.makeShapeWithElementMap(sewer.SewedShape(),
+                                                          MapperSewing(sewer),
+                                                          sources,
+                                                          OpCodes::Sewing);
+
     auto elements = elementMap(result);
     // Assert
     EXPECT_EQ(&result, &topoShape);

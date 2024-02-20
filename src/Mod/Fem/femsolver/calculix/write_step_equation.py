@@ -81,6 +81,10 @@ def write_step_equation(f, ccxwriter):
     # https://forum.freecad.org/viewtopic.php?f=18&t=43178
     if ccxwriter.solver_obj.MatrixSolverType == "default":
         pass
+    elif ccxwriter.solver_obj.MatrixSolverType == "pastix":
+        analysis_type += ", SOLVER=PASTIX"
+    elif ccxwriter.solver_obj.MatrixSolverType == "pardiso":
+        analysis_type += ", SOLVER=PARDISO"
     elif ccxwriter.solver_obj.MatrixSolverType == "spooles":
         analysis_type += ", SOLVER=SPOOLES"
     elif ccxwriter.solver_obj.MatrixSolverType == "iterativescaling":

@@ -621,6 +621,7 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
 
 void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
 {
+    Base::ASCIIInputStream asciiStream (stream);
     _hashes->clear();
     std::string content;
     boost::io::ios_flags_saver ifs(stream);
@@ -688,7 +689,7 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
         }
 
         if (!d.isPostfixed()) {
-            stream >> content;
+            asciiStream >> content;
             if (d.isHashed() || d.isBinary()) {
                 d._data = QByteArray::fromBase64(content.c_str());
             }
@@ -815,7 +816,12 @@ void StringHasher::Restore(Base::XMLReader& reader)
 
     std::size_t count = reader.getAttributeAsUnsigned("count");
     if (newTag) {
+        try {
         restoreStreamNew(reader.beginCharStream(), count);
+        } catch (const Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to restore string table: full-document recompute strongly recommended.");
+        }
         reader.readEndElement("StringHasher2");
         return;
     }

@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include <BRepPrimAPI_MakeBox.hxx>
-
 #include "PartTestHelpers.h"
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
@@ -153,6 +151,28 @@ std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes()
     box2.Location(TopLoc_Location(transform));
 
     return {box1, box2};
+}
+
+std::pair<TopoShape, TopoShape> CreateTwoTopoShapeCubes()
+{
+    auto [box1, box2] = CreateTwoCubes();
+    std::vector<TopoShape> vec;
+    long tag = 1L;
+    for (TopExp_Explorer exp(box1, TopAbs_FACE); exp.More(); exp.Next()) {
+        vec.emplace_back(TopoShape(exp.Current(), tag++));
+    }
+    TopoShape box1ts;
+    box1ts.makeElementCompound(vec);
+    box1ts.Tag = tag++;
+    vec.clear();
+    for (TopExp_Explorer exp(box2, TopAbs_FACE); exp.More(); exp.Next()) {
+        vec.emplace_back(TopoShape(exp.Current(), tag++));
+    }
+    TopoShape box2ts;
+    box2ts.Tag = tag++;
+    box2ts.makeElementCompound(vec);
+
+    return {box1ts, box2ts};
 }
 
 }  // namespace PartTestHelpers

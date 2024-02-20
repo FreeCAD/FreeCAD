@@ -420,9 +420,10 @@ class Scale(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate the operation."""
-        super().finish()
+        self.end_callbacks(self.call)
         for ghost in self.ghosts:
             ghost.finalize()
+        super().finish()
 
 
 Gui.addCommand('Draft_Scale', Scale())

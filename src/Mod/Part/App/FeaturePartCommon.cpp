@@ -45,6 +45,11 @@ PROPERTY_SOURCE(Part::Common, Part::Boolean)
 
 Common::Common() = default;
 
+const char *Common::opCode() const
+{
+    return Part::OpCodes::Common;
+}
+
 BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:

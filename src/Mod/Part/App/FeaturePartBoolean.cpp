@@ -33,6 +33,7 @@
 #include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
+#include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
 
@@ -70,6 +71,11 @@ short Boolean::mustExecute() const
     return 0;
 }
 
+const char *Boolean::opCode() const
+{
+    return Part::OpCodes::Boolean;
+}
+
 App::DocumentObjectExecReturn* Boolean::execute()
 {
     try {
@@ -82,13 +88,16 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (!base || !tool) {
             return new App::DocumentObjectExecReturn("Linked object is not a Part object");
         }
-
+        std::vector<TopoShape> shapes;
+        shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        TopoDS_Shape BaseShape = Feature::getShape(base);
+        shapes.push_back(Feature::getTopoShape(Base.getValue()));
+        auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
         }
-        TopoDS_Shape ToolShape = Feature::getShape(tool);
+        shapes.push_back(Feature::getTopoShape(Tool.getValue()));
+        auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");
         }
@@ -123,8 +132,8 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
 #ifndef FC_USE_TNP_FIX
         std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, BaseShape));
+        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, ToolShape));
 
         if (this->Refine.getValue()) {
             try {
@@ -144,7 +153,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
         this->History.setValues(history);
         return App::DocumentObject::StdReturn;
 #else
-        TopoShape res(0, getDocument()->getStringHasher());
+        TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
             res = res.makeElementRefine();

@@ -59,6 +59,8 @@ protected:
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
     TechDraw::LineGenerator* m_lineGenerator;
+
+    bool m_blockLineStandardOnChanged{false};
 };
 
 } // namespace TechDrawGui

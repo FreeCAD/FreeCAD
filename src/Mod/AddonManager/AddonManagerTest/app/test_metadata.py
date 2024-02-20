@@ -546,7 +546,7 @@ class TestMetadataReaderIntegration(unittest.TestCase):
         self.assertEqual(Version("1.0.1"), metadata.version)
         self.assertEqual("2022-01-07", metadata.date)
         self.assertEqual("Resources/icons/PackageIcon.svg", metadata.icon)
-        self.assertListEqual([License(name="LGPLv2.1", file="LICENSE")], metadata.license)
+        self.assertListEqual([License(name="LGPL-2.1", file="LICENSE")], metadata.license)
         self.assertListEqual(
             [Contact(name="FreeCAD Developer", email="developer@freecad.org")],
             metadata.maintainer,
