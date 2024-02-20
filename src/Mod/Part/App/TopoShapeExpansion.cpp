@@ -48,9 +48,11 @@
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
@@ -83,10 +85,6 @@
 #include "Geometry.h"
 
 #include <App/ElementNamingUtils.h>
-#include <BRepLib.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include "Geometry.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -2508,86 +2506,108 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
     return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
-bool TopoShape::_makeElementTransform(const TopoShape &shape,
-                               const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
+bool TopoShape::_makeElementTransform(const TopoShape& shape,
+                                      const Base::Matrix4D& mat,
+                                      const char* op,
+                                      CheckScale checkScale,
+                                      Copy copy)
 {
-    if(checkScale) {
-        auto scaleType = rclTrf.hasScale();
+    if (checkScale == CheckScale::checkScale) {
+        auto scaleType = mat.hasScale();
         if (scaleType != Base::ScaleType::NoScaling && scaleType != Base::ScaleType::Uniform) {
-            makeElementGTransform(shape,rclTrf,op,copy);
+            makeElementGTransform(shape, mat, op, copy);
             return true;
         }
     }
-    makeElementTransform(shape,convert(rclTrf),op,copy);
+    makeElementTransform(shape, convert(mat), op, copy);
     return false;
 }
 
-TopoShape &TopoShape::makeElementTransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
-    if(!copy) {
+TopoShape& TopoShape::makeElementTransform(const TopoShape& shape,
+                                           const gp_Trsf& trsf,
+                                           const char* op,
+                                           Copy copy)
+{
+    if (copy == Copy::noCopy) {
         // OCCT checks the ScaleFactor against gp::Resolution() which is DBL_MIN!!!
-        copy = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
-            Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
+        // No scaling is 1 as in 1:1
+        const bool scaling = Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
+        const bool negative_scaling =
+            trsf.ScaleFactor() * trsf.HVectorialPart().Determinant() < 0.0;
+        copy = negative_scaling || scaling ? Copy::copy : Copy::noCopy;
     }
     TopoShape tmp(shape);
-    if(copy) {
-        if(shape.isNull())
+    if (copy == Copy::copy) {
+        if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
+        }
 
         BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
         // TODO: calling Moved() is to make sure the shape has some Location,
         // which is necessary for STEP export to work. However, if we reach
-        // here, it porabably means BRepBuilderAPI_Transform has modified
+        // here, it probably means BRepBuilderAPI_Transform has modified
         // underlying shapes (because of scaling), it will break compound child
         // parent relationship anyway. In short, STEP import/export will most
         // likely break badly if there is any scaling involved
         tmp.setShape(mkTrf.Shape().Moved(gp_Trsf()), false);
-    } else
+    }
+    else {
         tmp.move(trsf);
+    }
 
-    if(op || (shape.Tag && shape.Tag!=Tag)) {
+    if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
-        if (!Hasher)
+        if (!Hasher) {
             Hasher = tmp.Hasher;
+        }
         copyElementMap(tmp, op);
-    } else
+    }
+    else {
         *this = tmp;
+    }
     return *this;
 }
 
-TopoShape &TopoShape::makeElementGTransform(const TopoShape &shape,
-                                     const Base::Matrix4D &rclTrf, const char *op, bool copy)
+TopoShape& TopoShape::makeElementGTransform(const TopoShape& shape,
+                                            const Base::Matrix4D& mat,
+                                            const char* op,
+                                            Copy copy)
 {
-    if(shape.isNull())
+    if (shape.isNull()) {
         FC_THROWM(NullShapeException, "Null input shape");
+    }
 
     // if(!op) op = Part::OpCodes::Gtransform;
-    gp_GTrsf mat;
-    mat.SetValue(1,1,rclTrf[0][0]);
-    mat.SetValue(2,1,rclTrf[1][0]);
-    mat.SetValue(3,1,rclTrf[2][0]);
-    mat.SetValue(1,2,rclTrf[0][1]);
-    mat.SetValue(2,2,rclTrf[1][1]);
-    mat.SetValue(3,2,rclTrf[2][1]);
-    mat.SetValue(1,3,rclTrf[0][2]);
-    mat.SetValue(2,3,rclTrf[1][2]);
-    mat.SetValue(3,3,rclTrf[2][2]);
-    mat.SetValue(1,4,rclTrf[0][3]);
-    mat.SetValue(2,4,rclTrf[1][3]);
-    mat.SetValue(3,4,rclTrf[2][3]);
+    gp_GTrsf matrix;
+    matrix.SetValue(1, 1, mat[0][0]);
+    matrix.SetValue(2, 1, mat[1][0]);
+    matrix.SetValue(3, 1, mat[2][0]);
+    matrix.SetValue(1, 2, mat[0][1]);
+    matrix.SetValue(2, 2, mat[1][1]);
+    matrix.SetValue(3, 2, mat[2][1]);
+    matrix.SetValue(1, 3, mat[0][2]);
+    matrix.SetValue(2, 3, mat[1][2]);
+    matrix.SetValue(3, 3, mat[2][2]);
+    matrix.SetValue(1, 4, mat[0][3]);
+    matrix.SetValue(2, 4, mat[1][3]);
+    matrix.SetValue(3, 4, mat[2][3]);
 
     // geometric transformation
     TopoShape tmp(shape);
-    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
+    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), matrix, copy == Copy::copy);
     tmp.setShape(mkTrf.Shape(), false);
-    if(op || (shape.Tag && shape.Tag!=Tag)) {
+    if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
-        if (!Hasher)
+        if (!Hasher) {
             Hasher = tmp.Hasher;
+        }
         copyElementMap(tmp, op);
-    } else
+    }
+    else {
         *this = tmp;
+    }
     return *this;
 }
 
