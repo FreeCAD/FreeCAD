@@ -1359,7 +1359,9 @@ TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
     // Assert
     TopoShape result = topoShape1.makeElementShellFromWires(shapes);
 #if OCC_VERSION_HEX >= 0x070400
-    EXPECT_EQ(result.getShape().NbChildren(), 20);  // 6  TODO: VERSION DEPENDENT?
+    EXPECT_EQ(result.getShape().NbChildren(), 20);
+#else
+    EXPECT_EQ(result.getShape().NbChildren(), 6);
 #endif
     EXPECT_EQ(result.countSubElements("Vertex"), 8);
     EXPECT_EQ(result.countSubElements("Edge"), 32);
@@ -1765,6 +1767,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCut)
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
 }
 
+<<<<<<< HEAD
 TEST_F(TopoShapeExpansionTest, makeElementChamfer)
 {
     // Arrange
@@ -2642,4 +2645,6 @@ TEST_F(TopoShapeExpansionTest, traceElement)
         }));
 }
 
+=======
+>>>>>>> f6b3402577 (Toposhape/Part: Clean GeneralFuse, Fuse, Cut; add tests; tweak other tests)
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
