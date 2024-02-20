@@ -866,7 +866,11 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event) {
             else if (mouse_event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::LeftButton && !dragInProgress) {
                 if (indexResizable(mouse_event->pos()).isValid()) {
                     dragInProgress = true;
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                     dragPreviousPos = mouse_event->x();
+#else
+                    dragPreviousPos = mouse_event->position().toPoint().x();
+#endif
                     dragSection = indexResizable(mouse_event->pos()).column();
                     return true;
                 }
