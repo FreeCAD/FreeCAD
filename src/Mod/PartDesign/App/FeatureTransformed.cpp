@@ -187,90 +187,78 @@ App::DocumentObjectExecReturn *Transformed::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
-    if (supportTopShape.getShape().IsNull())
+    TopoDS_Shape support = supportFeature->Shape.getShape().getShape();
+    if (support.IsNull())
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape"));
 
-    // create an untransformed copy of the support shape
-    Part::TopoShape supportShape(supportTopShape);
+    // A transformation from the Body LCS to the support shape LCS
+    gp_Trsf trsfInv = support.Location().Transformation().Inverted();
 
-    gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
+    // Get an untransformed support shape
+    support.Location(gp_Trsf{});
 
-    supportShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape support = supportShape.getShape();
+    // The boolean operation used to fuse/cut the shapes
+    BRepAlgoAPI_BooleanOperation booleanOperation;
 
-    auto getTransformedCompShape = [&](const auto& origShape)
-    {
-        TopTools_ListOfShape shapeTools;
-        auto shapes = applyTransformation({origShape});
-        auto iter = shapes.begin();
-        ++iter; // ignore first shape, it is always the original untransformed shape
-        for (; iter < shapes.end(); ++iter) {
-            shapeTools.Append(std::move(*iter));
-        }
-
-        return shapeTools;
-    };
-
-    // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
-    // transform the compounds as a whole. But we choose to apply the transformations to each
-    // Original separately. This way it is easier to discover what feature causes a fuse/cut
-    // to fail. The downside is that performance suffers when there are many originals. But it seems
+    // NOTE: We choose to apply the transformations to each Original separately. This way it is
+    // easier to discover what feature causes a fuse/cut to fail.
+    // The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
     for (auto original : originals)
     {
-        // Extract the original shape and determine whether to cut or to fuse
-        Part::TopoShape fuseShape;
-        Part::TopoShape cutShape;
-
-        if (original->isDerivedFrom<PartDesign::FeatureAddSub>()) {
-            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(original);
-            feature->getAddSubShape(fuseShape, cutShape);
-            if (fuseShape.isNull() && cutShape.isNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
-            gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-            if (!fuseShape.isNull())
-                fuseShape = fuseShape.makeTransform(trsf);
-            if (!cutShape.isNull())
-                cutShape = cutShape.makeTransform(trsf);
-        }
-        else {
+        if (!original->isDerivedFrom<PartDesign::FeatureAddSub>()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Only additive and subtractive features can be transformed"));
         }
 
-        TopoDS_Shape current = support;
-        if (!fuseShape.isNull()) {
-            TopTools_ListOfShape shapeArguments;
-            shapeArguments.Append(current);
-            TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
-            if (!shapeTools.IsEmpty()) {
-                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
-                mkBool->SetArguments(shapeArguments);
-                mkBool->SetTools(shapeTools);
-                mkBool->Build();
-                if (!mkBool->IsDone()) {
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                }
-                current = mkBool->Shape();
-            }
-        }
-        if (!cutShape.isNull()) {
-            TopTools_ListOfShape shapeArguments;
-            shapeArguments.Append(current);
-            TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
-            if (!shapeTools.IsEmpty()) {
-                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
-                mkBool->SetArguments(shapeArguments);
-                mkBool->SetTools(shapeTools);
-                mkBool->Build();
-                if (!mkBool->IsDone()) {
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                }
-                current = mkBool->Shape();
-            }
-        }
+        auto feature = static_cast<PartDesign::FeatureAddSub*>(original);
 
-        support = current; // Use result of this operation for fuse/cut of next original
+        // Extract the original shape and determine whether to cut or to fuse
+        struct ShapeOperation {
+            BOPAlgo_Operation operation;
+            Part::TopoShape shape = {};
+        };
+        ShapeOperation fuseShapeOp = {BOPAlgo_FUSE};
+        ShapeOperation cutShapeOp = {BOPAlgo_CUT};
+
+        feature->getAddSubShape(fuseShapeOp.shape, cutShapeOp.shape);
+        if (fuseShapeOp.shape.isNull() && cutShapeOp.shape.isNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
+
+        // Transform from feature LCS to support shape LCS
+        gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+
+        for (auto [operation, partShape] : {fuseShapeOp, cutShapeOp}) {
+            if (partShape.isNull()) {
+                continue;
+            }
+
+            TopoDS_Shape shape = partShape.getShape();
+            shape.Move(trsf);
+
+            TopTools_ListOfShape shapeTools;
+            {
+                auto shapes = applyTransformation({shape});
+                auto iter = shapes.begin();
+                ++iter; // ignore first shape, it is always the original untransformed shape
+                for (; iter < shapes.end(); ++iter) {
+                    shapeTools.Append(std::move(*iter));
+                }
+            }
+
+            if (!shapeTools.IsEmpty()) {
+                TopTools_ListOfShape shapeArguments;
+                shapeArguments.Append(support);
+
+                booleanOperation.SetOperation(operation);
+                booleanOperation.SetArguments(shapeArguments);
+                booleanOperation.SetTools(shapeTools);
+                booleanOperation.Build();
+                if (!booleanOperation.IsDone()) {
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+                }
+                support = booleanOperation.Shape();
+            }
+        }
     }
 
     support = refineShapeIfActive(support);
