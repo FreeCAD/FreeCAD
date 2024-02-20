@@ -98,12 +98,14 @@ DrawView::DrawView():
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, (App::PropertyType)(App::Prop_None), "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
 
     setScaleAttribute();
+    Scale.setIgnoreDecimals(true);
+
 }
 
 DrawView::~DrawView()
@@ -112,7 +114,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute()
 {
-//    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
+    // Base::Console().Message("DV::execute() - scale.ignoreDecimals: %d\n", Scale.isIgnoreDecimals());
     if (!findParentPage()) {
         return App::DocumentObject::execute();
     }

@@ -84,6 +84,7 @@ DrawPage::DrawPage(void)
                       "Auto-numbering for Balloons");
 
     Scale.setConstraints(&scaleRange);
+    Scale.setIgnoreDecimals(true);
 }
 
 DrawPage::~DrawPage() {}
