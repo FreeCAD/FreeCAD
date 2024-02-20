@@ -745,7 +745,7 @@ public:
     
     /** Refine the input shape by merging faces/edges that share the same geometry
      *
-     * @param source: input shape
+     * @param shape: input shape
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param no_fail: if throwException, throw exception if failed to refine. Or else,
@@ -756,7 +756,7 @@ public:
      *         itself as a self reference so that multiple operations can be
      *         carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementRefine(const TopoShape& source,
+    TopoShape& makeElementRefine(const TopoShape& shape,
                                  const char* op = nullptr,
                                  RefineFail no_fail = RefineFail::throwException);
 
@@ -878,8 +878,10 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEGeneralFuse(const std::vector<TopoShape> &sources,
-                               std::vector<std::vector<TopoShape> > &modified, double tol=0, const char *op=nullptr);
+    TopoShape& makeElementGeneralFuse(const std::vector<TopoShape>& sources,
+                                      std::vector<std::vector<TopoShape>>& modified,
+                                      double tol = 0,
+                                      const char* op = nullptr);
 
     /** Make a fusion of input shapes
      *
@@ -893,7 +895,9 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEFuse(const std::vector<TopoShape> &sources, const char *op=nullptr, double tol=0);
+    TopoShape& makeElementFuse(const std::vector<TopoShape>& sources,
+                               const char* op = nullptr,
+                               double tol = 0);
     /** Make a fusion of this shape and an input shape
      *
      * @param source: the source shape
@@ -903,8 +907,10 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makEFuse(const TopoShape &source, const char *op=nullptr, double tol=0) const {
-        return TopoShape(0,Hasher).makEFuse({*this,source},op,tol);
+    TopoShape
+    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = 0) const
+    {
+        return TopoShape(0, Hasher).makeElementFuse({*this, source}, op, tol);
     }
 
     /** Make a boolean cut of this shape with an input shape
@@ -919,7 +925,8 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makECut(const std::vector<TopoShape> &sources, const char *op=nullptr, double tol=0);
+    TopoShape&
+    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = 0);
     /** Make a boolean cut of this shape with an input shape
      *
      * @param source: the source shape
@@ -929,8 +936,10 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makECut(const TopoShape &source, const char *op=nullptr, double tol=0) const {
-        return TopoShape(0,Hasher).makECut({*this,source},op,tol);
+    TopoShape
+    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = 0) const
+    {
+        return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane

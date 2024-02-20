@@ -1148,10 +1148,29 @@ TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
     EXPECT_THROW(topoShape1.makeElementShell(false, nullptr), Base::CADKernelError);
 }
 
-// TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
-// {
-//     // Arrange
-// }
+TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape topoShape {cube1};
+    std::vector<TopoShape> shapes;
+    for (const auto& face : topoShape.getSubShapes(TopAbs_WIRE)) {
+        shapes.emplace_back(face);
+    }
+    // Act
+    TopoShape topoShape1 {1L};
+    topoShape1.makeElementCompound(shapes, "D");
+    // Assert
+    TopoShape result = topoShape1.makeElementShellFromWires(shapes);
+#if OCC_VERSION_HEX >= 0x070400
+    EXPECT_EQ(result.getShape().NbChildren(), 6);
+#endif
+    EXPECT_EQ(result.countSubElements("Vertex"), 8);
+    EXPECT_EQ(result.countSubElements("Edge"), 32);
+    EXPECT_EQ(result.countSubElements("Face"), 20);
+    EXPECT_STREQ(result.shapeName().c_str(), "Shell");
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementBooleanImpossibleCommon)
 {
     // Arrange
@@ -1162,9 +1181,10 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanImpossibleCommon)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Common, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
-    EXPECT_EQ(elements.size(), 0);
+    // Assert shape is correct
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
@@ -1180,11 +1200,12 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Common, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.25);
+    // Assert elementMap is correct
     EXPECT_EQ(elements.size(), 26);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.25);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
@@ -1199,7 +1220,9 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
     // Act
     TopoShape& result = topoShape1.makeElementBoolean(Part::OpCodes::Cut, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
+    // Assert elementMap is correct
     EXPECT_EQ(elements.size(), 38);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(
@@ -1208,7 +1231,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
             "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
             "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
@@ -1224,7 +1246,9 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Fuse, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert element map is correct
     EXPECT_EQ(elements.size(), 66);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(
@@ -1233,7 +1257,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
             "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
             "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
             "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementDraft)
@@ -1251,8 +1274,10 @@ TEST_F(TopoShapeExpansionTest, makeElementDraft)
     TopoShape& result = cube1TS.makeElementDraft(cube1TS, faces, pullDirection, angle, plane);
     auto elements = elementMap(result);
     // Assert
-    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
     EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Face1;:G;DFT;:H1:7,F;:U;DFT;:H1:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
@@ -1289,7 +1314,7 @@ TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
     EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
+TEST_F(TopoShapeExpansionTest, linearizeEdge)
 {
     // Arrange
     TColgp_Array1OfPnt points {1, 2};
@@ -1309,7 +1334,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
     EXPECT_EQ(curve2.GetType(), GeomAbs_Line);
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
+TEST_F(TopoShapeExpansionTest, linearizeFace)
 {
     TColgp_Array2OfPnt points2 {1, 2, 1, 2};
     points2.SetValue(1, 1, gp_Pnt(0.0, 0.0, 0.0));
@@ -1341,7 +1366,7 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
     // Act
     topoShape.makeElementRuledSurface({edge1ts, edge2ts}, 0);  // TODO: orientation as enum?
     auto elements = elementMap(topoShape);
-    // Assert
+    // Assert shape is correct
     EXPECT_EQ(topoShape.countSubElements("Wire"), 1);
     EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 20);
     // Assert that we're creating a correct element map
@@ -1464,6 +1489,84 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
     EXPECT_EQ(elements.size(), 74);
     EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge11;THK;:H1:4,E"));
+}
+
+
+TEST_F(TopoShapeExpansionTest, makeElementGeneralFuse)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    std::vector<std::vector<TopoShape>> modified {{}};
+    TopoShape& result = topoShape1.makeElementGeneralFuse({topoShape1, topoShape2}, modified);
+
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 72);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;GFS;:H1:7,F;:U;GFS;:H1:7,E;:L(Face5;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E|Face5;:M;"
+            "GFS;:H1:7,F;:U2;GFS;:H1:8,E;:U;GFS;:H1:7,V;:L(Face6;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E;:U;"
+            "GFS;:H1:7,V);GFS;:H1:3c,E|Face6;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E);GFS;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFuse)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+TEST_F(TopoShapeExpansionTest, makeElementCut)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementCut(
+        {topoShape1, topoShape2});  //, const char* op = nullptr, double tol = 0);
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 38);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
+            "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
+            "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
