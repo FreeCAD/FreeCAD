@@ -202,6 +202,18 @@ enum class JoinType
     Intersection,
 };
 
+enum class CheckScale
+{
+    noScaleCheck,
+    checkScale
+};
+
+enum class Copy
+{
+    noCopy,
+    copy
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -790,7 +802,7 @@ public:
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
-     * @param source: input shape
+     * @param shape: input shape
      * @param faces: list of faces to remove, must be sub shape of the input shape
      * @param offset: thickness of the walls
      * @param tol: tolerance criterion for coincidence in generated shapes
@@ -806,13 +818,12 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementThickSolid(const TopoShape &source, const std::vector<TopoShape> &faces,
+    TopoShape &makeElementThickSolid(const TopoShape &shape, const std::vector<TopoShape> &faces,
                               double offset, double tol, bool intersection = false, bool selfInter = false,
                               short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr);
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
-     * @param source: input shape
      * @param faces: list of faces to remove, must be sub shape of the input shape
      * @param offset: thickness of the walls
      * @param tol: tolerance criterion for coincidence in generated shapes
@@ -1224,7 +1235,6 @@ public:
         return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
     }
 
-
     /** Make a new shape with transformation that may contain non-uniform scaling
      *
      * @param source: input shape
@@ -1239,8 +1249,10 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementGTransform(const TopoShape &source, const Base::Matrix4D &mat,
-                              const char *op=nullptr, bool copy=false);
+    TopoShape& makeElementGTransform(const TopoShape& source,
+                                     const Base::Matrix4D& mat,
+                                     const char* op = nullptr,
+                                     Copy copy = Copy::noCopy);
 
     /** Make a new shape with transformation that may contain non-uniform scaling
      *
@@ -1254,8 +1266,11 @@ public:
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape makeElementGTransform(const Base::Matrix4D &mat, const char *op=nullptr, bool copy=false) const {
-        return TopoShape(Tag,Hasher).makeElementGTransform(*this,mat,op,copy);
+    TopoShape makeElementGTransform(const Base::Matrix4D& mat,
+                                    const char* op = nullptr,
+                                    Copy copy = Copy::noCopy) const
+    {
+        return TopoShape(Tag, Hasher).makeElementGTransform(*this, mat, op, copy);
     }
 
     /** Make a deep copy of the shape
@@ -1355,8 +1370,8 @@ public:
      *            the operation
      * @param checkScale: whether to check if the transformation matrix
      *                    contains scaling factor.
-     * @param copy: whether to perform deep copy of the shape. If false, and
-     *              checkScale is true, then the shape will be copied if there
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
      *              is scaling.
      *
      * @return Returns true if scaling is performed.
@@ -1364,8 +1379,11 @@ public:
      * The original content of this TopoShape is discarded and replaced with
      * the new transformed shape.
      */
-    bool _makeElementTransform(const TopoShape &source, const Base::Matrix4D &mat,
-                        const char *op=nullptr, bool checkScale=false, bool copy=false);
+    bool _makeElementTransform(const TopoShape& source,
+                               const Base::Matrix4D& mat,
+                               const char* op = nullptr,
+                               CheckScale checkScale = CheckScale::noScaleCheck,
+                               Copy copy = Copy::noCopy);
 
     /** Make a new shape with transformation
      *
@@ -1375,8 +1393,8 @@ public:
      *            the operation
      * @param checkScale: whether to check if the transformation matrix
      *                    contains scaling factor.
-     * @param copy: whether to perform deep copy of the shape. If false, and
-     *              checkScale is true, then the shape will be copied if there
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
      *              is scaling.
      *
      * @return The original content of this TopoShape is discarded and replaced
@@ -1384,9 +1402,13 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementTransform(const TopoShape &source, const Base::Matrix4D &mat,
-                             const char *op=nullptr, bool checkScale=false, bool copy=false) {
-        _makeElementTransform(source,mat,op,checkScale,copy);
+    TopoShape& makeElementTransform(const TopoShape& source,
+                                    const Base::Matrix4D& mat,
+                                    const char* op = nullptr,
+                                    CheckScale checkScale = CheckScale::noScaleCheck,
+                                    Copy copy = Copy::noCopy)
+    {
+        _makeElementTransform(source, mat, op, checkScale, copy);
         return *this;
     }
 
@@ -1398,16 +1420,19 @@ public:
      *            the operation
      * @param checkScale: whether to check if the transformation matrix
      *                    contains scaling factor.
-     * @param copy: whether to perform deep copy of the shape. If false, and
-     *              checkScale is true, then the shape will be copied if there
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
      *              is scaling.
      *
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape makeElementTransform(const Base::Matrix4D &mat, const char *op=nullptr,
-                            bool checkScale=false, bool copy=false) const {
-        return TopoShape(Tag,Hasher).makeElementTransform(*this,mat,op,checkScale,copy);
+    TopoShape makeElementTransform(const Base::Matrix4D& mat,
+                                   const char* op = nullptr,
+                                   CheckScale checkScale = CheckScale::noScaleCheck,
+                                   Copy copy = Copy::noCopy)
+    {
+        return TopoShape(Tag, Hasher).makeElementTransform(*this, mat, op, checkScale, copy);
     }
 
     /** Make a new shape with transformation
@@ -1416,19 +1441,17 @@ public:
      * @param trsf: OCCT transformation matrix
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
-     * @param checkScale: whether to check if the transformation matrix
-     *                    contains scaling factor.
-     * @param copy: whether to perform deep copy of the shape. If false, and
-     *              checkScale is true, then the shape will be copied if there
-     *              is scaling.
+     * @param copy: whether to perform deep copy of the shape.
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new transformed shape. The function returns the
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementTransform(const TopoShape &shape, const gp_Trsf &trsf,
-                             const char *op=nullptr, bool copy=false);
+    TopoShape& makeElementTransform(const TopoShape& shape,
+                                    const gp_Trsf& trsf,
+                                    const char* op = nullptr,
+                                    Copy copy = Copy::noCopy);
 
     /** Make a new shape with transformation
      *
@@ -1436,17 +1459,15 @@ public:
      * @param trsf: OCCT transformation matrix
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
-     * @param checkScale: whether to check if the transformation matrix
-     *                    contains scaling factor.
-     * @param copy: whether to perform deep copy of the shape. If false, and
-     *              checkScale is true, then the shape will be copied if there
-     *              is scaling.
+     * @param copy: whether to perform deep copy of the shape.
      *
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape makeElementTransform(const gp_Trsf &trsf, const char *op=nullptr, bool copy=false) const {
-        return TopoShape(Tag,Hasher).makeElementTransform(*this,trsf,op,copy);
+    TopoShape
+    makeElementTransform(const gp_Trsf& trsf, const char* op = nullptr, Copy copy = Copy::noCopy)
+    {
+        return TopoShape(Tag, Hasher).makeElementTransform(*this, trsf, op, copy);
     }
 
     /* Make draft shape
@@ -1687,7 +1708,7 @@ public:
      * makeShapeWithElementMap directly.  For example:
      * makeElementShape(sewer, sources)
      * makeShapeWithElementMap(sewer.SewedShape(), MapperSewing(sewer), sources, OpCodes::Sewing);
-     * Note that if op exists in the method, it should be checked for null and overriden with
+     * Note that if op exists in the method, it should be checked for null and overridden with
      * the appropriate operation if so.
      */
 
