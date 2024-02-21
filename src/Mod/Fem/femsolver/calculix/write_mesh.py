@@ -52,7 +52,7 @@ def write_mesh(ccxwriter):
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         # Use reduced integration beam elements if this option is enabled in ccx solver settings
-        if ccxwriter.solver_obj.BeamReducedIntegration is True:
+        if ccxwriter.solver_obj.BeamReducedIntegration:
             meshtools.beam_reduced_integration(ccxwriter.femmesh_file)
         
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
@@ -74,7 +74,7 @@ def write_mesh(ccxwriter):
             meshtools.write_D_network_element_to_inputfile(ccxwriter.femmesh_file)
 
         # Use reduced integration beam elements if this option is enabled in ccx solver settings
-        if ccxwriter.solver_obj.BeamReducedIntegration is True:
+        if ccxwriter.solver_obj.BeamReducedIntegration:
             meshtools.beam_reduced_integration(ccxwriter.femmesh_file)
 
         # reopen file with "append" to add all the rest
