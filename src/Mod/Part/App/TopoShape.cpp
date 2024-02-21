@@ -593,14 +593,6 @@ void TopoShape::setPyObject(PyObject* obj)
     }
 }
 
-void TopoShape::operator = (const TopoShape& sh)
-{
-    if (this != &sh) {
-        this->Tag = sh.Tag;
-        this->_Shape = sh._Shape;
-    }
-}
-
 void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {
     trsf.SetValues(mtrx[0][0],mtrx[0][1],mtrx[0][2],mtrx[0][3],

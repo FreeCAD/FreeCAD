@@ -70,12 +70,10 @@ TEST_F(TopoShapeMakeShapeTests, shapeVertex)
     TopoShape topoShape(vertexMaker.Vertex(), 1L);
     // Act
     TopoShape& result = topoShape.makeElementShape(vertexMaker, topoShape);
-    auto elements = elementMap(result);
     // Assert
-    EXPECT_EQ(elements.size(), 1);
-    EXPECT_EQ(elements.count(IndexedName("Vertex", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;MAK;:H:4,V"));
-    EXPECT_EQ(getArea(result.getShape()), 0);
+    EXPECT_EQ(result.getElementMap().size(), 0);
+    EXPECT_EQ(result.countSubElements("Vertex"), 1);
+    EXPECT_EQ(result.countSubShapes("Vertex"), 1);
 }
 
 TEST_F(TopoShapeMakeShapeTests, thruSections)

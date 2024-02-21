@@ -137,6 +137,40 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
     return result;
 }
 
+testing::AssertionResult elementsMatch(const TopoShape& shape,
+                                       const std::vector<std::string>& names)
+{
+    auto elements = shape.getElementMap();
+    if (std::find_first_of(elements.begin(),
+                           elements.end(),
+                           names.begin(),
+                           names.end(),
+                           [&](const Data::MappedElement& element, const std::string& name) {
+                               return element.name.toString() == name;
+                           })
+        == elements.end()) {
+        std::stringstream output;
+        output << "{";
+        for (const auto& element : elements) {
+            output << "\"" << element.name.toString() << "\", ";
+        }
+        output << "}";
+        return testing::AssertionFailure() << output.str();
+    }
+    return testing::AssertionSuccess();
+}
+
+testing::AssertionResult allElementsMatch(const TopoShape& shape,
+                                          const std::vector<std::string>& names)
+{
+    auto elements = shape.getElementMap();
+    if (elements.size() != names.size()) {
+        return testing::AssertionFailure()
+            << elements.size() << " != " << names.size() << " elements in map";
+    }
+    return elementsMatch(shape, names);
+}
+
 std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes()
 {
     auto boxMaker1 = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
