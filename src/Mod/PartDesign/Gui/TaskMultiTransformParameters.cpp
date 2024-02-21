@@ -165,7 +165,11 @@ void TaskMultiTransformParameters::closeSubTask()
     if (subTask) {
         ui->buttonOK->hide();
         exitSelectionMode();
-        subTask->apply();
+        // The subfeature can already be deleted (e.g. cancel) so we have to check before
+        // calling apply
+        if (subFeature) {
+            subTask->apply();
+        }
 
         // Remove all parameter ui widgets and layout
         ui->subFeatureWidget->setUpdatesEnabled(false);
@@ -177,6 +181,7 @@ void TaskMultiTransformParameters::closeSubTask()
 
         delete subTask;
         subTask = nullptr;
+        subFeature = nullptr;
     }
 }
 
