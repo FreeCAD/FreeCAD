@@ -99,6 +99,7 @@
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
+#include "VarSet.h"
 #include "MaterialObject.h"
 #include "MeasureDistance.h"
 #include "Origin.h"
@@ -2102,6 +2103,7 @@ void Application::initTypes()
     App::LinkElementPython         ::init();
     App::LinkGroup                 ::init();
     App::LinkGroupPython           ::init();
+    App::VarSet                    ::init();
 
     // Expression classes
     App::Expression                ::init();
