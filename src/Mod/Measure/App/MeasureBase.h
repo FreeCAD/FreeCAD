@@ -123,7 +123,7 @@ private:
 };
 
 template <typename T>
-typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers = MeasureBaseExtendable<T>::HandlerMap();
+typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers;
 
 
 } //namespace Measure

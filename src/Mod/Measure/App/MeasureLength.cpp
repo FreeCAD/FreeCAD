@@ -41,8 +41,6 @@ using namespace Measure;
 
 PROPERTY_SOURCE(Measure::MeasureLength, Measure::MeasureBase)
 
-
-
 MeasureLength::MeasureLength()
 {
     ADD_PROPERTY_TYPE(Elements,(nullptr), "Measurement", App::Prop_None, "Elements to get the length from");
@@ -189,3 +187,8 @@ std::vector<App::DocumentObject*> MeasureLength::getSubject() const
     return Elements.getValues();
 }
 
+
+namespace Measure {
+// explicit template instantiation
+template class MeasureExport MeasureBaseExtendable<MeasureLengthInfo>;
+}

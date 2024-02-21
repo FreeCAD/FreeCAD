@@ -41,8 +41,6 @@ using namespace Measure;
 
 PROPERTY_SOURCE(Measure::MeasureArea, Measure::MeasureBase)
 
-
-
 MeasureArea::MeasureArea()
 {
     ADD_PROPERTY_TYPE(Elements,(nullptr), "Measurement", App::Prop_None, "Element to get the area from");
@@ -187,4 +185,9 @@ Base::Placement MeasureArea::getPlacement() {
 std::vector<App::DocumentObject*> MeasureArea::getSubject() const
 {
     return Elements.getValues();
+}
+
+namespace Measure {
+// explicit template instantiation
+template class MeasureExport MeasureBaseExtendable<MeasureAreaInfo>;
 }

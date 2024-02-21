@@ -33,9 +33,8 @@
 
 using namespace Measure;
 
+
 PROPERTY_SOURCE(Measure::MeasurePosition, Measure::MeasureBase)
-
-
 
 MeasurePosition::MeasurePosition()
 {
@@ -184,4 +183,9 @@ Base::Placement MeasurePosition::getPlacement() {
 std::vector<App::DocumentObject*> MeasurePosition::getSubject() const
 {
     return {Element.getValue()};
+}
+
+namespace Measure {
+// explicit template instantiation
+template class MeasureExport MeasureBaseExtendable<Base::Vector3d>;
 }

@@ -42,8 +42,8 @@
 
 using namespace Measure;
 
-PROPERTY_SOURCE(Measure::MeasureRadius, Measure::MeasureBase)
 
+PROPERTY_SOURCE(Measure::MeasureRadius, Measure::MeasureBase)
 
 
 MeasureRadius::MeasureRadius()
@@ -218,4 +218,9 @@ MeasureRadiusInfo MeasureRadius::getMeasureInfoFirst() const
 std::vector<App::DocumentObject*> MeasureRadius::getSubject() const
 {
     return {Element.getValue()};
+}
+
+namespace Measure {
+// explicit template instantiation
+template class MeasureExport MeasureBaseExtendable<MeasureRadiusInfo>;
 }
