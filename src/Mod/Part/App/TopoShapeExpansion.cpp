@@ -2594,6 +2594,59 @@ struct MapperThruSections: MapperMaker
     }
 };
 
+TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoShape> &edges,
+                                 double radius1, double radius2, const char *op)
+{
+    if(!op) op = Part::OpCodes::Fillet;
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+
+    if(edges.empty())
+        HANDLE_NULL_INPUT;
+
+    BRepFilletAPI_MakeFillet mkFillet(shape.getShape());
+    for(auto &e : edges) {
+        if(e.isNull())
+            HANDLE_NULL_INPUT;
+        const auto &edge = e.getShape();
+        if(!shape.findShape(edge))
+            FC_THROWM(Base::CADKernelError,"edge does not belong to the shape");
+        mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
+    }
+    return makEShape(mkFillet,shape,op);
+}
+
+TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges,
+                                  double radius1, double radius2, const char *op, bool flipDirection, bool asAngle)
+{
+    if(!op) op = Part::OpCodes::Chamfer;
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+
+    if(edges.empty())
+        HANDLE_NULL_INPUT;
+
+    BRepFilletAPI_MakeChamfer mkChamfer(shape.getShape());
+    for(auto &e : edges) {
+        const auto &edge = e.getShape();
+        if(e.isNull())
+            HANDLE_NULL_INPUT;
+        if(!shape.findShape(edge))
+            FC_THROWM(Base::CADKernelError,"edge does not belong to the shape");
+        //Add edge to fillet algorithm
+        TopoDS_Shape face;
+        if(flipDirection)
+            face = shape.findAncestorsShapes(edge,TopAbs_FACE).back();
+        else
+            face = shape.findAncestorShape(edge,TopAbs_FACE);
+        if(asAngle)
+            mkChamfer.AddDA(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        else
+            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+    }
+    return makEShape(mkChamfer,shape,op);
+}
+
 TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shapes,
                                              std::vector<std::vector<TopoShape>>& modifies,
                                              double tol,

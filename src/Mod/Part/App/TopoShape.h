@@ -1317,6 +1317,71 @@ public:
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
+
+    /* Make fillet shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make fillets
+     * @param radius1: the radius of the beginning of the fillet
+     * @param radius2: the radius of the ending of the fillet
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makEFillet(const TopoShape &source, const std::vector<TopoShape> &edges,
+                          double radius1, double radius2, const char *op=nullptr);
+    /* Make fillet shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make fillets
+     * @param radius1: the radius of the beginning of the fillet
+     * @param radius2: the radius of the ending of the fillet
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makEFillet(const std::vector<TopoShape> &edges,
+                         double radius1, double radius2, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makEFillet(*this,edges,radius1,radius2,op);
+    }
+
+    /* Make chamfer shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make chamfers
+     * @param radius1: the radius of the beginning of the chamfer
+     * @param radius2: the radius of the ending of the chamfer
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makEChamfer(const TopoShape &source, const std::vector<TopoShape> &edges,
+                           double radius1, double radius2, const char *op=nullptr, bool flipDirection=false, bool asAngle=false);
+    /* Make chamfer shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make chamfers
+     * @param radius1: the radius of the beginning of the chamfer
+     * @param radius2: the radius of the ending of the chamfer
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makEChamfer(const std::vector<TopoShape> &edges,
+                          double radius1, double radius2, const char *op=nullptr, bool flipDirection=false, bool asAngle=false) const {
+        return TopoShape(0,Hasher).makEChamfer(*this,edges,radius1,radius2,op,flipDirection,asAngle);
+    }
+
     /* Make draft shape
      *
      * @param source: the source shape
