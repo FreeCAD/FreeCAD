@@ -457,6 +457,19 @@ public:
     static void setTreeToolTipIcon(const bool &v);
     static const char *docTreeToolTipIcon();
     //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
+    /// Accessor for parameter VisibilityIcon
+    ///
+    /// If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled
+    static const bool & getVisibilityIcon();
+    static const bool & defaultVisibilityIcon();
+    static void removeVisibilityIcon();
+    static void setVisibilityIcon(const bool &v);
+    static const char *docVisibilityIcon();
+    static void onVisibilityIconChanged();
+    //@}
 //[[[end]]]
 
     static void refreshTreeViews();

@@ -78,6 +78,7 @@ public:
     long ColumnSize1;
     long ColumnSize2;
     bool TreeToolTipIcon;
+    bool VisibilityIcon;
 
     // Auto generated code (Tools/params_utils.py:203)
     TreeParamsP() {
@@ -156,6 +157,8 @@ public:
         funcs["ColumnSize2"] = &TreeParamsP::updateColumnSize2;
         TreeToolTipIcon = handle->GetBool("TreeToolTipIcon", false);
         funcs["TreeToolTipIcon"] = &TreeParamsP::updateTreeToolTipIcon;
+        VisibilityIcon = handle->GetBool("VisibilityIcon", false);
+        funcs["VisibilityIcon"] = &TreeParamsP::updateVisibilityIcon;
     }
 
     // Auto generated code (Tools/params_utils.py:217)
@@ -388,6 +391,14 @@ public:
     // Auto generated code (Tools/params_utils.py:238)
     static void updateTreeToolTipIcon(TreeParamsP *self) {
         self->TreeToolTipIcon = self->handle->GetBool("TreeToolTipIcon", false);
+    }
+    // Auto generated code (Tools/params_utils.py:296)
+    static void updateVisibilityIcon(TreeParamsP *self) {
+        auto v = self->handle->GetBool("VisibilityIcon", false);
+        if (self->VisibilityIcon != v) {
+            self->VisibilityIcon = v;
+            TreeParams::onVisibilityIconChanged();
+        }
     }
 };
 
@@ -1381,6 +1392,34 @@ void TreeParams::setTreeToolTipIcon(const bool &v) {
 void TreeParams::removeTreeToolTipIcon() {
     instance()->handle->RemoveBool("TreeToolTipIcon");
 }
+
+// Auto generated code (Tools/params_utils.py:350)
+const char *TreeParams::docVisibilityIcon() {
+    return QT_TRANSLATE_NOOP("TreeParams",
+"If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled");
+}
+
+// Auto generated code (Tools/params_utils.py:358)
+const bool & TreeParams::getVisibilityIcon() {
+    return instance()->VisibilityIcon;
+}
+
+// Auto generated code (Tools/params_utils.py:366)
+const bool & TreeParams::defaultVisibilityIcon() {
+    const static bool def = false;
+    return def;
+}
+
+// Auto generated code (Tools/params_utils.py:375)
+void TreeParams::setVisibilityIcon(const bool &v) {
+    instance()->handle->SetBool("VisibilityIcon",v);
+    instance()->VisibilityIcon = v;
+}
+
+// Auto generated code (Tools/params_utils.py:384)
+void TreeParams::removeVisibilityIcon() {
+    instance()->handle->RemoveBool("VisibilityIcon");
+}
 //[[[end]]]
 
 void TreeParams::onSyncSelectionChanged() {
@@ -1481,4 +1520,9 @@ void TreeParams::onHideColumnChanged()
 {
     for(auto tree : TreeWidget::Instances)
         tree->setColumnHidden(1, TreeParams::getHideColumn());
+}
+
+void TreeParams::onVisibilityIconChanged()
+{
+    TreeWidget::updateVisibilityIcons();
 }

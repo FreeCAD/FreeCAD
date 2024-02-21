@@ -94,7 +94,7 @@ static bool _DraggingActive;
 static bool _DragEventFilter;
 
 static bool isVisibilityIconEnabled() {
-    return true;
+    return TreeParams::getVisibilityIcon();
 }
 
 static bool isSelectionCheckBoxesEnabled() {
