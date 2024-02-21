@@ -379,8 +379,7 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             "Set to True to use beam elements with reduced integration"
         )
-        red = ccx_prefs.GetBool("BeamReducedIntegration", True)
-        obj.BeamReducedIntegration = red
+        obj.BeamReducedIntegration = True
 
 """
 Should there be some equation object for Calculix too?
