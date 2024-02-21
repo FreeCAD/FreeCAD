@@ -2517,11 +2517,11 @@ def beam_reduced_integration(
     lines = f.readlines()
     f.seek(0)
     for line in lines:
-      if line.find("B32") != -1:
-        line = line.replace("B32", "B32R")
-      if line.find("B31") != -1:
-        line = line.replace("B31", "B31R")
-      f.write(line)
+        if line.find("B32") != -1:
+            line = line.replace("B32", "B32R")
+        if line.find("B31") != -1:
+            line = line.replace("B31", "B31R")
+        f.write(line)
     
     f.truncate()
     f.close()
