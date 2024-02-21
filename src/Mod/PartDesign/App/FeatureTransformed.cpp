@@ -27,7 +27,6 @@
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
@@ -219,9 +218,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // Get an untransformed support shape
     support.Location(gp_Trsf {});
 
-    // The boolean operation used to fuse/cut the shapes
-    BRepAlgoAPI_BooleanOperation booleanOperation;
-
     // NOTE: We choose to apply the transformations to each Original separately. This way it is
     // easier to discover what feature causes a fuse/cut to fail.
     // The downside is that performance suffers when there are many originals. But it seems
@@ -275,15 +271,26 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 TopTools_ListOfShape shapeArguments;
                 shapeArguments.Append(support);
 
-                booleanOperation.SetOperation(operation);
-                booleanOperation.SetArguments(shapeArguments);
-                booleanOperation.SetTools(shapeTools);
-                booleanOperation.Build();
-                if (!booleanOperation.IsDone()) {
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> boolOperation;
+                switch (operation) {
+                case BOPAlgo_FUSE:
+                    boolOperation = std::make_unique<BRepAlgoAPI_Fuse>();
+                    break;
+                case BOPAlgo_CUT:
+                    boolOperation = std::make_unique<BRepAlgoAPI_Cut>();
+                    break;
+                default:
+                    throw Base::RuntimeError("Boolean operation not implemented");
+                }
+
+                boolOperation->SetArguments(shapeArguments);
+                boolOperation->SetTools(shapeTools);
+                boolOperation->Build();
+                if (!boolOperation->IsDone()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
                 }
-                support = booleanOperation.Shape();
+                support = boolOperation->Shape();
             }
         }
     }
