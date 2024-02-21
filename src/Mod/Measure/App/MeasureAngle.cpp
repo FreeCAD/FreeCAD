@@ -51,6 +51,7 @@ MeasureAngle::MeasureAngle()
     ADD_PROPERTY_TYPE(Angle,(0.0)       ,"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                                             "Angle between the two elements");
     Angle.setUnit(Base::Unit::Angle);
+
 }
 
 MeasureAngle::~MeasureAngle() = default;
@@ -170,7 +171,7 @@ gp_Vec MeasureAngle::vector1() {
     App::DocumentObject* ob = Element1.getValue();
     std::vector<std::string> subs = Element1.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.size() < 1 ) {
+    if (!ob || !ob->isValid() || subs.empty()) {
         return gp_Vec();
     }
 
@@ -183,13 +184,13 @@ gp_Vec MeasureAngle::vector2() {
     App::DocumentObject* ob = Element2.getValue();
     std::vector<std::string> subs = Element2.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.size() < 1 ) {
-        return gp_Vec();
+    if (!ob || !ob->isValid() || subs.empty() ) {
+        return {};
     }
 
     Base::Vector3d vec;
     getVec(*ob, subs.at(0), vec);
-    return gp_Vec(vec.x, vec.y, vec.z);
+    return {vec.x, vec.y, vec.z};
 }
 
 gp_Vec MeasureAngle::location1() {
@@ -197,7 +198,7 @@ gp_Vec MeasureAngle::location1() {
     App::DocumentObject* ob = Element1.getValue();
     std::vector<std::string> subs = Element1.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.size() < 1 ) {
+    if (!ob || !ob->isValid() || subs.empty() ) {
         return {};
     }
     auto temp = getLoc(*ob, subs.at(0));
@@ -207,7 +208,7 @@ gp_Vec MeasureAngle::location2() {
     App::DocumentObject* ob = Element2.getValue();
     std::vector<std::string> subs = Element2.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.size() < 1 ) {
+    if (!ob || !ob->isValid() || subs.empty() ) {
         return {};
     }
 
@@ -228,7 +229,7 @@ App::DocumentObjectExecReturn *MeasureAngle::execute()
         return new App::DocumentObjectExecReturn("Submitted object(s) is not valid");
     }
 
-    if (subs1.size() < 1 || subs2.size() < 1) {
+    if (subs1.empty() || subs2.empty()) {
         return new App::DocumentObjectExecReturn("No geometry element picked");
     }
 

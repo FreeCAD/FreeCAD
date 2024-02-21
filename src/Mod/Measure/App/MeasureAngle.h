@@ -51,7 +51,7 @@ struct MeasureAngleInfo {
 };
 
 
-class MeasureExport MeasureAngle : public Measure::MeasureBaseExtendable<MeasureAngleInfo>
+class MeasureExport MeasureAngle : public MeasureBaseExtendable<MeasureAngleInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 
@@ -91,6 +91,7 @@ public:
     // Location Vectors
     gp_Vec location1();
     gp_Vec location2();
+
     
 private:
 

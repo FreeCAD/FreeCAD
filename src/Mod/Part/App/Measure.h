@@ -36,6 +36,7 @@ class PartExport Measure
 public:
 
     static void initialize();
+    static void registerMeasureHandlers();
 
 };
 

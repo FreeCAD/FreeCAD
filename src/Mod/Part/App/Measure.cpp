@@ -321,7 +321,7 @@ Measure::MeasureAreaInfo MeasureAreaHandler(std::string* objectName, std::string
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
+        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
         return {false, 0.0, Base::Matrix4D()};
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
@@ -418,23 +418,33 @@ void Part::Measure::initialize() {
 
     App::Application& app = App::GetApplication();
     app.addMeasureHandler("Part", PartMeasureTypeCb);
+}
+
+using CallbackItem = std::function<typename Measure::MeasureInfo (std::string*, std::string*)>;
+
+void Part::Measure::registerMeasureHandlers(std::vector<std::string>& moduleProxies,
+                                            std::vector< CallbackItem >& callbacks )
+{
 
     std::vector<std::string> proxyList(  { "Part", "PartDesign", "Sketcher" } );
+    std::vector< std::function<typename Measure::MeasureInfo (std::string*, std::string*)> > handlerCBs(
+                     { MeasureLengthHandler, MeasureRadiusHandler, MeasureAreaHandler,
+                       MeasurePositionHandler, MeasureAngleHandler, MeasureDistanceHandler } );
     // Extend MeasureLength
-    MeasureLength::addGeometryHandlers(proxyList, MeasureLengthHandler);
-
+                       //Measure::MeasureLengthInfo MeasureLengthHandler(std::string* objectName, std::string* subName){
+    MeasureLength::addGeometryHandlerCBs(proxyList, MeasureLengthHandler);
     // Extend MeasurePosition
-    MeasurePosition::addGeometryHandlers(proxyList, MeasurePositionHandler);
+    MeasurePosition::addGeometryHandlerCBs(proxyList, MeasurePositionHandler);
 
     // Extend MeasureArea
-    MeasureArea::addGeometryHandlers(proxyList, MeasureAreaHandler);
+    MeasureArea::addGeometryHandlerCBs(proxyList, MeasureAreaHandler);
 
     // Extend MeasureAngle
-    MeasureAngle::addGeometryHandlers(proxyList, MeasureAngleHandler);
+    MeasureAngle::addGeometryHandlerCBs(proxyList, MeasureAngleHandler);
 
     // Extend MeasureDistance
-    MeasureDistance::addGeometryHandlers(proxyList, MeasureDistanceHandler);
+    MeasureDistance::addGeometryHandlerCBs(proxyList, MeasureDistanceHandler);
 
     // Extend MeasureRadius
-    MeasureRadius::addGeometryHandlers(proxyList, MeasureRadiusHandler);
+    MeasureRadius::addGeometryHandlerCBs(proxyList, MeasureRadiusHandler);
 }

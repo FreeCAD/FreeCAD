@@ -86,44 +86,51 @@ template <typename T>
 class MeasureExport MeasureBaseExtendable : public MeasureBase
 {
 
-    using GeometryHandler = std::function<T (std::string*, std::string*)>;
-    using HandlerMap = std::map<std::string, GeometryHandler>;
+    using GeometryHandlerCB = std::function<T (std::string*, std::string*)>;
+    using HandlerMap = std::map<std::string, GeometryHandlerCB>;
 
 
-public: 
+public:
 
-    static void addGeometryHandler(const std::string& module, GeometryHandler callback) {
-        _mGeometryHandlers[module] = callback;
+    //! create or replace the callback for a module
+    static void addGeometryHandlerCB(const std::string& module, GeometryHandlerCB callback) {
+        (*MeasureBaseExtendable<T>::Map()) [module] = callback;
     }
 
-    static GeometryHandler getGeometryHandler(const std::string& module) {
+    //! assign many modules to the same callback
+    static void addGeometryHandlerCBs(const std::vector<std::string>& modules, GeometryHandlerCB callback){
+        // TODO: this will replace a callback with a later one.  Should we check that there isn't already a
+        // handler defined for this module?
+        for (auto& mod : modules) {
+            (*MeasureBaseExtendable<T>::Map())[mod] = callback;
+        }
+    }
 
+    //! get the address of callback std::function
+    static GeometryHandlerCB getGeometryHandlerCB(const std::string& module) {
         if (!hasGeometryHandler(module)) {
             return {};
         }
 
-        return _mGeometryHandlers[module];
+        return (*MeasureBaseExtendable<T>::Map()) [module];
     }
-
-    static void addGeometryHandlers(const std::vector<std::string>& modules, GeometryHandler callback){
-        // TODO: this will replace a callback with a later one.  Should we check that there isn't already a
-        // handler defined for this module?
-        for (auto& mod : modules) {
-            _mGeometryHandlers[mod] = callback;
-        }
-    }
-
 
     static bool hasGeometryHandler(const std::string& module) {
-        return (_mGeometryHandlers.count(module) > 0);
+        return ((*MeasureBaseExtendable<T>::Map()).count(module) > 0);
     }
 
+    static MeasureBaseExtendable<T>::HandlerMap* Map();
+
+    // static HandlerMap _mGeometryHandlers;
+    static HandlerMap* m_mapLink;
+
 private:
-    static HandlerMap _mGeometryHandlers;
+    // static HandlerMap _mGeometryHandlers;
+    // static HandlerMap* m_mapLink;
 };
 
-template <typename T>
-typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers;
+// template <typename T>
+// typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers;
 
 
 } //namespace Measure
