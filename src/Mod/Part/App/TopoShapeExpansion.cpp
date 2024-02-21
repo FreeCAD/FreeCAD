@@ -1220,7 +1220,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     }
                     int newShapeIndex = newInfo.find(newShape);
                     if (newShapeIndex == 0) {
-                        // This warning occurs in makERevolve. It generates
+                        // This warning occurs in makeElementRevolve. It generates
                         // some shape from a vertex that never made into the
                         // final shape. There may be incomingShape cases there.
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -2459,11 +2459,7 @@ TopoShape::makeElementCopy(const TopoShape& shape, const char* op, bool copyGeom
     }
 
     TopoShape tmp(shape);
-#if OCC_VERSION_HEX >= 0x070000
     tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(), copyGeom, copyMesh).Shape(), false);
-#else
-    tmp.setShape(BRepBuilderAPI_Copy(shape.getShape()).Shape(), false);
-#endif
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
         initCache();
@@ -2543,6 +2539,74 @@ struct MapperThruSections: MapperMaker
         return _res;
     }
 };
+
+TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shapes,
+                                             std::vector<std::vector<TopoShape>>& modifies,
+                                             double tol,
+                                             const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::GeneralFuse;
+    }
+
+    if (_shapes.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+
+    std::vector<TopoShape> shapes(_shapes);
+
+    BRepAlgoAPI_BuilderAlgo mkGFA;
+    mkGFA.SetRunParallel(true);
+    TopTools_ListOfShape GFAArguments;
+    for (auto& shape : shapes) {
+        if (shape.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        if (tol > 0.0) {
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shape = shape.makeElementCopy();
+        }
+        GFAArguments.Append(shape.getShape());
+    }
+    mkGFA.SetArguments(GFAArguments);
+    if (tol > 0.0) {
+        mkGFA.SetFuzzyValue(tol);
+    }
+#if OCC_VERSION_HEX >= 0x070000
+    mkGFA.SetNonDestructive(Standard_True);
+#endif
+    mkGFA.Build();
+    if (!mkGFA.IsDone()) {
+        FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
+    }
+    makeElementShape(mkGFA, shapes, op);
+    modifies.resize(shapes.size());
+    int index = 0;
+    for (auto& shape : shapes) {
+        auto& mod = modifies[index++];
+        for (TopTools_ListIteratorOfListOfShape it(mkGFA.Modified(shape.getShape())); it.More();
+             it.Next()) {
+            TopoShape res(Tag);
+            res.setShape(it.Value());
+            mod.push_back(res);
+        }
+        mapSubElementsTo(mod);
+    }
+    return *this;
+}
+
+TopoShape&
+TopoShape::makeElementFuse(const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    return makeElementBoolean(Part::OpCodes::Fuse, shapes, op, tol);
+}
+
+TopoShape&
+TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
+}
+
 
 TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
                                        const TopoShape& source,
@@ -2734,7 +2798,7 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
         // Update: one of the cause is related to OCC bug in
         // BRepBuilder_FindPlane, A possible call sequence is,
         //
-        //      makEOffset2D() -> TopoShape::findPlane() -> BRepLib_FindSurface
+        //      makeElementOffset2D() -> TopoShape::findPlane() -> BRepLib_FindSurface
         //
         // See code comments in findPlane() for the description of the bug and
         // work around.
