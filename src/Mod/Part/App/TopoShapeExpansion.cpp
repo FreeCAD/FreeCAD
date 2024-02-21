@@ -120,6 +120,48 @@ void TopoShape::initCache(int reset) const
     }
 }
 
+Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
+{
+    if (_cache && elementMap != this->elementMap(false)) {
+        for (auto& info : _cache->shapeAncestryCache) {
+            info.clear();
+        }
+    }
+    else {
+        initCache();
+    }
+    if (elementMap) {
+        _cache->cachedElementMap = elementMap;
+        _cache->subLocation.Identity();
+        _subLocation.Identity();
+        _parentCache.reset();
+    }
+    return Data::ComplexGeoData::resetElementMap(elementMap);
+}
+
+void TopoShape::flushElementMap() const
+{
+    initCache();
+    if (!elementMap(false) && this->_cache) {
+        if (this->_cache->cachedElementMap) {
+            const_cast<TopoShape*>(this)->resetElementMap(this->_cache->cachedElementMap);
+        }
+        else if (this->_parentCache) {
+            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->shape);
+            parent._cache = _parentCache;
+            parent.flushElementMap();
+            TopoShape self(this->Tag,
+                           this->Hasher,
+                           this->_Shape.Located(this->_subLocation * this->_cache->subLocation));
+            self._cache = _cache;
+            self.mapSubElement(parent);
+            this->_parentCache.reset();
+            this->_subLocation.Identity();
+            const_cast<TopoShape*>(this)->resetElementMap(self.elementMap());
+        }
+    }
+}
+
 void TopoShape::setShape(const TopoDS_Shape& shape, bool resetElementMap)
 {
     if (resetElementMap) {
@@ -207,6 +249,18 @@ TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer
     return moved(sCopy, transfer);
 }
 
+void TopoShape::operator = (const TopoShape& sh)
+{
+    if (this != &sh) {
+        this->setShape(sh._Shape, true);
+        this->Tag = sh.Tag;
+        this->Hasher = sh.Hasher;
+        this->_cache = sh._cache;
+        this->_parentCache = sh._parentCache;
+        this->_subLocation = sh._subLocation;
+        resetElementMap(sh.elementMap(false));
+    }
+}
 
 int TopoShape::findShape(const TopoDS_Shape& subshape) const
 {

@@ -127,38 +127,67 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoShapesGeneratesMap)
     // Arrange
     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge();
     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge();
-    TopoShape topoShape {edge1};
-    std::vector<TopoShape> shapes {edge1, edge2};
-
+    TopoShape topoShape {1L};
+    std::vector<TopoShape> shapes {TopoShape(edge1, 2L), TopoShape(edge2, 3L)};
     // Act
     topoShape.makeElementCompound(shapes);
-
-    // Assert
-    EXPECT_EQ(4, topoShape.getMappedChildElements().size());  // two vertices and two edges
+    auto elements = elementMap((topoShape));
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 2);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 0, 0)));
+    // Assert map is correct
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 6);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;:H2,E"));
+    EXPECT_EQ(elements[IndexedName("Edge", 2)], MappedName("Edge1;:H3,E"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;:H2,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 2)], MappedName("Vertex2;:H2,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 3)], MappedName("Vertex1;:H3,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 4)], MappedName("Vertex2;:H3,V"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
 {
-    // Arrange
-    auto [cube1, cube2] = CreateTwoCubes();
-    TopoShape cube1TS {cube1};
-    cube1TS.Tag = 1;
-    TopoShape cube2TS {cube2};
-    cube2TS.Tag = 2;
-
+    auto [cube1TS, cube2TS] = CreateTwoTopoShapeCubes();
     // Act
-    TopoShape topoShape;
+    TopoShape topoShape {3L};
     topoShape.makeElementCompound({cube1TS, cube2TS});
-
-    // Assert
-    auto elementMap = topoShape.getElementMap();
-    EXPECT_EQ(52, elementMap.size());
+    auto elementMap = cube1TS.getElementMap();
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_EQ(6, topoShape.getMappedChildElements().size());
+    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 2);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 1, 1)));
+    // Assert map is correct
     // Two cubes, each consisting of:
     // 8 Vertices
     // 12 Edges
     // 6 Faces
     // ----------
     // 26 subshapes each
+    EXPECT_TRUE(
+        allElementsMatch(topoShape,
+                         {
+                             "Edge1;:H1,E;:H7,E",   "Edge2;:H1,E;:H7,E",   "Edge3;:H1,E;:H7,E",
+                             "Edge4;:H1,E;:H7,E",   "Edge1;:H2,E;:H7,E",   "Edge2;:H2,E;:H7,E",
+                             "Edge3;:H2,E;:H7,E",   "Edge4;:H2,E;:H7,E",   "Edge1;:H3,E;:H7,E",
+                             "Edge2;:H3,E;:H7,E",   "Edge3;:H3,E;:H7,E",   "Edge4;:H3,E;:H7,E",
+                             "Edge1;:H8,E;:He,E",   "Edge2;:H8,E;:He,E",   "Edge3;:H8,E;:He,E",
+                             "Edge4;:H8,E;:He,E",   "Edge1;:H9,E;:He,E",   "Edge2;:H9,E;:He,E",
+                             "Edge3;:H9,E;:He,E",   "Edge4;:H9,E;:He,E",   "Edge1;:Ha,E;:He,E",
+                             "Edge2;:Ha,E;:He,E",   "Edge3;:Ha,E;:He,E",   "Edge4;:Ha,E;:He,E",
+                             "Vertex1;:H8,V;:He,V", "Vertex2;:H8,V;:He,V", "Vertex3;:H8,V;:He,V",
+                             "Vertex4;:H8,V;:He,V", "Vertex1;:H9,V;:He,V", "Vertex2;:H9,V;:He,V",
+                             "Vertex3;:H9,V;:He,V", "Vertex4;:H9,V;:He,V", "Face1;:H1,F;:H7,F",
+                             "Face1;:H2,F;:H7,F",   "Face1;:H3,F;:H7,F",   "Face1;:H4,F;:H7,F",
+                             "Face1;:H5,F;:H7,F",   "Face1;:H6,F;:H7,F",   "Face1;:H8,F;:He,F",
+                             "Face1;:H9,F;:He,F",   "Face1;:Ha,F;:He,F",   "Face1;:Hb,F;:He,F",
+                             "Face1;:Hc,F;:He,F",   "Face1;:Hd,F;:He,F",   "Vertex1;:H1,V;:H7,V",
+                             "Vertex2;:H1,V;:H7,V", "Vertex3;:H1,V;:H7,V", "Vertex4;:H1,V;:H7,V",
+                             "Vertex1;:H2,V;:H7,V", "Vertex2;:H2,V;:H7,V", "Vertex3;:H2,V;:H7,V",
+                             "Vertex4;:H2,V;:H7,V",
+                         }));
 }
 
 TEST_F(TopoShapeExpansionTest, MapperMakerModified)
@@ -368,7 +397,7 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
     topoShape.makeElementWires(shapes);
     auto elementMap = topoShape.getElementMap();
     // Assert
-    EXPECT_EQ(0, elementMap.size());  // TODO:  What is the correct value?
+    EXPECT_EQ(6, elementMap.size());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
@@ -386,19 +415,22 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
     auto& wire2 = (new TopoShape {})->makeElementWires(shapes2);
     auto& topoShape = (new TopoShape {})->makeElementWires({wire1, wire2});
     auto elements = elementMap((topoShape));
-    // Assert
-    EXPECT_EQ(elements.size(), 10);
-    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;:H,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 2)], MappedName("Edge2;:H,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 3)], MappedName("Edge1;:C1;:H:4,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 4)], MappedName("Edge2;:C1;:H:4,E"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 2)], MappedName("Vertex2;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 3)], MappedName("Vertex3;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 4)], MappedName("Vertex1;:C1;:H:4,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 5)], MappedName("Vertex2;:C1;:H:4,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 6)], MappedName("Vertex3;:C1;:H:4,V"));
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 4.4142137);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 3, 2, 0)));
+    // Assert map is correct
+    EXPECT_TRUE(allElementsMatch(topoShape,
+                                 {"Edge1;WIR",
+                                  "Edge1;WIR;D1",
+                                  "Edge1;WIR;D2",
+                                  "Edge1;WIR;D1;D1",
+                                  "Vertex1;WIR",
+                                  "Vertex2;WIR",
+                                  "Vertex2;WIR;D1",
+                                  "Vertex1;WIR;D1",
+                                  "Vertex2;WIR;D2",
+                                  "Vertex2;WIR;D1;D1"}));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
@@ -622,7 +654,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
                                                             OpCodes::Common,
                                                             op);
     // ASSERT
-    EXPECT_STREQ(result.toString().c_str(), "Edge1;:H,E;CMN(Face7|Face8);Copy");
+    EXPECT_STREQ(result.toString().c_str(), "Edge1;CMN(Face7|Face8);Copy");
     // The detailed forms of names are covered in encodeElementName tests
 }
 
@@ -1283,10 +1315,10 @@ TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
     EXPECT_TRUE(result.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 26);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:G;DFT;:He:7,F"));
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:H8,F;:G;DFT;:He:7,F"));
     EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
-    EXPECT_EQ(result2.getElementMap().size(), 0);  // No element map in non reference call.
-    EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
+    EXPECT_EQ(result2.getElementMap().size(), 26);
+    EXPECT_EQ(result3.getElementMap().size(), 26);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
