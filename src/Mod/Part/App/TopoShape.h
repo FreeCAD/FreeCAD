@@ -197,9 +197,21 @@ enum class MapElement
 /// Defines how to fill the holes that may appear after offset two adjacent faces
 enum class JoinType
 {
-    Arc,
-    Tangent,
-    Intersection,
+    arc,
+    tangent,
+    intersection,
+};
+
+enum class Flip
+{
+    none,
+    flip
+};
+
+enum class AsAngle
+{
+    no,
+    yes
 };
 
 /** The representation for a CAD Shape
@@ -808,7 +820,7 @@ public:
      */
     TopoShape &makeElementThickSolid(const TopoShape &source, const std::vector<TopoShape> &faces,
                               double offset, double tol, bool intersection = false, bool selfInter = false,
-                              short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr);
+                              short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr);
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
@@ -830,7 +842,7 @@ public:
      */
     TopoShape makeElementThickSolid(const std::vector<TopoShape> &faces,
                              double offset, double tol, bool intersection = false, bool selfInter = false,
-                             short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr) const {
+                             short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr) const {
         return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
                                                    offsetMode,join,op);
     }
@@ -1332,8 +1344,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEFillet(const TopoShape &source, const std::vector<TopoShape> &edges,
-                          double radius1, double radius2, const char *op=nullptr);
+    TopoShape& makeElementFillet(const TopoShape& source,
+                                 const std::vector<TopoShape>& edges,
+                                 double radius1,
+                                 double radius2,
+                                 const char* op = nullptr);
     /* Make fillet shape
      *
      * @param source: the source shape
@@ -1345,9 +1360,12 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makEFillet(const std::vector<TopoShape> &edges,
-                         double radius1, double radius2, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makEFillet(*this,edges,radius1,radius2,op);
+    TopoShape makeElementFillet(const std::vector<TopoShape>& edges,
+                                double radius1,
+                                double radius2,
+                                const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementFillet(*this, edges, radius1, radius2, op);
     }
 
     /* Make chamfer shape
@@ -1364,8 +1382,13 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEChamfer(const TopoShape &source, const std::vector<TopoShape> &edges,
-                           double radius1, double radius2, const char *op=nullptr, bool flipDirection=false, bool asAngle=false);
+    TopoShape& makeElementChamfer(const TopoShape& source,
+                                  const std::vector<TopoShape>& edges,
+                                  double radius1,
+                                  double radius2,
+                                  const char* op = nullptr,
+                                  Flip flipDirection = Flip::none,
+                                  AsAngle asAngle = AsAngle::no);
     /* Make chamfer shape
      *
      * @param source: the source shape
@@ -1377,9 +1400,15 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makEChamfer(const std::vector<TopoShape> &edges,
-                          double radius1, double radius2, const char *op=nullptr, bool flipDirection=false, bool asAngle=false) const {
-        return TopoShape(0,Hasher).makEChamfer(*this,edges,radius1,radius2,op,flipDirection,asAngle);
+    TopoShape makeElementChamfer(const std::vector<TopoShape>& edges,
+                                 double radius1,
+                                 double radius2,
+                                 const char* op = nullptr,
+                                 Flip flipDirection = Flip::none,
+                                 AsAngle asAngle = AsAngle::no) const
+    {
+        return TopoShape(0, Hasher)
+            .makeElementChamfer(*this, edges, radius1, radius2, op, flipDirection, asAngle);
     }
 
     /* Make draft shape

@@ -1575,6 +1575,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFuse)
             "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
             "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
 }
+
 TEST_F(TopoShapeExpansionTest, makeElementCut)
 {
     // Arrange
@@ -1599,6 +1600,249 @@ TEST_F(TopoShapeExpansionTest, makeElementCut)
             "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
             "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementChamfer)
+{
+    // Arrange
+    // Fillets / Chamfers do not work on compounds of faces, so use complete boxes ( Solids ) here.
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    // Act
+    cube1TS.makeElementChamfer({cube1TS}, edges, .05, .05);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.640996);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_TRUE(allElementsMatch(cube1TS,
+                                 {
+                                     "Edge10;:G;CHF;:H1:7,F",
+                                     "Edge10;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge11;:G;CHF;:H1:7,F",
+                                     "Edge11;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge12;:G;CHF;:H1:7,F",
+                                     "Edge12;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge1;:G;CHF;:H1:7,F",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge2;:G;CHF;:H1:7,F",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge3;:G;CHF;:H1:7,F",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge4;:G;CHF;:H1:7,F",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge4;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge5;:G;CHF;:H1:7,F",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge6;:G;CHF;:H1:7,F",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge7;:G;CHF;:H1:7,F",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge8;:G;CHF;:H1:7,F",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge8;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge9;:G;CHF;:H1:7,F",
+                                     "Edge9;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Face1;:M;CHF;:H1:7,F",
+                                     "Face2;:M;CHF;:H1:7,F",
+                                     "Face3;:M;CHF;:H1:7,F",
+                                     "Face4;:M;CHF;:H1:7,F",
+                                     "Face5;:M;CHF;:H1:7,F",
+                                     "Face6;:M;CHF;:H1:7,F",
+                                     "Vertex1;:G;CHF;:H1:7,F",
+                                     "Vertex2;:G;CHF;:H1:7,F",
+                                     "Vertex3;:G;CHF;:H1:7,F",
+                                     "Vertex4;:G;CHF;:H1:7,F",
+                                     "Vertex5;:G;CHF;:H1:7,F",
+                                     "Vertex6;:G;CHF;:H1:7,F",
+                                     "Vertex7;:G;CHF;:H1:7,F",
+                                     "Vertex8;:G;CHF;:H1:7,F",
+                                 }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFillet)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    // Act
+    cube1TS.makeElementFillet({cube1TS}, edges, .05, .05);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.739646);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_TRUE(elementsMatch(cube1TS,
+                              {
+                                  "Edge10;:G;FLT;:H1:7,F",
+                                  "Edge10;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge11;:G;FLT;:H1:7,F",
+                                  "Edge11;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge12;:G;FLT;:H1:7,F",
+                                  "Edge12;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge1;:G;FLT;:H1:7,F",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge2;:G;FLT;:H1:7,F",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge3;:G;FLT;:H1:7,F",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge4;:G;FLT;:H1:7,F",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge4;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge5;:G;FLT;:H1:7,F",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge6;:G;FLT;:H1:7,F",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge7;:G;FLT;:H1:7,F",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge8;:G;FLT;:H1:7,F",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge8;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge9;:G;FLT;:H1:7,F",
+                                  "Edge9;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Face1;:M;FLT;:H1:7,F",
+                                  "Face2;:M;FLT;:H1:7,F",
+                                  "Face3;:M;FLT;:H1:7,F",
+                                  "Face4;:M;FLT;:H1:7,F",
+                                  "Face5;:M;FLT;:H1:7,F",
+                                  "Face6;:M;FLT;:H1:7,F",
+                                  "Vertex1;:G;FLT;:H1:7,F",
+                                  "Vertex1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex2;:G;FLT;:H1:7,F",
+                                  "Vertex2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex3;:G;FLT;:H1:7,F",
+                                  "Vertex3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex4;:G;FLT;:H1:7,F",
+                                  "Vertex4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex5;:G;FLT;:H1:7,F",
+                                  "Vertex5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex6;:G;FLT;:H1:7,F",
+                                  "Vertex6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex7;:G;FLT;:H1:7,F",
+                                  "Vertex7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex8;:G;FLT;:H1:7,F",
+                                  "Vertex8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                              }));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
