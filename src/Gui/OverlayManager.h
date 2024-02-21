@@ -28,6 +28,7 @@
 
 class QAction;
 class QDockWidget;
+class QDockWidget::DockWidgetFeatures;
 class QString;
 class QPoint;
 class QWidget;

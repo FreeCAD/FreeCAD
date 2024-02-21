@@ -1593,6 +1593,7 @@ void OverlayManager::onDockVisibleChange(bool visible)
 
 void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures features)
 {
+    Q_UNUSED(features);
     auto dw = qobject_cast<QDockWidget*>(sender());
     if (!dw)
         return;
