@@ -174,6 +174,7 @@ protected:
 private:
     void onToggleDockWidget(bool checked);
     void onDockVisibleChange(bool visible);
+    void onDockFeaturesChange(QDockWidget::DockWidgetFeatures features);
     void onDockWidgetTitleChange(const QString &);
     void onTaskViewUpdate();
     void onFocusChanged(QWidget *, QWidget *);
