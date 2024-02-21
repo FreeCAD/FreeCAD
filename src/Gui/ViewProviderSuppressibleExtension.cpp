@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "ActionFunction.h"
+#include "Control.h"
 #include "Document.h"
 #include "PreCompiled.h"
 
@@ -31,6 +33,7 @@
 #include "ViewProviderSuppressibleExtension.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
+#include "qmenu.h"
 
 
 namespace Gui {
@@ -96,6 +99,27 @@ QIcon ViewProviderSuppressibleExtension::extensionMergeColorfullOverlayIcons (co
     }
     return Gui::ViewProviderExtension::extensionMergeColorfullOverlayIcons(mergedicon);
 }
+
+
+void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
+{
+    auto vp = getExtendedViewProvider();
+    auto obj = vp->getObject()->getExtensionByType<App::SuppressibleExtension>();
+    //show (Un)Suppress action if the Suppressed property is visible
+    if (obj && ! obj->Suppressed.testStatus(App::Property::Hidden)) {
+        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+        QAction* act;
+        if (obj->Suppressed.getValue())
+            act = menu->addAction(QObject::tr("UnSuppress"));
+        else
+            act = menu->addAction(QObject::tr("Suppress"));
+
+        func->trigger(act, [obj](){
+            obj->Suppressed.setValue(! obj->Suppressed.getValue());
+        });
+    }
+}
+
 
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderSuppressibleExtensionPython, Gui::ViewProviderSuppressibleExtension)
 
