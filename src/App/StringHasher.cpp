@@ -621,7 +621,7 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
 
 void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
 {
-    Base::ASCIIInputStream asciiStream (stream);
+    Base::TextInputStream asciiStream (stream);
     _hashes->clear();
     std::string content;
     boost::io::ios_flags_saver ifs(stream);

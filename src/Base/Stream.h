@@ -142,38 +142,38 @@ private:
 };
 
 /**
- * The ASCIIInputStream class provides reading of ASCII data from an istream, with custom handling
+ * The TextInputStream class provides reading of ASCII data from an istream, with custom handling
  * for std::string to make it easier to read a single multi-line (or multi-word) string. This is
  * designed for easy compatibility with the LinkStage3 implementation of the InputStream class, used
  * to store StringHashers for the toponaming mitigation technique.
  */
-class BaseExport ASCIIInputStream: public Stream
+class BaseExport TextInputStream: public Stream
 {
 public:
     /** Constructor
      * @param rin: upstream input
      */
-    explicit ASCIIInputStream(std::istream& rin)
+    explicit TextInputStream(std::istream& rin)
         : _in(rin)
     {}
 
-    ASCIIInputStream(const ASCIIInputStream&) = delete;
+    TextInputStream(const TextInputStream&) = delete;
 
-    ASCIIInputStream(const ASCIIInputStream&&) noexcept = delete;
+    TextInputStream(const TextInputStream&&) noexcept = delete;
 
-    void operator=(const ASCIIInputStream&) = delete;
+    void operator=(const TextInputStream&) = delete;
 
-    void operator=(const ASCIIInputStream&&) = delete;
+    void operator=(const TextInputStream&&) = delete;
 
-    ~ASCIIInputStream() override = default;
+    ~TextInputStream() override = default;
 
-    ASCIIInputStream& operator>>(bool& input)
+    TextInputStream& operator>>(bool& input)
     {
         _in >> input;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(int8_t& ch)
+    TextInputStream& operator>>(int8_t& ch)
     {
         int index {};
         _in >> index;
@@ -181,7 +181,7 @@ public:
         return *this;
     }
 
-    ASCIIInputStream& operator>>(uint8_t& uch)
+    TextInputStream& operator>>(uint8_t& uch)
     {
         unsigned uns {};
         _in >> uns;
@@ -189,57 +189,57 @@ public:
         return *this;
     }
 
-    ASCIIInputStream& operator>>(int16_t& int16)
+    TextInputStream& operator>>(int16_t& int16)
     {
         _in >> int16;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(uint16_t& us)
+    TextInputStream& operator>>(uint16_t& us)
     {
         _in >> us;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(int32_t& int32)
+    TextInputStream& operator>>(int32_t& int32)
     {
         _in >> int32;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(uint32_t& ui)
+    TextInputStream& operator>>(uint32_t& ui)
     {
         _in >> ui;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(int64_t& int64)
+    TextInputStream& operator>>(int64_t& int64)
     {
         _in >> int64;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(uint64_t& ul)
+    TextInputStream& operator>>(uint64_t& ul)
     {
         _in >> ul;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(float& flt)
+    TextInputStream& operator>>(float& flt)
     {
         _in >> flt;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(double& dbl)
+    TextInputStream& operator>>(double& dbl)
     {
         _in >> dbl;
         return *this;
     }
 
-    ASCIIInputStream& operator>>(std::string& str);
+    TextInputStream& operator>>(std::string& str);
 
-    ASCIIInputStream& operator>>(char& chr)
+    TextInputStream& operator>>(char& chr)
     {
         chr = (char)_in.get();
         return *this;

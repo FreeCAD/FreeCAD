@@ -836,7 +836,7 @@ std::streambuf::pos_type Streambuf::seekpos(std::streambuf::pos_type pos,
 // The custom string handler written by realthunder for the LinkStage3 toponaming code, to handle
 // reading multi-line strings directly into a std::string. Imported from LinkStage3 and refactored
 // during the TNP mitigation project in February 2024.
-ASCIIInputStream& ASCIIInputStream::operator>>(std::string& outputString)
+TextInputStream& TextInputStream::operator>>(std::string& outputString)
 {
     uint32_t numberOfLines;
     char inputChar;
