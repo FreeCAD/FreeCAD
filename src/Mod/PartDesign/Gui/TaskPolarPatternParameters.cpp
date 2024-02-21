@@ -404,7 +404,7 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
     }
 }
 
-void TaskPolarPatternParameters::doApply()
+void TaskPolarPatternParameters::apply()
 {
     std::vector<std::string> axes;
     App::DocumentObject* obj;

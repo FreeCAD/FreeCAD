@@ -55,6 +55,8 @@ public:
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
+    void apply() override;
+
 private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const uint n);
@@ -63,7 +65,6 @@ private Q_SLOTS:
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
-    void doApply() override;
     void updateUI();
 
     double getFactor() const;

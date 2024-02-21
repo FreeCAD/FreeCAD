@@ -58,6 +58,8 @@ public:
                                           QWidget* parent = nullptr);
     ~TaskMultiTransformParameters() override;
 
+    void apply() override;
+
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature()
     {
@@ -83,7 +85,6 @@ private Q_SLOTS:
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
-    void doApply() override;
 
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;

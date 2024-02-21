@@ -150,10 +150,7 @@ public:
     ~TaskTransformedParameters() override;
 
     /// Apply changes for python console
-    void apply()
-    {
-        doApply();
-    }
+    virtual void apply() = 0;
 
     /*!
      * \brief setEnabledTransaction
@@ -234,9 +231,6 @@ private:
 
     /// Change translation of the parameter UI
     virtual void retranslateParameterUI(QWidget* widget) = 0;
-
-    /// Implementation for apply()
-    virtual void doApply() = 0;
 
     void addObject(App::DocumentObject*);
     void removeObject(App::DocumentObject*);

@@ -209,7 +209,7 @@ void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj,
     sub = lnk.getSubValues();
 }
 
-void TaskMirroredParameters::doApply()
+void TaskMirroredParameters::apply()
 {
     std::vector<std::string> mirrorPlanes;
     App::DocumentObject* obj;

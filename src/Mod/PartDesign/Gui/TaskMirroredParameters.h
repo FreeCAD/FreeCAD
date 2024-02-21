@@ -57,6 +57,8 @@ public:
 
     ~TaskMirroredParameters() override;
 
+    void apply() override;
+
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
@@ -67,7 +69,6 @@ private Q_SLOTS:
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
-    void doApply() override;
     void updateUI();
     void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 

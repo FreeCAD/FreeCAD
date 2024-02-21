@@ -530,7 +530,7 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
     }
 }
 
-void TaskMultiTransformParameters::doApply()
+void TaskMultiTransformParameters::apply()
 {
     PartDesign::MultiTransform* pcMultiTransform =
         static_cast<PartDesign::MultiTransform*>(getObject());

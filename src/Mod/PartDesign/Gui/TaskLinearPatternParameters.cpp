@@ -421,7 +421,7 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
     }
 }
 
-void TaskLinearPatternParameters::doApply()
+void TaskLinearPatternParameters::apply()
 {
     std::vector<std::string> directions;
     App::DocumentObject* obj;

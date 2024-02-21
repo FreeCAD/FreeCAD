@@ -152,7 +152,7 @@ unsigned TaskScaledParameters::getOccurrences() const
     return ui->spinOccurrences->value();
 }
 
-void TaskScaledParameters::doApply()
+void TaskScaledParameters::apply()
 {
     FCMD_OBJ_CMD(getObject(), "Factor = " << getFactor());
     ui->spinOccurrences->apply();
