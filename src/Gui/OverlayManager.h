@@ -24,11 +24,11 @@
 #define FC_OVERLAYMANAGER_H
 
 #include <QObject>
+#include <QDockWidget>
 #include <FCGlobal.h>
 
 class QAction;
 class QDockWidget;
-class QDockWidget::DockWidgetFeatures;
 class QString;
 class QPoint;
 class QWidget;
