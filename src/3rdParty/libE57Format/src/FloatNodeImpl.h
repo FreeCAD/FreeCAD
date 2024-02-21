@@ -33,14 +33,16 @@ namespace e57
    class FloatNodeImpl : public NodeImpl
    {
    public:
-      FloatNodeImpl( ImageFileImplWeakPtr destImageFile, double value = 0, FloatPrecision precision = E57_DOUBLE,
-                     double minimum = E57_DOUBLE_MIN, double maximum = E57_DOUBLE_MAX );
+      explicit FloatNodeImpl( ImageFileImplWeakPtr destImageFile, double value = 0,
+                              bool validValue = true, FloatPrecision precision = PrecisionDouble,
+                              double minimum = DOUBLE_MIN, double maximum = DOUBLE_MAX );
       ~FloatNodeImpl() override = default;
 
       NodeType type() const override
       {
-         return E57_FLOAT;
+         return TypeFloat;
       }
+
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
       bool isDefined( const ustring &pathName ) override;
 
@@ -54,7 +56,7 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 

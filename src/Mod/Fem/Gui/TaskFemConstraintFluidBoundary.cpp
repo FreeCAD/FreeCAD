@@ -32,6 +32,8 @@
 #include <sstream>
 #endif
 
+#include <cfloat>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -144,18 +146,18 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             &TaskFemConstraintFluidBoundary::onReferenceDeleted);
 
     // setup ranges
-    ui->spinBoundaryValue->setMinimum(-FLOAT_MAX);
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinBoundaryValue->setMinimum(-FLT_MAX);
+    ui->spinBoundaryValue->setMaximum(FLT_MAX);
     ui->spinTurbulentIntensityValue->setMinimum(0.0);
-    ui->spinTurbulentIntensityValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentIntensityValue->setMaximum(FLT_MAX);
     ui->spinTurbulentLengthValue->setMinimum(0.0);
-    ui->spinTurbulentLengthValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentLengthValue->setMaximum(FLT_MAX);
     ui->spinTemperatureValue->setMinimum(-273.15);
-    ui->spinTemperatureValue->setMaximum(FLOAT_MAX);
+    ui->spinTemperatureValue->setMaximum(FLT_MAX);
     ui->spinHeatFluxValue->setMinimum(0.0);
-    ui->spinHeatFluxValue->setMaximum(FLOAT_MAX);
+    ui->spinHeatFluxValue->setMaximum(FLT_MAX);
     ui->spinHTCoeffValue->setMinimum(0.0);
-    ui->spinHTCoeffValue->setMaximum(FLOAT_MAX);
+    ui->spinHTCoeffValue->setMaximum(FLT_MAX);
 
     connect(ui->comboBoundaryType,
             qOverload<int>(&QComboBox::currentIndexChanged),
@@ -351,8 +353,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
 
     // Fill data into dialog elements
     double f = pcConstraint->BoundaryValue.getValue();
-    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);  // previous set the min to ZERO is not flexible
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinBoundaryValue->setMinimum(FLT_MIN);  // previous set the min to ZERO is not flexible
+    ui->spinBoundaryValue->setMaximum(FLT_MAX);
     ui->spinBoundaryValue->setValue(f);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {

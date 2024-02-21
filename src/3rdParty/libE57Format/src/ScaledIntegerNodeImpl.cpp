@@ -29,43 +29,49 @@
 
 #include "CheckedFile.h"
 #include "ScaledIntegerNodeImpl.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
-   ScaledIntegerNodeImpl::ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t rawValue, int64_t minimum,
-                                                 int64_t maximum, double scale, double offset ) :
+   ScaledIntegerNodeImpl::ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile,
+                                                 int64_t rawValue, int64_t minimum, int64_t maximum,
+                                                 double scale, double offset ) :
       NodeImpl( destImageFile ),
-      value_( rawValue ), minimum_( minimum ), maximum_( maximum ), scale_( scale ), offset_( offset )
-   {
-      // don't checkImageFileOpen, NodeImpl() will do it
-
-      /// Enforce the given bounds on raw value
-      if ( rawValue < minimum || maximum < rawValue )
-      {
-         throw E57_EXCEPTION2( E57_ERROR_VALUE_OUT_OF_BOUNDS,
-                               "this->pathName=" + this->pathName() + " rawValue=" + toString( rawValue ) +
-                                  " minimum=" + toString( minimum ) + " maximum=" + toString( maximum ) );
-      }
-   }
-
-   ScaledIntegerNodeImpl::ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, double scaledValue,
-                                                 double scaledMinimum, double scaledMaximum, double scale,
-                                                 double offset ) :
-      NodeImpl( destImageFile ),
-      value_( static_cast<int64_t>( std::floor( ( scaledValue - offset ) / scale + .5 ) ) ),
-      minimum_( static_cast<int64_t>( std::floor( ( scaledMinimum - offset ) / scale + .5 ) ) ),
-      maximum_( static_cast<int64_t>( std::floor( ( scaledMaximum - offset ) / scale + .5 ) ) ), scale_( scale ),
+      value_( rawValue ), minimum_( minimum ), maximum_( maximum ), scale_( scale ),
       offset_( offset )
    {
       // don't checkImageFileOpen, NodeImpl() will do it
 
-      /// Enforce the given bounds on raw value
+      // Enforce the given bounds on raw value
+      if ( rawValue < minimum || maximum < rawValue )
+      {
+         throw E57_EXCEPTION2( ErrorValueOutOfBounds, "this->pathName=" + this->pathName() +
+                                                         " rawValue=" + toString( rawValue ) +
+                                                         " minimum=" + toString( minimum ) +
+                                                         " maximum=" + toString( maximum ) );
+      }
+   }
+
+   ScaledIntegerNodeImpl::ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile,
+                                                 double scaledValue, double scaledMinimum,
+                                                 double scaledMaximum, double scale,
+                                                 double offset ) :
+      NodeImpl( destImageFile ),
+      value_( static_cast<int64_t>( std::floor( ( scaledValue - offset ) / scale + .5 ) ) ),
+      minimum_( static_cast<int64_t>( std::floor( ( scaledMinimum - offset ) / scale + .5 ) ) ),
+      maximum_( static_cast<int64_t>( std::floor( ( scaledMaximum - offset ) / scale + .5 ) ) ),
+      scale_( scale ), offset_( offset )
+   {
+      // don't checkImageFileOpen, NodeImpl() will do it
+
+      // Enforce the given bounds on raw value
       if ( scaledValue < scaledMinimum || scaledMaximum < scaledValue )
       {
-         throw E57_EXCEPTION2( E57_ERROR_VALUE_OUT_OF_BOUNDS, "this->pathName=" + this->pathName() +
-                                                                 " scaledValue=" + toString( scaledValue ) +
-                                                                 " scaledMinimum=" + toString( scaledMinimum ) +
-                                                                 " scaledMaximum=" + toString( scaledMaximum ) );
+         throw E57_EXCEPTION2( ErrorValueOutOfBounds,
+                               "this->pathName=" + this->pathName() +
+                                  " scaledValue=" + toString( scaledValue ) +
+                                  " scaledMinimum=" + toString( scaledMinimum ) +
+                                  " scaledMaximum=" + toString( scaledMaximum ) );
       }
    }
 
@@ -73,42 +79,43 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// Same node type?
-      if ( ni->type() != E57_SCALED_INTEGER )
+      // Same node type?
+      if ( ni->type() != TypeScaledInteger )
       {
          return ( false );
       }
 
-      /// Downcast to shared_ptr<ScaledIntegerNodeImpl>
-      std::shared_ptr<ScaledIntegerNodeImpl> ii( std::static_pointer_cast<ScaledIntegerNodeImpl>( ni ) );
+      // Downcast to shared_ptr<ScaledIntegerNodeImpl>
+      std::shared_ptr<ScaledIntegerNodeImpl> ii(
+         std::static_pointer_cast<ScaledIntegerNodeImpl>( ni ) );
 
-      /// minimum must match
+      // minimum must match
       if ( minimum_ != ii->minimum_ )
       {
          return ( false );
       }
 
-      /// maximum must match
+      // maximum must match
       if ( maximum_ != ii->maximum_ )
       {
          return ( false );
       }
 
-      /// scale must match
+      // scale must match
       if ( scale_ != ii->scale_ )
       {
          return ( false );
       }
 
-      /// offset must match
+      // offset must match
       if ( offset_ != ii->offset_ )
       {
          return ( false );
       }
 
-      /// ignore value_, doesn't have to match
+      // ignore value_, doesn't have to match
 
-      /// Types match
+      // Types match
       return ( true );
    }
 
@@ -116,7 +123,7 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We have no sub-structure, so if path not empty return false
+      // We have no sub-structure, so if path not empty return false
       return pathName.empty();
    }
 
@@ -137,6 +144,7 @@ namespace e57
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
       return ( minimum_ );
    }
+
    double ScaledIntegerNodeImpl::scaledMinimum()
    {
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
@@ -148,6 +156,7 @@ namespace e57
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
       return ( maximum_ );
    }
+
    double ScaledIntegerNodeImpl::scaledMaximum()
    {
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
@@ -166,24 +175,25 @@ namespace e57
       return ( offset_ );
    }
 
-   void ScaledIntegerNodeImpl::checkLeavesInSet( const StringSet &pathNames, NodeImplSharedPtr origin )
+   void ScaledIntegerNodeImpl::checkLeavesInSet( const StringSet &pathNames,
+                                                 NodeImplSharedPtr origin )
    {
       // don't checkImageFileOpen
 
-      /// We are a leaf node, so verify that we are listed in set.
+      // We are a leaf node, so verify that we are listed in set.
       if ( pathNames.find( relativePathName( origin ) ) == pathNames.end() )
       {
-         throw E57_EXCEPTION2( E57_ERROR_NO_BUFFER_FOR_ELEMENT, "this->pathName=" + this->pathName() );
+         throw E57_EXCEPTION2( ErrorNoBufferForElement, "this->pathName=" + this->pathName() );
       }
    }
 
-   void ScaledIntegerNodeImpl::writeXml( ImageFileImplSharedPtr /*imf*/, CheckedFile &cf, int indent,
-                                         const char *forcedFieldName )
+   void ScaledIntegerNodeImpl::writeXml( ImageFileImplSharedPtr /*imf*/, CheckedFile &cf,
+                                         int indent, const char *forcedFieldName )
    {
       // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName )
+      if ( forcedFieldName != nullptr )
       {
          fieldName = forcedFieldName;
       }
@@ -194,12 +204,12 @@ namespace e57
 
       cf << space( indent ) << "<" << fieldName << " type=\"ScaledInteger\"";
 
-      /// Don't need to write if are default values
-      if ( minimum_ != E57_INT64_MIN )
+      // Don't need to write if are default values
+      if ( minimum_ != INT64_MIN )
       {
          cf << " minimum=\"" << minimum_ << "\"";
       }
-      if ( maximum_ != E57_INT64_MAX )
+      if ( maximum_ != INT64_MAX )
       {
          cf << " maximum=\"" << maximum_ << "\"";
       }
@@ -212,7 +222,7 @@ namespace e57
          cf << " offset=\"" << offset_ << "\"";
       }
 
-      /// Write value as child text, unless it is the default value
+      // Write value as child text, unless it is the default value
       if ( value_ != 0 )
       {
          cf << ">" << value_ << "</" << fieldName << ">\n";
@@ -223,7 +233,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void ScaledIntegerNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen

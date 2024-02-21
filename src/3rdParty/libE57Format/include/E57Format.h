@@ -29,11 +29,11 @@
 
 #pragma once
 
-//! @file  E57Format.h header file for the E57 API
+/// @file  E57Format.h Header file for the E57 API.
 
 #include <cfloat>
-#include <memory>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "E57Exception.h"
@@ -50,111 +50,172 @@ namespace e57
    using std::uint8_t;
 
    // Shorthand for unicode string
-   //! @brief UTF-8 encodeded Unicode string
+   /// @brief UTF-8 encoded Unicode string
    using ustring = std::string;
 
-   //! @brief Identifiers for types of E57 elements
+   /// @brief Identifiers for types of E57 elements
    enum NodeType
    {
-      E57_STRUCTURE = 1,         //!< StructureNode class
-      E57_VECTOR = 2,            //!< VectorNode class
-      E57_COMPRESSED_VECTOR = 3, //!< CompressedVectorNode class
-      E57_INTEGER = 4,           //!< IntegerNode class
-      E57_SCALED_INTEGER = 5,    //!< ScaledIntegerNode class
-      E57_FLOAT = 6,             //!< FloatNode class
-      E57_STRING = 7,            //!< StringNode class
-      E57_BLOB = 8               //!< BlobNode class
+      TypeStructure = 1,        ///< StructureNode class
+      TypeVector = 2,           ///< VectorNode class
+      TypeCompressedVector = 3, ///< CompressedVectorNode class
+      TypeInteger = 4,          ///< IntegerNode class
+      TypeScaledInteger = 5,    ///< ScaledIntegerNode class
+      TypeFloat = 6,            ///< FloatNode class
+      TypeString = 7,           ///< StringNode class
+      TypeBlob = 8,             ///< BlobNode class
+
+      /// @deprecated Will be removed in 4.0. Use e57::TypeStructure.
+      E57_STRUCTURE DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeStructure." ) = TypeStructure,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeVector.
+      E57_VECTOR DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeVector." ) = TypeVector,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeCompressedVector.
+      E57_COMPRESSED_VECTOR DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeCompressedVector." ) =
+         TypeCompressedVector,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeInteger.
+      E57_INTEGER DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeInteger." ) = TypeInteger,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeScaledInteger.
+      E57_SCALED_INTEGER DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeScaledInteger." ) =
+         TypeScaledInteger,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeFloat.
+      E57_FLOAT DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeFloat." ) = TypeFloat,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeString.
+      E57_STRING DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeString." ) = TypeString,
+      /// @deprecated Will be removed in 4.0. Use e57::TypeBlob.
+      E57_BLOB DEPRECATED_ENUM( "Will be removed in 4.0. Use TypeBlob." ) = TypeBlob
    };
 
-   //! @brief The IEEE floating point number precisions supported
+   /// @brief The IEEE floating point number precisions supported
    enum FloatPrecision
    {
-      E57_SINGLE = 1, //!< 32 bit IEEE floating point number format
-      E57_DOUBLE = 2  //!< 64 bit IEEE floating point number format
+      PrecisionSingle = 1, ///< 32 bit IEEE floating point number format
+      PrecisionDouble = 2, ///< 64 bit IEEE floating point number format
+
+      /// @deprecated Will be removed in 4.0. Use e57::PrecisionSingle.
+      E57_SINGLE DEPRECATED_ENUM( "Will be removed in 4.0. Use PrecisionSingle." ) =
+         PrecisionSingle,
+      /// @deprecated Will be removed in 4.0. Use e57::PrecisionDouble.
+      E57_DOUBLE DEPRECATED_ENUM( "Will be removed in 4.0. Use PrecisionDouble." ) = PrecisionDouble
    };
 
-   //! @brief Identifies the representations of memory elements API can transfer
-   //! data to/from
+   /// @brief Identifies the representations of memory elements API can transfer data to/from
    enum MemoryRepresentation
    {
-      E57_INT8 = 1,    //!< 8 bit signed integer
-      E57_UINT8 = 2,   //!< 8 bit unsigned integer
-      E57_INT16 = 3,   //!< 16 bit signed integer
-      E57_UINT16 = 4,  //!< 16 bit unsigned integer
-      E57_INT32 = 5,   //!< 32 bit signed integer
-      E57_UINT32 = 6,  //!< 32 bit unsigned integer
-      E57_INT64 = 7,   //!< 64 bit signed integer
-      E57_BOOL = 8,    //!< C++ boolean type
-      E57_REAL32 = 9,  //!< C++ float type
-      E57_REAL64 = 10, //!< C++ double type
-      E57_USTRING = 11 //!< Unicode UTF-8 std::string
+      Int8 = 1,     ///< 8 bit signed integer
+      UInt8 = 2,    ///< 8 bit unsigned integer
+      Int16 = 3,    ///< 16 bit signed integer
+      UInt16 = 4,   ///< 16 bit unsigned integer
+      Int32 = 5,    ///< 32 bit signed integer
+      UInt32 = 6,   ///< 32 bit unsigned integer
+      Int64 = 7,    ///< 64 bit signed integer
+      Bool = 8,     ///< C++ boolean type
+      Real32 = 9,   ///< C++ float type
+      Real64 = 10,  ///< C++ double type
+      UString = 11, ///< Unicode UTF-8 std::string
+
+      /// @deprecated Will be removed in 4.0. Use e57::Int8.
+      E57_INT8 DEPRECATED_ENUM( "Will be removed in 4.0. Use Int8." ) = Int8,
+      /// @deprecated Will be removed in 4.0. Use e57::UInt8.
+      E57_UINT8 DEPRECATED_ENUM( "Will be removed in 4.0. Use UInt8." ) = UInt8,
+      /// @deprecated Will be removed in 4.0. Use e57::Int16.
+      E57_INT16 DEPRECATED_ENUM( "Will be removed in 4.0. Use Int16." ) = Int16,
+      /// @deprecated Will be removed in 4.0. Use e57::UInt16.
+      E57_UINT16 DEPRECATED_ENUM( "Will be removed in 4.0. Use UInt16." ) = UInt16,
+      /// @deprecated Will be removed in 4.0. Use e57::Int32.
+      E57_INT32 DEPRECATED_ENUM( "Will be removed in 4.0. Use Int32." ) = Int32,
+      /// @deprecated Will be removed in 4.0. Use e57::UInt32.
+      E57_UINT32 DEPRECATED_ENUM( "Will be removed in 4.0. Use UInt32." ) = UInt32,
+      /// @deprecated Will be removed in 4.0. Use e57::Int64.
+      E57_INT64 DEPRECATED_ENUM( "Will be removed in 4.0. Use Int64." ) = Int64,
+      /// @deprecated Will be removed in 4.0. Use e57::Bool.
+      E57_BOOL DEPRECATED_ENUM( "Will be removed in 4.0. Use Bool." ) = Bool,
+      /// @deprecated Will be removed in 4.0. Use e57::Real32.
+      E57_REAL32 DEPRECATED_ENUM( "Will be removed in 4.0. Use Real32." ) = Real32,
+      /// @deprecated Will be removed in 4.0. Use e57::Real64.
+      E57_REAL64 DEPRECATED_ENUM( "Will be removed in 4.0. Use Real64." ) = Real64,
+      /// @deprecated Will be removed in 4.0. Use e57::UString.
+      E57_USTRING DEPRECATED_ENUM( "Will be removed in 4.0. Use UString." ) = UString
    };
 
-   //! @brief Specifies the percentage of checksums which are verified when reading
-   //! an ImageFile (0-100%).
+   /// @brief Default checksum policies for e57::ReadChecksumPolicy
+   /// @details These are some convenient default checksum policies, though you can use any value
+   /// you want (0-100).
+   enum ChecksumPolicy
+   {
+      ChecksumNone = 0,    ///< Do not verify the checksums. (fast)
+      ChecksumSparse = 25, ///< Only verify 25% of the checksums. The last block is always verified.
+      ChecksumHalf = 50,   ///< Only verify 50% of the checksums. The last block is always verified.
+      ChecksumAll = 100    ///< Verify all checksums. This is the default. (slow)
+   };
+
+   /// @brief Specifies the percentage of checksums which are verified when reading an ImageFile
+   /// (0-100%).
+   /// @see e57::ChecksumPolicy
    using ReadChecksumPolicy = int;
 
-   //! Do not verify the checksums. (fast)
-   constexpr ReadChecksumPolicy CHECKSUM_POLICY_NONE = 0;
-   //! Only verify 25% of the checksums. The last block is always verified.
-   constexpr ReadChecksumPolicy CHECKSUM_POLICY_SPARSE = 25;
-   //! Only verify 50% of the checksums. The last block is always verified.
-   constexpr ReadChecksumPolicy CHECKSUM_POLICY_HALF = 50;
-   //! Verify all checksums. This is the default. (slow)
-   constexpr ReadChecksumPolicy CHECKSUM_POLICY_ALL = 100;
+   /// @name Deprecated Checksum Policies
+   /// These have been replaced by the enum e57::ChecksumPolicy.
+   ///@{
 
-   //! @brief The URI of ASTM E57 v1.0 standard XML namespace
-   //! Note that even though this URI does not point to a valid document, the standard (section 8.4.2.3)
-   //! says that this is the required namespace.
-   constexpr char E57_V1_0_URI[] = "http://www.astm.org/COMMIT/E57/2010-e57-v1.0";
+   /// @deprecated Will be removed in 4.0. Use ChecksumPolicy::ChecksumNone.
+   [[deprecated(
+      "Will be removed in 4.0. Use ChecksumPolicy::ChecksumNone." )]] // TODO Remove in 4.0
+   constexpr ReadChecksumPolicy CHECKSUM_POLICY_NONE = ChecksumNone;
 
-   //! @cond documentNonPublic   The following aren't documented
+   /// @deprecated Will be removed in 4.0. Use ChecksumPolicy::ChecksumSparse.
+   [[deprecated(
+      "Will be removed in 4.0. Use ChecksumPolicy::ChecksumSparse." )]] // TODO Remove in 4.0
+   constexpr ReadChecksumPolicy CHECKSUM_POLICY_SPARSE = ChecksumSparse;
+
+   /// @deprecated Will be removed in 4.0. Use ChecksumPolicy::ChecksumHalf.
+   [[deprecated(
+      "Will be removed in 4.0. Use ChecksumPolicy::ChecksumHalf." )]] // TODO Remove in 4.0
+   constexpr ReadChecksumPolicy CHECKSUM_POLICY_HALF = ChecksumHalf;
+
+   /// @deprecated Will be removed in 4.0. Use ChecksumPolicy::ChecksumAll.
+   [[deprecated(
+      "Will be removed in 4.0. Use ChecksumPolicy::ChecksumAll." )]] // TODO Remove in 4.0
+   constexpr ReadChecksumPolicy CHECKSUM_POLICY_ALL = ChecksumAll;
+
+   ///@}
+
+   /// @brief The URI of ASTM E57 v1.0 standard XML namespace
+   /// @note Even though this URI does not point to a valid document, the standard (section 8.4.2.3)
+   /// says that this is the required namespace.
+   constexpr char VERSION_1_0_URI[] = "http://www.astm.org/COMMIT/E57/2010-e57-v1.0";
+
+   /// @deprecated Will be removed in 4.0. Use e57::VERSION_1_0_URI.
+   [[deprecated( "Will be removed in 4.0. Use e57::VERSION_1_0_URI." )]] // TODO Remove in 4.0
+   constexpr auto E57_V1_0_URI = VERSION_1_0_URI;
+
+   /// @cond documentNonPublic   The following aren't documented
    // Minimum and maximum values for integers
-   constexpr int8_t E57_INT8_MIN = -128;
-   constexpr int8_t E57_INT8_MAX = 127;
-   constexpr int16_t E57_INT16_MIN = -32768;
-   constexpr int16_t E57_INT16_MAX = 32767;
-   constexpr int32_t E57_INT32_MIN = -2147483647 - 1;
-   constexpr int32_t E57_INT32_MAX = 2147483647;
-   constexpr int64_t E57_INT64_MIN = -9223372036854775807LL - 1;
-   constexpr int64_t E57_INT64_MAX = 9223372036854775807LL;
-   constexpr uint8_t E57_UINT8_MIN = 0U;
-   constexpr uint8_t E57_UINT8_MAX = 0xffU; /* 255U */
-   constexpr uint16_t E57_UINT16_MIN = 0U;
-   constexpr uint16_t E57_UINT16_MAX = 0xffffU; /* 65535U */
-   constexpr uint32_t E57_UINT32_MIN = 0U;
-   constexpr uint32_t E57_UINT32_MAX = 0xffffffffU; /* 4294967295U */
-   constexpr uint64_t E57_UINT64_MIN = 0ULL;
-   constexpr uint64_t E57_UINT64_MAX = 0xffffffffffffffffULL; /* 18446744073709551615ULL */
+   constexpr uint8_t UINT8_MIN = 0U;
+   constexpr uint16_t UINT16_MIN = 0U;
+   constexpr uint32_t UINT32_MIN = 0U;
+   constexpr uint64_t UINT64_MIN = 0ULL;
 
-   constexpr float E57_FLOAT_MIN = -FLT_MAX;
-   constexpr float E57_FLOAT_MAX = FLT_MAX;
-   constexpr double E57_DOUBLE_MIN = -DBL_MAX;
-   constexpr double E57_DOUBLE_MAX = DBL_MAX;
-//! @endcond
+   constexpr float FLOAT_MIN = -FLT_MAX;
+   constexpr float FLOAT_MAX = FLT_MAX;
+   constexpr double DOUBLE_MIN = -DBL_MAX;
+   constexpr double DOUBLE_MAX = DBL_MAX;
+   /// @endcond
 
-//! @cond documentNonPublic   The following isn't part of the API, and isn't
-//! documented.
-// Internal implementation files should include E57FormatImpl.h first which
-// defines symbol E57_INTERNAL_IMPLEMENTATION_ENABLE. Normal API users should
-// not define this symbol. Basically the internal version allows access to the
-// pointer to the implementation (impl_)
+   /// @cond documentNonPublic   The following isn't part of the API, and isn't documented.
+   // Internal implementation files should include Common.h first which defines symbol
+   // E57_INTERNAL_IMPLEMENTATION_ENABLE. Normal API users should not define this symbol.
+   // Basically the internal version allows access to the pointer to the implementation (impl_)
 #ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
-#define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
-public:                                                                                                                \
-   std::shared_ptr<T##Impl> impl() const                                                                               \
-   {                                                                                                                   \
-      return ( impl_ );                                                                                                \
-   }                                                                                                                   \
-                                                                                                                       \
-protected:                                                                                                             \
-   std::shared_ptr<T##Impl> impl_;
+#define E57_INTERNAL_ACCESS( T )                                                                   \
+public:                                                                                            \
+   std::shared_ptr<T##Impl> impl() const                                                           \
+   {                                                                                               \
+      return ( impl_ );                                                                            \
+   }
 #else
-#define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
-protected:                                                                                                             \
-   std::shared_ptr<T##Impl> impl_;
+#define E57_INTERNAL_ACCESS( T )
 #endif
-   //! @endcond
+   /// @endcond
 
    class BlobNode;
    class BlobNodeImpl;
@@ -197,11 +258,10 @@ protected:                                                                      
       bool isAttached() const;
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
       void checkInvariant( bool doRecurse = true, bool doDowncast = true );
-      bool operator==( Node n2 ) const;
-      bool operator!=( Node n2 ) const;
+      bool operator==( const Node &n2 ) const;
+      bool operator!=( const Node &n2 ) const;
 
-//! \cond documentNonPublic   The following isn't part of the API, and isn't
-//! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
 #ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
       explicit Node( std::shared_ptr<NodeImpl> ); // internal use only
 #endif
@@ -209,16 +269,18 @@ protected:                                                                      
    private:
       friend class NodeImpl;
 
-      E57_OBJECT_IMPLEMENTATION( Node ) // Internal implementation details, not
-                                        // part of API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( Node )
+
+   protected:
+      std::shared_ptr<NodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL StructureNode
    {
    public:
       StructureNode() = delete;
-      StructureNode( ImageFile destImageFile );
+      explicit StructureNode( const ImageFile &destImageFile );
 
       int64_t childCount() const;
       bool isDefined( const ustring &pathName ) const;
@@ -240,26 +302,27 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class ImageFile;
 
-      StructureNode( std::shared_ptr<StructureNodeImpl> ni );   // internal use only
-      StructureNode( std::weak_ptr<ImageFileImpl> fileParent ); // internal use only
+      explicit StructureNode( std::shared_ptr<StructureNodeImpl> ni );
+      explicit StructureNode( std::weak_ptr<ImageFileImpl> fileParent );
 
-      E57_OBJECT_IMPLEMENTATION( StructureNode ) // Internal implementation details, not part of API, must
-                                                 // be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( StructureNode )
+
+   protected:
+      std::shared_ptr<StructureNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL VectorNode
    {
    public:
       VectorNode() = delete;
-      explicit VectorNode( ImageFile destImageFile, bool allowHeteroChildren = false );
+      explicit VectorNode( const ImageFile &destImageFile, bool allowHeteroChildren = false );
 
       bool allowHeteroChildren() const;
 
@@ -283,45 +346,57 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class CompressedVectorNode;
 
-      VectorNode( std::shared_ptr<VectorNodeImpl> ni ); // internal use only
+      explicit VectorNode( std::shared_ptr<VectorNodeImpl> ni ); // internal use only
 
-      E57_OBJECT_IMPLEMENTATION( VectorNode ) // Internal implementation details, not part of API, must be
-                                              // last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( VectorNode )
+
+   protected:
+      std::shared_ptr<VectorNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL SourceDestBuffer
    {
    public:
       SourceDestBuffer() = delete;
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, int8_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( int8_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, uint8_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( uint8_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, int16_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( int16_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, uint16_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( uint16_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, int32_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( int32_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, uint32_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( uint32_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, int64_t *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( int64_t ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, bool *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( bool ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, float *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( float ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, double *b, const size_t capacity,
-                        bool doConversion = false, bool doScaling = false, size_t stride = sizeof( double ) );
-      SourceDestBuffer( ImageFile destImageFile, const ustring &pathName, std::vector<ustring> *b );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, int8_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( int8_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, uint8_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( uint8_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, int16_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( int16_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, uint16_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( uint16_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, int32_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( int32_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, uint32_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( uint32_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, int64_t *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( int64_t ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, bool *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( bool ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, float *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( float ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName, double *b,
+                        size_t capacity, bool doConversion = false, bool doScaling = false,
+                        size_t stride = sizeof( double ) );
+      SourceDestBuffer( const ImageFile &destImageFile, const ustring &pathName,
+                        std::vector<ustring> *b );
 
       ustring pathName() const;
       enum MemoryRepresentation memoryRepresentation() const;
@@ -334,12 +409,12 @@ protected:                                                                      
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
       void checkInvariant( bool doRecurse = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
-   private:
-      E57_OBJECT_IMPLEMENTATION( SourceDestBuffer ) // Internal implementation details, not part of
-                                                    // API, must be last in object
-      //! \endcond
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
+      E57_INTERNAL_ACCESS( SourceDestBuffer )
+
+   protected:
+      std::shared_ptr<SourceDestBufferImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL CompressedVectorReader
@@ -357,16 +432,17 @@ protected:                                                                      
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
       void checkInvariant( bool doRecurse = true );
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class CompressedVectorNode;
 
-      CompressedVectorReader( std::shared_ptr<CompressedVectorReaderImpl> ni );
+      explicit CompressedVectorReader( std::shared_ptr<CompressedVectorReaderImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( CompressedVectorReader ) // Internal implementation details, not
-                                                          // part of API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( CompressedVectorReader )
+
+   protected:
+      std::shared_ptr<CompressedVectorReaderImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL CompressedVectorWriter
@@ -374,8 +450,8 @@ protected:                                                                      
    public:
       CompressedVectorWriter() = delete;
 
-      void write( const size_t recordCount );
-      void write( std::vector<SourceDestBuffer> &sbufs, const size_t recordCount );
+      void write( size_t recordCount );
+      void write( std::vector<SourceDestBuffer> &sbufs, size_t recordCount );
       void close();
       bool isOpen();
       CompressedVectorNode compressedVectorNode() const;
@@ -383,23 +459,25 @@ protected:                                                                      
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
       void checkInvariant( bool doRecurse = true );
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class CompressedVectorNode;
 
-      CompressedVectorWriter( std::shared_ptr<CompressedVectorWriterImpl> ni );
+      explicit CompressedVectorWriter( std::shared_ptr<CompressedVectorWriterImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( CompressedVectorWriter ) // Internal implementation details, not
-                                                          // part of API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( CompressedVectorWriter )
+
+   protected:
+      std::shared_ptr<CompressedVectorWriterImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL CompressedVectorNode
    {
    public:
       CompressedVectorNode() = delete;
-      explicit CompressedVectorNode( ImageFile destImageFile, const Node &prototype, const VectorNode &codecs );
+      explicit CompressedVectorNode( const ImageFile &destImageFile, const Node &prototype,
+                                     const VectorNode &codecs );
 
       int64_t childCount() const;
       Node prototype() const;
@@ -423,28 +501,29 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class CompressedVectorReader;
       friend class CompressedVectorWriter;
       friend class E57XmlParser;
 
-      CompressedVectorNode( std::shared_ptr<CompressedVectorNodeImpl> ni ); // internal use only
+      CompressedVectorNode( std::shared_ptr<CompressedVectorNodeImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( CompressedVectorNode ) // Internal implementation details, not part
-                                                        // of API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( CompressedVectorNode )
+
+   protected:
+      std::shared_ptr<CompressedVectorNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL IntegerNode
    {
    public:
       IntegerNode() = delete;
-      explicit IntegerNode( ImageFile destImageFile, int64_t value = 0, int64_t minimum = E57_INT64_MIN,
-                            int64_t maximum = E57_INT64_MAX );
+      explicit IntegerNode( const ImageFile &destImageFile, int64_t value = 0,
+                            int64_t minimum = INT64_MIN, int64_t maximum = INT64_MAX );
 
       int64_t value() const;
       int64_t minimum() const;
@@ -464,30 +543,32 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
-      IntegerNode( std::shared_ptr<IntegerNodeImpl> ni ); // internal use only
+      explicit IntegerNode( std::shared_ptr<IntegerNodeImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( IntegerNode ) // Internal implementation details, not part of API, must be
-                                               // last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( IntegerNode )
+
+   protected:
+      std::shared_ptr<IntegerNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL ScaledIntegerNode
    {
    public:
       ScaledIntegerNode() = delete;
-      explicit ScaledIntegerNode( ImageFile destImageFile, int64_t rawValue, int64_t minimum, int64_t maximum,
-                                  double scale = 1.0, double offset = 0.0 );
-      explicit ScaledIntegerNode( ImageFile destImageFile, int rawValue, int64_t minimum, int64_t maximum,
-                                  double scale = 1.0, double offset = 0.0 );
-      explicit ScaledIntegerNode( ImageFile destImageFile, int rawValue, int minimum, int maximum, double scale = 1.0,
+      explicit ScaledIntegerNode( const ImageFile &destImageFile, int64_t rawValue, int64_t minimum,
+                                  int64_t maximum, double scale = 1.0, double offset = 0.0 );
+      explicit ScaledIntegerNode( const ImageFile &destImageFile, int rawValue, int64_t minimum,
+                                  int64_t maximum, double scale = 1.0, double offset = 0.0 );
+      explicit ScaledIntegerNode( const ImageFile &destImageFile, int rawValue, int minimum,
+                                  int maximum, double scale = 1.0, double offset = 0.0 );
+      explicit ScaledIntegerNode( const ImageFile &destImageFile, double scaledValue,
+                                  double scaledMinimum, double scaledMaximum, double scale = 1.0,
                                   double offset = 0.0 );
-      explicit ScaledIntegerNode( ImageFile destImageFile, double scaledValue, double scaledMinimum,
-                                  double scaledMaximum, double scale = 1.0, double offset = 0.0 );
 
       int64_t rawValue() const;
       double scaledValue() const;
@@ -512,24 +593,26 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
-      ScaledIntegerNode( std::shared_ptr<ScaledIntegerNodeImpl> ni ); // internal use only
+      explicit ScaledIntegerNode( std::shared_ptr<ScaledIntegerNodeImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( ScaledIntegerNode ) // Internal implementation details, not part of
-                                                     // API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( ScaledIntegerNode )
+
+   protected:
+      std::shared_ptr<ScaledIntegerNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL FloatNode
    {
    public:
       FloatNode() = delete;
-      explicit FloatNode( ImageFile destImageFile, double value = 0.0, FloatPrecision precision = E57_DOUBLE,
-                          double minimum = E57_DOUBLE_MIN, double maximum = E57_DOUBLE_MAX );
+      explicit FloatNode( const ImageFile &destImageFile, double value = 0.0,
+                          FloatPrecision precision = PrecisionDouble, double minimum = DOUBLE_MIN,
+                          double maximum = DOUBLE_MAX );
 
       double value() const;
       FloatPrecision precision() const;
@@ -550,23 +633,24 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
-      FloatNode( std::shared_ptr<FloatNodeImpl> ni ); // internal use only
+      explicit FloatNode( std::shared_ptr<FloatNodeImpl> ni );
 
-      E57_OBJECT_IMPLEMENTATION( FloatNode ) // Internal implementation details, not part of API, must be
-                                             // last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( FloatNode )
+
+   protected:
+      std::shared_ptr<FloatNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL StringNode
    {
    public:
       StringNode() = delete;
-      explicit StringNode( ImageFile destImageFile, const ustring &value = "" );
+      explicit StringNode( const ImageFile &destImageFile, const ustring &value = "" );
 
       ustring value() const;
 
@@ -584,24 +668,26 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class StringNodeImpl;
-      StringNode( std::shared_ptr<StringNodeImpl> ni ); // internal use only
 
-      E57_OBJECT_IMPLEMENTATION( StringNode ) // Internal implementation details, not part of API, must be
-                                              // last in object
-      //! \endcond
+      explicit StringNode( std::shared_ptr<StringNodeImpl> ni );
+
+      E57_INTERNAL_ACCESS( StringNode )
+
+   protected:
+      std::shared_ptr<StringNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL BlobNode
    {
    public:
       BlobNode() = delete;
-      explicit BlobNode( ImageFile destImageFile, int64_t byteCount );
+      explicit BlobNode( const ImageFile &destImageFile, int64_t byteCount );
 
       int64_t byteCount() const;
       void read( uint8_t *buf, int64_t start, size_t count );
@@ -621,29 +707,32 @@ protected:                                                                      
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-      void checkInvariant( bool doRecurse = true, bool doUpcast = true );
+      void checkInvariant( bool doRecurse = true, bool doUpcast = true ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
       friend class E57XmlParser;
 
-      BlobNode( std::shared_ptr<BlobNodeImpl> ni ); // internal use only
+      explicit BlobNode( std::shared_ptr<BlobNodeImpl> ni );
 
-      // Internal use only, create blob already in a file
-      BlobNode( ImageFile destImageFile, int64_t fileOffset, int64_t length );
+      // create blob already in a file
+      BlobNode( const ImageFile &destImageFile, int64_t fileOffset, int64_t length );
 
-      E57_OBJECT_IMPLEMENTATION( BlobNode ) // Internal implementation details, not
-                                            // part of API, must be last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( BlobNode )
+
+   protected:
+      std::shared_ptr<BlobNodeImpl> impl_;
+      /// @endcond
    };
 
    class E57_DLL ImageFile
    {
    public:
       ImageFile() = delete;
-      ImageFile( const ustring &fname, const ustring &mode, ReadChecksumPolicy checksumPolicy = CHECKSUM_POLICY_ALL );
-      ImageFile( const char *input, const uint64_t size, ReadChecksumPolicy checksumPolicy = CHECKSUM_POLICY_ALL );
+      ImageFile( const ustring &fname, const ustring &mode,
+                 ReadChecksumPolicy checksumPolicy = ChecksumAll );
+      ImageFile( const char *input, uint64_t size,
+                 ReadChecksumPolicy checksumPolicy = ChecksumAll );
 
       StructureNode root() const;
       void close();
@@ -656,27 +745,27 @@ protected:                                                                      
 
       // Manipulate registered extensions in the file
       void extensionsAdd( const ustring &prefix, const ustring &uri );
+      bool extensionsLookupPrefix( const ustring &prefix ) const;
       bool extensionsLookupPrefix( const ustring &prefix, ustring &uri ) const;
       bool extensionsLookupUri( const ustring &uri, ustring &prefix ) const;
       size_t extensionsCount() const;
-      ustring extensionsPrefix( const size_t index ) const;
-      ustring extensionsUri( const size_t index ) const;
+      ustring extensionsPrefix( size_t index ) const;
+      ustring extensionsUri( size_t index ) const;
 
       // Field name functions:
       bool isElementNameExtended( const ustring &elementName ) const;
-      void elementNameParse( const ustring &elementName, ustring &prefix, ustring &localPart ) const;
+      void elementNameParse( const ustring &elementName, ustring &prefix,
+                             ustring &localPart ) const;
 
       // Diagnostic functions:
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
       void checkInvariant( bool doRecurse = true ) const;
-      bool operator==( ImageFile imf2 ) const;
-      bool operator!=( ImageFile imf2 ) const;
+      bool operator==( const ImageFile &imf2 ) const;
+      bool operator!=( const ImageFile &imf2 ) const;
 
-      //! \cond documentNonPublic   The following isn't part of the API, and isn't
-      //! documented.
+      /// @cond documentNonPublic The following isn't part of the API, and isn't documented.
    private:
-      ImageFile( double ); // Give a second dummy constructor, better error msg
-                           // for: ImageFile(0)
+      explicit ImageFile( double ); // Dummy constructor for better error msg for: ImageFile(0)
 
       friend class Node;
       friend class StructureNode;
@@ -688,10 +777,12 @@ protected:                                                                      
       friend class StringNode;
       friend class BlobNode;
 
-      ImageFile( std::shared_ptr<ImageFileImpl> imfi ); // internal use only
+      explicit ImageFile( std::shared_ptr<ImageFileImpl> imfi );
 
-      E57_OBJECT_IMPLEMENTATION( ImageFile ) // Internal implementation details, not part of API, must be
-                                             // last in object
-      //! \endcond
+      E57_INTERNAL_ACCESS( ImageFile )
+
+   protected:
+      std::shared_ptr<ImageFileImpl> impl_;
+      /// @endcond
    };
 }

@@ -5,7 +5,9 @@
 
 include( GenerateExportHeader )
 
-set( comment "// NOTE: This is a generated file. Any changes will be overwritten." )
+set( comment "\r
+// NOTE: This is a generated file. Any changes will be overwritten."
+)
 
 generate_export_header( E57Format
 	EXPORT_FILE_NAME E57Export.h

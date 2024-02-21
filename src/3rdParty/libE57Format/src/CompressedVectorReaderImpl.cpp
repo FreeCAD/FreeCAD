@@ -32,55 +32,58 @@
 #include "Packet.h"
 #include "SectionHeaders.h"
 #include "SourceDestBufferImpl.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
-   CompressedVectorReaderImpl::CompressedVectorReaderImpl( std::shared_ptr<CompressedVectorNodeImpl> cvi,
-                                                           std::vector<SourceDestBuffer> &dbufs ) :
+   CompressedVectorReaderImpl::CompressedVectorReaderImpl(
+      std::shared_ptr<CompressedVectorNodeImpl> cvi,
+      std::vector<SourceDestBuffer> &dbufs ) :
       isOpen_( false ), // set to true when succeed below
       cVector_( cvi )
    {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
       std::cout << "CompressedVectorReaderImpl() called" << std::endl; //???
 #endif
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
-      /// Allow reading of a completed CompressedVector, whether file is being read
-      /// or currently being written.
-      ///??? what other situations need checking for?
-      ///??? check if CV not yet written to?
-      ///??? file in error state?
+      // Allow reading of a completed CompressedVector, whether file is being read
+      // or currently being written.
+      //??? what other situations need checking for?
+      //??? check if CV not yet written to?
+      //??? file in error state?
 
-      /// Empty dbufs is an error
+      // Empty dbufs is an error
       if ( dbufs.empty() )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_API_ARGUMENT,
-                               "imageFileName=" + cVector_->imageFileName() + " cvPathName=" + cVector_->pathName() );
+         throw E57_EXCEPTION2( ErrorBadAPIArgument, "imageFileName=" + cVector_->imageFileName() +
+                                                       " cvPathName=" + cVector_->pathName() );
       }
 
-      /// Get CompressedArray's prototype node (all array elements must match this
-      /// type)
+      // Get CompressedArray's prototype node (all array elements must match this
+      // type)
       proto_ = cVector_->getPrototype();
 
-      /// Check dbufs well formed (matches proto exactly)
+      // Check dbufs well formed (matches proto exactly)
       setBuffers( dbufs );
 
-      /// For each dbuf, create an appropriate Decoder based on the cVector_
-      /// attributes
+      // For each dbuf, create an appropriate Decoder based on the cVector_
+      // attributes
       for ( unsigned i = 0; i < dbufs_.size(); i++ )
       {
          std::vector<SourceDestBuffer> theDbuf;
          theDbuf.push_back( dbufs.at( i ) );
 
-         std::shared_ptr<Decoder> decoder = Decoder::DecoderFactory( i, cVector_.get(), theDbuf, ustring() );
+         std::shared_ptr<Decoder> decoder =
+            Decoder::DecoderFactory( i, cVector_.get(), theDbuf, ustring() );
 
-         /// Calc which stream the given path belongs to.  This depends on position
-         /// of the node in the proto tree.
+         // Calc which stream the given path belongs to.  This depends on position
+         // of the node in the proto tree.
          NodeImplSharedPtr readNode = proto_->get( dbufs.at( i ).pathName() );
          uint64_t bytestreamNumber = 0;
          if ( !proto_->findTerminalPosition( readNode, bytestreamNumber ) )
          {
-            throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "dbufIndex=" + toString( i ) );
+            throw E57_EXCEPTION2( ErrorInternal, "dbufIndex=" + toString( i ) );
          }
 
          channels_.emplace_back( dbufs.at( i ), decoder, static_cast<unsigned>( bytestreamNumber ),
@@ -89,72 +92,88 @@ namespace e57
 
       recordCount_ = 0;
 
-      /// Get how many records are actually defined
+      // Get how many records are actually defined
       maxRecordCount_ = cvi->childCount();
 
       ImageFileImplSharedPtr imf( cVector_->destImageFile_ );
 
-      //??? what if fault in this constructor?
-      cache_ = new PacketReadCache( imf->file_, 32 );
-
-      /// Read CompressedVector section header
-      CompressedVectorSectionHeader sectionHeader;
+      // Check the file offset of this vector - it must be positive
       uint64_t sectionLogicalStart = cVector_->getBinarySectionLogicalStart();
       if ( sectionLogicalStart == 0 )
       {
-         //??? should have caught this before got here, in XML read, get this if CV
-         // wasn't written to
-         // by writer.
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL,
-                               "imageFileName=" + cVector_->imageFileName() + " cvPathName=" + cVector_->pathName() );
+         // Older versions of this library (and E57RefImpl) incorrectly set the "fileOffset" to 0
+         // when "recordCount" is 0. "fileOffset" must be greater than 0 (Table 9 in the standard).
+         if ( maxRecordCount_ == 0 )
+         {
+            throw E57_EXCEPTION2( ErrorData3DReadInvalidZeroRecords,
+                                  "fileOffset cannot be 0; cvPathName=" + cVector_->pathName() +
+                                     " imageFileName=" + cVector_->imageFileName() );
+         }
+
+         //??? should have caught this before got here, in XML read, get this if CV wasn't written
+         // to by writer.
+         throw E57_EXCEPTION2( ErrorInternal, "imageFileName=" + cVector_->imageFileName() +
+                                                 " cvPathName=" + cVector_->pathName() );
       }
+
+      // Read CompressedVector section header
+      CompressedVectorSectionHeader sectionHeader;
       imf->file_->seek( sectionLogicalStart, CheckedFile::Logical );
       imf->file_->read( reinterpret_cast<char *>( &sectionHeader ), sizeof( sectionHeader ) );
 
-#ifdef E57_DEBUG
+#if VALIDATE_BASIC
       sectionHeader.verify( imf->file_->length( CheckedFile::Physical ) );
 #endif
 
-      /// Pre-calc end of section, so can tell when we are out of packets.
+      // Pre-calc end of section, so can tell when we are out of packets.
       sectionEndLogicalOffset_ = sectionLogicalStart + sectionHeader.sectionLogicalLength;
 
-      /// Convert physical offset to first data packet to logical
-      uint64_t dataLogicalOffset = imf->file_->physicalToLogical( sectionHeader.dataPhysicalOffset );
+      // Convert physical offset to first data packet to logical
+      uint64_t dataLogicalOffset =
+         imf->file_->physicalToLogical( sectionHeader.dataPhysicalOffset );
 
-      /// Verify that packet given by dataPhysicalOffset is actually a data packet,
-      /// init channels
+      //??? what if fault in this constructor?
+      cache_ = new PacketReadCache( imf->file_, 32 );
+
+      // Verify that packet given by dataPhysicalOffset is actually a data packet,
+      // init channels
       {
          char *anyPacket = nullptr;
          std::unique_ptr<PacketLock> packetLock = cache_->lock( dataLogicalOffset, anyPacket );
 
          auto dpkt = reinterpret_cast<DataPacket *>( anyPacket );
 
-         /// Double check that have a data packet
+         // Double check that have a data packet
          if ( dpkt->header.packetType != DATA_PACKET )
          {
-            throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetType=" + toString( dpkt->header.packetType ) );
+            throw E57_EXCEPTION2( ErrorBadCVPacket,
+                                  "packetType=" + toString( dpkt->header.packetType ) );
          }
 
-         /// Have good packet, initialize channels
-         for ( auto &channel : channels_ )
+         // Have good packet, initialize channels if we have records
+         if ( maxRecordCount_ > 0 )
          {
-            channel.currentPacketLogicalOffset = dataLogicalOffset;
-            channel.currentBytestreamBufferIndex = 0;
-            channel.currentBytestreamBufferLength = dpkt->getBytestreamBufferLength( channel.bytestreamNumber );
+            for ( auto &channel : channels_ )
+            {
+               channel.currentPacketLogicalOffset = dataLogicalOffset;
+               channel.currentBytestreamBufferIndex = 0;
+               channel.currentBytestreamBufferLength =
+                  dpkt->getBytestreamBufferLength( channel.bytestreamNumber );
+            }
          }
       }
 
-      /// Just before return (and can't throw) increment reader count  ??? safer
-      /// way to assure don't miss close?
+      // Just before return (and can't throw) increment reader count  ??? safer
+      // way to assure don't miss close?
       imf->incrReaderCount();
 
-      /// If get here, the reader is open
+      // If get here, the reader is open
       isOpen_ = true;
    }
 
    CompressedVectorReaderImpl::~CompressedVectorReaderImpl()
    {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
       std::cout << "~CompressedVectorReaderImpl() called" << std::endl; //???
                                                                         // dump(4);
 #endif
@@ -163,7 +182,7 @@ namespace e57
       {
          try
          {
-            close(); ///??? what if already closed?
+            close(); //??? what if already closed?
          }
          catch ( ... )
          {
@@ -174,27 +193,28 @@ namespace e57
 
    void CompressedVectorReaderImpl::setBuffers( std::vector<SourceDestBuffer> &dbufs )
    {
-      /// don't checkImageFileOpen
-      /// don't checkReaderOpen
+      // don't checkImageFileOpen
+      // don't checkReaderOpen
 
-      /// Check dbufs well formed: no dups, no extra, missing is ok
+      // Check dbufs well formed: no dups, no extra, missing is ok
       proto_->checkBuffers( dbufs, true );
 
-      /// If had previous dbufs_, check to see if new ones have changed in
-      /// incompatible way
+      // If had previous dbufs_, check to see if new ones have changed in
+      // incompatible way
       if ( !dbufs_.empty() )
       {
          if ( dbufs_.size() != dbufs.size() )
          {
-            throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
-                                  "oldSize=" + toString( dbufs_.size() ) + " newSize=" + toString( dbufs.size() ) );
+            throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
+                                  "oldSize=" + toString( dbufs_.size() ) +
+                                     " newSize=" + toString( dbufs.size() ) );
          }
          for ( size_t i = 0; i < dbufs_.size(); i++ )
          {
             std::shared_ptr<SourceDestBufferImpl> oldBuf = dbufs_[i].impl();
             std::shared_ptr<SourceDestBufferImpl> newBuf = dbufs[i].impl();
 
-            /// Throw exception if old and new not compatible
+            // Throw exception if old and new not compatible
             oldBuf->checkCompatible( newBuf );
          }
       }
@@ -204,12 +224,12 @@ namespace e57
 
    unsigned CompressedVectorReaderImpl::read( std::vector<SourceDestBuffer> &dbufs )
    {
-      /// don't checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__), read() will
-      /// do it
+      // don't checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__), read() will
+      // do it
 
       checkReaderOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
-      /// Check compatible with current dbufs
+      // Check compatible with current dbufs
       setBuffers( dbufs );
 
       return ( read() );
@@ -217,46 +237,46 @@ namespace e57
 
    unsigned CompressedVectorReaderImpl::read()
    {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
       std::cout << "CompressedVectorReaderImpl::read() called" << std::endl; //???
 #endif
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
       checkReaderOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
-      /// Rewind all dbufs so start writing to them at beginning
+      // Rewind all dbufs so start writing to them at beginning
       for ( auto &dbuf : dbufs_ )
       {
          dbuf.impl()->rewind();
       }
 
-      /// Allow decoders to use data they already have in their queue to fill newly
-      /// empty dbufs This helps to keep decoder input queues smaller, which
-      /// reduces backtracking in the packet cache.
+      // Allow decoders to use data they already have in their queue to fill newly
+      // empty dbufs This helps to keep decoder input queues smaller, which
+      // reduces backtracking in the packet cache.
       for ( auto &channel : channels_ )
       {
          channel.decoder->inputProcess( nullptr, 0 );
       }
 
-      /// Loop until every dbuf is full or we have reached end of the binary
-      /// section.
+      // Loop until every dbuf is full or we have reached end of the binary
+      // section.
       while ( true )
       {
-         /// Find the earliest packet position for channels that are still hungry
-         /// It's important to call inputProcess of the decoders before this call,
-         /// so current hungriness level is reflected.
+         // Find the earliest packet position for channels that are still hungry
+         // It's important to call inputProcess of the decoders before this call,
+         // so current hungriness level is reflected.
          uint64_t earliestPacketLogicalOffset = earliestPacketNeededForInput();
 
-         /// If nobody's hungry, we are done with the read
-         if ( earliestPacketLogicalOffset == E57_UINT64_MAX )
+         // If nobody's hungry, we are done with the read
+         if ( earliestPacketLogicalOffset == UINT64_MAX )
          {
             break;
          }
 
-         /// Feed packet to the hungry decoders
+         // Feed packet to the hungry decoders
          feedPacketToDecoders( earliestPacketLogicalOffset );
       }
 
-      /// Verify that each channel produced the same number of records
+      // Verify that each channel produced the same number of records
       unsigned outputCount = 0;
       for ( unsigned i = 0; i < channels_.size(); i++ )
       {
@@ -269,20 +289,21 @@ namespace e57
          {
             if ( outputCount != chan->dbuf.impl()->nextIndex() )
             {
-               throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "outputCount=" + toString( outputCount ) + " nextIndex=" +
-                                                            toString( chan->dbuf.impl()->nextIndex() ) );
+               throw E57_EXCEPTION2(
+                  ErrorInternal, "outputCount=" + toString( outputCount ) +
+                                    " nextIndex=" + toString( chan->dbuf.impl()->nextIndex() ) );
             }
          }
       }
 
-      /// Return number of records transferred to each dbuf.
+      // Return number of records transferred to each dbuf.
       return outputCount;
    }
 
    uint64_t CompressedVectorReaderImpl::earliestPacketNeededForInput() const
    {
-      uint64_t earliestPacketLogicalOffset = E57_UINT64_MAX;
-#ifdef E57_MAX_VERBOSE
+      uint64_t earliestPacketLogicalOffset = UINT64_MAX;
+#ifdef E57_VERBOSE
       unsigned earliestChannel = 0;
 #endif
 
@@ -290,29 +311,29 @@ namespace e57
       {
          const DecodeChannel *chan = &channels_[i];
 
-         /// Test if channel needs more input.
-         /// Important to call inputProcess just before this, so these tests work.
+         // Test if channel needs more input.
+         // Important to call inputProcess just before this, so these tests work.
          if ( !chan->isOutputBlocked() && !chan->inputFinished )
          {
-            /// Check if earliest so far
+            // Check if earliest so far
             if ( chan->currentPacketLogicalOffset < earliestPacketLogicalOffset )
             {
                earliestPacketLogicalOffset = chan->currentPacketLogicalOffset;
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
                earliestChannel = i;
 #endif
             }
          }
       }
-#ifdef E57_MAX_VERBOSE
-      if ( earliestPacketLogicalOffset == E57_UINT64_MAX )
+#ifdef E57_VERBOSE
+      if ( earliestPacketLogicalOffset == UINT64_MAX )
       {
          std::cout << "earliestPacketNeededForInput returning none found" << std::endl;
       }
       else
       {
-         std::cout << "earliestPacketNeededForInput returning " << earliestPacketLogicalOffset << " for channel["
-                   << earliestChannel << "]" << std::endl;
+         std::cout << "earliestPacketNeededForInput returning " << earliestPacketLogicalOffset
+                   << " for channel[" << earliestChannel << "]" << std::endl;
       }
 #endif
       return earliestPacketLogicalOffset;
@@ -327,9 +348,11 @@ namespace e57
       return reinterpret_cast<DataPacket *>( packet );
    }
 
-   inline bool _alreadyReadPacket( const DecodeChannel &channel, uint64_t currentPacketLogicalOffset )
+   inline bool _alreadyReadPacket( const DecodeChannel &channel,
+                                   uint64_t currentPacketLogicalOffset )
    {
-      return ( ( channel.currentPacketLogicalOffset != currentPacketLogicalOffset ) || channel.isOutputBlocked() );
+      return ( ( channel.currentPacketLogicalOffset != currentPacketLogicalOffset ) ||
+               channel.isOutputBlocked() );
    }
 
    void CompressedVectorReaderImpl::feedPacketToDecoders( uint64_t currentPacketLogicalOffset )
@@ -337,21 +360,18 @@ namespace e57
       // Get packet at currentPacketLogicalOffset into memory.
       auto dpkt = dataPacket( currentPacketLogicalOffset );
 
-      // Double check that have a data packet.  Should have already determined
-      // this.
+      // Double check that have a data packet.  Should have already determined this.
       if ( dpkt->header.packetType != DATA_PACKET )
       {
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "packetType=" + toString( dpkt->header.packetType ) );
+         throw E57_EXCEPTION2( ErrorInternal, "packetType=" + toString( dpkt->header.packetType ) );
       }
 
-      // Read earliest packet into cache and send data to decoders with unblocked
-      // output
+      // Read earliest packet into cache and send data to decoders with unblocked output
 
       bool anyChannelHasExhaustedPacket = false;
-      uint64_t nextPacketLogicalOffset = E57_UINT64_MAX;
+      uint64_t nextPacketLogicalOffset = UINT64_MAX;
 
-      // Feed bytestreams to channels with unblocked output that are reading from
-      // this packet
+      // Feed bytestreams to channels with unblocked output that are reading from this packet
       for ( DecodeChannel &channel : channels_ )
       {
          // Skip channels that have already read this packet.
@@ -367,9 +387,10 @@ namespace e57
          // Double check we are not off end of buffer
          if ( channel.currentBytestreamBufferIndex > bsbLength )
          {
-            throw E57_EXCEPTION2( E57_ERROR_INTERNAL,
-                                  "currentBytestreamBufferIndex =" + toString( channel.currentBytestreamBufferIndex ) +
-                                     " bsbLength=" + toString( bsbLength ) );
+            throw E57_EXCEPTION2(
+               ErrorInternal,
+               "currentBytestreamBufferIndex =" + toString( channel.currentBytestreamBufferIndex ) +
+                  " bsbLength=" + toString( bsbLength ) );
          }
 
          // Calc where we are in the buffer
@@ -378,23 +399,24 @@ namespace e57
 
          if ( &uneatenStart[uneatenLength] > &bsbStart[bsbLength] )
          {
-            throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "uneatenLength=" + toString( uneatenLength ) +
-                                                         " bsbLength=" + toString( bsbLength ) );
+            throw E57_EXCEPTION2( ErrorInternal, "uneatenLength=" + toString( uneatenLength ) +
+                                                    " bsbLength=" + toString( bsbLength ) );
          }
 
          // Feed into decoder
          const size_t bytesProcessed = channel.decoder->inputProcess( uneatenStart, uneatenLength );
 
-#ifdef E57_MAX_VERBOSE
-         std::cout << "  stream[" << channel.bytestreamNumber << "]: feeding decoder " << uneatenLength << " bytes"
-                   << std::endl;
+#ifdef E57_VERBOSE
+         std::cout << "  stream[" << channel.bytestreamNumber << "]: feeding decoder "
+                   << uneatenLength << " bytes" << std::endl;
 
          if ( uneatenLength == 0 )
          {
             channel.dump( 8 );
          }
 
-         std::cout << "  stream[" << channel.bytestreamNumber << "]: bytesProcessed=" << bytesProcessed << std::endl;
+         std::cout << "  stream[" << channel.bytestreamNumber
+                   << "]: bytesProcessed=" << bytesProcessed << std::endl;
 #endif
 
          // Adjust counts of bytestream location
@@ -404,12 +426,13 @@ namespace e57
          // packet
          if ( channel.isInputBlocked() )
          {
-#ifdef E57_MAX_VERBOSE
-            std::cout << "  stream[" << channel.bytestreamNumber << "] has exhausted its input in current packet"
-                      << std::endl;
+#ifdef E57_VERBOSE
+            std::cout << "  stream[" << channel.bytestreamNumber
+                      << "] has exhausted its input in current packet" << std::endl;
 #endif
             anyChannelHasExhaustedPacket = true;
-            nextPacketLogicalOffset = currentPacketLogicalOffset + dpkt->header.packetLogicalLengthMinus1 + 1;
+            nextPacketLogicalOffset =
+               currentPacketLogicalOffset + dpkt->header.packetLogicalLengthMinus1 + 1;
          }
       }
 
@@ -425,7 +448,7 @@ namespace e57
       // Some channel has exhausted this packet, so find next data packet and
       // update currentPacketLogicalOffset for all interested channels.
 
-      if ( nextPacketLogicalOffset < E57_UINT64_MAX )
+      if ( nextPacketLogicalOffset < UINT64_MAX )
       { //??? huh?
          // Get packet at nextPacketLogicalOffset into memory.
          dpkt = dataPacket( nextPacketLogicalOffset );
@@ -444,9 +467,10 @@ namespace e57
 
             // It is OK if the next packet doesn't contain any data for this
             // channel, will skip packet on next iter of loop
-            channel.currentBytestreamBufferLength = dpkt->getBytestreamBufferLength( channel.bytestreamNumber );
+            channel.currentBytestreamBufferLength =
+               dpkt->getBytestreamBufferLength( channel.bytestreamNumber );
 
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
             std::cout << "  set new stream buffer for channel[" << channel.bytestreamNumber
                       << "], length=" << channel.currentBytestreamBufferLength << std::endl;
 #endif
@@ -457,7 +481,7 @@ namespace e57
       {
          // Reached end without finding data packet, mark exhausted channels as
          // finished
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
          std::cout << "  at end of data packets" << std::endl;
 #endif
          if ( nextPacketLogicalOffset >= sectionEndLogicalOffset_ )
@@ -470,8 +494,9 @@ namespace e57
                   continue;
                }
 
-#ifdef E57_MAX_VERBOSE
-               std::cout << "  Marking channel[" << channel.bytestreamNumber << "] as finished" << std::endl;
+#ifdef E57_VERBOSE
+               std::cout << "  Marking channel[" << channel.bytestreamNumber << "] as finished"
+                         << std::endl;
 #endif
                channel.inputFinished = true;
             }
@@ -481,74 +506,78 @@ namespace e57
 
    uint64_t CompressedVectorReaderImpl::findNextDataPacket( uint64_t nextPacketLogicalOffset )
    {
-#ifdef E57_MAX_VERBOSE
-      std::cout << "  searching for next data packet, nextPacketLogicalOffset=" << nextPacketLogicalOffset
+#ifdef E57_VERBOSE
+      std::cout << "  searching for next data packet, nextPacketLogicalOffset="
+                << nextPacketLogicalOffset
                 << " sectionEndLogicalOffset=" << sectionEndLogicalOffset_ << std::endl;
 #endif
 
-      /// Starting at nextPacketLogicalOffset, search for next data packet until
-      /// hit end of binary section.
+      // Starting at nextPacketLogicalOffset, search for next data packet until
+      // hit end of binary section.
       while ( nextPacketLogicalOffset < sectionEndLogicalOffset_ )
       {
          char *anyPacket = nullptr;
 
-         std::unique_ptr<PacketLock> packetLock = cache_->lock( nextPacketLogicalOffset, anyPacket );
+         std::unique_ptr<PacketLock> packetLock =
+            cache_->lock( nextPacketLogicalOffset, anyPacket );
 
-         /// Guess it's a data packet, if not continue to next packet
+         // Guess it's a data packet, if not continue to next packet
          auto dpkt = reinterpret_cast<const DataPacket *>( anyPacket );
 
          if ( dpkt->header.packetType == DATA_PACKET )
          {
-#ifdef E57_MAX_VERBOSE
-            std::cout << "  Found next data packet at nextPacketLogicalOffset=" << nextPacketLogicalOffset << std::endl;
+#ifdef E57_VERBOSE
+            std::cout << "  Found next data packet at nextPacketLogicalOffset="
+                      << nextPacketLogicalOffset << std::endl;
 #endif
             return nextPacketLogicalOffset;
          }
 
-         /// All packets have length in same place, so can use the field to skip to
-         /// next packet.
+         // All packets have length in same place, so can use the field to skip to
+         // next packet.
          nextPacketLogicalOffset += dpkt->header.packetLogicalLengthMinus1 + 1;
       }
 
-      /// Ran off end of section, so return failure code.
-      return E57_UINT64_MAX;
+      // Ran off end of section, so return failure code.
+      return UINT64_MAX;
    }
 
    void CompressedVectorReaderImpl::seek( uint64_t /*recordNumber*/ )
    {
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
-      ///!!! implement
-      throw E57_EXCEPTION1( E57_ERROR_NOT_IMPLEMENTED );
+      // !!! implement
+      throw E57_EXCEPTION1( ErrorNotImplemented );
    }
 
    bool CompressedVectorReaderImpl::isOpen() const
    {
-      /// don't checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__), or
-      /// checkReaderOpen()
+      // don't checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__), or
+      // checkReaderOpen()
       return ( isOpen_ );
    }
 
-   std::shared_ptr<CompressedVectorNodeImpl> CompressedVectorReaderImpl::compressedVectorNode() const
+   std::shared_ptr<CompressedVectorNodeImpl> CompressedVectorReaderImpl::compressedVectorNode()
+      const
    {
       return ( cVector_ );
    }
 
    void CompressedVectorReaderImpl::close()
    {
-      /// Before anything that can throw, decrement reader count
+      // Before anything that can throw, decrement reader count
       ImageFileImplSharedPtr imf( cVector_->destImageFile_ );
       imf->decrReaderCount();
 
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
-      /// No error if reader not open
+      // No error if reader not open
       if ( !isOpen_ )
       {
          return;
       }
 
-      /// Destroy decoders
+      // Destroy decoders
       channels_.clear();
 
       delete cache_;
@@ -561,7 +590,9 @@ namespace e57
                                                         const char *srcFunctionName ) const
    {
       // unimplemented...
-      (void)srcFileName; (void)srcLineNumber; (void)srcFunctionName;
+      UNUSED( srcFileName );
+      UNUSED( srcLineNumber );
+      UNUSED( srcFunctionName );
    }
 
    void CompressedVectorReaderImpl::checkReaderOpen( const char *srcFileName, int srcLineNumber,
@@ -569,13 +600,14 @@ namespace e57
    {
       if ( !isOpen_ )
       {
-         throw E57Exception( E57_ERROR_READER_NOT_OPEN,
-                             "imageFileName=" + cVector_->imageFileName() + " cvPathName=" + cVector_->pathName(),
+         throw E57Exception( ErrorReaderNotOpen,
+                             "imageFileName=" + cVector_->imageFileName() +
+                                " cvPathName=" + cVector_->pathName(),
                              srcFileName, srcLineNumber, srcFunctionName );
       }
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void CompressedVectorReaderImpl::dump( int indent, std::ostream &os )
    {
       os << space( indent ) << "isOpen:" << isOpen_ << std::endl;

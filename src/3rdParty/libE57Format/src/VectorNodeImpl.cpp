@@ -27,40 +27,41 @@
 
 #include "VectorNodeImpl.h"
 #include "CheckedFile.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
    VectorNodeImpl::VectorNodeImpl( ImageFileImplWeakPtr destImageFile, bool allowHeteroChildren ) :
       StructureNodeImpl( destImageFile ), allowHeteroChildren_( allowHeteroChildren )
    {
-      /// don't checkImageFileOpen, StructNodeImpl() will do it
+      // don't checkImageFileOpen, StructNodeImpl() will do it
    }
 
    bool VectorNodeImpl::isTypeEquivalent( NodeImplSharedPtr ni )
    {
-      /// don't checkImageFileOpen
+      // don't checkImageFileOpen
 
-      /// Same node type?
-      if ( ni->type() != E57_VECTOR )
+      // Same node type?
+      if ( ni->type() != TypeVector )
       {
          return ( false );
       }
 
       std::shared_ptr<VectorNodeImpl> ai( std::static_pointer_cast<VectorNodeImpl>( ni ) );
 
-      /// allowHeteroChildren must match
+      // allowHeteroChildren must match
       if ( allowHeteroChildren_ != ai->allowHeteroChildren_ )
       {
          return ( false );
       }
 
-      /// Same number of children?
+      // Same number of children?
       if ( childCount() != ai->childCount() )
       {
          return ( false );
       }
 
-      /// Check each child, must be in same order
+      // Check each child, must be in same order
       for ( unsigned i = 0; i < childCount(); i++ )
       {
          if ( !children_.at( i )->isTypeEquivalent( ai->children_.at( i ) ) )
@@ -69,7 +70,7 @@ namespace e57
          }
       }
 
-      /// Types match
+      // Types match
       return ( true );
    }
 
@@ -84,26 +85,28 @@ namespace e57
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
       if ( !allowHeteroChildren_ )
       {
-         /// New node type must match all existing children
+         // New node type must match all existing children
          for ( auto &child : children_ )
          {
             if ( !child->isTypeEquivalent( ni ) )
             {
-               throw E57_EXCEPTION2( E57_ERROR_HOMOGENEOUS_VIOLATION, "this->pathName=" + this->pathName() );
+               throw E57_EXCEPTION2( ErrorHomogeneousViolation,
+                                     "this->pathName=" + this->pathName() );
             }
          }
       }
 
-      ///??? for now, use base implementation
+      //??? for now, use base implementation
       StructureNodeImpl::set( index64, ni );
    }
 
-   void VectorNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent, const char *forcedFieldName )
+   void VectorNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
+                                  const char *forcedFieldName )
    {
-      /// don't checkImageFileOpen
+      // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName )
+      if ( forcedFieldName != nullptr )
       {
          fieldName = forcedFieldName;
       }
@@ -121,13 +124,13 @@ namespace e57
       cf << space( indent ) << "</" << fieldName << ">\n";
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void VectorNodeImpl::dump( int indent, std::ostream &os ) const
    {
-      /// don't checkImageFileOpen
+      // don't checkImageFileOpen
       os << space( indent ) << "type:        Vector"
          << " (" << type() << ")" << std::endl;
-      NodeImpl::dump( indent, os );
+      NodeImpl::dump( indent, os ); // NOLINT(bugprone-parent-virtual-call)
       os << space( indent ) << "allowHeteroChildren: " << allowHeteroChildren() << std::endl;
       for ( unsigned i = 0; i < children_.size(); i++ )
       {

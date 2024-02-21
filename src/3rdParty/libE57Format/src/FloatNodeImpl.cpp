@@ -27,37 +27,38 @@
 
 #include "FloatNodeImpl.h"
 #include "CheckedFile.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
-   FloatNodeImpl::FloatNodeImpl( ImageFileImplWeakPtr destImageFile, double value, FloatPrecision precision,
-                                 double minimum, double maximum ) :
+   FloatNodeImpl::FloatNodeImpl( ImageFileImplWeakPtr destImageFile, double value, bool validValue,
+                                 FloatPrecision precision, double minimum, double maximum ) :
       NodeImpl( destImageFile ),
       value_( value ), precision_( precision ), minimum_( minimum ), maximum_( maximum )
    {
       // don't checkImageFileOpen, NodeImpl() will do it
 
-      /// Since this ctor also used to construct single precision, and defaults for
-      /// minimum/maximum are for double precision, adjust bounds smaller if
-      /// single.
-      if ( precision_ == E57_SINGLE )
+      // Since this ctor also used to construct single precision, and defaults for minimum/maximum
+      // are for double precision, adjust bounds smaller if single.
+      if ( precision_ == PrecisionSingle )
       {
-         if ( minimum_ < E57_FLOAT_MIN )
+         if ( minimum_ < FLOAT_MIN )
          {
-            minimum_ = E57_FLOAT_MIN;
+            minimum_ = FLOAT_MIN;
          }
-         if ( maximum_ > E57_FLOAT_MAX )
+         if ( maximum_ > FLOAT_MAX )
          {
-            maximum_ = E57_FLOAT_MAX;
+            maximum_ = FLOAT_MAX;
          }
       }
 
-      /// Enforce the given bounds on raw value
-      if ( value < minimum || maximum < value )
+      // Enforce the given bounds on raw value if it is valid
+      if ( validValue && ( value < minimum || value > maximum ) )
       {
-         throw E57_EXCEPTION2( E57_ERROR_VALUE_OUT_OF_BOUNDS,
-                               "this->pathName=" + this->pathName() + " value=" + toString( value ) +
-                                  " minimum=" + toString( minimum ) + " maximum=" + toString( maximum ) );
+         throw E57_EXCEPTION2( ErrorValueOutOfBounds, "this->pathName=" + this->pathName() +
+                                                         " value=" + toString( value ) +
+                                                         " minimum=" + toString( minimum ) +
+                                                         " maximum=" + toString( maximum ) );
       }
    }
 
@@ -65,36 +66,36 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// Same node type?
-      if ( ni->type() != E57_FLOAT )
+      // Same node type?
+      if ( ni->type() != TypeFloat )
       {
          return ( false );
       }
 
-      /// Downcast to shared_ptr<FloatNodeImpl>
+      // Downcast to shared_ptr<FloatNodeImpl>
       std::shared_ptr<FloatNodeImpl> fi( std::static_pointer_cast<FloatNodeImpl>( ni ) );
 
-      /// precision must match
+      // precision must match
       if ( precision_ != fi->precision_ )
       {
          return ( false );
       }
 
-      /// minimum must match
+      // minimum must match
       if ( minimum_ != fi->minimum_ )
       {
          return ( false );
       }
 
-      /// maximum must match
+      // maximum must match
       if ( maximum_ != fi->maximum_ )
       {
          return ( false );
       }
 
-      /// ignore value_, doesn't have to match
+      // ignore value_, doesn't have to match
 
-      /// Types match
+      // Types match
       return ( true );
    }
 
@@ -102,7 +103,7 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We have no sub-structure, so if path not empty return false
+      // We have no sub-structure, so if path not empty return false
       return pathName.empty();
    }
 
@@ -134,12 +135,11 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We are a leaf node, so verify that we are listed in set (either relative
-      /// or absolute form)
+      // We are a leaf node, so verify that we are listed in set (either relative or absolute form)
       if ( pathNames.find( relativePathName( origin ) ) == pathNames.end() &&
            pathNames.find( pathName() ) == pathNames.end() )
       {
-         throw E57_EXCEPTION2( E57_ERROR_NO_BUFFER_FOR_ELEMENT, "this->pathName=" + this->pathName() );
+         throw E57_EXCEPTION2( ErrorNoBufferForElement, "this->pathName=" + this->pathName() );
       }
    }
 
@@ -149,7 +149,7 @@ namespace e57
       // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName )
+      if ( forcedFieldName != nullptr )
       {
          fieldName = forcedFieldName;
       }
@@ -159,21 +159,21 @@ namespace e57
       }
 
       cf << space( indent ) << "<" << fieldName << " type=\"Float\"";
-      if ( precision_ == E57_SINGLE )
+      if ( precision_ == PrecisionSingle )
       {
          cf << " precision=\"single\"";
 
-         /// Don't need to write if are default values
-         if ( minimum_ > E57_FLOAT_MIN )
+         // Don't need to write if are default values
+         if ( minimum_ > FLOAT_MIN )
          {
             cf << " minimum=\"" << static_cast<float>( minimum_ ) << "\"";
          }
-         if ( maximum_ < E57_FLOAT_MAX )
+         if ( maximum_ < FLOAT_MAX )
          {
             cf << " maximum=\"" << static_cast<float>( maximum_ ) << "\"";
          }
 
-         /// Write value as child text, unless it is the default value
+         // Write value as child text, unless it is the default value
          if ( value_ != 0.0 )
          {
             cf << ">" << static_cast<float>( value_ ) << "</" << fieldName << ">\n";
@@ -185,19 +185,19 @@ namespace e57
       }
       else
       {
-         /// Don't need to write precision="double", because that's the default
+         // Don't need to write precision="double", because that's the default
 
-         /// Don't need to write if are default values
-         if ( minimum_ > E57_DOUBLE_MIN )
+         // Don't need to write if are default values
+         if ( minimum_ > DOUBLE_MIN )
          {
             cf << " minimum=\"" << minimum_ << "\"";
          }
-         if ( maximum_ < E57_DOUBLE_MAX )
+         if ( maximum_ < DOUBLE_MAX )
          {
             cf << " maximum=\"" << maximum_ << "\"";
          }
 
-         /// Write value as child text, unless it is the default value
+         // Write value as child text, unless it is the default value
          if ( value_ != 0.0 )
          {
             cf << ">" << value_ << "</" << fieldName << ">\n";
@@ -209,7 +209,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void FloatNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen
@@ -217,7 +217,7 @@ namespace e57
          << " (" << type() << ")" << std::endl;
       NodeImpl::dump( indent, os );
       os << space( indent ) << "precision:   ";
-      if ( precision() == E57_SINGLE )
+      if ( precision() == PrecisionSingle )
       {
          os << "single" << std::endl;
       }
@@ -226,15 +226,16 @@ namespace e57
          os << "double" << std::endl;
       }
 
-      /// Save old stream config
+      // Save old stream config
       const std::streamsize oldPrecision = os.precision();
       const std::ios_base::fmtflags oldFlags = os.flags();
 
-      os << space( indent ) << std::scientific << std::setprecision( 17 ) << "value:       " << value_ << std::endl;
+      os << space( indent ) << std::scientific << std::setprecision( 17 )
+         << "value:       " << value_ << std::endl;
       os << space( indent ) << "minimum:     " << minimum_ << std::endl;
       os << space( indent ) << "maximum:     " << maximum_ << std::endl;
 
-      /// Restore old stream config
+      // Restore old stream config
       os.precision( oldPrecision );
       os.flags( oldFlags );
    }

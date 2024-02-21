@@ -29,46 +29,48 @@
 
 #include "CheckedFile.h"
 #include "ImageFileImpl.h"
+#include "StringFunctions.h"
 #include "StructureNodeImpl.h"
 
 using namespace e57;
 
-StructureNodeImpl::StructureNodeImpl( ImageFileImplWeakPtr destImageFile ) : NodeImpl( destImageFile )
+StructureNodeImpl::StructureNodeImpl( ImageFileImplWeakPtr destImageFile ) :
+   NodeImpl( destImageFile )
 {
    checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 }
 
 NodeType StructureNodeImpl::type() const
 {
-   /// don't checkImageFileOpen
-   return E57_STRUCTURE;
+   // don't checkImageFileOpen
+   return TypeStructure;
 }
 
 //??? use visitor?
 bool StructureNodeImpl::isTypeEquivalent( NodeImplSharedPtr ni )
 {
-   /// don't checkImageFileOpen
+   // don't checkImageFileOpen
 
-   /// Same node type?
-   if ( ni->type() != E57_STRUCTURE )
+   // Same node type?
+   if ( ni->type() != TypeStructure )
    {
       return ( false );
    }
 
-   /// Downcast to shared_ptr<StructureNodeImpl>
+   // Downcast to shared_ptr<StructureNodeImpl>
    std::shared_ptr<StructureNodeImpl> si( std::static_pointer_cast<StructureNodeImpl>( ni ) );
 
-   /// Same number of children?
+   // Same number of children?
    if ( childCount() != si->childCount() )
    {
       return ( false );
    }
 
-   /// Check each child is equivalent
+   // Check each child is equivalent
    for ( unsigned i = 0; i < childCount(); i++ )
    { //??? vector iterator?
       ustring myChildsFieldName = children_.at( i )->elementName();
-      /// Check if matching field name is in same position (to speed things up)
+      // Check if matching field name is in same position (to speed things up)
       if ( myChildsFieldName == si->children_.at( i )->elementName() )
       {
          if ( !children_.at( i )->isTypeEquivalent( si->children_.at( i ) ) )
@@ -78,8 +80,7 @@ bool StructureNodeImpl::isTypeEquivalent( NodeImplSharedPtr ni )
       }
       else
       {
-         /// Children in different order, so lookup by name and check if equal
-         /// to our child
+         // Children in different order, so lookup by name and check if equal to our child
          if ( !si->isDefined( myChildsFieldName ) )
          {
             return ( false );
@@ -91,7 +92,7 @@ bool StructureNodeImpl::isTypeEquivalent( NodeImplSharedPtr ni )
       }
    }
 
-   /// Types match
+   // Types match
    return ( true );
 }
 
@@ -104,10 +105,10 @@ bool StructureNodeImpl::isDefined( const ustring &pathName )
 
 void StructureNodeImpl::setAttachedRecursive()
 {
-   /// Mark this node as attached to an ImageFile
+   // Mark this node as attached to an ImageFile
    isAttached_ = true;
 
-   /// Not a leaf node, so mark all our children
+   // Not a leaf node, so mark all our children
    for ( auto &child : children_ )
    {
       child->setAttachedRecursive();
@@ -120,14 +121,15 @@ int64_t StructureNodeImpl::childCount() const
 
    return children_.size();
 }
+
 NodeImplSharedPtr StructureNodeImpl::get( int64_t index )
 {
    checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
    if ( index < 0 || index >= static_cast<int64_t>( children_.size() ) )
    { // %%% Possible truncation on platforms where size_t = uint64
-      throw E57_EXCEPTION2( E57_ERROR_CHILD_INDEX_OUT_OF_BOUNDS, "this->pathName=" + this->pathName() +
-                                                                    " index=" + toString( index ) +
-                                                                    " size=" + toString( children_.size() ) );
+      throw E57_EXCEPTION2( ErrorChildIndexOutOfBounds,
+                            "this->pathName=" + this->pathName() + " index=" + toString( index ) +
+                               " size=" + toString( children_.size() ) );
    }
    return ( children_.at( static_cast<unsigned>( index ) ) );
 }
@@ -139,14 +141,15 @@ NodeImplSharedPtr StructureNodeImpl::get( const ustring &pathName )
 
    if ( !ni )
    {
-      throw E57_EXCEPTION2( E57_ERROR_PATH_UNDEFINED, "this->pathName=" + this->pathName() + " pathName=" + pathName );
+      throw E57_EXCEPTION2( ErrorPathUndefined,
+                            "this->pathName=" + this->pathName() + " pathName=" + pathName );
    }
    return ( ni );
 }
 
 NodeImplSharedPtr StructureNodeImpl::lookup( const ustring &pathName )
 {
-   /// don't checkImageFileOpen
+   // don't checkImageFileOpen
    //??? use lookup(fields, level) instead, for speed.
    bool isRelative;
    std::vector<ustring> fields;
@@ -159,51 +162,46 @@ NodeImplSharedPtr StructureNodeImpl::lookup( const ustring &pathName )
       {
          if ( isRelative )
          {
-            return NodeImplSharedPtr(); /// empty pointer
+            return {}; // empty pointer
          }
-         else
-         {
-            NodeImplSharedPtr root( getRoot() );
-            return ( root );
-         }
+
+         NodeImplSharedPtr root( getRoot() );
+         return ( root );
       }
-      else
+
+      // Find child with elementName that matches first field in path
+      unsigned i;
+      for ( i = 0; i < children_.size(); i++ )
       {
-         /// Find child with elementName that matches first field in path
-         unsigned i;
-         for ( i = 0; i < children_.size(); i++ )
+         if ( fields.at( 0 ) == children_.at( i )->elementName() )
          {
-            if ( fields.at( 0 ) == children_.at( i )->elementName() )
-            {
-               break;
-            }
+            break;
          }
-         if ( i == children_.size() )
-         {
-            return NodeImplSharedPtr(); /// empty pointer
-         }
-
-         if ( fields.size() == 1 )
-         {
-            return ( children_.at( i ) );
-         }
-
-         //??? use level here rather than unparse
-         /// Remove first field in path
-         fields.erase( fields.begin() );
-
-         /// Call lookup on child object with remaining fields in path name
-         return children_.at( i )->lookup( imf->pathNameUnparse( true, fields ) );
       }
-   }
-   else
-   { /// Absolute pathname and we aren't at the root
-      /// Find root of the tree
-      NodeImplSharedPtr root( getRoot() );
+      if ( i == children_.size() )
+      {
+         return {}; // empty pointer
+      }
 
-      /// Call lookup on root
-      return ( root->lookup( pathName ) );
+      if ( fields.size() == 1 )
+      {
+         return ( children_.at( i ) );
+      }
+
+      //??? use level here rather than unparse
+      // Remove first field in path
+      fields.erase( fields.begin() );
+
+      // Call lookup on child object with remaining fields in path name
+      return children_.at( i )->lookup( imf->pathNameUnparse( true, fields ) );
    }
+
+   // Absolute pathname and we aren't at the root
+   // Find root of the tree
+   NodeImplSharedPtr root( getRoot() );
+
+   // Call lookup on root
+   return ( root->lookup( pathName ) );
 }
 
 void StructureNodeImpl::set( int64_t index64, NodeImplSharedPtr ni )
@@ -212,38 +210,39 @@ void StructureNodeImpl::set( int64_t index64, NodeImplSharedPtr ni )
 
    auto index = static_cast<unsigned>( index64 );
 
-   /// Allow index == current number of elements, interpret as append
+   // Allow index == current number of elements, interpret as append
    if ( index64 < 0 || index64 > UINT_MAX || index > children_.size() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_CHILD_INDEX_OUT_OF_BOUNDS, "this->pathName=" + this->pathName() +
-                                                                    " index=" + toString( index64 ) +
-                                                                    " size=" + toString( children_.size() ) );
+      throw E57_EXCEPTION2( ErrorChildIndexOutOfBounds,
+                            "this->pathName=" + this->pathName() + " index=" + toString( index64 ) +
+                               " size=" + toString( children_.size() ) );
    }
 
-   /// Enforce "set once" policy, only allow append
+   // Enforce "set once" policy, only allow append
    if ( index != children_.size() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_SET_TWICE,
-                            "this->pathName=" + this->pathName() + " index=" + toString( index64 ) );
+      throw E57_EXCEPTION2( ErrorSetTwice, "this->pathName=" + this->pathName() +
+                                              " index=" + toString( index64 ) );
    }
 
-   /// Verify that child is destined for same ImageFile as this is
+   // Verify that child is destined for same ImageFile as this is
    ImageFileImplSharedPtr thisDest( destImageFile() );
    ImageFileImplSharedPtr niDest( ni->destImageFile() );
    if ( thisDest != niDest )
    {
-      throw E57_EXCEPTION2( E57_ERROR_DIFFERENT_DEST_IMAGEFILE,
-                            "this->destImageFile" + thisDest->fileName() + " ni->destImageFile" + niDest->fileName() );
+      throw E57_EXCEPTION2( ErrorDifferentDestImageFile,
+                            "this->destImageFile" + thisDest->fileName() + " ni->destImageFile" +
+                               niDest->fileName() );
    }
 
-   /// Field name is string version of index value, e.g. "14"
+   // Field name is string version of index value, e.g. "14"
    std::stringstream elementName;
    elementName << index;
 
-   /// If this struct is type constrained, can't add new child
+   // If this struct is type constrained, can't add new child
    if ( isTypeConstrained() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_HOMOGENEOUS_VIOLATION, "this->pathName=" + this->pathName() );
+      throw E57_EXCEPTION2( ErrorHomogeneousViolation, "this->pathName=" + this->pathName() );
    }
 
    ni->setParent( shared_from_this(), elementName.str() );
@@ -258,34 +257,33 @@ void StructureNodeImpl::set( const ustring &pathName, NodeImplSharedPtr ni, bool
    // types for VECTOR,
    // COMPRESSED_VECTOR
 
-#ifdef E57_MAX_VERBOSE
-   std::cout << "StructureNodeImpl::set(pathName=" << pathName << ", ni, autoPathCreate=" << autoPathCreate
-             << std::endl;
+#ifdef E57_VERBOSE
+   std::cout << "StructureNodeImpl::set(pathName=" << pathName
+             << ", ni, autoPathCreate=" << autoPathCreate << std::endl;
 #endif
 
    bool isRelative;
    std::vector<ustring> fields;
 
-   /// Path may be absolute or relative with several levels.  Break string into
-   /// individual levels.
+   // Path may be absolute or relative with several levels.  Break string into individual levels.
    ImageFileImplSharedPtr imf( destImageFile_ );
    imf->pathNameParse( pathName, isRelative, fields ); // throws if bad pathName
    if ( isRelative )
    {
-      /// Relative path, starting from current object, e.g. "foo/17/bar"
+      // Relative path, starting from current object, e.g. "foo/17/bar"
       set( fields, 0, ni, autoPathCreate );
    }
    else
    {
-      /// Absolute path (starting from root), e.g. "/foo/17/bar"
+      // Absolute path (starting from root), e.g. "/foo/17/bar"
       getRoot()->set( fields, 0, ni, autoPathCreate );
    }
 }
 
-void StructureNodeImpl::set( const std::vector<ustring> &fields, unsigned level, NodeImplSharedPtr ni,
-                             bool autoPathCreate )
+void StructureNodeImpl::set( const std::vector<ustring> &fields, unsigned level,
+                             NodeImplSharedPtr ni, bool autoPathCreate )
 {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "StructureNodeImpl::set: level=" << level << std::endl;
    for ( unsigned i = 0; i < fields.size(); i++ )
    {
@@ -298,58 +296,56 @@ void StructureNodeImpl::set( const std::vector<ustring> &fields, unsigned level,
    // index, else throw
    // bad_path
 
-   /// Check if trying to set the root node "/", which is illegal
+   // Check if trying to set the root node "/", which is illegal
    if ( level == 0 && fields.empty() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_SET_TWICE, "this->pathName=" + this->pathName() + " element=/" );
+      throw E57_EXCEPTION2( ErrorSetTwice, "this->pathName=" + this->pathName() + " element=/" );
    }
 
-   /// Serial search for matching field name, if find match, have error since
-   /// can't set twice
+   // Serial search for matching field name, if find match, have error since can't set twice
    for ( auto &child : children_ )
    {
       if ( fields.at( level ) == child->elementName() )
       {
          if ( level == fields.size() - 1 )
          {
-            /// Enforce "set once" policy, don't allow reset
-            throw E57_EXCEPTION2( E57_ERROR_SET_TWICE,
-                                  "this->pathName=" + this->pathName() + " element=" + fields[level] );
+            // Enforce "set once" policy, don't allow reset
+            throw E57_EXCEPTION2( ErrorSetTwice, "this->pathName=" + this->pathName() +
+                                                    " element=" + fields[level] );
          }
 
-         /// Recurse on child
+         // Recurse on child
          child->set( fields, level + 1, ni );
 
          return;
       }
    }
-   /// Didn't find matching field name, so have a new child.
+   // Didn't find matching field name, so have a new child.
 
-   /// If this struct is type constrained, can't add new child
+   // If this struct is type constrained, can't add new child
    if ( isTypeConstrained() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_HOMOGENEOUS_VIOLATION, "this->pathName=" + this->pathName() );
+      throw E57_EXCEPTION2( ErrorHomogeneousViolation, "this->pathName=" + this->pathName() );
    }
 
-   /// Check if we are at bottom level
+   // Check if we are at bottom level
    if ( level == fields.size() - 1 )
    {
-      /// At bottom, so append node at end of children
+      // At bottom, so append node at end of children
       ni->setParent( shared_from_this(), fields.at( level ) );
       children_.push_back( ni );
    }
    else
    {
-      /// Not at bottom level, if not autoPathCreate have an error
+      // Not at bottom level, if not autoPathCreate have an error
       if ( !autoPathCreate )
       {
-         throw E57_EXCEPTION2( E57_ERROR_PATH_UNDEFINED,
-                               "this->pathName=" + this->pathName() + " field=" + fields.at( level ) );
+         throw E57_EXCEPTION2( ErrorPathUndefined, "this->pathName=" + this->pathName() +
+                                                      " field=" + fields.at( level ) );
       }
       //??? what if extra fields are numbers?
 
-      /// Do autoPathCreate: Create nested Struct objects for extra field names
-      /// in path
+      // Do autoPathCreate: Create nested Struct objects for extra field names in path
       NodeImplSharedPtr parent( shared_from_this() );
       for ( ; level != fields.size() - 1; level++ )
       {
@@ -363,18 +359,18 @@ void StructureNodeImpl::set( const std::vector<ustring> &fields, unsigned level,
 
 void StructureNodeImpl::append( NodeImplSharedPtr ni )
 {
-   /// don't checkImageFileOpen, set() will do it
+   // don't checkImageFileOpen, set() will do it
 
-   /// Create new node at end of list with integer field name
+   // Create new node at end of list with integer field name
    set( childCount(), ni );
 }
 
 //??? use visitor?
 void StructureNodeImpl::checkLeavesInSet( const StringSet &pathNames, NodeImplSharedPtr origin )
 {
-   /// don't checkImageFileOpen
+   // don't checkImageFileOpen
 
-   /// Not a leaf node, so check all our children
+   // Not a leaf node, so check all our children
    for ( auto &child : children_ )
    {
       child->checkLeavesInSet( pathNames, origin );
@@ -382,12 +378,13 @@ void StructureNodeImpl::checkLeavesInSet( const StringSet &pathNames, NodeImplSh
 }
 
 //??? use visitor?
-void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent, const char *forcedFieldName )
+void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
+                                  const char *forcedFieldName )
 {
-   /// don't checkImageFileOpen
+   // don't checkImageFileOpen
 
    ustring fieldName;
-   if ( forcedFieldName )
+   if ( forcedFieldName != nullptr )
    {
       fieldName = forcedFieldName;
    }
@@ -400,9 +397,9 @@ void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, i
 
    const int numSpaces = indent + static_cast<int>( fieldName.length() ) + 2;
 
-   /// If this struct is the root for the E57 file, add name space declarations
-   /// Note the prototype of a CompressedVector is a separate tree, so don't
-   /// want to write out namespaces if not the ImageFile root
+   // If this struct is the root for the E57 file, add name space declarations. Note the prototype
+   // of a CompressedVector is a separate tree, so don't want to write out namespaces if not the
+   // ImageFile root
    if ( isRoot() && shared_from_this() == imf->root() )
    {
       bool gotDefaultNamespace = false;
@@ -426,38 +423,37 @@ void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, i
             << imf->extensionsUri( index ) << "\"";
       }
 
-      /// If user didn't explicitly declare a default namespace, use the current
-      /// E57 standard one.
+      // If user didn't explicitly declare a default namespace, use the current E57 standard one.
       if ( !gotDefaultNamespace )
       {
-         cf << "\n" << space( numSpaces ) << "xmlns=\"" << E57_V1_0_URI << "\"";
+         cf << "\n" << space( numSpaces ) << "xmlns=\"" << VERSION_1_0_URI << "\"";
       }
    }
    if ( !children_.empty() )
    {
       cf << ">\n";
 
-      /// Write all children nested inside Structure element
+      // Write all children nested inside Structure element
       for ( auto &child : children_ )
       {
          child->writeXml( imf, cf, indent + 2 );
       }
 
-      /// Write closing tag
+      // Write closing tag
       cf << space( indent ) << "</" << fieldName << ">\n";
    }
    else
    {
-      /// XML element has no child elements
+      // XML element has no child elements
       cf << "/>\n";
    }
 }
 
 //??? use visitor?
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void StructureNodeImpl::dump( int indent, std::ostream &os ) const
 {
-   /// don't checkImageFileOpen
+   // don't checkImageFileOpen
    os << space( indent ) << "type:        Structure"
       << " (" << type() << ")" << std::endl;
    NodeImpl::dump( indent, os );

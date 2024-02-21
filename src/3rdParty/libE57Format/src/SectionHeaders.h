@@ -43,8 +43,8 @@ namespace e57
       uint8_t reserved1[7] = {};         // must be zero
       uint64_t sectionLogicalLength = 0; // byte length of whole section
 
-#ifdef E57_DEBUG
-      void dump( int indent = 0, std::ostream &os = std::cout );
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
+      void dump( int indent = 0, std::ostream &os = std::cout ) const;
 #endif
    };
 
@@ -58,9 +58,10 @@ namespace e57
       uint64_t indexPhysicalOffset = 0;  // offset of first index packet
 
       CompressedVectorSectionHeader();
+
       void verify( uint64_t filePhysicalSize = 0 );
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
 #endif
    };

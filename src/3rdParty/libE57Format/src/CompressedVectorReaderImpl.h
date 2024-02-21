@@ -36,8 +36,10 @@ namespace e57
    class CompressedVectorReaderImpl
    {
    public:
-      CompressedVectorReaderImpl( std::shared_ptr<CompressedVectorNodeImpl> ni, std::vector<SourceDestBuffer> &dbufs );
+      CompressedVectorReaderImpl( std::shared_ptr<CompressedVectorNodeImpl> cvi,
+                                  std::vector<SourceDestBuffer> &dbufs );
       ~CompressedVectorReaderImpl();
+
       unsigned read();
       unsigned read( std::vector<SourceDestBuffer> &dbufs );
       void seek( uint64_t recordNumber );
@@ -45,13 +47,15 @@ namespace e57
       std::shared_ptr<CompressedVectorNodeImpl> compressedVectorNode() const;
       void close();
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout );
 #endif
 
    private:
-      void checkImageFileOpen( const char *srcFileName, int srcLineNumber, const char *srcFunctionName ) const;
-      void checkReaderOpen( const char *srcFileName, int srcLineNumber, const char *srcFunctionName ) const;
+      void checkImageFileOpen( const char *srcFileName, int srcLineNumber,
+                               const char *srcFunctionName ) const;
+      void checkReaderOpen( const char *srcFileName, int srcLineNumber,
+                            const char *srcFunctionName ) const;
       void setBuffers( std::vector<SourceDestBuffer> &dbufs ); //???needed?
       uint64_t earliestPacketNeededForInput() const;
 
