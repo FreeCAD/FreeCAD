@@ -73,6 +73,35 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isJointConnectingPartToGround">
+      <Documentation>
+        <UserDocu>
+          Check if a joint is connecting a part to the ground.
+
+          isJointConnectingPartToGround(joint, propName) -> bool
+
+          Args:
+          - joint: document object of the joint to check.
+          - propName: string 'Part1' or 'Part2' of the joint.
+
+          Returns: True if part is connected to ground
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPartGrounded">
+      <Documentation>
+        <UserDocu>
+          Check if a part has a grounded joint.
+
+          isPartGrounded(obj) -> bool
+
+          Args:
+          - obj: document object of the part to check.
+
+          Returns: True if part has grounded joint
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="exportAsASMT">
       <Documentation>
         <UserDocu>

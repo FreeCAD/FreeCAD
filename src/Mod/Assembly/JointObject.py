@@ -314,10 +314,6 @@ class Joint:
 
         if len(current_selection) >= 1:
             joint.Part1 = None
-            if isAssembly:
-                self.part1Connected = assembly.isPartConnected(current_selection[0]["part"])
-            else:
-                self.part1Connected = True
 
             joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
@@ -336,10 +332,6 @@ class Joint:
 
         if len(current_selection) >= 2:
             joint.Part2 = None
-            if isAssembly:
-                self.part2Connected = assembly.isPartConnected(current_selection[1]["part"])
-            else:
-                self.part2Connected = False
 
             joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
@@ -533,7 +525,13 @@ class Joint:
         return self.applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
 
     def flipOnePart(self, joint):
-        if hasattr(self, "part2Connected") and not self.part2Connected:
+        assembly = self.getAssembly(joint)
+        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        part1Grounded = assembly.isPartGrounded(joint.Part1)
+        part2Grounded = assembly.isPartGrounded(joint.Part2)
+        if part2ConnectedByJoint and not part2Grounded:
+            print("flipOnePart if hasattr(self, part2Connected) and not self.part2Connected")
+            print(joint.Part2.Name)
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement2, joint.Object2, joint.Part2
             )
@@ -543,7 +541,9 @@ class Joint:
             jcsPlc = self.flipPlacement(jcsPlc)
             joint.Part2.Placement = globalJcsPlc * jcsPlc.inverse()
 
-        else:
+        elif not part1Grounded:
+            print("flipOnePart else")
+            print(joint.Part1.Name)
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement1, joint.Object1, joint.Part1
             )
@@ -583,8 +583,10 @@ class Joint:
         # we actually don't want to match perfectly the JCS, it is best to match them
         # in the current closest direction, ie either matched or flipped.
         sameDir = self.areJcsSameDir(joint)
-
-        if hasattr(self, "part2Connected") and not self.part2Connected:
+        assembly = self.getAssembly(joint)
+        part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
+        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        if part2ConnectedByJoint:
             if savePlc:
                 self.partMovedByPresolved = joint.Part2
                 self.presolveBackupPlc = joint.Part2.Placement
@@ -600,7 +602,7 @@ class Joint:
             joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
-        elif hasattr(self, "part1Connected") and not self.part1Connected:
+        elif part1ConnectedByJoint:
             if savePlc:
                 self.partMovedByPresolved = joint.Part1
                 self.presolveBackupPlc = joint.Part1.Placement
