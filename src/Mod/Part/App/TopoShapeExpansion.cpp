@@ -49,6 +49,8 @@
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepFilletAPI_MakeChamfer.hxx>
+#include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
@@ -2143,11 +2145,11 @@ TopoShape& TopoShape::makeElementThickSolid(const TopoShape& shape,
 
     // we do not offer tangent join type
     switch (join) {
-        case JoinType::Arc:
-        case JoinType::Intersection:
+        case JoinType::arc:
+        case JoinType::intersection:
             break;
         default:
-            join = JoinType::Intersection;
+            join = JoinType::intersection;
     }
 
     if (shape.isNull()) {
@@ -2593,6 +2595,80 @@ struct MapperThruSections: MapperMaker
         return _res;
     }
 };
+
+TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
+                                        const std::vector<TopoShape>& edges,
+                                        double radius1,
+                                        double radius2,
+                                        const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Fillet;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (edges.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    BRepFilletAPI_MakeFillet mkFillet(shape.getShape());
+    for (auto& e : edges) {
+        if (e.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        const auto& edge = e.getShape();
+        if (!shape.findShape(edge)) {
+            FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
+        }
+        mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
+    }
+    return makeElementShape(mkFillet, shape, op);
+}
+
+TopoShape& TopoShape::makeElementChamfer(const TopoShape& shape,
+                                         const std::vector<TopoShape>& edges,
+                                         double radius1,
+                                         double radius2,
+                                         const char* op,
+                                         Flip flipDirection,
+                                         AsAngle asAngle)
+{
+    if (!op) {
+        op = Part::OpCodes::Chamfer;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (edges.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    BRepFilletAPI_MakeChamfer mkChamfer(shape.getShape());
+    for (auto& e : edges) {
+        const auto& edge = e.getShape();
+        if (e.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        if (!shape.findShape(edge)) {
+            FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
+        }
+        // Add edge to fillet algorithm
+        TopoDS_Shape face;
+        if (flipDirection == Flip::flip) {
+            face = shape.findAncestorsShapes(edge, TopAbs_FACE).back();
+        }
+        else {
+            face = shape.findAncestorShape(edge, TopAbs_FACE);
+        }
+        if (asAngle == AsAngle::yes) {
+            mkChamfer.AddDA(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        }
+        else {
+            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        }
+    }
+    return makeElementShape(mkChamfer, shape, op);
+}
 
 TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shapes,
                                              std::vector<std::vector<TopoShape>>& modifies,
