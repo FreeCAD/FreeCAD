@@ -149,18 +149,18 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
         return false;
     }
 
-    auto handler = getGeometryHandler(mod);
+    auto handler = getGeometryHandlerCB(mod);
     std::string obName = static_cast<std::string>(ob->getNameInDocument());
 
     auto info = handler(&obName, &subName);
-    if (!info.valid) {
+    if (!info->valid) {
         return false;
     }
 
-    rShape = info.shape;
+    auto distanceInfo = static_cast<MeasureDistanceInfo*>(info);
+    rShape = distanceInfo->shape;
     return true;
 }
-
 
 App::DocumentObjectExecReturn *MeasureDistance::execute()
 {

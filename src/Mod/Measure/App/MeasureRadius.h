@@ -33,13 +33,19 @@
 #include <Base/Placement.h>
 
 #include "MeasureBase.h"
+#include "MeasureInfo.h"
+
 
 namespace Measure
 {
 
-struct MeasureRadiusInfo {
-    bool valid;
-    double radius;
+class MeasureExport MeasureRadiusInfo : public MeasureInfo {
+public:
+    MeasureRadiusInfo() = default;
+    MeasureRadiusInfo(bool val, double rad, Base::Vector3d point, Base::Placement plm) { valid = val; radius = rad; pointOnCurve = point;  placement = plm;};
+    ~MeasureRadiusInfo() = default;
+
+    double radius{};
     Base::Vector3d pointOnCurve;
     Base::Placement placement;  // curve center & circle orientation
 };

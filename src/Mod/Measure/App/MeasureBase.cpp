@@ -71,8 +71,8 @@ std::vector<App::DocumentObject*> MeasureBase::getSubject() const {
 
     Py::Sequence retTuple(ret);
     std::vector<App::DocumentObject*> retVec;
-    for (Py::Object o : retTuple) {
-        retVec.push_back(static_cast<App::DocumentObjectPy*>(o.ptr())->getDocumentObjectPtr());
+    for (Py::Object obj : retTuple) {
+        retVec.push_back(static_cast<App::DocumentObjectPy*>(obj.ptr())->getDocumentObjectPtr());
     }
 
     return retVec;
@@ -127,8 +127,8 @@ std::vector<std::string> MeasureBase::getInputProps() {
 
     // Get cpp vector from propsPy
     std::vector<std::string> props;
-    for (Py::Object o : propsPy) {
-        props.push_back(o.as_string());
+    for (Py::Object obj : propsPy) {
+        props.push_back(obj.as_string());
     }
 
     return props;
@@ -178,17 +178,25 @@ Base::Placement MeasureBase::getPlacement() {
     return this->Placement.getValue();
 }
 
-//namespace Measure {
-template <typename T>
-typename Measure::MeasureBaseExtendable<T>::HandlerMap* Measure::MeasureBaseExtendable<T>::Map()
-{
-    if (m_mapLink) {
-        return m_mapLink;
-    }
-    m_mapLink = new HandlerMap();
-    return m_mapLink;
-}
-//}
+// MeasureBase::HandlerMap* MeasureBase::Map()
+// {
+//     if (m_mapLink) {
+//         return m_mapLink;
+//     }
+//     m_mapLink = new HandlerMap();
+//     return m_mapLink;
+// }
+
+// template<typename T>
+// typename MeasureBaseExtendable<T>::HandlerMap* MeasureBaseExtendable<T>::Map()
+// {
+//     if (MeasureBaseExtendable<T>::m_mapLink) {
+//         return MeasureBaseExtendable<T>::m_mapLink;
+//     }
+//     MeasureBaseExtendable<T>::m_mapLink = new MeasureBaseExtendable<T>::HandlerMap();
+//     return MeasureBaseExtendable<T>::m_mapLink;
+// }
+
 
 
 // Python Drawing feature ---------------------------------------------------------
@@ -196,7 +204,7 @@ typename Measure::MeasureBaseExtendable<T>::HandlerMap* Measure::MeasureBaseExte
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Measure::MeasurePython, Measure::MeasureBase)
-template<> const char* Measure::MeasurePython::getViewProviderName(void) const {
+template<> const char* Measure::MeasurePython::getViewProviderName() const {
     return "MeasureGui::ViewProviderMeasure";
 }
 template<> PyObject* Measure::MeasurePython::getPyObject() {
@@ -211,5 +219,4 @@ template<> PyObject* Measure::MeasurePython::getPyObject() {
 // explicit template instantiation
 template class MeasureExport FeaturePythonT<Measure::MeasureBase>;
 }
-
 

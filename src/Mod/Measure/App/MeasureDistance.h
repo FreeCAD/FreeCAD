@@ -39,14 +39,20 @@
 #include <App/PropertyUnits.h>
 
 #include "MeasureBase.h"
+#include "MeasureInfo.h"
+
 
 namespace Measure
 {
 
 // Translate geometry reference into an OCC type
-struct MeasureDistanceInfo {
-    bool valid;
-    TopoDS_Shape shape;
+class MeasureExport MeasureDistanceInfo : public MeasureInfo {
+public:
+    MeasureDistanceInfo() = default;
+    MeasureDistanceInfo(bool val, TopoDS_Shape shp) { valid = val; shape = shp;};
+    ~MeasureDistanceInfo() = default;
+
+    TopoDS_Shape shape{};
 };
 
 

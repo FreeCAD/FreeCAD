@@ -204,13 +204,15 @@ MeasureRadiusInfo MeasureRadius::getMeasureInfoFirst() const
     const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
     const std::string& mod = object->getClassTypeId().getModuleName(className);
 
-    auto handler = getGeometryHandler(mod);
+    auto handler = getGeometryHandlerCB(mod);
     if (!handler) {
         throw Base::RuntimeError("No geometry handler available for submitted element type");
     }
 
     std::string obName = object->getNameInDocument();
-    return handler(&obName, &subElement);
+    auto info = handler(&obName, &subElement);
+    auto radiusInfo = static_cast<MeasureRadiusInfo*>(info);
+    return *radiusInfo;
 }
 
 //! Return the object we are measuring

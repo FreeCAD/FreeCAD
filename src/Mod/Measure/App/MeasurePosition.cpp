@@ -123,14 +123,15 @@ void MeasurePosition::recalculatePosition()
     // Get the Geometry handler based on the module
     const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
     const std::string& mod = object->getClassTypeId().getModuleName(className);
-    auto handler = getGeometryHandler(mod);
+    auto handler = getGeometryHandlerCB(mod);
     if (!handler) {
         throw Base::RuntimeError("No geometry handler available for submitted element type");
     }
 
     std::string obName = object->getNameInDocument();
-    auto result = handler(&obName, &subElement);
-    Position.setValue(result);
+    auto info = handler(&obName, &subElement);
+    auto positionInfo = static_cast<MeasurePositionInfo*>(info);
+    Position.setValue(positionInfo->position);
 }
 
 void MeasurePosition::onChanged(const App::Property* prop)

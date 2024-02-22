@@ -131,13 +131,15 @@ void MeasureLength::recalculateLength()
         // Get the Geometry handler based on the module
         const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
         const std::string& mod = object->getClassTypeId().getModuleName(className);
-        auto handler = getGeometryHandler(mod);
+        auto handler = getGeometryHandlerCB(mod);
         if (!handler) {
             throw Base::RuntimeError("No geometry handler available for submitted element type");
         }
 
         std::string obName = object->getNameInDocument();
-        result += handler(&obName, &subElement).length;
+        auto info =  handler(&obName, &subElement);
+        auto lengthInfo = static_cast<MeasureLengthInfo*>(info);
+        result += lengthInfo->length;
     }
 
     Length.setValue(result);
@@ -161,7 +163,7 @@ Base::Placement MeasureLength::getPlacement() {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
-    if (!objects.size() || !subElements.size()) {
+    if (objects.empty() || !subElements.empty()) {
         return Base::Placement();
     }
 
@@ -170,13 +172,15 @@ Base::Placement MeasureLength::getPlacement() {
     const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
     const std::string& mod = object->getClassTypeId().getModuleName(className);
 
-    auto handler = getGeometryHandler(mod);
+    auto handler = getGeometryHandlerCB(mod);
     if (!handler) {
         throw Base::RuntimeError("No geometry handler available for submitted element type");
     }
 
     std::string obName = object->getNameInDocument();
-    return handler(&obName, &subElement).placement;
+    auto info = handler(&obName, &subElement);
+    auto lengthInfo = static_cast<MeasureLengthInfo*>(info);
+    return lengthInfo->placement;
 }
 
 
@@ -192,3 +196,5 @@ namespace Measure {
 // explicit template instantiation
 template class MeasureExport MeasureBaseExtendable<MeasureLengthInfo>;
 }
+
+

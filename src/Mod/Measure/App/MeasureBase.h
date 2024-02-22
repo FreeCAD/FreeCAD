@@ -37,6 +37,7 @@
 #include <Base/Interpreter.h>
 #include <App/FeaturePython.h>
 
+#include "MeasureInfo.h"
 
 namespace Measure
 {
@@ -82,15 +83,13 @@ protected:
 // Create a scriptable object based on MeasureBase
 using MeasurePython = App::FeaturePythonT<MeasureBase>;
 
-template <typename T>
+template <class T>
 class MeasureExport MeasureBaseExtendable : public MeasureBase
 {
-
-    using GeometryHandlerCB = std::function<T (std::string*, std::string*)>;
-    using HandlerMap = std::map<std::string, GeometryHandlerCB>;
-
-
 public:
+    using GeometryHandlerCB = std::function<MeasureInfo* (std::string*, std::string*)>;
+    using HandlerMap = std::map<std::string, GeometryHandlerCB>;
+    using HandlerMapPtr = HandlerMap*;
 
     //! create or replace the callback for a module
     static void addGeometryHandlerCB(const std::string& module, GeometryHandlerCB callback) {
@@ -102,7 +101,7 @@ public:
         // TODO: this will replace a callback with a later one.  Should we check that there isn't already a
         // handler defined for this module?
         for (auto& mod : modules) {
-            (*MeasureBaseExtendable<T>::Map())[mod] = callback;
+            (*Map())[mod] = callback;
         }
     }
 
@@ -112,23 +111,32 @@ public:
             return {};
         }
 
-        return (*MeasureBaseExtendable<T>::Map()) [module];
+        return (*Map()) [module];
     }
 
     static bool hasGeometryHandler(const std::string& module) {
-        return ((*MeasureBaseExtendable<T>::Map()).count(module) > 0);
+        return ((*Map()).count(module) > 0);
     }
 
-    static MeasureBaseExtendable<T>::HandlerMap* Map();
+    static MeasureBaseExtendable<T>::HandlerMap* m_mapLink;
 
-    // static HandlerMap _mGeometryHandlers;
-    static HandlerMap* m_mapLink;
+    static MeasureBaseExtendable<T>::HandlerMap* Map() {
+    if (MeasureBaseExtendable<T>::m_mapLink) {
+        return MeasureBaseExtendable<T>::m_mapLink;
+    }
+    MeasureBaseExtendable<T>::m_mapLink = new MeasureBaseExtendable<T>::HandlerMap();
+    return MeasureBaseExtendable<T>::m_mapLink;
+}
+
 
 private:
     // static HandlerMap _mGeometryHandlers;
     // static HandlerMap* m_mapLink;
 };
 
+template <class T> typename MeasureBaseExtendable<T>::HandlerMap* MeasureBaseExtendable<T>::m_mapLink;
+
+//template MeasureBaseExtendable<
 // template <typename T>
 // typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers;
 

@@ -36,12 +36,22 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 #include "MeasureBase.h"
+#include "MeasureInfo.h"
+
 
 namespace Measure
 {
 
+class MeasureExport MeasurePositionInfo : public MeasureInfo {
+public:
+    MeasurePositionInfo() = default;
+    MeasurePositionInfo(bool val, Base::Vector3d pos) { valid = val; position = pos;};
+    ~MeasurePositionInfo() = default;
 
-class MeasureExport MeasurePosition : public Measure::MeasureBaseExtendable<Base::Vector3d>
+    Base::Vector3d position{0.0, 09.0, 0.0};
+};
+
+class MeasureExport MeasurePosition : public Measure::MeasureBaseExtendable<MeasurePositionInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasurePosition);
 

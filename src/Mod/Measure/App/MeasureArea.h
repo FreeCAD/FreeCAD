@@ -44,14 +44,20 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "MeasureBase.h"
+#include "MeasureInfo.h"
+
 
 namespace Measure
 {
 
-struct MeasureAreaInfo {
-    bool valid;
-    double area;
-    Base::Placement placement;
+class MeasureExport MeasureAreaInfo : public MeasureInfo {
+public:
+    MeasureAreaInfo() = default;
+    MeasureAreaInfo(bool val, double a2, Base::Placement plm) { valid = val; area = a2; placement = plm;};
+    ~MeasureAreaInfo() = default;
+
+    double area{0};
+    Base::Placement placement{};
 };
 
 

@@ -24,18 +24,24 @@
 #define PART_MEASURE_H
 
 #include <Mod/Part/PartGlobal.h>
+#include <functional>
+#include <string>
+#include <vector>
 
+#include <Mod/Measure/App/MeasureInfo.h>
 
+using CallbackItem = std::function<typename Measure::MeasureInfo* (std::string*, std::string*)>;
 
 namespace Part
 {
 
 
-class PartExport Measure
+class PartExport MeasureClient
 {
 public:
 
     static void initialize();
+
     static void registerMeasureHandlers();
 
 };

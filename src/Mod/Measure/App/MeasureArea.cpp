@@ -131,13 +131,15 @@ void MeasureArea::recalculateArea()
         // Get the Geometry handler based on the module
         const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
         const std::string& mod = object->getClassTypeId().getModuleName(className);
-        auto handler = getGeometryHandler(mod);
+        auto handler = getGeometryHandlerCB(mod);
         if (!handler) {
             throw Base::RuntimeError("No geometry handler available for submitted element type");
         }
 
         std::string obName = object->getNameInDocument();
-        result += handler(&obName, &subElement).area;
+        auto info = handler(&obName, &subElement);
+        auto areaInfo = static_cast<MeasureAreaInfo*>(info);
+        result += areaInfo->area;
     }
 
     Area.setValue(result);
@@ -170,13 +172,15 @@ Base::Placement MeasureArea::getPlacement() {
     const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
     const std::string& mod = object->getClassTypeId().getModuleName(className);
 
-    auto handler = getGeometryHandler(mod);
+    auto handler = getGeometryHandlerCB(mod);
     if (!handler) {
         throw Base::RuntimeError("No geometry handler available for submitted element type");
     }
 
     std::string obName = object->getNameInDocument();
-    return handler(&obName, &subElement).placement;
+    auto info = handler(&obName, &subElement);
+    auto areaInfo = static_cast<MeasureAreaInfo*>(info);
+    return areaInfo->placement;
 }
 
 

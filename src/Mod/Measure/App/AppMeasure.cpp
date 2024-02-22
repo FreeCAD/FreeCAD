@@ -25,6 +25,8 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include <Mod/Part/App/MeasureClient.h>
+
 #include "Measurement.h"
 #include "MeasurementPy.h"
 
@@ -137,6 +139,8 @@ PyMOD_INIT_FUNC(Measure)
             MeasureRadius::isValidSelection,
             MeasureRadius::isPrioritizedSelection
         );
+
+    Part::MeasureClient::registerMeasureHandlers();
 
     Base::Console().Log("Loading Measure module... done\n");
     PyMOD_Return(mod);

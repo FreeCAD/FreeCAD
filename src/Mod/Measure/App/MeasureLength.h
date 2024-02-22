@@ -27,7 +27,7 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <functional>
-#include <string.h>
+#include <string>
 #include <map>
 #include <tuple>
 
@@ -44,17 +44,24 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "MeasureBase.h"
+#include "MeasureInfo.h"
+
 
 namespace Measure
 {
 
-struct MeasureLengthInfo {
-    bool valid;
-    double length;
-    Base::Placement placement;
+class MeasureExport MeasureLengthInfo : public MeasureInfo {
+public:
+    MeasureLengthInfo() = default;
+    MeasureLengthInfo(bool val, double len, Base::Placement plm) { valid = val; length = len; placement = plm;};
+    ~MeasureLengthInfo() = default;
+
+    double length{};
+    Base::Placement placement{};
 };
 
-
+// we need this MeasureExport to evaluate to FREECAD_DECL_EXPORT when building MeasureLength
+// and FREECAD_DECL_IMPORT when building anything else?
 class MeasureExport MeasureLength : public Measure::MeasureBaseExtendable<MeasureLengthInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureLength);
@@ -81,7 +88,7 @@ public:
     App::Property* getResultProp() override {return &this->Length;}
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement();
+    Base::Placement getPlacement() override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
@@ -92,10 +99,6 @@ private:
 
 };
 
-// template <typename T>
-// typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers = 0;
-//MeasureLength::HandlerMap _mGeometryHandlers = HandlerMap();
-// Measure::MeasureBaseExtendable<Measure::MeasureLengthInfo>::HandlerMap _mGeometryHandlers =
 
 } //namespace Measure
 
