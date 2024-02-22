@@ -38,29 +38,27 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
-def activeAssembly():
+def activePartOrAssembly():
     doc = Gui.ActiveDocument
 
     if doc is None or doc.ActiveView is None:
         return None
 
-    active_assembly = doc.ActiveView.getActiveObject("part")
+    return doc.ActiveView.getActiveObject("part")
 
-    if active_assembly is not None and active_assembly.Type == "Assembly":
+
+def activeAssembly():
+    active_assembly = activePartOrAssembly()
+    if active_assembly is not None and active_assembly.isDerivedFrom("Assembly::AssemblyObject"):
         return active_assembly
 
     return None
 
 
 def activePart():
-    doc = Gui.ActiveDocument
+    active_part = activePartOrAssembly()
 
-    if doc is None or doc.ActiveView is None:
-        return None
-
-    active_part = doc.ActiveView.getActiveObject("part")
-
-    if active_part is not None and active_part.Type != "Assembly":
+    if active_part is not None and not active_part.isDerivedFrom("Assembly::AssemblyObject"):
         return active_part
 
     return None

@@ -83,7 +83,7 @@ class CommandCreateJointFixed:
         }
 
     def IsActive(self):
-        if UtilsAssembly.activePart:
+        if UtilsAssembly.activePart() is not None:
             return UtilsAssembly.assembly_has_at_least_n_parts(2)
 
         return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
