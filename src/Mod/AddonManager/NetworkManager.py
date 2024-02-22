@@ -502,7 +502,6 @@ if HAVE_QTNETWORK:
                         current_index = index
                         break
 
-                sender.abort()
                 if current_index != -1:
                     self.__launch_request(current_index, self.__create_get_request(url, timeout_ms))
 
@@ -579,7 +578,7 @@ if HAVE_QTNETWORK:
                 return
 
             response_code = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if response_code == 301:  # Permanently moved -- this is a redirect, bail out
+            if response_code == 301 or response_code == 302:  # This is a redirect, bail out
                 return
             if reply.error() != QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
                 # It this was not a timeout, make sure we mark the queue task done

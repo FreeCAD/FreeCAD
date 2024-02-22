@@ -93,9 +93,9 @@ class PackageList(QtWidgets.QWidget):
         self.set_view_style(style)
         self.ui.view_bar.view_selector.set_current_view(style)
 
-        self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
-        self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
-        self.item_filter.setHideNonOSIApproved(pref.GetBool("HideNonOSIApproved", True))
+        self.item_filter.setHidePy2(pref.GetBool("HidePy2", False))
+        self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", False))
+        self.item_filter.setHideNonOSIApproved(pref.GetBool("HideNonOSIApproved", False))
         self.item_filter.setHideNonFSFLibre(pref.GetBool("HideNonFSFFreeLibre", False))
         self.item_filter.setHideNewerFreeCADRequired(
             pref.GetBool("HideNewerFreeCADRequired", False)
