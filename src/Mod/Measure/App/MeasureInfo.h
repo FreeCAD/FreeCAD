@@ -36,7 +36,7 @@ class MeasureExport MeasureInfo {
 public:
     MeasureInfo() = default;
     MeasureInfo(bool val) { valid = val; };
-    virtual ~MeasureInfo() = default;
+    virtual ~MeasureInfo() = default;           // virtual to make class polymorphic
 
     bool valid{false};
 };

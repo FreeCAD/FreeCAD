@@ -163,7 +163,7 @@ Base::Placement MeasureLength::getPlacement() {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
-    if (objects.empty() || !subElements.empty()) {
+    if (objects.empty() || subElements.empty()) {
         return Base::Placement();
     }
 
