@@ -1342,7 +1342,8 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEMirror(const TopoShape &source, const gp_Ax2& axis, const char *op=nullptr);
+    TopoShape&
+    makeElementMirror(const TopoShape& source, const gp_Ax2& axis, const char* op = nullptr);
     /** Make a mirrored shape
      *
      * @param source: the source shape
@@ -1352,15 +1353,16 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makEMirror(const gp_Ax2& ax, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makEMirror(*this,ax,op);
+    TopoShape makeElementMirror(const gp_Ax2& ax, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementMirror(*this, ax, op);
     }
 
     /** Make a cross section slice
      *
      * @param source: the source shape
      * @param dir: direction of the normal of the section plane
-     * @param d: distance to move the section plane
+     * @param distance: distance to move the section plane
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
@@ -1369,19 +1371,23 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makESlice(const TopoShape &source, const Base::Vector3d& dir, double d, const char *op=nullptr);
+    TopoShape& makeElementSlice(const TopoShape& source,
+                                const Base::Vector3d& dir,
+                                double distance,
+                                const char* op = nullptr);
     /** Make a cross section slice
      *
      * @param source: the source shape
      * @param dir: direction of the normal of the section plane
-     * @param d: distance to move the section plane
+     * @param distance: distance to move the section plane
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makESlice(const Base::Vector3d& dir, double d, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makESlice(*this,dir,d,op);
+    TopoShape makeElementSlice(const Base::Vector3d& dir, double distance, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementSlice(*this, dir, distance, op);
     }
 
     /** Make multiple cross section slices
@@ -1397,8 +1403,10 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makESlices(const TopoShape &source, const Base::Vector3d& dir,
-                          const std::vector<double> &distances, const char *op=nullptr);
+    TopoShape& makeElementSlices(const TopoShape& source,
+                                 const Base::Vector3d& dir,
+                                 const std::vector<double>& distances,
+                                 const char* op = nullptr);
     /** Make multiple cross section slices
      *
      * @param source: the source shape
@@ -1409,8 +1417,11 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makESlices(const Base::Vector3d &dir, const std::vector<double> &distances, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makESlices(*this,dir,distances,op);
+    TopoShape makeElementSlices(const Base::Vector3d& dir,
+                                const std::vector<double>& distances,
+                                const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementSlices(*this, dir, distances, op);
     }
 
     /* Make fillet shape

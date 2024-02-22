@@ -1612,7 +1612,7 @@ TEST_F(TopoShapeExpansionTest, makeElementChamfer)
     // Act
     cube1TS.makeElementChamfer({cube1TS}, edges, .05, .05);
     auto elements = elementMap(cube1TS);
-    // Assert
+    // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
     EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.640996);
     // Assert that we're creating a correct element map
@@ -1729,7 +1729,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFillet)
     // Act
     cube1TS.makeElementFillet({cube1TS}, edges, .05, .05);
     auto elements = elementMap(cube1TS);
-    // Assert
+    // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
     EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.739646);
     // Assert that we're creating a correct element map
@@ -1843,6 +1843,115 @@ TEST_F(TopoShapeExpansionTest, makeElementFillet)
                                   "Vertex8;:G;FLT;:H1:7,F",
                                   "Vertex8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
                               }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementSlice)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();  // TopoShape version works too
+    TopoShape cube1TS {cube1};               // Adding a tag here only adds text in each mapped name
+    auto faces = cube1TS.getSubShapes(TopAbs_FACE);
+    TopoShape slicer {faces[0]};
+    Base::Vector3d direction {1.0, 0.0, 0.0};
+    // Act
+    auto& result = slicer.makeElementSlice(cube1TS, direction, 0.5);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getLength(result.getShape()), 4);
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, result.getShape().ShapeType());
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_TRUE(allElementsMatch(result,
+                                 {
+                                     "Edge1;SLC;D1;MAK",
+                                     "Edge1;SLC;D2;MAK",
+                                     "Edge1;SLC;D3;MAK",
+                                     "Edge1;SLC;MAK",
+                                     "Vertex1;SLC;D1;MAK",
+                                     "Vertex1;SLC;D2;MAK",
+                                     "Vertex1;SLC;MAK",
+                                     "Vertex2;SLC;D1;MAK",
+                                     "Vertex2;SLC;D2;MAK",
+                                     "Vertex2;SLC;MAK",
+                                 }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementSlices)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto faces = cube1TS.getSubShapes(TopAbs_FACE);
+    TopoShape slicer {faces[0]};
+    Base::Vector3d direction {1.0, 0.0, 0.0};
+    // Act
+    auto& result = slicer.makeElementSlices(cube1TS, direction, {0.25, 0.5, 0.75});
+    auto subTopoShapes = result.getSubTopoShapes(TopAbs_WIRE);
+    // Assert shape is correct
+    EXPECT_EQ(result.countSubElements("Wire"), 3);
+    EXPECT_FLOAT_EQ(getLength(result.getShape()), 12);
+    EXPECT_FLOAT_EQ(getLength(subTopoShapes[0].getShape()), 4);
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_COMPOUND, result.getShape().ShapeType());
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, subTopoShapes[0].getShape().ShapeType());
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, subTopoShapes[1].getShape().ShapeType());
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, subTopoShapes[2].getShape().ShapeType());
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_TRUE(elementsMatch(result, {"Edge1;SLC;:H1:4,E;D1;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC;:H1:4,E;D2;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC;:H1:4,E;D3;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC;:H1:4,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_2;:H1:6,E;D1;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_2;:H1:6,E;D2;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_2;:H1:6,E;D3;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_2;:H1:6,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_3;:H1:6,E;D1;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_3;:H1:6,E;D2;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_3;:H1:6,E;D3;:H1:3,E;MAK;:H1:4,E",
+                                       "Edge1;SLC_3;:H1:6,E;MAK;:H1:4,E",
+                                       "Vertex1;SLC;:H1:4,V;D2;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex1;SLC;:H1:4,V;MAK;:H1:4,V",
+                                       "Vertex1;SLC_2;:H1:6,V;D2;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex1;SLC_2;:H1:6,V;MAK;:H1:4,V",
+                                       "Vertex1;SLC_3;:H1:6,V;D2;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex1;SLC_3;:H1:6,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC;:H1:4,V;D1;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC;:H1:4,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC_2;:H1:6,V;D1;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC_2;:H1:6,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC_3;:H1:6,V;D1;:H1:3,V;MAK;:H1:4,V",
+                                       "Vertex2;SLC_3;:H1:6,V;MAK;:H1:4,V"}));
+    EXPECT_TRUE(subTopoShapes[0].getElementMap().empty());
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementMirror)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    gp_Ax2 axis {gp_Pnt {0, 0, 0}, gp_Dir {1, 0, 0}};
+    // Act
+    auto& result = cube1TS.makeElementMirror(cube1TS, axis);
+    auto elements = elementMap(cube1TS);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-1, 0, 0, 0, 1, 1)));
+    EXPECT_EQ(result.countSubElements("Wire"), 6);
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_SOLID, result.getShape().ShapeType());
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_TRUE(
+        elementsMatch(result,
+                      {"Edge10;:M;MIR;:H1:7,E",  "Edge11;:M;MIR;:H1:7,E",  "Edge12;:M;MIR;:H1:7,E",
+                       "Edge1;:M;MIR;:H1:7,E",   "Edge2;:M;MIR;:H1:7,E",   "Edge3;:M;MIR;:H1:7,E",
+                       "Edge4;:M;MIR;:H1:7,E",   "Edge5;:M;MIR;:H1:7,E",   "Edge6;:M;MIR;:H1:7,E",
+                       "Edge7;:M;MIR;:H1:7,E",   "Edge8;:M;MIR;:H1:7,E",   "Edge9;:M;MIR;:H1:7,E",
+                       "Face1;:M;MIR;:H1:7,F",   "Face2;:M;MIR;:H1:7,F",   "Face3;:M;MIR;:H1:7,F",
+                       "Face4;:M;MIR;:H1:7,F",   "Face5;:M;MIR;:H1:7,F",   "Face6;:M;MIR;:H1:7,F",
+                       "Vertex1;:M;MIR;:H1:7,V", "Vertex2;:M;MIR;:H1:7,V", "Vertex3;:M;MIR;:H1:7,V",
+                       "Vertex4;:M;MIR;:H1:7,V", "Vertex5;:M;MIR;:H1:7,V", "Vertex6;:M;MIR;:H1:7,V",
+                       "Vertex7;:M;MIR;:H1:7,V", "Vertex8;:M;MIR;:H1:7,V"}));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

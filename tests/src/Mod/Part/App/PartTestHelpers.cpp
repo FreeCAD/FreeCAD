@@ -141,21 +141,23 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
                                        const std::vector<std::string>& names)
 {
     auto elements = shape.getElementMap();
-    if (std::find_first_of(elements.begin(),
-                           elements.end(),
-                           names.begin(),
-                           names.end(),
-                           [&](const Data::MappedElement& element, const std::string& name) {
-                               return element.name.toString() == name;
-                           })
-        == elements.end()) {
-        std::stringstream output;
-        output << "{";
-        for (const auto& element : elements) {
-            output << "\"" << element.name.toString() << "\", ";
+    if (!elements.empty() || !names.empty()) {
+        if (std::find_first_of(elements.begin(),
+                               elements.end(),
+                               names.begin(),
+                               names.end(),
+                               [&](const Data::MappedElement& element, const std::string& name) {
+                                   return element.name.toString() == name;
+                               })
+            == elements.end()) {
+            std::stringstream output;
+            output << "{";
+            for (const auto& element : elements) {
+                output << "\"" << element.name.toString() << "\", ";
+            }
+            output << "}";
+            return testing::AssertionFailure() << output.str();
         }
-        output << "}";
-        return testing::AssertionFailure() << output.str();
     }
     return testing::AssertionSuccess();
 }

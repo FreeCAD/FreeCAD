@@ -49,6 +49,7 @@
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepLib.hxx>
@@ -75,6 +76,7 @@
 #endif
 
 #include "modelRefine.h"
+#include "CrossSection.h"
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeCache.h"
@@ -2596,28 +2598,52 @@ struct MapperThruSections: MapperMaker
     }
 };
 
-TopoShape &TopoShape::makESlice(const TopoShape &shape,
-                                const Base::Vector3d& dir, double d, const char *op)
+TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax2, const char* op)
 {
-    if(shape.isNull())
-        HANDLE_NULL_SHAPE;
-    TopoCrossSection cs(dir.x, dir.y, dir.z,shape,op);
-    TopoShape res = cs.slice(1,d);
+    if (!op) {
+        op = Part::OpCodes::Mirror;
+    }
+
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    gp_Trsf mat;
+    mat.SetMirror(ax2);
+    TopLoc_Location loc = shape.getShape().Location();
+    gp_Trsf placement = loc.Transformation();
+    mat = placement * mat;
+    BRepBuilderAPI_Transform mkTrf(shape.getShape(), mat);
+    return makeElementShape(mkTrf, shape, op);
+}
+
+TopoShape& TopoShape::makeElementSlice(const TopoShape& shape,
+                                       const Base::Vector3d& dir,
+                                       double distance,
+                                       const char* op)
+{
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    TopoCrossSection cs(dir.x, dir.y, dir.z, shape, op);
+    TopoShape res = cs.slice(1, distance);
     setShape(res._Shape);
     Hasher = res.Hasher;
     resetElementMap(res.elementMap());
     return *this;
 }
 
-TopoShape &TopoShape::makESlices(const TopoShape &shape,
-                                 const Base::Vector3d& dir, const std::vector<double> &d, const char *op)
+TopoShape& TopoShape::makeElementSlices(const TopoShape& shape,
+                                        const Base::Vector3d& dir,
+                                        const std::vector<double>& distances,
+                                        const char* op)
 {
     std::vector<TopoShape> wires;
-    TopoCrossSection cs(dir.x, dir.y, dir.z, shape,op);
-    int i=0;
-    for(auto &dd : d)
-        cs.slice(++i,dd,wires);
-    return makECompound(wires,op,false);
+    TopoCrossSection cs(dir.x, dir.y, dir.z, shape, op);
+    int index = 0;
+    for (auto& distance : distances) {
+        cs.slice(++index, distance, wires);
+    }
+    return makeElementCompound(wires, op, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
 TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
@@ -2774,7 +2800,14 @@ TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
                                        const std::vector<TopoShape>& shapes,
                                        const char* op)
 {
-    return makeShapeWithElementMap(mkShape.Shape(), MapperMaker(mkShape), shapes, op);
+    TopoDS_Shape shape;
+    // OCCT 7.3.x requires calling Solid() and not Shape() to function correctly
+    if ( typeid(mkShape) == typeid(BRepPrimAPI_MakeHalfSpace) ) {
+        shape = static_cast<BRepPrimAPI_MakeHalfSpace&>(mkShape).Solid();
+    } else {
+        shape = mkShape.Shape();
+    }
+    return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op);
 }
 
 TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
