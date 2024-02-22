@@ -349,7 +349,7 @@
     <message>
       <location filename="../../SheetModel.cpp" line="546"/>
       <source>Edit cell</source>
-      <translation>Modifier la cellule</translation>
+      <translation>Éditer la cellule</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
@@ -449,14 +449,14 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation>A quelle feuille de calcul se lier</translation>
+      <translation>La feuille de calcul à laquelle se lier</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la
+      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la 
 vérification des dépendances.
 Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
@@ -504,15 +504,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>Adresse de la cellule de démarrage.
+      <translation>Adresse de la cellule de départ.
 
-La première colonne de la plage est supposée contenir une liste de noms
-de configuration, qui sera utilisé pour générer une liste de chaînes de caractères et se lier à la propriété
-donnée pour que l'utilisateur puisse basculer dynamiquement la configuration.
+La première colonne de la plage est supposée contenir une liste de noms de configuration,
+qui sera utilisée pour générer une liste de chaînes et la lier à la propriété donnée pour que
+l'utilisateur puisse changer dynamiquement de configuration.
 
-La première ligne de l'intervalle sera liée à n'importe quelle ligne (indirectement) sélectionnée
-par cette propriété.
-</translation>
+La première ligne de la plage sera liée à n'importe quelle ligne sélectionnée (indirectement)
+par cette propriété.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="42"/>
@@ -527,13 +526,12 @@ by that property.
 </source>
       <translation>Adresse de la cellule de fin.
 
-La première colonne de la plage est supposée contenir une liste de noms
-de configuration, qui sera utilisé pour générer une liste de chaînes de caractères et se lier à la propriété
-donnée pour que l'utilisateur puisse basculer dynamiquement la configuration.
+La première colonne de la plage est supposée contenir une liste de noms de configuration,
+qui sera utilisé pour générer une liste de chaînes de caractères et se lier à la propriété donnée
+pour que l'utilisateur puisse basculer dynamiquement la configuration.
 
 La première ligne de l'intervalle sera liée à n'importe quelle ligne (indirectement) sélectionnée
-par cette propriété.
-</translation>
+par cette propriété.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -544,7 +542,9 @@ par cette propriété.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Saisissez une expression pour spécifier le nom de l'objet et de la propriété pour changer dynamiquement la configuration de la conception. La propriété sera créée si elle n'existe pas.</translation>
+      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela 
+changera dynamiquement la configuration de la conception. La propriété sera
+créée si elle n'existe pas.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -554,7 +554,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation>Nom optionnel du groupe de propriétés.</translation>
+      <translation>Nom facultatif du groupe des propriétés.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -708,7 +708,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Définit la couleur de premier plan de la ou des cellules de la feuille de calcul</translation>
+      <translation>Définir la couleur de premier plan de la ou des cellules de la feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="115"/>
@@ -729,13 +729,14 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../SpreadsheetView.cpp" line="485"/>
       <source>Alias contains invalid characters!</source>
-      <translation>L'alias contient des caractères invalides!</translation>
+      <translation>L'alias contient des caractères invalides !</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="491"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
+      <translation>La cellule est désignée par un alias, par exemple
+Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
@@ -922,7 +923,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation>Si cette case est cochée, utiliser la présentation personnalisée pour afficher la chaîne de caractères dans la cellule.</translation>
+      <translation>Si cette option est cochée, la présentation personnalisée sera utilisée pour afficher la chaîne de caractères dans la cellule.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
@@ -1003,7 +1004,7 @@ Par défaut : %V = %A
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>Insérer %n ligne(s) au-dessus</numerusform>
-        <numerusform>Insérer %n lignes au-dessus</numerusform>
+        <numerusform>Insérer %n ligne(s) au-dessus</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1019,14 +1020,14 @@ Par défaut : %V = %A
       <source>Insert %n non-contiguous rows</source>
       <translation>
         <numerusform>Insérer %n lignes non contiguës</numerusform>
-        <numerusform>Insérer %n lignes non contiguës</numerusform>
+        <numerusform>Insérer %n ligne(s) non contiguë(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
       <translation>
-        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+        <numerusform>Supprimer une ou plusieurs ligne(s)</numerusform>
         <numerusform>Supprimer le(s) ligne(s)</numerusform>
       </translation>
     </message>
@@ -1058,7 +1059,7 @@ Par défaut : %V = %A
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
       <translation>
-        <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
+        <numerusform>Supprimer une ou plusieurs colonne(s)</numerusform>
         <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
       </translation>
     </message>
