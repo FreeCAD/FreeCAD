@@ -145,8 +145,8 @@
 #include "UiLoader.h"
 #include "MetaTypes.h"
 
-#ifdef HAVE_SHIBOKEN
-#ifdef HAVE_SHIBOKEN2
+// NOLINTBEGIN
+#if defined(HAVE_SHIBOKEN2)
 PyTypeObject** SbkPySide2_QtCoreTypes           = nullptr;
 PyTypeObject** SbkPySide2_QtGuiTypes            = nullptr;
 PyTypeObject** SbkPySide2_QtWidgetsTypes        = nullptr;
@@ -157,8 +157,11 @@ constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide2_QtGuiTypes;
 constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide2_QtWidgetsTypes;
 constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide2_QtPrintSupportTypes;
 constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide2_QtUiToolsTypes;
+#if !defined(HAVE_PYSIDE2)
+constexpr const char* ModuleShiboken            = "shiboken2";
+#endif
 constexpr const char* ModulePySide              = "PySide2";
-#else
+#elif defined(HAVE_SHIBOKEN6)
 PyTypeObject** SbkPySide6_QtCoreTypes           = nullptr;
 PyTypeObject** SbkPySide6_QtGuiTypes            = nullptr;
 PyTypeObject** SbkPySide6_QtWidgetsTypes        = nullptr;
@@ -169,8 +172,10 @@ constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide6_QtGuiTypes;
 constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide6_QtWidgetsTypes;
 constexpr auto &SbkPySide_QtPrintSupportTypes   = SbkPySide6_QtPrintSupportTypes;
 constexpr auto &SbkPySide_QtUiToolsTypes        = SbkPySide6_QtUiToolsTypes;
-constexpr const char* ModulePySide              = "PySide6";
+#if !defined(HAVE_PYSIDE6)
+constexpr const char* ModuleShiboken            = "shiboken6";
 #endif
+constexpr const char* ModulePySide              = "PySide6";
 #else
 static PyTypeObject** SbkPySide_DummyTypes;
 constexpr auto &SbkPySide_QtCoreTypes           = SbkPySide_DummyTypes;
@@ -186,6 +191,7 @@ constexpr const char* ModuleShiboken            = "shiboken6";
 constexpr const char* ModulePySide              = "PySide6";
 # endif
 #endif
+// NOLINTEND
 
 using namespace Gui;
 
