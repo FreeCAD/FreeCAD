@@ -32,6 +32,8 @@ elseif ( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
     add_compiler_version()
 elseif ( CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compiler_version()
+else()
+    set(T1_)
 endif()
 
 set( T_ ${T_}-${T1_} )
