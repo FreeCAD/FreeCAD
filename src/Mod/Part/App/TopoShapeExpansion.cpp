@@ -2596,6 +2596,30 @@ struct MapperThruSections: MapperMaker
     }
 };
 
+TopoShape &TopoShape::makESlice(const TopoShape &shape,
+                                const Base::Vector3d& dir, double d, const char *op)
+{
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+    TopoCrossSection cs(dir.x, dir.y, dir.z,shape,op);
+    TopoShape res = cs.slice(1,d);
+    setShape(res._Shape);
+    Hasher = res.Hasher;
+    resetElementMap(res.elementMap());
+    return *this;
+}
+
+TopoShape &TopoShape::makESlices(const TopoShape &shape,
+                                 const Base::Vector3d& dir, const std::vector<double> &d, const char *op)
+{
+    std::vector<TopoShape> wires;
+    TopoCrossSection cs(dir.x, dir.y, dir.z, shape,op);
+    int i=0;
+    for(auto &dd : d)
+        cs.slice(++i,dd,wires);
+    return makECompound(wires,op,false);
+}
+
 TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
                                         const std::vector<TopoShape>& edges,
                                         double radius1,
