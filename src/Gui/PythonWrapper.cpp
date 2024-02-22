@@ -207,7 +207,8 @@ using namespace Gui;
   \endcode
   */
 
-PyObject* toPythonFuncQuantityTyped(Base::Quantity cpx) {
+PyObject* toPythonFuncQuantityTyped(Base::Quantity cpx)
+{
     return new Base::QuantityPy(new Base::Quantity(cpx));
 }
 
@@ -218,13 +219,14 @@ PyObject* toPythonFuncQuantity(const void* cpp)
 
 void toCppPointerConvFuncQuantity(PyObject* pyobj,void* cpp)
 {
-   *((Base::Quantity*)cpp) = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
+   *static_cast<Base::Quantity*>(cpp) = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
 }
 
 PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
 {
-    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
+    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type))) {
         return toCppPointerConvFuncQuantity;
+    }
     return nullptr;
 }
 
@@ -236,8 +238,9 @@ void BaseQuantity_PythonToCpp_QVariant(PyObject* pyIn, void* cppOut)
 
 PythonToCppFunc isBaseQuantity_PythonToCpp_QVariantConvertible(PyObject* obj)
 {
-    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
+    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type))) {
         return BaseQuantity_PythonToCpp_QVariant;
+    }
     return nullptr;
 }
 
@@ -295,8 +298,9 @@ static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& type
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (!types) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import(getPySideModuleName(moduleName).c_str()));
-        if (requiredModule.isNull())
+        if (requiredModule.isNull()) {
             return false;
+        }
         types = Shiboken::Module::getTypes(requiredModule);
     }
 #else
@@ -318,8 +322,9 @@ getPyTypeObjectForTypeName()
 #if defined (HAVE_SHIBOKEN_TYPE_FOR_TYPENAME)
 # if defined (HAVE_SHIBOKEN2)
     auto sbkType = Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
-    if (sbkType)
+    if (sbkType) {
         return reinterpret_cast<SbkObjectType*>&(sbkType->type);
+    }
 # else
     return Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
 # endif
@@ -385,16 +390,20 @@ public:
             PyW_invalidator->setObjectName(PyW_unique_name);
 
             Py_INCREF (pyobj);
-        } else
+        }
+        else {
             PyW_invalidator->disconnect();
+        }
 
         auto destroyedFun = [pyobj](){
             Base::PyGILStateLocker lock;
             auto sbk_ptr = reinterpret_cast <SbkObject *> (pyobj);
-            if (sbk_ptr != nullptr)
+            if (sbk_ptr != nullptr) {
                 Shiboken::Object::setValidCpp(sbk_ptr, false);
-            else
+            }
+            else {
                 Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
+            }
             Py_DECREF (pyobj);
         };
 
@@ -490,8 +499,9 @@ const char* qt_identifyType(QObject* ptr, const std::string& moduleName)
     const QMetaObject* metaObject = ptr->metaObject();
     while (metaObject) {
         const char* className = metaObject->className();
-        if (qtmod.getDict().hasKey(className))
+        if (qtmod.getDict().hasKey(className)) {
             return className;
+        }
         metaObject = metaObject->superClass();
     }
 
@@ -589,8 +599,9 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
     const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
     PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QIcon>(),
                               const_cast<QIcon*>(icon), true, false, typeName);
-    if (pyobj)
+    if (pyobj) {
         return Py::asObject(pyobj);
+    }
 
     throw Py::RuntimeError("Failed to wrap icon");
 #else
@@ -610,8 +621,9 @@ Py::Object PythonWrapper::fromQDir(const QDir& dir)
     const char* typeName = typeid(dir).name();
     PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QDir>(),
         const_cast<QDir*>(&dir), false, false, typeName);
-    if (pyobj)
+    if (pyobj) {
         return Py::asObject(pyobj);
+    }
 #else
     Q_UNUSED(dir)
 #endif
@@ -625,8 +637,9 @@ QDir* PythonWrapper::toQDir(PyObject* pyobj)
 
 Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
 {
-    if (!printer)
+    if (!printer) {
         return Py::None();
+    }
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
     auto type = getPyTypeObjectForTypeName<QPrinter>();
@@ -652,17 +665,21 @@ Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
 
 Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
 {
-    if (!object)
+    if (!object) {
         return Py::None();
+    }
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
     auto type = getPyTypeObjectForTypeName<QObject>();
     if (type) {
         std::string typeName;
-        if (className)
+        if (className) {
             typeName = className;
-        else
+        }
+        else {
             typeName = object->metaObject()->className();
+        }
+
         PyObject* pyobj = Shiboken::Object::newObject(type, object, false, false, typeName.c_str());
         WrapperManager::instance().addQObject(object, pyobj);
         return Py::asObject(pyobj);
@@ -671,10 +688,13 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
 #else
     // Access shiboken/PySide via Python
     std::string typeName;
-    if (className)
+    if (className) {
         typeName = className;
-    else
+    }
+    else {
         typeName = object->metaObject()->className();
+    }
+
     return qt_wrapInstance<QObject*>(object, typeName, "QtCore");
 #endif
 }
@@ -686,10 +706,13 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     auto type = getPyTypeObjectForTypeName<QWidget>();
     if (type) {
         std::string typeName;
-        if (className)
+        if (className) {
             typeName = className;
-        else
+        }
+        else {
             typeName = widget->metaObject()->className();
+        }
+
         PyObject* pyobj = Shiboken::Object::newObject(type, widget, false, false, typeName.c_str());
         WrapperManager::instance().addQObject(widget, pyobj);
         return Py::asObject(pyobj);
@@ -698,10 +721,13 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 #else
     // Access shiboken/PySide via Python
     std::string typeName;
-    if (className)
+    if (className) {
         typeName = className;
-    else
+    }
+    else {
         typeName = widget->metaObject()->className();
+    }
+
     return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets");
 #endif
 }
@@ -713,8 +739,9 @@ const char* PythonWrapper::getWrapperName(QObject* obj) const
     while (meta) {
         const char* typeName = meta->className();
         PyTypeObject* exactType = Shiboken::Conversions::getPythonTypeObject(typeName);
-        if (exactType)
+        if (exactType) {
             return typeName;
+        }
         meta = meta->superClass();
     }
 #else
@@ -723,8 +750,9 @@ const char* PythonWrapper::getWrapperName(QObject* obj) const
     const QMetaObject* meta = obj->metaObject();
     while (meta) {
         const char* typeName = meta->className();
-        if (names.indexOf(QLatin1String(typeName)) >= 0)
+        if (names.indexOf(QLatin1String(typeName)) >= 0) {
             return typeName;
+        }
         meta = meta->superClass();
     }
 #endif
@@ -770,10 +798,12 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
 #else
                 const char* className = qt_identifyType(child, "QtWidgets");
                 if (!className) {
-                    if (qobject_cast<QWidget*>(child))
+                    if (qobject_cast<QWidget*>(child)) {
                         className = "QWidget";
-                    else
+                    }
+                    else {
                         className = "QObject";
+                    }
                 }
 
                 Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets"));
