@@ -97,12 +97,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.form.partList.installEventFilter(self)
 
         pref = Preferences.preferences()
-        self.form.CheckBox_InsertInParts.setChecked(pref.GetBool("InsertInParts", True))
+        self.form.CheckBox_ShowOnlyParts.setChecked(pref.GetBool("InsertShowOnlyParts", False))
 
         # Actions
         self.form.openFileButton.clicked.connect(self.openFiles)
         self.form.partList.itemClicked.connect(self.onItemClicked)
         self.form.filterPartList.textChanged.connect(self.onFilterChange)
+        self.form.CheckBox_ShowOnlyParts.stateChanged.connect(self.buildPartList)
 
         self.allParts = []
         self.partsDoc = []
@@ -137,7 +138,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     def deactivated(self):
         pref = Preferences.preferences()
-        pref.SetBool("InsertInParts", self.form.CheckBox_InsertInParts.isChecked())
+        pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
 
     def buildPartList(self):
         self.allParts.clear()
@@ -163,11 +164,12 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     self.allParts.append(obj)
                     self.partsDoc.append(doc)
 
-            for obj in doc.findObjects("Part::Feature"):
-                # but only those at top level (not nested inside other containers)
-                if obj.getParentGeoFeatureGroup() is None:
-                    self.allParts.append(obj)
-                    self.partsDoc.append(doc)
+            if not self.form.CheckBox_ShowOnlyParts.isChecked():
+                for obj in doc.findObjects("Part::Feature"):
+                    # but only those at top level (not nested inside other containers)
+                    if obj.getParentGeoFeatureGroup() is None:
+                        self.allParts.append(obj)
+                        self.partsDoc.append(doc)
 
         self.form.partList.clear()
         for part in self.allParts:
@@ -232,18 +234,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             if not (msgBox.clickedButton() == saveButton and Gui.ActiveDocument.saveAs()):
                 return
 
-        objectWhereToInsert = self.assembly
-
-        if self.form.CheckBox_InsertInParts.isChecked() and selectedPart.TypeId != "App::Part":
-            objectWhereToInsert = self.assembly.newObject("App::Part", "Part_" + selectedPart.Label)
-
-        createdLink = objectWhereToInsert.newObject("App::Link", selectedPart.Label)
+        createdLink = self.assembly.newObject("App::Link", selectedPart.Label)
         createdLink.LinkedObject = selectedPart
         createdLink.recompute()
 
         addedObject = createdLink
-        if self.form.CheckBox_InsertInParts.isChecked() and selectedPart.TypeId != "App::Part":
-            addedObject = objectWhereToInsert
 
         insertionDict = {}
         insertionDict["item"] = item
