@@ -43,18 +43,18 @@
     </layout>
    </item>
    <item row="3" column="0">
-    <widget class="Gui::PrefCheckBox" name="CheckBox_InsertInParts">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_ShowOnlyParts">
      <property name="toolTip">
-      <string>If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</string>
+      <string>If checked, the list will show only Parts.</string>
      </property>
      <property name="text">
-      <string>Insert as part</string>
+      <string>Show only parts</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="prefEntry" stdset="0">
-      <cstring>InsertInParts</cstring>
+      <cstring>InsertShowOnlyParts</cstring>
      </property>
      <property name="prefPath" stdset="0">
       <cstring>Mod/Assembly</cstring>
