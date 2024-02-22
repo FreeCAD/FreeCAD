@@ -22,8 +22,7 @@
 # ***************************************************************************
 
 """ Defines the PackageList QWidget for displaying a list of Addons. """
-
-from enum import IntEnum
+import datetime
 import threading
 
 import FreeCAD
@@ -37,11 +36,11 @@ from expanded_view import Ui_ExpandedView
 
 import addonmanager_utilities as utils
 from addonmanager_metadata import get_first_supported_freecad_version, Version
-from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar
+from Widgets.addonmanager_widget_view_control_bar import WidgetViewControlBar, SortOptions
 from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
-from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter, ContentFilter
+from Widgets.addonmanager_widget_filter_selector import StatusFilter, Filter
 from Widgets.addonmanager_widget_progress_bar import WidgetProgressBar
-from addonmanager_licenses import get_license_manager, SPDXLicenseManager
+from addonmanager_licenses import get_license_manager
 
 translate = FreeCAD.Qt.translate
 
@@ -69,6 +68,9 @@ class PackageList(QtWidgets.QWidget):
         self.ui.view_bar.view_changed.connect(self.set_view_style)
         self.ui.view_bar.filter_changed.connect(self.update_status_filter)
         self.ui.view_bar.search_changed.connect(self.item_filter.setFilterRegularExpression)
+        self.ui.view_bar.sort_changed.connect(self.item_filter.setSortRole)
+        self.ui.view_bar.sort_changed.connect(self.item_delegate.set_sort)
+        self.ui.view_bar.sort_order_changed.connect(lambda order: self.item_filter.sort(0, order))
 
         # Set up the view the same as the last time:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -86,7 +88,8 @@ class PackageList(QtWidgets.QWidget):
         """This is a model-view-controller widget: set its model."""
         self.item_model = model
         self.item_filter.setSourceModel(self.item_model)
-        self.item_filter.sort(0)
+        self.item_filter.setSortRole(SortOptions.Alphabetical)
+        self.item_filter.sort(0, QtCore.Qt.AscendingOrder)
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         style = pref.GetInt("ViewStyle", AddonManagerDisplayStyle.EXPANDED)
@@ -141,8 +144,6 @@ class PackageListItemModel(QtCore.QAbstractListModel):
     write_lock = threading.Lock()
 
     DataAccessRole = QtCore.Qt.UserRole
-    StatusUpdateRole = QtCore.Qt.UserRole + 1
-    IconUpdateRole = QtCore.Qt.UserRole + 2
 
     def rowCount(self, parent: QtCore.QModelIndex = QtCore.QModelIndex()) -> int:
         """The number of rows"""
@@ -179,29 +180,28 @@ class PackageListItemModel(QtCore.QAbstractListModel):
         if role == PackageListItemModel.DataAccessRole:
             return self.repos[row]
 
+        # Sorting
+        if role == SortOptions.Alphabetical:
+            return self.repos[row].display_name
+        if role == SortOptions.LastUpdated:
+            update_date = self.repos[row].update_date
+            if update_date and hasattr(update_date, "timestamp"):
+                return update_date.timestamp()
+            return 0
+        if role == SortOptions.DateAdded:
+            if self.repos[row].stats and self.repos[row].stats.date_created:
+                return self.repos[row].stats.date_created.timestamp()
+            return 0
+        if role == SortOptions.Stars:
+            if self.repos[row].stats and self.repos[row].stats.stars:
+                return self.repos[row].stats.stars
+            return 0
+        if role == SortOptions.Rank:
+            return len(self.repos[row].display_name)
+
     def headerData(self, _unused1, _unused2, _role=QtCore.Qt.DisplayRole):
         """No header in this implementation: always returns None."""
         return None
-
-    def setData(self, index: QtCore.QModelIndex, value, role=QtCore.Qt.EditRole) -> None:
-        """Set the data for this row. The column of the index is ignored."""
-
-        row = index.row()
-        with self.write_lock:
-            if role == PackageListItemModel.StatusUpdateRole:
-                self.repos[row].set_status(value)
-                self.dataChanged.emit(
-                    self.index(row, 2),
-                    self.index(row, 2),
-                    [PackageListItemModel.StatusUpdateRole],
-                )
-            elif role == PackageListItemModel.IconUpdateRole:
-                self.repos[row].icon = value
-                self.dataChanged.emit(
-                    self.index(row, 0),
-                    self.index(row, 0),
-                    [PackageListItemModel.IconUpdateRole],
-                )
 
     def append_item(self, repo: Addon) -> None:
         """Adds this addon to the end of the model. Thread safe."""
@@ -220,20 +220,6 @@ class PackageListItemModel(QtCore.QAbstractListModel):
                 self.beginRemoveRows(QtCore.QModelIndex(), 0, self.rowCount() - 1)
                 self.repos = []
                 self.endRemoveRows()
-
-    def update_item_status(self, name: str, status: Addon.Status) -> None:
-        """Set the status of addon with name to status."""
-        for row, item in enumerate(self.repos):
-            if item.name == name:
-                self.setData(self.index(row, 0), status, PackageListItemModel.StatusUpdateRole)
-                return
-
-    def update_item_icon(self, name: str, icon: QtGui.QIcon) -> None:
-        """Set the icon for Addon with name to icon"""
-        for row, item in enumerate(self.repos):
-            if item.name == name:
-                self.setData(self.index(row, 0), icon, PackageListItemModel.IconUpdateRole)
-                return
 
     def reload_item(self, repo: Addon) -> None:
         """Sets the addon data for the given addon (based on its name)"""
@@ -268,6 +254,7 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.displayStyle = AddonManagerDisplayStyle.EXPANDED
+        self.sort_order = SortOptions.Alphabetical
         self.expanded = ExpandedView()
         self.compact = CompactView()
         self.widget = self.expanded
@@ -276,6 +263,11 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         """Set the view of to style"""
         if not self.displayStyle == style:
             self.displayStyle = style
+
+    def set_sort(self, sort: SortOptions) -> None:
+        """When sorting by various things, we display the thing that's being sorted on."""
+        if not self.sort_order == sort:
+            self.sort_order = sort
 
     def sizeHint(self, _option, index):
         """Attempt to figure out the correct height for the widget based on its
@@ -294,22 +286,22 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget = self.compact
             self.widget.ui.labelPackageName.setText(f"<b>{repo.display_name}</b>")
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QtCore.QSize(16, 16)))
+            self._set_sort_string_compact(repo, self.widget.ui.labelDescription)
 
         self.widget.ui.labelIcon.setText("")
         if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             self.widget.ui.labelTags.setText("")
         if repo.metadata:
-            self.widget.ui.labelDescription.setText(repo.metadata.description)
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.version}</i>")
             if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
                 self._setup_expanded_package(repo)
         elif repo.macro and repo.macro.parsed:
             self._setup_macro(repo)
         else:
-            self.widget.ui.labelDescription.setText("")
-            self.widget.ui.labelVersion.setText("")
             if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
+                self.widget.ui.labelDescription.setText("")
                 self.widget.ui.labelMaintainer.setText("")
+            self.widget.ui.labelVersion.setText("")
 
         # Update status
         if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
@@ -341,7 +333,6 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
 
     def _setup_macro(self, repo: Addon):
         """Set up the display for a macro"""
-        self.widget.ui.labelDescription.setText(repo.macro.comment)
         version_string = ""
         if repo.macro.version:
             version_string = repo.macro.version + " "
@@ -351,14 +342,6 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             version_string += "(git)"
         else:
             version_string += "(unknown source)"
-        if repo.macro.date:
-            version_string = (
-                version_string
-                + ", "
-                + translate("AddonsInstaller", "updated")
-                + " "
-                + repo.macro.date
-            )
         self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
         if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             if repo.macro.author:
@@ -366,6 +349,46 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 self.widget.ui.labelMaintainer.setText(caption + ": " + repo.macro.author)
             else:
                 self.widget.ui.labelMaintainer.setText("")
+
+    def _set_sort_string_compact(self, addon: Addon, label: QtWidgets.QLabel) -> None:
+        if self.sort_order == SortOptions.Alphabetical:
+            if addon.metadata:
+                trimmed_text = addon.metadata.description
+                # TODO: Un-hardcode the 25 character limiter
+                trimmed_text = trimmed_text.replace("\r\n", " ")[:25] + "..."
+                label.setText(trimmed_text)
+            elif addon.macro and addon.macro.comment:
+                trimmed_text = addon.macro.comment
+                trimmed_text = trimmed_text.replace("\r\n", " ")[:25] + "..."
+                label.setText(trimmed_text)
+            else:
+                label.setText("")
+        elif self.sort_order == SortOptions.Stars:
+            if addon.stats and addon.stats.stars and addon.stats.stars > 0:
+                label.setText(
+                    translate("AddonsInstaller", "{} ★ on GitHub").format(addon.stats.stars)
+                )
+            else:
+                label.setText(translate("AddonsInstaller", "No ★, or not on GitHub"))
+        elif self.sort_order == SortOptions.DateAdded:
+            if addon.stats and addon.stats.date_created:
+                epoch_seconds = addon.stats.date_created.timestamp()
+                qdt = QtCore.QDateTime.fromSecsSinceEpoch(int(epoch_seconds)).date()
+                time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
+                label.setText(translate("AddonsInstaller", "Created ") + time_string)
+            else:
+                label.setText("")
+        elif self.sort_order == SortOptions.LastUpdated:
+            update_date = addon.update_date
+            if update_date:
+                epoch_seconds = update_date.timestamp()
+                qdt = QtCore.QDateTime.fromSecsSinceEpoch(int(epoch_seconds)).date()
+                time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
+                label.setText(translate("AddonsInstaller", "Updated ") + time_string)
+            else:
+                label.setText("")
+        elif self.sort_order == SortOptions.Rank:
+            label.setText(translate("AddonsInstaller", "Rank: ") + str(len(addon.display_name)))
 
     @staticmethod
     def get_compact_update_string(repo: Addon) -> str:
@@ -524,13 +547,13 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
         self.hide_newer_freecad_required = hide_nfr
         self.invalidateFilter()
 
-    def lessThan(self, left_in, right_in) -> bool:
-        """Enable sorting of display name (not case-sensitive)."""
-
-        left = self.sourceModel().data(left_in, PackageListItemModel.DataAccessRole)
-        right = self.sourceModel().data(right_in, PackageListItemModel.DataAccessRole)
-
-        return left.display_name.lower() < right.display_name.lower()
+    # def lessThan(self, left_in, right_in) -> bool:
+    #    """Enable sorting of display name (not case-sensitive)."""
+    #
+    #    left = self.sourceModel().data(left_in, self.sortRole)
+    #    right = self.sourceModel().data(right_in, self.sortRole)
+    #
+    #    return left.display_name.lower() < right.display_name.lower()
 
     def filterAcceptsRow(self, row, _parent=QtCore.QModelIndex()):
         """Do the actual filtering (called automatically by Qt when drawing the list)"""
@@ -597,17 +620,17 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
                     if not fsf_libre and license_manager.is_fsf_libre(license_id):
                         fsf_libre = True
                 if self.hide_non_OSI_approved and not osi_approved:
-                    FreeCAD.Console.PrintLog(
-                        f"Hiding addon {data.name} because its license, {licenses_to_check}, "
-                        f"is "
-                        f"not OSI approved\n"
-                    )
+                    # FreeCAD.Console.PrintLog(
+                    #    f"Hiding addon {data.name} because its license, {licenses_to_check}, "
+                    #    f"is "
+                    #    f"not OSI approved\n"
+                    # )
                     return False
                 if self.hide_non_FSF_libre and not fsf_libre:
-                    FreeCAD.Console.PrintLog(
-                        f"Hiding addon {data.name} because its license, {licenses_to_check},  is "
-                        f"not FSF Libre\n"
-                    )
+                    # FreeCAD.Console.PrintLog(
+                    #    f"Hiding addon {data.name} because its license, {licenses_to_check},  is "
+                    #    f"not FSF Libre\n"
+                    # )
                     return False
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD

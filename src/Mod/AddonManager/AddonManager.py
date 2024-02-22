@@ -42,6 +42,7 @@ from addonmanager_workers_startup import (
     LoadMacrosFromCacheWorker,
     CheckWorkbenchesForUpdatesWorker,
     CacheMacroCodeWorker,
+    GetBasicAddonStatsWorker,
 )
 from addonmanager_workers_installation import (
     UpdateMetadataCacheWorker,
@@ -50,12 +51,14 @@ from addonmanager_installer_gui import AddonInstallerGUI, MacroInstallerGUI
 from addonmanager_uninstaller_gui import AddonUninstallerGUI
 from addonmanager_update_all_gui import UpdateAllGUI
 import addonmanager_utilities as utils
+import addonmanager_freecad_interface as fci
 import AddonManager_rc  # This is required by Qt, it's not unused
 from package_list import PackageList, PackageListItemModel
 from addonmanager_package_details_controller import PackageDetailsController
 from Widgets.addonmanager_widget_package_details_view import PackageDetailsView
 from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
 from Addon import Addon
+from AddonStats import AddonStats
 from manage_python_dependencies import (
     PythonPackageManager,
 )
@@ -115,6 +118,7 @@ class CommandAddonManager:
         "load_macro_metadata_worker",
         "update_all_worker",
         "check_for_python_package_updates_worker",
+        "get_basic_addon_stats_worker",
     ]
 
     lock = threading.Lock()
@@ -392,6 +396,7 @@ class CommandAddonManager:
             self.update_metadata_cache,
             self.check_updates,
             self.check_python_updates,
+            self.fetch_addon_stats
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
@@ -659,6 +664,21 @@ class CommandAddonManager:
         if not hasattr(self, "manage_python_packages_dialog"):
             self.manage_python_packages_dialog = PythonPackageManager(self.item_model.repos)
         self.manage_python_packages_dialog.show()
+
+    def fetch_addon_stats(self) -> None:
+        """ Fetch the Addon Stats JSON data from a URL """
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        url = pref.GetString("AddonsStatsURL", "https://freecad.org/addon_stats.json")
+        if url and url != "NONE":
+            self.get_basic_addon_stats_worker = GetBasicAddonStatsWorker(url, self.item_model.repos, self.dialog)
+            self.get_basic_addon_stats_worker.finished.connect(self.do_next_startup_phase)
+            self.get_basic_addon_stats_worker.update_addon_stats.connect(self.update_addon_stats)
+            self.get_basic_addon_stats_worker.start()
+        else:
+            self.do_next_startup_phase()
+
+    def update_addon_stats(self, addon: Addon):
+        self.item_model.reload_item(addon)
 
     def show_developer_tools(self) -> None:
         """Display the developer tools dialog"""
