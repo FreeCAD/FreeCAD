@@ -822,6 +822,16 @@ Py::Float ConstraintPy::getValue() const
     return Py::Float(this->getConstraintPtr()->getValue());
 }
 
+Py::Float ConstraintPy::getLabelDistance() const
+{
+    return Py::Float(this->getConstraintPtr()->LabelDistance);
+}
+
+Py::Float ConstraintPy::getLabelPosition() const
+{
+    return Py::Float(this->getConstraintPtr()->LabelPosition);
+}
+
 Py::Boolean ConstraintPy::getDriving() const
 {
     return Py::Boolean(this->getConstraintPtr()->isDriving);

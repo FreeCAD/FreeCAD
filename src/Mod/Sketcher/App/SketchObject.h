@@ -264,6 +264,15 @@ public:
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 
+    /// set the label position of the constraint
+    int setLabelPosition(int ConstrId, float value);
+    /// get the label position of the constraint
+    int getLabelPosition(int ConstrId, float& value);
+    /// set the label distance of the constraint
+    int setLabelDistance(int ConstrId, float value);
+    /// get the label distance of the constraint
+    int getLabelDistance(int ConstrId, float& value);
+
     /// Make all dimensionals Driving/non-Driving
     int setDatumsDriving(bool isdriving);
     /// Move Dimensional constraints at the end of the properties array
