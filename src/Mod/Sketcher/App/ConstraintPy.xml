@@ -88,5 +88,17 @@
         </Documentation>
         <Parameter Name="IsActive" Type="Boolean"/>
     </Attribute>
+    <Attribute Name="LabelDistance" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Label distance</UserDocu>
+        </Documentation>
+        <Parameter Name="LabelDistance" Type="Float"/>
+    </Attribute>
+    <Attribute Name="LabelPosition" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Label position</UserDocu>
+        </Documentation>
+        <Parameter Name="LabelPosition" Type="Float"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
