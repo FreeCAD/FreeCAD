@@ -4889,8 +4889,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     auto linked = obj->getLinkedObject(false);
     bool external = object()->getDocument() != getOwnerDocument()->document() ||
         (linked && linked->getDocument() != obj->getDocument());
+    bool freezed = pObject->isFreezed();
 
     int currentStatus =
+        ((freezed ? 0 : 1) << 5) |
         ((external ? 0 : 1) << 4) |
         ((object()->showInTree() ? 0 : 1) << 3) |
         ((pObject->isError() ? 1 : 0) << 2) |
@@ -5044,6 +5046,36 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
+        }
+
+        if (freezed) {
+            static QPixmap pxFreeze;
+            if (pxFreeze.isNull()) {
+                // object is in freezed state
+                const char* const feature_freezed_xpm[] = {
+                                                           "16 16 2 1",
+                                                           " 	c None",
+                                                           ".	c #00EEFF",
+                                                           "      . . .     ",
+                                                           "    .  ...  .   ",
+                                                           "   ..   .   ..  ",
+                                                           "  ....  .  .... ",
+                                                           "     .. . ..    ",
+                                                           " .    . . .    .",
+                                                           "  .    ...    . ",
+                                                           " ...............",
+                                                           "  .    ...    . ",
+                                                           " .    . . .    .",
+                                                           "     .. . ..    ",
+                                                           "  ....  .  .... ",
+                                                           "   ..   .   ..  ",
+                                                           "    .  ...  .   ",
+                                                           "      . . .     ",
+                                                           "                "};
+                pxFreeze = QPixmap(feature_freezed_xpm);
+            }
+            pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
+            pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
         }
 
         icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
