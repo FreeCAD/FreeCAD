@@ -177,14 +177,7 @@ class Addon:
         self.status_lock = Lock()
         self.update_status = status
 
-        # The url should never end in ".git", so strip it if it's there
-        parsed_url = urlparse(self.url)
-        if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
-            if parsed_url.query:
-                self.url += "?" + parsed_url.query
-            if parsed_url.fragment:
-                self.url += "#" + parsed_url.fragment
+        self._clean_url()
 
         if utils.recognized_git_location(self):
             self.metadata_url = construct_git_url(self, "package.xml")
@@ -212,6 +205,16 @@ class Addon:
         self._icon_file = None
         self._cached_license: str = ""
         self._cached_update_date = None
+
+    def _clean_url(self):
+        # The url should never end in ".git", so strip it if it's there
+        parsed_url = urlparse(self.url)
+        if parsed_url.path.endswith(".git"):
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
+            if parsed_url.query:
+                self.url += "?" + parsed_url.query
+            if parsed_url.fragment:
+                self.url += "#" + parsed_url.fragment
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -339,6 +342,8 @@ class Addon:
             instance.python_requires = set(cache_dict["python_requires"])
             instance.python_optional = set(cache_dict["python_optional"])
 
+        instance._clean_url()
+
         return instance
 
     def to_cache(self) -> Dict:
@@ -369,6 +374,7 @@ class Addon:
         if os.path.exists(file):
             metadata = MetadataReader.from_file(file)
             self.set_metadata(metadata)
+            self._clean_url()
         else:
             fci.Console.PrintLog(f"Internal error: {file} does not exist")
 
@@ -394,6 +400,7 @@ class Addon:
             if url.type == UrlType.repository:
                 self.url = url.location
                 self.branch = url.branch if url.branch else "master"
+        self._clean_url()
         self.extract_tags(self.metadata)
         self.extract_metadata_dependencies(self.metadata)
 

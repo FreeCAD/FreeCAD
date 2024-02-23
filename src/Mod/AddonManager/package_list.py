@@ -280,45 +280,63 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         repo = index.data(PackageListItemModel.DataAccessRole)
         if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
             self.widget = self.expanded
-            self.widget.ui.labelPackageName.setText(f"<h1>{repo.display_name}</h1>")
-            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QtCore.QSize(48, 48)))
-        else:
+            self._setup_expanded_view(repo)
+        elif self.displayStyle == AddonManagerDisplayStyle.COMPACT:
             self.widget = self.compact
-            self.widget.ui.labelPackageName.setText(f"<b>{repo.display_name}</b>")
-            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QtCore.QSize(16, 16)))
-            self._set_sort_string_compact(repo, self.widget.ui.labelDescription)
-
-        self.widget.ui.labelIcon.setText("")
-        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
-            self.widget.ui.labelTags.setText("")
-        if repo.metadata:
-            self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.version}</i>")
-            if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
-                self._setup_expanded_package(repo)
-        elif repo.macro and repo.macro.parsed:
-            self._setup_macro(repo)
-        else:
-            if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
-                self.widget.ui.labelDescription.setText("")
-                self.widget.ui.labelMaintainer.setText("")
-            self.widget.ui.labelVersion.setText("")
-
-        # Update status
-        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
-            self.widget.ui.labelStatus.setText(self.get_expanded_update_string(repo))
-        else:
-            self.widget.ui.labelStatus.setText(self.get_compact_update_string(repo))
-
+            self._setup_compact_view(repo)
         self.widget.adjustSize()
 
-    def _setup_expanded_package(self, repo: Addon):
-        """Set up the display for a package in expanded view"""
-        maintainers = repo.metadata.maintainer
+    def _setup_expanded_view(self, addon: Addon) -> None:
+        self.widget.ui.labelPackageName.setText(f"<h1>{addon.display_name}</h1>")
+        self.widget.ui.labelIcon.setPixmap(addon.icon.pixmap(QtCore.QSize(48, 48)))
+        self.widget.ui.labelStatus.setText(self.get_expanded_update_string(addon))
+        self.widget.ui.labelIcon.setText("")
+        self.widget.ui.labelTags.setText("")
+        if addon.metadata:
+            self.widget.ui.labelDescription.setText(addon.metadata.description)
+            self.widget.ui.labelVersion.setText(f"<i>v{addon.metadata.version}</i>")
+            self._set_package_maintainer_label(addon)
+        elif addon.macro:
+            self.widget.ui.labelDescription.setText(addon.macro.comment)
+            self._set_macro_version_label(addon)
+            self._set_macro_maintainer_label(addon)
+        else:
+            self.widget.ui.labelDescription.setText("")
+            self.widget.ui.labelMaintainer.setText("")
+            self.widget.ui.labelVersion.setText("")
+        if addon.tags:
+            self.widget.ui.labelTags.setText(
+                translate("AddonsInstaller", "Tags") + ": " + ", ".join(addon.tags)
+            )
+        if self.sort_order == SortOptions.Alphabetical:
+            self.widget.ui.labelSort.setText("")
+        else:
+            self.widget.ui.labelSort.setText(self._get_sort_label_text(addon))
+
+    def _setup_compact_view(self, addon: Addon) -> None:
+        self.widget.ui.labelPackageName.setText(f"<b>{addon.display_name}</b>")
+        self.widget.ui.labelIcon.setPixmap(addon.icon.pixmap(QtCore.QSize(16, 16)))
+        self.widget.ui.labelStatus.setText(self.get_compact_update_string(addon))
+        self.widget.ui.labelIcon.setText("")
+        if addon.metadata:
+            self.widget.ui.labelVersion.setText(f"<i>v{addon.metadata.version}</i>")
+        elif addon.macro:
+            self._set_macro_version_label(addon)
+        else:
+            self.widget.ui.labelVersion.setText("")
+        if self.sort_order == SortOptions.Alphabetical:
+            description = self._get_compact_description(addon)
+            self.widget.ui.labelDescription.setText(description)
+        else:
+            self.widget.ui.labelDescription.setText(self._get_sort_label_text(addon))
+
+    def _set_package_maintainer_label(self, addon: Addon):
+        maintainers = addon.metadata.maintainer
         maintainers_string = ""
         if len(maintainers) == 1:
             maintainers_string = (
-                translate("AddonsInstaller", "Maintainer")
-                + f": {maintainers[0].name} <{maintainers[0].email}>"
+                    translate("AddonsInstaller", "Maintainer")
+                    + f": {maintainers[0].name} <{maintainers[0].email}>"
             )
         elif len(maintainers) > 1:
             n = len(maintainers)
@@ -326,69 +344,64 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             for maintainer in maintainers:
                 maintainers_string += f"\n{maintainer.name} <{maintainer.email}>"
         self.widget.ui.labelMaintainer.setText(maintainers_string)
-        if repo.tags:
-            self.widget.ui.labelTags.setText(
-                translate("AddonsInstaller", "Tags") + ": " + ", ".join(repo.tags)
-            )
 
-    def _setup_macro(self, repo: Addon):
-        """Set up the display for a macro"""
+    def _set_macro_maintainer_label(self, repo: Addon):
+        if repo.macro.author:
+            caption = translate("AddonsInstaller", "Author")
+            self.widget.ui.labelMaintainer.setText(caption + ": " + repo.macro.author)
+        else:
+            self.widget.ui.labelMaintainer.setText("")
+
+    def _set_macro_version_label(self, addon: Addon):
         version_string = ""
-        if repo.macro.version:
-            version_string = repo.macro.version + " "
-        if repo.macro.on_wiki:
+        if addon.macro.version:
+            version_string = addon.macro.version + " "
+        if addon.macro.on_wiki:
             version_string += "(wiki)"
-        elif repo.macro.on_git:
+        elif addon.macro.on_git:
             version_string += "(git)"
         else:
             version_string += "(unknown source)"
         self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
-        if self.displayStyle == AddonManagerDisplayStyle.EXPANDED:
-            if repo.macro.author:
-                caption = translate("AddonsInstaller", "Author")
-                self.widget.ui.labelMaintainer.setText(caption + ": " + repo.macro.author)
-            else:
-                self.widget.ui.labelMaintainer.setText("")
 
-    def _set_sort_string_compact(self, addon: Addon, label: QtWidgets.QLabel) -> None:
+    def _get_sort_label_text(self, addon: Addon) -> str:
         if self.sort_order == SortOptions.Alphabetical:
-            if addon.metadata:
-                trimmed_text = addon.metadata.description
-                # TODO: Un-hardcode the 25 character limiter
-                trimmed_text = trimmed_text.replace("\r\n", " ")[:25] + "..."
-                label.setText(trimmed_text)
-            elif addon.macro and addon.macro.comment:
-                trimmed_text = addon.macro.comment
-                trimmed_text = trimmed_text.replace("\r\n", " ")[:25] + "..."
-                label.setText(trimmed_text)
-            else:
-                label.setText("")
+            return ""
         elif self.sort_order == SortOptions.Stars:
             if addon.stats and addon.stats.stars and addon.stats.stars > 0:
-                label.setText(
-                    translate("AddonsInstaller", "{} ★ on GitHub").format(addon.stats.stars)
-                )
-            else:
-                label.setText(translate("AddonsInstaller", "No ★, or not on GitHub"))
+                return translate("AddonsInstaller", "{} ★ on GitHub").format(addon.stats.stars)
+            return translate("AddonsInstaller", "No ★, or not on GitHub")
         elif self.sort_order == SortOptions.DateAdded:
             if addon.stats and addon.stats.date_created:
                 epoch_seconds = addon.stats.date_created.timestamp()
                 qdt = QtCore.QDateTime.fromSecsSinceEpoch(int(epoch_seconds)).date()
                 time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
-                label.setText(translate("AddonsInstaller", "Created ") + time_string)
-            else:
-                label.setText("")
+                return translate("AddonsInstaller", "Created ") + time_string
+            return ""
         elif self.sort_order == SortOptions.LastUpdated:
             update_date = addon.update_date
             if update_date:
                 epoch_seconds = update_date.timestamp()
                 qdt = QtCore.QDateTime.fromSecsSinceEpoch(int(epoch_seconds)).date()
                 time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
-                label.setText(translate("AddonsInstaller", "Updated ") + time_string)
-            else:
-                label.setText("")
+                return translate("AddonsInstaller", "Updated ") + time_string
+            return ""
         elif self.sort_order == SortOptions.Rank:
-            label.setText(translate("AddonsInstaller", "Rank: ") + str(len(addon.display_name)))
+            return translate("AddonsInstaller", "Rank: ") + str(len(addon.display_name))
+        return ""
+
+    def _set_sort_string_expanded(self, addon: Addon, label: QtWidgets.QLabel) -> None:
+        pass
+
+    def _get_compact_description(self, addon: Addon) -> str:
+        if addon.metadata:
+            trimmed_text = addon.metadata.description
+            # TODO: Un-hardcode the 25 character limiter
+            return trimmed_text.replace("\r\n", " ")[:25] + "..."
+        if addon.macro and addon.macro.comment:
+            trimmed_text = addon.macro.comment
+            return trimmed_text.replace("\r\n", " ")[:25] + "..."
+        return ""
 
     @staticmethod
     def get_compact_update_string(repo: Addon) -> str:
