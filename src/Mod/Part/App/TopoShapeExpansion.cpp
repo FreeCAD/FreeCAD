@@ -50,6 +50,8 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_NurbsConvert.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
@@ -57,14 +59,22 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
+#include <BRepOffsetAPI_MakeFilling.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <BRepPrimAPI_MakeRevol.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepProj_Projection.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <GeomConvert.hxx>
+#include <GeomFill_BezierCurves.hxx>
+#include <GeomFill_BSplineCurves.hxx>
+#include <Precision.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <ShapeBuild_ReShape.hxx>
+#include <ShapeConstruct_Curve.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
-#include <Precision.hxx>
-#include <ShapeBuild_ReShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
 
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
@@ -88,10 +98,6 @@
 #include "Geometry.h"
 
 #include <App/ElementNamingUtils.h>
-#include <BRepPrimAPI_MakeRevol.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepProj_Projection.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -1035,7 +1041,7 @@ struct ShapeInfo
 };
 
 ////////////////////////////////////////
-// makESHAPE -> makeShapeWithElementMap
+// makeElementSHAPE -> makeShapeWithElementMap
 ///////////////////////////////////////
 
 struct NameKey
@@ -2804,6 +2810,167 @@ struct MapperPrism: MapperMaker {
     }
 };
 
+TopoShape &TopoShape::makeElementFilledFace(const std::vector<TopoShape> &_shapes,
+                                     const BRepFillingParams &params,
+                                     const char *op)
+{
+    if(!op)
+        op = Part::OpCodes::FilledFace;
+    BRepOffsetAPI_MakeFilling maker(params.degree,
+                                    params.ptsoncurve,
+                                    params.numiter,
+                                    params.anisotropy,
+                                    params.tol2d,
+                                    params.tol3d,
+                                    params.tolG1,
+                                    params.tolG2,
+                                    params.maxdeg,
+                                    params.maxseg);
+
+    if (!params.surface.isNull() && params.surface.getShape().ShapeType() == TopAbs_FACE)
+        maker.LoadInitSurface(TopoDS::Face(params.surface.getShape()));
+
+    std::vector<TopoShape> shapes;
+    for(auto &s : _shapes)
+        expandCompound(s,shapes);
+
+    TopoShapeMap output;
+    auto getOrder = [&](const TopoDS_Shape &s) {
+        auto it = params.orders.find(s);
+        if (it == params.orders.end()) {
+            auto iter = output.find(s);
+            if (iter != output.end())
+                it = params.orders.find(iter->second.getShape());
+        }
+        if (it != params.orders.end())
+            return static_cast<GeomAbs_Shape>(it->second);
+        return GeomAbs_C0;
+    };
+
+    auto getSupport = [&](const TopoDS_Shape &s) {
+        TopoDS_Face support;
+        auto it = params.supports.find(s);
+        if (it == params.supports.end()) {
+            auto iter = output.find(s);
+            if (iter != output.end())
+                it = params.supports.find(iter->second.getShape());
+        }
+        if (it != params.supports.end()) {
+            if (!it->second.IsNull() && it->second.ShapeType() == TopAbs_FACE)
+                support = TopoDS::Face(it->second);
+        }
+        return support;
+    };
+
+    auto findBoundary = [](std::vector<TopoShape> &shapes) -> TopoShape {
+        // Find a wire (preferably a closed one) to be used as the boundary.
+        int i = -1;
+        int boundIdx = -1;
+        for (auto &s : shapes) {
+            ++i;
+            if(s.isNull() || !s.hasSubShape(TopAbs_EDGE) || s.shapeType()!=TopAbs_WIRE)
+                continue;
+            if (BRep_Tool::IsClosed(TopoDS::Wire(s.getShape()))) {
+                boundIdx = i;
+                break;
+            } else if (boundIdx < 0)
+                boundIdx = i;
+        }
+        if (boundIdx >= 0) {
+            auto res = shapes[boundIdx];
+            shapes.erase(shapes.begin() + boundIdx);
+            return res;
+        }
+        return TopoShape();
+    };
+
+    TopoShape bound;
+    std::vector<TopoShape> wires;
+    if (params.boundary_begin >= 0
+        && params.boundary_end > params.boundary_begin
+        && params.boundary_end <= (int)shapes.size())
+    {
+        if (params.boundary_end-1 != params.boundary_begin
+            || shapes[params.boundary_begin].shapeType() != TopAbs_WIRE)
+        {
+            std::vector<TopoShape> edges;
+            edges.insert(edges.end(),
+                         shapes.begin()+params.boundary_begin,
+                         shapes.begin()+params.boundary_end);
+            wires = TopoShape(0, Hasher).makeElementWires(edges,"",0.0,ConnectionPolicy::requireSharedVertex,&output).getSubTopoShapes(TopAbs_WIRE);
+            shapes.erase(shapes.begin()+params.boundary_begin,
+                         shapes.begin()+params.boundary_end);
+        }
+    } else {
+        bound = findBoundary(shapes);
+        if (bound.isNull()) {
+            // If no boundary is found, then try to build one.
+            std::vector<TopoShape> edges;
+            for(auto it=shapes.begin(); it!=shapes.end();) {
+                if (it->shapeType(true) == TopAbs_EDGE) {
+                    edges.push_back(*it);
+                    it = shapes.erase(it);
+                } else
+                    ++it;
+            }
+            if(edges.size())
+                wires = TopoShape(0, Hasher).makeElementWires(edges,"",0.0,ConnectionPolicy::requireSharedVertex,&output).getSubTopoShapes(TopAbs_WIRE);
+        }
+    }
+
+    if (bound.isNull())
+        bound = findBoundary(wires);
+
+    if (bound.isNull())
+        FC_THROWM(Base::CADKernelError,"No boundary wire");
+
+    // Since we've only selected one wire for boundary, return all the
+    // other edges in shapes to be added as non boundary constraints
+    shapes.insert(shapes.end(), wires.begin(), wires.end());
+
+    // Must fix wire connection to avoid OCC crash in BRepFill_Filling.cxx WireFromList()
+    // https://github.com/Open-Cascade-SAS/OCCT/blob/1c96596ae7ba120a678021db882857e289c73947/src/BRepFill/BRepFill_Filling.cxx#L133
+    // The reason of crash is because the wire connection tolerance is too big.
+    // The crash can be fixed by simply checking itl.More() before calling Remove().
+    bound.fix(Precision::Confusion(),
+              Precision::Confusion(),
+              Precision::Confusion());
+
+    for (const auto &e : bound.getOrderedEdges()) {
+        maker.Add(TopoDS::Edge(e.getShape()),
+                  getSupport(e.getShape()),
+                  getOrder(e.getShape()),
+                  /*IsBound*/Standard_True);
+    }
+
+    for(const auto &s : shapes) {
+        if(s.isNull())
+            continue;
+        const auto &sh = s.getShape();
+        if (sh.ShapeType() == TopAbs_WIRE) {
+            for (const auto &e : s.getSubShapes(TopAbs_EDGE))
+                maker.Add(TopoDS::Edge(e),
+                          getSupport(e),
+                          getOrder(e),
+                          /*IsBound*/Standard_False);
+        }
+        else if (sh.ShapeType() == TopAbs_EDGE)
+            maker.Add(TopoDS::Edge(sh),
+                      getSupport(sh),
+                      getOrder(sh),
+                      /*IsBound*/Standard_False);
+        else if (sh.ShapeType() == TopAbs_FACE)
+            maker.Add(TopoDS::Face(sh), getOrder(sh));
+        else if (sh.ShapeType() == TopAbs_VERTEX)
+            maker.Add(BRep_Tool::Pnt(TopoDS::Vertex(sh)));
+    }
+
+    maker.Build();
+    if (!maker.IsDone())
+        FC_THROWM(Base::CADKernelError,"Failed to created face by filling edges");
+    return makeElementShape(maker,_shapes,op);
+}
+
 // TODO:  This method does not appear to ever be called in the codebase, and it is probably
 // broken, because using TopoShape() with no parameters means the result will not have an
 // element Map.
@@ -3553,6 +3720,226 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     *this = shape;
     return *this;
 }
+
+
+TopoShape & TopoShape::makeElementBSplineFace(const TopoShape & shape,
+                                      FillingStyle style,
+                                      bool keepBezier,
+                                      const char *op)
+{
+    std::vector<TopoShape> input(1, shape);
+    return makeElementBSplineFace(input, style, keepBezier, op);
+}
+
+TopoShape & TopoShape::makeElementBSplineFace(const std::vector<TopoShape> &input,
+                                      FillingStyle style,
+                                      bool keepBezier,
+                                      const char *op)
+{
+    std::vector<TopoShape> edges;
+    for (auto &s : input) {
+        auto e = s.getSubTopoShapes(TopAbs_EDGE);
+        edges.insert(edges.end(), e.begin(), e.end());
+    }
+
+    if (edges.size() == 1 && edges[0].isClosed()) {
+        auto edge = edges[0].getSubShape(TopAbs_EDGE, 1);
+        auto e = TopoDS::Edge(edge);
+        auto v = TopExp::FirstVertex(e);
+        Standard_Real first, last;
+        Handle(Geom_Curve) curve = BRep_Tool::Curve(e, first, last);
+
+        BRepBuilderAPI_MakeEdge mk1,mk2,mk3,mk4;
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(curve);
+        if (bspline.IsNull()) {
+            ShapeConstruct_Curve scc;
+            bspline = scc.ConvertToBSpline(curve, first, last, Precision::Confusion());
+            if (bspline.IsNull())
+                FC_THROWM(Base::CADKernelError, "Failed to convert edge to bspline");
+            first = bspline->FirstParameter();
+            last = bspline->LastParameter();
+        }
+        auto step = (last - first) * 0.25;
+        auto m1 = first + step;
+        auto m2 = m1 + step;
+        auto m3 = m2 + step;
+        auto c1 = GeomConvert::SplitBSplineCurve(bspline, first, m1, Precision::Confusion());
+        auto c2 = GeomConvert::SplitBSplineCurve(bspline, m1, m2, Precision::Confusion());
+        auto c3 = GeomConvert::SplitBSplineCurve(bspline, m2, m3, Precision::Confusion());
+        auto c4 = GeomConvert::SplitBSplineCurve(bspline, m3, last, Precision::Confusion());
+        mk1.Init(c1);
+        mk2.Init(c2);
+        mk3.Init(c3);
+        mk4.Init(c4);
+
+        if(!mk1.IsDone() || !mk2.IsDone() || !mk3.IsDone() || !mk4.IsDone())
+            FC_THROWM(Base::CADKernelError, "Failed to split edge");
+
+        auto e1 = mk1.Edge();
+        auto e2 = mk2.Edge();
+        auto e3 = mk3.Edge();
+        auto e4 = mk4.Edge();
+
+        ShapeMapper mapper;
+        mapper.populate(MappingStatus::Modified, e, {e1, e2, e3, e4});
+        mapper.populate(MappingStatus::Generated, v, {TopExp::FirstVertex(e1)});
+        mapper.populate(MappingStatus::Generated, v, {TopExp::LastVertex(e4)});
+
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        builder.Add(comp, e1);
+        builder.Add(comp, e2);
+        builder.Add(comp, e3);
+        builder.Add(comp, e4);
+
+        TopoShape s;
+        s.makeShapeWithElementMap(comp, mapper, edges, Part::OpCodes::Split);
+        return makeElementBSplineFace(s, style, op);
+    }
+
+    if (edges.size() < 2 || edges.size() > 4)
+        FC_THROWM(Base::CADKernelError, "Require minimum one, maximum four edges");
+
+    GeomFill_FillingStyle fstyle;
+    switch (style) {
+        case coons:
+            fstyle = GeomFill_CoonsStyle;
+            break;
+        case curved:
+            fstyle = GeomFill_CurvedStyle;
+            break;
+        default:
+            fstyle = GeomFill_StretchStyle;
+    }
+
+    Handle(Geom_Surface) aSurface;
+
+    Standard_Real u1, u2;
+    if (keepBezier) {
+        std::vector<Handle(Geom_BezierCurve)> curves;
+        curves.reserve(4);
+        for (const auto &e : edges) {
+            const TopoDS_Edge& edge = TopoDS::Edge (e.getShape());
+            TopLoc_Location heloc; // this will be output
+            Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);
+            Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast(c_geom);
+            if (!curve)
+                break;
+            curve->Transform(heloc.Transformation()); // apply original transformation to control points
+            curves.push_back(curve);
+        }
+        if (curves.size() == edges.size()) {
+            GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
+
+            if (edges.size() == 2) {
+                aSurfBuilder.Init(curves[0], curves[1], fstyle);
+            }
+            else if (edges.size() == 3) {
+                aSurfBuilder.Init(curves[0], curves[1], curves[2], fstyle);
+            }
+            else if (edges.size() == 4) {
+                aSurfBuilder.Init(curves[0], curves[1], curves[2], curves[3], fstyle);
+            }
+            aSurface = aSurfBuilder.Surface();
+        }
+    }
+
+    if (aSurface.IsNull()) {
+        std::vector<Handle(Geom_BSplineCurve)> curves;
+        curves.reserve(4);
+        for (const auto & e : edges) {
+            const TopoDS_Edge& edge = TopoDS::Edge (e.getShape());
+            TopLoc_Location heloc; // this will be output
+            Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
+            Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
+            if (!bspline.IsNull()) {
+                gp_Trsf transf = heloc.Transformation();
+                bspline->Transform(transf); // apply original transformation to control points
+                //Store Underlying Geometry
+                curves.push_back(bspline);
+            }
+            else {
+                // try to convert it into a B-spline
+                BRepBuilderAPI_NurbsConvert mkNurbs(edge);
+                TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
+                // avoid copying
+                TopLoc_Location heloc2; // this will be output
+                Handle(Geom_Curve) c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
+                Handle(Geom_BSplineCurve) bspline2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
+
+                if (!bspline2.IsNull()) {
+                    gp_Trsf transf = heloc2.Transformation();
+                    bspline2->Transform(transf); // apply original transformation to control points
+                    //Store Underlying Geometry
+                    curves.push_back(bspline2);
+                }
+                else {
+                    // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
+                    ShapeConstruct_Curve scc;
+                    Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                    if (spline.IsNull())
+                        Standard_Failure::Raise("A curve was not a B-spline and could not be converted into one.");
+                    gp_Trsf transf = heloc2.Transformation();
+                    spline->Transform(transf); // apply original transformation to control points
+                    curves.push_back(spline);
+                }
+            }
+        }
+
+        GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
+
+        if (edges.size() == 2) {
+            aSurfBuilder.Init(curves[0], curves[1], fstyle);
+        }
+        else if (edges.size() == 3) {
+            aSurfBuilder.Init(curves[0], curves[1], curves[2], fstyle);
+        }
+        else if (edges.size() == 4) {
+            aSurfBuilder.Init(curves[0], curves[1], curves[2], curves[3], fstyle);
+        }
+
+        aSurface = aSurfBuilder.Surface();
+    }
+
+    BRepBuilderAPI_MakeFace aFaceBuilder;
+    Standard_Real v1, v2;
+    // transfer surface bounds to face
+    aSurface->Bounds(u1, u2, v1, v2);
+
+    aFaceBuilder.Init(aSurface, u1, u2, v1, v2, Precision::Confusion());
+
+    TopoShape aFace(0, Hasher, aFaceBuilder.Face());
+
+    if (!aFaceBuilder.IsDone()) {
+        FC_THROWM(Base::CADKernelError, "Face unable to be constructed");
+    }
+    if (aFace.isNull()) {
+        FC_THROWM(Base::CADKernelError, "Resulting Face is null");
+    }
+
+    auto newEdges = aFace.getSubTopoShapes(TopAbs_EDGE);
+    if (newEdges.size() != edges.size())
+        FC_WARN("Face edge count mismatch");
+    else {
+        int i = 0;
+        for (auto &edge : newEdges)
+            edge.resetElementMap(edges[i++].elementMap());
+        aFace.mapSubElement(newEdges);
+    }
+
+    Data::ElementIDRefs sids;
+    Data::MappedName edgeName = aFace.getMappedName(
+        Data::IndexedName::fromConst("Edge",1), true, &sids);
+    aFace.setElementComboName(Data::IndexedName::fromConst("Face",1),
+                              {edgeName},
+                              Part::OpCodes::BSplineFace,
+                              op,
+                              &sids);
+    *this = aFace;
+    return *this;
+}
+
 
 
 /**

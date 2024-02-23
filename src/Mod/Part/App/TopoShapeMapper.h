@@ -244,8 +244,7 @@ struct PartExport GenericShapeMapper: ShapeMapper {
 };
 
 /// Parameters for TopoShape::makeElementFilledFace()
-struct PartExport TopoShape::BRepFillingParams
-{
+struct PartExport TopoShape::BRepFillingParams {
     /** Optional initial surface to begin the construction of the surface for the filled face.
      *
      *  It is useful if the surface resulting from construction for the
@@ -269,8 +268,7 @@ struct PartExport TopoShape::BRepFillingParams
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> supports;
     /// Optional begin index to the input shapes to be used as the boundary of the filled face.
     int boundary_begin = -1;
-    /// Optional end index (last index + 1) to the input shapes to be used as the boundary of the
-    /// filled face.
+    /// Optional end index (last index + 1) to the input shapes to be used as the boundary of the filled face.
     int boundary_end = -1;
     /// The energe minimizing criterion degree;
     unsigned int degree = 3;

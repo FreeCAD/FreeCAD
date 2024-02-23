@@ -226,6 +226,16 @@ enum class Copy
     copy
 };
 
+/// Filling style when making a BSpline face
+enum FillingStyle {
+    /// The style with the flattest patches
+    stretch,
+    /// A rounded style of patch with less depth than those of Curved
+    coons,
+    /// The style with the most rounded patches
+    curved,
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -1942,16 +1952,64 @@ public:
         return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane);
     }
 
-    /// Filling style when making a BSpline face
-    enum class FillingStyle
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param shapes: input shapes of any type, but only edges inside the shape
+     *                will be used.
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with either BSpline or Bezier
+     *         surface. The original content of this TopoShape is discarded and
+     *         replaced with the new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementBSplineFace(const std::vector<TopoShape> &input,
+                               FillingStyle style = FillingStyle::stretch,
+                               bool keepBezier = false,
+                               const char *op=nullptr);
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param shape: input shape of any type, but only edges inside the shape
+     *               will be used.
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with either BSpline or Bezier
+     *         surface. The original content of this TopoShape is discarded and
+     *         replaced with the new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementBSplineFace(const TopoShape &input,
+                               FillingStyle style = FillingStyle::stretch,
+                               bool keepBezier = false,
+                               const char *op=nullptr);
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function returns a new face with either BSpline or Bezier
+     *         surface. The shape itself is not modified.
+     */
+    TopoShape makeElementBSplineFace(FillingStyle style = FillingStyle::stretch,
+                              bool keepBezier = false,
+                              const char *op=nullptr)
     {
-        /// The style with the flattest patches
-        Stretch,
-        /// A rounded style of patch with less depth than those of Curved
-        Coons,
-        /// The style with the most rounded patches
-        Curved,
-    };
+        return TopoShape(0,Hasher).makeElementBSplineFace(*this, style, keepBezier, op);
+    }
+
 
     struct BRepFillingParams;
 
@@ -1987,6 +2045,29 @@ public:
         */
         CN,
     };
+
+    /** Make a non-planar filled face with boundary and/or constraint edge/wire
+     *
+     * @param shapes: input shapes of any type. The function will automatically
+     *                discover connected and closed edges to be used as the
+     *                boundary of the the new face. Any other vertex, edge,
+     *                and/or face will be used as constraints to fine tune the
+     *                surface generation.
+     * @param params: @sa BRepFillingParams
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with BSpline surface. The original
+     *         content of this TopoShape is discarded and replaced with the new
+     *         shape. The function returns the TopoShape itself as a self
+     *         reference so that multiple operations can be carried out for the
+     *         same shape in the same line of code.
+     *
+     * @sa OCCT BRepOffsetAPI_MakeFilling
+     */
+    TopoShape &makeElementFilledFace(const std::vector<TopoShape> &shapes,
+                              const BRepFillingParams &params,
+                              const char *op=nullptr);
 
     /** Make a solid using shells or CompSolid
      *
