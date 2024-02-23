@@ -381,6 +381,21 @@ def add_attributes(obj, ccx_prefs):
         )
         obj.BeamReducedIntegration = True
 
+    if not hasattr(obj, "ModelSpace"):
+        model_space_types = [
+            "3D",
+            "plane stress",
+            "plane strain",
+            "axisymmetric"
+        ]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ModelSpace",
+            "Fem",
+            "Type of model space"
+        )
+        obj.ModelSpace = model_space_types
+
 """
 Should there be some equation object for Calculix too?
 
