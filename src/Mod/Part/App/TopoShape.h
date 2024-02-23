@@ -1750,6 +1750,46 @@ public:
         CN,
     };
 
+    /** Make a solid using shells or CompSolid
+     *
+     * @param shapes: input shapes of either shells or CompSolid.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function produces a solid. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a self reference so
+     *         that multiple operations can be carried out for the same shape
+     *         in the same line of code.
+     */
+     // TODO: This does not appear to be called, and the implementation seems impossible
+//    TopoShape &makeElementSolid(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+    /** Make a solid using shells or CompSolid
+     *
+     * @param shape: input shape of either a shell, a compound of shells, or a
+     *               CompSolid.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function produces a solid. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a self reference so
+     *         that multiple operations can be carried out for the same shape
+     *         in the same line of code.
+     */
+    TopoShape &makeElementSolid(const TopoShape &shape, const char *op=nullptr);
+    /** Make a solid using this shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function returns a new solid using the shell or CompSolid
+     *         inside this shape. The shape itself is not modified.
+     */
+    TopoShape makeElementSolid(const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementSolid(*this,op);
+    }
+
 
     /** Generic shape making with mapped element name from shape history
      *
