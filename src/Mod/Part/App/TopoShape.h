@@ -226,18 +226,6 @@ enum class Copy
     copy
 };
 
-enum class CheckScale
-{
-    noScaleCheck,
-    checkScale
-};
-
-enum class Copy
-{
-    noCopy,
-    copy
-};
-
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
