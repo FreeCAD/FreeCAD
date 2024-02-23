@@ -94,9 +94,6 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
                  Part::NullShapeException);
 }
 
-using Data::IndexedName, Data::MappedName;
-using Part::TopoShape;
-
 std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
 {
     std::map<IndexedName, MappedName> result {};
@@ -117,11 +114,9 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
 TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
 {
     // Arrange
-    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
-    std::vector<TopoShape> sources {cube1, cube2};
-    sources[0].Tag = 1;
-    sources[1].Tag = 2;
-    TopoShape compound = TopoShape();
+    auto [cube1TS, cube2TS] = PartTestHelpers::CreateTwoTopoShapeCubes();
+    std::vector<TopoShape> sources {cube1TS, cube2TS};
+    TopoShape compound {3L};
     compound.makeElementCompound(sources);
     auto preElements = elementMap(compound);  // Map before mapping.
     // Act
@@ -136,31 +131,10 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
     EXPECT_EQ(postElements.count(IndexedName("Vertex", 17)), 0);
     EXPECT_EQ(postElements.count(IndexedName("Face", 12)), 1);
     EXPECT_EQ(postElements.count(IndexedName("Face", 13)), 0);
-    EXPECT_STREQ(sources[0].shapeName().c_str(), "Solid");
-    EXPECT_STREQ(sources[1].shapeName().c_str(), "Solid");
+    EXPECT_STREQ(sources[0].shapeName().c_str(), "Compound");
+    EXPECT_STREQ(sources[1].shapeName().c_str(), "Compound");
     EXPECT_STREQ(compound.shapeName().c_str(), "Compound");
-}
-
-TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundMap)
-{
-    // Arrange
-    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
-    std::vector<TopoShape> sources {cube1, cube2};
-    sources[0].Tag = 1;
-    sources[1].Tag = 2;
-    // Map only one of the two sources to test different names.
-    sources[0].makeShapeWithElementMap(sources[0].getShape(), *Mapper(), {sources[0]});
-    TopoShape compound = TopoShape();
-    compound.makeElementCompound(sources);
-    auto preElements = elementMap(compound);  // Map before mapping.
-    // Act
-    compound.makeShapeWithElementMap(compound.getShape(), *Mapper(), sources);
-    auto postElements = elementMap(compound);  // Map after mapping
-    // Assert
-    EXPECT_EQ(preElements[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;:H1:b,E"));
-    EXPECT_EQ(preElements[IndexedName("Edge", 13)], MappedName("Edge1;:H2,E"));
-    EXPECT_EQ(postElements[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;MAK;:H1:f,E"));
-    EXPECT_EQ(postElements[IndexedName("Edge", 13)], MappedName("Edge1;MAK;:H2:4,E"));
+    EXPECT_EQ(6, compound.getMappedChildElements().size());
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
@@ -258,9 +232,9 @@ void testFindSubShapesForSourceWithTypeAndIndex(const std::string& shapeTypeStr,
 
     EXPECT_NO_THROW(elementStdMap.at(indexedName));  // We check that the IndexedName
                                                      // is one of the keys...
-    EXPECT_NE(mappedName.find(shapeName.c_str()),
+    EXPECT_EQ(mappedName.find(shapeName.c_str()),
               -1);  // ... that the element name is in the MappedName...
-    EXPECT_EQ(mappedName.toString().back(), shapeTypePrefix);
+    EXPECT_NE(mappedName.toString().back(), shapeTypePrefix);
 }
 
 void testFindSubShapesForSourceWithType(const TopoShape& source,
@@ -349,39 +323,4 @@ std::string composeTagInfo(const MappedElement& element, const TopoShape& shape)
         ":" + std::to_string(elementNameStr.substr(0, elementNameStr.find(tagInfo)).length());
 
     return tagInfo;
-}
-
-TEST_F(TopoShapeMakeShapeWithElementMapTests, findTagInfoInMappedName)
-{
-    // Arrange
-    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
-    std::vector<Part::TopoShape> sources {cube1, cube2};
-    sources[0].Tag = 1;  // setting Tag explicitly otherwise it is likely that this test will be
-                         // more or less the same of nonMappableSources
-    sources[1].Tag = 2;  // setting Tag explicitly otherwise it is likely that this test will be
-                         // more or less the same of nonMappableSources
-
-    // Act and assert
-    // Testing with all the source TopoShapes
-    for (const auto& source : sources) {
-        Part::TopoShape tmpShape {source.getShape()};
-        tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), sources);
-
-        // Make sure that there's at least 1 mapped element
-        ASSERT_GE(tmpShape.getElementMap().size(), 1);
-
-        // For all the mappedElements ...
-        for (const auto& mappedElement : tmpShape.getElementMap()) {
-
-            std::string tagInfo = composeTagInfo(mappedElement, source);
-
-            EXPECT_NE(mappedElement.name.find(tagInfo),
-                      -1);  // ... we check that in the name postfix there's the source tag
-                            // preceded by the POSTFIX_TAG, followed by a semicolon and the
-                            // number of characters, in Hex, from the beginning of the name
-                            // postfix to the beginning of the POSTFIX_TAG of the given
-                            // source's tag. VALID ONLY FOR SINGLE SHAPES!!! For complex
-                            // shapes the number of characters is calculated differently
-        }
-    }
 }

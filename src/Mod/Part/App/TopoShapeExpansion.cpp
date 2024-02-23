@@ -51,6 +51,8 @@
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepFilletAPI_MakeChamfer.hxx>
+#include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
@@ -118,6 +120,48 @@ void TopoShape::initCache(int reset) const
             _subLocation.Identity();
         }
         _cache = std::make_shared<TopoShapeCache>(_Shape);
+    }
+}
+
+Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
+{
+    if (_cache && elementMap != this->elementMap(false)) {
+        for (auto& info : _cache->shapeAncestryCache) {
+            info.clear();
+        }
+    }
+    else {
+        initCache();
+    }
+    if (elementMap) {
+        _cache->cachedElementMap = elementMap;
+        _cache->subLocation.Identity();
+        _subLocation.Identity();
+        _parentCache.reset();
+    }
+    return Data::ComplexGeoData::resetElementMap(elementMap);
+}
+
+void TopoShape::flushElementMap() const
+{
+    initCache();
+    if (!elementMap(false) && this->_cache) {
+        if (this->_cache->cachedElementMap) {
+            const_cast<TopoShape*>(this)->resetElementMap(this->_cache->cachedElementMap);
+        }
+        else if (this->_parentCache) {
+            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->shape);
+            parent._cache = _parentCache;
+            parent.flushElementMap();
+            TopoShape self(this->Tag,
+                           this->Hasher,
+                           this->_Shape.Located(this->_subLocation * this->_cache->subLocation));
+            self._cache = _cache;
+            self.mapSubElement(parent);
+            this->_parentCache.reset();
+            this->_subLocation.Identity();
+            const_cast<TopoShape*>(this)->resetElementMap(self.elementMap());
+        }
     }
 }
 
@@ -208,6 +252,18 @@ TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer
     return moved(sCopy, transfer);
 }
 
+void TopoShape::operator = (const TopoShape& sh)
+{
+    if (this != &sh) {
+        this->setShape(sh._Shape, true);
+        this->Tag = sh.Tag;
+        this->Hasher = sh.Hasher;
+        this->_cache = sh._cache;
+        this->_parentCache = sh._parentCache;
+        this->_subLocation = sh._subLocation;
+        resetElementMap(sh.elementMap(false));
+    }
+}
 
 int TopoShape::findShape(const TopoDS_Shape& subshape) const
 {
@@ -2090,11 +2146,11 @@ TopoShape& TopoShape::makeElementThickSolid(const TopoShape& shape,
 
     // we do not offer tangent join type
     switch (join) {
-        case JoinType::Arc:
-        case JoinType::Intersection:
+        case JoinType::arc:
+        case JoinType::intersection:
             break;
         default:
-            join = JoinType::Intersection;
+            join = JoinType::intersection;
     }
 
     if (shape.isNull()) {
@@ -2452,19 +2508,19 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
 }
 
 bool TopoShape::_makeElementTransform(const TopoShape& shape,
-                                      const Base::Matrix4D& rclTrf,
+                                      const Base::Matrix4D& mat,
                                       const char* op,
                                       CheckScale checkScale,
                                       Copy copy)
 {
     if (checkScale == CheckScale::checkScale) {
-        auto scaleType = rclTrf.hasScale();
+        auto scaleType = mat.hasScale();
         if (scaleType != Base::ScaleType::NoScaling && scaleType != Base::ScaleType::Uniform) {
-            makeElementGTransform(shape, rclTrf, op, copy);
+            makeElementGTransform(shape, mat, op, copy);
             return true;
         }
     }
-    makeElementTransform(shape, convert(rclTrf), op, copy);
+    makeElementTransform(shape, convert(mat), op, copy);
     return false;
 }
 
@@ -2475,8 +2531,11 @@ TopoShape& TopoShape::makeElementTransform(const TopoShape& shape,
 {
     if (copy == Copy::noCopy) {
         // OCCT checks the ScaleFactor against gp::Resolution() which is DBL_MIN!!!
-        copy = trsf.ScaleFactor() * trsf.HVectorialPart().Determinant() < 0.
-            || Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion() ? Copy::copy : Copy::noCopy;
+        // No scaling is 1 as in 1:1
+        const bool scaling = Abs(Abs(trsf.ScaleFactor()) - 1) > Precision::Confusion();
+        const bool negative_scaling =
+            trsf.ScaleFactor() * trsf.HVectorialPart().Determinant() < 0.0;
+        copy = negative_scaling || scaling ? Copy::copy : Copy::noCopy;
     }
     TopoShape tmp(shape);
     if (copy == Copy::copy) {
@@ -2512,7 +2571,7 @@ TopoShape& TopoShape::makeElementTransform(const TopoShape& shape,
 }
 
 TopoShape& TopoShape::makeElementGTransform(const TopoShape& shape,
-                                            const Base::Matrix4D& rclTrf,
+                                            const Base::Matrix4D& mat,
                                             const char* op,
                                             Copy copy)
 {
@@ -2521,23 +2580,23 @@ TopoShape& TopoShape::makeElementGTransform(const TopoShape& shape,
     }
 
     // if(!op) op = Part::OpCodes::Gtransform;
-    gp_GTrsf mat;
-    mat.SetValue(1, 1, rclTrf[0][0]);
-    mat.SetValue(2, 1, rclTrf[1][0]);
-    mat.SetValue(3, 1, rclTrf[2][0]);
-    mat.SetValue(1, 2, rclTrf[0][1]);
-    mat.SetValue(2, 2, rclTrf[1][1]);
-    mat.SetValue(3, 2, rclTrf[2][1]);
-    mat.SetValue(1, 3, rclTrf[0][2]);
-    mat.SetValue(2, 3, rclTrf[1][2]);
-    mat.SetValue(3, 3, rclTrf[2][2]);
-    mat.SetValue(1, 4, rclTrf[0][3]);
-    mat.SetValue(2, 4, rclTrf[1][3]);
-    mat.SetValue(3, 4, rclTrf[2][3]);
+    gp_GTrsf matrix;
+    matrix.SetValue(1, 1, mat[0][0]);
+    matrix.SetValue(2, 1, mat[1][0]);
+    matrix.SetValue(3, 1, mat[2][0]);
+    matrix.SetValue(1, 2, mat[0][1]);
+    matrix.SetValue(2, 2, mat[1][1]);
+    matrix.SetValue(3, 2, mat[2][1]);
+    matrix.SetValue(1, 3, mat[0][2]);
+    matrix.SetValue(2, 3, mat[1][2]);
+    matrix.SetValue(3, 3, mat[2][2]);
+    matrix.SetValue(1, 4, mat[0][3]);
+    matrix.SetValue(2, 4, mat[1][3]);
+    matrix.SetValue(3, 4, mat[2][3]);
 
     // geometric transformation
     TopoShape tmp(shape);
-    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy == Copy::copy);
+    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), matrix, copy == Copy::copy);
     tmp.setShape(mkTrf.Shape(), false);
     if (op || (shape.Tag && shape.Tag != Tag)) {
         setShape(tmp._Shape);
@@ -2699,6 +2758,80 @@ TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
                   "Provided shape has more than one compsolid.");
     }
     return *this;
+}
+  
+TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
+                                        const std::vector<TopoShape>& edges,
+                                        double radius1,
+                                        double radius2,
+                                        const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Fillet;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (edges.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    BRepFilletAPI_MakeFillet mkFillet(shape.getShape());
+    for (auto& e : edges) {
+        if (e.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        const auto& edge = e.getShape();
+        if (!shape.findShape(edge)) {
+            FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
+        }
+        mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
+    }
+    return makeElementShape(mkFillet, shape, op);
+}
+
+TopoShape& TopoShape::makeElementChamfer(const TopoShape& shape,
+                                         const std::vector<TopoShape>& edges,
+                                         double radius1,
+                                         double radius2,
+                                         const char* op,
+                                         Flip flipDirection,
+                                         AsAngle asAngle)
+{
+    if (!op) {
+        op = Part::OpCodes::Chamfer;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (edges.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    BRepFilletAPI_MakeChamfer mkChamfer(shape.getShape());
+    for (auto& e : edges) {
+        const auto& edge = e.getShape();
+        if (e.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        if (!shape.findShape(edge)) {
+            FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
+        }
+        // Add edge to fillet algorithm
+        TopoDS_Shape face;
+        if (flipDirection == Flip::flip) {
+            face = shape.findAncestorsShapes(edge, TopAbs_FACE).back();
+        }
+        else {
+            face = shape.findAncestorShape(edge, TopAbs_FACE);
+        }
+        if (asAngle == AsAngle::yes) {
+            mkChamfer.AddDA(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        }
+        else {
+            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        }
+    }
+    return makeElementShape(mkChamfer, shape, op);
 }
 
 TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shapes,
