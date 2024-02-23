@@ -51,6 +51,7 @@
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -2702,6 +2703,69 @@ struct MapperThruSections: MapperMaker
     }
 };
 
+// TODO:  This method does not appear to ever be called in the codebase, and it is probably
+// broken, because using TopoShape() with no parameters means the result will not have an
+// element Map.  If ever restored, code like this should be used to make a tag.
+//TopoShape& TopoShape::makeElementSolid(const std::vector<TopoShape>& shapes, const char* op)
+//{
+//     static std::random_device _RD;
+//     static std::mt19937 _RGEN(_RD());
+//     static std::uniform_int_distribution<> _RDIST(1, 10000);
+//     long idx = _RDIST(_RGEN);
+//    return makeElementSolid(TopoShape(idx).makeElementCompound(shapes), op);
+//}
+
+TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Solid;
+    }
+
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    // first, if we were given a compsolid, try making a solid out of it
+    TopoDS_CompSolid compsolid;
+    int count = 0;
+    for (const auto& s : shape.getSubShapes(TopAbs_COMPSOLID)) {
+        ++count;
+        compsolid = TopoDS::CompSolid(s);
+        if (count > 1) {
+            break;
+        }
+    }
+    if (count == 0) {
+        // no compsolids. Get shells...
+        BRepBuilderAPI_MakeSolid mkSolid;
+        count = 0;
+        for (const auto& s : shape.getSubShapes(TopAbs_SHELL)) {
+            ++count;
+            mkSolid.Add(TopoDS::Shell(s));
+        }
+
+        if (count == 0) {  // no shells?
+            FC_THROWM(Base::CADKernelError, "No shells or compsolids found in shape");
+        }
+
+        makeElementShape(mkSolid, shape, op);
+
+        TopoDS_Solid solid = TopoDS::Solid(_Shape);
+        BRepLib::OrientClosedSolid(solid);
+        setShape(solid, false);
+    }
+    else if (count == 1) {
+        BRepBuilderAPI_MakeSolid mkSolid(compsolid);
+        makeElementShape(mkSolid, shape, op);
+    }
+    else {  // if (count > 1)
+        FC_THROWM(Base::CADKernelError,
+                  "Only one compsolid can be accepted. "
+                  "Provided shape has more than one compsolid.");
+    }
+    return *this;
+}
+  
 TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax2, const char* op)
 {
     if (!op) {
