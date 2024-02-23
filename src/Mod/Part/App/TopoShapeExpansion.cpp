@@ -2705,14 +2705,10 @@ struct MapperThruSections: MapperMaker
 
 // TODO:  This method does not appear to ever be called in the codebase, and it is probably
 // broken, because using TopoShape() with no parameters means the result will not have an
-// element Map.  If ever restored, code like this should be used to make a tag.
+// element Map.
 //TopoShape& TopoShape::makeElementSolid(const std::vector<TopoShape>& shapes, const char* op)
 //{
-//     static std::random_device _RD;
-//     static std::mt19937 _RGEN(_RD());
-//     static std::uniform_int_distribution<> _RDIST(1, 10000);
-//     long idx = _RDIST(_RGEN);
-//    return makeElementSolid(TopoShape(idx).makeElementCompound(shapes), op);
+//    return makeElementSolid(TopoShape().makeElementCompound(shapes), op);
 //}
 
 TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
