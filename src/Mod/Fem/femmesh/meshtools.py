@@ -2525,4 +2525,58 @@ def beam_reduced_integration(
     
     f.truncate()
     f.close()
+def plane_stress(
+    fileName
+):
+    # replace shell elements with plane stress elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CPS3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CPS6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CPS4")     
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+def plane_strain(
+    fileName
+):
+    # replace shell elements with plane strain elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CPE3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CPE6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CPE4")      
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+def axisymmetric(
+    fileName
+):
+    # replace shell elements with axisymmetric elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CAX3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CAX6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CAX4")    
+        f.write(line)
+    
+    f.truncate()
+    f.close()
 ##  @}
