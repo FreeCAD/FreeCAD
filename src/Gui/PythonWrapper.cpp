@@ -472,7 +472,7 @@ qttype* qt_getCppType(PyObject* pyobj)
     Py::Callable func = mainmod.getDict().getItem("getCppPointer");
 
     Py::Tuple arguments(1);
-    arguments[0] = Py::asObject(pyobj); // PySide pointer
+    arguments[0] = Py::Object(pyobj); // PySide pointer
     Py::Tuple result(func.apply(arguments));
     return reinterpret_cast<qttype*>(PyLong_AsVoidPtr(result[0].ptr()));
 }
