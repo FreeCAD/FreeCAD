@@ -108,20 +108,15 @@ def write_femelement_geometry(f, ccxwriter):
                 f.write(section_def)
                 f.write(section_geo)
             elif "shellthickness_obj" in matgeoset:  # shell mesh
+                shellth_obj = matgeoset["shellthickness_obj"]
                 if ccxwriter.solver_obj.ModelSpace == "3D":
-                    shellth_obj = matgeoset["shellthickness_obj"]
                     section_def = "*SHELL SECTION, {}{}\n".format(elsetdef, material)
-                    thickness = shellth_obj.Thickness.getValueAs("mm").Value
-                    section_geo = "{:.13G}\n".format(thickness)
-                    f.write(section_def)
-                    f.write(section_geo)
                 else:
-                    shellth_obj = matgeoset["shellthickness_obj"]
                     section_def = "*SOLID SECTION, {}{}\n".format(elsetdef, material)
-                    thickness = shellth_obj.Thickness.getValueAs("mm").Value
-                    section_geo = "{:.13G}\n".format(thickness)
-                    f.write(section_def)
-                    f.write(section_geo)    
+                thickness = shellth_obj.Thickness.getValueAs("mm").Value
+                section_geo = "{:.13G}\n".format(thickness)
+                f.write(section_def)
+                f.write(section_geo)    
             else:  # solid mesh
                 section_def = "*SOLID SECTION, {}{}\n".format(elsetdef, material)
                 f.write(section_def)
