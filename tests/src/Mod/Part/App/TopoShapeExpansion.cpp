@@ -12,9 +12,11 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFeat_SplitShape.hxx>
+#include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
@@ -2344,6 +2346,39 @@ TEST_F(TopoShapeExpansionTest, removeElementShape)
                           "Vertex3;:H1,V;:H7,V", "Vertex3;:H2,V;:H7,V", "Vertex4;:H1,V;:H7,V",
                           "Vertex4;:H2,V;:H7,V",
                       }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementEvolve)
+{
+    BRepBuilderAPI_MakePolygon polygon(gp_Pnt(0.0, 0.0, 0.0),
+                                       gp_Pnt(200.0, 0.0, 0.0),
+                                       gp_Pnt(200.0, 200.0, 0.0),
+                                       gp_Pnt(0.0, 200.0, 0.0));
+    polygon.Close();
+    TopoShape spine {polygon.Wire(), 1L};
+    // Alternative:
+    //    auto face {BRepBuilderAPI_MakeFace(polygon.Wire()).Face()};
+    //    TopoShape spine {face, 11L};
+    BRepBuilderAPI_MakePolygon polygon2(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(-60.0, -60.0, -200.0));
+    TopoShape profile {polygon2.Wire(), 2L};
+    // Alternative:
+    //    TopoShape profile {
+    //        BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(-60.0, -60.0, -200.0)).Edge(),
+    //        10L};
+    // Act
+    TopoShape topoShape {3L};
+    auto& result = topoShape.makeElementEvolve(spine, profile);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(
+        PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-60.0, -60.0, -200.0, 260.0, 260.0, 0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 8910324);
+    // Assert elementMap is correct
+    EXPECT_EQ(topoShape.getElementMap().size(), 0);
+    // Neither the Spine nor the Profile have an elementMap, because they are simple wires or faces.
+    // The resulting Evolved also does not populate the elementMap, but that might be a bug in
+    // underutilized code.
+    EXPECT_EQ(spine.getElementMap().size(), 0);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

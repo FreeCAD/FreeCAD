@@ -227,13 +227,26 @@ enum class Copy
 };
 
 /// Filling style when making a BSpline face
-enum FillingStyle {
+enum FillingStyle
+{
     /// The style with the flattest patches
     stretch,
     /// A rounded style of patch with less depth than those of Curved
     coons,
     /// The style with the most rounded patches
     curved,
+};
+
+enum class CoordinateSystem
+{
+    relativeToSpine,
+    global
+};
+
+enum class Spine
+{
+    notOn,
+    on
 };
 
 /** The representation for a CAD Shape
@@ -1262,6 +1275,8 @@ public:
      * An evolved shape is built from a planar spine (face or wire) and a
      * profile (wire). The evolved shape is the unlooped sweep (pipe) of the
      * profile along the spine. Self-intersections are removed.
+     * Note that the underlying OCCT method is very finicky about parameters and
+     * make throw "Unimplemented" exceptions for various types.
      *
      * @param spine: the spine shape, must be planar face or wire
      * @param profile: the profile wire, must be planar, or a line segment
@@ -1277,8 +1292,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makEEvolve(const TopoShape &spine, const TopoShape &profile, JoinType join=JoinType::Arc,
-                          bool axeProf=true, bool solid=false, bool profOnSpine=false, double tol=0.0, const char *op=nullptr);
+    TopoShape& makeElementEvolve(const TopoShape& spine,
+                                 const TopoShape& profile,
+                                 JoinType join = JoinType::arc,
+                                 CoordinateSystem = CoordinateSystem::global,
+                                 MakeSolid solid = MakeSolid::noSolid,
+                                 Spine profOnSpine = Spine::notOn,
+                                 double tol = 0.0,
+                                 const char* op = nullptr);
 
     /** Make an evolved shape using this shape as spine
      *
@@ -1296,10 +1317,16 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makEEvolve(const TopoShape &profile, JoinType join=JoinType::Arc,
-                         bool axeProf=true, bool solid=false, bool profOnSpine=false, double tol=0.0, const char *op=nullptr)
+    TopoShape makeElementEvolve(const TopoShape& profile,
+                                JoinType join = JoinType::arc,
+                                CoordinateSystem axeProf = CoordinateSystem::global,
+                                MakeSolid solid = MakeSolid::noSolid,
+                                Spine profOnSpine = Spine::notOn,
+                                double tol = 0.0,
+                                const char* op = nullptr)
     {
-        return TopoShape(0,Hasher).makEEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
+        return TopoShape(0, Hasher)
+            .makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
     }
 
     /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
