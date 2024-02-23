@@ -303,7 +303,7 @@ QWidget* setupMainWindow()
         try {
             Gui::initGuiAppPostMainWindow(true, *qApp, *mw, nullptr);
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             return nullptr;
         }
 
