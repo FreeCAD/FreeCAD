@@ -396,7 +396,7 @@ class CommandAddonManager:
             self.update_metadata_cache,
             self.check_updates,
             self.check_python_updates,
-            self.fetch_addon_stats
+            self.fetch_addon_stats,
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
@@ -666,11 +666,13 @@ class CommandAddonManager:
         self.manage_python_packages_dialog.show()
 
     def fetch_addon_stats(self) -> None:
-        """ Fetch the Addon Stats JSON data from a URL """
+        """Fetch the Addon Stats JSON data from a URL"""
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         url = pref.GetString("AddonsStatsURL", "https://freecad.org/addon_stats.json")
         if url and url != "NONE":
-            self.get_basic_addon_stats_worker = GetBasicAddonStatsWorker(url, self.item_model.repos, self.dialog)
+            self.get_basic_addon_stats_worker = GetBasicAddonStatsWorker(
+                url, self.item_model.repos, self.dialog
+            )
             self.get_basic_addon_stats_worker.finished.connect(self.do_next_startup_phase)
             self.get_basic_addon_stats_worker.update_addon_stats.connect(self.update_addon_stats)
             self.get_basic_addon_stats_worker.start()

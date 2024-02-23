@@ -335,8 +335,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         maintainers_string = ""
         if len(maintainers) == 1:
             maintainers_string = (
-                    translate("AddonsInstaller", "Maintainer")
-                    + f": {maintainers[0].name} <{maintainers[0].email}>"
+                translate("AddonsInstaller", "Maintainer")
+                + f": {maintainers[0].name} <{maintainers[0].email}>"
             )
         elif len(maintainers) > 1:
             n = len(maintainers)

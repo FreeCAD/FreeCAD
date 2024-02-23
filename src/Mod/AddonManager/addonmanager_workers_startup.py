@@ -917,7 +917,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
 
 
 class GetBasicAddonStatsWorker(QtCore.QThread):
-    """Fetch data from an addon stats repository. """
+    """Fetch data from an addon stats repository."""
 
     update_addon_stats = QtCore.Signal(Addon)
 
@@ -927,7 +927,7 @@ class GetBasicAddonStatsWorker(QtCore.QThread):
         self.addons = addons
 
     def run(self):
-        """ Fetch the remote data and load it into the addons """
+        """Fetch the remote data and load it into the addons"""
 
         fetch_result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.url, 5000)
         if fetch_result is None:
