@@ -389,6 +389,10 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actTransparent.setData(QStringLiteral("OBTN Transparent"));
     actTransparent.setParent(this);
     addAction(&actTransparent);
+    connect(&actTransparent, &QAction::triggered, [&](bool checked) {
+        this->setProperty("transparent", checked);
+        OverlayManager::instance()->refresh(this, true);
+    });
 
     actAutoHide.setData(QStringLiteral("OBTN AutoHide"));
 
@@ -1143,6 +1147,7 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, OverlayOption option)
 
 void OverlayTabWidget::setTransparent(bool enable)
 {
+    setProperty("transparent", enable);
     if(actTransparent.isChecked() == enable)
         return;
     if(hGrp) {
