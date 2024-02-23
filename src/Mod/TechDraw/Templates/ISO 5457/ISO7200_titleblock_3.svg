@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="180mm"
+   height="48mm"
+   viewBox="0 0 180 48"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
+  <title
+     id="title1">Titleblock ISO 5457</title>
+  <defs
+     id="defs1" />
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Titleblock ISO 5457</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benjamin May</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     width="180"
+     x="0"
+     id="Frame"
+     height="48"
+     y="0"
+     style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+  <g
+     id="Owner">
+    <rect
+       width="40"
+       x="140"
+       id="Owner border"
+       height="24"
+       y="0"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="140.5"
+       id="Owner label"
+       y="3.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Owner:</text>
+  </g>
+  <g
+     id="Identification number">
+    <rect
+       width="60"
+       x="80"
+       id="Identification number border"
+       height="12"
+       y="24"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="80.5"
+       id="Identification number label"
+       y="27.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Drawing number:</text>
+    <text
+       x="81"
+       id="Identification number data field"
+       y="33.2"
+       freecad:editable="drawing_number"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">DN</text>
+  </g>
+  <g
+     id="Revision index">
+    <rect
+       width="20"
+       x="140"
+       id="Revision index border"
+       height="12"
+       y="36"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="140.5"
+       id="Revision index label"
+       y="39.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Revision:</text>
+    <text
+       x="150"
+       id="Revision index data field"
+       y="45.2"
+       freecad:editable="revision_index"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">AAA</text>
+  </g>
+  <g
+     id="Date of issue">
+    <rect
+       width="40"
+       x="100"
+       id="Date of issue border"
+       height="12"
+       y="36"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="100.5"
+       id="Date of issue label"
+       y="39.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Issue date:</text>
+    <text
+       x="101"
+       id="Date of issue data field"
+       y="45.2"
+       freecad:editable="issue_date"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">YYYY-MM-DD</text>
+  </g>
+  <g
+     id="Sheet number">
+    <rect
+       width="20"
+       x="160"
+       id="Sheet number border"
+       height="12"
+       y="36"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="160.5"
+       id="Sheet number label"
+       y="39.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Sheet:</text>
+    <text
+       x="170"
+       id="Sheet number data field"
+       y="45.2"
+       freecad:editable="sheet_number"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">X / Y</text>
+  </g>
+  <g
+     id="Title, supplementary title">
+    <rect
+       width="80"
+       x="0"
+       id="Title border"
+       height="24"
+       y="0"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="0.5"
+       id="Title label"
+       y="3.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Title, supplementary title:</text>
+    <text
+       x="1"
+       id="Title data field"
+       y="9.2"
+       freecad:editable="title"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">ISO 7200 titleblock</text>
+    <text
+       x="1"
+       id="Supplementary title 1 data field"
+       y="15.2"
+       freecad:editable="supplementary_title_1"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">ST1</text>
+    <text
+       x="1"
+       id="Supplementary title 2 data field"
+       y="21.2"
+       freecad:editable="supplementary_title_2"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">ST2</text>
+  </g>
+  <g
+     id="Responsible department">
+    <rect
+       width="40"
+       x="140"
+       id="Responsible department border"
+       height="12"
+       y="24"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="140.5"
+       id="Responsible department label"
+       y="27.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Responsible department:</text>
+    <text
+       x="141"
+       id="Responsible department data field"
+       y="33.12"
+       freecad:editable="responsible_department"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">RD</text>
+  </g>
+  <g
+     id="Approval person">
+    <rect
+       width="60"
+       x="80"
+       id="Approval person border"
+       height="12"
+       y="12"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="80.5"
+       id="Approval person label"
+       y="15.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Approved by:</text>
+    <text
+       x="81"
+       id="Approval person data field"
+       y="21.2"
+       freecad:editable="approved_by"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">B. Hecate</text>
+  </g>
+  <g
+     id="Document type">
+    <rect
+       width="80"
+       x="0"
+       id="Document type border"
+       height="12"
+       y="24"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="0.5"
+       id="Document type label"
+       y="27.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Document type:</text>
+    <text
+       x="1"
+       id="Document type data field"
+       y="33.2"
+       freecad:editable="document_type"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Assembly Drawing</text>
+  </g>
+  <g
+     id="Creator">
+    <rect
+       width="60"
+       x="80"
+       id="Creator border"
+       height="12"
+       y="0"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="80.5"
+       id="Creator label"
+       y="3.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Created by:</text>
+    <text
+       x="81"
+       id="Creator data field"
+       y="9.2"
+       freecad:editable="created_by"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">A. Nemesis</text>
+  </g>
+  <g
+     id="Document status">
+    <rect
+       width="80"
+       x="0"
+       id="Document status border"
+       height="12"
+       y="36"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="0.5"
+       id="Document status label"
+       y="39.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Document status:</text>
+    <text
+       x="1"
+       id="Document status data field"
+       y="45.2"
+       freecad:editable="document_status"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">In preparation</text>
+  </g>
+  <g
+     id="Paper size">
+    <rect
+       width="20"
+       x="80"
+       id="Paper size border"
+       height="12"
+       y="36"
+       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+    <text
+       x="80.5"
+       id="Paper size label"
+       y="39.6"
+       style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Paper size:</text>
+    <text
+       x="90"
+       id="Paper size data field"
+       y="45.2"
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">A3</text>
+  </g>
+</svg>
