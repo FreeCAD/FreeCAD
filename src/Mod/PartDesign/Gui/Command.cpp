@@ -319,7 +319,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
-            FCMD_OBJ_CMD(Feat,"Support = " << support.getPyReprString());
+            FCMD_OBJ_CMD(Feat,"ObjectSupport = " << support.getPyReprString());
         }
         updateActive();
         PartDesignGui::setEdit(Feat,pcActiveBody);

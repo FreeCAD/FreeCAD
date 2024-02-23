@@ -131,7 +131,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
     std::vector<std::string> subs;
 
     if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
+        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->ObjectSupport, obj, subs);
     else
         return;
 
@@ -317,12 +317,12 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         break;
     case SelectObject: {
         auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-        if (!self || !self->Support.getValue())
+        if (!self || !self->ObjectSupport.getValue())
             break;
 
         Gui::Selection().selStackPush();
         Gui::Selection().clearSelection();
-        for (auto& link : self->Support.getSubListValues()) {
+        for (auto& link : self->ObjectSupport.getSubListValues()) {
             auto obj = link.getValue();
             if (!obj || !obj->isAttachedToDocument())
                 continue;
@@ -345,7 +345,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
 
 void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if (!self || !self->Support.getValue())
+    if (!self || !self->ObjectSupport.getValue())
         return;
 
     std::vector<Base::Matrix4D> mats;
@@ -402,9 +402,9 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
     std::vector<App::DocumentObject*> ret;
     auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
-    if (self && self->ClaimChildren.getValue() && self->Support.getValue()) {
+    if (self && self->ClaimChildren.getValue() && self->ObjectSupport.getValue()) {
         std::set<App::DocumentObject*> objSet;
-        for (auto& l : self->Support.getSubListValues()) {
+        for (auto& l : self->ObjectSupport.getSubListValues()) {
             auto obj = l.getValue();
             if (!obj)
                 continue;

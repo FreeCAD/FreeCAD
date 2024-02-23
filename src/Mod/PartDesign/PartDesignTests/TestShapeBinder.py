@@ -40,7 +40,7 @@ class TestShapeBinder(unittest.TestCase):
         self.Doc.recompute()
         self.Body001 = self.Doc.addObject('PartDesign::Body','Body001')
         self.ShapeBinder = self.Doc.addObject('PartDesign::ShapeBinder','ShapeBinder')
-        self.ShapeBinder.Support = [(self.Box, 'Face1')]
+        self.ShapeBinder.ObjectSupport = [(self.Box, 'Face1')]
         self.Body001.addObject(self.ShapeBinder)
         self.Doc.recompute()
         self.assertIn('Box', self.ShapeBinder.OutList[0].Label)
@@ -70,7 +70,7 @@ class TestSubShapeBinder(unittest.TestCase):
         box.Height=10.00000
 
         binder = body.newObject('PartDesign::SubShapeBinder','Binder')
-        binder.Support=[(box, ("Edge2", "Edge12", "Edge6", "Edge10"))]
+        binder.ObjectSupport=[(box, ("Edge2", "Edge12", "Edge6", "Edge10"))]
         self.Doc.recompute()
 
         self.assertAlmostEqual(binder.Shape.Length, 40)
@@ -111,7 +111,7 @@ class TestSubShapeBinder(unittest.TestCase):
         self.Doc.recompute()
 
         binder1 = body.newObject('PartDesign::SubShapeBinder','Binder')
-        binder1.Support = sketch
+        binder1.ObjectSupport = sketch
         self.Doc.recompute()
         pad = body.newObject('PartDesign::Pad','Pad')
         pad.Profile = sketch
@@ -122,7 +122,7 @@ class TestSubShapeBinder(unittest.TestCase):
         self.Doc.recompute()
 
         binder2 = body.newObject('PartDesign::SubShapeBinder','Binder001')
-        binder2.Support = [pad, "Sketch."]
+        binder2.ObjectSupport = [pad, "Sketch."]
         self.Doc.recompute()
 
         self.assertAlmostEqual(binder1.Shape.BoundBox.XLength, binder2.Shape.BoundBox.XLength, 2)

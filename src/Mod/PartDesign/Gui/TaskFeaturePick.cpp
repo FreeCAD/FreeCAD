@@ -407,7 +407,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
 
             if(!independent)
-                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+                static_cast<PartDesign::ShapeBinder*>(copy)->ObjectSupport.setValue(obj, entity.c_str());
             else
                 shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
         }
@@ -417,7 +417,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
 
             if (!independent) {
-                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+                static_cast<PartDesign::ShapeBinder*>(copy)->ObjectSupport.setValue(obj, entity.c_str());
             }
             else {
                 App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);

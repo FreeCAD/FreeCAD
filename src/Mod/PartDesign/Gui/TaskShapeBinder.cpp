@@ -86,13 +86,13 @@ void TaskShapeBinder::updateUI()
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);
+    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->ObjectSupport, obj, subs);
 
     if (obj) {
         ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));
     }
 
-    // Allow to clear the Support
+    // Allow to clear the ObjectSupport
     ui->baseEdit->setClearButtonEnabled(true);
     connect(ui->baseEdit, &QLineEdit::textChanged,
             this, &TaskShapeBinder::supportChanged);
@@ -143,7 +143,7 @@ void TaskShapeBinder::supportChanged(const QString& text)
 {
     if (!vp.expired() && text.isEmpty()) {
         PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
-        binder->Support.setValue(nullptr, nullptr);
+        binder->ObjectSupport.setValue(nullptr, nullptr);
         vp->highlightReferences(false);
         vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
         ui->listWidgetReferences->clear();
@@ -198,7 +198,7 @@ void TaskShapeBinder::deleteItem()
         std::vector<std::string> subs;
 
         PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
-        PartDesign::ShapeBinder::getFilteredReferences(&binder->Support, obj, subs);
+        PartDesign::ShapeBinder::getFilteredReferences(&binder->ObjectSupport, obj, subs);
 
         std::string subname = data.constData();
         std::vector<std::string>::iterator it = std::find(subs.begin(), subs.end(), subname);
@@ -206,7 +206,7 @@ void TaskShapeBinder::deleteItem()
         // if something was found, delete it and update the support
         if (it != subs.end()) {
             subs.erase(it);
-            binder->Support.setValue(obj, subs);
+            binder->ObjectSupport.setValue(obj, subs);
 
             vp->highlightReferences(false);
             vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
@@ -294,7 +294,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
         App::GeoFeature* obj = nullptr;
         std::vector<std::string> refs;
 
-        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
+        PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->ObjectSupport, obj, refs);
 
         // get selected object
         auto docObj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
@@ -307,7 +307,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
             return false;
         }
         if (!obj) {
-            // Support has not been set before
+            // ObjectSupport has not been set before
             obj = selectedObj;
         }
 
@@ -337,7 +337,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
             obj = selectedObj;
         }
 
-        static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);
+        static_cast<PartDesign::ShapeBinder*>(vp->getObject())->ObjectSupport.setValue(obj, refs);
 
         return true;
     }
@@ -365,7 +365,7 @@ void TaskShapeBinder::accept()
 
     std::string label = ui->baseEdit->text().toStdString();
     PartDesign::ShapeBinder* binder = static_cast<PartDesign::ShapeBinder*>(vp->getObject());
-    if (!binder->Support.getValue() && !label.empty()) {
+    if (!binder->ObjectSupport.getValue() && !label.empty()) {
         auto mode = selectionMode;
         selectionMode = refObjAdd;
         SelectionChanges msg(SelectionChanges::AddSelection, binder->getDocument()->getName(), label.c_str());

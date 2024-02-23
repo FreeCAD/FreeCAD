@@ -49,7 +49,7 @@ public:
     ShapeBinder();
     ~ShapeBinder() override;
 
-    App::PropertyLinkSubListGlobal    Support;
+    App::PropertyLinkSubListGlobal    ObjectSupport; // intentionally not named "Support" to avoid conflict with AttachExtension::Support
     App::PropertyBool TraceSupport;
 
     static void getFilteredReferences(const App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
@@ -62,7 +62,7 @@ public:
 protected:
     Part::TopoShape updatedShape() const;
     bool hasPlacementChanged() const;
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char * PropName) override;
     short int mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
@@ -89,7 +89,7 @@ public:
 
     void setLinks(std::map<App::DocumentObject *, std::vector<std::string> > &&values, bool reset=false);
 
-    App::PropertyXLinkSubList Support;
+    App::PropertyXLinkSubList ObjectSupport; // intentionally not named "Support" to avoid conflict with AttachExtension::Support
     App::PropertyBool ClaimChildren;
     App::PropertyBool Relative;
     App::PropertyBool Fuse;
@@ -126,8 +126,8 @@ protected:
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property *prop) override;
 
-    void handleChangedPropertyType(
-            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void handleChangedPropertyName(
+            Base::XMLReader &reader, const char * TypeName, const char * PropName) override;
 
     void onDocumentRestored() override;
     void setupObject() override;

@@ -59,7 +59,7 @@ PROPERTY_SOURCE(PartDesign::ShapeBinder, Part::Feature)
 
 ShapeBinder::ShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_None), "Support of the geometry");
+    ADD_PROPERTY_TYPE(ObjectSupport, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_None), "Support of the geometry");
     Placement.setStatus(App::Property::Hidden, true);
     ADD_PROPERTY_TYPE(TraceSupport, (false), "", App::Prop_None, "Trace support shape");
 }
@@ -76,7 +76,7 @@ void ShapeBinder::onChanged(const App::Property* prop)
 
 short int ShapeBinder::mustExecute() const {
 
-    if (Support.isTouched())
+    if (ObjectSupport.isTouched())
         return 1;
     if (TraceSupport.isTouched())
         return 1;
@@ -90,7 +90,7 @@ Part::TopoShape ShapeBinder::updatedShape() const
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    ShapeBinder::getFilteredReferences(&Support, obj, subs);
+    ShapeBinder::getFilteredReferences(&ObjectSupport, obj, subs);
 
     //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
     if (obj) {
@@ -242,14 +242,20 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
     return TopoDS_Shape();
 }
 
-void ShapeBinder::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void ShapeBinder::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
 {
-    // The type of Support was App::PropertyLinkSubList in the past
-    if (prop == &Support && strcmp(TypeName, "App::PropertyLinkSubList") == 0) {
-        Support.Restore(reader);
+    const Base::Type type = Base::Type::fromName(TypeName);
+
+    // ObjectSupport:
+    // The current property is ObjectSupport (type=App::PropertyLinkSubListGlobal)
+    // Previously, it was called     Support (type=App::PropertyLinkSubListGlobal)
+    // Prior to that, it was         Support (type=App::PropertyLinkSubList)
+    if (strcmp(PropName, "Support") == 0 && (type == ObjectSupport.getClassTypeId() ||
+        strcmp(TypeName, "App::PropertyLinkSubList") == 0)) {
+        ObjectSupport.Restore(reader);
     }
     else {
-        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+        Part::Feature::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 
@@ -278,7 +284,7 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
 
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
-    ShapeBinder::getFilteredReferences(&Support, obj, subs);
+    ShapeBinder::getFilteredReferences(&ObjectSupport, obj, subs);
     if (obj) {
         if (obj == &Obj) {
             // the directly referenced object has changed
@@ -309,8 +315,8 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (nullptr), "", (App::PropertyType)(App::Prop_None), "Support of the geometry");
-    Support.setStatus(App::Property::ReadOnly, true);
+    ADD_PROPERTY_TYPE(ObjectSupport, (nullptr), "", (App::PropertyType)(App::Prop_None), "Support of the geometry");
+    ObjectSupport.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base", App::Prop_None, "Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base", App::Prop_None, "Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Offsetting", App::Prop_None, "2D offset face or wires, 0.0 = no offset");
@@ -394,7 +400,7 @@ App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject*
 
     App::GetApplication().checkLinkDepth(depth);
     std::string name(subname, dot - subname);
-    for (auto& l : Support.getSubListValues()) {
+    for (auto& l : ObjectSupport.getSubListValues()) {
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
             continue;
@@ -421,7 +427,7 @@ App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject*
 void SubShapeBinder::setupCopyOnChange() {
     copyOnChangeConns.clear();
 
-    const auto& support = Support.getSubListValues();
+    const auto& support = ObjectSupport.getSubListValues();
     if (BindCopyOnChange.getValue() == 0 || support.size() != 1) {
         if (hasCopyOnChange) {
             hasCopyOnChange = false;
@@ -510,7 +516,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
-    for (auto& l : Support.getSubListValues()) {
+    for (auto& l : ObjectSupport.getSubListValues()) {
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
             continue;
@@ -536,7 +542,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
                 else if (_Version.getValue() == 0) {
                     // For existing legacy SubShapeBinder, we use its Placement
-                    // to store the position adjustment of the first Support
+                    // to store the position adjustment of the first ObjectSupport
                     if (first) {
                         auto pla = Placement.getValue() * Base::Placement(mat).inverse();
                         Placement.setValue(pla);
@@ -562,7 +568,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         App::DocumentObject* copied = nullptr;
 
-        if (BindCopyOnChange.getValue() == 2 && Support.getSubListValues().size() == 1) {
+        if (BindCopyOnChange.getValue() == 2 && ObjectSupport.getSubListValues().size() == 1) {
             if (!_CopiedObjs.empty())
                 copied = _CopiedObjs.front().getObject();
 
@@ -843,13 +849,13 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
         }
     }
     else if (!isRestoring()) {
-        if (prop == &Support) {
+        if (prop == &ObjectSupport) {
             clearCopiedObjects();
             setupCopyOnChange();
-            if (!Support.getSubListValues().empty()) {
+            if (!ObjectSupport.getSubListValues().empty()) {
                 update();
                 if (BindMode.getValue() == 2)
-                    Support.setValue(nullptr);
+                    ObjectSupport.setValue(nullptr);
             }
         }
         else if (prop == &BindCopyOnChange) {
@@ -857,7 +863,7 @@ void SubShapeBinder::onChanged(const App::Property* prop) {
         }
         else if (prop == &BindMode) {
             if (BindMode.getValue() == 2)
-                Support.setValue(nullptr);
+                ObjectSupport.setValue(nullptr);
             else if (BindMode.getValue() == 0)
                 update();
             checkPropertyStatus();
@@ -875,10 +881,10 @@ void SubShapeBinder::checkCopyOnChange(const App::Property& prop) {
     if (BindCopyOnChange.getValue() != 1
         || getDocument()->isPerformingTransaction()
         || !App::LinkBaseExtension::isCopyOnChangeProperty(this, prop)
-        || Support.getSubListValues().size() != 1)
+        || ObjectSupport.getSubListValues().size() != 1)
         return;
 
-    auto linked = Support.getSubListValues().front().getValue();
+    auto linked = ObjectSupport.getSubListValues().front().getValue();
     if (!linked)
         return;
     auto linkedProp = linked->getPropertyByName(prop.getName());
@@ -887,7 +893,7 @@ void SubShapeBinder::checkCopyOnChange(const App::Property& prop) {
 }
 
 void SubShapeBinder::checkPropertyStatus() {
-    Support.setAllowPartial(PartialLoad.getValue());
+    ObjectSupport.setAllowPartial(PartialLoad.getValue());
 
     // Make Shape transient can reduce some file size, and maybe reduce file
     // loading time as well. But there maybe complication arise when doing
@@ -900,7 +906,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
 {
     if (values.empty()) {
         if (reset) {
-            Support.setValue(nullptr);
+            ObjectSupport.setValue(nullptr);
             Shape.setValue(Part::TopoShape());
         }
         return;
@@ -944,7 +950,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
     }
 
     if (!reset) {
-        for (auto& link : Support.getSubListValues()) {
+        for (auto& link : ObjectSupport.getSubListValues()) {
             auto subs = link.getSubValues();
             auto& s = values[link.getValue()];
             if (s.empty()) {
@@ -978,17 +984,21 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
             s = std::move(subs);
         }
     }
-    Support.setValues(std::move(values));
+    ObjectSupport.setValues(std::move(values));
 }
 
-void SubShapeBinder::handleChangedPropertyType(
-    Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void SubShapeBinder::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
 {
-    if (prop == &Support) {
-        Support.upgrade(reader, TypeName);
+    const Base::Type type = Base::Type::fromName(TypeName);
+
+    // ObjectSupport:
+    // The current property is ObjectSupport (type=App::PropertyXLinkSubList)
+    // Previously, it was called     Support (type=App::PropertyXLinkSubList)
+    if (strcmp(PropName, "Support") == 0 && type == ObjectSupport.getClassTypeId()) {
+        ObjectSupport.Restore(reader);
     }
     else {
-        inherited::handleChangedPropertyType(reader, TypeName, prop);
+        Part::Feature::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
 
