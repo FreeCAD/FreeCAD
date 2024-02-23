@@ -12,21 +12,21 @@ double getVolume(const TopoDS_Shape& shape)
 {
     GProp_GProps prop;
     BRepGProp::VolumeProperties(shape, prop);
-    return prop.Mass();
+    return abs(prop.Mass());
 }
 
 double getArea(const TopoDS_Shape& shape)
 {
     GProp_GProps prop;
     BRepGProp::SurfaceProperties(shape, prop);
-    return prop.Mass();
+    return abs(prop.Mass());
 }
 
 double getLength(const TopoDS_Shape& shape)
 {
     GProp_GProps prop;
     BRepGProp::LinearProperties(shape, prop);
-    return prop.Mass();
+    return abs(prop.Mass());
 }
 
 
