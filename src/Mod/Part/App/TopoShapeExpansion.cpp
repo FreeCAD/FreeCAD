@@ -1857,6 +1857,76 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
+TopoShape &TopoShape::makEEvolve(const TopoShape &spine,
+                                 const TopoShape &profile,
+                                 JoinType join,
+                                 bool axeProf,
+                                 bool solid,
+                                 bool profOnSpine,
+                                 double tol,
+                                 const char *op)
+{
+    if (!op)
+        op = Part::OpCodes::Evolve;
+    if (tol == 0.0)
+        tol = 1e-6;
+
+    GeomAbs_JoinType joinType;
+    switch (join) {
+        case JoinType::Arc:
+            joinType = GeomAbs_Tangent;
+            break;
+        case JoinType::Intersection:
+            joinType = GeomAbs_Intersection;
+            break;
+        default:
+            joinType = GeomAbs_Arc;
+            break;
+    }
+
+    TopoDS_Shape spineShape;
+    if (spine.countSubShapes(TopAbs_FACE) > 0)
+        spineShape = spine.getSubShape(TopAbs_FACE, 1);
+    else if (spine.countSubShapes(TopAbs_WIRE) > 0)
+        spineShape = spine.getSubShape(TopAbs_WIRE, 1);
+    else if (spine.countSubShapes(TopAbs_EDGE) > 0)
+        spineShape = BRepBuilderAPI_MakeWire(TopoDS::Edge(spine.getSubShape(TopAbs_EDGE, 1))).Wire();
+    if (spineShape.IsNull() || !BRepBuilderAPI_FindPlane(spineShape).Found())
+        FC_THROWM(Base::CADKernelError, "Expect the the spine to be a planar wire or face");
+
+    TopoDS_Shape profileShape;
+    if (profile.countSubShapes(TopAbs_FACE) > 0 || profile.countSubShapes(TopAbs_WIRE) > 0)
+        profileShape = profile.getSubShape(TopAbs_WIRE, 1);
+    else if (profile.countSubShapes(TopAbs_EDGE) > 0)
+        profileShape = BRepBuilderAPI_MakeWire(TopoDS::Edge(profile.getSubShape(TopAbs_EDGE, 1))).Wire();
+    if (profileShape.IsNull() || !BRepBuilderAPI_FindPlane(profileShape).Found()) {
+        if (profileShape.IsNull()
+            || profile.countSubShapes(TopAbs_EDGE) > 1
+            || !profile.getSubTopoShape(TopAbs_EDGE, 1).isLinearEdge())
+        {
+            FC_THROWM(Base::CADKernelError, "Expect the the profile to be a planar wire or face or a line");
+        }
+    }
+    if (spineShape.ShapeType() == TopAbs_FACE) {
+        BRepOffsetAPI_MakeEvolved maker(TopoDS::Face(spineShape),
+                                        TopoDS::Wire(profileShape), joinType,
+                                        axeProf ? Standard_True : Standard_False,
+                                        solid ? Standard_True : Standard_False,
+                                        profOnSpine ? Standard_True : Standard_False,
+                                        tol);
+        return makEShape(maker, {spine, profile}, op);
+    }
+    else {
+        BRepOffsetAPI_MakeEvolved maker(TopoDS::Wire(spineShape),
+                                        TopoDS::Wire(profileShape), joinType,
+                                        axeProf ? Standard_True : Standard_False,
+                                        solid ? Standard_True : Standard_False,
+                                        profOnSpine ? Standard_True : Standard_False,
+                                        tol);
+        return makEShape(maker, {spine, profile}, op);
+    }
+}
+
 TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shapes,
                                               int orientation,
                                               const char* op)

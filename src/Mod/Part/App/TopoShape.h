@@ -1257,6 +1257,50 @@ public:
             return _res;
         }
     };
+    /** Make an evolved shape
+     *
+     * An evolved shape is built from a planar spine (face or wire) and a
+     * profile (wire). The evolved shape is the unlooped sweep (pipe) of the
+     * profile along the spine. Self-intersections are removed.
+     *
+     * @param spine: the spine shape, must be planar face or wire
+     * @param profile: the profile wire, must be planar, or a line segment
+     * @param join: the join type (only support Arc at the moment)
+     * @param axeProf: determine the coordinate system for the profile
+     * @param solid: whether to make a solid
+     * @param profOnSpine: whether the profile is connect with the spine
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makEEvolve(const TopoShape &spine, const TopoShape &profile, JoinType join=JoinType::Arc,
+                          bool axeProf=true, bool solid=false, bool profOnSpine=false, double tol=0.0, const char *op=nullptr);
+
+    /** Make an evolved shape using this shape as spine
+     *
+     * An evolved shape is built from a planar spine (face or wire) and a
+     * profile (wire). The evolved shape is the unlooped sweep (pipe) of the
+     * profile along the spine. Self-intersections are removed.
+     *
+     * @param profile: the profile wire, must be planar, or a line segment
+     * @param join: the join type (only support Arc at the moment)
+     * @param axeProf: determine the coordinate system for the profile
+     * @param solid: whether to make a solid
+     * @param profOnSpine: whether the profile is connect with the spine
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makEEvolve(const TopoShape &profile, JoinType join=JoinType::Arc,
+                         bool axeProf=true, bool solid=false, bool profOnSpine=false, double tol=0.0, const char *op=nullptr)
+    {
+        return TopoShape(0,Hasher).makEEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
+    }
 
     /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
      *
