@@ -54,6 +54,7 @@ from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathRotationGenerator import TestPathRotationGenerator
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathStock import TestPathStock
+from PathTests.TestPathTapGenerator import TestPathTapGenerator
 from PathTests.TestPathThreadMilling import TestPathThreadMilling
 from PathTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from PathTests.TestPathToolBit import TestPathToolBit

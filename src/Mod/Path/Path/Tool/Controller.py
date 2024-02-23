@@ -131,7 +131,7 @@ class ToolController:
                 (translate("Path_ToolController", "Forward"), "Forward"),
                 (translate("Path_ToolController", "Reverse"), "Reverse"),
                 (translate("Path_ToolController", "None"), "None"),
-            ],  # this is the direction that the profile runs
+            ]  # this is the direction that the profile runs
         }
 
         if dataType == "raw":

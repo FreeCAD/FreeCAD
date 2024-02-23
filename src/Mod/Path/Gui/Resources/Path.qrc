@@ -25,6 +25,7 @@
         <file>icons/Path_Depths.svg</file>
         <file>icons/Path_Dressup.svg</file>
         <file>icons/Path_Drilling.svg</file>
+        <file>icons/Path_Tapping.svg</file>
         <file>icons/Path_Engrave.svg</file>
         <file>icons/Path_ExportTemplate.svg</file>
         <file>icons/Path_Face.svg</file>
@@ -117,6 +118,7 @@
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PageOpTappingEdit.ui</file>
         <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
