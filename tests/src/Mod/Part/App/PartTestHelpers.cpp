@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <regex>
 #include "PartTestHelpers.h"
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
@@ -137,6 +138,32 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
     return result;
 }
 
+std::string mappedElementVectorToString(std::vector<MappedElement>& elements)
+{
+    std::stringstream output;
+    output << "{";
+    for (const auto& element : elements) {
+        output << "\"" << element.name.toString() << "\", ";
+    }
+    output << "}";
+    return output.str();
+}
+
+bool matchStringsWithoutClause(std::string first, std::string second, std::string regex)
+{
+    first = std::regex_replace(first, std::regex(regex), "");
+    second = std::regex_replace(second, std::regex(regex), "");
+    return first == second;
+}
+
+/**
+ *  Check to see if the elementMap in a shape contains all the names in a list
+ *  The "Duplicate" clause in a name - ";Dnnn" can contain a random number, so we need to
+ *  exclude those.
+ * @param shape The Shape
+ * @param names The vector of names
+ * @return An assertion usable by the gtest framework
+ */
 testing::AssertionResult elementsMatch(const TopoShape& shape,
                                        const std::vector<std::string>& names)
 {
@@ -147,16 +174,12 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
                                names.begin(),
                                names.end(),
                                [&](const Data::MappedElement& element, const std::string& name) {
-                                   return element.name.toString() == name;
+                                   return matchStringsWithoutClause(element.name.toString(),
+                                                                    name,
+                                                                    ";D[a-fA-F0-9]+");
                                })
             == elements.end()) {
-            std::stringstream output;
-            output << "{";
-            for (const auto& element : elements) {
-                output << "\"" << element.name.toString() << "\", ";
-            }
-            output << "}";
-            return testing::AssertionFailure() << output.str();
+            return testing::AssertionFailure() << mappedElementVectorToString(elements);
         }
     }
     return testing::AssertionSuccess();
@@ -168,7 +191,8 @@ testing::AssertionResult allElementsMatch(const TopoShape& shape,
     auto elements = shape.getElementMap();
     if (elements.size() != names.size()) {
         return testing::AssertionFailure()
-            << elements.size() << " != " << names.size() << " elements in map";
+            << elements.size() << " != " << names.size()
+            << " elements: " << mappedElementVectorToString(elements);
     }
     return elementsMatch(shape, names);
 }

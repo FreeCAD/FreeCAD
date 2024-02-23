@@ -112,7 +112,7 @@ installed addons will be checked for available updates
       <string>Hide Addons with non-FSF Free/Libre license</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="prefEntry" stdset="0">
       <cstring>HideNonFSFFreeLibre</cstring>

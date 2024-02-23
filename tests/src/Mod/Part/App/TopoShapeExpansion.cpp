@@ -1523,7 +1523,6 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge11;THK;:H1:4,E"));
 }
 
-
 TEST_F(TopoShapeExpansionTest, makeElementGeneralFuse)
 {
     // Arrange
@@ -1860,19 +1859,19 @@ TEST_F(TopoShapeExpansionTest, makeElementSlice)
     EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, result.getShape().ShapeType());
     // Assert that we're creating a correct element map
     EXPECT_TRUE(result.getMappedChildElements().empty());
-    EXPECT_TRUE(allElementsMatch(result,
-                                 {
-                                     "Edge1;SLC;D1;MAK",
-                                     "Edge1;SLC;D2;MAK",
-                                     "Edge1;SLC;D3;MAK",
-                                     "Edge1;SLC;MAK",
-                                     "Vertex1;SLC;D1;MAK",
-                                     "Vertex1;SLC;D2;MAK",
-                                     "Vertex1;SLC;MAK",
-                                     "Vertex2;SLC;D1;MAK",
-                                     "Vertex2;SLC;D2;MAK",
-                                     "Vertex2;SLC;MAK",
-                                 }));
+    EXPECT_TRUE(elementsMatch(result,
+                              {
+                                  "Edge1;SLC;D1;MAK",
+                                  "Edge1;SLC;D2;MAK",
+                                  "Edge1;SLC;D3;MAK",
+                                  "Edge1;SLC;MAK",
+                                  "Vertex1;SLC;D1;MAK",
+                                  "Vertex1;SLC;D2;MAK",
+                                  "Vertex1;SLC;MAK",
+                                  "Vertex2;SLC;D1;MAK",
+                                  "Vertex2;SLC;D2;MAK",
+                                  "Vertex2;SLC;MAK",
+                              }));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementSlices)
@@ -1953,5 +1952,100 @@ TEST_F(TopoShapeExpansionTest, makeElementMirror)
                        "Vertex4;:M;MIR;:H1:7,V", "Vertex5;:M;MIR;:H1:7,V", "Vertex6;:M;MIR;:H1:7,V",
                        "Vertex7;:M;MIR;:H1:7,V", "Vertex8;:M;MIR;:H1:7,V"}));
 }
+
+TEST_F(TopoShapeExpansionTest, makeElementTransformWithoutMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    TopoShape topoShape1 {cube1, 1L};
+    // Act
+    TopoShape& result = topoShape1.makeElementTransform(topoShape1, tr);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -0.5, 0.0, 0.5, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementTransformWithMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    topoShape1.makeElementTransform(result, tr);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -1.0, 0.0, 1.0, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementGTransformWithoutMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    TopoShape topoShape1 {cube1, 1L};
+    // Act
+    TopoShape& result = topoShape1.makeElementGTransform(topoShape1, TopoShape::convert(tr));
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -0.5, 0.0, 0.5, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementGTransformWithMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    topoShape1.makeElementGTransform(result, TopoShape::convert(tr));
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -1.0, 0.0, 1.0, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+
+// Not testing _makeElementTransform as it is a thin wrapper that calls the same places as the four
+// preceding tests.
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
