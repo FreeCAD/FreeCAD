@@ -3059,7 +3059,7 @@ TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
     }
     return *this;
 }
-  
+
 TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax2, const char* op)
 {
     if (!op) {
@@ -3106,6 +3106,41 @@ TopoShape& TopoShape::makeElementSlices(const TopoShape& shape,
         cs.slice(++index, distance, wires);
     }
     return makeElementCompound(wires, op, SingleShapeCompoundCreationPolicy::returnShape);
+}
+
+TopoShape &TopoShape::replacEShape(const TopoShape &shape,
+                                   const std::vector<std::pair<TopoShape,TopoShape> > &s)
+{
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+    BRepTools_ReShape reshape;
+    std::vector<TopoShape> shapes;
+    shapes.reserve(s.size()+1);
+    for (auto &v : s) {
+        if(v.first.isNull() || v.second.isNull())
+            HANDLE_NULL_INPUT;
+        reshape.Replace(v.first.getShape(), v.second.getShape());
+        shapes.push_back(v.second);
+    }
+    shapes.push_back(shape);
+    setShape(reshape.Apply(shape.getShape(),TopAbs_SHAPE));
+    mapSubElement(shapes);
+    return *this;
+}
+
+TopoShape &TopoShape::removEShape(const TopoShape &shape, const std::vector<TopoShape>& s)
+{
+    if(shape.isNull())
+        HANDLE_NULL_SHAPE;
+    BRepTools_ReShape reshape;
+    for(auto &sh : s) {
+        if(sh.isNull())
+            HANDLE_NULL_INPUT;
+        reshape.Remove(sh.getShape());
+    }
+    setShape(reshape.Apply(shape.getShape(), TopAbs_SHAPE));
+    mapSubElement(shape);
+    return *this;
 }
 
 TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
