@@ -25,6 +25,7 @@
 # include <limits>
 # include <unordered_map>
 # include <list>
+# include <QAction>
 # include <QApplication>
 # include <QDir>
 # include <QIcon>
@@ -633,6 +634,28 @@ Py::Object PythonWrapper::fromQDir(const QDir& dir)
 QDir* PythonWrapper::toQDir(PyObject* pyobj)
 {
     return qt_getCppType<QDir>(pyobj);
+}
+
+Py::Object PythonWrapper::fromQAction(QAction* action)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // Access shiboken/PySide via C++
+    auto type = getPyTypeObjectForTypeName<QAction>();
+    if (type) {
+        PyObject* pyobj = Shiboken::Object::newObject(type, action, false, false, "QAction");
+        WrapperManager::instance().addQObject(action, pyobj);
+        return Py::asObject(pyobj);
+    }
+    throw Py::RuntimeError("Failed to wrap action");
+#else
+    // Access shiboken/PySide via Python
+# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    constexpr const char* qtModWithQAction = "QtWidgets";
+# else
+    constexpr const char* qtModWithQAction = "QtGui";
+# endif
+    return qt_wrapInstance<QAction*>(action, "QAction", qtModWithQAction);
+#endif
 }
 
 Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
