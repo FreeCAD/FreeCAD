@@ -2162,7 +2162,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                                                 c.driving);
                 }
             }
-            else {  // line length
+            else {  // line length, arc length
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -3288,19 +3288,23 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     return ConstraintsCounter;
 }
 
-// line length constraint
+// line length and arc length constraint
 int Sketch::addDistanceConstraint(int geoId, double* value, bool driving)
 {
     geoId = checkGeoId(geoId);
 
-    if (Geoms[geoId].type != Line) {
+    int tag = ++ConstraintsCounter;
+    if (Geoms[geoId].type == Line) {
+        GCS::Line& l = Lines[Geoms[geoId].index];
+        GCSsys.addConstraintP2PDistance(l.p1, l.p2, value, tag, driving);
+    }
+    else if (Geoms[geoId].type == Arc) {
+        GCS::Arc& a = Arcs[Geoms[geoId].index];
+        GCSsys.addConstraintArcLength(a, value, tag, driving);
+    }
+    else {
         return -1;
     }
-
-    GCS::Line& l = Lines[Geoms[geoId].index];
-
-    int tag = ++ConstraintsCounter;
-    GCSsys.addConstraintP2PDistance(l.p1, l.p2, value, tag, driving);
     return ConstraintsCounter;
 }
 

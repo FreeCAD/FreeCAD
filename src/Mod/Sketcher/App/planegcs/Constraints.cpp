@@ -24,6 +24,8 @@
 #pragma warning(disable : 4251)
 #endif
 
+#include <math.h>
+
 #include <algorithm>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
@@ -3490,5 +3492,91 @@ double ConstraintP2CDistance::grad(double* param)
 
     return deriv * scale;
 }
+
+// --------------------------------------------------------
+// ConstraintArcLength
+ConstraintArcLength::ConstraintArcLength(Arc& a, double* d)
+{
+    this->d = d;
+    pvec.push_back(d);
+
+    this->arc = a;
+    this->arc.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintArcLength::ReconstructGeomPointers()
+{
+    int i = 0;
+    i++;  // skip the first parameter as there is the inline function distance for it
+    arc.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintArcLength::getTypeId()
+{
+    return ArcLength;
+}
+
+void ConstraintArcLength::rescale(double coef)
+{
+    scale = coef;
+}
+
+void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    double rad = *arc.rad;
+    double endA = *arc.endAngle;
+    double startA = *arc.startAngle;
+    // Assume positive angles and CCW arc
+    while (startA < 0.) {
+        startA += 2. * M_PI;
+    }
+    while (endA < startA) {
+        endA += 2. * M_PI;
+    }
+    if (err) {
+        *err = rad * (endA - startA) - *distance();
+    }
+    else if (grad) {
+        if (param == distance()) {
+            // if constraint is not driving it varies on distance().
+            *grad = -1.;
+        }
+        else {
+            double dRad = param == arc.rad ? 1. : 0.;
+            double dStartA = param == arc.startAngle ? 1. : 0.;
+            double dEndA = param == arc.endAngle ? 1. : 0.;
+            *grad = rad * (dEndA - dStartA) + dRad * (endA - startA);
+        }
+    }
+}
+
+double ConstraintArcLength::error()
+{
+    double err;
+    errorgrad(&err, nullptr, nullptr);
+    return scale * err;
+}
+
+double ConstraintArcLength::grad(double* param)
+{
+    if (findParamInPvec(param) == -1) {
+        return 0.0;
+    }
+
+    double deriv;
+    errorgrad(nullptr, &deriv, param);
+
+    return deriv * scale;
+}
+
 
 }  // namespace GCS
