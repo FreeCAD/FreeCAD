@@ -147,11 +147,6 @@ App::DocumentObject* Transformed::getSketchObject() const
     }
 }
 
-void Transformed::Restore(Base::XMLReader& reader)
-{
-    PartDesign::Feature::Restore(reader);
-}
-
 void Transformed::handleChangedPropertyType(Base::XMLReader& reader,
                                             const char* TypeName,
                                             App::Property* prop)

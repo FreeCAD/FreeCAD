@@ -88,7 +88,6 @@ public:
     TopoDS_Shape rejected;
 
 protected:
-    void Restore(Base::XMLReader& reader) override;
     void handleChangedPropertyType(Base::XMLReader& reader,
                                    const char* TypeName,
                                    App::Property* prop) override;
