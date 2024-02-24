@@ -253,11 +253,14 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         // The left mouse button has been released right now
         if (this->lockButton1) {
             this->lockButton1 = false;
+            if (curmode != NavigationStyle::SELECTION) {
+                processed = true;
+            }
         }
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
-        if (!viewer->isEditing() && (curmode == NavigationStyle::SPINNING || this->lockButton1))
+        if (curmode == NavigationStyle::SPINNING || this->lockButton1 && curmode != NavigationStyle::SELECTION)
             newmode = NavigationStyle::IDLE;
         else
             newmode = NavigationStyle::SELECTION;
