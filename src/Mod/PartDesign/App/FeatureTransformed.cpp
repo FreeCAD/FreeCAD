@@ -213,6 +213,47 @@ App::DocumentObjectExecReturn* Transformed::execute()
     // Get an untransformed support shape
     support.Location(gp_Trsf {});
 
+    auto applyShape = [&] (TopoDS_Shape const& shape, BOPAlgo_Operation operation)
+    {
+        TopTools_ListOfShape shapeTools;
+        {
+            auto shapes = applyTransformation({shape});
+            auto iter = shapes.begin();
+            ++iter;  // ignore first shape, it is always the original untransformed shape
+            for (; iter < shapes.end(); ++iter) {
+                shapeTools.Append(std::move(*iter));
+            }
+        }
+
+        if (!shapeTools.IsEmpty()) {
+            TopTools_ListOfShape shapeArguments;
+            shapeArguments.Append(support);
+
+            std::unique_ptr<BRepAlgoAPI_BooleanOperation> boolOperation;
+            switch (operation) {
+            case BOPAlgo_FUSE:
+                boolOperation = std::make_unique<BRepAlgoAPI_Fuse>();
+                break;
+            case BOPAlgo_CUT:
+                boolOperation = std::make_unique<BRepAlgoAPI_Cut>();
+                break;
+            default:
+                throw Base::RuntimeError("Boolean operation not implemented");
+            }
+
+            boolOperation->SetArguments(shapeArguments);
+            boolOperation->SetTools(shapeTools);
+            boolOperation->Build();
+            if (!boolOperation->IsDone()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+            }
+            support = boolOperation->Shape();
+        }
+
+        return App::DocumentObject::StdReturn;
+    };
+
     // NOTE: We choose to apply the transformations to each Original separately. This way it is
     // easier to discover what feature causes a fuse/cut to fail.
     // The downside is that performance suffers when there are many originals. But it seems
@@ -226,17 +267,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
         auto feature = static_cast<PartDesign::FeatureAddSub*>(original);
 
-        // Extract the original shape and determine whether to cut or to fuse
-        struct ShapeOperation
-        {
-            BOPAlgo_Operation operation;
-            Part::TopoShape shape = {};
-        };
-        ShapeOperation fuseShapeOp = {BOPAlgo_FUSE};
-        ShapeOperation cutShapeOp = {BOPAlgo_CUT};
-
-        feature->getAddSubShape(fuseShapeOp.shape, cutShapeOp.shape);
-        if (fuseShapeOp.shape.isNull() && cutShapeOp.shape.isNull()) {
+        Part::TopoShape fuseShape, cutShape;
+        feature->getAddSubShape(fuseShape, cutShape);
+        if (fuseShape.isNull() && cutShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
         }
@@ -244,48 +277,18 @@ App::DocumentObjectExecReturn* Transformed::execute()
         // Transform from feature LCS to support shape LCS
         gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
 
-        for (auto [operation, partShape] : {fuseShapeOp, cutShapeOp}) {
-            if (partShape.isNull()) {
-                continue;
-            }
-
-            TopoDS_Shape shape = partShape.getShape();
+        if (!fuseShape.isNull()) {
+            TopoDS_Shape shape = fuseShape.getShape();
             shape.Move(trsf);
-
-            TopTools_ListOfShape shapeTools;
-            {
-                auto shapes = applyTransformation({shape});
-                auto iter = shapes.begin();
-                ++iter;  // ignore first shape, it is always the original untransformed shape
-                for (; iter < shapes.end(); ++iter) {
-                    shapeTools.Append(std::move(*iter));
-                }
+            if (auto result = applyShape(shape, BOPAlgo_FUSE); result != App::DocumentObject::StdReturn) {
+                return result;
             }
-
-            if (!shapeTools.IsEmpty()) {
-                TopTools_ListOfShape shapeArguments;
-                shapeArguments.Append(support);
-
-                std::unique_ptr<BRepAlgoAPI_BooleanOperation> boolOperation;
-                switch (operation) {
-                case BOPAlgo_FUSE:
-                    boolOperation = std::make_unique<BRepAlgoAPI_Fuse>();
-                    break;
-                case BOPAlgo_CUT:
-                    boolOperation = std::make_unique<BRepAlgoAPI_Cut>();
-                    break;
-                default:
-                    throw Base::RuntimeError("Boolean operation not implemented");
-                }
-
-                boolOperation->SetArguments(shapeArguments);
-                boolOperation->SetTools(shapeTools);
-                boolOperation->Build();
-                if (!boolOperation->IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                }
-                support = boolOperation->Shape();
+        }
+        if (!cutShape.isNull()) {
+            TopoDS_Shape shape = cutShape.getShape();
+            shape.Move(trsf);
+            if (auto result = applyShape(shape, BOPAlgo_CUT); result != App::DocumentObject::StdReturn) {
+                return result;
             }
         }
     }
