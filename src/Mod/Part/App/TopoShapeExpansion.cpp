@@ -3108,34 +3108,41 @@ TopoShape& TopoShape::makeElementSlices(const TopoShape& shape,
     return makeElementCompound(wires, op, SingleShapeCompoundCreationPolicy::returnShape);
 }
 
-TopoShape &TopoShape::replacEShape(const TopoShape &shape,
-                                   const std::vector<std::pair<TopoShape,TopoShape> > &s)
+TopoShape& TopoShape::replaceElementShape(const TopoShape& shape,
+                                          const std::vector<std::pair<TopoShape, TopoShape>>& s)
 {
-    if(shape.isNull())
-        HANDLE_NULL_SHAPE;
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
     BRepTools_ReShape reshape;
     std::vector<TopoShape> shapes;
-    shapes.reserve(s.size()+1);
-    for (auto &v : s) {
-        if(v.first.isNull() || v.second.isNull())
-            HANDLE_NULL_INPUT;
+    shapes.reserve(s.size() + 1);
+    for (auto& v : s) {
+        if (v.first.isNull() || v.second.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
         reshape.Replace(v.first.getShape(), v.second.getShape());
         shapes.push_back(v.second);
     }
+    // TODO:  This does not work when replacing a shape in a compound.  Should we replace with
+    // something else?
+    //  Note that remove works with a compound.
     shapes.push_back(shape);
-    setShape(reshape.Apply(shape.getShape(),TopAbs_SHAPE));
+    setShape(reshape.Apply(shape.getShape(), TopAbs_SHAPE));
     mapSubElement(shapes);
     return *this;
 }
 
-TopoShape &TopoShape::removEShape(const TopoShape &shape, const std::vector<TopoShape>& s)
+TopoShape& TopoShape::removeElementShape(const TopoShape& shape, const std::vector<TopoShape>& s)
 {
-    if(shape.isNull())
-        HANDLE_NULL_SHAPE;
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
     BRepTools_ReShape reshape;
-    for(auto &sh : s) {
-        if(sh.isNull())
-            HANDLE_NULL_INPUT;
+    for (auto& sh : s) {
+        if (sh.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
         reshape.Remove(sh.getShape());
     }
     setShape(reshape.Apply(shape.getShape(), TopAbs_SHAPE));

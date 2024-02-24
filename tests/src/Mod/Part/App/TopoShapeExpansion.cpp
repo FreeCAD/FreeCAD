@@ -172,24 +172,24 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     EXPECT_TRUE(
         allElementsMatch(topoShape,
                          {
-                             "Edge1;:H1,E;:H7,E",   "Edge2;:H1,E;:H7,E",   "Edge3;:H1,E;:H7,E",
-                             "Edge4;:H1,E;:H7,E",   "Edge1;:H2,E;:H7,E",   "Edge2;:H2,E;:H7,E",
-                             "Edge3;:H2,E;:H7,E",   "Edge4;:H2,E;:H7,E",   "Edge1;:H3,E;:H7,E",
-                             "Edge2;:H3,E;:H7,E",   "Edge3;:H3,E;:H7,E",   "Edge4;:H3,E;:H7,E",
-                             "Edge1;:H8,E;:He,E",   "Edge2;:H8,E;:He,E",   "Edge3;:H8,E;:He,E",
-                             "Edge4;:H8,E;:He,E",   "Edge1;:H9,E;:He,E",   "Edge2;:H9,E;:He,E",
-                             "Edge3;:H9,E;:He,E",   "Edge4;:H9,E;:He,E",   "Edge1;:Ha,E;:He,E",
-                             "Edge2;:Ha,E;:He,E",   "Edge3;:Ha,E;:He,E",   "Edge4;:Ha,E;:He,E",
-                             "Vertex1;:H8,V;:He,V", "Vertex2;:H8,V;:He,V", "Vertex3;:H8,V;:He,V",
-                             "Vertex4;:H8,V;:He,V", "Vertex1;:H9,V;:He,V", "Vertex2;:H9,V;:He,V",
-                             "Vertex3;:H9,V;:He,V", "Vertex4;:H9,V;:He,V", "Face1;:H1,F;:H7,F",
-                             "Face1;:H2,F;:H7,F",   "Face1;:H3,F;:H7,F",   "Face1;:H4,F;:H7,F",
-                             "Face1;:H5,F;:H7,F",   "Face1;:H6,F;:H7,F",   "Face1;:H8,F;:He,F",
+                             "Vertex1;:H1,V;:H7,V", "Vertex2;:H1,V;:H7,V", "Vertex3;:H1,V;:H7,V",
+                             "Vertex4;:H1,V;:H7,V", "Vertex1;:H2,V;:H7,V", "Vertex2;:H2,V;:H7,V",
+                             "Vertex3;:H2,V;:H7,V", "Vertex4;:H2,V;:H7,V", "Face1;:H8,F;:He,F",
                              "Face1;:H9,F;:He,F",   "Face1;:Ha,F;:He,F",   "Face1;:Hb,F;:He,F",
-                             "Face1;:Hc,F;:He,F",   "Face1;:Hd,F;:He,F",   "Vertex1;:H1,V;:H7,V",
-                             "Vertex2;:H1,V;:H7,V", "Vertex3;:H1,V;:H7,V", "Vertex4;:H1,V;:H7,V",
-                             "Vertex1;:H2,V;:H7,V", "Vertex2;:H2,V;:H7,V", "Vertex3;:H2,V;:H7,V",
-                             "Vertex4;:H2,V;:H7,V",
+                             "Face1;:Hc,F;:He,F",   "Face1;:Hd,F;:He,F",   "Edge1;:H8,E;:He,E",
+                             "Edge2;:H8,E;:He,E",   "Edge3;:H8,E;:He,E",   "Edge4;:H8,E;:He,E",
+                             "Edge1;:H9,E;:He,E",   "Edge2;:H9,E;:He,E",   "Edge3;:H9,E;:He,E",
+                             "Edge4;:H9,E;:He,E",   "Edge1;:Ha,E;:He,E",   "Edge2;:Ha,E;:He,E",
+                             "Edge3;:Ha,E;:He,E",   "Edge4;:Ha,E;:He,E",   "Vertex1;:H8,V;:He,V",
+                             "Vertex2;:H8,V;:He,V", "Vertex3;:H8,V;:He,V", "Vertex4;:H8,V;:He,V",
+                             "Vertex1;:H9,V;:He,V", "Vertex2;:H9,V;:He,V", "Vertex3;:H9,V;:He,V",
+                             "Vertex4;:H9,V;:He,V", "Edge1;:H1,E;:H7,E",   "Edge2;:H1,E;:H7,E",
+                             "Edge3;:H1,E;:H7,E",   "Edge4;:H1,E;:H7,E",   "Edge1;:H2,E;:H7,E",
+                             "Edge2;:H2,E;:H7,E",   "Edge3;:H2,E;:H7,E",   "Edge4;:H2,E;:H7,E",
+                             "Edge1;:H3,E;:H7,E",   "Edge2;:H3,E;:H7,E",   "Edge3;:H3,E;:H7,E",
+                             "Edge4;:H3,E;:H7,E",   "Face1;:H1,F;:H7,F",   "Face1;:H2,F;:H7,F",
+                             "Face1;:H3,F;:H7,F",   "Face1;:H4,F;:H7,F",   "Face1;:H5,F;:H7,F",
+                             "Face1;:H6,F;:H7,F",
                          }));
 }
 
@@ -2280,6 +2280,70 @@ TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)
                                   "Vertex2",
                                   "Vertex2;D1",
                               }));
+}
+
+TEST_F(TopoShapeExpansionTest, replaceElementShape)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoTopoShapeCubes();
+    // We can't use a compound in replaceElementShape, so we'll make a replacement wire and a shell
+    auto wire {BRepBuilderAPI_MakeWire(
+                   BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)),
+                   BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)),
+                   BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)))
+                   .Wire()};
+    auto shell = cube1.makeElementShell();
+    auto wires = shell.getSubTopoShapes(TopAbs_WIRE);
+    // Act
+    TopoShape& result = shell.replaceElementShape(shell, {{wires[0], wire}});
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 5);
+    EXPECT_EQ(result.countSubElements("Wire"), 6);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_TRUE(elementsMatch(
+        result,
+        {
+            "Edge1",         "Edge1;:H1,E",   "Edge1;:H2,E",   "Edge1;:H3,E",   "Edge2",
+            "Edge2;:H1,E",   "Edge2;:H2,E",   "Edge2;:H3,E",   "Edge3",         "Edge3;:H1,E",
+            "Edge3;:H2,E",   "Edge3;:H3,E",   "Edge4;:H1,E",   "Edge4;:H2,E",   "Edge4;:H3,E",
+            "Face1;:H2,F",   "Face1;:H3,F",   "Face1;:H4,F",   "Face1;:H5,F",   "Face1;:H6,F",
+            "Vertex1",       "Vertex1;:H1,V", "Vertex1;:H2,V", "Vertex2",       "Vertex2;:H1,V",
+            "Vertex2;:H2,V", "Vertex3",       "Vertex3;:H1,V", "Vertex3;:H2,V", "Vertex4;:H1,V",
+            "Vertex4;:H2,V",
+        }));
+}
+
+TEST_F(TopoShapeExpansionTest, removeElementShape)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoTopoShapeCubes();
+    auto faces = cube1.getSubTopoShapes(TopAbs_FACE);
+    // Act
+    TopoShape result = cube1.removeElementShape({faces[0]});
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 5);
+    EXPECT_EQ(result.countSubShapes("Compound"), 1);
+    EXPECT_EQ(result.countSubShapes("Face"), 5);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(result.getMappedChildElements().empty());
+    EXPECT_TRUE(
+        elementsMatch(result,
+                      {
+                          "Edge1;:H1,E;:H7,E",   "Edge1;:H2,E;:H7,E",   "Edge1;:H3,E;:H7,E",
+                          "Edge2;:H1,E;:H7,E",   "Edge2;:H2,E;:H7,E",   "Edge2;:H3,E;:H7,E",
+                          "Edge3;:H1,E;:H7,E",   "Edge3;:H2,E;:H7,E",   "Edge3;:H3,E;:H7,E",
+                          "Edge4;:H1,E;:H7,E",   "Edge4;:H2,E;:H7,E",   "Edge4;:H3,E;:H7,E",
+                          "Face1;:H2,F;:H7,F",   "Face1;:H3,F;:H7,F",   "Face1;:H4,F;:H7,F",
+                          "Face1;:H5,F;:H7,F",   "Face1;:H6,F;:H7,F",   "Vertex1;:H1,V;:H7,V",
+                          "Vertex1;:H2,V;:H7,V", "Vertex2;:H1,V;:H7,V", "Vertex2;:H2,V;:H7,V",
+                          "Vertex3;:H1,V;:H7,V", "Vertex3;:H2,V;:H7,V", "Vertex4;:H1,V;:H7,V",
+                          "Vertex4;:H2,V;:H7,V",
+                      }));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
