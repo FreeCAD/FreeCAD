@@ -59,7 +59,7 @@ Py::Object CommandActionPy::getAction()
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
 
-        return wrap.fromQObject(action->action());
+        return wrap.fromQAction(action->action());
     }
     else {
         return Py::None();
