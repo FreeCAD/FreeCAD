@@ -1666,10 +1666,12 @@ def get_pressure_obj_faces(
                     # How to find the orientation of a FEM mesh face?
                     # https://forum.freecad.org/viewtopic.php?f=18&t=51898
         else:
-            FreeCAD.Console.PrintError(
-                "Pressure on shell mesh at the moment only "
-                "supported for meshes with appropriate group data.\n"
-            )
+            for sh, elems in femobj["Object"].References:
+                for e in elems:
+                    meshfaces = femmesh.getFacesByFace(sh.getSubObject(e))
+                    for mf in meshfaces:
+                        pressure_faces.append([mf, -1])
+
     return pressure_faces
 
 
