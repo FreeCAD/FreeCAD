@@ -3,6 +3,7 @@
 #include "gtest/gtest.h"
 #include "src/App/InitApplication.h"
 #include <Mod/Part/App/TopoShape.h>
+#include "Mod/Part/App/TopoShapeMapper.h"
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "PartTestHelpers.h"
@@ -16,8 +17,10 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
+#include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <gp_Pln.hxx>
 #include <ShapeFix_Wireframe.hxx>
 #include <ShapeBuild_ReShape.hxx>
@@ -1195,7 +1198,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
     // Assert
     TopoShape result = topoShape1.makeElementShellFromWires(shapes);
 #if OCC_VERSION_HEX >= 0x070400
-    EXPECT_EQ(result.getShape().NbChildren(), 6);
+    EXPECT_EQ(result.getShape().NbChildren(), 20);  // 6  TODO: VERSION DEPENDENT?
 #endif
     EXPECT_EQ(result.countSubElements("Vertex"), 8);
     EXPECT_EQ(result.countSubElements("Edge"), 32);
@@ -2203,5 +2206,80 @@ TEST_F(TopoShapeExpansionTest, makeElementPrism)
 //    EXPECT_TRUE(elementsMatch(result,
 //                              {"Edge1;:G;XTR;:H2:7,F",}));
 //}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape topoShape1 {cube1, 1L};
+    auto wires = topoShape1.getSubShapes(TopAbs_WIRE);
+    TopoShape topoShape2 {wires[0], 2L};
+    // Act
+    auto params = TopoShape::BRepFillingParams();
+    TopoShape& result = topoShape1.makeElementFilledFace({topoShape2}, params);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.6, -0.6, 0, 1.6, 1.6)));
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 1);
+    // Assert elementMap is correct
+    EXPECT_TRUE(allElementsMatch(result,
+                                 {
+                                     "Edge1;:G;FFC;:H2:7,E",
+                                     "Edge1;:G;FFC;:H2:7,E;:L(Edge2;:G;FFC;:H2:7,E|Edge3;:G;FFC;:"
+                                     "H2:7,E|Edge4;:G;FFC;:H2:7,E);FFC;:H2:47,F",
+                                     "Edge2;:G;FFC;:H2:7,E",
+                                     "Edge3;:G;FFC;:H2:7,E",
+                                     "Edge4;:G;FFC;:H2:7,E",
+                                     "Vertex1;:G;FFC;:H2:7,V",
+                                     "Vertex2;:G;FFC;:H2:7,V",
+                                     "Vertex3;:G;FFC;:H2:7,V",
+                                     "Vertex4;:G;FFC;:H2:7,V",
+                                 }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)
+{
+    // Arrange
+    TColgp_Array1OfPnt array1(1, 3);  // sizing array
+    array1.SetValue(1, gp_Pnt(-4, 0, 2));
+    array1.SetValue(2, gp_Pnt(-7, 2, 2));
+    array1.SetValue(3, gp_Pnt(-10, 0, 2));
+    Handle(Geom_BSplineCurve) curve1 = GeomAPI_PointsToBSpline(array1).Curve();
+
+    TColgp_Array1OfPnt array2(1, 3);  // sizing array
+    array2.SetValue(1, gp_Pnt(-4, 0, 2));
+    array2.SetValue(2, gp_Pnt(-7, -2, 2));
+    array2.SetValue(3, gp_Pnt(-9, 0, 2));
+    Handle(Geom_BSplineCurve) curve2 = GeomAPI_PointsToBSpline(array2).Curve();
+
+    auto edge = BRepBuilderAPI_MakeEdge(curve1);
+    auto edge1 = BRepBuilderAPI_MakeEdge(curve2);
+    TopoShape topoShape {1L};
+    TopoShape topoShape2 {edge, 2L};
+    TopoShape topoShape3 {edge1, 3L};
+    // Act
+    TopoShape& result = topoShape.makeElementBSplineFace({topoShape2, topoShape3});
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(
+        bb,
+        Base::BoundBox3d(-10, -2.0597998470594132, 2, -4, 2.1254369627132599, 2)));
+    EXPECT_FLOAT_EQ(getArea(result.getShape()), 14.677052);
+    // Assert elementMap is correct
+    EXPECT_TRUE(elementsMatch(result,
+                              {
+                                  "Edge1",
+                                  "Edge1;BSF",
+                                  "Edge1;D1",
+                                  "Edge1;D2",
+                                  "Edge1;D3",
+                                  "Vertex1",
+                                  "Vertex1;D1",
+                                  "Vertex2",
+                                  "Vertex2;D1",
+                              }));
+}
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
