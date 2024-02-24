@@ -804,7 +804,8 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
@@ -830,6 +831,9 @@ private:
     bool constraintHasExpression(int constrid) const;
 
     const std::vector<Sketcher::Constraint*> getConstraints() const;
+    /// gets the corresponding constraint to the given \a constid
+    /// or null if it doesn't exist.
+    Sketcher::Constraint* getConstraint(int constid) const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
