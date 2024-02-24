@@ -231,7 +231,7 @@ ConstraintFixed,6
 
 ***********************************************************
 ** Outputs --> frd file
-*NODE FILE, OUTPUT=2d
+*NODE FILE, OUTPUT=3d
 U
 *EL FILE
 S, E
