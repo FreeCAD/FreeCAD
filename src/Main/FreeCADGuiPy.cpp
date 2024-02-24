@@ -48,6 +48,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
+#include <Gui/StartupProcess.h>
 #include <Gui/SoFCDB.h>
 #include <Gui/Quarter/Quarter.h>
 #include <Inventor/SoDB.h>
@@ -286,7 +287,8 @@ QWidget* setupMainWindow()
             return nullptr;
         }
 
-        Gui::initGuiAppPreMainWindow(true);
+        Gui::StartupProcess process;
+        process.execute();
 
         Base::PyGILStateLocker lock;
         // It's sufficient to create the config key
@@ -301,7 +303,9 @@ QWidget* setupMainWindow()
         mw->setWindowIcon(qApp->windowIcon());
 
         try {
-            Gui::initGuiAppPostMainWindow(true, *qApp, *mw, nullptr);
+            Gui::StartupPostProcess postProcess(mw, *Gui::Application::Instance, qApp);
+            postProcess.setLoadFromPythonModule(true);
+            postProcess.execute();
         }
         catch (const Base::Exception& e) {
             return nullptr;

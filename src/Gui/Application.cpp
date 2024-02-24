@@ -29,7 +29,6 @@
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
-# include <QImageReader>
 # include <QLocale>
 # include <QMessageBox>
 # include <QMessageLogContext>
@@ -60,7 +59,6 @@
 #include <Quarter/Quarter.h>
 
 #include "Application.h"
-#include "AutoSaver.h"
 #include "AxisOriginPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -68,7 +66,6 @@
 #include "CommandPy.h"
 #include "Control.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
-#include "DlgCheckableMessageBox.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
 #include "EditorView.h"
@@ -89,6 +86,7 @@
 #include "SelectionFilterPy.h"
 #include "SoQtOffscreenRendererPy.h"
 #include "SplitView3DInventor.h"
+#include "StartupProcess.h"
 #include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
 #include "TransactionObject.h"
@@ -139,356 +137,7 @@ namespace sp = std::placeholders;
 
 Application* Application::Instance = nullptr;
 
-namespace {
-    void setImportImageFormats();
-}
-
-#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-void messageHandlerCoin(const SoError * error, void * /*userdata*/);
-#endif
-
-
 namespace Gui {
-
-
-
-void initGuiAppPreMainWindow(bool calledByGuiPy)
-{
-        QString plugin;
-        plugin = QString::fromStdString(App::Application::getHomePath());
-        plugin += QLatin1String("/plugins");
-        QCoreApplication::addLibraryPath(plugin);
-
-        // setup the search paths for Qt style sheets
-        QStringList qssPaths;
-        qssPaths << QString::fromUtf8(
-            (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
-                << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
-                << QLatin1String(":/stylesheets");
-        QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
-        // setup the search paths for Qt overlay style sheets
-        QStringList qssOverlayPaths;
-        qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
-                            + "Gui/Stylesheets/overlay").c_str())
-                        << QString::fromUtf8((App::Application::getResourceDir()
-                            + "Gui/Stylesheets/overlay").c_str());
-        QDir::setSearchPaths(QStringLiteral("overlay"), qssOverlayPaths);
-
-        // set search paths for images
-        QStringList imagePaths;
-        imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
-                << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
-                << QLatin1String(":/icons");
-        QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
-
-        // register action style event type
-        ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
-
-        ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Bitmaps/Theme");
-#if !defined(Q_OS_LINUX)
-        QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                                << QString::fromLatin1(":/icons/FreeCAD-default"));
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-        // Option to opt-out from using a Linux desktop icon theme.
-        // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-        bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
-        if (!themePaths) {
-            QStringList searchPaths;
-            searchPaths.prepend(QString::fromUtf8(":/icons"));
-            QIcon::setThemeSearchPaths(searchPaths);
-            QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-        }
-#endif
-
-        std::string searchpath = hTheme->GetASCII("SearchPath");
-        if (!searchpath.empty()) {
-            QStringList searchPaths = QIcon::themeSearchPaths();
-            searchPaths.prepend(QString::fromUtf8(searchpath.c_str()));
-            QIcon::setThemeSearchPaths(searchPaths);
-        }
-
-        std::string name = hTheme->GetASCII("Name");
-        if (!name.empty()) {
-            QIcon::setThemeName(QString::fromLatin1(name.c_str()));
-        }
-
-#if defined(FC_OS_LINUX)
-        // See #0001588
-        QString path = FileDialog::restoreLocation();
-        FileDialog::setWorkingDirectory(QDir::currentPath());
-        FileDialog::saveLocation(path);
-#else
-        FileDialog::setWorkingDirectory(FileDialog::restoreLocation());
-#endif
-}
-
-
-void initGuiAppPostMainWindow(bool calledByGuiPy, QApplication &mApp, MainWindow &mw, GUIApplicationNativeEventAware *pmAppNativeEventAware)
-{
-    Application &app = *Gui::Application::Instance;
-
-    // allow to disable version number
-    ParameterGrp::handle hGen =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
-
-    if (showVersion) {
-        // set main window title with FreeCAD Version
-        std::map<std::string, std::string>& config = App::Application::Config();
-        QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
-        QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-        QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
-        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
-        QString title =
-            QString::fromLatin1("%1 %2.%3.%4%5").arg(mApp.applicationName(), major, minor, point, suffix);
-        mw.setWindowTitle(title);
-    }
-    else {
-        QString title = mApp.applicationName();
-        if (title.isEmpty()) {
-			title = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-        }
-		mw.setWindowTitle(title);
-    }
-
-    if (pmAppNativeEventAware != nullptr) {
-        QObject::connect(&mApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
-                        &mw, SLOT(processMessages(const QList<QByteArray> &)));
-    }
-
-    ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
-    if (!hDocGrp->GetBool("AutoSaveEnabled", true))
-        timeout = 0;
-    AutoSaver::instance()->setTimeout(timeout * 60000);
-    AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", true));
-
-    // set toolbar icon size
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    int size = hGrp->GetInt("ToolbarIconSize", 0);
-    if (size >= 16) // must not be lower than this
-        mw.setIconSize(QSize(size,size));
-
-    // filter wheel events for combo boxes
-    if (hGrp->GetBool("ComboBoxWheelEventFilter", false)) {
-        auto filter = new WheelEventFilter(&mApp);
-        mApp.installEventFilter(filter);
-    }
-
-    // For values different to 1 and 2 use the OS locale settings
-    auto localeFormat = hGrp->GetInt("UseLocaleFormatting", 0);
-    if (localeFormat == 1) {
-        Translator::instance()->setLocale(
-            hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str()));
-    }
-    else if (localeFormat == 2) {
-        Translator::instance()->setLocale("C");
-    }
-
-    // set text cursor blinking state
-    int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
-    qApp->setCursorFlashTime(blinkTime);
-
-    {
-        QWindow window;
-        window.setSurfaceType(QWindow::OpenGLSurface);
-        window.create();
-
-        QOpenGLContext context;
-        if (context.create()) {
-            context.makeCurrent(&window);
-            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
-                Base::Console().Log("This system does not support framebuffer objects\n");
-            }
-            if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::NPOTTextures)) {
-                Base::Console().Log("This system does not support NPOT textures\n");
-            }
-
-            int major = context.format().majorVersion();
-            int minor = context.format().minorVersion();
-
-#ifdef NDEBUG
-            // In release mode, issue a warning to users that their version of OpenGL is
-            // potentially going to cause problems
-            if (major < 2) {
-                auto message =
-                    QObject::tr("This system is running OpenGL %1.%2. "
-                                "FreeCAD requires OpenGL 2.0 or above. "
-                                "Please upgrade your graphics driver and/or card as required.")
-                        .arg(major)
-                        .arg(minor)
-                    + QStringLiteral("\n");
-                Base::Console().Warning(message.toStdString().c_str());
-                Dialog::DlgCheckableMessageBox::showMessage(
-                    Gui::GUISingleApplication::applicationName() + QStringLiteral(" - ")
-                        + QObject::tr("Invalid OpenGL Version"),
-                    message);
-            }
-#endif
-            const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-            Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
-        }
-    }
-
-    if (!calledByGuiPy) {
-		assert(!SoDB::isInitialized());
-    }
-    if (!SoDB::isInitialized()) {
-        // init the Inventor subsystem
-        Application::initOpenInventor();
-    }
-
-    QString home = QString::fromStdString(App::Application::getHomePath());
-
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
-    it = cfg.find("WindowTitle");
-    if (it != cfg.end()) {
-        QString title = QString::fromUtf8(it->second.c_str());
-        mw.setWindowTitle(title);
-    }
-    it = cfg.find("WindowIcon");
-    if (it != cfg.end()) {
-        QString path = QString::fromUtf8(it->second.c_str());
-        if (QDir(path).isRelative()) {
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-        QApplication::setWindowIcon(QIcon(path));
-    }
-    it = cfg.find("ProgramLogo");
-    if (it != cfg.end()) {
-        QString path = QString::fromUtf8(it->second.c_str());
-        if (QDir(path).isRelative()) {
-            path = QFileInfo(QDir(home), path).absoluteFilePath();
-        }
-        QPixmap px(path);
-        if (!px.isNull()) {
-            auto logo = new QLabel();
-            logo->setPixmap(px.scaledToHeight(32));
-            mw.statusBar()->addPermanentWidget(logo, 0);
-            logo->setFrameShape(QFrame::NoFrame);
-        }
-    }
-    bool hidden = false;
-    it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
-        hidden = true;
-    }
-
-    if (calledByGuiPy) {
-        assert(!hidden);
-    }
-
-    // show splasher while initializing the GUI
-    if (!hidden)
-        mw.startSplasher();
-
-    // running the GUI init script
-    try {
-        Base::Console().Log("Run Gui init script\n");
-        Application::runInitGuiScript();
-        setImportImageFormats();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
-        mw.stopSplasher();
-        throw;
-
-    }
-
-    // stop splash screen and set immediately the active window that may be of interest
-    // for scripts using Python binding for Qt
-    mw.stopSplasher();
-    mApp.setActiveWindow(&mw);
-
-    // Activate the correct workbench
-    std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-    std::string autoload =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-            ->GetASCII("AutoloadModule", start.c_str());
-    if ("$LastModule" == autoload) {
-        start = App::GetApplication()
-                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                    ->GetASCII("LastModule", start.c_str());
-    }
-    else {
-        start = autoload;
-    }
-    // if the auto workbench is not visible then force to use the default workbech
-    // and replace the wrong entry in the parameters
-    QStringList wb = app.workbenches();
-    if (!wb.contains(QString::fromLatin1(start.c_str()))) {
-        start = App::Application::Config()["StartWorkbench"];
-        if ("$LastModule" == autoload) {
-            App::GetApplication()
-                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->SetASCII("LastModule", start.c_str());
-        }
-        else {
-            App::GetApplication()
-                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                ->SetASCII("AutoloadModule", start.c_str());
-        }
-    }
-
-    // Call this before showing the main window because otherwise:
-    // 1. it shows a white window for a few seconds which doesn't look nice
-    // 2. the layout of the toolbars is completely broken
-    app.activateWorkbench(start.c_str());
-
-    // show the main window
-    if (!hidden) {
-        Base::Console().Log("Init: Showing main window\n");
-        mw.loadWindowSettings();
-    }
-
-    //initialize spaceball.
-    if (pmAppNativeEventAware != nullptr) {
-        pmAppNativeEventAware->initSpaceball(&mw);
-    }
-
-#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-    SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
-#endif
-
-    hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
-    std::string style = hGrp->GetASCII("StyleSheet");
-    if (style.empty()) {
-        // check the branding settings
-        const auto& config = App::Application::Config();
-        auto it = config.find("StyleSheet");
-        if (it != config.end())
-            style = it->second;
-    }
-
-    app.setStyleSheet(QLatin1String(style.c_str()), hGrp->GetBool("TiledBackground", false));
-
-    // Now run the background autoload, for workbenches that should be loaded at startup, but not
-    // displayed to the user immediately
-    std::string autoloadCSV =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-            ->GetASCII("BackgroundAutoloadModules", "");
-
-    // Tokenize the comma-separated list and load the requested workbenches if they exist in this
-    // installation
-    std::vector<std::string> backgroundAutoloadedModules;
-    std::stringstream stream(autoloadCSV);
-    std::string workbench;
-    while (std::getline(stream, workbench, ',')) {
-        if (wb.contains(QString::fromLatin1(workbench.c_str())))
-            app.activateWorkbench(workbench.c_str());
-    }
-
-    // Reactivate the startup workbench
-    app.activateWorkbench(start.c_str());
-}
-
 
 class ViewProviderMap {
     std::unordered_map<const App::DocumentObject *, ViewProvider *> map;
@@ -687,22 +336,6 @@ struct PyMethodDef FreeCADGui_methods[] = {
 };
 
 } // namespace Gui
-
-namespace {
-    void setImportImageFormats()
-    {
-        QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
-        std::stringstream str;
-        str << "Image formats (";
-        for (const auto& ext : supportedFormats) {
-            str << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
-        }
-        str << ")";
-
-        std::string filter = str.str();
-        App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
-    }
-}
 
 Application::Application(bool GUIenabled)
 {
@@ -2309,83 +1942,11 @@ void Application::runInitGuiScript()
     Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
 }
 
-void Application::runApplication()
+namespace {
+bool onlySingleInstance(GUISingleApplication& mainApp)
 {
     const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
-
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
-
-    // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
-    ParameterGrp::handle hDPI =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
-    bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
-    if (disableDpiScaling) {
-#ifdef FC_OS_WIN32
-        SetProcessDPIAware(); // call before the main event loop
-#endif
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-        QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
-#endif
-    }
-    else {
-        // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
-        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-#endif
-    }
-
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    //Enable support for highres images (added in Qt 5.1, but off by default)
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
-
-    // Use software rendering for OpenGL
-    ParameterGrp::handle hOpenGL =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
-    bool useSoftwareOpenGL = hOpenGL->GetBool("UseSoftwareOpenGL", false);
-    if (useSoftwareOpenGL) {
-        QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
-    }
-
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-        // By default (on platforms that support it, see docs for
-        // Qt::AA_CompressHighFrequencyEvents) QT applies compression
-        // for high frequency events (mouse move, touch, window resizes)
-        // to keep things smooth even when handling the event takes a
-        // while (e.g. to calculate snapping).
-        // However, tablet pen move events (and mouse move events
-        // synthesised from those) are not compressed by default (to
-        // allow maximum precision when e.g. hand-drawing curves),
-        // leading to unacceptable slowdowns using a tablet pen. Enable
-        // compression for tablet events here to solve that.
-        QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-    #endif
-
-    // A new QApplication
-    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
-
-    // if application not yet created by the splasher
-    int argc = App::Application::GetARGC();
-    GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
-
-    // Make sure that we use '.' as decimal point. See also
-    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    // and issue #0002891
-    // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
-    setlocale(LC_NUMERIC, "C");
-
-    // check if a single or multiple instances can run
-    it = cfg.find("SingleInstance");
+    auto it = cfg.find("SingleInstance");
     if (it != cfg.end() && mainApp.isRunning()) {
         // send the file names to be opened to the server application so that this
         // opens them
@@ -2408,81 +1969,79 @@ void Application::runApplication()
                 break;
             }
         }
-        return;
+
+        return true;
     }
+
+    return false;
+}
+
+void setAppNameAndIcon()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
 
     // set application icon and window title
-    it = cfg.find("Application");
+    auto it = cfg.find("Application");
     if (it != cfg.end()) {
-        mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
+        QApplication::setApplicationName(QString::fromUtf8(it->second.c_str()));
     }
     else {
-        mainApp.setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
+        QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
 #ifndef Q_OS_MACX
-    mainApp.setWindowIcon(
+    QApplication::setWindowIcon(
         Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
 #endif
+}
 
-    initGuiAppPreMainWindow(false);
-	
-    Application app(true);
-    MainWindow mw;
-    mw.setProperty("QuitOnClosed", true);
+void tryRunEventLoop(GUISingleApplication& mainApp)
+{
+    std::stringstream s;
+    s << App::Application::getUserCachePath() << App::Application::getExecutableName()
+      << "_" << QCoreApplication::applicationPid() << ".lock";
+    // open a lock file with the PID
+    Base::FileInfo fi(s.str());
+    Base::ofstream lock(fi);
 
-    initGuiAppPostMainWindow(false, mainApp, mw, &mainApp);
-
-    Instance->d->startingUp = false;
-
-    // gets called once we start the event loop
-    QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
-
-    // run the Application event loop
-    Base::Console().Log("Init: Entering event loop\n");
-
-    // boot phase reference point
-    // https://forum.freecad.org/viewtopic.php?f=10&t=21665
-    Gui::getMainWindow()->setProperty("eventLoop", true);
-
-    try {
-        std::stringstream s;
-        s << App::Application::getUserCachePath() << App::Application::getExecutableName()
-          << "_" << QCoreApplication::applicationPid() << ".lock";
-        // open a lock file with the PID
-        Base::FileInfo fi(s.str());
-        Base::ofstream lock(fi);
-
-        // In case the file_lock cannot be created start FreeCAD without IPC support.
+    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
-        std::string filename = s.str();
+    std::string filename = s.str();
 #else
-        std::wstring filename = fi.toStdWString();
+    std::wstring filename = fi.toStdWString();
 #endif
-        std::unique_ptr<boost::interprocess::file_lock> flock;
-        try {
-            flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
-            flock->lock();
-        }
-        catch (const boost::interprocess::interprocess_exception& e) {
-            QString msg = QString::fromLocal8Bit(e.what());
-            Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
-                                    msg.toUtf8().constData());
-        }
+    std::unique_ptr<boost::interprocess::file_lock> flock;
+    try {
+        flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
+        flock->lock();
+    }
+    catch (const boost::interprocess::interprocess_exception& e) {
+        QString msg = QString::fromLocal8Bit(e.what());
+        Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
+                                msg.toUtf8().constData());
+    }
 
-        Base::Console().Log("Init: Executing event loop...\n");
-        mainApp.exec();
+    Base::Console().Log("Init: Executing event loop...\n");
+    QApplication::exec();
 
-        // Qt can't handle exceptions thrown from event handlers, so we need
-        // to manually rethrow SystemExitExceptions.
-        if (mainApp.caughtException.get())
-            throw Base::SystemExitException(*mainApp.caughtException.get());
+    // Qt can't handle exceptions thrown from event handlers, so we need
+    // to manually rethrow SystemExitExceptions.
+    if (mainApp.caughtException) {
+        throw Base::SystemExitException(*mainApp.caughtException.get());
+    }
 
-        // close the lock file, in case of a crash we can see the existing lock file
-        // on the next restart and try to repair the documents, if needed.
-        if (flock.get())
-            flock->unlock();
-        lock.close();
-        fi.deleteFile();
+    // close the lock file, in case of a crash we can see the existing lock file
+    // on the next restart and try to repair the documents, if needed.
+    if (flock) {
+        flock->unlock();
+    }
+    lock.close();
+    fi.deleteFile();
+}
+
+void runEventLoop(GUISingleApplication& mainApp)
+{
+    try {
+        tryRunEventLoop(mainApp);
     }
     catch (const Base::SystemExitException&) {
         Base::Console().Message("System exit\n");
@@ -2500,6 +2059,62 @@ void Application::runApplication()
         App::Application::destructObserver();
         throw;
     }
+}
+}
+
+void Application::runApplication()
+{
+    StartupProcess::setupApplication();
+
+    // A new QApplication
+    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
+
+    // if application not yet created by the splasher
+    int argc = App::Application::GetARGC();
+    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
+
+    // Make sure that we use '.' as decimal point. See also
+    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
+    // and issue #0002891
+    // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
+    setlocale(LC_NUMERIC, "C");
+
+    // check if a single or multiple instances can run
+    if (onlySingleInstance(mainApp)) {
+        return;
+    }
+
+    setAppNameAndIcon();
+
+    StartupProcess process;
+    process.execute();
+
+    Application app(true);
+    MainWindow mw;
+    mw.setProperty("QuitOnClosed", true);
+
+#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
+    SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
+#endif
+
+    StartupPostProcess postProcess(&mw, app, &mainApp);
+    postProcess.execute();
+
+    Instance->d->startingUp = false;
+
+    // gets called once we start the event loop
+    QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
+
+    // run the Application event loop
+    Base::Console().Log("Init: Entering event loop\n");
+
+    // boot phase reference point
+    // https://forum.freecad.org/viewtopic.php?f=10&t=21665
+    Gui::getMainWindow()->setProperty("eventLoop", true);
+
+    runEventLoop(mainApp);
 
     Base::Console().Log("Finish: Event loop left\n");
 }
