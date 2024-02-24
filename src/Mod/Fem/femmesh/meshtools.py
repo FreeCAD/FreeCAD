@@ -1666,10 +1666,12 @@ def get_pressure_obj_faces(
                     # How to find the orientation of a FEM mesh face?
                     # https://forum.freecad.org/viewtopic.php?f=18&t=51898
         else:
-            FreeCAD.Console.PrintError(
-                "Pressure on shell mesh at the moment only "
-                "supported for meshes with appropriate group data.\n"
-            )
+            for sh, elems in femobj["Object"].References:
+                for e in elems:
+                    meshfaces = femmesh.getFacesByFace(sh.getSubObject(e))
+                    for mf in meshfaces:
+                        pressure_faces.append([mf, -1])
+
     return pressure_faces
 
 
@@ -2508,4 +2510,21 @@ def compact_mesh(
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)
 
+# ************************************************************************************************
+def beam_reduced_integration(
+    fileName
+):
+    # replace B3x elements with B3xR elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") != -1:
+            line = line.replace("B32", "B32R")
+        if line.find("B31") != -1:
+            line = line.replace("B31", "B31R")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
 ##  @}

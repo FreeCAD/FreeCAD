@@ -637,6 +637,7 @@ void QGIViewPart::drawAllSectionLines()
 
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
+//    Base::Console().Message("QGIVP::drawSectionLine()\n");
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
@@ -665,7 +666,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-        sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
         App::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
         sectionLine->setSectionColor(color.asValue<QColor>());
         sectionLine->setPathMode(false);
@@ -754,7 +754,6 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroup(sectionLine);
     sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-    sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
     App::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
     sectionLine->setSectionColor(color.asValue<QColor>());
     sectionLine->setPathMode(true);

@@ -1711,7 +1711,7 @@ def getIfcTypeFromObj(obj):
     if "::" in ifctype:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
         # this is not a ifctype at all
-        ifctype = None
+        ifctype = "IfcBuildingElementPRoxy"
 
     # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
     return ifctype

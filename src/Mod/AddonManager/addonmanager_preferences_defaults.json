@@ -2,7 +2,7 @@
     "AddonFlagsURL":
         "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json",
     "AddonsRemoteCacheURL": "https://addons.freecad.org/metadata.zip",
-    "AddonsUpdateStatsURL": "https://addons.freecad.org/addon_update_stats.json",
+    "AddonsStatsURL": "https://freecad.org/addon_stats.json",
     "AutoCheck": false,
     "BlockedMacros": "BOLTS,WorkFeatures,how to install,documentation,PartsLibrary,FCGear",
     "CustomRepoHash": "",
@@ -14,6 +14,9 @@
     "HideNewerFreeCADRequired": true,
     "HideObsolete": true,
     "HidePy2": true,
+    "HideNonOSIApproved": false,
+    "HideNonFSFFreeLibre": false,
+    "HideUnlicensed": false,
     "KnownPythonVersions": "[]",
     "LastCacheUpdate": "never",
     "MacroCacheUpdateFrequency": 7,

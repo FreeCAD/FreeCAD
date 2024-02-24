@@ -77,7 +77,7 @@ def write_femelement_geometry(f, ccxwriter):
                     thickness = beamsec_obj.PipeThickness.getValueAs("mm").Value
                     section_type = ", SECTION=PIPE"
                     section_geo = "{:.13G},{:.13G}\n".format(radius, thickness)
-                    section_def = "*BEAM GENERAL SECTION, {}{}{}\n".format(
+                    section_def = "*BEAM SECTION, {}{}{}\n".format(
                         elsetdef,
                         material,
                         section_type

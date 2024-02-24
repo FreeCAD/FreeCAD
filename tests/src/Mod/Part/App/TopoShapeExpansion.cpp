@@ -9,6 +9,7 @@
 
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -18,6 +19,8 @@
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
 #include <gp_Pln.hxx>
+#include <ShapeFix_Wireframe.hxx>
+#include <ShapeBuild_ReShape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 
@@ -124,38 +127,67 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoShapesGeneratesMap)
     // Arrange
     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge();
     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge();
-    TopoShape topoShape {edge1};
-    std::vector<TopoShape> shapes {edge1, edge2};
-
+    TopoShape topoShape {1L};
+    std::vector<TopoShape> shapes {TopoShape(edge1, 2L), TopoShape(edge2, 3L)};
     // Act
     topoShape.makeElementCompound(shapes);
-
-    // Assert
-    EXPECT_EQ(4, topoShape.getMappedChildElements().size());  // two vertices and two edges
+    auto elements = elementMap((topoShape));
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 2);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 0, 0)));
+    // Assert map is correct
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 6);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;:H2,E"));
+    EXPECT_EQ(elements[IndexedName("Edge", 2)], MappedName("Edge1;:H3,E"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;:H2,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 2)], MappedName("Vertex2;:H2,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 3)], MappedName("Vertex1;:H3,V"));
+    EXPECT_EQ(elements[IndexedName("Vertex", 4)], MappedName("Vertex2;:H3,V"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
 {
-    // Arrange
-    auto [cube1, cube2] = CreateTwoCubes();
-    TopoShape cube1TS {cube1};
-    cube1TS.Tag = 1;
-    TopoShape cube2TS {cube2};
-    cube2TS.Tag = 2;
-
+    auto [cube1TS, cube2TS] = CreateTwoTopoShapeCubes();
     // Act
-    TopoShape topoShape;
+    TopoShape topoShape {3L};
     topoShape.makeElementCompound({cube1TS, cube2TS});
-
-    // Assert
-    auto elementMap = topoShape.getElementMap();
-    EXPECT_EQ(52, elementMap.size());
+    auto elementMap = cube1TS.getElementMap();
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_EQ(6, topoShape.getMappedChildElements().size());
+    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 2);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 1, 1)));
+    // Assert map is correct
     // Two cubes, each consisting of:
     // 8 Vertices
     // 12 Edges
     // 6 Faces
     // ----------
     // 26 subshapes each
+    EXPECT_TRUE(
+        allElementsMatch(topoShape,
+                         {
+                             "Edge1;:H1,E;:H7,E",   "Edge2;:H1,E;:H7,E",   "Edge3;:H1,E;:H7,E",
+                             "Edge4;:H1,E;:H7,E",   "Edge1;:H2,E;:H7,E",   "Edge2;:H2,E;:H7,E",
+                             "Edge3;:H2,E;:H7,E",   "Edge4;:H2,E;:H7,E",   "Edge1;:H3,E;:H7,E",
+                             "Edge2;:H3,E;:H7,E",   "Edge3;:H3,E;:H7,E",   "Edge4;:H3,E;:H7,E",
+                             "Edge1;:H8,E;:He,E",   "Edge2;:H8,E;:He,E",   "Edge3;:H8,E;:He,E",
+                             "Edge4;:H8,E;:He,E",   "Edge1;:H9,E;:He,E",   "Edge2;:H9,E;:He,E",
+                             "Edge3;:H9,E;:He,E",   "Edge4;:H9,E;:He,E",   "Edge1;:Ha,E;:He,E",
+                             "Edge2;:Ha,E;:He,E",   "Edge3;:Ha,E;:He,E",   "Edge4;:Ha,E;:He,E",
+                             "Vertex1;:H8,V;:He,V", "Vertex2;:H8,V;:He,V", "Vertex3;:H8,V;:He,V",
+                             "Vertex4;:H8,V;:He,V", "Vertex1;:H9,V;:He,V", "Vertex2;:H9,V;:He,V",
+                             "Vertex3;:H9,V;:He,V", "Vertex4;:H9,V;:He,V", "Face1;:H1,F;:H7,F",
+                             "Face1;:H2,F;:H7,F",   "Face1;:H3,F;:H7,F",   "Face1;:H4,F;:H7,F",
+                             "Face1;:H5,F;:H7,F",   "Face1;:H6,F;:H7,F",   "Face1;:H8,F;:He,F",
+                             "Face1;:H9,F;:He,F",   "Face1;:Ha,F;:He,F",   "Face1;:Hb,F;:He,F",
+                             "Face1;:Hc,F;:He,F",   "Face1;:Hd,F;:He,F",   "Vertex1;:H1,V;:H7,V",
+                             "Vertex2;:H1,V;:H7,V", "Vertex3;:H1,V;:H7,V", "Vertex4;:H1,V;:H7,V",
+                             "Vertex1;:H2,V;:H7,V", "Vertex2;:H2,V;:H7,V", "Vertex3;:H2,V;:H7,V",
+                             "Vertex4;:H2,V;:H7,V",
+                         }));
 }
 
 TEST_F(TopoShapeExpansionTest, MapperMakerModified)
@@ -254,6 +286,105 @@ TEST_F(TopoShapeExpansionTest, MapperMakerGenerated)
     EXPECT_EQ(fuse2MprMkr.generated(edge3).size(), 1);  // fuse2 has a new vertex generated by edge3
 }
 
+TEST_F(TopoShapeExpansionTest, MapperHistoryModified)
+{
+    // Arrange
+    // Creating a all the shapes needed for the operations that have a history
+    auto vertex1 {BRepBuilderAPI_MakeVertex(gp_Pnt(-1.0, -1.0, 0.0)).Vertex()};
+    auto vertex2 {BRepBuilderAPI_MakeVertex(gp_Pnt(1.0, 0.0, 0.0)).Vertex()};
+    auto edge1 {BRepBuilderAPI_MakeEdge(vertex1, vertex2).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(-1.0, 0.0, 0.0), gp_Pnt(0.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto wire {BRepBuilderAPI_MakeWire(edge1, edge2, edge3).Wire()};
+
+    // Definition of a MapperHistory made with ShapeBuild_ReShape and of all the objects needed
+    // (https://dev.opencascade.org/doc/refman/html/class_shape_build___re_shape.html)
+    // (https://dev.opencascade.org/doc/overview/html/occt_user_guides__shape_healing.html#occt_shg_5_1)
+    Handle(ShapeBuild_ReShape) reshape {new ShapeBuild_ReShape()};
+    // Recording all the shapes that will be modified
+    vertex1 = reshape->CopyVertex(vertex1);
+    vertex2 = reshape->CopyVertex(vertex2);
+    reshape->Apply(edge1);
+    auto reshapeMprHst {MapperHistory(reshape)};
+
+    // Definition a MapperHistory made with ShapeFix_Wireframe and of all the objects needed
+    // (https://dev.opencascade.org/doc/refman/html/class_shape_fix___wireframe.html)
+    // (https://dev.opencascade.org/doc/overview/html/occt_user_guides__shape_healing.html#occt_shg_2_1)
+    Handle(ShapeFix_Wireframe) fix {new ShapeFix_Wireframe()};
+    fix->SetContext(reshape);
+    fix->SetPrecision(0.0);
+    auto fixMprHst {MapperHistory(*fix)};
+
+    // Definition of a MapperHistory made with the BRepTools_History of reshape
+    // (https://dev.opencascade.org/doc/refman/html/class_b_rep_tools___history.html)
+    auto historyMprHst {MapperHistory(reshape->History())};
+
+    // Act
+    // Closing the wire
+    fix->Load(wire);
+    fix->FixWireGaps();
+
+    // Replacing the edge with the new one made with the modified Vertexes
+    reshape->Replace(edge1, BRepBuilderAPI_MakeEdge(vertex1, vertex2).Edge());
+    reshape->Apply(edge1);
+
+    // Assert
+    // Check that all the shapes and operations have been performed
+    EXPECT_TRUE(reshape->Status(ShapeExtend_DONE1));
+    EXPECT_TRUE(reshape->Status(ShapeExtend_DONE3));
+    EXPECT_TRUE(fix->StatusWireGaps(ShapeExtend_DONE));
+
+    // Check the results of the operations after the ShapeFix_Wireframe.
+    // The history is in common so all the MapperHistory object defined previously will return the
+    // same values
+    EXPECT_EQ(historyMprHst.modified(edge1).size(), 1);
+    EXPECT_EQ(reshapeMprHst.modified(edge1).size(), 1);
+    EXPECT_EQ(fixMprHst.modified(edge1).size(), 1);
+}
+
+TEST_F(TopoShapeExpansionTest, MapperHistoryGenerated)
+{
+    // Arrange
+    // Creating a all the shapes needed for the operations that have a history
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-1.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, -1.0, 0.0), gp_Pnt(0.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, -1.0), gp_Pnt(0.0, 0.0, 1.0)).Edge()};
+
+    // Definition of a MapperHistory made with a BRepTools_History containing the Generated() shapes
+    // of the Fuse operations, added manually to workaround a CI failure
+    // (https://github.com/FreeCAD/FreeCAD/pull/12402#issuecomment-1946234571)
+    auto fuse1Mkr {BRepAlgoAPI_Fuse(edge1, edge2)};
+    Handle(BRepTools_History) fuse1Hst {new BRepTools_History()};
+    auto fuse1MprHst {MapperHistory(fuse1Hst)};
+    auto fuse2Mkr {BRepAlgoAPI_Fuse(edge1, edge3)};
+    Handle(BRepTools_History) fuse2Hst {new BRepTools_History()};
+    auto fuse2MprHst {MapperHistory(fuse2Hst)};
+
+    // Act
+    fuse1Mkr.Build();
+    fuse1Hst->AddGenerated(edge1, fuse1Mkr);
+    fuse1Hst->AddGenerated(edge2, fuse1Mkr);
+    fuse2Mkr.Build();
+    fuse2Hst->AddGenerated(edge1, fuse2Mkr);
+    fuse2Hst->AddGenerated(edge3, fuse2Mkr);
+
+    // Assert
+    // Check that all the shapes and operations have been performed
+    EXPECT_TRUE(fuse1Mkr.IsDone());
+    EXPECT_TRUE(fuse2Mkr.IsDone());
+
+    // Check the result of the operations
+    EXPECT_EQ(fuse1MprHst.generated(edge1).size(), 1);  // fuse1 has a new vertex generated by edge1
+    EXPECT_EQ(fuse1MprHst.generated(edge2).size(), 1);  // fuse1 has a new vertex generated by edge2
+    EXPECT_EQ(fuse1MprHst.generated(edge3).size(),
+              0);  // fuse1 doesn't have a new vertex generated by edge3
+
+    EXPECT_EQ(fuse2MprHst.generated(edge1).size(), 1);  // fuse2 has a new vertex generated by edge1
+    EXPECT_EQ(fuse2MprHst.generated(edge2).size(),
+              0);  // fuse2 doesn't have a new vertex generated by edge2
+    EXPECT_EQ(fuse2MprHst.generated(edge3).size(), 1);  // fuse2 has a new vertex generated by edge3
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
 {
     // Arrange
@@ -266,7 +397,7 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
     topoShape.makeElementWires(shapes);
     auto elementMap = topoShape.getElementMap();
     // Assert
-    EXPECT_EQ(0, elementMap.size());  // TODO:  What is the correct value?
+    EXPECT_EQ(6, elementMap.size());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
@@ -284,19 +415,22 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
     auto& wire2 = (new TopoShape {})->makeElementWires(shapes2);
     auto& topoShape = (new TopoShape {})->makeElementWires({wire1, wire2});
     auto elements = elementMap((topoShape));
-    // Assert
-    EXPECT_EQ(elements.size(), 10);
-    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;:H,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 2)], MappedName("Edge2;:H,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 3)], MappedName("Edge1;:C1;:H:4,E"));
-    EXPECT_EQ(elements[IndexedName("Edge", 4)], MappedName("Edge2;:C1;:H:4,E"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 1)], MappedName("Vertex1;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 2)], MappedName("Vertex2;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 3)], MappedName("Vertex3;:H,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 4)], MappedName("Vertex1;:C1;:H:4,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 5)], MappedName("Vertex2;:C1;:H:4,V"));
-    EXPECT_EQ(elements[IndexedName("Vertex", 6)], MappedName("Vertex3;:C1;:H:4,V"));
+    Base::BoundBox3d bb = topoShape.getBoundBox();
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 4.4142137);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 3, 2, 0)));
+    // Assert map is correct
+    EXPECT_TRUE(allElementsMatch(topoShape,
+                                 {"Edge1;WIR",
+                                  "Edge1;WIR;D1",
+                                  "Edge1;WIR;D2",
+                                  "Edge1;WIR;D1;D1",
+                                  "Vertex1;WIR",
+                                  "Vertex2;WIR",
+                                  "Vertex2;WIR;D1",
+                                  "Vertex1;WIR;D1",
+                                  "Vertex2;WIR;D2",
+                                  "Vertex2;WIR;D1;D1"}));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
@@ -520,7 +654,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
                                                             OpCodes::Common,
                                                             op);
     // ASSERT
-    EXPECT_STREQ(result.toString().c_str(), "Edge1;:H,E;CMN(Face7|Face8);Copy");
+    EXPECT_STREQ(result.toString().c_str(), "Edge1;CMN(Face7|Face8);Copy");
     // The detailed forms of names are covered in encodeElementName tests
 }
 
@@ -1046,10 +1180,29 @@ TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
     EXPECT_THROW(topoShape1.makeElementShell(false, nullptr), Base::CADKernelError);
 }
 
-// TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
-// {
-//     // Arrange
-// }
+TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape topoShape {cube1};
+    std::vector<TopoShape> shapes;
+    for (const auto& face : topoShape.getSubShapes(TopAbs_WIRE)) {
+        shapes.emplace_back(face);
+    }
+    // Act
+    TopoShape topoShape1 {1L};
+    topoShape1.makeElementCompound(shapes, "D");
+    // Assert
+    TopoShape result = topoShape1.makeElementShellFromWires(shapes);
+#if OCC_VERSION_HEX >= 0x070400
+    EXPECT_EQ(result.getShape().NbChildren(), 6);
+#endif
+    EXPECT_EQ(result.countSubElements("Vertex"), 8);
+    EXPECT_EQ(result.countSubElements("Edge"), 32);
+    EXPECT_EQ(result.countSubElements("Face"), 20);
+    EXPECT_STREQ(result.shapeName().c_str(), "Shell");
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementBooleanImpossibleCommon)
 {
     // Arrange
@@ -1060,9 +1213,10 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanImpossibleCommon)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Common, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
-    EXPECT_EQ(elements.size(), 0);
+    // Assert shape is correct
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
@@ -1078,11 +1232,12 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Common, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.25);
+    // Assert elementMap is correct
     EXPECT_EQ(elements.size(), 26);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.25);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
@@ -1097,7 +1252,9 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
     // Act
     TopoShape& result = topoShape1.makeElementBoolean(Part::OpCodes::Cut, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
+    // Assert elementMap is correct
     EXPECT_EQ(elements.size(), 38);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(
@@ -1106,7 +1263,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
             "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
             "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
             "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
@@ -1122,7 +1278,9 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
     TopoShape& result =
         topoShape1.makeElementBoolean(Part::OpCodes::Fuse, {topoShape1, topoShape2});
     auto elements = elementMap(result);
-    // Assert
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert element map is correct
     EXPECT_EQ(elements.size(), 66);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(
@@ -1131,7 +1289,6 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
             "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
             "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
             "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementDraft)
@@ -1149,8 +1306,10 @@ TEST_F(TopoShapeExpansionTest, makeElementDraft)
     TopoShape& result = cube1TS.makeElementDraft(cube1TS, faces, pullDirection, angle, plane);
     auto elements = elementMap(result);
     // Assert
-    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
     EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 26);  // Cubes have 6 Faces, 12 Edges, 8 Vertexes
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Face1;:G;DFT;:H1:7,F;:U;DFT;:H1:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
@@ -1181,13 +1340,13 @@ TEST_F(TopoShapeExpansionTest, makeElementDraftTopoShapes)
     EXPECT_TRUE(result.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 26);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
-    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:G;DFT;:He:7,F"));
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;:H8,F;:G;DFT;:He:7,F"));
     EXPECT_NEAR(getVolume(result.getShape()), 4.3333333333, 1e-06);  // Truncated pyramid
-    EXPECT_EQ(result2.getElementMap().size(), 0);  // No element map in non reference call.
-    EXPECT_EQ(result3.getElementMap().size(), 0);  // No element map in non reference call.
+    EXPECT_EQ(result2.getElementMap().size(), 26);
+    EXPECT_EQ(result3.getElementMap().size(), 26);
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
+TEST_F(TopoShapeExpansionTest, linearizeEdge)
 {
     // Arrange
     TColgp_Array1OfPnt points {1, 2};
@@ -1207,7 +1366,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLinearizeEdge)
     EXPECT_EQ(curve2.GetType(), GeomAbs_Line);
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
+TEST_F(TopoShapeExpansionTest, linearizeFace)
 {
     TColgp_Array2OfPnt points2 {1, 2, 1, 2};
     points2.SetValue(1, 1, gp_Pnt(0.0, 0.0, 0.0));
@@ -1231,15 +1390,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLinearizeFace)
 TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
 {
     // Arrange
-    auto [cube1, cube2] = CreateTwoCubes();
-    TopoShape cube1TS {cube1, 1L};
-    std::vector<TopoShape> subEdges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
-    std::vector<TopoShape> shapes2 = {subEdges[0], subEdges[1]};
+    auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 8.0)).Edge();
+    auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(2.5, 0.0, 0.0), gp_Pnt(2.5, 0.0, 8.0)).Edge();
+    TopoShape edge1ts {edge1, 2L};
+    TopoShape edge2ts {edge2, 3L};
+    TopoShape topoShape {1L};
     // Act
-    TopoShape result2 = cube1TS.makeElementRuledSurface(shapes2, 0);  // TODO: direction as enum?
-    // Assert
-    EXPECT_EQ(result2.countSubElements("Wire"), 1);
-    EXPECT_FLOAT_EQ(getArea(result2.getShape()), 0.32953611);
+    topoShape.makeElementRuledSurface({edge1ts, edge2ts}, 0);  // TODO: orientation as enum?
+    auto elements = elementMap(topoShape);
+    // Assert shape is correct
+    EXPECT_EQ(topoShape.countSubElements("Wire"), 1);
+    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 20);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    // TODO: Revisit these when resetElementMap() is fully worked through.  Suspect that last loop
+    // of makeElementRuledSurface is dependent on this to create elementMaps.
+    //    EXPECT_EQ(elements.size(), 24);
+    //    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    //    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
@@ -1248,12 +1416,19 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
     auto [cube1, cube2] = CreateTwoCubes();
     TopoShape cube1TS {cube1, 1L};
     std::vector<TopoShape> subWires = cube1TS.getSubTopoShapes(TopAbs_WIRE);
-    std::vector<TopoShape> shapes = {subWires[0], subWires[1]};
     // Act
-    TopoShape result = cube1TS.makeElementRuledSurface(shapes, 0);  // TODO: direction as enum?
+    cube1TS.makeElementRuledSurface({subWires[0], subWires[1]}, 0);  // TODO: orientation as enum?
+    auto elements = elementMap(cube1TS);
     // Assert
-    EXPECT_EQ(result.countSubElements("Wire"), 4);
-    EXPECT_FLOAT_EQ(getArea(result.getShape()), 2.023056);
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 4);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 2.023056);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    // TODO: Revisit these when resetElementMap() is fully worked through.  Suspect that last loop
+    // of makeElementRuledSurface is dependent on this to create elementMaps.
+    //    EXPECT_EQ(elements.size(), 24);
+    //    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    //    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoft)
@@ -1324,6 +1499,471 @@ TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
     EXPECT_EQ(elements.size(), 24);
     EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Vertex1;:G;PSH;:H2:7,E"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    std::vector<TopoShape> subFaces = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    subFaces[0].Tag = 2L;
+    subFaces[1].Tag = 3L;
+    std::vector<TopoShape> shapes = {subFaces[0], subFaces[1]};
+    // Act
+    cube1TS.makeElementThickSolid(cube1TS, shapes, 0.1, 1e-07);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 16);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 9.4911509);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_EQ(elements.size(), 74);
+    EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge11;THK;:H1:4,E"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementGeneralFuse)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    std::vector<std::vector<TopoShape>> modified {{}};
+    TopoShape& result = topoShape1.makeElementGeneralFuse({topoShape1, topoShape2}, modified);
+
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 72);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;GFS;:H1:7,F;:U;GFS;:H1:7,E;:L(Face5;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E|Face5;:M;"
+            "GFS;:H1:7,F;:U2;GFS;:H1:8,E;:U;GFS;:H1:7,V;:L(Face6;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E;:U;"
+            "GFS;:H1:7,V);GFS;:H1:3c,E|Face6;:M;GFS;:H1:7,F;:U2;GFS;:H1:8,E);GFS;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFuse)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementCut)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementCut(
+        {topoShape1, topoShape2});  //, const char* op = nullptr, double tol = 0);
+    auto elements = elementMap(result);
+    // Assert shape is correct
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 38);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
+            "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
+            "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementChamfer)
+{
+    // Arrange
+    // Fillets / Chamfers do not work on compounds of faces, so use complete boxes ( Solids ) here.
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    // Act
+    cube1TS.makeElementChamfer({cube1TS}, edges, .05, .05);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.640996);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_TRUE(allElementsMatch(cube1TS,
+                                 {
+                                     "Edge10;:G;CHF;:H1:7,F",
+                                     "Edge10;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge10;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge11;:G;CHF;:H1:7,F",
+                                     "Edge11;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge11;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge12;:G;CHF;:H1:7,F",
+                                     "Edge12;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge12;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge1;:G;CHF;:H1:7,F",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge1;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge1;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge2;:G;CHF;:H1:7,F",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge2;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge2;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge3;:G;CHF;:H1:7,F",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge3;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge3;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge4;:G;CHF;:H1:7,F",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge4;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge4;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge4;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge5;:G;CHF;:H1:7,F",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge5;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge5;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge6;:G;CHF;:H1:7,F",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge6;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge6;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge7;:G;CHF;:H1:7,F",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge7;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge7;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge8;:G;CHF;:H1:7,F",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U2;CHF;:H1:8,V",
+                                     "Edge8;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E;:U;CHF;:H1:7,V",
+                                     "Edge8;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge8;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Edge9;:G;CHF;:H1:7,F",
+                                     "Edge9;:G;CHF;:H1:7,F;:U2;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U3;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U4;CHF;:H1:8,E",
+                                     "Edge9;:G;CHF;:H1:7,F;:U;CHF;:H1:7,E",
+                                     "Face1;:M;CHF;:H1:7,F",
+                                     "Face2;:M;CHF;:H1:7,F",
+                                     "Face3;:M;CHF;:H1:7,F",
+                                     "Face4;:M;CHF;:H1:7,F",
+                                     "Face5;:M;CHF;:H1:7,F",
+                                     "Face6;:M;CHF;:H1:7,F",
+                                     "Vertex1;:G;CHF;:H1:7,F",
+                                     "Vertex2;:G;CHF;:H1:7,F",
+                                     "Vertex3;:G;CHF;:H1:7,F",
+                                     "Vertex4;:G;CHF;:H1:7,F",
+                                     "Vertex5;:G;CHF;:H1:7,F",
+                                     "Vertex6;:G;CHF;:H1:7,F",
+                                     "Vertex7;:G;CHF;:H1:7,F",
+                                     "Vertex8;:G;CHF;:H1:7,F",
+                                 }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFillet)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
+    // Act
+    cube1TS.makeElementFillet({cube1TS}, edges, .05, .05);
+    auto elements = elementMap(cube1TS);
+    // Assert
+    EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
+    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.739646);
+    // Assert that we're creating a correct element map
+    EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
+    EXPECT_TRUE(elementsMatch(cube1TS,
+                              {
+                                  "Edge10;:G;FLT;:H1:7,F",
+                                  "Edge10;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge10;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge11;:G;FLT;:H1:7,F",
+                                  "Edge11;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge11;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge12;:G;FLT;:H1:7,F",
+                                  "Edge12;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge12;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge1;:G;FLT;:H1:7,F",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge1;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge1;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge2;:G;FLT;:H1:7,F",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge2;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge2;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge3;:G;FLT;:H1:7,F",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge3;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge3;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge4;:G;FLT;:H1:7,F",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge4;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge4;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge5;:G;FLT;:H1:7,F",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge5;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge5;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge6;:G;FLT;:H1:7,F",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge6;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge6;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge7;:G;FLT;:H1:7,F",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge7;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge7;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge8;:G;FLT;:H1:7,F",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U2;FLT;:H1:8,V",
+                                  "Edge8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E;:U;FLT;:H1:7,V",
+                                  "Edge8;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge8;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Edge9;:G;FLT;:H1:7,F",
+                                  "Edge9;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U3;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U4;FLT;:H1:8,E",
+                                  "Edge9;:G;FLT;:H1:7,F;:U;FLT;:H1:7,E",
+                                  "Face1;:M;FLT;:H1:7,F",
+                                  "Face2;:M;FLT;:H1:7,F",
+                                  "Face3;:M;FLT;:H1:7,F",
+                                  "Face4;:M;FLT;:H1:7,F",
+                                  "Face5;:M;FLT;:H1:7,F",
+                                  "Face6;:M;FLT;:H1:7,F",
+                                  "Vertex1;:G;FLT;:H1:7,F",
+                                  "Vertex1;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex2;:G;FLT;:H1:7,F",
+                                  "Vertex2;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex3;:G;FLT;:H1:7,F",
+                                  "Vertex3;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex4;:G;FLT;:H1:7,F",
+                                  "Vertex4;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex5;:G;FLT;:H1:7,F",
+                                  "Vertex5;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex6;:G;FLT;:H1:7,F",
+                                  "Vertex6;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex7;:G;FLT;:H1:7,F",
+                                  "Vertex7;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                                  "Vertex8;:G;FLT;:H1:7,F",
+                                  "Vertex8;:G;FLT;:H1:7,F;:U2;FLT;:H1:8,E",
+                              }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementTransformWithoutMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    TopoShape topoShape1 {cube1, 1L};
+    // Act
+    TopoShape& result = topoShape1.makeElementTransform(topoShape1, tr);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -0.5, 0.0, 0.5, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementTransformWithMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    topoShape1.makeElementTransform(result, tr);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -1.0, 0.0, 1.0, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementGTransformWithoutMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    TopoShape topoShape1 {cube1, 1L};
+    // Act
+    TopoShape& result = topoShape1.makeElementGTransform(topoShape1, TopoShape::convert(tr));
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -0.5, 0.0, 0.5, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementGTransformWithMap)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementFuse({topoShape1, topoShape2});  // op, tolerance
+    topoShape1.makeElementGTransform(result, TopoShape::convert(tr));
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.5, -1.0, 0.0, 1.0, 0.5, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1.75);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 66);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(
+        elements[IndexedName("Face", 1)],
+        MappedName(
+            "Face3;:M;FUS;:H1:7,F;:U;FUS;:H1:7,E;:L(Face5;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E|Face5;:M;"
+            "FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;FUS;:H1:7,V;:L(Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E;:U;"
+            "FUS;:H1:7,V);FUS;:H1:3c,E|Face6;:M;FUS;:H1:7,F;:U2;FUS;:H1:8,E);FUS;:H1:cb,F"));
+}
+
+// Not testing _makeElementTransform as it is a thin wrapper that calls the same places as the four
+// preceding tests.
+
+TEST_F(TopoShapeExpansionTest, makeElementSolid)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopExp_Explorer exp(topoShape1.getShape(), TopAbs_SHELL);
+    auto shell1 = exp.Current();
+    exp.Init(topoShape2.getShape(), TopAbs_SHELL);
+    auto shell2 = exp.Current();
+    TopoShape& topoShape3 = topoShape1.makeElementCompound({shell1, shell2});
+    TopoShape& result = topoShape1.makeElementSolid(topoShape3);  // Need the single parm form
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.5, 0.0, 1.5, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 2);
+    // Assert elementMap is correct
+    EXPECT_EQ(elements.size(), 52);
+    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
+    EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;SLD;:H1:4,F"));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

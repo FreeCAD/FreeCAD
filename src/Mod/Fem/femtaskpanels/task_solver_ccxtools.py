@@ -98,15 +98,17 @@ class _TaskPanel:
             QtCore.SIGNAL("clicked()"),
             self.editCalculixInputFile
         )
-        QtCore.QObject.connect(
-            self.form.pb_run_ccx,
-            QtCore.SIGNAL("clicked()"),
-            self.runCalculix
-        )
+        # connect stopCalculix before runCalculix
+        # see https://github.com/FreeCAD/FreeCAD/issues/12448
         QtCore.QObject.connect(
             self.form.pb_run_ccx,
             QtCore.SIGNAL("clicked()"),
             self.stopCalculix
+        )
+        QtCore.QObject.connect(
+            self.form.pb_run_ccx,
+            QtCore.SIGNAL("clicked()"),
+            self.runCalculix
         )
         QtCore.QObject.connect(
             self.form.rb_static_analysis,
