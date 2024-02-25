@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 """ Worker thread classes for Addon Manager startup """
-
+import datetime
 import hashlib
 import json
 import os
@@ -966,7 +966,7 @@ class GetAddonScoreWorker(QtCore.QThread):
                 FreeCAD.Console.PrintError(
                     translate(
                         "AddonsInstaller",
-                        "Failed to get Addon score from {} -- sorting by score will fail\n",
+                        "Failed to get Addon score from '{}' -- sorting by score will fail\n",
                     ).format(self.url)
                 )
                 return
@@ -976,7 +976,10 @@ class GetAddonScoreWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning("Running score generation in TEST mode...\n")
             json_result = {}
             for addon in self.addons:
-                json_result[addon.url] = len(addon.display_name)
+                if addon.macro:
+                    json_result[addon.name] = len(addon.macro.comment) if addon.macro.comment else 0
+                else:
+                    json_result[addon.url] = len(addon.description) if addon.description else 0
 
         for addon in self.addons:
             score = None
