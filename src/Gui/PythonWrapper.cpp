@@ -581,12 +581,14 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
     if (pyobj) {
         return Py::asObject(pyobj);
     }
-
-    throw Py::RuntimeError("Failed to wrap image");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
+    Py::Object obj = qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap image");
 }
 
 QImage *PythonWrapper::toQImage(PyObject *pyobj)
@@ -603,12 +605,14 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
     if (pyobj) {
         return Py::asObject(pyobj);
     }
-
-    throw Py::RuntimeError("Failed to wrap icon");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<const QIcon*>(icon, "QIcon", "QtGui");
+    Py::Object obj = qt_wrapInstance<const QIcon*>(icon, "QIcon", "QtGui");
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap icon");
 }
 
 QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
@@ -646,7 +650,6 @@ Py::Object PythonWrapper::fromQAction(QAction* action)
         WrapperManager::instance().addQObject(action, pyobj);
         return Py::asObject(pyobj);
     }
-    throw Py::RuntimeError("Failed to wrap action");
 #else
     // Access shiboken/PySide via Python
 # if QT_VERSION < QT_VERSION_CHECK(6,0,0)
@@ -654,8 +657,12 @@ Py::Object PythonWrapper::fromQAction(QAction* action)
 # else
     constexpr const char* qtModWithQAction = "QtGui";
 # endif
-    return qt_wrapInstance<QAction*>(action, "QAction", qtModWithQAction);
+    Py::Object obj = qt_wrapInstance<QAction*>(action, "QAction", qtModWithQAction);
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap action");
 }
 
 Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
@@ -678,12 +685,14 @@ Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
         PyObject* pyobj = Shiboken::Object::newObject(type, printer, false, false, "QPrinter");
         return Py::asObject(pyobj);
     }
-
-    throw Py::RuntimeError("Failed to wrap printer");
 #else
     // Access shiboken/PySide via Python
-    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "QtCore");
+    Py::Object obj = qt_wrapInstance<QPrinter*>(printer, "QPrinter", "QtCore");
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap printer");
 }
 
 Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
@@ -707,7 +716,6 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         WrapperManager::instance().addQObject(object, pyobj);
         return Py::asObject(pyobj);
     }
-    throw Py::RuntimeError("Failed to wrap object");
 #else
     // Access shiboken/PySide via Python
     std::string typeName;
@@ -718,8 +726,12 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         typeName = object->metaObject()->className();
     }
 
-    return qt_wrapInstance<QObject*>(object, typeName, "QtCore");
+    Py::Object obj = qt_wrapInstance<QObject*>(object, typeName, "QtCore");
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap object");
 }
 
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
@@ -740,7 +752,6 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         WrapperManager::instance().addQObject(widget, pyobj);
         return Py::asObject(pyobj);
     }
-    throw Py::RuntimeError("Failed to wrap widget");
 #else
     // Access shiboken/PySide via Python
     std::string typeName;
@@ -751,8 +762,12 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         typeName = widget->metaObject()->className();
     }
 
-    return qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets");
+    Py::Object obj = qt_wrapInstance<QWidget*>(widget, typeName, "QtWidgets");
+    if (!obj.isNull()) {
+        return obj;
+    }
 #endif
+    throw Py::RuntimeError("Failed to wrap widget");
 }
 
 const char* PythonWrapper::getWrapperName(QObject* obj) const
