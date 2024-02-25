@@ -94,6 +94,36 @@ void Rotation::getValue(double& q0, double& q1, double& q2, double& q3) const
     q3 = this->quat[3];
 }
 
+void Rotation::preferRotationAxisDirection(const Rotation& other)
+{
+    preferRotationAxisDirection(other._axis);
+}
+
+void Rotation::preferRotationAxisDirection(const Vector3d& rotAxis)
+{
+    preferRotationAxisDirection(rotAxis.x, rotAxis.y, rotAxis.z);
+}
+
+void Rotation::preferRotationAxisDirection(double x, double y, double z)
+{
+    // keep the direction of the rotation axis close to the preferred one
+    // (this->_axis is initialized in the class declaration in the header file)
+    if (x * this->quat[0] + y * this->quat[1] + z * this->quat[2] < 0.0) {
+        // angle between preferred rotation axis and current rotation axis is > 90 deg
+        // --> flip rotation axis
+        this->quat[0] *= -1;
+        this->quat[1] *= -1;
+        this->quat[2] *= -1;
+        this->quat[3] *= -1;
+
+        this->_axis.x *= -1;
+        this->_axis.y *= -1;
+        this->_axis.z *= -1;
+
+        this->_angle *= -1;
+    }
+}
+
 void Rotation::evaluateVector()
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
@@ -107,14 +137,28 @@ void Rotation::evaluateVector()
         if (l < Base::Vector3d::epsilon()) {
             l = 1;
         }
+
+        double oldAxisX = this->_axis.x;
+        double oldAxisY = this->_axis.y;
+        double oldAxisZ = this->_axis.z;
+
         this->_axis.x = this->quat[0] * l / scale;
         this->_axis.y = this->quat[1] * l / scale;
         this->_axis.z = this->quat[2] * l / scale;
 
         _angle = rfAngle;
+
+        preferRotationAxisDirection(oldAxisX, oldAxisY, oldAxisZ);
     }
     else {
-        _axis.Set(0.0, 0.0, 1.0);
+        // keep the direction of the new rotation axis close to the old one
+        if (this->_axis.z < 0.0) {
+            // --> flip new rotation axis
+            _axis.Set(0.0, 0.0, -1.0);
+        }
+        else {
+            _axis.Set(0.0, 0.0, 1.0);
+        }
         _angle = 0.0;
     }
 }

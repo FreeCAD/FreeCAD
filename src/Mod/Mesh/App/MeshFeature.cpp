@@ -68,6 +68,7 @@ void Feature::onChanged(const App::Property* prop)
         try {
             Base::Placement p;
             p.fromMatrix(this->Mesh.getTransform());
+            p.preferRotationAxisDirection(this->Placement.getValue());
             if (p != this->Placement.getValue()) {
                 this->Placement.setValue(p);
             }

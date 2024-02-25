@@ -104,6 +104,8 @@ public:
     static Placement slerp(const Placement& p0, const Placement& p1, double t);
     static Placement
     sclerp(const Placement& p0, const Placement& p1, double t, bool shorten = true);
+    void preferRotationAxisDirection(const Base::Placement& other);
+    void preferRotationAxisDirection(const Base::Rotation& otherRotAxis);
 
 private:
     Vector3<double> _pos;

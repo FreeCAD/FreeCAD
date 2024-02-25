@@ -209,3 +209,13 @@ Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, 
     Placement trf = p0.inverse() * p1;
     return p0 * trf.pow(t, shorten);
 }
+
+void Placement::preferRotationAxisDirection(const Base::Placement& other)
+{
+    _rot.preferRotationAxisDirection(other.getRotation());
+}
+
+void Placement::preferRotationAxisDirection(const Base::Rotation& otherRotAxis)
+{
+    _rot.preferRotationAxisDirection(otherRotAxis);
+}

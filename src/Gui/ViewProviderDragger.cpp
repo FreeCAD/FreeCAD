@@ -271,43 +271,40 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
     Base::Vector3d movementVector(getVectorX());
     movementVector *= (tCountX * translationIncrement);
     freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
   }
   if (tCountY)
   {
     Base::Vector3d movementVector(getVectorY());
     movementVector *= (tCountY * translationIncrement);
     freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
   }
   if (tCountZ)
   {
     Base::Vector3d movementVector(getVectorZ());
     movementVector *= (tCountZ * translationIncrement);
     freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
   }
   if (rCountX)
   {
     Base::Vector3d rotationVector(getVectorX());
     Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
   }
   if (rCountY)
   {
     Base::Vector3d rotationVector(getVectorY());
     Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
   }
   if (rCountZ)
   {
     Base::Vector3d rotationVector(getVectorZ());
     Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
   }
+
+  freshPlacement.preferRotationAxisDirection(originalPlacement);
+  geoFeature->Placement.setValue(freshPlacement);
 
   draggerIn->clearIncrementCounts();
 }

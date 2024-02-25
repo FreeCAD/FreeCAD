@@ -69,6 +69,9 @@ public:
     void setYawPitchRoll(double y, double p, double r);
     /// Euler angles in yaw,pitch,roll notation
     void getYawPitchRoll(double& y, double& p, double& r) const;
+    void preferRotationAxisDirection(const Rotation& other);
+    void preferRotationAxisDirection(const Vector3d& rotAxis);
+    void preferRotationAxisDirection(double x, double y, double z);
 
     enum EulerSequence
     {
@@ -183,8 +186,11 @@ private:
     void normalize();
     void evaluateVector();
     double quat[4];
-    Vector3d _axis;  // the axis kept not to lose direction when angle is 0
-    double _angle;   // this angle to keep the angle chosen by the user
+    Vector3d _axis {0.0,
+                    0.0,
+                    1.0};  // the axis kept not to lose direction when angle is 0
+                           // _axis has to be initialized for method Rotation::evaluateVector()
+    double _angle;         // this angle to keep the angle chosen by the user
 };
 
 }  // namespace Base
