@@ -576,9 +576,9 @@ QGraphicsObject* PythonWrapper::toQGraphicsObject(const Py::Object& pyobject)
 Py::Object PythonWrapper::fromQImage(const QImage& img)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyObject* pyobj = Shiboken::Conversions::copyToPython(getPyTypeObjectForTypeName<QImage>(),
-                              const_cast<QImage*>(&img));
-    if (pyobj) {
+    auto type = getPyTypeObjectForTypeName<QImage>();
+    if (type) {
+        PyObject* pyobj = Shiboken::Conversions::copyToPython(type, const_cast<QImage*>(&img));
         return Py::asObject(pyobj);
     }
 #else
@@ -600,9 +600,9 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
-    PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QIcon>(),
-                              const_cast<QIcon*>(icon), true, false, typeName);
-    if (pyobj) {
+    auto type = getPyTypeObjectForTypeName<QIcon>();
+    if (type) {
+        PyObject* pyobj = Shiboken::Object::newObject(type, const_cast<QIcon*>(icon), true, false, typeName);
         return Py::asObject(pyobj);
     }
 #else
@@ -624,9 +624,9 @@ Py::Object PythonWrapper::fromQDir(const QDir& dir)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     const char* typeName = typeid(dir).name();
-    PyObject* pyobj = Shiboken::Object::newObject(getPyTypeObjectForTypeName<QDir>(),
-        const_cast<QDir*>(&dir), false, false, typeName);
-    if (pyobj) {
+    auto type = getPyTypeObjectForTypeName<QDir>();
+    if (type) {
+        PyObject* pyobj = Shiboken::Object::newObject(type, const_cast<QDir*>(&dir), false, false, typeName);
         return Py::asObject(pyobj);
     }
 #else
