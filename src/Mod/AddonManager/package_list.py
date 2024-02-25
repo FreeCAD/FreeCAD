@@ -387,11 +387,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 return translate("AddonsInstaller", "Updated ") + time_string
             return ""
         elif self.sort_order == SortOptions.Score:
-            return translate("AddonsInstaller", "Score: ") + str(len(addon.display_name))
+            return translate("AddonsInstaller", "Score: ") + str(addon.score)
         return ""
-
-    def _set_sort_string_expanded(self, addon: Addon, label: QtWidgets.QLabel) -> None:
-        pass
 
     def _get_compact_description(self, addon: Addon) -> str:
         if addon.metadata:
