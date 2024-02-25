@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Activity</source>
-      <translation>Activité</translation>
+      <translation>Activités</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="271"/>
       <source>Show examples folder contents</source>
-      <translation>Afficher le contenu du dossier d'exemples</translation>
+      <translation>Afficher le contenu du répertoire des exemples</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
@@ -363,7 +363,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="239"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Si cette case est cochée, les derniers messages du forum FreeCAD s'afficheront dans l’onglet Activité</translation>
+      <translation>Si cette option est cochée, les derniers messages du forum FreeCAD s'afficheront dans l’onglet Activités.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="307"/>
@@ -400,7 +400,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
       <source>The size of file thumbnail icons in recent files and examples sections</source>
-      <translation>La dimension des miniatures des fichiers dans les sections fichiers récents et exemples</translation>
+      <translation>La dimension des miniatures des fichiers dans les sections des fichiers récents et exemples</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="196"/>
@@ -410,12 +410,12 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation>Dimension des miniatures de fichier</translation>
+      <translation>Dimension des miniatures des fichiers</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation>Afficher les miniatures de fichiers</translation>
+      <translation>Afficher les miniatures des fichiers</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -465,12 +465,12 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Si cette case est cochée, et si une feuille de style est spécifiée dans les préférences générales, celle-ci sera utilisée et remplacera les couleurs ci-dessous</translation>
+      <translation>Si cette option est cochée, et si une feuille de style est spécifiée dans les préférences générales, celle-ci sera utilisée et remplacera les couleurs ci-dessous.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="370"/>
       <source>Page background color</source>
-      <translation>Couleur d'arrière-plan de la page</translation>
+      <translation>Couleur d'arrière-plan des pages</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="678"/>
@@ -520,7 +520,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="545"/>
       <source>Background text color</source>
-      <translation>Couleur d'arrière-plan du texte</translation>
+      <translation>Couleur d'arrière-plan des textes</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="485"/>
@@ -561,7 +561,7 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Si coché, fermera automatiquement la page de démarrage au lancement de FreeCAD</translation>
+      <translation>Si cette option est cochée, cela fermera automatiquement la page de démarrage au lancement de FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -576,12 +576,12 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="66"/>
       <source>Close and switch on opening file</source>
-      <translation>Fermer et basculer à l'ouverture du fichier</translation>
+      <translation>Fermer et basculer à l'ouverture des fichiers</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="73"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation>Si l'application est lancée par l'ouverture d'un fichier, appliquez les deux paramètres ci-dessus</translation>
+      <translation>Si l'application est lancée par l'ouverture d'un fichier, cela applique les deux paramètres au-dessus.</translation>
     </message>
   </context>
   <context>
@@ -609,7 +609,8 @@ En utilisant ";;" pour séparer les chemins, vous pouvez ajouter plusieurs dossi
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez coller votre CSS personnalisé ici et la page de démarrage l'appliquera pour vous. Pour en savoir plus sur la façon de personnaliser la page d'accueil, voir les sources HTML et CSS :&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github. om/FreeCAD/FreeCAD/blob/master/src/Mod/StartPage/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez coller votre CSS personnalisé ici et la page de démarrage l'appliquera pour vous.
+Pour en savoir plus sur la façon de personnaliser la page d'accueil, voir les sources HTML et CSS :&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github. om/FreeCAD/FreeCAD/blob/master/src/Mod/StartPage/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>

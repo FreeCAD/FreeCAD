@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Стандартная система мер (мм, кг, сек, угол)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Строительство Евро (см, м2, м3)</translation>
+      <translation>Строительство Евро (см, м², м³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="79"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Имперская для граждан (ft, ft/с)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
