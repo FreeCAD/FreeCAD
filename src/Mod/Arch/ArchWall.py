@@ -1205,7 +1205,10 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
+            import DraftGeomUtils
+            normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
+            if normal == None:
+                normal = Vector(0,0,1)
         else:
             normal = Vector(obj.Normal)
         base = None
@@ -1270,7 +1273,7 @@ class _Wall(ArchComponent.Component):
 
                     # If the object is a single edge, use that as the
                     # basewires.
-                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
+                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algorithm for Sketch altogther?
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 

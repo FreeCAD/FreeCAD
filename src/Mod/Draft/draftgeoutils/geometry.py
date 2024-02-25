@@ -219,6 +219,72 @@ def get_spline_normal(edge, tol=-1):
         return None
 
 
+def get_shape_normal(shape):
+    """Find the normal of a shape or list of points or colinear edges, if possible."""
+
+    # New function based on get_normal() drafted by @Roy_043  
+    # in discussion https://forum.freecad.org/viewtopic.php?p=717862#p717862 
+    #
+    # The normal would not be affected  by the 3D view direction and flipped as
+    # get_normal would be. Placement of the Shape is taken into account in this
+    # new function instead :
+    # - Normal of a planar shape is usually bi-directional, this function return
+    #   the one 'in the direction' of the shape's placement 'normal' (z-direction).
+    #   As reference, shape.findPlane() favour positive axes, get_normal()
+    #   favour the 'view direction' (obtained by getViewDirection() ).
+    # - Even when the Shape is an edge or colinear edges, its Placement is taken
+    #   into account, and this function return one 'in the direction' of the
+    #   shape's placement 'normal' (z-direction).
+    #   https://forum.freecad.org/viewtopic.php?p=715850#p715850
+    # The normal direction of a Draft wire (co-planar) or arc used to depends on
+    # the way the shape is constructed i.e. by vertexes in clockwise or
+    # anti-clockwise.  This cryptic behaviour no longer matters.
+
+    # for points
+    if isinstance(shape, (list, tuple)):
+        if len(shape) <= 2:
+            return None
+        else:
+            shape = Part.makePolygon(shape)
+
+    if shape.isNull():
+        return None
+
+    # Roy_043's remarks on the behavior of Shape.findPlane():
+    # - https://forum.freecad.org/viewtopic.php?p=713993#p713993
+    # Check if the shape is planar
+    # If True: check if the outer wire is closed:
+    #    if True  :   Return a (plane with) normal based on the direction of the outer wire (CW or CCW).
+    #    if False : ? Return a (plane with) normal that points towards positive global axes with a certain priority
+    #                 (probably? Z, Y and then X).
+    # If False: return None.
+    # 
+    # Further remarks :
+    # - Tested Sketch with 2 colinear edges return a Plane with Axis
+    # - Tested Sketch with 1 edge return no Plane with no Axis
+
+    shape_rot = shape.Placement.Rotation
+    if is_straight_line(shape):
+        start_edge = shape.Edges[0]
+        x_vec = start_edge.tangentAt(start_edge.FirstParameter)  # Return vector is in global coordinate
+        local_x_vec = shape_rot.inverted().multVec(x_vec)  # 
+        local_rot = App.Rotation(local_x_vec, App.Vector(0, 1, 0), App.Vector(0, 0, 1), "XZY")
+        # see https://blog.freecad.org/2023/01/16/the-rotation-api-in-freecad/ for App.Rotation(vecx, vecy, vecz, string)
+        # discussion - https://forum.freecad.org/viewtopic.php?p=717738#p717738
+        return shape_rot.multiply(local_rot).multVec(App.Vector(0, 0, 1))
+    else:
+        plane = shape.findPlane()  
+
+    normal = plane.Axis
+    shape_normal = shape_rot.multVec(App.Vector(0, 0, 1))
+    # Now, check the normal direction of the plane (plane.Axis).
+    # The final deduced normal should be 'in the direction' of the z-direction of the shape's placement,
+    # if plane.Axis is in the 'opposite' direction of the Z direction of the shape's placement, reverse it. 
+    if normal.getAngle(shape_normal) > math.pi/2:
+        normal = normal.negative()
+    return normal
+
+
 def get_normal(shape, tol=-1):
     """Find the normal of a shape or list of points, if possible."""
 
@@ -329,6 +395,8 @@ def is_straight_line(shape, tol=-1):
     if len(shape.Edges) >= 1:
         start_edge = shape.Edges[0]
         dir_start_edge = start_edge.tangentAt(start_edge.FirstParameter)
+        point_start_edge = start_edge.firstVertex().Point
+
         #set tolerance
         if tol <=0:
             err = shape.globalTolerance(tol)
@@ -343,6 +411,24 @@ def is_straight_line(shape, tol=-1):
             # because sin(x) = x + O(x**3), for small angular deflection it's
             # enough use the cross product of directions (or dot with a normal)
             if (abs(edge.Length - first_point.distanceToPoint(last_point)) > err
+                # https://forum.freecad.org/viewtopic.php?p=726101#p726101
+                # Shape with parallel edges but not colinear used to return True
+                # by this function, below line added fixes this bug.
+                # Further remark on the below fix :
+                # - get_normal() use this function, may had created problems 
+                #   previously but not reported; on the other hand, this fix
+                #   seems have no 'regression' created as get_normal use
+                #   plane.Axis (with 3DView check).  See get_shape_normal()
+                #   which take into account shape's placement
+                # - other functions had been using this also : Keep In View to
+                #    see if there is 'regression' :
+                #
+                # $ grep -rni "is_straight" ./
+                # ./draftfunctions/upgrade.py
+                # ./draftgeoutils/geometry.py
+                # ./draftmake/make_wire.py
+                or first_point.distanceToLine(point_start_edge, dir_start_edge) > err \
+                #
                 or dir_start_edge.cross(dir_edge).Length > err):
                 return False
 
