@@ -76,7 +76,7 @@
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Path/App/PathSegmentWalker.h>
-#include <Mod/Path/libarea/Area.h>
+
 
 #include "Area.h"
 
