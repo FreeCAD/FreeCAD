@@ -168,6 +168,7 @@ class Addon:
         self.tags = set()  # Just a cache, loaded from Metadata
         self.last_updated = None
         self.stats = AddonStats()
+        self.score = 0
 
         # To prevent multiple threads from running git actions on this repo at the
         # same time
@@ -260,7 +261,6 @@ class Addon:
 
     def _process_date_string_to_python_datetime(self, date_string: str) -> datetime:
         split_result = re.split(r"[ ./-]+", date_string.strip())
-        print(f"{self.display_name} - {split_result}")
         if len(split_result) != 3:
             raise SyntaxError(
                 f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"

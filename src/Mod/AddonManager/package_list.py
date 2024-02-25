@@ -196,8 +196,8 @@ class PackageListItemModel(QtCore.QAbstractListModel):
             if self.repos[row].stats and self.repos[row].stats.stars:
                 return self.repos[row].stats.stars
             return 0
-        if role == SortOptions.Rank:
-            return len(self.repos[row].display_name)
+        if role == SortOptions.Score:
+            return self.repos[row].score
 
     def headerData(self, _unused1, _unused2, _role=QtCore.Qt.DisplayRole):
         """No header in this implementation: always returns None."""
@@ -386,8 +386,8 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
                 return translate("AddonsInstaller", "Updated ") + time_string
             return ""
-        elif self.sort_order == SortOptions.Rank:
-            return translate("AddonsInstaller", "Rank: ") + str(len(addon.display_name))
+        elif self.sort_order == SortOptions.Score:
+            return translate("AddonsInstaller", "Score: ") + str(len(addon.display_name))
         return ""
 
     def _set_sort_string_expanded(self, addon: Addon, label: QtWidgets.QLabel) -> None:
