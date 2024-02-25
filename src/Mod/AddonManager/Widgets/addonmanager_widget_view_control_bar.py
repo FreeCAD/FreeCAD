@@ -25,6 +25,11 @@
 
 from enum import IntEnum, auto
 
+try:
+    import FreeCAD
+except ImportError:
+    FreeCAD = None
+
 # Get whatever version of PySide we can
 try:
     import PySide  # Use the FreeCAD wrapper
@@ -52,7 +57,7 @@ class SortOptions(IntEnum):
     LastUpdated = QtCore.Qt.UserRole + _SortRoleOffset + 1
     DateAdded = QtCore.Qt.UserRole + _SortRoleOffset + 2
     Stars = QtCore.Qt.UserRole + _SortRoleOffset + 3
-    Rank = QtCore.Qt.UserRole + _SortRoleOffset + 4
+    Score = QtCore.Qt.UserRole + _SortRoleOffset + 4
 
 
 default_sort_order = {
@@ -60,7 +65,7 @@ default_sort_order = {
     SortOptions.LastUpdated: QtCore.Qt.DescendingOrder,
     SortOptions.DateAdded: QtCore.Qt.DescendingOrder,
     SortOptions.Stars: QtCore.Qt.DescendingOrder,
-    SortOptions.Rank: QtCore.Qt.DescendingOrder,
+    SortOptions.Score: QtCore.Qt.DescendingOrder,
 }
 
 
@@ -75,6 +80,7 @@ class WidgetViewControlBar(QtWidgets.QWidget):
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)
+        self.has_rankings = False
         self._setup_ui()
         self._setup_connections()
         self.retranslateUi(None)
@@ -124,6 +130,10 @@ class WidgetViewControlBar(QtWidgets.QWidget):
                 )
             )
 
+    def set_rankings_available(self, rankings_available: bool) -> None:
+        self.has_rankings = rankings_available
+        self.retranslateUi(None)
+
     def _setup_connections(self):
         self.view_selector.view_changed.connect(self.view_changed.emit)
         self.filter_selector.filter_changed.connect(self.filter_changed.emit)
@@ -133,6 +143,8 @@ class WidgetViewControlBar(QtWidgets.QWidget):
 
     def _sort_changed(self, index: int):
         sort_role = self.sort_selector.itemData(index)
+        if sort_role is None:
+            sort_role = SortOptions.Alphabetical
         self.set_sort_order(default_sort_order[sort_role])
         self.sort_changed.emit(sort_role)
         self.sort_order_changed.emit(self.sort_order)
@@ -151,5 +163,7 @@ class WidgetViewControlBar(QtWidgets.QWidget):
         self.sort_selector.addItem(
             translate("AddonsInstaller", "GitHub Stars", "Sort order"), SortOptions.Stars
         )
-        # self.sort_selector.addItem(translate("AddonsInstaller", "Rank", "Sort order"),
-        #                            SortOptions.Rank)
+        if self.has_rankings:
+            self.sort_selector.addItem(
+                translate("AddonsInstaller", "Score", "Sort order"), SortOptions.Score
+            )
