@@ -26,7 +26,7 @@ ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Path")
 
 # Set the needed information
 ParGrp.SetString("HelpIndex", "Path/Help/index.html")
-ParGrp.SetString("WorkBenchName", "Path")
+ParGrp.SetString("WorkBenchName", "CAM")
 ParGrp.SetString("WorkBenchModule", "PathWorkbench.py")
 
 FreeCAD.__unit_test__ += ["TestPathApp"]

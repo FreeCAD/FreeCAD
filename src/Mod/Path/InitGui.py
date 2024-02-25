@@ -45,15 +45,15 @@ class PathCommandGroup:
         return False
 
 
-class PathWorkbench(Workbench):
-    "Path workbench"
+class CAMWorkbench(Workbench):
+    "CAM workbench"
 
     def __init__(self):
         self.__class__.Icon = (
-            FreeCAD.getResourceDir() + "Mod/Path/Resources/icons/PathWorkbench.svg"
+            FreeCAD.getResourceDir() + "Mod/Path/Resources/icons/CAMWorkbench.svg"
         )
-        self.__class__.MenuText = "Path"
-        self.__class__.ToolTip = "Path workbench"
+        self.__class__.MenuText = "CAM"
+        self.__class__.ToolTip = "CAM workbench"
 
     def Initialize(self):
         global PathCommandGroup
@@ -84,9 +84,9 @@ class PathWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path"))
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM"))
         FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
+            PathPreferencesPathDressup.DressupPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM")
         )
 
         Path.GuiInit.Startup()
@@ -199,7 +199,7 @@ class PathWorkbench(Workbench):
             )
 
         self.appendMenu(
-            [QT_TRANSLATE_NOOP("Workbench", "&Path")],
+            [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
             + ["Path_ExportTemplate", "Separator"]
             + toolcmdlist
@@ -213,21 +213,21 @@ class PathWorkbench(Workbench):
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                 QT_TRANSLATE_NOOP("Workbench", "Path Dressup"),
             ],
             dressupcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                 QT_TRANSLATE_NOOP("Workbench", "Supplemental Commands"),
             ],
             prepcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                 QT_TRANSLATE_NOOP("Workbench", "Path Modification"),
             ],
             modcmdlist,
@@ -235,18 +235,18 @@ class PathWorkbench(Workbench):
         if specialcmdlist:
             self.appendMenu(
                 [
-                    QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                    QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                     QT_TRANSLATE_NOOP("Workbench", "Specialty Operations"),
                 ],
                 specialcmdlist,
             )
         if extracmdlist:
-            self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], extracmdlist)
+            self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&CAM")], extracmdlist)
 
-        self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], ["Separator"])
+        self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&CAM")], ["Separator"])
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                 QT_TRANSLATE_NOOP("Workbench", "Utils"),
             ],
             ["Path_PropertyBag"],
@@ -263,9 +263,9 @@ class PathWorkbench(Workbench):
         from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "Path")
+            PathPreferencesAdvanced.AdvancedPreferencesPage, QT_TRANSLATE_NOOP("QObject", "CAM")
         )
-        Log("Loading Path workbench... done\n")
+        Log("Loading CAM workbench... done\n")
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
@@ -273,10 +273,10 @@ class PathWorkbench(Workbench):
     def Activated(self):
         # update the translation engine
         FreeCADGui.updateLocale()
-        # Msg("Path workbench activated\n")
+        # Msg("CAM workbench activated\n")
 
     def Deactivated(self):
-        # Msg("Path workbench deactivated\n")
+        # Msg("CAM workbench deactivated\n")
         pass
 
     def ContextMenu(self, recipient):
@@ -320,6 +320,6 @@ class PathWorkbench(Workbench):
             self.appendContextMenu("", "Separator")
 
 
-Gui.addWorkbench(PathWorkbench())
+Gui.addWorkbench(CAMWorkbench())
 
 FreeCAD.addImportType("GCode (*.nc *.NC *.gc *.GC *.ncc *.NCC *.ngc *.NGC *.cnc *.CNC *.tap *.TAP *.gcode *.GCODE)", "PathGui")

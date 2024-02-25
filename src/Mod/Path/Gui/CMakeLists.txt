@@ -80,7 +80,7 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 SET(PathGuiIcon_SVG
-    Resources/icons/PathWorkbench.svg
+    Resources/icons/CAMWorkbench.svg
 )
 
 add_library(PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
