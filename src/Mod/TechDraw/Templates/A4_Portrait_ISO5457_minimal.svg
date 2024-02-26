@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="A4_Portrait_ISO5457_minimal.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.73139029"
+     inkscape:cx="396.50513"
+     inkscape:cy="561.25984"
+     inkscape:current-layer="svg1" />
+  <title
+     id="title1">Drawing sheet ISO 5457 - A4T</title>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Drawing sheet ISO 5457 - A4T</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1" />
+  <rect
+     style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:8.29502"
+     id="Drawing space frame"
+     width="180"
+     height="277"
+     x="20"
+     y="10" />
+  <g
+     id="Centring marks">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 105,5 0,10"
+       id="Top" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 205,148.5 -10,0"
+       id="Right" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 105,292 0,-10"
+       id="Bottom" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 15,148.5 10,0"
+       id="Left" />
+  </g>
+  <g
+     id="Grid reference system">
+    <g
+       id="Grid reference borders">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:31.3513"
+         id="rect11"
+         width="190"
+         height="286.99997"
+         x="15"
+         y="5.0000005" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 15,98.49992 h 4.999999"
+         id="path46" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 15,48.499923 h 4.999999"
+         id="path47" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 15,198.49992 h 4.999999"
+         id="path49" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 15,248.49992 h 4.999999"
+         id="path50" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 200.00001,98.49992 h 5"
+         id="path53" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 200.00001,48.499923 h 5"
+         id="path54" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 200.00001,198.49992 h 5"
+         id="path55" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 200.00001,248.49992 h 5"
+         id="path56" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="M 155.00002,5.0000098 155,10.00001"
+         id="path31" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 55.00003,5.0000098 -2e-5,5.0000002"
+         id="path35" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="M 155.00002,287 155,292.00001"
+         id="path38" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 55.00003,287 -2e-5,5.00001"
+         id="path42" />
+    </g>
+    <g
+       id="Grid reference markers">
+      <path
+         d="m 30.00684,6.2618504 q 0.05811,-0.054687 0.121338,-0.054687 0.128173,0 0.128173,0.1418457 v 2.2849121 q 0,0.1452636 -0.123046,0.1452636 -0.126465,0 -0.126465,-0.1469726 0,0 0,-2.0148926 l -0.297364,0.2973633 q -0.04614,0.046143 -0.09229,0.046143 -0.129882,0 -0.129882,-0.114502 0,-0.058105 0.04956,-0.107666 z"
+         id="text36"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="1" />
+      <path
+         d="m 202.53079,122.19853 q 0,0 0.52295,0 0.12647,0 0.12647,0.12818 0,0.12988 -0.13672,0.12988 h -0.51441 q -0.14355,0 -0.27856,0.12475 -0.10254,0.0957 -0.10254,0.25635 v 1.30567 q 0,0.16064 0.10767,0.27685 0.11279,0.11963 0.23413,0.11963 h 0.57422 q 0.12304,0 0.12304,0.12476 0,0.11792 -0.12475,0.11792 h -0.58277 q -0.23584,0 -0.44092,-0.2273 -0.14013,-0.15552 -0.14013,-0.39819 v -1.33814 q 0,-0.25634 0.20166,-0.44604 0.18457,-0.17432 0.43066,-0.17432 z"
+         id="text53"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="C" />
+      <path
+         d="m 203.29642,74.001511 q 0,0.375976 -0.23926,0.581054 -0.23755,0.205078 -0.44946,0.205078 h -0.75025 q -0.11963,0 -0.11963,-0.155517 v -2.264404 q 0,-0.160645 0.15894,-0.160645 h 0.5332 q 0.32471,0 0.47339,0.129883 0.25977,0.227295 0.25977,0.516113 0,0.314453 -0.23926,0.502442 0.15893,0.09229 0.26489,0.264892 0.10767,0.172608 0.10767,0.381104 z m -1.29541,-0.492188 v 1.040772 h 0.5332 q 0.23242,0 0.37256,-0.160645 0.14014,-0.160644 0.14014,-0.355469 0,-0.194824 -0.1316,-0.360595 -0.12988,-0.164063 -0.37597,-0.164063 z m 0,-1.047607 v 0.781006 h 0.52124 q 0.19653,0 0.29394,-0.105957 0.0991,-0.107666 0.0991,-0.266602 0,-0.160645 -0.10424,-0.283691 -0.10425,-0.124756 -0.29566,-0.124756 z"
+         id="text54"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="B" />
+      <path
+         d="m 202.38895,22.301064 q 0.0308,-0.09399 0.11963,-0.09399 0.0854,0 0.11621,0.09399 l 0.76391,2.296875 q 0.0154,0.04614 0.0154,0.0752 0,0.10083 -0.12304,0.114502 -0.0906,0 -0.12818,-0.112793 0,0 -0.17431,-0.540039 h -0.94678 l -0.18628,0.553711 q -0.0359,0.104248 -0.11621,0.104248 -0.1333,0 -0.1333,-0.124756 0,-0.01709 0.0376,-0.128174 z m 0.11279,0.425537 -0.39307,1.167236 h 0.78784 z"
+         id="text55"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="A" />
+      <path
+         d="m 201.97794,174.54153 q 0,0 0.59301,0 0.22901,0 0.3418,-0.11792 0.1145,-0.11962 0.1145,-0.29223 v -1.28345 q 0,-0.1521 -0.11108,-0.27344 -0.11109,-0.12133 -0.29395,-0.12133 h -0.64428 z m -0.25122,-2.19433 q 0,-0.14014 0.14184,-0.14014 h 0.80151 q 0.23584,0 0.41871,0.18457 0.18457,0.18457 0.18457,0.4187 v 1.37915 q 0,0.23413 -0.18457,0.417 -0.18457,0.18115 -0.39478,0.18115 h -0.85278 q -0.1145,0 -0.1145,-0.1521 z"
+         id="text56"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="D" />
+      <path
+         d="m 202.14542,224.53299 h 0.91088 q 0.12647,0 0.12647,0.12305 0,0.12304 -0.12134,0.12304 h -1.04931 q -0.1128,0 -0.1128,-0.12817 v -2.31909 q 0,-0.1333 0.1521,-0.1333 h 0.99634 q 0.13843,0 0.13843,0.12475 0,0.12305 -0.13843,0.12305 h -0.90234 v 0.79639 h 0.65966 q 0.12476,0 0.12476,0.12304 0,0.11621 -0.12134,0.11621 h -0.66308 z"
+         id="text57"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="E" />
+      <path
+         d="m 202.15225,273.48367 v 1.15699 q 0,0.14013 -0.12817,0.14013 -0.12476,0 -0.12476,-0.14184 0,0 0,-2.3208 0,-0.11963 0.1333,-0.11963 0,0 1.01856,0 0.13501,0 0.13501,0.12304 0,0.12305 -0.1333,0.12305 h -0.89893 v 0.78955 h 0.89893 q 0.1333,0 0.1333,0.12476 0,0.12475 -0.13501,0.12475 z"
+         id="text58"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="F" />
+      <path
+         d="m 129.49585,6.1986179 q 0,0 0.53491,0 0.23242,0 0.41699,0.1999512 0.1709,0.1845703 0.1709,0.4323731 0,0.3110351 -0.2666,0.5314941 0.25977,0.1879883 0.25977,0.4631348 0,0 0,0.3759765 0,0.220459 -0.1897,0.4101563 -0.16748,0.1674804 -0.4375,0.1674804 0,0 -0.50928,0 -0.14526,0 -0.14526,-0.1264648 0,-0.114502 0.15381,-0.114502 0,0 0.45117,0 0.20679,0 0.32641,-0.1230468 0.11109,-0.114502 0.11109,-0.2990723 v -0.222168 q 0,-0.1743164 -0.10254,-0.2819824 -0.12476,-0.1315918 -0.2666,-0.1315918 h -0.25977 q -0.14184,0 -0.14184,-0.1281738 0,-0.112793 0.14355,-0.112793 h 0.23071 q 0.16065,0 0.27515,-0.1162109 0.12134,-0.1230469 0.12134,-0.2802735 0,-0.1606445 -0.0974,-0.2597656 -0.1333,-0.1350097 -0.27344,-0.1350097 h -0.50586 q -0.15894,0 -0.15894,-0.1281739 0,-0.1213379 0.15894,-0.1213379 z"
+         id="text31"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="3" />
+      <path
+         d="m 179.78893,6.2943211 q 0.0273,-0.095703 0.12646,-0.095703 0.11792,0 0.11792,0.11792 0,0.029053 -0.012,0.068359 l -0.46656,1.6269532 h 0.62378 V 7.6392918 q 0,-0.1435547 0.12476,-0.1435547 0.12134,0 0.12134,0.1538086 v 0.3640136 q 0,0 0.26318,0 0.12476,0 0.12476,0.1350098 0,0.109375 -0.12989,0.109375 h -0.25805 v 0.3862305 q 0,0.1384277 -0.12647,0.1384277 -0.11963,0 -0.11963,-0.1333008 V 8.2630711 h -0.78442 q -0.12134,0 -0.12134,-0.114502 0,-0.037598 0.0239,-0.1230469 z"
+         id="text32"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="4" />
+      <path
+         d="m 79.488167,6.8411961 q -0.133301,0 -0.133301,-0.1196289 0,-0.037598 0.03076,-0.099121 0.107666,-0.2119141 0.247802,-0.3024903 0.174317,-0.1127929 0.367432,-0.1127929 0.324707,0 0.509277,0.2478027 0.13501,0.1811523 0.13501,0.3896484 0,0.1828614 -0.112793,0.3657227 l -0.828857,1.3381348 h 0.810058 q 0.128174,0 0.128174,0.1281738 0,0.111084 -0.140136,0.111084 h -0.99292 q -0.1521,0 -0.1521,-0.109375 0,-0.047852 0.02222,-0.08374 l 0.919433,-1.4816894 q 0.09399,-0.1520996 0.09399,-0.2683106 0,-0.1469726 -0.09399,-0.2563476 -0.114502,-0.1333008 -0.305908,-0.1333008 -0.237549,0 -0.384521,0.2802734 -0.0564,0.1059571 -0.119629,0.1059571 z"
+         id="text35"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;word-spacing:0px;text-orientation:sideways;text-anchor:middle;stroke-width:2;stroke-linejoin:round"
+         aria-label="2" />
+    </g>
+  </g>
+  <g
+     id="Trimming marks">
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round"
+       d="m 0,0 h 10 v 5 h -5 v 5 h -5 z"
+       id="Top left" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round"
+       d="m 210,0 h -10 v 5 h 5 v 5 h 5 z"
+       id="Top right" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+       d="m 210,297 h -10 v -5 h 5 v -5 h 5 z"
+       id="Bottom right" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round"
+       d="M 0,297 h 10 v -5 h -5 v -5 h -5 z"
+       id="Bottom left" />
+  </g>
+  <g
+     id="Title block">
+    <rect
+       width="180"
+       x="20"
+       height="36"
+       y="251"
+       style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect1" />
+    <g
+       id="Owner">
+      <rect
+         width="40"
+         x="160"
+         id="Owner border"
+         height="24"
+         y="251"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="160.5"
+         id="Owner label"
+         y="254.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Owner:</text>
+    </g>
+    <g
+       id="Identification number">
+      <rect
+         width="80"
+         x="20"
+         id="Identification number border"
+         height="12"
+         y="275"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="20.5"
+         id="Identification number label"
+         y="278.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Drawing number:</text>
+      <text
+         x="21"
+         id="Identification number data field"
+         y="284.20001"
+         freecad:editable="drawing_number"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Identification number span">DN</tspan></text>
+    </g>
+    <g
+       id="Revision index">
+      <rect
+         width="20"
+         x="160"
+         id="Revision index border"
+         height="12"
+         y="275"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="160.5"
+         id="Revision index label"
+         y="278.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Revision:</text>
+      <text
+         x="170"
+         id="Revision index data field"
+         y="284.20001"
+         freecad:editable="revision_index"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Revision index tspan">AAA</tspan></text>
+    </g>
+    <g
+       id="Date of issue">
+      <rect
+         width="40"
+         x="120"
+         id="Date of issue border"
+         height="12"
+         y="275"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="120.5"
+         id="Date of issue label"
+         y="278.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Issue date:</text>
+      <text
+         x="121"
+         id="Date of issue data field"
+         y="284.20001"
+         freecad:editable="issue_date"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Date of issue tspan">YYYY-MM-DD</tspan></text>
+    </g>
+    <g
+       id="Sheet number">
+      <rect
+         width="20"
+         x="180"
+         id="Sheet number border"
+         height="12"
+         y="275"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="180.5"
+         id="Sheet number label"
+         y="278.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Sheet:</text>
+      <text
+         x="190"
+         id="Sheet number data field"
+         y="284.20001"
+         freecad:editable="sheet_number"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Sheet number tspan">X / Y</tspan></text>
+    </g>
+    <g
+       id="Title">
+      <rect
+         width="80"
+         x="20"
+         id="Title border"
+         height="12"
+         y="251"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="20.5"
+         id="Title label"
+         y="254.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Title:</text>
+      <text
+         x="21"
+         id="Title data field"
+         y="260.20001"
+         freecad:editable="title"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Title tspan">ISO 5457 template</tspan></text>
+    </g>
+    <g
+       id="Approval person">
+      <rect
+         width="60"
+         x="100"
+         id="Approval person border"
+         height="12"
+         y="263"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="100.5"
+         id="Approval person label"
+         y="266.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Approved by:</text>
+      <text
+         x="101"
+         id="Approval person data field"
+         y="272.20001"
+         freecad:editable="approved_by"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Approval person tspan">B. Hecate</tspan></text>
+    </g>
+    <g
+       id="Creator">
+      <rect
+         width="60"
+         x="100"
+         id="Creator border"
+         height="12"
+         y="251"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="100.5"
+         id="Creator label"
+         y="254.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Created by:</text>
+      <text
+         x="101.2"
+         id="Creator data field"
+         y="260.20001"
+         freecad:editable="created_by"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Creator tspan">A. Nemesis</tspan></text>
+    </g>
+    <g
+       id="Document type">
+      <rect
+         width="80"
+         x="20"
+         id="Document type border"
+         height="12"
+         y="263"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="20.5"
+         id="Document type label"
+         y="266.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Document type:</text>
+      <text
+         x="21"
+         id="Document type data field"
+         y="272.20001"
+         freecad:editable="document_type"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+           id="Document type tspan">Assembly Drawing</tspan></text>
+    </g>
+    <g
+       id="Paper size">
+      <rect
+         width="20"
+         x="100"
+         id="Paper size border"
+         height="12"
+         y="275"
+         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none" />
+      <text
+         x="100.5"
+         id="Paper size label"
+         y="278.60001"
+         style="font-size:3.5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Paper size:</text>
+      <text
+         x="110"
+         id="Paper size data field"
+         y="284.20001"
+         style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">A4</text>
+    </g>
+  </g>
+</svg>
