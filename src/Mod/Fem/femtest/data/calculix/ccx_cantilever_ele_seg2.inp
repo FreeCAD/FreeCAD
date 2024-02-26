@@ -61,7 +61,7 @@
 
 
 ** Edge elements
-*Element, TYPE=B31, ELSET=Eedges
+*Element, TYPE=B31R, ELSET=Eedges
 1, 1, 3
 2, 3, 4
 3, 4, 5

@@ -119,6 +119,8 @@ class _TaskPanel:
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
         self.adjust = self.obj.Adjust
+        FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance)\
+            .bind(self.obj, "Tolerance")
         self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
         self.parameterWidget.ckb_adjust.setChecked(self.adjust)
 

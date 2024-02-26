@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn* Feature::recompute()
             return StdReturn;
         }
     }
-    catch (Base::Exception& e) {
+    catch (Base::Exception&) {
         //invalid BaseShape
         Suppressed.setValue(false);
     }

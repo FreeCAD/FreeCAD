@@ -186,9 +186,9 @@ class BezCurve(gui_lines.Line):
         closed: bool, optional
             Close the curve if `True`.
         """
-        if self.ui:
-            if hasattr(self, "bezcurvetrack"):
-                self.bezcurvetrack.finalize()
+        self.end_callbacks(self.call)
+        if self.ui and hasattr(self, "bezcurvetrack"):
+            self.bezcurvetrack.finalize()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
@@ -433,9 +433,9 @@ class CubicBezCurve(gui_lines.Line):
         """
         params.set_param_view("EnableSelection", self.old_EnableSelection)
 
-        if self.ui:
-            if hasattr(self, "bezcurvetrack"):
-                self.bezcurvetrack.finalize()
+        self.end_callbacks(self.call)
+        if self.ui and hasattr(self, "bezcurvetrack"):
+            self.bezcurvetrack.finalize()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name

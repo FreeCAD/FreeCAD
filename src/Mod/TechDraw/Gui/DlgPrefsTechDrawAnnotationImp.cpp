@@ -65,6 +65,10 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
 
+    // NOTE that we block onChanged processing while loading the Line Standard combobox
+    connect(ui->pcbLineStandard, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawAnnotationImp::onLineStandardChanged);
+
      m_lineGenerator = new LineGenerator();
 }
 
@@ -87,13 +91,28 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->pdsbBalloonKink->onSave();
     ui->cbCutSurface->onSave();
 
+    // don't save invalid parameter values
+    // the comboboxes are properly loaded.
     ui->pcbLineGroup->onSave();
-    ui->pcbLineStandard->onSave();
-    ui->pcbSectionStyle->onSave();
-    ui->pcbCenterStyle->onSave();
-    ui->pcbHighlightStyle->onSave();
-    ui->cbEndCap->onSave();
-    ui->pcbHiddenStyle->onSave();
+    if (ui->pcbLineStandard->currentIndex() >= 0) {
+        ui->pcbLineStandard->onSave();
+    }
+    if (ui->pcbSectionStyle->currentIndex() >= 0) {
+        ui->pcbSectionStyle->onSave();
+    }
+    if (ui->pcbCenterStyle->currentIndex() >= 0)  {
+        ui->pcbCenterStyle->onSave();
+    }
+    if (ui->pcbHighlightStyle->currentIndex() >= 0) {
+        ui->pcbHighlightStyle->onSave();
+    }
+    if (ui->cbEndCap->currentIndex() >= 0) {
+        ui->cbEndCap->onSave();
+    }
+    if (ui->pcbHiddenStyle->currentIndex() >= 0) {
+        ui->pcbHiddenStyle->onSave();
+    }
+
     ui->pcbDetailMatting->onSave();
     ui->pcbDetailHighlight->onSave();
 }
@@ -141,15 +160,14 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->cbEndCap->onRestore();
 
-    ui->pcbLineStandard->onRestore();
+    // prevent onChanged processing while loading comboBox
+    ui->pcbLineStandard->blockSignals(true);
     DrawGuiUtil::loadLineStandardsChoices(ui->pcbLineStandard);
+    ui->pcbLineStandard->blockSignals(false);
+
     if (ui->pcbLineStandard->count() > Preferences::lineStandard()) {
         ui->pcbLineStandard->setCurrentIndex(Preferences::lineStandard());
     }
-    // we have to connect the slot after the initial load or the current standard will
-    // be set to index 0 when the widget is created
-    connect(ui->pcbLineStandard, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgPrefsTechDrawAnnotationImp::onLineStandardChanged);
 
     ui->pcbSectionStyle->onRestore();
     ui->pcbCenterStyle->onRestore();
@@ -164,9 +182,11 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
+        ui->pcbLineStandard->blockSignals(true);
+        int currentIndex = ui->pcbLineStandard->currentIndex();
         ui->retranslateUi(this);
-        loadSettings();
+        ui->pcbLineStandard->setCurrentIndex(currentIndex);
+        ui->pcbLineStandard->blockSignals(false);
     }
     else {
         QWidget::changeEvent(e);
@@ -203,10 +223,14 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
                  QString::fromStdString(lgNames.at(3))));
 }
 
-//! we must save the current line group preference when it changes so that the
+//! we must set the current line group preference when it changes so that the
 //! line style comboboxes are filled for the correct standard.
 void DlgPrefsTechDrawAnnotationImp::onLineStandardChanged(int index)
 {
+    if (index < 0) {
+        // do not process invalid index
+        return;
+    }
     Preferences::setLineStandard(index);
     m_lineGenerator->reloadDescriptions();
     loadLineStyleBoxes();

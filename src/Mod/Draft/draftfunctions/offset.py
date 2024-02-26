@@ -240,9 +240,9 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
             print("unsupported object") # TODO
         newobj = obj
     if copy and params.get_param("selectBaseObjects"):
-        gui_utils.select(newobj)
-    else:
         gui_utils.select(obj)
+    else:
+        gui_utils.select(newobj)
     if delete:
         App.ActiveDocument.removeObject(delete)
     return newobj

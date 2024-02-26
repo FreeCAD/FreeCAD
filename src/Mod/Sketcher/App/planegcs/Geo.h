@@ -27,6 +27,10 @@
 #include <boost/math/constants/constants.hpp>
 #include "../../SketcherGlobal.h"
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4251)
+#endif
+
 namespace GCS
 {
 class SketcherExport Point

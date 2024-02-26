@@ -264,6 +264,7 @@ class Offset(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Finish the offset operation."""
+        self.end_callbacks(self.call)
         if self.running:
             if self.linetrack:
                 self.linetrack.finalize()

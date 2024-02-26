@@ -102,6 +102,10 @@ public:
      */
     App::PropertyInteger Scale;
 
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyVectorList Points;
+    App::PropertyVectorList Normals;
+
     /**
      * @brief Updates @ref NormalDirection.
      *
@@ -175,6 +179,8 @@ protected:
      *  of FemConstraint.
      */
     void onDocumentRestored() override;
+    void onSettingDocument() override;
+    void unsetupObject() override;
 
     /**
      * @brief Returns data based on References relevant for rendering widgets.
@@ -243,6 +249,10 @@ protected:
      *  variables. It should be rewritten at a different place.
      */
     const Base::Vector3d getDirection(const App::PropertyLinkSub& direction);
+
+private:
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    boost::signals2::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;

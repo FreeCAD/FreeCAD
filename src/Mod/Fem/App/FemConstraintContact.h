@@ -38,10 +38,6 @@ public:
     /// Constructor
     ConstraintContact();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
     /*Note*/
     // Constraint parameters
     /******

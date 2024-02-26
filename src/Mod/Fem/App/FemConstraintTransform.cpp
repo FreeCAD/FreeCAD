@@ -66,18 +66,6 @@ ConstraintTransform::ConstraintTransform()
                       "ConstraintTransform",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Axis of cylindrical surface");
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,
-                      (Base::Vector3d()),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn* ConstraintTransform::execute()
@@ -124,10 +112,6 @@ void ConstraintTransform::onChanged(const App::Property* prop)
         std::vector<Base::Vector3d> normals;
         int scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale);  // OvG: Scale
-            Points.touch();         // This triggers ViewProvider::updateData()
             std::string transform_type = TransformType.getValueAsString();
             if (transform_type == "Cylindrical") {
                 // Find data of cylinder

@@ -439,7 +439,7 @@
     </message>
     <message>
         <location filename="../../AttacherTexts.cpp" line="248"/>
-        <source>Not implemented.</source>
+        <source>Intersection of two faces.</source>
         <comment>AttachmentLine mode tooltip</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -5617,55 +5617,12 @@ in the 3D view for the sweep path.</source>
     </message>
 </context>
 <context>
-    <name>Part_FaceMaker</name>
-    <message>
-        <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-        <source>Bull&apos;s-eye facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-        <source>Supports making planar faces with holes with islands.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMaker.cpp" line="262"/>
-        <source>Simple</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMaker.cpp" line="267"/>
-        <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-        <source>Cheese facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-        <source>Supports making planar faces with holes, but no islands inside holes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-        <source>Part Extrude facemaker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-        <source>Supports making faces with holes, does not support nesting.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-        <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
         <location filename="../../ViewProvider.cpp" line="49"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5756,20 +5713,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="81"/>
         <location filename="../../TaskAttacher.cpp" line="75"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="81"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="83"/>
         <location filename="../../TaskAttacher.cpp" line="78"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="83"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="84"/>
         <location filename="../../TaskAttacher.cpp" line="81"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="84"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6086,7 +6043,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="853"/>
+        <location filename="../../ViewProviderExt.cpp" line="854"/>
         <source>Set colors...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6860,6 +6817,66 @@ A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</sour
         <location filename="../../CommandFilter.cpp" line="249"/>
         <location filename="../../CommandFilter.cpp" line="251"/>
         <source>All selection filters cleared</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FaceMaker</name>
+    <message>
+        <location filename="../../../App/FaceMaker.cpp" line="72"/>
+        <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+        <location filename="../../../App/FaceMaker.cpp" line="262"/>
+        <source>Simple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FaceMaker.cpp" line="267"/>
+        <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+        <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+        <source>Bull&apos;s-eye facemaker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+        <source>Supports making planar faces with holes with islands.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+        <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+        <source>Cheese facemaker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+        <source>Supports making planar faces with holes, but no islands inside holes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+        <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+        <source>Part Extrude facemaker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+        <source>Supports making faces with holes, does not support nesting.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

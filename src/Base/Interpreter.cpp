@@ -438,48 +438,49 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
 #else
     FILE* fp = fopen(pxFileName, "r");
 #endif
-    if (fp) {
-        PyGILStateLocker locker;
-        PyObject* module {};
-        PyObject* dict {};
-        module = PyImport_AddModule("__main__");
-        dict = PyModule_GetDict(module);
-        if (local) {
-            dict = PyDict_Copy(dict);
-        }
-        else {
-            Py_INCREF(dict);  // avoid to further distinguish between local and global dict
-        }
-
-        if (!PyDict_GetItemString(dict, "__file__")) {
-            PyObject* pyObj = PyUnicode_FromString(pxFileName);
-            if (!pyObj) {
-                fclose(fp);
-                Py_DECREF(dict);
-                return;
-            }
-            if (PyDict_SetItemString(dict, "__file__", pyObj) < 0) {
-                Py_DECREF(pyObj);
-                fclose(fp);
-                Py_DECREF(dict);
-                return;
-            }
-            Py_DECREF(pyObj);
-        }
-
-        PyObject* result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
-        fclose(fp);
-        Py_DECREF(dict);
-
-        if (!result) {
-            if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
-                throw SystemExitException();
-            }
-            throw PyException();
-        }
-        Py_DECREF(result);
+    if (!fp) {
+        throw FileException("Unknown file", pxFileName);
     }
-    throw FileException("Unknown file", pxFileName);
+
+    PyGILStateLocker locker;
+    PyObject* module {};
+    PyObject* dict {};
+    module = PyImport_AddModule("__main__");
+    dict = PyModule_GetDict(module);
+    if (local) {
+        dict = PyDict_Copy(dict);
+    }
+    else {
+        Py_INCREF(dict);  // avoid to further distinguish between local and global dict
+    }
+
+    if (!PyDict_GetItemString(dict, "__file__")) {
+        PyObject* pyObj = PyUnicode_FromString(pxFileName);
+        if (!pyObj) {
+            fclose(fp);
+            Py_DECREF(dict);
+            return;
+        }
+        if (PyDict_SetItemString(dict, "__file__", pyObj) < 0) {
+            Py_DECREF(pyObj);
+            fclose(fp);
+            Py_DECREF(dict);
+            return;
+        }
+        Py_DECREF(pyObj);
+    }
+
+    PyObject* result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
+    fclose(fp);
+    Py_DECREF(dict);
+
+    if (!result) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
+            throw SystemExitException();
+        }
+        throw PyException();
+    }
+    Py_DECREF(result);
 }
 
 bool InterpreterSingleton::loadModule(const char* psModName)

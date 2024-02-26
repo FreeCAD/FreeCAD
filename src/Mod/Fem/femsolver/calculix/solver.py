@@ -345,6 +345,8 @@ def add_attributes(obj, ccx_prefs):
     if not hasattr(obj, "MatrixSolverType"):
         known_ccx_solver_types = [
             "default",
+            "pastix",
+            "pardiso",
             "spooles",
             "iterativescaling",
             "iterativecholesky"
@@ -369,6 +371,15 @@ def add_attributes(obj, ccx_prefs):
         dimout = ccx_prefs.GetBool("BeamShellOutput", False)
         obj.BeamShellResultOutput3D = dimout
 
+
+    if not hasattr(obj, "BeamReducedIntegration"):
+        obj.addProperty(
+            "App::PropertyBool",
+            "BeamReducedIntegration",
+            "Fem",
+            "Set to True to use beam elements with reduced integration"
+        )
+        obj.BeamReducedIntegration = True
 
 """
 Should there be some equation object for Calculix too?

@@ -31,11 +31,15 @@
 #endif
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Parameter.h>
 
 #include "FeaturePartFuse.h"
+#include "TopoShapeOpCode.h"
 #include "modelRefine.h"
+#include "TopoShapeOpCode.h"
 
+FC_LOG_LEVEL_INIT("Part",true,true);
 
 using namespace Part;
 
@@ -48,6 +52,11 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
 {
     // Let's call algorithm computing a fuse operation:
     return new BRepAlgoAPI_Fuse(base, tool);
+}
+
+const char *Fuse::opCode() const
+{
+    return Part::OpCodes::Fuse;
 }
 
 // ----------------------------------------------------
@@ -81,6 +90,7 @@ short MultiFuse::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiFuse::execute()
 {
+#ifndef FC_USE_TNP_FIX
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
@@ -97,9 +107,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
         compoundOfArguments = s[0];
         if (compoundOfArguments.ShapeType() == TopAbs_COMPOUND){
             s.clear();
-            TopoDS_Iterator it(compoundOfArguments);
-            for (; it.More(); it.Next()) {
-                const TopoDS_Shape& aChild = it.Value();
+            TopoDS_Iterator it2(compoundOfArguments);
+            for (; it2.More(); it2.Next()) {
+                const TopoDS_Shape& aChild = it2.Value();
                 s.push_back(aChild);
             }
             argumentsAreInCompound = true;
@@ -116,10 +126,10 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 throw Base::RuntimeError("Input shape is null");
             shapeArguments.Append(shape);
 
-            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-                if (it->IsNull())
+            for (auto it2 = s.begin()+1; it2 != s.end(); ++it2) {
+                if (it2->IsNull())
                     throw Base::RuntimeError("Input shape is null");
-                shapeTools.Append(*it);
+                shapeTools.Append(*it2);
             }
 
             mkFuse.SetArguments(shapeArguments);
@@ -129,8 +139,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 throw Base::RuntimeError("MultiFusion failed");
 
             TopoDS_Shape resShape = mkFuse.Shape();
-            for (const auto & it : s) {
-                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, it));
+            for (const auto & it2 : s) {
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, it2));
             }
             if (resShape.IsNull())
                 throw Base::RuntimeError("Resulting shape is null");
@@ -173,7 +183,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                     for(std::pair<const int,ShapeHistory::List> &histitem: history[iChild].shapeMap){ //loop over elements of history - that is - over faces of the child of source compound
                         int iFaceInChild = histitem.first;
                         ShapeHistory::List &iFacesInResult = histitem.second;
-                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
+                        const TopoDS_Shape& srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
                         int iFaceInCompound = facesOfCompound.FindIndex(srcFace)-1;
                         overallHist.shapeMap[iFaceInCompound] = iFacesInResult; //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
                     }
@@ -192,4 +202,46 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     }
 
     return App::DocumentObject::StdReturn;
+#else
+    std::vector<TopoShape> shapes;
+    for (auto obj : Shapes.getValues()) {
+        TopoShape sh = Feature::getTopoShape(obj);
+        if (sh.isNull()) {
+            return new App::DocumentObjectExecReturn("Input shape is null");
+        }
+        if (!sh.hasSubShape(TopAbs_SOLID)) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("fusion of non solid: " << obj->getFullName());
+            }
+            else {
+                FC_MSG("fusion of non solid: " << obj->getFullName());
+            }
+        }
+        shapes.push_back(sh);
+    }
+
+    TopoShape res(0);
+    res.makeElementBoolean(Part::OpCodes::Fuse, shapes);
+    if (res.isNull()) {
+        throw Base::RuntimeError("Resulting shape is null");
+    }
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+    if (hGrp->GetBool("CheckModel", false)) {
+        BRepCheck_Analyzer aChecker(res.getShape());
+        if (!aChecker.IsValid()) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+    }
+
+    if (this->Refine.getValue()) {
+        res = res.makeElementRefine();
+    }
+    this->Shape.setValue(res);
+    return Part::Feature::execute();
+#endif
 }

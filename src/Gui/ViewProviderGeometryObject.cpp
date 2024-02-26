@@ -68,13 +68,13 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
         b = (float)rand() / fMax;
     }
     else {
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL); // light gray (204,204,204)
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
         r = ((shcol >> 24) & 0xff) / 255.0;
         g = ((shcol >> 16) & 0xff) / 255.0;
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
 
-    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0); 
+    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
 
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";

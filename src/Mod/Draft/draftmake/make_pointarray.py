@@ -43,7 +43,6 @@ from draftutils.translate import translate
 from draftobjects.pointarray import PointArray
 
 if App.GuiUp:
-    from draftutils.todo import ToDo
     from draftviewproviders.view_array import ViewProviderDraftArray
     from draftviewproviders.view_draftlink import ViewProviderDraftLink
 

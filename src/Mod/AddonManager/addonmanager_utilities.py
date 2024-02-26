@@ -40,6 +40,7 @@ try:
 except ImportError:
     QtCore = None
     QtWidgets = None
+    QtGui = None
 
 import addonmanager_freecad_interface as fci
 
@@ -95,7 +96,7 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def rmdir(path: os.PathLike) -> bool:
+def rmdir(path: str) -> bool:
     try:
         if os.path.islink(path):
             os.unlink(path)  # Remove symlink
@@ -379,7 +380,7 @@ def blocking_get(url: str, method=None) -> bytes:
     p = b""
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
         if p:
             try:
                 p = p.data()

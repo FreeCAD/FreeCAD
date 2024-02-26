@@ -90,6 +90,7 @@ class Split(gui_base_original.Modifier):
 
     def proceed(self, info):
         """Proceed with execution of the command after click on an edge."""
+        self.end_callbacks(self.call)
         wire = App.ActiveDocument.getObject(info["Object"])
         edge_index = int(info["Component"][4:])
 
