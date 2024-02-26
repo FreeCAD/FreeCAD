@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "ActionFunction.h"
 #include "Control.h"
 #include "Document.h"
-#include "PreCompiled.h"
 
 #include <App/SuppressibleExtension.h>
 

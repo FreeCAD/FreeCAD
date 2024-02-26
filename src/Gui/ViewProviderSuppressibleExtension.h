@@ -29,7 +29,7 @@
 namespace Gui
 {
 
-class ViewProviderSuppressibleExtension : public Gui::ViewProviderExtension
+class GuiExport ViewProviderSuppressibleExtension : public Gui::ViewProviderExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderSuppressibleExtension);
 
