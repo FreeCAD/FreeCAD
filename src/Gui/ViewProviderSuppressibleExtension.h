@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Florian Foinant-Willig <ffw@2f2v.fr>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,31 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
+#define VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+#include "ViewProviderExtensionPython.h"
 
-namespace Gui {
 
-    /// highlight modes for the tree items
-    enum class HighlightMode {
-        Underlined,
-        Italic,
-        Overlined,
-        StrikeOut,
-        Bold,
-        Blue,
-        LightBlue,
-        UserDefined
-    };
+namespace Gui
+{
 
-    /// highlight modes for the tree items
-    enum class TreeItemMode {
-        ExpandItem,
-        ExpandPath,
-        CollapseItem,
-        ToggleItem
-    };
-}
+class ViewProviderSuppressibleExtension : public Gui::ViewProviderExtension
+{
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderSuppressibleExtension);
 
-#endif // GUI_TREEITEMMODE_H
+public:
+    ViewProviderSuppressibleExtension();
+    ~ViewProviderSuppressibleExtension() override;
+
+    void extensionUpdateData(const App::Property* prop) override;
+
+    void setSuppressedIcon(bool onoff);
+    QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
+    void extensionSetupContextMenu(QMenu* menu, QObject*, const char*) override;
+
+private:
+    bool isSetSuppressedIcon{false};
+};
+
+using ViewProviderSuppressibleExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderSuppressibleExtension>;
+
+} //namespace Gui
+
+#endif // VIEWPROVIDERSUPPRESSIBLEEXTENSION_H

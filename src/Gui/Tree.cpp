@@ -5072,6 +5072,9 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     case HighlightMode::Overlined:
         f.setOverline(set);
         break;
+    case HighlightMode::StrikeOut:
+        f.setStrikeOut(set);
+        break;
     case HighlightMode::Blue:
         highlight(QColor(200, 200, 255));
         break;

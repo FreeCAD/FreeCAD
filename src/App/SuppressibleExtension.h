@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Florian Foinant-Willig <ffw@2f2v.fr>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,31 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SUPPRESSIBLEEXTENSION_H
+#define SUPPRESSIBLEEXTENSION_H
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectExtension.h>
+#include <App/ExtensionPython.h>
 
-namespace Gui {
+namespace App
+{
+class SuppressibleExtensionPy;
 
-    /// highlight modes for the tree items
-    enum class HighlightMode {
-        Underlined,
-        Italic,
-        Overlined,
-        StrikeOut,
-        Bold,
-        Blue,
-        LightBlue,
-        UserDefined
-    };
+class AppExport SuppressibleExtension : public DocumentObjectExtension
+{
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::SuppressibleExtension);
+    using inherited = DocumentObjectExtension;
 
-    /// highlight modes for the tree items
-    enum class TreeItemMode {
-        ExpandItem,
-        ExpandPath,
-        CollapseItem,
-        ToggleItem
-    };
-}
+public:
+    /// Constructor
+    SuppressibleExtension();
+    ~SuppressibleExtension() override;
 
-#endif // GUI_TREEITEMMODE_H
+    PyObject* getExtensionPyObject() override;
+
+    ///Properties
+    PropertyBool   Suppressed;
+};
+
+template<typename ExtensionT>
+class SuppressibleExtensionPythonT : public ExtensionT {
+
+public:
+
+    SuppressibleExtensionPythonT() = default;
+    ~SuppressibleExtensionPythonT() override = default;
+};
+
+using SuppressibleExtensionPython = ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
+
+} //namespace App
+
+#endif // SUPPRESSIBLEEXTENSION_H

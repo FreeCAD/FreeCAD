@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2024 Florian Foinant-Willig <ffw@2f2v.fr>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,31 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+#include "DocumentObject.h"
 
-namespace Gui {
+// inclusion of the generated files (generated out of SuppressibleExtensionPy.xml)
+#include "SuppressibleExtensionPy.h"
+#include "SuppressibleExtensionPy.cpp"
+#include "DocumentObjectPy.h"
 
-    /// highlight modes for the tree items
-    enum class HighlightMode {
-        Underlined,
-        Italic,
-        Overlined,
-        StrikeOut,
-        Bold,
-        Blue,
-        LightBlue,
-        UserDefined
-    };
 
-    /// highlight modes for the tree items
-    enum class TreeItemMode {
-        ExpandItem,
-        ExpandPath,
-        CollapseItem,
-        ToggleItem
-    };
+using namespace App;
+
+// returns a string which represent the object e.g. when printed in python
+std::string SuppressibleExtensionPy::representation() const
+{
+    return {"<suppressible extension object>"};
 }
 
-#endif // GUI_TREEITEMMODE_H
+PyObject *SuppressibleExtensionPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int SuppressibleExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}
