@@ -1087,6 +1087,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.callbackMove = self.view.addEventCallback("SoLocation2Event", self.moveMouse)
         self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
 
+        self.form.featureList.installEventFilter(self)
+
     def accept(self):
         if len(self.current_selection) != 2:
             App.Console.PrintWarning("You need to select 2 elements from 2 separate parts.")
@@ -1414,6 +1416,33 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         if info["State"] == "UP" and info["Key"] == "RETURN":
             self.accept()
+
+    def eventFilter(self, watched, event):
+        if self.form is not None and watched == self.form.featureList:
+            if event.type() == QtCore.QEvent.ShortcutOverride:
+                if event.key() == QtCore.Qt.Key_Delete:
+                    event.accept()  # Accept the event only if the key is Delete
+                    return True  # Indicate that the event has been handled
+                return False
+
+            elif event.type() == QtCore.QEvent.KeyPress:
+                if event.key() == QtCore.Qt.Key_Delete:
+                    selected_indexes = self.form.featureList.selectedIndexes()
+
+                    for index in selected_indexes:
+                        row = index.row()
+                        if row < len(self.current_selection):
+                            selection_dict = self.current_selection[row]
+                            elName = self.getSubnameForSelection(
+                                selection_dict["object"],
+                                selection_dict["part"],
+                                selection_dict["element_name"],
+                            )
+                            Gui.Selection.removeSelection(selection_dict["object"], elName)
+
+                    return True  # Consume the event
+
+        return super().eventFilter(watched, event)
 
     def getContainingPart(self, full_element_name, obj):
         return UtilsAssembly.getContainingPart(full_element_name, obj, self.assembly)
