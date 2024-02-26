@@ -358,7 +358,7 @@ class Joint:
             joint.Placement2 = App.Placement()
             if isAssembly:
                 assembly.undoSolve()
-            self.undoPreSolve()
+            self.undoPreSolve(joint)
 
     def updateJCSPlacements(self, joint):
         if not joint.Detach1:
@@ -615,10 +615,12 @@ class Joint:
             return True
         return False
 
-    def undoPreSolve(self):
+    def undoPreSolve(self, joint):
         if self.partMovedByPresolved:
             self.partMovedByPresolved.Placement = self.presolveBackupPlc
             self.partMovedByPresolved = None
+
+            joint.Placement1 = joint.Placement1  # Make sure plc1 is redrawn
 
     def areJcsSameDir(self, joint):
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
