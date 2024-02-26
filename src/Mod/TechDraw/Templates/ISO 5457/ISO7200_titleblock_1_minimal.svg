@@ -83,7 +83,8 @@
        id="Identification number data field"
        y="33.2"
        freecad:editable="drawing_number"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">DN</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Identification number span">DN</tspan></text>
   </g>
   <g
      id="Revision index">
@@ -104,7 +105,8 @@
        id="Revision index data field"
        y="33.2"
        freecad:editable="revision_index"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">AAA</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Revision index tspan">AAA</tspan></text>
   </g>
   <g
      id="Date of issue">
@@ -125,7 +127,8 @@
        id="Date of issue data field"
        y="33.2"
        freecad:editable="issue_date"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">YYYY-MM-DD</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Date of issue tspan">YYYY-MM-DD</tspan></text>
   </g>
   <g
      id="Sheet number">
@@ -146,7 +149,8 @@
        id="Sheet number data field"
        y="33.2"
        freecad:editable="sheet_number"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">X / Y</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:middle;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Sheet number tspan">X / Y</tspan></text>
   </g>
   <g
      id="Title">
@@ -167,7 +171,8 @@
        id="Title data field"
        y="9.2"
        freecad:editable="title"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">ISO 5457 template</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Title tspan">ISO 5457 template</tspan></text>
   </g>
   <g
      id="Approval person">
@@ -188,7 +193,8 @@
        id="Approval person data field"
        y="21.2"
        freecad:editable="approved_by"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">B. Hecate</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Approval person tspan">B. Hecate</tspan></text>
   </g>
   <g
      id="Creator">
@@ -209,7 +215,8 @@
        id="Creator data field"
        y="9.2"
        freecad:editable="created_by"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">A. Nemesis</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Creator tspan">A. Nemesis</tspan></text>
   </g>
   <g
      id="Document type">
@@ -230,7 +237,8 @@
        id="Document type data field"
        y="21.2"
        freecad:editable="document_type"
-       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000">Assembly Drawing</text>
+       style="font-size:5px;line-height:1;font-family:osifont;-inkscape-font-specification:osifont;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;word-spacing:0px;text-orientation:sideways;text-anchor:start;fill:#000000;stroke:none;stroke-width:2;stroke-linejoin:round;stop-color:#000000"><tspan
+         id="Document type tspan">Assembly Drawing</tspan></text>
   </g>
   <g
      id="Paper size">
