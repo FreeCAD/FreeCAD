@@ -66,10 +66,6 @@ App::DocumentObjectExecReturn *Compound::execute()
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
 
-        // avoid duplicates without changing the order
-        // See also ViewProviderCompound::updateData
-        std::set<DocumentObject*> tempLinks;
-
         const std::vector<DocumentObject*>& links = Links.getValues();
         for (auto link : links) {
             if (link) {
@@ -102,12 +98,14 @@ App::DocumentObjectExecReturn *Compound::execute()
         return App::DocumentObject::StdReturn;
 #else
         std::vector<TopoShape> shapes;
-        for(auto obj : Links.getValues()) {
-            if(!tempLinks.insert(obj).second)
+        for (auto obj : Links.getValues()) {
+            if (!tempLinks.insert(obj).second) {
                 continue;
+            }
             auto sh = Feature::getTopoShape(obj);
-            if(!sh.isNull())
+            if (!sh.isNull()) {
                 shapes.push_back(sh);
+            }
         }
         this->Shape.setValue(TopoShape().makeElementCompound(shapes));
         return Part::Feature::execute();
