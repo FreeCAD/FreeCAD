@@ -37,7 +37,7 @@ import CommandCreateJoint
 
 # translate = App.Qt.translate
 
-__title__ = "Assembly Command Insert Link"
+__title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
@@ -49,12 +49,12 @@ class CommandInsertLink:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Link"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Component"),
             "Accel": "I",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_InsertLink",
-                "Insert a Link into the currently active assembly. This will create dynamic links to parts/bodies/primitives/assemblies. To insert external objects, make sure that the file is <b>open in the current session</b>",
+                "Insert a component into the current active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is <b>open in the current session</b>",
             )
             + "</p><p><ul><li>"
             + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert by left clicking items in the list.")
@@ -65,7 +65,7 @@ class CommandInsertLink:
             + "</li><li>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_InsertLink",
-                "Press shift to add several links while clicking on the view.",
+                "Press shift to add several instances of the component while clicking on the view.",
             )
             + "</li></ul></p>",
             "CmdType": "ForEdit",
@@ -116,7 +116,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.buildPartList()
 
-        App.setActiveTransaction("Insert Link")
+        App.setActiveTransaction("Insert Component")
 
     def accept(self):
         self.deactivated()
