@@ -313,8 +313,6 @@ class Joint:
         isAssembly = assembly.Type == "Assembly"
 
         if len(current_selection) >= 1:
-            joint.Part1 = None
-
             joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
             joint.Element1 = current_selection[0]["element_name"]
@@ -331,8 +329,6 @@ class Joint:
             self.partMovedByPresolved = None
 
         if len(current_selection) >= 2:
-            joint.Part2 = None
-
             joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
             joint.Element2 = current_selection[1]["element_name"]
@@ -1347,7 +1343,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         # First we build the listwidget
         self.updateJointList()
 
-        # Then we pass the new list to the join object
+        # Then we pass the new list to the joint object
         self.joint.Proxy.setJointConnectors(self.joint, self.current_selection)
 
     def updateJointList(self):
@@ -1456,14 +1452,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
         # Find and remove the corresponding dictionary from the combined list
-        selection_dict_to_remove = None
         for selection_dict in self.current_selection:
             if selection_dict["part"] == part_containing_selected_object:
-                selection_dict_to_remove = selection_dict
+                self.current_selection.remove(selection_dict)
                 break
-
-        if selection_dict_to_remove is not None:
-            self.current_selection.remove(selection_dict_to_remove)
 
         self.updateJoint()
 
