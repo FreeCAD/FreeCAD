@@ -2732,7 +2732,17 @@ SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& 
     SbVec3f pt, ptOnFocalPlaneAndOnLine, ptOnFocalPlane;
     SbPlane focalPlane = vol.getPlane(focalDist);
     vol.projectPointToLine(pnt2d, line);
-    focalPlane.intersect(line, ptOnFocalPlane);
+
+    if (!focalPlane.intersect(line, ptOnFocalPlane)) {
+        return {};  // No intersection found
+    }
+
+    // Check if line is orthogonal to the focal plane
+    SbVec3f focalPlaneNormal = focalPlane.getNormal();
+    float dotProduct = fabs(axis.dot(focalPlaneNormal));
+    if (dotProduct > 1.0 - 1e-6) {
+        return {};
+    }
 
     SbLine projectedLine = projectLineOntoPlane(axisCenter, axisCenter + axis, focalPlane);
     ptOnFocalPlaneAndOnLine = projectedLine.getClosestPoint(ptOnFocalPlane);
