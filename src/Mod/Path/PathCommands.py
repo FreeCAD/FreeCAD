@@ -55,11 +55,11 @@ class _CommandSelectLoop:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_SelectLoop",
-            "MenuText": QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
+            "Pixmap": "CAM_SelectLoop",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_SelectLoop", "Complete the selection of edges that form a loop"
+                "CAM_SelectLoop", "Complete the selection of edges that form a loop"
             ),
             "CmdType": "ForEdit",
         }
@@ -117,8 +117,8 @@ class _CommandSelectLoop:
         elif FreeCAD.GuiUp:
             QtGui.QMessageBox.information(
                 None,
-                QT_TRANSLATE_NOOP("Path_SelectLoop", "Feature Completion"),
-                QT_TRANSLATE_NOOP("Path_SelectLoop", "Closed loop detection failed."),
+                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Feature Completion"),
+                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Closed loop detection failed."),
             )
 
     def formsPartOfALoop(self, obj, sub, names):
@@ -137,7 +137,7 @@ class _CommandSelectLoop:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_SelectLoop", _CommandSelectLoop())
+    FreeCADGui.addCommand("CAM_SelectLoop", _CommandSelectLoop())
 
 
 class _ToggleOperation:
@@ -145,13 +145,13 @@ class _ToggleOperation:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_OpActive",
+            "Pixmap": "CAM_OpActive",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_OpActiveToggle", "Toggle the Active State of the Operation"
+                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
             ),
             "Accel": "P, X",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_OpActiveToggle", "Toggle the Active State of the Operation"
+                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
             ),
             "CmdType": "ForEdit",
         }
@@ -180,7 +180,7 @@ class _ToggleOperation:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_OpActiveToggle", _ToggleOperation())
+    FreeCADGui.addCommand("CAM_OpActiveToggle", _ToggleOperation())
 
 
 class _CopyOperation:
@@ -188,12 +188,12 @@ class _CopyOperation:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_OpCopy",
+            "Pixmap": "CAM_OpCopy",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_OperationCopy", "Copy the operation in the job"
+                "CAM_OperationCopy", "Copy the operation in the job"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_OperationCopy", "Copy the operation in the job"
+                "CAM_OperationCopy", "Copy the operation in the job"
             ),
             "CmdType": "ForEdit",
         }
@@ -216,7 +216,7 @@ class _CopyOperation:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_OperationCopy", _CopyOperation())
+    FreeCADGui.addCommand("CAM_OperationCopy", _CopyOperation())
 
 
 # \c findShape() is referenced from Gui/Command.cpp and used by Path.Area commands.

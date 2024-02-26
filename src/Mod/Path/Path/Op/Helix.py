@@ -68,8 +68,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("Path_Helix", "CW"), "CW"),
-                (translate("Path_Helix", "CCW"), "CCW"),
+                (translate("CAM_Helix", "CW"), "CW"),
+                (translate("CAM_Helix", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "StartSide": [
                 (translate("PathProfile", "Outside"), "Outside"),

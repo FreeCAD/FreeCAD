@@ -128,25 +128,25 @@ class ObjectDressup:
 
         enums = {
             "Method": [
-                (translate("Path_DressupRampEntry", "RampMethod1"), "RampMethod1"),
-                (translate("Path_DressupRampEntry", "RampMethod2"), "RampMethod2"),
-                (translate("Path_DressupRampEntry", "RampMethod3"), "RampMethod3"),
-                (translate("Path_DressupRampEntry", "Helix"), "Helix"),
+                (translate("CAM_DressupRampEntry", "RampMethod1"), "RampMethod1"),
+                (translate("CAM_DressupRampEntry", "RampMethod2"), "RampMethod2"),
+                (translate("CAM_DressupRampEntry", "RampMethod3"), "RampMethod3"),
+                (translate("CAM_DressupRampEntry", "Helix"), "Helix"),
             ],
             "RampFeedRate": [
                 (
-                    translate("Path_DressupRampEntry", "Horizontal Feed Rate"),
+                    translate("CAM_DressupRampEntry", "Horizontal Feed Rate"),
                     "Horizontal Feed Rate",
                 ),
                 (
-                    translate("Path_DressupRampEntry", "Vertical Feed Rate"),
+                    translate("CAM_DressupRampEntry", "Vertical Feed Rate"),
                     "Vertical Feed Rate",
                 ),
                 (
-                    translate("Path_DressupRampEntry", "Ramp Feed Rate"),
+                    translate("CAM_DressupRampEntry", "Ramp Feed Rate"),
                     "Ramp Feed Rate",
                 ),
-                (translate("Path_DressupRampEntry", "Custom"), "Custom"),
+                (translate("CAM_DressupRampEntry", "Custom"), "Custom"),
             ],
         }
 
@@ -894,10 +894,10 @@ class ViewProviderDressup:
 class CommandPathDressupRampEntry:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupRampEntry", "RampEntry"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupRampEntry",
+                "CAM_DressupRampEntry",
                 "Creates a Ramp Entry Dress-up object from a selected path",
             ),
         }
@@ -914,20 +914,20 @@ class CommandPathDressupRampEntry:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("Path_DressupRampEntry", "Please select one path object")
+                translate("CAM_DressupRampEntry", "Please select one path object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("Path_DressupRampEntry", "The selected object is not a path")
+                translate("CAM_DressupRampEntry", "The selected object is not a path")
                 + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             Path.Log.error(
-                translate("Path_DressupRampEntry", "Please select a Profile object")
+                translate("CAM_DressupRampEntry", "Please select a Profile object")
             )
             return
 
@@ -956,6 +956,6 @@ class CommandPathDressupRampEntry:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupRampEntry", CommandPathDressupRampEntry())
+    FreeCADGui.addCommand("CAM_DressupRampEntry", CommandPathDressupRampEntry())
 
-Path.Log.notice("Loading Path_DressupRampEntry... done\n")
+Path.Log.notice("Loading CAM_DressupRampEntry... done\n")

@@ -310,10 +310,10 @@ class CamoticsSimulation(QtCore.QObject):
 class CommandCamoticsSimulate:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Camotics",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Camotics", "Camotics"),
+            "Pixmap": "CAM_Camotics",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "Camotics"),
             "Accel": "P, C",
-            "ToolTip": QT_TRANSLATE_NOOP("Path_Camotics", "Simulate using Camotics"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using Camotics"),
             "CmdType": "ForEdit",
         }
 
@@ -332,7 +332,7 @@ class CommandCamoticsSimulate:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_Camotics", CommandCamoticsSimulate())
+    FreeCADGui.addCommand("CAM_Camotics", CommandCamoticsSimulate())
 
 
 FreeCAD.Console.PrintLog("Loading PathCamoticsSimulateGui ... done\n")

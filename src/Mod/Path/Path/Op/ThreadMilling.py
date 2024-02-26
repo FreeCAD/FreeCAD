@@ -242,59 +242,59 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         enums = {
             "ThreadType": [
                 (
-                    translate("Path_ThreadMilling", "Custom External"),
+                    translate("CAM_ThreadMilling", "Custom External"),
                     ThreadTypeCustomExternal,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Custom Internal"),
+                    translate("CAM_ThreadMilling", "Custom Internal"),
                     ThreadTypeCustomInternal,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Imperial External (2A)"),
+                    translate("CAM_ThreadMilling", "Imperial External (2A)"),
                     ThreadTypeImperialExternal2A,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Imperial External (3A)"),
+                    translate("CAM_ThreadMilling", "Imperial External (3A)"),
                     ThreadTypeImperialExternal3A,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Imperial Internal (2B)"),
+                    translate("CAM_ThreadMilling", "Imperial Internal (2B)"),
                     ThreadTypeImperialInternal2B,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Imperial Internal (3B)"),
+                    translate("CAM_ThreadMilling", "Imperial Internal (3B)"),
                     ThreadTypeImperialInternal3B,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Metric External (4G6G)"),
+                    translate("CAM_ThreadMilling", "Metric External (4G6G)"),
                     ThreadTypeMetricExternal4G6G,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Metric External (6G)"),
+                    translate("CAM_ThreadMilling", "Metric External (6G)"),
                     ThreadTypeMetricExternal6G,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Metric Internal (6H)"),
+                    translate("CAM_ThreadMilling", "Metric Internal (6H)"),
                     ThreadTypeMetricInternal6H,
                 ),
             ],
             "ThreadOrientation": [
                 (
-                    translate("Path_ThreadMilling", "LeftHand"),
+                    translate("CAM_ThreadMilling", "LeftHand"),
                     LeftHand,
                 ),
                 (
-                    translate("Path_ThreadMilling", "RightHand"),
+                    translate("CAM_ThreadMilling", "RightHand"),
                     RightHand,
                 ),
             ],
             "Direction": [
                 (
-                    translate("Path_ThreadMilling", "Climb"),
+                    translate("CAM_ThreadMilling", "Climb"),
                     DirectionClimb,
                 ),
                 (
-                    translate("Path_ThreadMilling", "Conventional"),
+                    translate("CAM_ThreadMilling", "Conventional"),
                     DirectionConventional,
                 ),
             ],

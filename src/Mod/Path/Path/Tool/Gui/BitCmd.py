@@ -45,10 +45,10 @@ class CommandToolBitCreate:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_ToolBit",
-            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitCreate", "Create Tool"),
+            "Pixmap": "CAM_ToolBit",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Create Tool"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ToolBitCreate", "Creates a new ToolBit object"
+                "CAM_ToolBitCreate", "Creates a new ToolBit object"
             ),
         }
 
@@ -70,14 +70,14 @@ class CommandToolBitSave:
 
     def GetResources(self):
         if self.saveAs:
-            menuTxt = QT_TRANSLATE_NOOP("Path_ToolBitSaveAs", "Save Tool as...")
+            menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSaveAs", "Save Tool as...")
         else:
-            menuTxt = QT_TRANSLATE_NOOP("Path_ToolBitSave", "Save Tool")
+            menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSave", "Save Tool")
         return {
-            "Pixmap": "Path_ToolBit",
+            "Pixmap": "CAM_ToolBit",
             "MenuText": menuTxt,
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ToolBitSave", "Save an existing ToolBit object to a file"
+                "CAM_ToolBitSave", "Save an existing ToolBit object to a file"
             ),
         }
 
@@ -134,10 +134,10 @@ class CommandToolBitLoad:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_ToolBit",
-            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitLoad", "Load Tool"),
+            "Pixmap": "CAM_ToolBit",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLoad", "Load Tool"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ToolBitLoad", "Load an existing ToolBit object from a file"
+                "CAM_ToolBitLoad", "Load an existing ToolBit object from a file"
             ),
         }
 
@@ -156,16 +156,16 @@ class CommandToolBitLoad:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_ToolBitCreate", CommandToolBitCreate())
-    FreeCADGui.addCommand("Path_ToolBitLoad", CommandToolBitLoad())
-    FreeCADGui.addCommand("Path_ToolBitSave", CommandToolBitSave(False))
-    FreeCADGui.addCommand("Path_ToolBitSaveAs", CommandToolBitSave(True))
+    FreeCADGui.addCommand("CAM_ToolBitCreate", CommandToolBitCreate())
+    FreeCADGui.addCommand("CAM_ToolBitLoad", CommandToolBitLoad())
+    FreeCADGui.addCommand("CAM_ToolBitSave", CommandToolBitSave(False))
+    FreeCADGui.addCommand("CAM_ToolBitSaveAs", CommandToolBitSave(True))
 
 CommandList = [
-    "Path_ToolBitCreate",
-    "Path_ToolBitLoad",
-    "Path_ToolBitSave",
-    "Path_ToolBitSaveAs",
+    "CAM_ToolBitCreate",
+    "CAM_ToolBitLoad",
+    "CAM_ToolBitSave",
+    "CAM_ToolBitSaveAs",
 ]
 
 FreeCAD.Console.PrintLog("Loading PathToolBitCmd... done\n")

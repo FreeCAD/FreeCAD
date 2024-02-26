@@ -139,7 +139,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab = QtGui.QLabel()
         lab.setText(
             translate(
-                "Path_Inspect",
+                "CAM_Inspect",
                 "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
             )
         )
@@ -264,11 +264,11 @@ def show(obj):
 class CommandPathInspect:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Inspect",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Inspect", "Inspect Path Commands"),
+            "Pixmap": "CAM_Inspect",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect Path Commands"),
             "Accel": "P, I",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Inspect", "Inspects the contents of a Path object"
+                "CAM_Inspect", "Inspects the contents of a Path object"
             ),
         }
 
@@ -281,13 +281,13 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object")
+                translate("CAM_Inspect", "Please select exactly one path object")
                 + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object")
+                translate("CAM_Inspect", "Please select exactly one path object")
                 + "\n"
             )
             return
@@ -303,4 +303,4 @@ class CommandPathInspect:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Inspect", CommandPathInspect())
+    FreeCADGui.addCommand("CAM_Inspect", CommandPathInspect())

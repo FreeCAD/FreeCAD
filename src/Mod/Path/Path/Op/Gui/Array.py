@@ -448,10 +448,10 @@ class ViewProviderArray:
 class CommandPathArray:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Array",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Array", "Array"),
+            "Pixmap": "CAM_Array",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Array", "Creates an array from selected path(s)"
+                "CAM_Array", "Creates an array from selected path(s)"
             ),
         }
 
@@ -471,7 +471,7 @@ class CommandPathArray:
             if not (sel.isDerivedFrom("Path::Feature")):
                 FreeCAD.Console.PrintError(
                     translate(
-                        "Path_Array", "Arrays can be created only from Path operations."
+                        "CAM_Array", "Arrays can be created only from Path operations."
                     )
                     + "\n"
                 )
@@ -502,4 +502,4 @@ class CommandPathArray:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Array", CommandPathArray())
+    FreeCADGui.addCommand("CAM_Array", CommandPathArray())

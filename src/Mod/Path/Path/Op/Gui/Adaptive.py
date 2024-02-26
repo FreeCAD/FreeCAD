@@ -171,8 +171,8 @@ Command = PathOpGui.SetupOperation(
     "Adaptive",
     PathAdaptive.Create,
     TaskPanelOpPage,
-    "Path_Adaptive",
-    QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
-    QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"),
+    "CAM_Adaptive",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Adaptive", "Adaptive"),
+    QtCore.QT_TRANSLATE_NOOP("CAM_Adaptive", "Adaptive clearing and profiling"),
     PathAdaptive.SetupProperties,
 )

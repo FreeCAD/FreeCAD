@@ -301,7 +301,7 @@ def Create(base, name="DressupPathBoundary"):
 
     if not base.isDerivedFrom("Path::Feature"):
         Path.Log.error(
-            translate("Path_DressupPathBoundary", "The selected object is not a path")
+            translate("CAM_DressupPathBoundary", "The selected object is not a path")
             + "\n"
         )
         return None

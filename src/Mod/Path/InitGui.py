@@ -92,64 +92,62 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post", "Path_Sanity"]
+        projcmdlist = ["CAM_Job", "CAM_Post", "CAM_Sanity"]
         toolcmdlist = [
-            "Path_Inspect",
-            "Path_Simulator",
-            "Path_SelectLoop",
-            "Path_OpActiveToggle",
+            "CAM_Inspect",
+            "CAM_Simulator",
+            "CAM_SelectLoop",
+            "CAM_OpActiveToggle",
         ]
         prepcmdlist = [
-            "Path_Fixture",
-            "Path_Comment",
-            "Path_Stop",
-            "Path_Custom",
-            "Path_Probe",
+            "CAM_Fixture",
+            "CAM_Comment",
+            "CAM_Stop",
+            "CAM_Custom",
+            "CAM_Probe",
         ]
         twodopcmdlist = [
-            "Path_Profile",
-            "Path_Pocket_Shape",
-            "Path_Drilling",
-            "Path_MillFace",
-            "Path_Helix",
-            "Path_Adaptive",
+            "CAM_Profile",
+            "CAM_Pocket_Shape",
+            "CAM_Drilling",
+            "CAM_MillFace",
+            "CAM_Helix",
+            "CAM_Adaptive",
         ]
-        threedopcmdlist = ["Path_Pocket3D"]
-        engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
-        modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
+        threedopcmdlist = ["CAM_Pocket3D"]
+        engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
+        modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
-            "Path_DressupAxisMap",
-            "Path_DressupPathBoundary",
-            "Path_DressupDogbone",
-            "Path_DressupDragKnife",
-            "Path_DressupLeadInOut",
-            "Path_DressupRampEntry",
-            "Path_DressupTag",
-            "Path_DressupZCorrect",
+            "CAM_DressupAxisMap",
+            "CAM_DressupPathBoundary",
+            "CAM_DressupDogbone",
+            "CAM_DressupDragKnife",
+            "CAM_DressupLeadInOut",
+            "CAM_DressupRampEntry",
+            "CAM_DressupTag",
+            "CAM_DressupZCorrect",
         ]
         extracmdlist = []
-        # modcmdmore = ["Path_Hop",]
-        # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
-        engravecmdgroup = ["Path_EngraveTools"]
+        engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(
-            "Path_EngraveTools",
+            "CAM_EngraveTools",
             PathCommandGroup(
                 engravecmdlist,
-                QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations"),
+                QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
 
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("Path_Shape")
-            extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
-            specialcmdlist.append("Path_ThreadMilling")
-            twodopcmdlist.append("Path_Slot")
+            prepcmdlist.append("CAM_Shape")
+            extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
+            specialcmdlist.append("CAM_ThreadMilling")
+            twodopcmdlist.append("CAM_Slot")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -159,7 +157,7 @@ class CAMWorkbench(Workbench):
                 v = parse(r)
 
                 if v >= Version("1.2.2"):
-                    toolcmdlist.append("Path_Camotics")
+                    toolcmdlist.append("CAM_Camotics")
             except (FileNotFoundError, ModuleNotFoundError):
                 pass
 
@@ -201,7 +199,7 @@ class CAMWorkbench(Workbench):
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
-            + ["Path_ExportTemplate", "Separator"]
+            + ["CAM_ExportTemplate", "Separator"]
             + toolcmdlist
             + toolbitcmdlist
             + ["Separator"]
@@ -249,7 +247,7 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("Workbench", "&CAM"),
                 QT_TRANSLATE_NOOP("Workbench", "Utils"),
             ],
-            ["Path_PropertyBag"],
+            ["CAM_PropertyBag"],
         )
 
         self.dressupcmds = dressupcmdlist
@@ -287,18 +285,18 @@ class CAMWorkbench(Workbench):
             obj = FreeCADGui.Selection.getSelection()[0]
             if obj.isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", "Separator")
-                self.appendContextMenu("", ["Path_Inspect"])
+                self.appendContextMenu("", ["CAM_Inspect"])
                 selectedName = obj.Name
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
                     self.appendContextMenu(
-                        "", ["Path_ExportTemplate"] + self.toolbitctxmenu
+                        "", ["CAM_ExportTemplate"] + self.toolbitctxmenu
                     )
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu(
-                    "", ["Path_OperationCopy", "Path_OpActiveToggle"]
+                    "", ["CAM_OperationCopy", "CAM_OpActiveToggle"]
                 )
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
@@ -314,7 +312,7 @@ class CAMWorkbench(Workbench):
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
             if isinstance(obj.Proxy, Path.Tool.Bit.ToolBit):
-                self.appendContextMenu("", ["Path_ToolBitSave", "Path_ToolBitSaveAs"])
+                self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:
             self.appendContextMenu("", "Separator")

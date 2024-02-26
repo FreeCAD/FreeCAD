@@ -150,9 +150,9 @@ class CommandPathFixture:
     def GetResources(self):
         return {
             "Pixmap": "Path_Datums",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Fixture", "Fixture"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Fixture", "Creates a Fixture Offset"
+                "CAM_Fixture", "Creates a Fixture Offset"
             ),
         }
 
@@ -186,7 +186,7 @@ PathUtils.addToJob(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Fixture", CommandPathFixture())
+    FreeCADGui.addCommand("CAM_Fixture", CommandPathFixture())
 
 
 FreeCAD.Console.PrintLog("Loading PathFixture... done\n")

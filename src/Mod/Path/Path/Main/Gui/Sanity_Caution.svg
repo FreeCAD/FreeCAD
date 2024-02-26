@@ -42,7 +42,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Path_Stop</dc:title>
+        <dc:title>CAM_Sanity_Caution</dc:title>
         <dc:date>2015-07-04</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -50,7 +50,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Stop.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/CAM_Sanity_Caution.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>

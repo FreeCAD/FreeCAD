@@ -198,7 +198,7 @@ class ViewProvider:
         self.unsetEdit(None, None)
 
     def getIcon(self):
-        return ":/icons/Path_Job.svg"
+        return ":/icons/CAM_Job.svg"
 
     def claimChildren(self):
         children = []
@@ -280,7 +280,7 @@ class ViewProvider:
         Path.Log.track()
         for action in menu.actions():
             menu.removeAction(action)
-        action = QtGui.QAction(translate("Path_Job", "Edit"), menu)
+        action = QtGui.QAction(translate("CAM_Job", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
@@ -523,7 +523,7 @@ class StockCreateCylinderEdit(StockEdit):
                         self.form.stockCylinderHeight.text()
                     )
             else:
-                Path.Log.error(translate("Path_Job", "Stock not a cylinder!"))
+                Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
         except Exception:
             pass
 
@@ -940,9 +940,9 @@ class TaskPanel:
     def setPostProcessorOutputFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_Job", "Select Output File"),
+            translate("CAM_Job", "Select Output File"),
             None,
-            translate("Path_Job", "All Files (*.*)"),
+            translate("CAM_Job", "All Files (*.*)"),
         )
         if filename and filename[0]:
             self.obj.PostProcessorOutputFile = str(filename[0])
@@ -1322,7 +1322,7 @@ class TaskPanel:
                 setupFromExisting()
             else:
                 Path.Log.error(
-                    translate("Path_Job", "Unsupported stock object %s")
+                    translate("CAM_Job", "Unsupported stock object %s")
                     % self.obj.Stock.Label
                 )
         else:
@@ -1338,7 +1338,7 @@ class TaskPanel:
                     index = -1
             else:
                 Path.Log.error(
-                    translate("Path_Job", "Unsupported stock type %s (%d)")
+                    translate("CAM_Job", "Unsupported stock type %s (%d)")
                     % (self.form.stock.currentText(), index)
                 )
         self.stockEdit.activate(self.obj, index == -1)
@@ -1430,7 +1430,7 @@ class TaskPanel:
 
     def jobModelEdit(self):
         dialog = PathJobDlg.JobCreate()
-        dialog.setupTitle(translate("Path_Job", "Model Selection"))
+        dialog.setupTitle(translate("CAM_Job", "Model Selection"))
         dialog.setupModel(self.obj)
         if dialog.exec_() == 1:
             models = dialog.getModels()
@@ -1617,10 +1617,10 @@ class TaskPanel:
         def _displayWarningWindow(msg):
             """Display window with warning message and Add action button.
             Return action state."""
-            txtHeader = translate("Path_Job", "Warning")
-            txtPleaseAddOne = translate("Path_Job", "Please add one.")
-            txtOk = translate("Path_Job", "Ok")
-            txtAdd = translate("Path_Job", "Add")
+            txtHeader = translate("CAM_Job", "Warning")
+            txtPleaseAddOne = translate("CAM_Job", "Please add one.")
+            txtOk = translate("CAM_Job", "Ok")
+            txtAdd = translate("CAM_Job", "Add")
 
             msgbox = QtGui.QMessageBox(
                 QtGui.QMessageBox.Warning, txtHeader, msg + " " + txtPleaseAddOne
@@ -1632,14 +1632,14 @@ class TaskPanel:
         # Check if at least on base model is present
         if len(self.obj.Model.Group) == 0:
             self.form.setCurrentIndex(0)  # Change tab to General tab
-            no_model_txt = translate("Path_Job", "This job has no base model.")
+            no_model_txt = translate("CAM_Job", "This job has no base model.")
             if _displayWarningWindow(no_model_txt) == 1:
                 self.jobModelEdit()
 
         # Check if at least one tool is present
         if len(self.obj.Tools.Group) == 0:
             self.form.setCurrentIndex(3)  # Change tab to Tools tab
-            no_tool_txt = translate("Path_Job", "This job has no tool.")
+            no_tool_txt = translate("CAM_Job", "This job has no tool.")
             if _displayWarningWindow(no_tool_txt) == 1:
                 self.toolControllerAdd()
 

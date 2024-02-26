@@ -910,12 +910,12 @@ class PathAdaptive(PathOp.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Side": [
-                (translate("Path_Adaptive", "Outside"), "Outside"),
-                (translate("Path_Adaptive", "Inside"), "Inside"),
+                (translate("CAM_Adaptive", "Outside"), "Outside"),
+                (translate("CAM_Adaptive", "Inside"), "Inside"),
             ],  # this is the direction that the profile runs
             "OperationType": [
-                (translate("Path_Adaptive", "Clearing"), "Clearing"),
-                (translate("Path_Adaptive", "Profiling"), "Profiling"),
+                (translate("CAM_Adaptive", "Clearing"), "Clearing"),
+                (translate("CAM_Adaptive", "Profiling"), "Profiling"),
             ],  # side of profile that cutter is on in relation to direction of profile
         }
 

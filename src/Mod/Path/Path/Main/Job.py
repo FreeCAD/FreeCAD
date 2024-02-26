@@ -252,15 +252,15 @@ class ObjectJob:
 
         enums = {
             "OrderOutputBy": [
-                (translate("Path_Job", "Fixture"), "Fixture"),
-                (translate("Path_Job", "Tool"), "Tool"),
-                (translate("Path_Job", "Operation"), "Operation"),
+                (translate("CAM_Job", "Fixture"), "Fixture"),
+                (translate("CAM_Job", "Tool"), "Tool"),
+                (translate("CAM_Job", "Operation"), "Operation"),
             ],
             "JobType": [
-                (translate("Path_Job", "2D"), "2D"),
-                (translate("Path_Job", "2.5D"), "2.5D"),
-                (translate("Path_Job", "Lathe"), "Lathe"),
-                (translate("Path_Job", "Multiaxis"), "Multiaxis"),
+                (translate("CAM_Job", "2D"), "2D"),
+                (translate("CAM_Job", "2.5D"), "2.5D"),
+                (translate("CAM_Job", "Lathe"), "Lathe"),
+                (translate("CAM_Job", "Multiaxis"), "Multiaxis"),
             ],
         }
 

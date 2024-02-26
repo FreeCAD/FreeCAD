@@ -85,9 +85,9 @@ class JobCreate:
                             preferences().SetBool("WarningSuppressVelocity", True)
 
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        self.itemsSolid = QtGui.QStandardItem(translate("Path_Job", "Solids"))
-        self.items2D = QtGui.QStandardItem(translate("Path_Job", "2D"))
-        self.itemsJob = QtGui.QStandardItem(translate("Path_Job", "Jobs"))
+        self.itemsSolid = QtGui.QStandardItem(translate("CAM_Job", "Solids"))
+        self.items2D = QtGui.QStandardItem(translate("CAM_Job", "2D"))
+        self.itemsJob = QtGui.QStandardItem(translate("CAM_Job", "Jobs"))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
         # debugging support
@@ -354,7 +354,7 @@ class JobTemplateExport:
             stockType = PathStock.StockType.FromStock(job.Stock)
             if stockType == PathStock.StockType.FromBase:
                 seHint = translate(
-                    "Path_Job", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
+                    "CAM_Job", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
                 ) % (
                     job.Stock.ExtXneg,
                     job.Stock.ExtXpos,
@@ -365,13 +365,13 @@ class JobTemplateExport:
                 )
                 self.dialog.stockPlacement.setChecked(False)
             elif stockType == PathStock.StockType.CreateBox:
-                seHint = translate("Path_Job", "Box: %.2f x %.2f x %.2f") % (
+                seHint = translate("CAM_Job", "Box: %.2f x %.2f x %.2f") % (
                     job.Stock.Length,
                     job.Stock.Width,
                     job.Stock.Height,
                 )
             elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate("Path_Job:", "Cylinder: %.2f x %.2f") % (
+                seHint = translate("CAM_Job:", "Cylinder: %.2f x %.2f") % (
                     job.Stock.Radius,
                     job.Stock.Height,
                 )
@@ -380,7 +380,7 @@ class JobTemplateExport:
 
             else:  # Existing Solid
                 seHint = "-"
-                Path.Log.error(translate("Path_Job", "Unsupported stock type"))
+                Path.Log.error(translate("CAM_Job", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)
             spHint = "%s" % job.Stock.Placement
             self.dialog.stockPlacementHint.setText(spHint)

@@ -1301,7 +1301,7 @@ class ObjectTagDressup:
         except ValueError:
             Path.Log.error(
                 translate(
-                    "Path_DressupTag",
+                    "CAM_DressupTag",
                     "Cannot insert holding tags for this path - please select a Profile path",
                 )
                 + "\n"
@@ -1354,12 +1354,12 @@ def Create(baseObject, name="DressupTag"):
     """
     if not baseObject.isDerivedFrom("Path::Feature"):
         Path.Log.error(
-            translate("Path_DressupTag", "The selected object is not a path") + "\n"
+            translate("CAM_DressupTag", "The selected object is not a path") + "\n"
         )
         return None
 
     if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-        Path.Log.error(translate("Path_DressupTag", "Please select a Profile object"))
+        Path.Log.error(translate("CAM_DressupTag", "Please select a Profile object"))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
@@ -1370,4 +1370,4 @@ def Create(baseObject, name="DressupTag"):
     return obj
 
 
-Path.Log.notice("Loading Path_DressupTag... done\n")
+Path.Log.notice("Loading CAM_DressupTag... done\n")

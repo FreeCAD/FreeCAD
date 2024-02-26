@@ -627,11 +627,11 @@ class PathSimulation:
 class CommandPathSimulate:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Simulator",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
+            "Pixmap": "CAM_Simulator",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
             "Accel": "P, M",
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Simulator", "Simulate G-code on stock"
+                "CAM_Simulator", "Simulate G-code on stock"
             ),
         }
 
@@ -649,5 +649,5 @@ class CommandPathSimulate:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Simulator", CommandPathSimulate())
+    FreeCADGui.addCommand("CAM_Simulator", CommandPathSimulate())
     FreeCAD.Console.PrintLog("Loading PathSimulator Gui... done\n")

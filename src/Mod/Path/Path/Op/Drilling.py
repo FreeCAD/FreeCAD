@@ -66,13 +66,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "RetractMode": [
-                (translate("Path_Drilling", "G98"), "G98"),
-                (translate("Path_Drilling", "G99"), "G99"),
+                (translate("CAM_Drilling", "G98"), "G98"),
+                (translate("CAM_Drilling", "G99"), "G99"),
             ],  # How high to retract after a drilling move
             "ExtraOffset": [
-                (translate("Path_Drilling", "None"), "None"),
-                (translate("Path_Drilling", "Drill Tip"), "Drill Tip"),
-                (translate("Path_Drilling", "2x Drill Tip"), "2x Drill Tip"),
+                (translate("CAM_Drilling", "None"), "None"),
+                (translate("CAM_Drilling", "Drill Tip"), "Drill Tip"),
+                (translate("CAM_Drilling", "2x Drill Tip"), "2x Drill Tip"),
             ],  # extra drilling depth to clear drill taper
         }
 

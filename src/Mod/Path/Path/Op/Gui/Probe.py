@@ -90,9 +90,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def SetOutputFileName(self):
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_Probe", "Select Output File"),
+            translate("CAM_Probe", "Select Output File"),
             None,
-            translate("Path_Probe", "All Files (*.*)"),
+            translate("CAM_Probe", "All Files (*.*)"),
         )
         if filename and filename[0]:
             self.obj.OutputFileName = str(filename[0])
@@ -103,9 +103,9 @@ Command = PathOpGui.SetupOperation(
     "Probe",
     PathProbe.Create,
     TaskPanelOpPage,
-    "Path_Probe",
-    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Probe"),
-    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Create a Probing Grid from a job stock"),
+    "CAM_Probe",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Probe", "Probe"),
+    QtCore.QT_TRANSLATE_NOOP("CAM_Probe", "Create a Probing Grid from a job stock"),
     PathProbe.SetupProperties,
 )
 

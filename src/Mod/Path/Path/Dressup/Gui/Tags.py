@@ -378,7 +378,7 @@ class PathDressupTagViewProvider:
     def debugDisplay(self):
         # if False and addDebugDisplay():
         #    if not hasattr(self.vobj, 'Debug'):
-        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QT_TRANSLATE_NOOP('Path_DressupTag', 'Some elements for debugging'))
+        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QT_TRANSLATE_NOOP('CAM_DressupTag', 'Some elements for debugging'))
         #        dbg = self.vobj.Object.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
         #        self.vobj.Debug = dbg
         #    return True
@@ -562,10 +562,10 @@ def Create(baseObject, name="DressupTag"):
 class CommandPathDressupTag:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupTag", "Tag"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupTag", "Creates a Tag Dress-up object from a selected path"
+                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected path"
             ),
         }
 
@@ -581,7 +581,7 @@ class CommandPathDressupTag:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("Path_DressupTag", "Please select one path object") + "\n"
+                translate("CAM_DressupTag", "Please select one path object") + "\n"
             )
             return
         baseObject = selection[0]
@@ -598,6 +598,6 @@ class CommandPathDressupTag:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupTag", CommandPathDressupTag())
+    FreeCADGui.addCommand("CAM_DressupTag", CommandPathDressupTag())
 
 Path.Log.notice("Loading PathDressupTagGui... done\n")

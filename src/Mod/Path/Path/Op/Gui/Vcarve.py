@@ -162,9 +162,9 @@ Command = PathOpGui.SetupOperation(
     "Vcarve",
     PathVcarve.Create,
     TaskPanelOpPage,
-    "Path_Vcarve",
-    QtCore.QT_TRANSLATE_NOOP("Path_Vcarve", "Vcarve"),
-    QtCore.QT_TRANSLATE_NOOP("Path_Vcarve", "Creates a medial line engraving path"),
+    "CAM_Vcarve",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Vcarve", "Vcarve"),
+    QtCore.QT_TRANSLATE_NOOP("CAM_Vcarve", "Creates a medial line engraving path"),
     PathVcarve.SetupProperties,
 )
 

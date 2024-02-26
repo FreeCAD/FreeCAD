@@ -28,7 +28,7 @@ import Path.Op.Base as PathOp
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Custom Operation"
+__title__ = "CAM Custom Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Path Custom object and FreeCAD command"

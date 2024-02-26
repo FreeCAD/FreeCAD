@@ -159,7 +159,7 @@ class ViewProvider(object):
         if self.Object.Active:
             return self.OpIcon
         else:
-            return ":/icons/Path_OpActive.svg"
+            return ":/icons/CAM_OpActive.svg"
 
     def getTaskPanelOpPage(self, obj):
         """getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller."""
@@ -1461,7 +1461,7 @@ def SetupOperation(
     )
 
     command = CommandPathOp(res)
-    FreeCADGui.addCommand("Path_%s" % name.replace(" ", "_"), command)
+    FreeCADGui.addCommand("CAM_%s" % name.replace(" ", "_"), command)
 
     if setupProperties is not None:
         PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
@@ -1469,6 +1469,6 @@ def SetupOperation(
     return command
 
 
-FreeCADGui.addCommand("Path_SetStartPoint", CommandSetStartPoint())
+FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())
 
 FreeCAD.Console.PrintLog("Loading PathOpGui... done\n")

@@ -597,10 +597,10 @@ class ViewProviderDressup:
 class CommandDressupDragknife:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDragKnife", "DragKnife"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "DragKnife"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupDragKnife",
+                "CAM_DressupDragKnife",
                 "Modifies a path to add dragknife corner actions",
             ),
         }
@@ -618,19 +618,19 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDragKnife", "Please select one path object")
+                translate("CAM_DressupDragKnife", "Please select one path object")
                 + "\n"
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDragKnife", "The selected object is not a path")
+                translate("CAM_DressupDragKnife", "The selected object is not a path")
                 + "\n"
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDragKnife", "Please select a Path object")
+                translate("CAM_DressupDragKnife", "Please select a Path object")
             )
             return
 
@@ -663,6 +663,6 @@ class CommandDressupDragknife:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupDragKnife", CommandDressupDragknife())
+    FreeCADGui.addCommand("CAM_DressupDragKnife", CommandDressupDragknife())
 
-FreeCAD.Console.PrintLog("Loading Path_DressupDragKnife... done\n")
+FreeCAD.Console.PrintLog("Loading CAM_DressupDragKnife... done\n")

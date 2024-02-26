@@ -468,10 +468,10 @@ class CommandPathPost:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_Post",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
+            "Pixmap": "CAM_Post",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QT_TRANSLATE_NOOP("Path_Post", "Post Process the selected Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Process the selected Job"),
         }
 
     def IsActive(self):
@@ -618,6 +618,6 @@ class CommandPathPost:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Post", CommandPathPost())
+    FreeCADGui.addCommand("CAM_Post", CommandPathPost())
 
 FreeCAD.Console.PrintLog("Loading PathPost... done\n")

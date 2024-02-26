@@ -74,14 +74,14 @@ def checkWorkingDir():
     ret = qm.question(
         None,
         "",
-        translate("Path_ToolBit", "Toolbit working directory not set up. Do that now?"),
+        translate("CAM_ToolBit", "Toolbit working directory not set up. Do that now?"),
         qm.Yes | qm.No,
     )
 
     if ret == qm.No:
         return False
 
-    msg = translate("Path_ToolBit", "Choose a writable location for your toolbits")
+    msg = translate("CAM_ToolBit", "Choose a writable location for your toolbits")
     while not dirOK():
         workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(
             None, msg, Path.Preferences.filePath()
@@ -120,7 +120,7 @@ def checkWorkingDir():
             None,
             "",
             translate(
-                "Path_ToolBit",
+                "CAM_ToolBit",
                 "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?",
             ).format(workingdir, needed),
             qm.Yes | qm.No,
@@ -140,7 +140,7 @@ def checkWorkingDir():
                         None,
                         "",
                         translate(
-                            "Path_ToolBit", "Copy example files to new {} directory?"
+                            "CAM_ToolBit", "Copy example files to new {} directory?"
                         ).format(dir),
                         qm.Yes | qm.No,
                     )
@@ -331,7 +331,7 @@ class ModelFactory(object):
                 libItem = PySide.QtGui.QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(PySide.QtGui.QPixmap(":/icons/Path_ToolTable.svg"))
+                libItem.setIcon(PySide.QtGui.QPixmap(":/icons/CAM_ToolTable.svg"))
                 model.appendRow(libItem)
 
         Path.Log.debug("model rows: {}".format(model.rowCount()))
@@ -663,11 +663,11 @@ class ToolBitLibrary(object):
         print("all done")
 
     def libraryNew(self):
-        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
+        TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_ToolBit", "Save toolbit library"),
+            translate("CAM_ToolBit", "Save toolbit library"),
             Path.Preferences.lastPathToolLibrary(),
             "{}".format(TooltableTypeJSON),
         )
@@ -791,13 +791,13 @@ class ToolBitLibrary(object):
 
     def librarySaveAs(self, path):
 
-        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
-        TooltableTypeLinuxCNC = translate("Path_ToolBit", "LinuxCNC tooltable (*.tbl)")
-        TooltableTypeCamotics = translate("Path_ToolBit", "Camotics tooltable (*.json)")
+        TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
+        TooltableTypeLinuxCNC = translate("CAM_ToolBit", "LinuxCNC tooltable (*.tbl)")
+        TooltableTypeCamotics = translate("CAM_ToolBit", "Camotics tooltable (*.json)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_ToolBit", "Save toolbit library"),
+            translate("CAM_ToolBit", "Save toolbit library"),
             Path.Preferences.lastPathToolLibrary(),
             "{};;{};;{}".format(
                 TooltableTypeJSON, TooltableTypeLinuxCNC, TooltableTypeCamotics

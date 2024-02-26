@@ -49,9 +49,9 @@ else:
 class ObjectDressup:
     def __init__(self, obj):
         lead_styles = [
-            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Arc"),
-            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Tangent"),
-            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Perpendicular"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Perpendicular"),
         ]
         self.obj = obj
         obj.addProperty(
@@ -164,14 +164,14 @@ class ObjectDressup:
 
         if obj.Length <= 0:
             Path.Log.error(
-                translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
+                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null")
                 + "\n"
             )
             obj.Length = 0.1
 
         if obj.LengthOut <= 0:
             Path.Log.error(
-                translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
+                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null")
                 + "\n"
             )
             obj.LengthOut = 0.1
@@ -460,10 +460,10 @@ class ViewProviderDressup:
 class CommandPathDressupLeadInOut:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LeadInOut"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupLeadInOut",
+                "CAM_DressupLeadInOut",
                 "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path",
             ),
         }
@@ -479,20 +479,20 @@ class CommandPathDressupLeadInOut:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("Path_DressupLeadInOut", "Please select one path object")
+                translate("CAM_DressupLeadInOut", "Please select one path object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("Path_DressupLeadInOut", "The selected object is not a path")
+                translate("CAM_DressupLeadInOut", "The selected object is not a path")
                 + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             Path.Log.error(
-                translate("Path_DressupLeadInOut", "Please select a Profile object")
+                translate("CAM_DressupLeadInOut", "Please select a Profile object")
             )
             return
 
@@ -521,6 +521,6 @@ class CommandPathDressupLeadInOut:
 
 if App.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupLeadInOut", CommandPathDressupLeadInOut())
+    FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressupLeadInOut())
 
-Path.Log.notice("Loading Path_DressupLeadInOut... done\n")
+Path.Log.notice("Loading CAM_DressupLeadInOut... done\n")

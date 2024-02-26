@@ -34,7 +34,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderArea, PartGui::ViewProviderPlaneParametric)
 
 ViewProviderArea::ViewProviderArea()
 {
-    sPixmap = "Path_Area.svg";
+    sPixmap = "CAM_Area.svg";
 }
 
 ViewProviderArea::~ViewProviderArea()
@@ -118,7 +118,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderAreaView, PartGui::ViewProviderPlaneParamet
 
 ViewProviderAreaView::ViewProviderAreaView()
 {
-    sPixmap = "Path_Area_View.svg";
+    sPixmap = "CAM_Area_View.svg";
 }
 
 ViewProviderAreaView::~ViewProviderAreaView()

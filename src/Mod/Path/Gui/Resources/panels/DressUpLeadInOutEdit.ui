@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Path_DressupLeadInOut</class>
- <widget class="QWidget" name="Path_DressupLeadInOut">
+ <class>CAM_DressupLeadInOut</class>
+ <widget class="QWidget" name="CAM_DressupLeadInOut">
   <property name="geometry">
    <rect>
     <x>0</x>

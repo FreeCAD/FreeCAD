@@ -101,9 +101,9 @@ class ObjectSlot(PathOp.ObjectOp):
                     setattr(obj, k, [t[1] for t in tupList])
 
             if warn:
-                newPropMsg = translate("Path_Slot", "New property added to")
+                newPropMsg = translate("CAM_Slot", "New property added to")
                 newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-                newPropMsg += translate("Path_Slot", "Check default value(s).")
+                newPropMsg += translate("CAM_Slot", "Check default value(s).")
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
 
         self.propertiesReady = True
@@ -251,38 +251,38 @@ class ObjectSlot(PathOp.ObjectOp):
 
         enums = {
             "CutPattern": [
-                (translate("Path_Slot", "Line"), "Line"),
-                (translate("Path_Slot", "ZigZag"), "ZigZag"),
+                (translate("CAM_Slot", "Line"), "Line"),
+                (translate("CAM_Slot", "ZigZag"), "ZigZag"),
             ],
             "LayerMode": [
-                (translate("Path_Slot", "Single-pass"), "Single-pass"),
-                (translate("Path_Slot", "Multi-pass"), "Multi-pass"),
+                (translate("CAM_Slot", "Single-pass"), "Single-pass"),
+                (translate("CAM_Slot", "Multi-pass"), "Multi-pass"),
             ],
             "PathOrientation": [
-                (translate("Path_Slot", "Start to End"), "Start to End"),
-                (translate("Path_Slot", "Perpendicular"), "Perpendicular"),
+                (translate("CAM_Slot", "Start to End"), "Start to End"),
+                (translate("CAM_Slot", "Perpendicular"), "Perpendicular"),
             ],
             "Reference1": [
-                (translate("Path_Slot", "Center of Mass"), "Center of Mass"),
+                (translate("CAM_Slot", "Center of Mass"), "Center of Mass"),
                 (
-                    translate("Path_Slot", "Center of Bounding Box"),
+                    translate("CAM_Slot", "Center of Bounding Box"),
                     "Center of BoundBox",
                 ),
-                (translate("Path_Slot", "Lowest Point"), "Lowest Point"),
-                (translate("Path_Slot", "Highest Point"), "Highest Point"),
-                (translate("Path_Slot", "Long Edge"), "Long Edge"),
-                (translate("Path_Slot", "Short Edge"), "Short Edge"),
-                (translate("Path_Slot", "Vertex"), "Vertex"),
+                (translate("CAM_Slot", "Lowest Point"), "Lowest Point"),
+                (translate("CAM_Slot", "Highest Point"), "Highest Point"),
+                (translate("CAM_Slot", "Long Edge"), "Long Edge"),
+                (translate("CAM_Slot", "Short Edge"), "Short Edge"),
+                (translate("CAM_Slot", "Vertex"), "Vertex"),
             ],
             "Reference2": [
-                (translate("Path_Slot", "Center of Mass"), "Center of Mass"),
+                (translate("CAM_Slot", "Center of Mass"), "Center of Mass"),
                 (
-                    translate("Path_Slot", "Center of Bounding Box"),
+                    translate("CAM_Slot", "Center of Bounding Box"),
                     "Center of BoundBox",
                 ),
-                (translate("Path_Slot", "Lowest Point"), "Lowest Point"),
-                (translate("Path_Slot", "Highest Point"), "Highest Point"),
-                (translate("Path_Slot", "Vertex"), "Vertex"),
+                (translate("CAM_Slot", "Lowest Point"), "Lowest Point"),
+                (translate("CAM_Slot", "Highest Point"), "Highest Point"),
+                (translate("CAM_Slot", "Vertex"), "Vertex"),
             ],
         }
 
@@ -600,7 +600,7 @@ class ObjectSlot(PathOp.ObjectOp):
         featureCount = 0
 
         if not hasattr(obj, "Base"):
-            msg = translate("Path_Slot", "No Base Geometry object in the operation.")
+            msg = translate("CAM_Slot", "No Base Geometry object in the operation.")
             FreeCAD.Console.PrintError(msg + "\n")
             return False
 
@@ -609,14 +609,14 @@ class ObjectSlot(PathOp.ObjectOp):
             p1 = obj.CustomPoint1
             p2 = obj.CustomPoint2
             if p1 == p2:
-                msg = translate("Path_Slot", "Custom points are identical.")
+                msg = translate("CAM_Slot", "Custom points are identical.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
             elif p1.z == p2.z:
                 pnts = (p1, p2)
                 featureCount = 2
             else:
-                msg = translate("Path_Slot", "Custom points not at same Z height.")
+                msg = translate("CAM_Slot", "Custom points not at same Z height.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
         else:
@@ -672,7 +672,7 @@ class ObjectSlot(PathOp.ObjectOp):
             )
             if newRadius <= 0:
                 msg = translate(
-                    "Path_Slot",
+                    "CAM_Slot",
                     "Current Extend Radius value produces negative arc radius.",
                 )
                 FreeCAD.Console.PrintError(msg + "\n")
@@ -691,7 +691,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Complete circle
             if obj.ExtendPathStart.Value != 0 or obj.ExtendPathEnd.Value != 0:
                 msg = translate(
-                    "Path_Slot", "No path extensions available for full circles."
+                    "CAM_Slot", "No path extensions available for full circles."
                 )
                 FreeCAD.Console.PrintWarning(msg + "\n")
         else:
@@ -720,7 +720,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if self._arcCollisionCheck(obj, p1, p2, self.arcCenter, self.newRadius):
             msg = obj.Label + " "
-            msg += translate("Path_Slot", "operation collides with model.")
+            msg += translate("CAM_Slot", "operation collides with model.")
             FreeCAD.Console.PrintError(msg + "\n")
 
         # Path.Log.warning('Unable to create G-code.  _makeArcGCode() is incomplete.')
@@ -832,7 +832,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     if edg1_len != edg2_len:
                         msg = obj.Label + " "
                         msg += translate(
-                            "Path_Slot", "Verify slot path start and end points."
+                            "CAM_Slot", "Verify slot path start and end points."
                         )
                         FreeCAD.Console.PrintWarning(msg + "\n")
             else:
@@ -868,7 +868,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if self._lineCollisionCheck(obj, p1, p2):
             msg = obj.Label + " "
-            msg += translate("Path_Slot", "operation collides with model.")
+            msg += translate("CAM_Slot", "operation collides with model.")
             FreeCAD.Console.PrintWarning(msg + "\n")
 
         cmds = self._makeLineGCode(obj, p1, p2)
@@ -965,7 +965,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     pnts = self._processSingleComplexFace(obj, shape_1)
 
             if not pnts:
-                msg = translate("Path_Slot", "The selected face is inaccessible.")
+                msg = translate("CAM_Slot", "The selected face is inaccessible.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
 
@@ -982,7 +982,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         elif cat1 == "Vert":
             msg = translate(
-                "Path_Slot",
+                "CAM_Slot",
                 "Only a vertex selected. Add another feature to the Base Geometry.",
             )
             FreeCAD.Console.PrintError(msg + "\n")
@@ -1009,7 +1009,7 @@ class ObjectSlot(PathOp.ObjectOp):
         # Reject triangular faces
         if len(shape.Edges) < 4:
             msg = translate(
-                "Path_Slot", "A single selected face must have four edges minimum."
+                "CAM_Slot", "A single selected face must have four edges minimum."
             )
             FreeCAD.Console.PrintError(msg + "\n")
             return False
@@ -1067,7 +1067,7 @@ class ObjectSlot(PathOp.ObjectOp):
             Path.Log.debug(" -parallel_edge_flags: {}".format(parallel_edge_flags))
 
         if pairCnt == 0:
-            msg = translate("Path_Slot", "No parallel edges identified.")
+            msg = translate("CAM_Slot", "No parallel edges identified.")
             FreeCAD.Console.PrintError(msg + "\n")
             return False
         elif pairCnt == 1:
@@ -1091,7 +1091,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 same = parallel_edge_pairs[0]
             else:
                 msg = "Reference1 "
-                msg += translate("Path_Slot", "value error.")
+                msg += translate("CAM_Slot", "value error.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
 
@@ -1138,7 +1138,7 @@ class ObjectSlot(PathOp.ObjectOp):
         (p1, p2) = self._getCutSidePoints(obj, v0, v1, a1, a2, b1, b2)
 
         msg = obj.Label + " "
-        msg += translate("Path_Slot", "Verify slot path start and end points.")
+        msg += translate("CAM_Slot", "Verify slot path start and end points.")
         FreeCAD.Console.PrintWarning(msg + "\n")
 
         return (p1, p2)
@@ -1153,7 +1153,7 @@ class ObjectSlot(PathOp.ObjectOp):
         def oversizedTool(holeDiam):
             # Test if tool larger than opening
             if self.tool.Diameter > holeDiam:
-                msg = translate("Path_Slot", "Current tool larger than arc diameter.")
+                msg = translate("CAM_Slot", "Current tool larger than arc diameter.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return True
             return False
@@ -1238,7 +1238,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return (p1, p2)
         else:
             msg = translate(
-                "Path_Slot",
+                "CAM_Slot",
                 "Failed, slot from edge only accepts lines, arcs and circles.",
             )
             FreeCAD.Console.PrintError(msg + "\n")
@@ -1259,7 +1259,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         feature1 = self._processFeature(obj, shape_1, sub1, 1)
         if not feature1:
-            msg = translate("Path_Slot", "Failed to determine point 1 from")
+            msg = translate("CAM_Slot", "Failed to determine point 1 from")
             FreeCAD.Console.PrintError(msg + " {}.\n".format(sub1))
             return False
         (p1, dYdX1, shpType) = feature1
@@ -1269,7 +1269,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         feature2 = self._processFeature(obj, shape_2, sub2, 2)
         if not feature2:
-            msg = translate("Path_Slot", "Failed to determine point 2 from")
+            msg = translate("CAM_Slot", "Failed to determine point 2 from")
             FreeCAD.Console.PrintError(msg + " {}.\n".format(sub2))
             return False
         (p2, dYdX2, shpType) = feature2
@@ -1282,7 +1282,7 @@ class ObjectSlot(PathOp.ObjectOp):
             Path.Log.debug("dYdX1, dYdX2: {}, {}".format(dYdX1, dYdX2))
             if not self._isParallel(dYdX1, dYdX2):
                 if self.shapeType1 != "Edge" or self.shapeType2 != "Edge":
-                    msg = translate("Path_Slot", "Selected geometry not parallel.")
+                    msg = translate("CAM_Slot", "Selected geometry not parallel.")
                     FreeCAD.Console.PrintError(msg + "\n")
                     return False
 
@@ -1402,7 +1402,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # FreeCAD.Console.PrintMessage('{} normal {}.\n'.format(sub, norm))
             if norm.z != 0:
                 msg = translate(
-                    "Path_Slot", "The selected face is not oriented vertically:"
+                    "CAM_Slot", "The selected face is not oriented vertically:"
                 )
                 FreeCAD.Console.PrintError(msg + " {}.\n".format(sub))
                 return False
@@ -1916,7 +1916,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
                 msg = translate(
-                    "Path_Slot", "Current offset value produces negative radius."
+                    "CAM_Slot", "Current offset value produces negative radius."
                 )
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
@@ -1930,7 +1930,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
                 msg = translate(
-                    "Path_Slot", "Current offset value produces negative radius."
+                    "CAM_Slot", "Current offset value produces negative radius."
                 )
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False

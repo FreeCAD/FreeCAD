@@ -88,7 +88,7 @@ class _ViewProviderStop:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path_Stop.svg"
+        return ":/icons/CAM_Stop.svg"
 
     def onChanged(self, vobj, prop):  # optional
         mode = 2
@@ -106,10 +106,10 @@ class _ViewProviderStop:
 class CommandPathStop:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Stop",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
+            "Pixmap": "CAM_Stop",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Stop", "Stop"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Stop", "Add Optional or Mandatory Stop to the program"
+                "CAM_Stop", "Add Optional or Mandatory Stop to the program"
             ),
         }
 
@@ -143,7 +143,7 @@ PathUtils.addToJob(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Stop", CommandPathStop())
+    FreeCADGui.addCommand("CAM_Stop", CommandPathStop())
 
 
 FreeCAD.Console.PrintLog("Loading PathStop... done\n")

@@ -259,11 +259,11 @@ class ViewProviderDressup:
 class CommandPathDressup:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Axis Map"),
             "Accel": "",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupAxisMap", "Remap one axis to another."
+                "CAM_DressupAxisMap", "Remap one axis to another."
             ),
         }
 
@@ -280,17 +280,17 @@ class CommandPathDressup:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "Please select one path object\n")
+                translate("CAM_Dressup", "Please select one path object\n")
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "The selected object is not a path\n")
+                translate("CAM_Dressup", "The selected object is not a path\n")
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "Please select a Path object")
+                translate("CAM_Dressup", "Please select a Path object")
             )
             return
 
@@ -320,6 +320,6 @@ class CommandPathDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupAxisMap", CommandPathDressup())
+    FreeCADGui.addCommand("CAM_DressupAxisMap", CommandPathDressup())
 
 FreeCAD.Console.PrintLog("Loading PathDressup... done\n")

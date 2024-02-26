@@ -249,10 +249,10 @@ Command = PathOpGui.SetupOperation(
     "ThreadMilling",
     PathThreadMilling.Create,
     TaskPanelOpPage,
-    "Path_ThreadMilling",
-    QT_TRANSLATE_NOOP("Path_ThreadMilling", "Thread Milling"),
+    "CAM_ThreadMilling",
+    QT_TRANSLATE_NOOP("CAM_ThreadMilling", "Thread Milling"),
     QT_TRANSLATE_NOOP(
-        "Path_ThreadMilling",
+        "CAM_ThreadMilling",
         "Creates a Path Thread Milling operation from features of a base object",
     ),
     PathThreadMilling.SetupProperties,

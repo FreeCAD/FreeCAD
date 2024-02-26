@@ -114,8 +114,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         enums = {
             "HandleMultipleFeatures": [
-                (translate("Path_Pocket", "Collectively"), "Collectively"),
-                (translate("Path_Pocket", "Individually"), "Individually"),
+                (translate("CAM_Pocket", "Collectively"), "Collectively"),
+                (translate("CAM_Pocket", "Individually"), "Individually"),
             ],
         }
 

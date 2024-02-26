@@ -34,10 +34,10 @@ translate = FreeCAD.Qt.translate
 class CommandPathSimpleCopy:
     def GetResources(self):
         return {
-            "Pixmap": "Path_SimpleCopy",
-            "MenuText": QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
+            "Pixmap": "CAM_SimpleCopy",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_SimpleCopy", "Simple Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_SimpleCopy", "Creates a non-parametric copy of another path"
+                "CAM_SimpleCopy", "Creates a non-parametric copy of another path"
             ),
         }
 
@@ -55,13 +55,13 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object")
+                translate("CAM_SimpleCopy", "Please select exactly one path object")
                 + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object")
+                translate("CAM_SimpleCopy", "Please select exactly one path object")
                 + "\n"
             )
             return
@@ -88,4 +88,4 @@ class CommandPathSimpleCopy:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_SimpleCopy", CommandPathSimpleCopy())
+    FreeCADGui.addCommand("CAM_SimpleCopy", CommandPathSimpleCopy())

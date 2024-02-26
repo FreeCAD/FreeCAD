@@ -76,7 +76,7 @@ void ViewProviderPathCompound::dropObject(App::DocumentObject* obj)
 
 QIcon ViewProviderPathCompound::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path_Compound");
+    return Gui::BitmapFactory().pixmap("CAM_Compound");
 }
 
 // Python object -----------------------------------------------------------------------

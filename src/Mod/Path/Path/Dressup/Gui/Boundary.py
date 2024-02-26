@@ -259,10 +259,10 @@ def Create(base, name="DressupPathBoundary"):
 class CommandPathDressupPathBoundary:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Boundary"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupPathBoundary", "Boundary"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary",
+                "CAM_DressupPathBoundary",
                 "Creates a Path Boundary Dress-up from a selected path",
             ),
         }
@@ -279,7 +279,7 @@ class CommandPathDressupPathBoundary:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("Path_DressupPathBoundary", "Please select one path object")
+                translate("CAM_DressupPathBoundary", "Please select one path object")
                 + "\n"
             )
             return
@@ -297,6 +297,6 @@ class CommandPathDressupPathBoundary:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupPathBoundary", CommandPathDressupPathBoundary())
+    FreeCADGui.addCommand("CAM_DressupPathBoundary", CommandPathDressupPathBoundary())
 
 Path.Log.notice("Loading PathDressupPathBoundaryGui... done\n")

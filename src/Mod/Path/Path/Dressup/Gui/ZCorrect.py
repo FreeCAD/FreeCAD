@@ -289,9 +289,9 @@ class TaskPanel:
     def SetProbePointFileName(self):
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
-            translate("Path_Probe", "Select Probe Point File"),
+            translate("CAM_Probe", "Select Probe Point File"),
             None,
-            translate("Path_Probe", "All Files (*.*)"),
+            translate("CAM_Probe", "All Files (*.*)"),
         )
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
@@ -342,11 +342,11 @@ class ViewProviderDressup:
 class CommandPathDressup:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Z Depth Correction"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupZCorrect", "Z Depth Correction"),
             "Accel": "",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupZCorrect", "Use Probe Map to correct Z depth"
+                "CAM_DressupZCorrect", "Use Probe Map to correct Z depth"
             ),
         }
 
@@ -362,17 +362,17 @@ class CommandPathDressup:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "Please select one path object\n")
+                translate("CAM_Dressup", "Please select one path object\n")
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "The selected object is not a path\n")
+                translate("CAM_Dressup", "The selected object is not a path\n")
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("Path_Dressup", "Please select a Path object")
+                translate("CAM_Dressup", "Please select a Path object")
             )
             return
 
@@ -399,6 +399,6 @@ class CommandPathDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_DressupZCorrect", CommandPathDressup())
+    FreeCADGui.addCommand("CAM_DressupZCorrect", CommandPathDressup())
 
 FreeCAD.Console.PrintLog("Loading PathDressup... done\n")

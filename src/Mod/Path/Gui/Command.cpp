@@ -40,15 +40,15 @@
 DEF_STD_CMD_A(CmdPathArea)
 
 CmdPathArea::CmdPathArea()
-    :Command("Path_Area")
+    :Command("CAM_Area")
 {
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("Area");
     sToolTipText    = QT_TR_NOOP("Creates a feature area from selected objects");
-    sWhatsThis      = "Path_Area";
+    sWhatsThis      = "CAM_Area";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Path_Area";
+    sPixmap         = "CAM_Area";
 }
 
 void CmdPathArea::activated(int iMsg)
@@ -122,15 +122,15 @@ bool CmdPathArea::isActive()
 DEF_STD_CMD_A(CmdPathAreaWorkplane)
 
 CmdPathAreaWorkplane::CmdPathAreaWorkplane()
-    :Command("Path_Area_Workplane")
+    :Command("CAM_Area_Workplane")
 {
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("Area workplane");
     sToolTipText    = QT_TR_NOOP("Select a workplane for a FeatureArea");
-    sWhatsThis      = "Path_Area_Workplane";
+    sWhatsThis      = "CAM_Area_Workplane";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Path_Area_Workplane";
+    sPixmap         = "CAM_Area_Workplane";
 }
 
 void CmdPathAreaWorkplane::activated(int iMsg)
@@ -212,15 +212,15 @@ bool CmdPathAreaWorkplane::isActive()
 DEF_STD_CMD_A(CmdPathCompound)
 
 CmdPathCompound::CmdPathCompound()
-    :Command("Path_Compound")
+    :Command("CAM_Compound")
 {
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("Compound");
     sToolTipText    = QT_TR_NOOP("Creates a compound from selected paths");
-    sWhatsThis      = "Path_Compound";
+    sWhatsThis      = "CAM_Compound";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Path_Compound";
+    sPixmap         = "CAM_Compound";
 }
 
 void CmdPathCompound::activated(int iMsg)
@@ -264,15 +264,15 @@ bool CmdPathCompound::isActive()
 DEF_STD_CMD_A(CmdPathShape)
 
 CmdPathShape::CmdPathShape()
-    :Command("Path_Shape")
+    :Command("CAM_Shape")
 {
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("From Shape");
     sToolTipText    = QT_TR_NOOP("Creates a path from a selected shape");
-    sWhatsThis      = "Path_Shape";
+    sWhatsThis      = "CAM_Shape";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Path_Shape";
+    sPixmap         = "CAM_Shape";
 }
 
 void CmdPathShape::activated(int iMsg)

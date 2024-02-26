@@ -1357,10 +1357,10 @@ def Create(base, name="DogboneDressup"):
 class CommandDressupDogbone(object):
     def GetResources(self):
         return {
-            "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone"),
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDogbone", "Dogbone"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone",
+                "CAM_DressupDogbone",
                 "Creates a Dogbone Dress-up object from a selected path",
             ),
         }
@@ -1378,13 +1378,13 @@ class CommandDressupDogbone(object):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDogbone", "Please select one path object") + "\n"
+                translate("CAM_DressupDogbone", "Please select one path object") + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_DressupDogbone", "The selected object is not a path")
+                translate("CAM_DressupDogbone", "The selected object is not a path")
                 + "\n"
             )
             return
@@ -1406,6 +1406,6 @@ class CommandDressupDogbone(object):
 #    from PySide import QtGui
 #    from pivy import coin
 #
-#    FreeCADGui.addCommand("Path_DressupDogbone", CommandDressupDogbone())
+#    FreeCADGui.addCommand("CAM_DressupDogbone", CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")

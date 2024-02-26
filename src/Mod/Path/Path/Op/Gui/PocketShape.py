@@ -66,10 +66,10 @@ Command = PathOpGui.SetupOperation(
     "Pocket Shape",
     PathPocketShape.Create,
     TaskPanelOpPage,
-    "Path_Pocket",
-    QT_TRANSLATE_NOOP("Path_Pocket_Shape", "Pocket Shape"),
+    "CAM_Pocket",
+    QT_TRANSLATE_NOOP("CAM_Pocket_Shape", "Pocket Shape"),
     QT_TRANSLATE_NOOP(
-        "Path_Pocket_Shape", "Creates a Path Pocket object from a face or faces"
+        "CAM_Pocket_Shape", "Creates a Path Pocket object from a face or faces"
     ),
     PathPocketShape.SetupProperties,
 )

@@ -277,10 +277,10 @@ Command = PathOpGui.SetupOperation(
     "Slot",
     PathSlot.Create,
     TaskPanelOpPage,
-    "Path_Slot",
-    QtCore.QT_TRANSLATE_NOOP("Path_Slot", "Slot"),
+    "CAM_Slot",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Slot", "Slot"),
     QtCore.QT_TRANSLATE_NOOP(
-        "Path_Slot", "Create a Slot operation from selected geometry or custom points."
+        "CAM_Slot", "Create a Slot operation from selected geometry or custom points."
     ),
     PathSlot.SetupProperties,
 )

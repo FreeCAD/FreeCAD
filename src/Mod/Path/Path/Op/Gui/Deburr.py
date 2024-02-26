@@ -141,10 +141,10 @@ Command = PathOpGui.SetupOperation(
     "Deburr",
     PathDeburr.Create,
     TaskPanelOpPage,
-    "Path_Deburr",
-    QT_TRANSLATE_NOOP("Path_Deburr", "Deburr"),
+    "CAM_Deburr",
+    QT_TRANSLATE_NOOP("CAM_Deburr", "Deburr"),
     QT_TRANSLATE_NOOP(
-        "Path_Deburr", "Creates a Deburr Path along Edges or around Faces"
+        "CAM_Deburr", "Creates a Deburr Path along Edges or around Faces"
     ),
     PathDeburr.SetupProperties,
 )

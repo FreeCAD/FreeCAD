@@ -81,7 +81,7 @@ class _ViewProviderComment:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path_Comment.svg"
+        return ":/icons/CAM_Comment.svg"
 
     def onChanged(self, vobj, prop):  # optional
         mode = 2
@@ -99,10 +99,10 @@ class _ViewProviderComment:
 class CommandPathComment:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Comment",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
+            "Pixmap": "CAM_Comment",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Comment", "Comment"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Comment", "Add a Comment to your CNC program"
+                "CAM_Comment", "Add a Comment to your CNC program"
             ),
         }
 
@@ -133,7 +133,7 @@ PathUtils.addToJob(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Comment", CommandPathComment())
+    FreeCADGui.addCommand("CAM_Comment", CommandPathComment())
 
 
 FreeCAD.Console.PrintLog("Loading PathComment... done\n")

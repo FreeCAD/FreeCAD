@@ -44,9 +44,9 @@ class CommandToolBitSelectorOpen:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitDock", "ToolBit Dock"),
-            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolBitDock", "Toggle the Toolbit Dock"),
+            "Pixmap": "CAM_ToolTable",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "ToolBit Dock"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toggle the Toolbit Dock"),
             "Accel": "P, T",
             "CmdType": "ForEdit",
         }
@@ -71,12 +71,12 @@ class CommandToolBitLibraryOpen:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_ToolTable",
+            "Pixmap": "CAM_ToolTable",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_ToolBitLibraryOpen", "ToolBit Library editor"
+                "CAM_ToolBitLibraryOpen", "ToolBit Library editor"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ToolBitLibraryOpen", "Open an editor to manage ToolBit libraries"
+                "CAM_ToolBitLibraryOpen", "Open an editor to manage ToolBit libraries"
             ),
             "CmdType": "ForEdit",
         }
@@ -93,10 +93,10 @@ class CommandToolBitLibraryOpen:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("Path_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
-    FreeCADGui.addCommand("Path_ToolBitDock", CommandToolBitSelectorOpen())
+    FreeCADGui.addCommand("CAM_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
+    FreeCADGui.addCommand("CAM_ToolBitDock", CommandToolBitSelectorOpen())
 
-BarList = ["Path_ToolBitDock"]
-MenuList = ["Path_ToolBitLibraryOpen", "Path_ToolBitDock"]
+BarList = ["CAM_ToolBitDock"]
+MenuList = ["CAM_ToolBitLibraryOpen", "CAM_ToolBitDock"]
 
 FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd... done\n")

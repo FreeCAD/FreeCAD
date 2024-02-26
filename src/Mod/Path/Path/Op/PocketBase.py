@@ -58,19 +58,19 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
         enums = {
             "CutMode": [
-                (translate("Path_Pocket", "Climb"), "Climb"),
-                (translate("Path_Pocket", "Conventional"), "Conventional"),
+                (translate("CAM_Pocket", "Climb"), "Climb"),
+                (translate("CAM_Pocket", "Conventional"), "Conventional"),
             ],  # this is the direction that the profile runs
             "StartAt": [
-                (translate("Path_Pocket", "Center"), "Center"),
-                (translate("Path_Pocket", "Edge"), "Edge"),
+                (translate("CAM_Pocket", "Center"), "Center"),
+                (translate("CAM_Pocket", "Edge"), "Edge"),
             ],
             "OffsetPattern": [
-                (translate("Path_Pocket", "ZigZag"), "ZigZag"),
-                (translate("Path_Pocket", "Offset"), "Offset"),
-                (translate("Path_Pocket", "ZigZagOffset"), "ZigZagOffset"),
-                (translate("Path_Pocket", "Line"), "Line"),
-                (translate("Path_Pocket", "Grid"), "Grid"),
+                (translate("CAM_Pocket", "ZigZag"), "ZigZag"),
+                (translate("CAM_Pocket", "Offset"), "Offset"),
+                (translate("CAM_Pocket", "ZigZagOffset"), "ZigZagOffset"),
+                (translate("CAM_Pocket", "Line"), "Line"),
+                (translate("CAM_Pocket", "Grid"), "Grid"),
             ],  # Fill Pattern
         }
 

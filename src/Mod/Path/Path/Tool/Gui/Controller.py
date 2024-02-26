@@ -71,7 +71,7 @@ class ViewProvider:
         return None
 
     def getIcon(self):
-        return ":/icons/Path_ToolController.svg"
+        return ":/icons/CAM_ToolController.svg"
 
     def onChanged(self, vobj, prop):
         mode = 2
@@ -140,9 +140,9 @@ class CommandPathToolController(object):
         return {
             "Pixmap": "Path_LengthOffset",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_ToolController", "Add Tool Controller to the Job"
+                "CAM_ToolController", "Add Tool Controller to the Job"
             ),
-            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller"),
         }
 
     def selectedJob(self):
@@ -360,6 +360,6 @@ class DlgToolControllerEdit:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_ToolController", CommandPathToolController())
+    FreeCADGui.addCommand("CAM_ToolController", CommandPathToolController())
 
 FreeCAD.Console.PrintLog("Loading PathToolControllerGui... done\n")

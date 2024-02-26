@@ -108,10 +108,10 @@ Command = PathOpGui.SetupOperation(
     "Helix",
     PathHelix.Create,
     TaskPanelOpPage,
-    "Path_Helix",
-    QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
+    "CAM_Helix",
+    QT_TRANSLATE_NOOP("CAM_Helix", "Helix"),
     QT_TRANSLATE_NOOP(
-        "Path_Helix", "Creates a Path Helix from the features of a base object"
+        "CAM_Helix", "Creates a Path Helix from the features of a base object"
     ),
     PathHelix.SetupProperties,
 )

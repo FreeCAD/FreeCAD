@@ -168,10 +168,10 @@ Command = PathOpGui.SetupOperation(
     "Engrave",
     PathEngrave.Create,
     TaskPanelOpPage,
-    "Path_Engrave",
-    QtCore.QT_TRANSLATE_NOOP("Path_Engrave", "Engrave"),
+    "CAM_Engrave",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Engrave", "Engrave"),
     QtCore.QT_TRANSLATE_NOOP(
-        "Path_Engrave", "Creates an Engraving Path around a Draft ShapeString"
+        "CAM_Engrave", "Creates an Engraving Path around a Draft ShapeString"
     ),
     PathEngrave.SetupProperties,
 )

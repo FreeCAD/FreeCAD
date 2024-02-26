@@ -120,13 +120,13 @@ class CommandPathSanity:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_Sanity",
+            "Pixmap": "CAM_Sanity",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_Sanity", "Check the path job for common errors"
+                "CAM_Sanity", "Check the path job for common errors"
             ),
             "Accel": "P, S",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Sanity", "Check the path job for common errors"
+                "CAM_Sanity", "Check the path job for common errors"
             ),
         }
 
@@ -211,38 +211,38 @@ class CommandPathSanity:
         """
         generates an asciidoc file with the report information
         """
-        Title = translate("Path_Sanity", "Setup Report for FreeCAD Job")
-        ToC = translate("Path_Sanity", "Table of Contents")
-        PartInfoHeading = translate("Path_Sanity", "Part Information")
-        RunSumHeading = translate("Path_Sanity", "Run Summary")
-        RoughStkHeading = translate("Path_Sanity", "Rough Stock")
-        ToolDataHeading = translate("Path_Sanity", "Tool Data")
-        OutputHeading = translate("Path_Sanity", "Output")
-        FixturesHeading = translate("Path_Sanity", "Fixtures")
-        SquawksHeading = translate("Path_Sanity", "Squawks")
+        Title = translate("CAM_Sanity", "Setup Report for FreeCAD Job")
+        ToC = translate("CAM_Sanity", "Table of Contents")
+        PartInfoHeading = translate("CAM_Sanity", "Part Information")
+        RunSumHeading = translate("CAM_Sanity", "Run Summary")
+        RoughStkHeading = translate("CAM_Sanity", "Rough Stock")
+        ToolDataHeading = translate("CAM_Sanity", "Tool Data")
+        OutputHeading = translate("CAM_Sanity", "Output")
+        FixturesHeading = translate("CAM_Sanity", "Fixtures")
+        SquawksHeading = translate("CAM_Sanity", "Squawks")
 
-        PartLabel = translate("Path_Sanity", "Base Object(s)")
-        SequenceLabel = translate("Path_Sanity", "Job Sequence")
-        DescriptionLabel = translate("Path_Sanity", "Job Description")
-        JobTypeLabel = translate("Path_Sanity", "Job Type")
-        CADLabel = translate("Path_Sanity", "CAD File Name")
-        LastSaveLabel = translate("Path_Sanity", "Last Save Date")
-        CustomerLabel = translate("Path_Sanity", "Customer")
-        DesignerLabel = translate("Path_Sanity", "Designer")
+        PartLabel = translate("CAM_Sanity", "Base Object(s)")
+        SequenceLabel = translate("CAM_Sanity", "Job Sequence")
+        DescriptionLabel = translate("CAM_Sanity", "Job Description")
+        JobTypeLabel = translate("CAM_Sanity", "Job Type")
+        CADLabel = translate("CAM_Sanity", "CAD File Name")
+        LastSaveLabel = translate("CAM_Sanity", "Last Save Date")
+        CustomerLabel = translate("CAM_Sanity", "Customer")
+        DesignerLabel = translate("CAM_Sanity", "Designer")
 
         b = data["baseData"]
         d = data["designData"]
         jobname = d["JobLabel"]
 
-        opLabel = translate("Path_Sanity", "Operation")
-        zMinLabel = translate("Path_Sanity", "Minimum Z Height")
-        zMaxLabel = translate("Path_Sanity", "Maximum Z Height")
-        cycleTimeLabel = translate("Path_Sanity", "Cycle Time")
+        opLabel = translate("CAM_Sanity", "Operation")
+        zMinLabel = translate("CAM_Sanity", "Minimum Z Height")
+        zMaxLabel = translate("CAM_Sanity", "Maximum Z Height")
+        cycleTimeLabel = translate("CAM_Sanity", "Cycle Time")
 
-        coolantLabel = translate("Path_Sanity", "Coolant")
-        jobTotalLabel = translate("Path_Sanity", "TOTAL JOB")
+        coolantLabel = translate("CAM_Sanity", "Coolant")
+        jobTotalLabel = translate("CAM_Sanity", "TOTAL JOB")
         d = data["toolData"]
-        toolLabel = translate("Path_Sanity", "Tool Number")
+        toolLabel = translate("CAM_Sanity", "Tool Number")
         imageCounter = 1
         reportHtmlTemplate = """
 
@@ -505,40 +505,40 @@ class CommandPathSanity:
 	</tr>
 </table>"""
 
-        descriptionLabel = translate("Path_Sanity", "Description")
-        manufLabel = translate("Path_Sanity", "Manufacturer")
-        partNumberLabel = translate("Path_Sanity", "Part Number")
-        urlLabel = translate("Path_Sanity", "URL")
-        inspectionNotesLabel = translate("Path_Sanity", "Inspection Notes")
-        opLabel = translate("Path_Sanity", "Operation")
-        tcLabel = translate("Path_Sanity", "Tool Controller")
-        feedLabel = translate("Path_Sanity", "Feed Rate")
-        speedLabel = translate("Path_Sanity", "Spindle Speed")
-        shapeLabel = translate("Path_Sanity", "Tool Shape")
-        diameterLabel = translate("Path_Sanity", "Tool Diameter")
+        descriptionLabel = translate("CAM_Sanity", "Description")
+        manufLabel = translate("CAM_Sanity", "Manufacturer")
+        partNumberLabel = translate("CAM_Sanity", "Part Number")
+        urlLabel = translate("CAM_Sanity", "URL")
+        inspectionNotesLabel = translate("CAM_Sanity", "Inspection Notes")
+        opLabel = translate("CAM_Sanity", "Operation")
+        tcLabel = translate("CAM_Sanity", "Tool Controller")
+        feedLabel = translate("CAM_Sanity", "Feed Rate")
+        speedLabel = translate("CAM_Sanity", "Spindle Speed")
+        shapeLabel = translate("CAM_Sanity", "Tool Shape")
+        diameterLabel = translate("CAM_Sanity", "Tool Diameter")
 
-        xDimLabel = translate("Path_Sanity", "X Size")
-        yDimLabel = translate("Path_Sanity", "Y Size")
-        zDimLabel = translate("Path_Sanity", "Z Size")
-        materialLabel = translate("Path_Sanity", "Material")
+        xDimLabel = translate("CAM_Sanity", "X Size")
+        yDimLabel = translate("CAM_Sanity", "Y Size")
+        zDimLabel = translate("CAM_Sanity", "Z Size")
+        materialLabel = translate("CAM_Sanity", "Material")
 
-        offsetsLabel = translate("Path_Sanity", "Work Offsets")
-        orderByLabel = translate("Path_Sanity", "Order By")
-        datumLabel = translate("Path_Sanity", "Part Datum")
+        offsetsLabel = translate("CAM_Sanity", "Work Offsets")
+        orderByLabel = translate("CAM_Sanity", "Order By")
+        datumLabel = translate("CAM_Sanity", "Part Datum")
 
-        gcodeFileLabel = translate("Path_Sanity", "G-code File")
-        lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
-        stopsLabel = translate("Path_Sanity", "Stops")
-        programmerLabel = translate("Path_Sanity", "Programmer")
-        machineLabel = translate("Path_Sanity", "Machine")
-        postLabel = translate("Path_Sanity", "Postprocessor")
-        flagsLabel = translate("Path_Sanity", "Post Processor Flags")
-        fileSizeLabel = translate("Path_Sanity", "File Size (kB)")
-        lineCountLabel = translate("Path_Sanity", "Line Count")
+        gcodeFileLabel = translate("CAM_Sanity", "G-code File")
+        lastpostLabel = translate("CAM_Sanity", "Last Post Process Date")
+        stopsLabel = translate("CAM_Sanity", "Stops")
+        programmerLabel = translate("CAM_Sanity", "Programmer")
+        machineLabel = translate("CAM_Sanity", "Machine")
+        postLabel = translate("CAM_Sanity", "Postprocessor")
+        flagsLabel = translate("CAM_Sanity", "Post Processor Flags")
+        fileSizeLabel = translate("CAM_Sanity", "File Size (kB)")
+        lineCountLabel = translate("CAM_Sanity", "Line Count")
 
-        noteLabel = translate("Path_Sanity", "Note")
-        operatorLabel = translate("Path_Sanity", "Operator")
-        dateLabel = translate("Path_Sanity", "Date")
+        noteLabel = translate("CAM_Sanity", "Note")
+        operatorLabel = translate("CAM_Sanity", "Operator")
+        dateLabel = translate("CAM_Sanity", "Date")
 
         d = data["runData"]
         reportHtmlTemplate += """
@@ -1326,7 +1326,7 @@ class CommandPathSanity:
                     self.squawk(
                         "PathSanity",
                         translate(
-                            "Path_Sanity",
+                            "CAM_Sanity",
                             "Tool number {} is a legacy tool. Legacy tools not \
                         supported by Path-Sanity",
                         ).format(TC.ToolNumber),
@@ -1339,7 +1339,7 @@ class CommandPathSanity:
                     self.squawk(
                         "PathSanity",
                         translate(
-                            "Path_Sanity", "Tool number {} used by multiple tools"
+                            "CAM_Sanity", "Tool number {} used by multiple tools"
                         ).format(TC.ToolNumber),
                         squawkType="CAUTION",
                     )
@@ -1367,7 +1367,7 @@ class CommandPathSanity:
                     self.squawk(
                         "PathSanity",
                         translate(
-                            "Path_Sanity", "Tool Controller '{}' has no spindlespeed"
+                            "CAM_Sanity", "Tool Controller '{}' has no spindlespeed"
                         ).format(TC.Label),
                         squawkType="WARNING",
                     )
@@ -1395,7 +1395,7 @@ class CommandPathSanity:
                     self.squawk(
                         "PathSanity",
                         translate(
-                            "Path_Sanity", "Tool Controller '{}' is not used"
+                            "CAM_Sanity", "Tool Controller '{}' is not used"
                         ).format(TC.Label),
                         squawkType="WARNING",
                     )
@@ -1491,7 +1491,7 @@ class CommandPathSanity:
             if data["material"] == "Not Specified":
                 self.squawk(
                     "PathSanity",
-                    translate("Path_Sanity", "Consider Specifying the Stock Material"),
+                    translate("CAM_Sanity", "Consider Specifying the Stock Material"),
                     squawkType="TIP",
                 )
 
@@ -1582,7 +1582,7 @@ class CommandPathSanity:
                 data["linecount"] = str(0)
                 self.squawk(
                     "PathSanity",
-                    translate("Path_Sanity", "The Job has not been post-processed"),
+                    translate("CAM_Sanity", "The Job has not been post-processed"),
                 )
             else:
                 data["filesize"] = str(
@@ -1601,4 +1601,4 @@ class CommandPathSanity:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Sanity", CommandPathSanity())
+    FreeCADGui.addCommand("CAM_Sanity", CommandPathSanity())

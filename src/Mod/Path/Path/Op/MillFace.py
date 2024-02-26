@@ -65,10 +65,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         enums = {
             "BoundaryShape": [
-                (translate("Path_Pocket", "Boundbox"), "Boundbox"),
-                (translate("Path_Pocket", "Face Region"), "Face Region"),
-                (translate("Path_Pocket", "Perimeter"), "Perimeter"),
-                (translate("Path_Pocket", "Stock"), "Stock"),
+                (translate("CAM_Pocket", "Boundbox"), "Boundbox"),
+                (translate("CAM_Pocket", "Face Region"), "Face Region"),
+                (translate("CAM_Pocket", "Perimeter"), "Perimeter"),
+                (translate("CAM_Pocket", "Stock"), "Stock"),
             ],
         }
 

@@ -353,7 +353,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
             Path.Log.error(
                 translate(
-                    "Path_Vcarve",
+                    "CAM_Vcarve",
                     "VCarve requires an engraving cutter with a cutting edge angle",
                 )
             )
@@ -361,7 +361,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             Path.Log.error(
                 translate(
-                    "Path_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
+                    "CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
                 )
             )
             return
