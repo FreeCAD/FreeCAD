@@ -236,6 +236,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         createdLink = self.assembly.newObject("App::Link", selectedPart.Label)
         createdLink.LinkedObject = selectedPart
+        createdLink.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
         createdLink.recompute()
 
         addedObject = createdLink
