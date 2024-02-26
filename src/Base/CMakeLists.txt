@@ -87,18 +87,6 @@ generate_from_xml(QuantityPy)
 generate_from_xml(PrecisionPy)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
-if(SWIG_FOUND)
-    # Create the file swigpyrun.hh and then compare with the file swigpyrun.h.
-    # If the files are different or if swigpyrun.h doesn't exist then copy swigpyrun.hh.
-    # This is to avoid to having to build the target each time cmake configure is executed.
-    execute_process(COMMAND ${SWIG_EXECUTABLE} -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.hh)
-
-    fc_copy_file_if_different(
-        "${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.hh"
-        "${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.h"
-    )
-    add_definitions(-DHAVE_SWIG=1)
-endif(SWIG_FOUND)
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
@@ -211,9 +199,7 @@ SET(FreeCADBase_UNITAPI_SRCS
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
-SET(SWIG_SRCS
-    swigpyrun.cpp
-)
+
 
 SET(FreeCADBase_CPP_SRCS
     Axis.cpp
@@ -281,9 +267,6 @@ SET(FreeCADBase_CPP_SRCS
     ZipHeader.cpp
 )
 
-SET(SWIG_HEADERS
-    swigpyrun.inl
-)
 
 SET(FreeCADBase_HPP_SRCS
     Axis.h
