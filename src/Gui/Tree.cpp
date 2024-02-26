@@ -4055,7 +4055,6 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
     auto getTreeRank = [](Gui::ViewProviderDocumentObject* vp) -> int {
         if (vp->TreeRank.getValue() == -1) {
             vp->TreeRank.setValue(vp->getObject()->getID());
-            Base::Console().Warning("init treerank to %d\n", vp->getObject()->getID());
         }
         return vp->TreeRank.getValue();
     };
