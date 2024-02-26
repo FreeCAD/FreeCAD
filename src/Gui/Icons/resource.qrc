@@ -133,6 +133,8 @@
         <file>Tree_Annotation.svg</file>
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
+        <file>TreeItemVisible.svg</file>
+        <file>TreeItemInvisible.svg</file>
         <file>dagViewVisible.svg</file>
         <file>dagViewPass.svg</file>
         <file>dagViewFail.svg</file>
@@ -267,6 +269,7 @@
         <file>image-open.svg</file>
         <file>image-plane.svg</file>
         <file>image-scaling.svg</file>
+        <file>VarSet.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

@@ -87,6 +87,7 @@ generate_from_xml(LinkBaseExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_xml(SuppressibleExtensionPy)
 generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
@@ -112,6 +113,7 @@ SET(FreeCADApp_XML_SRCS
     GeoFeaturePy.xml
     GeoFeatureGroupExtensionPy.xml
     OriginGroupExtensionPy.xml
+    SuppressibleExtensionPy.xml
     PartPy.xml
     DocumentPy.xml
     PropertyContainerPy.xml
@@ -154,6 +156,8 @@ SET(Document_CPP_SRCS
     ImagePlane.cpp
     OriginGroupExtensionPyImp.cpp
     OriginGroupExtension.cpp
+    SuppressibleExtensionPyImp.cpp
+    SuppressibleExtension.cpp
     PartPyImp.cpp
     Part.cpp
     Origin.cpp
@@ -171,6 +175,7 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
+    VarSet.cpp
     License.h
 )
 
@@ -199,6 +204,7 @@ SET(Document_HPP_SRCS
     GeoFeatureGroupExtension.h
     ImagePlane.h
     OriginGroupExtension.h
+    SuppressibleExtension.h
     Part.h
     Origin.h
     Path.h
@@ -213,6 +219,7 @@ SET(Document_HPP_SRCS
     MaterialObject.h
     MergeDocuments.h
     TextDocument.h
+    VarSet.h
     Link.h
 )
 SET(Document_SRCS

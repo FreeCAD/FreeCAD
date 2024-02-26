@@ -368,9 +368,18 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             "Output 3D results for 1D and 2D analysis "
         )
-        dimout = ccx_prefs.GetBool("BeamShellOutput", False)
+        dimout = ccx_prefs.GetBool("BeamShellOutput", True)
         obj.BeamShellResultOutput3D = dimout
 
+
+    if not hasattr(obj, "BeamReducedIntegration"):
+        obj.addProperty(
+            "App::PropertyBool",
+            "BeamReducedIntegration",
+            "Fem",
+            "Set to True to use beam elements with reduced integration"
+        )
+        obj.BeamReducedIntegration = True
 
 """
 Should there be some equation object for Calculix too?

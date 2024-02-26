@@ -895,6 +895,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderGroupExtension.cpp
     ViewProviderGeoFeatureGroupExtension.cpp
     ViewProviderOriginGroupExtension.cpp
+    ViewProviderSuppressibleExtension.cpp
     ViewProviderAnnotation.cpp
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
@@ -923,6 +924,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderLink.cpp
     LinkViewPyImp.cpp
     ViewProviderLinkPyImp.cpp
+    ViewProviderVarSet.cpp
     AxisOriginPyImp.cpp
     AxisOrigin.cpp
 )
@@ -957,6 +959,7 @@ SET(Viewprovider_SRCS
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
     ViewProviderLink.h
+    ViewProviderVarSet.h
     AxisOrigin.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})

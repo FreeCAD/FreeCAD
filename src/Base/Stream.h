@@ -30,6 +30,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "FileInfo.h"
@@ -138,6 +139,121 @@ public:
 
 private:
     std::istream& _in;
+};
+
+/**
+ * The TextInputStream class provides reading of ASCII data from an istream, with custom handling
+ * for std::string to make it easier to read a single multi-line (or multi-word) string. This is
+ * designed for easy compatibility with the LinkStage3 implementation of the InputStream class, used
+ * to store StringHashers for the toponaming mitigation technique.
+ */
+class BaseExport TextInputStream: public Stream
+{
+public:
+    /** Constructor
+     * @param rin: upstream input
+     */
+    explicit TextInputStream(std::istream& rin)
+        : _in(rin)
+    {}
+
+    TextInputStream(const TextInputStream&) = delete;
+
+    TextInputStream(const TextInputStream&&) noexcept = delete;
+
+    void operator=(const TextInputStream&) = delete;
+
+    void operator=(const TextInputStream&&) = delete;
+
+    ~TextInputStream() override = default;
+
+    TextInputStream& operator>>(bool& input)
+    {
+        _in >> input;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int8_t& ch)
+    {
+        int index {};
+        _in >> index;
+        ch = (int8_t)index;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint8_t& uch)
+    {
+        unsigned uns {};
+        _in >> uns;
+        uch = (uint8_t)uns;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int16_t& int16)
+    {
+        _in >> int16;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint16_t& us)
+    {
+        _in >> us;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int32_t& int32)
+    {
+        _in >> int32;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint32_t& ui)
+    {
+        _in >> ui;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int64_t& int64)
+    {
+        _in >> int64;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint64_t& ul)
+    {
+        _in >> ul;
+        return *this;
+    }
+
+    TextInputStream& operator>>(float& flt)
+    {
+        _in >> flt;
+        return *this;
+    }
+
+    TextInputStream& operator>>(double& dbl)
+    {
+        _in >> dbl;
+        return *this;
+    }
+
+    TextInputStream& operator>>(std::string& str);
+
+    TextInputStream& operator>>(char& chr)
+    {
+        chr = (char)_in.get();
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        // test if _Ipfx succeeded
+        return !_in.eof();
+    }
+
+private:
+    std::istream& _in;
+    std::ostringstream _ss;
 };
 
 // ----------------------------------------------------------------------------

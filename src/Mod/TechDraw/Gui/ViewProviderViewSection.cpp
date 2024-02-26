@@ -91,7 +91,6 @@ ViewProviderViewSection::~ViewProviderViewSection()
 void ViewProviderViewSection::onChanged(const App::Property* prop)
 {
     if (prop == &WeightPattern   ||
-//        prop == &HatchCutSurface ||
         prop == &HatchColor      ||
         prop == &GeomHatchColor      ||
         prop == &CutSurfaceColor ||
@@ -155,9 +154,6 @@ void ViewProviderViewSection::getParameters()
 {
     App::Color cutColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("CutSurfaceColor", 0xD3D3D3FF));
     CutSurfaceColor.setValue(cutColor);
-
-//    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));
-//    HatchColor.setValue(hatchColor);
 
     double lineWeight = Preferences::getPreferenceGroup("PAT")->GetFloat("GeomWeight", 0.1);
     WeightPattern.setValue(lineWeight);

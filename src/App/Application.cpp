@@ -99,12 +99,15 @@
 #include "InventorObject.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
+#include "VarSet.h"
 #include "MaterialObject.h"
 #include "MeasureDistance.h"
 #include "Origin.h"
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
+#include "SuppressibleExtension.h"
+#include "SuppressibleExtensionPy.h"
 #include "Part.h"
 #include "PartPy.h"
 #include "Placement.h"
@@ -2058,6 +2061,8 @@ void Application::initTypes()
     App::LinkBaseExtensionPython       ::init();
     App::LinkExtension                 ::init();
     App::LinkExtensionPython           ::init();
+    App::SuppressibleExtension         ::init();
+    App::SuppressibleExtensionPython   ::init();
 
     // Document classes
     App::TransactionalObject       ::init();
@@ -2102,6 +2107,7 @@ void Application::initTypes()
     App::LinkElementPython         ::init();
     App::LinkGroup                 ::init();
     App::LinkGroupPython           ::init();
+    App::VarSet                    ::init();
 
     // Expression classes
     App::Expression                ::init();

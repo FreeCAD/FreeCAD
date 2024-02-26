@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Si cette case est cochée, les objets afficheront leurs enfants dans la vue en arborescence</translation>
+      <translation>Si cette option est cochée, les objets afficheront leurs enfants dans la vue en arborescence.</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Si cette case est cochée, les objets Multimatrix seront paramétriques</translation>
+      <translation>Si cette option est cochée, les objets Multimatrix seront paramétriques.</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>

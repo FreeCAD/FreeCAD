@@ -241,6 +241,8 @@ public:
                 return isEndPointSelected;
             case Sketcher::PointPos::mid:
                 return isMidPointSelected;
+            default:
+                return false;
         }
     }
 

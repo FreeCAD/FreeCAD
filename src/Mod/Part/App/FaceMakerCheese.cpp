@@ -244,12 +244,12 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 
 std::string FaceMakerCheese::getUserFriendlyName() const
 {
-    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Cheese facemaker")};
+    return {tr("Cheese facemaker").toStdString()};
 }
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return {QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making planar faces with holes, but no islands inside holes.")};
+    return {tr("Supports making planar faces with holes, but no islands inside holes.").toStdString()};
 }
 
 void FaceMakerCheese::Build_Essence()

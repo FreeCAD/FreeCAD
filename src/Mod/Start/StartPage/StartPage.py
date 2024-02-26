@@ -321,6 +321,10 @@ def build_new_file_card(template):
             TranslationTexts.get("T_TEMPLATE_PARAMETRICPART_NAME"),
             TranslationTexts.get("T_TEMPLATE_PARAMETRICPART_DESC"),
         ],
+        "assembly": [
+            TranslationTexts.get("T_TEMPLATE_ASSEMBLY_NAME"),
+            TranslationTexts.get("T_TEMPLATE_ASSEMBLY_DESC"),
+        ],
         # "csg_part": [TranslationTexts.get("T_TEMPLATE_CSGPART_NAME"), TranslationTexts.get("T_TEMPLATE_CSGPART_DESC")],
         "2d_draft": [
             TranslationTexts.get("T_TEMPLATE_2DDRAFT_NAME"),
@@ -553,6 +557,7 @@ def handle():
     SECTION_NEW_FILE += build_new_file_card("empty_file")
     SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
+    SECTION_NEW_FILE += build_new_file_card("assembly")
     # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
     SECTION_NEW_FILE += build_new_file_card("architecture")
