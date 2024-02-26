@@ -28,11 +28,11 @@ import TreeParams
 TreeParams.declare_begin()
 ]]]*/
 
-// Auto generated code (Tools/params_utils.py:72)
+// Auto generated code (Tools/params_utils.py:82)
 #include <Base/Parameter.h>
 
 
-// Auto generated code (Tools/params_utils.py:78)
+// Auto generated code (Tools/params_utils.py:90)
 namespace Gui {
 /** Convenient class to obtain tree view related parameters
 
@@ -68,7 +68,7 @@ class GuiExport TreeParams {
 public:
     static ParameterGrp::handle getHandle();
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncSelection
     static const bool & getSyncSelection();
@@ -79,7 +79,7 @@ public:
     static void onSyncSelectionChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter CheckBoxesSelection
     static const bool & getCheckBoxesSelection();
@@ -90,7 +90,7 @@ public:
     static void onCheckBoxesSelectionChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncView
     static const bool & getSyncView();
@@ -100,7 +100,7 @@ public:
     static const char *docSyncView();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelection
     static const bool & getPreSelection();
@@ -110,7 +110,7 @@ public:
     static const char *docPreSelection();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncPlacement
     static const bool & getSyncPlacement();
@@ -120,7 +120,7 @@ public:
     static const char *docSyncPlacement();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter RecordSelection
     static const bool & getRecordSelection();
@@ -130,7 +130,7 @@ public:
     static const char *docRecordSelection();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DocumentMode
     static const long & getDocumentMode();
@@ -141,7 +141,7 @@ public:
     static void onDocumentModeChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter StatusTimeout
     static const long & getStatusTimeout();
@@ -151,7 +151,7 @@ public:
     static const char *docStatusTimeout();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SelectionTimeout
     static const long & getSelectionTimeout();
@@ -161,7 +161,7 @@ public:
     static const char *docSelectionTimeout();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionTimeout
     static const long & getPreSelectionTimeout();
@@ -171,7 +171,7 @@ public:
     static const char *docPreSelectionTimeout();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionDelay
     static const long & getPreSelectionDelay();
@@ -181,7 +181,7 @@ public:
     static const char *docPreSelectionDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionMinDelay
     static const long & getPreSelectionMinDelay();
@@ -191,7 +191,7 @@ public:
     static const char *docPreSelectionMinDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter RecomputeOnDrop
     static const bool & getRecomputeOnDrop();
@@ -201,7 +201,7 @@ public:
     static const char *docRecomputeOnDrop();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter KeepRootOrder
     static const bool & getKeepRootOrder();
@@ -211,7 +211,7 @@ public:
     static const char *docKeepRootOrder();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveAutoExpand
     static const bool & getTreeActiveAutoExpand();
@@ -221,7 +221,7 @@ public:
     static const char *docTreeActiveAutoExpand();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveColor
     static const unsigned long & getTreeActiveColor();
@@ -232,7 +232,7 @@ public:
     static void onTreeActiveColorChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeEditColor
     static const unsigned long & getTreeEditColor();
@@ -243,7 +243,7 @@ public:
     static void onTreeEditColorChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SelectingGroupColor
     static const unsigned long & getSelectingGroupColor();
@@ -254,7 +254,7 @@ public:
     static void onSelectingGroupColorChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveBold
     static const bool & getTreeActiveBold();
@@ -265,7 +265,7 @@ public:
     static void onTreeActiveBoldChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveItalic
     static const bool & getTreeActiveItalic();
@@ -276,7 +276,7 @@ public:
     static void onTreeActiveItalicChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveUnderlined
     static const bool & getTreeActiveUnderlined();
@@ -287,7 +287,7 @@ public:
     static void onTreeActiveUnderlinedChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveOverlined
     static const bool & getTreeActiveOverlined();
@@ -298,7 +298,7 @@ public:
     static void onTreeActiveOverlinedChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter Indentation
     static const long & getIndentation();
@@ -309,7 +309,7 @@ public:
     static void onIndentationChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter LabelExpression
     static const bool & getLabelExpression();
@@ -319,7 +319,7 @@ public:
     static const char *docLabelExpression();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter IconSize
     static const long & getIconSize();
@@ -330,7 +330,7 @@ public:
     static void onIconSizeChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter FontSize
     static const long & getFontSize();
@@ -341,7 +341,7 @@ public:
     static void onFontSizeChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ItemSpacing
     static const long & getItemSpacing();
@@ -352,7 +352,7 @@ public:
     static void onItemSpacingChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ItemBackground
     ///
@@ -365,7 +365,7 @@ public:
     static void onItemBackgroundChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ItemBackgroundPadding
     ///
@@ -378,7 +378,7 @@ public:
     static void onItemBackgroundPaddingChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter HideColumn
     ///
@@ -391,7 +391,7 @@ public:
     static void onHideColumnChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter HideScrollBar
     ///
@@ -403,7 +403,7 @@ public:
     static const char *docHideScrollBar();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter HideHeaderView
     ///
@@ -415,7 +415,7 @@ public:
     static const char *docHideHeaderView();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ResizableColumn
     ///
@@ -428,7 +428,7 @@ public:
     static void onResizableColumnChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ColumnSize1
     static const long & getColumnSize1();
@@ -438,7 +438,7 @@ public:
     static const char *docColumnSize1();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ColumnSize2
     static const long & getColumnSize2();
@@ -448,7 +448,7 @@ public:
     static const char *docColumnSize2();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeToolTipIcon
     static const bool & getTreeToolTipIcon();
@@ -456,6 +456,19 @@ public:
     static void removeTreeToolTipIcon();
     static void setTreeToolTipIcon(const bool &v);
     static const char *docTreeToolTipIcon();
+    //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
+    /// Accessor for parameter VisibilityIcon
+    ///
+    /// If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled
+    static const bool & getVisibilityIcon();
+    static const bool & defaultVisibilityIcon();
+    static void removeVisibilityIcon();
+    static void setVisibilityIcon(const bool &v);
+    static const char *docVisibilityIcon();
+    static void onVisibilityIconChanged();
     //@}
 //[[[end]]]
 
@@ -465,7 +478,7 @@ public:
 TreeParams.declare_end()
 ]]]*/
 
-// Auto generated code (Tools/params_utils.py:150)
+// Auto generated code (Tools/params_utils.py:178)
 }; // class TreeParams
 } // namespace Gui
 //[[[end]]]

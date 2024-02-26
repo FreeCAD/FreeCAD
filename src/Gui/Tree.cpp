@@ -93,6 +93,14 @@ const int TreeWidget::ObjectType = 1001;
 static bool _DraggingActive;
 static bool _DragEventFilter;
 
+static bool isVisibilityIconEnabled() {
+    return TreeParams::getVisibilityIcon();
+}
+
+static bool isSelectionCheckBoxesEnabled() {
+    return TreeParams::getCheckBoxesSelection();
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -1550,6 +1558,50 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
         }
     }
     QTreeWidget::keyPressEvent(event);
+}
+
+void TreeWidget::mousePressEvent(QMouseEvent* event)
+{
+    QTreeWidget::mousePressEvent(event);
+
+    // Handle the visibility icon after the normal event processing to not interfer with
+    // the selection logic.
+    if (isVisibilityIconEnabled()) {
+        QTreeWidgetItem* item = itemAt(event->pos());
+        if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
+            auto objitem = static_cast<DocumentObjectItem*>(item);
+
+            // Mouse position relative to viewport
+            auto mousePos = event->pos();
+
+            // Rect occupied by the item relative to viewport
+            auto iconRect = visualItemRect(objitem);
+
+            // If the checkboxes are visible, these are displayed before the icon
+            // and we have to compensate for its width.
+            if (isSelectionCheckBoxesEnabled()) {
+                auto style = this->style();
+                int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
+                                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+                iconRect.adjust(checkboxWidth, 0, 0, 0);
+            }
+
+            // We are interested in the first icon (visibility icon)
+            iconRect.setWidth(iconSize());
+
+            // If the visibility icon was clicked, toggle the DocumentObject visibility
+            if (iconRect.contains(mousePos)) {
+                auto vp = objitem->object();
+                if (vp->isShow()) {
+                    vp->hide();
+                } else {
+                    vp->show();
+                }
+                event->setAccepted(true);
+                return;
+            }
+        }
+    }
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -3282,10 +3334,6 @@ void TreeWidget::onItemSelectionChanged()
     this->blockSelection(lock);
 }
 
-static bool isSelectionCheckBoxesEnabled() {
-    return TreeParams::getCheckBoxesSelection();
-}
-
 void TreeWidget::synchronizeSelectionCheckBoxes() {
     const bool useCheckBoxes = isSelectionCheckBoxesEnabled();
     for (auto tree : TreeWidget::Instances) {
@@ -3297,6 +3345,20 @@ void TreeWidget::synchronizeSelectionCheckBoxes() {
                     item->setCheckState(0, item->isSelected() ? Qt::Checked : Qt::Unchecked);
                 else
                     item->setData(0, Qt::CheckStateRole, QVariant());
+            }
+        }
+        tree->resizeColumnToContents(0);
+    }
+}
+
+void TreeWidget::updateVisibilityIcons() {
+    for (auto tree : TreeWidget::Instances) {
+        QSignalBlocker blocker(tree);
+        for (QTreeWidgetItemIterator it(tree); *it; ++it) {
+            auto item = *it;
+            if (item->type() == ObjectType) {
+                auto objitem = static_cast<DocumentObjectItem*>(item);
+                objitem->testStatus(true);
             }
         }
         tree->resizeColumnToContents(0);
@@ -5117,7 +5179,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (currentStatus & 1) { // visible
+    if (isVisibilityIconEnabled() || (currentStatus & 1)) { // visible
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5260,6 +5322,35 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
 
         icon = object()->mergeColorfulOverlayIcons(icon);
+    }
+
+    if (isVisibilityIconEnabled()) {
+        static QPixmap pxVisible, pxInvisible;
+        if (pxVisible.isNull()) {
+            pxVisible = BitmapFactory().pixmap("TreeItemVisible");
+        }
+        if (pxInvisible.isNull()) {
+            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
+        }
+
+        // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
+        QIcon new_icon;
+        for (auto state: {QIcon::On, QIcon::Off}) {
+            QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
+
+            QPixmap px(2*px_org.width(), px_org.height());
+            px.fill(Qt::transparent);
+
+            QPainter pt;
+            pt.begin(&px);
+            pt.setPen(Qt::NoPen);
+            pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+            pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+            pt.end();
+
+            new_icon.addPixmap(px, QIcon::Normal, state);
+        }
+        icon = new_icon;
     }
 
 

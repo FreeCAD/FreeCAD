@@ -122,6 +122,7 @@ public:
     void itemSearch(const QString &text, bool select);
 
     static void synchronizeSelectionCheckBoxes();
+    static void updateVisibilityIcons();
 
     QList<QTreeWidgetItem *> childrenOfItem(const QTreeWidgetItem &item) const;
 
@@ -155,6 +156,7 @@ protected:
     //@}
     bool event(QEvent *e) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void mousePressEvent(QMouseEvent * event) override;
     void mouseDoubleClickEvent(QMouseEvent * event) override;
 
 protected:
