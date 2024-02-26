@@ -207,7 +207,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             if not import_doc_is_open:
                 if filename.lower().endswith(".fcstd"):
-                    App.openDocument(filename)
+                    App.openDocument(filename, True)
                     App.setActiveDocument(self.doc.Name)
                     self.buildPartList()
 
