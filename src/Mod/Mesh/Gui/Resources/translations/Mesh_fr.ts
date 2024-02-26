@@ -1428,8 +1428,8 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>La face inférieure d'une surface recevra le même rendu que la face supérieure.
 Si cette option n'est pas cochée, elle dépend de l'option "Couleur du rétroéclairage"
-(préférences section Affichage → Vue 3D). Soit la couleur du rétroéclairage
-sera utilisée, soit ce sera noir.</translation>
+(préférences section Affichage → Vue 3D).
+La couleur du rétroéclairage sera utilisée ou bien ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>

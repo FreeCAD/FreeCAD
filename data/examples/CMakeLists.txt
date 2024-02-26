@@ -9,6 +9,7 @@ SET(Examples_Files
     FemCalculixCantilever2D.FCStd
     FemCalculixCantilever3D.FCStd
     FemCalculixCantilever3D_newSolver.FCStd
+    AssemblyExample.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL

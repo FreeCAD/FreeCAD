@@ -80,8 +80,8 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
 
-    //we cannot drop thing of this group into it again
-    if (group->hasObject(obj))
+    //we cannot drop thing of this group into it again if it does not allow reorder
+    if (group->hasObject(obj) && !getExtendedViewProvider()->acceptReorderingObjects())
         return false;
 
     if (group->allowObject(obj))

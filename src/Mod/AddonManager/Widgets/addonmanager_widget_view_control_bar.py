@@ -23,6 +23,8 @@
 
 """ Defines a class derived from QWidget for displaying the bar at the top of the addons list. """
 
+from enum import IntEnum, auto
+
 # Get whatever version of PySide we can
 try:
     import PySide  # Use the FreeCAD wrapper
@@ -36,10 +38,30 @@ except ImportError:
 
         PySide = PySide2
 
-from PySide import QtCore, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
 from .addonmanager_widget_view_selector import WidgetViewSelector
 from .addonmanager_widget_filter_selector import WidgetFilterSelector
 from .addonmanager_widget_search import WidgetSearch
+
+translate = QtCore.QCoreApplication.translate
+
+
+class SortOptions(IntEnum):
+    _SortRoleOffset = 100
+    Alphabetical = QtCore.Qt.UserRole + _SortRoleOffset + 0
+    LastUpdated = QtCore.Qt.UserRole + _SortRoleOffset + 1
+    DateAdded = QtCore.Qt.UserRole + _SortRoleOffset + 2
+    Stars = QtCore.Qt.UserRole + _SortRoleOffset + 3
+    Rank = QtCore.Qt.UserRole + _SortRoleOffset + 4
+
+
+default_sort_order = {
+    SortOptions.Alphabetical: QtCore.Qt.AscendingOrder,
+    SortOptions.LastUpdated: QtCore.Qt.DescendingOrder,
+    SortOptions.DateAdded: QtCore.Qt.DescendingOrder,
+    SortOptions.Stars: QtCore.Qt.DescendingOrder,
+    SortOptions.Rank: QtCore.Qt.DescendingOrder,
+}
 
 
 class WidgetViewControlBar(QtWidgets.QWidget):
@@ -48,28 +70,86 @@ class WidgetViewControlBar(QtWidgets.QWidget):
     view_changed = QtCore.Signal(int)
     filter_changed = QtCore.Signal(object)
     search_changed = QtCore.Signal(str)
+    sort_changed = QtCore.Signal(int)
+    sort_order_changed = QtCore.Signal(QtCore.Qt.SortOrder)
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)
         self._setup_ui()
         self._setup_connections()
         self.retranslateUi(None)
+        self.sort_order = QtCore.Qt.AscendingOrder
+        self._set_sort_order_icon()
 
     def _setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout()
         self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
         self.view_selector = WidgetViewSelector(self)
         self.filter_selector = WidgetFilterSelector(self)
+        self.sort_selector = QtWidgets.QComboBox(self)
+        self.sort_order_button = QtWidgets.QToolButton(self)
+        self.sort_order_button.setIcon(
+            QtGui.QIcon.fromTheme("ascending", QtGui.QIcon(":/icons/sort_ascending.svg"))
+        )
         self.search = WidgetSearch(self)
         self.horizontal_layout.addWidget(self.view_selector)
         self.horizontal_layout.addWidget(self.filter_selector)
+        self.horizontal_layout.addWidget(self.sort_selector)
+        self.horizontal_layout.addWidget(self.sort_order_button)
         self.horizontal_layout.addWidget(self.search)
         self.setLayout(self.horizontal_layout)
+
+    def _sort_order_clicked(self):
+        if self.sort_order == QtCore.Qt.AscendingOrder:
+            self.set_sort_order(QtCore.Qt.DescendingOrder)
+        else:
+            self.set_sort_order(QtCore.Qt.AscendingOrder)
+        self.sort_order_changed.emit(self.sort_order)
+
+    def set_sort_order(self, order: QtCore.Qt.SortOrder) -> None:
+        self.sort_order = order
+        self._set_sort_order_icon()
+
+    def _set_sort_order_icon(self):
+        if self.sort_order == QtCore.Qt.AscendingOrder:
+            self.sort_order_button.setIcon(
+                QtGui.QIcon.fromTheme(
+                    "view-sort-ascending", QtGui.QIcon(":/icons/sort_ascending.svg")
+                )
+            )
+        else:
+            self.sort_order_button.setIcon(
+                QtGui.QIcon.fromTheme(
+                    "view-sort-descending", QtGui.QIcon(":/icons/sort_descending.svg")
+                )
+            )
 
     def _setup_connections(self):
         self.view_selector.view_changed.connect(self.view_changed.emit)
         self.filter_selector.filter_changed.connect(self.filter_changed.emit)
         self.search.search_changed.connect(self.search_changed.emit)
+        self.sort_selector.currentIndexChanged.connect(self._sort_changed)
+        self.sort_order_button.clicked.connect(self._sort_order_clicked)
+
+    def _sort_changed(self, index: int):
+        sort_role = self.sort_selector.itemData(index)
+        self.set_sort_order(default_sort_order[sort_role])
+        self.sort_changed.emit(sort_role)
+        self.sort_order_changed.emit(self.sort_order)
 
     def retranslateUi(self, _=None):
-        pass
+        self.sort_selector.clear()
+        self.sort_selector.addItem(
+            translate("AddonsInstaller", "Alphabetical", "Sort order"), SortOptions.Alphabetical
+        )
+        self.sort_selector.addItem(
+            translate("AddonsInstaller", "Last Updated", "Sort order"), SortOptions.LastUpdated
+        )
+        self.sort_selector.addItem(
+            translate("AddonsInstaller", "Date Created", "Sort order"), SortOptions.DateAdded
+        )
+        self.sort_selector.addItem(
+            translate("AddonsInstaller", "GitHub Stars", "Sort order"), SortOptions.Stars
+        )
+        # self.sort_selector.addItem(translate("AddonsInstaller", "Rank", "Sort order"),
+        #                            SortOptions.Rank)

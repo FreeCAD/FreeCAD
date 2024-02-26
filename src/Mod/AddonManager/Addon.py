@@ -25,6 +25,7 @@
 
 import os
 import re
+from datetime import datetime
 from urllib.parse import urlparse
 from typing import Dict, Set, List, Optional
 from threading import Lock
@@ -176,14 +177,7 @@ class Addon:
         self.status_lock = Lock()
         self.update_status = status
 
-        # The url should never end in ".git", so strip it if it's there
-        parsed_url = urlparse(self.url)
-        if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
-            if parsed_url.query:
-                self.url += "?" + parsed_url.query
-            if parsed_url.fragment:
-                self.url += "#" + parsed_url.fragment
+        self._clean_url()
 
         if utils.recognized_git_location(self):
             self.metadata_url = construct_git_url(self, "package.xml")
@@ -210,6 +204,17 @@ class Addon:
 
         self._icon_file = None
         self._cached_license: str = ""
+        self._cached_update_date = None
+
+    def _clean_url(self):
+        # The url should never end in ".git", so strip it if it's there
+        parsed_url = urlparse(self.url)
+        if parsed_url.path.endswith(".git"):
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
+            if parsed_url.query:
+                self.url += "?" + parsed_url.query
+            if parsed_url.fragment:
+                self.url += "#" + parsed_url.fragment
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -234,6 +239,59 @@ class Addon:
                 elif self.macro.on_wiki:
                     self._cached_license = "CC-BY-3.0"
         return self._cached_license
+
+    @property
+    def update_date(self):
+        if self._cached_update_date is None:
+            self._cached_update_date = 0
+            if self.stats and self.stats.last_update_time:
+                self._cached_update_date = self.stats.last_update_time
+            elif self.macro and self.macro.date:
+                # Try to parse the date:
+                try:
+                    self._cached_update_date = self._process_date_string_to_python_datetime(
+                        self.macro.date
+                    )
+                except SyntaxError as e:
+                    fci.Console.PrintWarning(str(e) + "\n")
+            else:
+                fci.Console.PrintWarning(f"No update date info for {self.name}\n")
+        return self._cached_update_date
+
+    def _process_date_string_to_python_datetime(self, date_string: str) -> datetime:
+        split_result = re.split(r"[ ./-]+", date_string.strip())
+        print(f"{self.display_name} - {split_result}")
+        if len(split_result) != 3:
+            raise SyntaxError(
+                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
+            )
+
+        if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
+            try:
+                year = int(split_result[0])
+                month = int(split_result[1])
+                day = int(split_result[2])
+                return datetime(year, month, day)
+            except (OverflowError, OSError, ValueError):
+                raise SyntaxError(
+                    f"In macro {self.name}, unrecognized date string {date_string} (expected YYYY-MM-DD)"
+                )
+        elif int(split_result[2]) > 2000:
+            # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
+            # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
+            if int(split_result[1]) <= 12:
+                year = int(split_result[2])
+                month = int(split_result[1])
+                day = int(split_result[0])
+            else:
+                year = int(split_result[2])
+                month = int(split_result[0])
+                day = int(split_result[1])
+            return datetime(year, month, day)
+        else:
+            raise SyntaxError(
+                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
+            )
 
     @classmethod
     def from_macro(cls, macro: Macro):
@@ -262,7 +320,8 @@ class Addon:
         instance = Addon(cache_dict["name"], cache_dict["url"], status, cache_dict["branch"])
 
         for key, value in cache_dict.items():
-            instance.__dict__[key] = value
+            if not str(key).startswith("_"):
+                instance.__dict__[key] = value
 
         instance.repo_type = Addon.Kind(cache_dict["repo_type"])
         if instance.repo_type == Addon.Kind.PACKAGE:
@@ -282,6 +341,8 @@ class Addon:
             instance.blocks = set(cache_dict["blocks"])
             instance.python_requires = set(cache_dict["python_requires"])
             instance.python_optional = set(cache_dict["python_optional"])
+
+        instance._clean_url()
 
         return instance
 
@@ -313,6 +374,7 @@ class Addon:
         if os.path.exists(file):
             metadata = MetadataReader.from_file(file)
             self.set_metadata(metadata)
+            self._clean_url()
         else:
             fci.Console.PrintLog(f"Internal error: {file} does not exist")
 
@@ -338,6 +400,7 @@ class Addon:
             if url.type == UrlType.repository:
                 self.url = url.location
                 self.branch = url.branch if url.branch else "master"
+        self._clean_url()
         self.extract_tags(self.metadata)
         self.extract_metadata_dependencies(self.metadata)
 

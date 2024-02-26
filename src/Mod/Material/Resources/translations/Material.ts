@@ -107,7 +107,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/Array2D.cpp" line="145"/>
+        <location filename="../../Gui/Array2D.cpp" line="143"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -634,14 +634,14 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/Array2D.cpp" line="177"/>
+        <location filename="../../Gui/Array2D.cpp" line="175"/>
         <location filename="../../Gui/ListEdit.cpp" line="139"/>
         <location filename="../../Gui/MaterialSave.cpp" line="561"/>
         <source>Confirm Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/Array2D.cpp" line="179"/>
+        <location filename="../../Gui/Array2D.cpp" line="177"/>
         <location filename="../../Gui/ListEdit.cpp" line="141"/>
         <source>Are you sure you want to delete the row?</source>
         <translation type="unfinished"></translation>

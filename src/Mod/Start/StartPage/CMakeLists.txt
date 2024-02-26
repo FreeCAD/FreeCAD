@@ -26,6 +26,7 @@ SET(StartPage_ImageResources
     images/installed.png
     images/new_file_thumbnail.svg
     images/icon_settings.png
+    images/new_assembly.png
     images/new_empty_file.png
     images/new_open_file.png
     images/new_parametric_part.png

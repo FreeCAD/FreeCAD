@@ -316,6 +316,17 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
+    void setRange(int min, int max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(int steps)
+    {
+        this->steps = steps;
+    }
+
 protected:
     QVariant toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
@@ -323,6 +334,11 @@ protected:
 
 protected:
     PropertyIntegerConstraintItem();
+
+private:
+    int min = INT_MIN;
+    int max = INT_MAX;
+    int steps = 1;
 };
 
 /**
@@ -379,8 +395,24 @@ class GuiExport PropertyUnitConstraintItem: public PropertyUnitItem
 
     void setEditorData(QWidget *editor, const QVariant& data) const override;
 
+    void setRange(double min, double max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(double steps)
+    {
+        this->steps = steps;
+    }
+
 protected:
     PropertyUnitConstraintItem();
+
+private:
+    double min = double(INT_MIN);
+    double max = double(INT_MAX);
+    double steps = 0.1;
 };
 
 /**
@@ -396,6 +428,17 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     void setEditorData(QWidget *editor, const QVariant& data) const override;
     QVariant editorData(QWidget *editor) const override;
 
+    void setRange(double min, double max)
+    {
+        this->min = min;
+        this->max = max;
+    }
+
+    void setStepSize(double steps)
+    {
+        this->steps = steps;
+    }
+
 protected:
     QVariant toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
@@ -403,6 +446,11 @@ protected:
 
 protected:
     PropertyFloatConstraintItem();
+
+private:
+    double min = double(INT_MIN);
+    double max = double(INT_MAX);
+    double steps = 0.1;
 };
 
 /**
@@ -978,10 +1026,10 @@ class GuiExport PropertyMaterialItem : public PropertyItem
     void setSpecularColor(const QColor&);
     QColor getEmissiveColor() const;
     void setEmissiveColor(const QColor&);
-    float getShininess() const;
-    void setShininess(float);
-    float getTransparency() const;
-    void setTransparency(float);
+    int getShininess() const;
+    void setShininess(int);
+    int getTransparency() const;
+    void setTransparency(int);
 
 protected:
     PropertyMaterialItem();
@@ -998,8 +1046,8 @@ private:
     PropertyColorItem* diffuse;
     PropertyColorItem* specular;
     PropertyColorItem* emissive;
-    PropertyFloatItem* shininess;
-    PropertyFloatItem* transparency;
+    PropertyIntegerConstraintItem* shininess;
+    PropertyIntegerConstraintItem* transparency;
 };
 
 class GuiExport PropertyMaterialListItem : public PropertyItem
@@ -1027,10 +1075,10 @@ class GuiExport PropertyMaterialListItem : public PropertyItem
     void setSpecularColor(const QColor&);
     QColor getEmissiveColor() const;
     void setEmissiveColor(const QColor&);
-    float getShininess() const;
-    void setShininess(float);
-    float getTransparency() const;
-    void setTransparency(float);
+    int getShininess() const;
+    void setShininess(int);
+    int getTransparency() const;
+    void setTransparency(int);
 
 protected:
     PropertyMaterialListItem();
@@ -1047,8 +1095,8 @@ private:
     PropertyColorItem* diffuse;
     PropertyColorItem* specular;
     PropertyColorItem* emissive;
-    PropertyFloatItem* shininess;
-    PropertyFloatItem* transparency;
+    PropertyIntegerConstraintItem* shininess;
+    PropertyIntegerConstraintItem* transparency;
 };
 
 /**
