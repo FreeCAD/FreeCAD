@@ -258,6 +258,12 @@ public:
 
     void operator=(const TopoShape&);
 
+    bool operator == (const TopoShape &other) const {
+        return _Shape.IsEqual(other._Shape);
+    }
+
+    virtual bool isSame (const Data::ComplexGeoData &other) const;
+
     /** @name Placement control */
     //@{
     /// set the transformation of the CasCade Shape
@@ -853,6 +859,148 @@ public:
         return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
                                                    offsetMode,join,op);
     }
+
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the base shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementRevolve(const TopoShape &base, const gp_Ax1& axis, double d,
+                           const char *face_maker=0, const char *op=nullptr);
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the basis shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementRevolve(const gp_Ax1& axis, double d,
+                          const char *face_maker=nullptr, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementRevolve(*this,axis,d,face_maker,op);
+    }
+
+
+    /** Make a prism that is a linear sweep of a basis shape
+     *
+     * @param base: the basis shape
+     * @param vec: vector defines the sweep direction
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementPrism(const TopoShape &base, const gp_Vec& vec, const char *op=nullptr);
+
+    /** Make a prism that is a linear sweep of this shape
+     *
+     * @param vec: vector defines the sweep direction
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementPrism(const gp_Vec& vec, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementPrism(*this,vec,op);
+    }
+
+    /// Operation mode for makeElementPrismUntil()
+    enum PrismMode {
+        /// Remove the generated prism shape from the base shape with boolean cut
+        CutFromBase = 0,
+        /// Add generated prism shape to the base shape with fusion
+        FuseWithBase = 1,
+        /// Return the generated prism shape without base shape
+        None = 2
+    };
+    /** Make a prism that is either depression or protrusion of a profile shape up to a given face
+     *
+     * @param base: the base shape
+     * @param profile: profile shape used for sweeping to make the prism
+     * @param supportFace: optional face serves to determining the type of
+     *                     operation. If it is inside the basis shape, a local
+     *                     operation such as glueing can be performed.
+     * @param upToFace: sweep the profile up until this give face.
+     * @param direction: the direction to sweep the profile
+     * @param mode: defines what shape to return. @sa PrismMode
+     * @param checkLimits: If true, then remove limit (boundary) of up to face.
+     *                     If false, then the generate prism may go beyond the
+     *                     boundary of the up to face.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
+    // unused.  It is potentially useful if debugged.
+//    TopoShape &makeElementPrismUntil(const TopoShape &base,
+//                              const TopoShape& profile,
+//                              const TopoShape& supportFace,
+//                              const TopoShape& upToFace,
+//                              const gp_Dir& direction,
+//                              PrismMode mode,
+//                              Standard_Boolean checkLimits = Standard_True,
+//                              const char *op=nullptr);
+
+    /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
+     *
+     * @param profile: profile shape used for sweeping to make the prism
+     * @param supportFace: optional face serves to determining the type of
+     *                     operation. If it is inside the basis shape, a local
+     *                     operation such as glueing can be performed.
+     * @param upToFace: sweep the profile up until this give face.
+     * @param direction: the direction to sweep the profile
+     * @param mode: defines what shape to return. @sa PrismMode
+     * @param checkLimits: If true, then remove limit (boundary) of up to face.
+     *                     If false, then the generate prism may go beyond the
+     *                     boundary of the up to face.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
+    // unused.  It is potentially useful if debugged.
+//    TopoShape makeElementPrismUntil(const TopoShape& profile,
+//                             const TopoShape& supportFace,
+//                             const TopoShape& upToFace,
+//                             const gp_Dir& direction,
+//                             PrismMode mode,
+//                             Standard_Boolean checkLimits = Standard_True,
+//                             const char *op=nullptr) const
+//    {
+//        return TopoShape(0,Hasher).makeElementPrismUntil(*this,
+//                                                   profile,
+//                                                   supportFace,
+//                                                   upToFace,
+//                                                   direction,
+//                                                   mode,
+//                                                   checkLimits,
+//                                                   op);
+//    }
+
 
     /* Make a shell or solid by sweeping profile wire along a spine
      *
@@ -1927,6 +2075,22 @@ public:
     {
         return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
     }
+
+    /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape &makeElementShape(BRepFeat_MakePrism &mkShape,
+                         const std::vector<TopoShape> &sources, const TopoShape &uptoface, const char *op);
 
     /* Toponaming migration, February 2014:
      * Note that the specialized versions of makeElementShape for operations that do not

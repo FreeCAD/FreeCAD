@@ -2075,4 +2075,133 @@ TEST_F(TopoShapeExpansionTest, makeElementSolid)
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face1;SLD;:H1:4,F"));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementRevolve)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape topoShape1 {cube1, 1L};
+    gp_Ax1 axis {gp_Pnt {0, 0, 0}, gp_Dir {0, 1, 0}};
+    double angle = 45;
+    auto subTopoFaces = topoShape1.getSubTopoShapes(TopAbs_FACE);
+    subTopoFaces[0].Tag = 2L;
+    // Act
+    TopoShape result = subTopoFaces[0].makeElementRevolve(axis, angle);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(
+        bb,
+        Base::BoundBox3d(0.0, 0.0, 0.0, 0.85090352453411933, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.50885141);
+    // Assert elementMap is correct
+    EXPECT_TRUE(
+        elementsMatch(result,
+                      {
+                          "Edge1;:G;RVL;:H2:7,F",
+                          "Edge1;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E",
+                          "Edge1;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E;:L(Edge2;:G;RVL;:H2:7,F;:U;RVL;:H2:"
+                          "7,E|Edge3;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E|Edge4;RVL;:H2:4,E);RVL;:H2:62,F",
+                          "Edge1;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E;:U;RVL;:H2:7,V",
+                          "Edge1;RVL;:H2:4,E",
+                          "Edge2;:G;RVL;:H2:7,F",
+                          "Edge2;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E",
+                          "Edge2;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E;:U;RVL;:H2:7,V",
+                          "Edge2;RVL;:H2:4,E",
+                          "Edge3;:G;RVL;:H2:7,F",
+                          "Edge3;:G;RVL;:H2:7,F;:U;RVL;:H2:7,E",
+                          "Edge3;RVL;:H2:4,E",
+                          "Edge4;RVL;:H2:4,E",
+                          "Face1;RVL;:H2:4,F",
+                          "Vertex1;:G;RVL;:H2:7,E",
+                          "Vertex1;RVL;:H2:4,V",
+                          "Vertex2;RVL;:H2:4,V",
+                          "Vertex3;:G;RVL;:H2:7,E",
+                          "Vertex3;RVL;:H2:4,V",
+                          "Vertex4;RVL;:H2:4,V",
+                      }));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementPrism)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape topoShape1 {cube1, 1L};
+    auto subTopoFaces = topoShape1.getSubTopoShapes(TopAbs_FACE);
+    subTopoFaces[0].Tag = 2L;
+    // Act
+    TopoShape& result = topoShape1.makeElementPrism(subTopoFaces[0], {0.75, 0, 0});
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 0.75, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
+    // Assert elementMap is correct
+    EXPECT_TRUE(elementsMatch(
+        result,
+        {
+            "Edge1;:G;XTR;:H2:7,F",
+            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:L(Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E|Edge3;:G;"
+            "XTR;:H2:7,F;:U;XTR;:H2:7,E|Edge4;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E);XTR;:H2:74,F",
+            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
+            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
+            "Edge1;XTR;:H2:4,E",
+            "Edge2;:G;XTR;:H2:7,F",
+            "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+            "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
+            "Edge2;XTR;:H2:4,E",
+            "Edge3;:G;XTR;:H2:7,F",
+            "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+            "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
+            "Edge3;XTR;:H2:4,E",
+            "Edge4;:G;XTR;:H2:7,F",
+            "Edge4;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+            "Edge4;XTR;:H2:4,E",
+            "Face1;XTR;:H2:4,F",
+            "Vertex1;:G;XTR;:H2:7,E",
+            "Vertex1;XTR;:H2:4,V",
+            "Vertex2;:G;XTR;:H2:7,E",
+            "Vertex2;XTR;:H2:4,V",
+            "Vertex3;:G;XTR;:H2:7,E",
+            "Vertex3;XTR;:H2:4,V",
+            "Vertex4;:G;XTR;:H2:7,E",
+            "Vertex4;XTR;:H2:4,V",
+        })
+
+    );
+}
+
+// TODO:  This code was written in Feb 2024 as part of the toponaming project, but appears to be
+// unused.  It is potentially useful if debugged.
+//
+// TEST_F(TopoShapeExpansionTest, makeElementPrismUntil)
+//{
+//    // Arrange
+//    auto [cube1, cube2] = CreateTwoCubes();
+//    TopoShape cube1TS {cube1, 1L};
+//    auto subFaces = cube1TS.getSubShapes(TopAbs_FACE);
+//    auto subTopoFaces = cube1TS.getSubTopoShapes(TopAbs_FACE);
+//    subTopoFaces[0].Tag = 2L;
+//    subTopoFaces[1].Tag = 3L;
+//    auto tr {gp_Trsf()};
+//    auto direction = gp_Vec(gp_XYZ(0.0, 0.0, 0.25));
+//    tr.SetTranslation(direction);
+//    auto support = subFaces[0].Moved(TopLoc_Location(tr));
+//    auto upto = support.Moved(TopLoc_Location(tr));
+//    // Act
+//    TopoShape result = cube1TS.makeElementPrismUntil(subTopoFaces[0],
+//                                                     TopoShape(support, 4L),
+//                                                     TopoShape(upto, 5L),
+//                                                     direction,
+//                                                     TopoShape::PrismMode::CutFromBase);
+//    auto elements = elementMap(result);
+//    Base::BoundBox3d bb = result.getBoundBox();
+//    // Assert shape is correct
+//    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.5, 0.0, 1.5, 1.0, 1.0)));
+//    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 2);
+//    // Assert elementMap is correct
+//    EXPECT_TRUE(elementsMatch(result,
+//                              {"Edge1;:G;XTR;:H2:7,F",}));
+//}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
