@@ -70,6 +70,7 @@
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
 
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 namespace sp = std::placeholders;
@@ -649,7 +650,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
             for(auto &mapped : Part::Feature::getRelatedElements(base,ref.c_str())) {
                 tmp.clear();
-                if(!subSet.insert(mapped.index.toString(tmp)).second
+                if(!subSet.insert(mapped.index.appendToStringBuffer(tmp)).second
                     || !subSet.insert(mapped.name.toString(0)).second)
                     continue;
                 FC_WARN("guess element reference: " << ref << " -> " << mapped.index);

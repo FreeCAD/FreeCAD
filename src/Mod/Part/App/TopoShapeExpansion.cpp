@@ -272,7 +272,7 @@ TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer
     return moved(sCopy, transfer);
 }
 
-void TopoShape::operator = (const TopoShape& sh)
+void TopoShape::operator=(const TopoShape& sh)
 {
     if (this != &sh) {
         this->setShape(sh._Shape, true);
@@ -834,12 +834,14 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
     mapSubElementForShape(other, op);
 #else
-       if(!canMapElement(other))
+    if (!canMapElement(other)) {
         return;
+    }
 
     if (!getElementMapSize(false) && this->_Shape.IsPartner(other._Shape)) {
-        if (!this->Hasher)
+        if (!this->Hasher) {
             this->Hasher = other.Hasher;
+        }
         copyElementMap(other, op);
         return;
     }
@@ -847,63 +849,74 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
 
-    auto checkHasher = [this](const TopoShape &other) {
-        if(Hasher) {
-            if(other.Hasher!=Hasher) {
-                if(!getElementMapSize(false)) {
-                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+    auto checkHasher = [this](const TopoShape& other) {
+        if (Hasher) {
+            if (other.Hasher != Hasher) {
+                if (!getElementMapSize(false)) {
+                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                         FC_WARN("hasher mismatch");
-                }else {
+                    }
+                }
+                else {
                     // FC_THROWM(Base::RuntimeError, "hasher mismatch");
                     FC_ERR("hasher mismatch");
                 }
                 Hasher = other.Hasher;
             }
-        }else
+        }
+        else {
             Hasher = other.Hasher;
+        }
     };
 
-    for(auto type : types) {
-        auto &shapeMap = _cache->getAncestry(type);
-        auto &otherMap = other._cache->getAncestry(type);
-        if(!shapeMap.count() || !otherMap.count())
+    for (auto type : types) {
+        auto& shapeMap = _cache->getAncestry(type);
+        auto& otherMap = other._cache->getAncestry(type);
+        if (!shapeMap.count() || !otherMap.count()) {
             continue;
-        if(!forceHasher && other.Hasher) {
+        }
+        if (!forceHasher && other.Hasher) {
             forceHasher = true;
             checkHasher(other);
         }
-        const char *shapetype = shapeName(type).c_str();
+        const char* shapetype = shapeName(type).c_str();
         std::ostringstream ss;
 
         bool forward;
         int count;
-        if(otherMap.count()<=shapeMap.count()) {
+        if (otherMap.count() <= shapeMap.count()) {
             forward = true;
             count = otherMap.count();
-        }else{
+        }
+        else {
             forward = false;
             count = shapeMap.count();
         }
-        for(int k=1;k<=count;++k) {
-            int i,idx;
-            if(forward) {
+        for (int k = 1; k <= count; ++k) {
+            int i, idx;
+            if (forward) {
                 i = k;
-                idx = shapeMap.find(_Shape,otherMap.find(other._Shape,k));
-                if(!idx) continue;
-            } else {
+                idx = shapeMap.find(_Shape, otherMap.find(other._Shape, k));
+                if (!idx) {
+                    continue;
+                }
+            }
+            else {
                 idx = k;
-                i = otherMap.find(other._Shape,shapeMap.find(_Shape,k));
-                if(!i) continue;
+                i = otherMap.find(other._Shape, shapeMap.find(_Shape, k));
+                if (!i) {
+                    continue;
+                }
             }
             Data::IndexedName element = Data::IndexedName::fromConst(shapetype, idx);
-            for(auto &v : other.getElementMappedNames(
-                        Data::IndexedName::fromConst(shapetype,i),true))
-            {
-                auto &name = v.first;
-                auto &sids = v.second;
-                if(sids.size()) {
-                    if (!Hasher)
+            for (auto& v :
+                 other.getElementMappedNames(Data::IndexedName::fromConst(shapetype, i), true)) {
+                auto& name = v.first;
+                auto& sids = v.second;
+                if (sids.size()) {
+                    if (!Hasher) {
                         Hasher = sids[0].getHasher();
+                    }
                     else if (!sids[0].isFromSameHasher(Hasher)) {
                         if (!warned) {
                             warned = true;
@@ -922,8 +935,8 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                     resetElementMap(std::make_shared<Data::ElementMap>());
                 }
 
-                elementMap()->encodeElementName(shapetype[0],name,ss,&sids,Tag,op,other.Tag);
-                elementMap()->setElementName(element,name,Tag,&sids);
+                elementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                elementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
@@ -1004,14 +1017,16 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
         }
     }
 #else
-    if (shapes.empty())
+    if (shapes.empty()) {
         return;
+    }
 
     if (shapeType(true) == TopAbs_COMPOUND) {
         int count = 0;
-        for (auto & s : shapes) {
-            if (s.isNull())
+        for (auto& s : shapes) {
+            if (s.isNull()) {
                 continue;
+            }
             if (!getSubShape(TopAbs_SHAPE, ++count, true).IsPartner(s._Shape)) {
                 count = 0;
                 break;
@@ -1019,26 +1034,30 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
         }
         if (count) {
             std::vector<Data::ElementMap::MappedChildElements> children;
-            children.reserve(count*3);
+            children.reserve(count * 3);
             TopAbs_ShapeEnum types[] = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-            for (unsigned i=0; i<sizeof(types)/sizeof(types[0]); ++i) {
+            for (unsigned i = 0; i < sizeof(types) / sizeof(types[0]); ++i) {
                 int offset = 0;
-                for (auto & s : shapes) {
-                    if (s.isNull())
+                for (auto& s : shapes) {
+                    if (s.isNull()) {
                         continue;
+                    }
                     int count = s.countSubShapes(types[i]);
-                    if (!count)
+                    if (!count) {
                         continue;
+                    }
                     children.emplace_back();
-                    auto & child = children.back();
-                    child.indexedName = Data::IndexedName::fromConst(shapeName(types[i]).c_str(), 1);
+                    auto& child = children.back();
+                    child.indexedName =
+                        Data::IndexedName::fromConst(shapeName(types[i]).c_str(), 1);
                     child.offset = offset;
                     offset += count;
                     child.count = count;
                     child.elementMap = s.elementMap();
                     child.tag = s.Tag;
-                    if (op)
+                    if (op) {
                         child.postfix = op;
+                    }
                 }
             }
             setMappedChildElements(children);
@@ -1046,8 +1065,9 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
         }
     }
 
-    for(auto &shape : shapes)
-        mapSubElement(shape,op);
+    for (auto& shape : shapes) {
+        mapSubElement(shape, op);
+    }
 #endif
 }
 
@@ -3506,18 +3526,20 @@ struct MapperThruSections: MapperMaker
     }
 };
 
-struct MapperPrism: MapperMaker {
+struct MapperPrism: MapperMaker
+{
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> vertexMap;
     ShapeMapper::ShapeMap edgeMap;
 
-    MapperPrism(BRepFeat_MakePrism &maker, const TopoShape &upTo)
-        :MapperMaker(maker)
+    MapperPrism(BRepFeat_MakePrism& maker, const TopoShape& upTo)
+        : MapperMaker(maker)
     {
         (void)upTo;
 
         std::vector<TopoShape> shapes;
-        for(TopTools_ListIteratorOfListOfShape it(maker.FirstShape());it.More();it.Next())
+        for (TopTools_ListIteratorOfListOfShape it(maker.FirstShape()); it.More(); it.Next()) {
             shapes.push_back(it.Value());
+        }
 
         if (shapes.size()) {
             // It seems that BRepFeat_MakePrism::newEdges() does not return
@@ -3527,18 +3549,21 @@ struct MapperPrism: MapperMaker {
             // i.e. the bottom profile, and add all edges that shares a
             // vertex with the profiles as new edges.
 
-            std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> edgeSet;
+            std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> edgeSet;
             TopoShape bottom;
-            bottom.makeElementCompound(shapes, nullptr, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+            bottom.makeElementCompound(shapes,
+                                       nullptr,
+                                       TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
             TopoShape shape(maker.Shape());
-            for (auto &vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
-                for (auto &e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
+            for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
+                for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
                     // Make sure to not visit the the same edge twice.
                     // And check only edge that are not found in the bottom profile
                     if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
                         auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));
-                        if (otherVertex.IsSame(vertex))
+                        if (otherVertex.IsSame(vertex)) {
                             otherVertex = TopExp::LastVertex(TopoDS::Edge(e));
+                        }
                         vertexMap[vertex] = otherVertex;
                     }
                 }
@@ -3550,37 +3575,44 @@ struct MapperPrism: MapperMaker {
             // corresponding edges in the top profile, what an extra criteria
             // for disambiguation. That is, the pair of edges (bottom and top)
             // must belong to the same face.
-            for (auto &edge : bottom.getSubShapes(TopAbs_EDGE)) {
+            for (auto& edge : bottom.getSubShapes(TopAbs_EDGE)) {
                 std::vector<int> indices;
                 auto first = TopExp::FirstVertex(TopoDS::Edge(edge));
                 auto last = TopExp::LastVertex(TopoDS::Edge(edge));
                 auto itFirst = vertexMap.find(first);
                 auto itLast = vertexMap.find(last);
-                if (itFirst == vertexMap.end() || itLast ==vertexMap.end())
+                if (itFirst == vertexMap.end() || itLast == vertexMap.end()) {
                     continue;
+                }
                 std::vector<TopoShape> faces;
-                for (int idx : shape.findAncestors(edge, TopAbs_FACE))
+                for (int idx : shape.findAncestors(edge, TopAbs_FACE)) {
                     faces.push_back(shape.getSubTopoShape(TopAbs_FACE, idx));
-                if (faces.empty())
+                }
+                if (faces.empty()) {
                     continue;
+                }
                 for (int idx : shape.findAncestors(itFirst->second, TopAbs_EDGE)) {
                     auto e = shape.getSubTopoShape(TopAbs_EDGE, idx);
-                    if (!e.findShape(itLast->second))
+                    if (!e.findShape(itLast->second)) {
                         continue;
-                    for (auto &face : faces) {
-                        if (!face.findShape(e.getShape()))
+                    }
+                    for (auto& face : faces) {
+                        if (!face.findShape(e.getShape())) {
                             continue;
-                        auto &entry = edgeMap[edge];
-                        if (entry.shapeSet.insert(e.getShape()).second)
+                        }
+                        auto& entry = edgeMap[edge];
+                        if (entry.shapeSet.insert(e.getShape()).second) {
                             entry.shapes.push_back(e.getShape());
+                        }
                     }
                 }
             }
         }
     }
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
         _res.clear();
-        switch(s.ShapeType()) {
+        switch (s.ShapeType()) {
             case TopAbs_VERTEX: {
                 auto it = vertexMap.find(s);
                 if (it != vertexMap.end()) {
@@ -3591,9 +3623,10 @@ struct MapperPrism: MapperMaker {
             }
             case TopAbs_EDGE: {
                 auto it = edgeMap.find(s);
-                if (it != edgeMap.end())
-                return it->second.shapes;
-            break;
+                if (it != edgeMap.end()) {
+                    return it->second.shapes;
+                }
+                break;
             }
             default:
                 break;
@@ -3796,7 +3829,7 @@ TopoShape& TopoShape::makeElementFilledFace(const std::vector<TopoShape>& _shape
 // TODO:  This method does not appear to ever be called in the codebase, and it is probably
 // broken, because using TopoShape() with no parameters means the result will not have an
 // element Map.
-//TopoShape& TopoShape::makeElementSolid(const std::vector<TopoShape>& shapes, const char* op)
+// TopoShape& TopoShape::makeElementSolid(const std::vector<TopoShape>& shapes, const char* op)
 //{
 //    return makeElementSolid(TopoShape().makeElementCompound(shapes), op);
 //}
@@ -4096,22 +4129,25 @@ TopoShape& TopoShape::makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
 {
     TopoDS_Shape shape;
     // OCCT 7.3.x requires calling Solid() and not Shape() to function correctly
-    if ( typeid(mkShape) == typeid(BRepPrimAPI_MakeHalfSpace) ) {
+    if (typeid(mkShape) == typeid(BRepPrimAPI_MakeHalfSpace)) {
         shape = static_cast<BRepPrimAPI_MakeHalfSpace&>(mkShape).Solid();
-    } else {
+    }
+    else {
         shape = mkShape.Shape();
     }
     return makeShapeWithElementMap(shape, MapperMaker(mkShape), shapes, op);
 }
 
-TopoShape &TopoShape::makeElementShape(BRepFeat_MakePrism &mkShape,
-                                const std::vector<TopoShape> &sources,
-                                const TopoShape &upTo,
-                                const char *op)
+TopoShape& TopoShape::makeElementShape(BRepFeat_MakePrism& mkShape,
+                                       const std::vector<TopoShape>& sources,
+                                       const TopoShape& upTo,
+                                       const char* op)
 {
-    if(!op) op = Part::OpCodes::Prism;
+    if (!op) {
+        op = Part::OpCodes::Prism;
+    }
     MapperPrism mapper(mkShape, upTo);
-    makeShapeWithElementMap(mkShape.Shape(),mapper,sources,op);
+    makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op);
     return *this;
 }
 
@@ -4197,7 +4233,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
 
 // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
 // unused.  It is potentially useful if debugged.
-//TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
+// TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 //                                            const TopoShape& profile,
 //                                            const TopoShape& supportFace,
 //                                            const TopoShape& __uptoface,
@@ -4266,9 +4302,9 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
 //        }
 //
 //        if (remove_limits) {
-//            // Note: Using an unlimited face every time gives unnecessary failures for concave faces
-//            TopLoc_Location loc = face.Location();
-//            BRepAdaptor_Surface adapt(face, Standard_False);
+//            // Note: Using an unlimited face every time gives unnecessary failures for concave
+//            faces TopLoc_Location loc = face.Location(); BRepAdaptor_Surface adapt(face,
+//            Standard_False);
 //            // use the placement of the adapter, not of the upToFace
 //            loc = TopLoc_Location(adapt.Trsf());
 //            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
@@ -4801,7 +4837,7 @@ TopoShape& TopoShape::makeElementBSplineFace(const std::vector<TopoShape>& input
     }
     unsigned ind = 0;
     for (auto& edge : newEdges) {
-        if ( ind < edges.size() ) {
+        if (ind < edges.size()) {
             edge.resetElementMap(edges[ind++].elementMap());
         }
     }
@@ -5655,33 +5691,32 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     return *this;
 }
 
-bool TopoShape::isSame(const Data::ComplexGeoData &_other) const
+bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
 {
-    if(!_other.isDerivedFrom(TopoShape::getClassTypeId()))
-        return false;
-
-    const auto &other = static_cast<const TopoShape &>(_other);
-    return Tag == other.Tag
-        && Hasher == other.Hasher
-        && _Shape.IsEqual(other._Shape);
-}
-void TopoShape::cacheRelatedElements(const Data::MappedName &name,
-                                     HistoryTraceType sameType,
-                                     const QVector<Data::MappedElement> & names) const
-{
-    initCache();
-    _cache->insertRelation(ShapeRelationKey(name,sameType), names);
-}
-
-bool TopoShape::getRelatedElementsCached(const Data::MappedName &name,
-                                         HistoryTraceType sameType,
-                                         QVector<Data::MappedElement> &names) const
-{
-    if(!_cache) {
+    if (!_other.isDerivedFrom(TopoShape::getClassTypeId())) {
         return false;
     }
-    auto it = _cache->relations.find(ShapeRelationKey(name,sameType));
-    if(it == _cache->relations.end()) {
+
+    const auto& other = static_cast<const TopoShape&>(_other);
+    return Tag == other.Tag && Hasher == other.Hasher && _Shape.IsEqual(other._Shape);
+}
+void TopoShape::cacheRelatedElements(const Data::MappedName& name,
+                                     HistoryTraceType sameType,
+                                     const QVector<Data::MappedElement>& names) const
+{
+    initCache();
+    _cache->insertRelation(ShapeRelationKey(name, sameType), names);
+}
+
+bool TopoShape::getRelatedElementsCached(const Data::MappedName& name,
+                                         HistoryTraceType sameType,
+                                         QVector<Data::MappedElement>& names) const
+{
+    if (!_cache) {
+        return false;
+    }
+    auto it = _cache->relations.find(ShapeRelationKey(name, sameType));
+    if (it == _cache->relations.end()) {
         return false;
     }
     names = it->second;

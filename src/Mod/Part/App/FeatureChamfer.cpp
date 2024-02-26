@@ -32,6 +32,7 @@
 #endif
 
 #include "FeatureChamfer.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -47,13 +48,15 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         return new App::DocumentObjectExecReturn("No object linked");
 
     try {
+        TopoShape baseTopoShape = Feature::getTopoShape(link);
         auto baseShape = Feature::getShape(link);
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape);
-        TopTools_IndexedMapOfShape mapOfEdges;
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
+        TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
 #ifndef FC_USE_TNP_FIX
+
         std::vector<FilletElement> values = Edges.getValues();
         for (const auto & value : values) {
             int id = value.edgeid;
@@ -99,10 +102,13 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             auto &sub = subs[i];
             auto &ref = sub.first.size()?sub.first:vals[i];
             ++i;
-            TopoDS_Shape edge;
-            try {
-                edge = baseTopoShape.getSubShape(ref.c_str());
-            }catch(...){}
+            // Toponaming project March 2024:  Replaced this code because it wouldn't work:
+//            TopoDS_Shape edge;
+//            try {
+//                edge = baseTopoShape.getSubShape(ref.c_str());
+//            }catch(...){}
+            auto id = Data::MappedName(ref.c_str()).toIndexedName().getIndex();
+            const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
             if(edge.IsNull())
                 return new App::DocumentObjectExecReturn("Invalid edge link");
             double radius1 = info.radius1;
@@ -115,8 +121,8 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        TopoShape res(0,getDocument()->getStringHasher());
-        this->Shape.setValue(res.makEShape(mkChamfer,baseTopoShape,Part::OpCodes::Chamfer));
+        TopoShape res(0);
+        this->Shape.setValue(res.makeElementShape(mkChamfer,baseTopoShape,Part::OpCodes::Chamfer));
         return Part::Feature::execute();
 #endif
     }

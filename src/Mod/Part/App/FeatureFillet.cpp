@@ -34,6 +34,7 @@
 #include <Base/Exception.h>
 
 #include "FeatureFillet.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -56,9 +57,11 @@ App::DocumentObjectExecReturn *Fillet::execute()
         auto baseShape = Feature::getShape(link);
         TopoShape baseTopoShape = Feature::getTopoShape(link);
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
-#ifndef FC_USE_TNP_FIX
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
+        TopTools_IndexedMapOfShape mapOfEdges;
+        TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
+#ifndef FC_USE_TNP_FIX
 
         std::vector<FilletElement> values = Edges.getValues();
         for (const auto & value : values) {
@@ -104,10 +107,13 @@ App::DocumentObjectExecReturn *Fillet::execute()
             auto &sub = subs[i];
             auto &ref = sub.first.size()?sub.first:vals[i];
             ++i;
-            TopoDS_Shape edge;
-            try {
-                edge = baseTopoShape.getSubShape(ref.c_str());
-            }catch(...){}
+            // Toponaming project March 2024:  Replaced this code because it wouldn't work:
+//            TopoDS_Shape edge;
+//            try {
+//                edge = baseTopoShape.getSubShape(ref.c_str());
+//            }catch(...){}
+            auto id = Data::MappedName(ref.c_str()).toIndexedName().getIndex();
+            const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
             if(edge.IsNull())
                 return new App::DocumentObjectExecReturn("Invalid edge link");
             double radius1 = info.radius1;
@@ -119,8 +125,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        TopoShape res(0,getDocument()->getStringHasher());
-        this->Shape.setValue(res.makEShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
+        TopoShape res(0);
+        this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
         return Part::Feature::execute();
 #endif
     }
