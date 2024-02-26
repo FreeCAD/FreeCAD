@@ -175,8 +175,15 @@ public:
 
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
+    App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
+    virtual void onUpdateElementReference(const App::Property *prop) override;
+
+protected:
+    virtual void onDocumentRestored() override;
+    virtual void onChanged(const App::Property *) override;
+    void syncEdgeLink();
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

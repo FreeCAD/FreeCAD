@@ -102,6 +102,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 
+#include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -814,6 +815,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
 
 void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher)
 {
+#ifndef FC_USE_TNP_FIX
     if (!canMapElement(other)) {
         return;
     }
@@ -831,6 +833,102 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
     }
 
     mapSubElementForShape(other, op);
+#else
+       if(!canMapElement(other))
+        return;
+
+    if (!getElementMapSize(false) && this->_Shape.IsPartner(other._Shape)) {
+        if (!this->Hasher)
+            this->Hasher = other.Hasher;
+        copyElementMap(other, op);
+        return;
+    }
+
+    bool warned = false;
+    static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+
+    auto checkHasher = [this](const TopoShape &other) {
+        if(Hasher) {
+            if(other.Hasher!=Hasher) {
+                if(!getElementMapSize(false)) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                        FC_WARN("hasher mismatch");
+                }else {
+                    // FC_THROWM(Base::RuntimeError, "hasher mismatch");
+                    FC_ERR("hasher mismatch");
+                }
+                Hasher = other.Hasher;
+            }
+        }else
+            Hasher = other.Hasher;
+    };
+
+    for(auto type : types) {
+        auto &shapeMap = _cache->getAncestry(type);
+        auto &otherMap = other._cache->getAncestry(type);
+        if(!shapeMap.count() || !otherMap.count())
+            continue;
+        if(!forceHasher && other.Hasher) {
+            forceHasher = true;
+            checkHasher(other);
+        }
+        const char *shapetype = shapeName(type).c_str();
+        std::ostringstream ss;
+
+        bool forward;
+        int count;
+        if(otherMap.count()<=shapeMap.count()) {
+            forward = true;
+            count = otherMap.count();
+        }else{
+            forward = false;
+            count = shapeMap.count();
+        }
+        for(int k=1;k<=count;++k) {
+            int i,idx;
+            if(forward) {
+                i = k;
+                idx = shapeMap.find(_Shape,otherMap.find(other._Shape,k));
+                if(!idx) continue;
+            } else {
+                idx = k;
+                i = otherMap.find(other._Shape,shapeMap.find(_Shape,k));
+                if(!i) continue;
+            }
+            Data::IndexedName element = Data::IndexedName::fromConst(shapetype, idx);
+            for(auto &v : other.getElementMappedNames(
+                        Data::IndexedName::fromConst(shapetype,i),true))
+            {
+                auto &name = v.first;
+                auto &sids = v.second;
+                if(sids.size()) {
+                    if (!Hasher)
+                        Hasher = sids[0].getHasher();
+                    else if (!sids[0].isFromSameHasher(Hasher)) {
+                        if (!warned) {
+                            warned = true;
+                            FC_WARN("hasher mismatch");
+                        }
+                        sids.clear();
+                    }
+                }
+                ss.str("");
+
+                // Originally in ComplexGeoData::setElementName
+                // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                // No longer possible after map separated in ElementMap.cpp
+
+                if (!elementMap()) {
+                    resetElementMap(std::make_shared<Data::ElementMap>());
+                }
+
+                elementMap()->encodeElementName(shapetype[0],name,ss,&sids,Tag,op,other.Tag);
+                elementMap()->setElementName(element,name,Tag,&sids);
+            }
+        }
+    }
+
+#endif
 }
 
 void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op) const
@@ -892,6 +990,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
 
 void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op)
 {
+#ifndef FC_USE_TNP_FIX
     if (shapes.empty()) {
         return;
     }
@@ -904,6 +1003,52 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
             mapSubElement(shape, op);
         }
     }
+#else
+    if (shapes.empty())
+        return;
+
+    if (shapeType(true) == TopAbs_COMPOUND) {
+        int count = 0;
+        for (auto & s : shapes) {
+            if (s.isNull())
+                continue;
+            if (!getSubShape(TopAbs_SHAPE, ++count, true).IsPartner(s._Shape)) {
+                count = 0;
+                break;
+            }
+        }
+        if (count) {
+            std::vector<Data::ElementMap::MappedChildElements> children;
+            children.reserve(count*3);
+            TopAbs_ShapeEnum types[] = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+            for (unsigned i=0; i<sizeof(types)/sizeof(types[0]); ++i) {
+                int offset = 0;
+                for (auto & s : shapes) {
+                    if (s.isNull())
+                        continue;
+                    int count = s.countSubShapes(types[i]);
+                    if (!count)
+                        continue;
+                    children.emplace_back();
+                    auto & child = children.back();
+                    child.indexedName = Data::IndexedName::fromConst(shapeName(types[i]).c_str(), 1);
+                    child.offset = offset;
+                    offset += count;
+                    child.count = count;
+                    child.elementMap = s.elementMap();
+                    child.tag = s.Tag;
+                    if (op)
+                        child.postfix = op;
+                }
+            }
+            setMappedChildElements(children);
+            return;
+        }
+    }
+
+    for(auto &shape : shapes)
+        mapSubElement(shape,op);
+#endif
 }
 
 std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type,
