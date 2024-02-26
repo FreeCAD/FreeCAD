@@ -717,7 +717,12 @@ class GmshTools():
             geo.write("// no boundary layer settings for this mesh\n")
 
     def write_part_file(self):
-        self.part_obj.Shape.exportBrep(self.temp_file_geometry)
+        global_pla = self.part_obj.getGlobalPlacement()
+        geom = self.part_obj.getPropertyOfGeometry()
+        # get partner shape
+        geom_trans = geom.transformed(FreeCAD.Placement().Matrix)
+        geom_trans.Placement = global_pla
+        geom_trans.exportBrep(self.temp_file_geometry)
 
     def write_geo(self):
         temp_dir = os.path.dirname(self.temp_file_geo)
