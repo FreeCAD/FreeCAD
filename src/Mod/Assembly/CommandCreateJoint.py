@@ -42,8 +42,16 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
+def noOtherTaskActive():
+    return UtilsAssembly.isAssemblyCommandActive() or JointObject.activeTask is not None
+
+
 def isCreateJointActive():
-    return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
+    return (
+        UtilsAssembly.isAssemblyGrounded()
+        and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        and noOtherTaskActive()
+    )
 
 
 def activateJoint(index):
@@ -86,7 +94,7 @@ class CommandCreateJointFixed:
         if UtilsAssembly.activePart() is not None:
             return UtilsAssembly.assembly_has_at_least_n_parts(2)
 
-        return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        return isCreateJointActive()
 
     def Activated(self):
         activateJoint(0)
