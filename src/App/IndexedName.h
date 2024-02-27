@@ -147,6 +147,18 @@ public:
         return result;
     }
 
+    const char * toString(std::string & s) const
+    {
+        // Note! s is not cleared on purpose.
+        std::size_t offset = s.size();
+        s += this->type;
+        if (this->index > 0)
+            s += std::to_string(this->index);
+        return s.c_str() + offset;
+    }
+
+
+
     /// An indexedName is represented as the simple concatenation of the name and its index, e.g.
     /// "EDGE1" or "FACE42".
     friend std::ostream & operator<<(std::ostream & stream, const IndexedName & indexedName)

@@ -1131,12 +1131,18 @@ public:
     static const std::string& shapeName(TopAbs_ShapeEnum type, bool silent = false);
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
+    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const Data::IndexedName &name);
 
-    Data::MappedName setElementComboName(const Data::IndexedName & element, 
+    Data::MappedName setElementComboName(const Data::IndexedName & element,
                                          const std::vector<Data::MappedName> &names,
                                          const char *marker=nullptr,
                                          const char *op=nullptr,
                                          const Data::ElementIDRefs *sids=nullptr);
+
+    std::vector<Data::MappedName> decodeElementComboName(const Data::IndexedName& element,
+                                                         const Data::MappedName& name,
+                                                         const char* marker = nullptr,
+                                                         std::string* postfix = nullptr) const;
 
     /** @name sub shape cached functions
      *
