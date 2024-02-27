@@ -8331,6 +8331,20 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
                 PosIdList.push_back((*it)->FirstPos);
             }
         }
+        if ((*it)->Type == Sketcher::Tangent) {
+            if ((*it)->First == GeoId && (*it)->FirstPos == PosId &&
+                ((*it)->SecondPos == Sketcher::PointPos::start ||
+                 (*it)->SecondPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back((*it)->Second);
+                PosIdList.push_back((*it)->SecondPos);
+            }
+            if ((*it)->Second == GeoId && (*it)->SecondPos == PosId &&
+                ((*it)->FirstPos == Sketcher::PointPos::start ||
+                 (*it)->FirstPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back((*it)->First);
+                PosIdList.push_back((*it)->FirstPos);
+            }
+        }
     }
     if (GeoIdList.size() == 1) {
         GeoIdList.clear();
