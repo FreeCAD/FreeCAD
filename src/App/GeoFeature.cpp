@@ -105,7 +105,7 @@ GeoFeature::_getElementName(const char *name, const Data::MappedElement &mapped)
         ss << Data::ComplexGeoData::elementMapPrefix()
            << mapped.name << '.' << mapped.index;
         ret.first = ss.str();
-        mapped.index.toString(ret.second);
+        mapped.index.appendToStringBuffer(ret.second);
     } else if (mapped.name) {
 //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
         ret.first = name;
@@ -117,7 +117,7 @@ GeoFeature::_getElementName(const char *name, const Data::MappedElement &mapped)
             ret.second += dot+1;
         }
     } else {
-        mapped.index.toString(ret.second);
+        mapped.index.appendToStringBuffer(ret.second);
     }
     return ret;
 }

@@ -474,28 +474,6 @@ public:
         return appendToBuffer(res, startPosition, len);
     }
 
-    const char * toString(std::string &s, int from=0, int len=-1) const
-    {
-        std::size_t offset = s.size();
-        int count = this->size();
-        if (from < 0)
-            from = 0;
-        else if (from >= count)
-            return s.c_str()+s.size();
-        if (len < 0 || len > count - from)
-            len = count - from;
-        s.reserve(s.size() + len);
-        if (from < this->data.size()) {
-            count = this->data.size() - from;
-            if (len < count)
-                count = len;
-            s.append(this->data.constData()+from, count);
-            len -= count;
-        }
-        s.append(this->postfix.constData(), len);
-        return s.c_str() + offset;
-    }
-
     /// Given a (possibly non-empty) std::string buffer, append this instance to it, starting at a
     /// specified position, and continuing for a specified number of bytes.
     ///

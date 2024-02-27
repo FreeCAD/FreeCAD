@@ -67,36 +67,6 @@ public:
     std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type=Normal) const override;
 
-//    static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
-//            const char *name, bool recursive=true, bool sameType=false);
-//
-//    static QVector<Data::MappedElement>
-//    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
-//
-//    /** Obtain the element name from a feature based of the element name of its source feature
-//     *
-//     * @param obj: current feature
-//     * @param subname: sub-object/element reference
-//     * @param src: source feature
-//     * @param srcSub: sub-object/element reference of the source
-//     * @param single: if true, then return upon first match is found, or else
-//     *                return all matches. Multiple matches are possible for
-//     *                compound of multiple instances of the same source shape.
-//     *
-//     * @return Return a vector of pair of new style and old style element names.
-//     */
-//    static QVector<Data::MappedElement>
-//    getElementFromSource(App::DocumentObject *obj,
-//                         const char *subname,
-//                         App::DocumentObject *src,
-//                         const char *srcSub,
-//                         bool single = false);
-//
-//    TopLoc_Location getLocation() const;
-//
-//    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
-//            Base::Matrix4D *mat, bool transform, int depth) const override;
-
     TopLoc_Location getLocation() const;
 
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
