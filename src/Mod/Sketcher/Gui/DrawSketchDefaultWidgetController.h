@@ -147,7 +147,13 @@ public:
     {
         adaptDrawingToParameterChange(parameterindex, value);  // specialisation interface
 
+        // we block the auto passing of focus back to OVP that would occur in mouseMove
+        // triggered in finishControlsChanged
+        ControllerBase::focusAutoPassing = false;
+
         ControllerBase::finishControlsChanged();
+
+        ControllerBase::focusAutoPassing = true;
     }
 
     void parameterFocusOut(int parameterindex)
