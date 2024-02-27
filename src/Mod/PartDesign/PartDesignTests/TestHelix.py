@@ -123,7 +123,11 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
-        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648,places=5)
+        # Computed exact value
+        # with r = radius, l = length of square, t = turns
+        # pi * r**2 * l * t
+        expected = pi * 25 * 5 * 3
+        self.assertAlmostEqual(helix.Shape.Volume, expected, places=2)
 
 
     def testCone(self):
