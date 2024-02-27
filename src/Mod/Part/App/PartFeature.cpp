@@ -188,6 +188,331 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     }
 }
 
+static std::vector<std::pair<long,Data::MappedName> >
+getElementSource(App::DocumentObject *owner,
+                 TopoShape shape, const Data::MappedName & name, char type)
+{
+    std::set<std::pair<App::Document*, long>> tagSet;
+    std::vector<std::pair<long,Data::MappedName> > ret;
+    ret.emplace_back(0,name);
+    int depth = 0;
+    while(1) {
+        Data::MappedName original;
+        std::vector<Data::MappedName> history;
+        // It is possible the name does not belong to the shape, e.g. when user
+        // changes modeling order in PartDesign. So we try to assign the
+        // document hasher here in case getElementHistory() needs to de-hash
+        if(!shape.Hasher && owner)
+            shape.Hasher = owner->getDocument()->getStringHasher();
+        long tag = shape.getElementHistory(ret.back().second,&original,&history);
+        if(!tag)
+            break;
+        auto obj = owner;
+        App::Document *doc = nullptr;
+        if(owner) {
+            doc = owner->getDocument();
+            for(;;++depth) {
+                auto linked = owner->getLinkedObject(false,nullptr,false,depth);
+                if (linked == owner)
+                    break;
+                owner = linked;
+                if (owner->getDocument() != doc) {
+                    doc = owner->getDocument();
+                    break;
+                }
+            }
+            // TODO: 02/24 Toponaming project:  It appears that getElementOwner is always nullptr.
+//            if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+//                auto o = static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
+//                if (o)
+//                    doc = o->getDocument();
+//            }
+            obj = doc->getObjectByID(tag < 0 ? -tag : tag);
+            if(type) {
+                for(auto &hist : history) {
+                    if(shape.elementType(hist)!=type)
+                        return ret;
+                }
+            }
+        }
+        owner = 0;
+        if(!obj) {
+            // Object maybe deleted, but it is still possible to extract the
+            // source element name from hasher table.
+            shape.setShape(TopoDS_Shape());
+            doc = nullptr;
+        }else
+            shape = Part::Feature::getTopoShape(obj,0,false,0,&owner);
+        if(type && shape.elementType(original)!=type)
+            break;
+
+        if (std::abs(tag) != ret.back().first
+            && !tagSet.insert(std::make_pair(doc,tag)).second) {
+            // Because an object might be deleted, which may be a link/binder
+            // that points to an external object that contain element name
+            // using external hash table. We shall prepare for circular element
+            // map due to looking up in the wrong table.
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("circular element mapping");
+            break;
+        }
+        ret.emplace_back(tag,original);
+    }
+    return ret;
+}
+
+std::list<Data::HistoryItem>
+Feature::getElementHistory(App::DocumentObject *feature,
+                           const char *name, bool recursive, bool sameType)
+{
+    std::list<Data::HistoryItem> ret;
+    TopoShape shape = getTopoShape(feature);
+    Data::IndexedName idx(name);
+    Data::MappedName element;
+    Data::MappedName prevElement;
+    if (idx)
+        element = shape.getMappedName(idx, true);
+    else if (Data::isMappedElement(name))
+        element = Data::MappedName(Data::newElementName(name));
+    else
+        element = Data::MappedName(name);
+    char element_type=0;
+    if(sameType)
+        element_type = shape.elementType(element);
+    int depth = 0;
+    do {
+        Data::MappedName original;
+        ret.emplace_back(feature,element);
+        long tag = shape.getElementHistory(element,&original,&ret.back().intermediates);
+
+        ret.back().index = shape.getIndexedName(element);
+        if (!ret.back().index && prevElement) {
+            ret.back().index = shape.getIndexedName(prevElement);
+            if (ret.back().index) {
+                ret.back().intermediates.insert(ret.back().intermediates.begin(), element);
+                ret.back().element = prevElement;
+            }
+        }
+        if (ret.back().intermediates.size())
+            prevElement = ret.back().intermediates.back();
+        else
+            prevElement = Data::MappedName();
+
+        App::DocumentObject *obj = nullptr;
+        if (tag) {
+            App::Document *doc = feature->getDocument();
+            for(;;++depth) {
+                auto linked = feature->getLinkedObject(false,nullptr,false,depth);
+                if (linked == feature)
+                    break;
+                feature = linked;
+                if (feature->getDocument() != doc) {
+                    doc = feature->getDocument();
+                    break;
+                }
+            }
+            // TODO: 02/24 Toponaming project:  It appears that getElementOwner is always nullptr.
+//            if(feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+//                auto owner = static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
+//                if(owner)
+//                    doc = owner->getDocument();
+//            }
+            obj = doc->getObjectByID(std::abs(tag));
+        }
+        if(!recursive) {
+            ret.emplace_back(obj,original);
+            ret.back().tag = tag;
+            return ret;
+        }
+        if(!obj)
+            break;
+        if(element_type) {
+            for(auto &hist : ret.back().intermediates) {
+                if(shape.elementType(hist)!=element_type)
+                    return ret;
+            }
+        }
+        feature = obj;
+        shape = Feature::getTopoShape(feature);
+        element = original;
+        if(element_type && shape.elementType(original)!=element_type)
+            break;
+    }while(feature);
+    return ret;
+}
+
+QVector<Data::MappedElement>
+Feature::getElementFromSource(App::DocumentObject *obj,
+                              const char *subname,
+                              App::DocumentObject *src,
+                              const char *srcSub,
+                              bool single)
+{
+    QVector<Data::MappedElement> res;
+    if (!obj || !src)
+        return res;
+
+    auto shape = getTopoShape(obj, subname, false, nullptr, nullptr, true,
+                              /*transform = */ false);
+    App::DocumentObject *owner = nullptr;
+    auto srcShape = getTopoShape(src, srcSub, false, nullptr, &owner);
+    int tagChanges;
+    Data::MappedElement element;
+    Data::IndexedName checkingSubname;
+    std::string sub = Data::noElementName(subname);
+    auto checkHistory = [&](const Data::MappedName &name, size_t, long, long tag) {
+        if (std::abs(tag) == owner->getID()) {
+            if (!tagChanges)
+                tagChanges = 1;
+        } else if (tagChanges && ++tagChanges > 3) {
+            // Once we found the tag, trace no more than 2 addition tag changes
+            // to limited the search depth.
+            return true;
+        }
+        if (name == element.name) {
+            std::pair<std::string, std::string> objElement;
+            std::size_t len = sub.size();
+            checkingSubname.toString(sub);
+            GeoFeature::resolveElement(obj, sub.c_str(), objElement);
+            sub.resize(len);
+            if (objElement.second.size()) {
+                res.push_back(Data::MappedElement(Data::MappedName(objElement.first),
+                                                  Data::IndexedName(objElement.second.c_str())));
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // obtain both the old and new style element name
+    std::pair<std::string, std::string> objElement;
+    GeoFeature::resolveElement(src,srcSub,objElement,false);
+
+    element.index = Data::IndexedName(objElement.second.c_str());
+    if (!objElement.first.empty()) {
+        // Strip prefix and indexed based name at the tail of the new style element name
+        auto mappedName = Data::newElementName(objElement.first.c_str());
+        auto mapped = Data::isMappedElement(mappedName.c_str());
+        if (mapped)
+            element.name = Data::MappedName(mapped);
+    }
+
+    // Translate the element name for datum
+    if (objElement.second == "Plane")
+        objElement.second = "Face1";
+    else if (objElement.second == "Line")
+        objElement.second = "Edge1";
+    else if (objElement.second == "Point")
+        objElement.second = "Vertex1";
+
+    // Use the old style name to obtain the shape type
+    auto type = TopoShape::shapeType(
+        Data::findElementName(objElement.second.c_str()));
+    // If the given shape has the same number of sub shapes as the source (e.g.
+    // a compound operation), then take a shortcut and assume the element index
+    // remains the same. But we still need to trace the shape history to
+    // confirm.
+    if (element.name && shape.countSubShapes(type) == srcShape.countSubShapes(type)) {
+        tagChanges = 0;
+        checkingSubname = element.index;
+        auto mapped = shape.getMappedName(element.index);
+        shape.traceElement(mapped, checkHistory);
+        if (res.size())
+            return res;
+    }
+
+    // Try geometry search first
+    auto subShape = srcShape.getSubShape(objElement.second.c_str());
+    std::vector<std::string> names;
+    shape.findSubShapesWithSharedVertex(subShape, &names);
+    if (names.size()) {
+        for (auto &name : names) {
+            Data::MappedElement e;
+            e.index = Data::IndexedName(name.c_str());
+            e.name = shape.getMappedName(e.index, true);
+            res.append(e);
+            if (single)
+                break;
+        }
+        return res;
+    }
+
+    if (!element.name)
+        return res;
+
+    // No shortcut, need to search every element of the same type. This may
+    // result in multiple matches, e.g. a compound of array of the same
+    // instance.
+    const char *shapetype = TopoShape::shapeName(type).c_str();
+    for (int i=0, count=shape.countSubShapes(type); i<count; ++i) {
+        checkingSubname = Data::IndexedName::fromConst(shapetype, i+1);
+        auto mapped = shape.getMappedName(checkingSubname);
+        tagChanges = 0;
+        shape.traceElement(mapped, checkHistory);
+        if (single && res.size())
+            break;
+    }
+    return res;
+}
+
+QVector<Data::MappedElement>
+Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType, bool withCache)
+{
+    auto owner = obj;
+    auto shape = getTopoShape(obj,0,false,0,&owner);
+    QVector<Data::MappedElement> ret;
+    Data::MappedElement mapped = shape.getElementName(name);
+    if (!mapped.name)
+        return ret;
+    if(withCache && shape.getRelatedElementsCached(mapped.name,sameType,ret))
+        return ret;
+
+    char element_type = shape.elementType(mapped.name);
+    TopAbs_ShapeEnum type = TopoShape::shapeType(element_type,true);
+    if(type == TopAbs_SHAPE)
+        return ret;
+
+    auto source = getElementSource(owner,shape,mapped.name,sameType?element_type:0);
+    for(auto &src : source) {
+        auto srcIndex = shape.getIndexedName(src.second);
+        if(srcIndex) {
+            ret.push_back(Data::MappedElement(src.second,srcIndex));
+            shape.cacheRelatedElements(mapped.name,sameType,ret);
+            return ret;
+        }
+    }
+
+    std::map<int,QVector<Data::MappedElement> > retMap;
+
+    const char *shapetype = TopoShape::shapeName(type).c_str();
+    std::ostringstream ss;
+    for(size_t i=1;i<=shape.countSubShapes(type);++i) {
+        Data::MappedElement related;
+        related.index = Data::IndexedName::fromConst(shapetype, i);
+        related.name = shape.getMappedName(related.index);
+        if (!related.name)
+            continue;
+        auto src = getElementSource(owner,shape,related.name,sameType?element_type:0);
+        int idx = (int)source.size()-1;
+        for(auto rit=src.rbegin();idx>=0&&rit!=src.rend();++rit,--idx) {
+            // TODO: shall we ignore source tag when comparing? It could cause
+            // matching unrelated element, but it does help dealing with feature
+            // reording in PartDesign::Body.
+            if(rit->second != source[idx].second)
+            {
+                ++idx;
+                break;
+            }
+        }
+        if(idx < (int)source.size())
+            retMap[idx].push_back(related);
+    }
+    if(retMap.size())
+        ret = retMap.begin()->second;
+    shape.cacheRelatedElements(mapped.name,sameType,ret);
+    return ret;
+}
+
 TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subname,
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner,
         bool resolveLink, bool transform)
