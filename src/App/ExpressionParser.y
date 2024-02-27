@@ -93,7 +93,9 @@ unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(Do
 exp:      num                                   { $$ = $1;                                                                        }
         | unit_num                              { $$ = $1;                                                                        }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
-        | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
+        | identifier                            { printf("test in exp 'identifier'\n");
+                                                  $$ = new VariableExpression(DocumentObject, $1);
+ }
         | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
         | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
         | exp '+' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
@@ -163,17 +165,17 @@ identifier
 iden
     :  '.' STRING '.' id_or_cell            { /* Path to property of a sub-object of the current object*/
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setDocumentObjectName(DocumentObject,false,ObjectIdentifier::String(std::move($2),true),true);
+                                                $$.setPropertyContainerName(DocumentObject,false,ObjectIdentifier::String(std::move($2),true),true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($4));
                                             }
     | '.' id_or_cell                        { /* Path to property of the current document object */
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setDocumentObjectName(DocumentObject);
+                                                $$.setPropertyContainerName(DocumentObject);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($2));
                                             }
     | object '.' STRING '.' id_or_cell      { /* Path to property of a sub-object */
                                                 $$ = ObjectIdentifier(DocumentObject);
-                                                $$.setDocumentObjectName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
+                                                $$.setPropertyContainerName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
                                                 $$.resolveAmbiguity();
                                             }
@@ -187,14 +189,21 @@ iden
     | document '#' object '.' id_or_cell    { /* Path to property from an external document, within a named document object */
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
-                                                $$.setDocumentObjectName(std::move($3), true);
+                                                $$.setPropertyContainerName(std::move($3), true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
+                                                $$.resolveAmbiguity();
+                                            }
+    | document '$' IDENTIFIER
+                                            {   $$ = ObjectIdentifier(DocumentObject);
+                                                $$.identifyAsDocumentProperty(true); // TODO: This should not be necessary
+                                                $$.setPropertyContainerName(std::move($1), true, ObjectIdentifier::String(std::move($3),true));
+                                                printf("test");
                                                 $$.resolveAmbiguity();
                                             }
     | document '#' object '.' STRING '.' id_or_cell
                                             {   $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
-                                                $$.setDocumentObjectName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
+                                                $$.setPropertyContainerName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($7));
                                                 $$.resolveAmbiguity();
                                             }
