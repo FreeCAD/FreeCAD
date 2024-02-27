@@ -102,8 +102,9 @@ public:
             double angleatpoint = acosh(((onSketchPos.x - centerPoint.x) * cos(phi)
                                          + (onSketchPos.y - centerPoint.y) * sin(phi))
                                         / a);
-            double b = (onSketchPos.y - centerPoint.y - a * cosh(angleatpoint) * sin(phi))
-                / (sinh(angleatpoint) * cos(phi));
+            double b = ((onSketchPos.y - centerPoint.y) * cos(phi)
+                        - (onSketchPos.x - centerPoint.x) * sin(phi))
+                / sinh(angleatpoint);
 
             if (!boost::math::isnan(b)) {
                 for (int i = 15; i >= -15; i--) {
@@ -140,8 +141,9 @@ public:
             double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
                                                  + (startingPoint.y - centerPoint.y) * sin(phi))
                                                 / a);
-            double b = (startingPoint.y - centerPoint.y - a * cosh(angleatstartingpoint) * sin(phi))
-                / (sinh(angleatstartingpoint) * cos(phi));
+            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
+                        - (startingPoint.x - centerPoint.x) * sin(phi))
+                / sinh(angleatstartingpoint);
 
             double startAngle = angleatstartingpoint;
 
@@ -240,8 +242,10 @@ public:
             double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
                                                  + (startingPoint.y - centerPoint.y) * sin(phi))
                                                 / a);
-            double b = (startingPoint.y - centerPoint.y - a * cosh(angleatstartingpoint) * sin(phi))
-                / (sinh(angleatstartingpoint) * cos(phi));
+
+            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
+                        - (startingPoint.x - centerPoint.x) * sin(phi))
+                / sinh(angleatstartingpoint);
 
             double startAngle = angleatstartingpoint;
 
