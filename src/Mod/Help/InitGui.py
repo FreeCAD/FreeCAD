@@ -21,7 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import Help
 
 Help.add_preferences_page()
 Help.add_language_path()
+FreeCAD.__unit_test__ += ["TestHelp"]

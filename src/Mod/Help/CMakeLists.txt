@@ -7,6 +7,7 @@ SET(Help_SRCS
     default.css
     Help.py
     dlgPreferencesHelp.ui
+    TestHelp.py
 )
 
 SOURCE_GROUP("" FILES ${Help_SRCS})
