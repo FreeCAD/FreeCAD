@@ -5003,4 +5003,25 @@ bool TopoShape::isSame(const Data::ComplexGeoData &_other) const
         && _Shape.IsEqual(other._Shape);
 }
 
+void TopoShape::cacheRelatedElements(const Data::MappedName &name,
+                                     bool sameType,
+                                     const QVector<Data::MappedElement> & names) const
+{
+    INIT_SHAPE_CACHE();
+    _Cache->insertRelation(ShapeRelationKey(name,sameType), names);
+}
+
+bool TopoShape::getRelatedElementsCached(const Data::MappedName &name,
+                                         bool sameType,
+                                         QVector<Data::MappedElement> &names) const
+{
+    if(!_Cache)
+        return false;
+    auto it = _Cache->relations.find(ShapeRelationKey(name,sameType));
+    if(it == _Cache->relations.end())
+        return false;
+    names = it->second;
+    return true;
+}
+
 }  // namespace Part

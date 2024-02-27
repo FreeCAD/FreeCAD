@@ -301,6 +301,28 @@ public:
     static bool isElementName(const char *subName) {
         return (subName != nullptr) && (*subName != 0) && findElementName(subName)==subName;
     }
+    /** Element trace callback
+     *
+     * The callback has the following call signature
+     *  (const std::string &name, size_t offset, long encodedTag, long tag) -> bool
+     *
+     * @param name: the current element name.
+     * @param offset: the offset skipping the encoded element name for the next iteration.
+     * @param encodedTag: the tag encoded inside the current element, which is usually the tag
+     *                    of the previous step in the shape history.
+     * @param tag: the tag of the current shape element.
+     *
+     * @sa traceElement()
+     */
+    typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     * @param cb: trace callback with call signature.
+     * @sa TraceCallback
+     */
+    void traceElement(const MappedName& name, TraceCallback cb) const;
 
     /** Flush an internal buffering for element mapping */
     virtual void flushElementMap() const;
