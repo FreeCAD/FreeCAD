@@ -1575,7 +1575,7 @@ void CmdSketcherCompCreateFillets::languageChange()
         QApplication::translate("Sketcher_CreateFillet", "Creates a radius between two lines"));
     QAction* pointFillet = a[1];
     pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets",
-                                                 "Constraint-preserving sketch fillet"));
+                                                 "Corner-preserving sketch fillet"));
     pointFillet->setToolTip(
         QApplication::translate("Sketcher_CreatePointFillet",
                                 "Fillet that preserves constraints and intersection point"));
