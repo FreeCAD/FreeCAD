@@ -45,12 +45,11 @@ def write_step_equation(f, ccxwriter):
                 "Analysis type frequency and geometrical nonlinear "
                 "analysis are not allowed together, linear is used instead!\n"
             )
-    if ccxwriter.solver_obj.IterationsThermoMechMaximum:
-        if ccxwriter.analysis_type == "thermomech":
-            step += ", INC={}".format(ccxwriter.solver_obj.IterationsThermoMechMaximum)
+    if ccxwriter.solver_obj.IterationsMaximum:
+        if ccxwriter.analysis_type == "thermomech" or ccxwriter.analysis_type == "static":
+            step += ", INC={}".format(ccxwriter.solver_obj.IterationsMaximum)
         elif (
-            ccxwriter.analysis_type == "static"
-            or ccxwriter.analysis_type == "frequency"
+            ccxwriter.analysis_type == "frequency"
             or ccxwriter.analysis_type == "buckling"
         ):
             # parameter is for thermomechanical analysis only, see ccx manual *STEP
@@ -124,9 +123,11 @@ def write_step_equation(f, ccxwriter):
     if ccxwriter.analysis_type == "static" or ccxwriter.analysis_type == "check":
         if ccxwriter.solver_obj.IterationsUserDefinedIncrementations is True \
                 or ccxwriter.solver_obj.IterationsUserDefinedTimeStepLength is True:
-            analysis_parameter = "{},{}".format(
+            analysis_parameter = "{},{},{},{}".format(
                 ccxwriter.solver_obj.TimeInitialStep,
-                ccxwriter.solver_obj.TimeEnd
+                ccxwriter.solver_obj.TimeEnd,
+                ccxwriter.solver_obj.TimeMinimumStep,
+                ccxwriter.solver_obj.TimeMaximumStep
             )
     elif ccxwriter.analysis_type == "frequency":
         if ccxwriter.solver_obj.EigenmodeLowLimit == 0.0 \
@@ -140,9 +141,11 @@ def write_step_equation(f, ccxwriter):
             )
     elif ccxwriter.analysis_type == "thermomech":
         # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
-        analysis_parameter = "{},{}".format(
+        analysis_parameter = "{},{},{},{}".format(
             ccxwriter.solver_obj.TimeInitialStep,
-            ccxwriter.solver_obj.TimeEnd
+            ccxwriter.solver_obj.TimeEnd,
+            ccxwriter.solver_obj.TimeMinimumStep,
+            ccxwriter.solver_obj.TimeMaximumStep
         )
     elif ccxwriter.analysis_type == "buckling":
         analysis_parameter = "{}\n".format(ccxwriter.solver_obj.BucklingFactors)
