@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             TopLoc_Location loc(mov);
             sourceShape.setShape(sourceShape.getShape().Moved(loc));
         }
-
+#ifndef FC_USE_TNP_FIX
         //"make solid" processing: make faces from wires.
         Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
         if (makeSolid){
@@ -189,13 +189,23 @@ App::DocumentObjectExecReturn *Revolution::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);
         return App::DocumentObject::StdReturn;
+#else
+        TopoShape revolve(0);
+        revolve.makeElementRevolve(sourceShape,
+                                   revAx,
+                                   angle,
+                                   Solid.getValue() ? FaceMakerClass.getValue() : 0);
+        if (revolve.isNull()) {
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        }
+        this->Shape.setValue(revolve);
+        return Part::Feature::execute();
+#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
-
-
 
 void Part::Revolution::setupObject()
 {
