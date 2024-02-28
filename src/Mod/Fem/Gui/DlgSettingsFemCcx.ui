@@ -393,14 +393,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="l_use_iterations_param">
           <property name="text">
            <string>Time incrementation control parameter</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="3" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
           <property name="text">
            <string>Use non ccx defaults</string>
@@ -410,6 +410,35 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UseNonCcxIterationParam</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="l_ccx_max_iterations">
+          <property name="text">
+           <string>Maximum number of iterations</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_iterations">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10000000</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>2000</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisMaxIterations</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -445,10 +474,10 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="decimals">
-           <number>3</number>
+           <number>9</number>
           </property>
           <property name="minimum">
-           <double>0.010000000000000</double>
+           <double>0.000000001000000</double>
           </property>
           <property name="singleStep">
            <double>0.010000000000000</double>
@@ -484,10 +513,10 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="decimals">
-           <number>3</number>
+           <number>9</number>
           </property>
           <property name="minimum">
-           <double>0.010000000000000</double>
+           <double>0.000000001000000</double>
           </property>
           <property name="singleStep">
            <double>0.010000000000000</double>
@@ -504,20 +533,130 @@
          </widget>
         </item>
         <item row="6" column="3">
-         <widget class="QLabel" name="l_hz_4">
+         <widget class="QLabel" name="l_hz_3">
           <property name="text">
            <string>s</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+       <item row="7" column="0">
+         <widget class="QLabel" name="l_ccx_minimum_time_step">
+          <property name="text">
+           <string>Time Minimum Step</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000010000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisTimeMinimumStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="3">
+         <widget class="QLabel" name="l_hz_3">
+          <property name="text">
+           <string>s</string>
+          </property>
+         </widget>
+        </item>
+       <item row="8" column="0">
+         <widget class="QLabel" name="l_ccx_maximum_time_step">
+          <property name="text">
+           <string>Time Maximum Step</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="8" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_step">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AnalysisTimeMaximumStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="3">
+         <widget class="QLabel" name="l_hz_3">
+          <property name="text">
+           <string>s</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
          <widget class="QLabel" name="l_BeamShellOutput">
           <property name="text">
            <string>Beam, shell element 3D output format </string>
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="9" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
           <property name="text">
            <string>3D Output, unchecked for 2D</string>
@@ -563,35 +702,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>StaticAnalysis</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations">
-          <property name="text">
-           <string>Maximum number of iterations</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_iterations">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>10000000</number>
-          </property>
-          <property name="singleStep">
-           <number>10</number>
-          </property>
-          <property name="value">
-           <number>2000</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisMaxIterations</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
