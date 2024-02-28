@@ -129,8 +129,12 @@ class PackageList(QtWidgets.QWidget):
         # TODO: Update to support composite
         if style == AddonManagerDisplayStyle.COMPACT:
             self.ui.listPackages.setSpacing(2)
+            self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
+            self.ui.listPackages.verticalScrollBar().setSingleStep(-1)
         else:
             self.ui.listPackages.setSpacing(5)
+            self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+            self.ui.listPackages.verticalScrollBar().setSingleStep(24)
         self.item_model.layoutChanged.emit()
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -720,6 +724,8 @@ class Ui_PackageList:
         self.listPackages.setUniformItemSizes(False)
         self.listPackages.setAlternatingRowColors(True)
         self.listPackages.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.listPackages.verticalScrollBar().setSingleStep(24)
 
         self.verticalLayout.addWidget(self.listPackages)
 
