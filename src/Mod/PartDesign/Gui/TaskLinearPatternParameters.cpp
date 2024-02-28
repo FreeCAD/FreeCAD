@@ -97,7 +97,7 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
 
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         this->fillAxisCombo(dirLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {

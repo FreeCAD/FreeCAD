@@ -205,7 +205,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         PartDesign::Transformed* pcTransformed = getObject();
         App::DocumentObject* selectedObject =
             pcTransformed->getDocument()->getObject(msg.pObjectName);
-        if (selectedObject->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+        if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -298,7 +298,7 @@ void TaskTransformedParameters::checkVisibility()
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
     for (auto obj : body->Group.getValues()) {
-        if (!obj->Visibility.getValue() || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (!obj->Visibility.getValue() || !obj->isDerivedFrom<PartDesign::Feature>()) {
             continue;
         }
         if (inset.count(obj) > 0) {
@@ -441,7 +441,7 @@ PartDesign::Transformed* TaskTransformedParameters::getTopTransformedObject() co
     }
 
     App::DocumentObject* transform = vp->getObject();
-    assert(transform->isDerivedFrom(PartDesign::Transformed::getClassTypeId()));
+    assert(transform->isDerivedFrom<PartDesign::Transformed>());
     return static_cast<PartDesign::Transformed*>(transform);
 }
 

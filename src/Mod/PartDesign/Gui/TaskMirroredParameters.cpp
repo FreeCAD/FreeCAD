@@ -78,7 +78,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
     ui->comboPlane->setEnabled(true);
 
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         this->fillPlanesCombo(planeLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {

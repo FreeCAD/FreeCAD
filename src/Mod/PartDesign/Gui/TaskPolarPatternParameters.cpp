@@ -98,7 +98,7 @@ void TaskPolarPatternParameters::setupParameterUI(QWidget* widget)
 
     this->axesLinks.setCombo(*(ui->comboAxis));
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {
