@@ -158,7 +158,7 @@ public:
      * instance that does it already, e.g. TaskDlgMultiTransformParameters.
      * By default, transactions are enabled.
      */
-    void setEnabledTransaction(bool /*unsused*/);
+    void setEnabledTransaction(bool /*unused*/);
 
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
@@ -215,7 +215,7 @@ protected:
     void setupTransaction();
 
 private Q_SLOTS:
-    virtual void onUpdateView(bool /*unsused*/) = 0;
+    virtual void onUpdateView(bool /*unused*/) = 0;
 
     void onButtonAddFeature(bool checked);
     void onButtonRemoveFeature(bool checked);

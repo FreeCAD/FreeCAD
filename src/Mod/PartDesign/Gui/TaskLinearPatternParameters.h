@@ -70,7 +70,7 @@ private Q_SLOTS:
     void onLength(double length);
     void onOffset(double offset);
     void onOccurrences(uint number);
-    void onUpdateView(bool /*unsused*/) override;
+    void onUpdateView(bool /*unused*/) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;
