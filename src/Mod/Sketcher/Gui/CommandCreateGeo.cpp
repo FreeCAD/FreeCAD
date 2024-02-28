@@ -551,20 +551,20 @@ void CmdSketcherCompCreateArc::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc", "Center and end points"));
+    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc", "Center and endpoints"));
     arc1->setToolTip(QApplication::translate("Sketcher_CreateArc",
-                                             "Create an arc by its center and by its end points"));
+                                             "Create an arc by its center and by its endpoints"));
     arc1->setStatusTip(
         QApplication::translate("Sketcher_CreateArc",
-                                "Create an arc by its center and by its end points"));
+                                "Create an arc by its center and by its endpoints"));
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc", "End points and rim point"));
+    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc", "Endpoints and rim point"));
     arc2->setToolTip(
         QApplication::translate("Sketcher_Create3PointArc",
-                                "Create an arc by its end points and a point along the arc"));
+                                "Create an arc by its endpoints and a point along the arc"));
     arc2->setStatusTip(
         QApplication::translate("Sketcher_Create3PointArc",
-                                "Create an arc by its end points and a point along the arc"));
+                                "Create an arc by its endpoints and a point along the arc"));
 }
 
 bool CmdSketcherCompCreateArc::isActive()
@@ -891,52 +891,52 @@ void CmdSketcherCompCreateConic::languageChange()
 
     QAction* ellipseByCenter = a[0];
     ellipseByCenter->setText(QApplication::translate("CmdSketcherCompCreateConic",
-                                                     "Ellipse by center, major radius, point"));
+                                                     "Ellipse by center, radius, rim point"));
     ellipseByCenter->setToolTip(
         QApplication::translate("Sketcher_CreateEllipseByCenter",
-                                "Create an ellipse by center, major radius and point"));
+                                "Create an ellipse by its center, one of its radii and a rim point"));
     ellipseByCenter->setStatusTip(
         QApplication::translate("Sketcher_CreateEllipseByCenter",
-                                "Create an ellipse by center, major radius and point"));
+                                "Create an ellipse by its center, one of its radii and a rim point"));
     QAction* ellipseBy3Points = a[1];
     ellipseBy3Points->setText(
         QApplication::translate("CmdSketcherCompCreateConic",
-                                "Ellipse by periapsis, apoapsis, minor radius"));
+                                "Ellipse by axis endpoints, rim point"));
     ellipseBy3Points->setToolTip(
         QApplication::translate("Sketcher_CreateEllipseBy3Points",
-                                "Create a ellipse by periapsis, apoapsis, and minor radius"));
+                                "Create an ellipse by the endpoints of one of its axes and a rim point"));
     ellipseBy3Points->setStatusTip(
         QApplication::translate("Sketcher_CreateEllipseBy3Points",
-                                "Create a ellipse by periapsis, apoapsis, and minor radius"));
+                                "Create an ellipse by the endpoints of one of its axes and a rim point"));
     QAction* arcofellipse = a[2];
     arcofellipse->setText(
         QApplication::translate("CmdSketcherCompCreateConic",
-                                "Arc of ellipse by center, major radius, endpoints"));
+                                "Arc of ellipse by center, radius, endpoints"));
     arcofellipse->setToolTip(QApplication::translate(
         "Sketcher_CreateArcOfEllipse",
-        "Create an arc of ellipse by its center, major radius, and endpoints"));
+        "Create an arc of ellipse by its center, one of its radii, and its endpoints"));
     arcofellipse->setStatusTip(QApplication::translate(
         "Sketcher_CreateArcOfEllipse",
-        "Create an arc of ellipse by its center, major radius, and endpoints"));
+        "Create an arc of ellipse by its center, one of its radii, and its endpoints"));
     QAction* arcofhyperbola = a[3];
     arcofhyperbola->setText(
         QApplication::translate("CmdSketcherCompCreateConic",
-                                "Arc of hyperbola by center, major radius, endpoints"));
+                                "Arc of hyperbola by center, vertex, endpoints"));
     arcofhyperbola->setToolTip(QApplication::translate(
         "Sketcher_CreateArcOfHyperbola",
-        "Create an arc of hyperbola by its center, major radius, and endpoints"));
+        "Create an arc of hyperbola by its center, vertex and endpoints"));
     arcofhyperbola->setStatusTip(QApplication::translate(
         "Sketcher_CreateArcOfHyperbola",
-        "Create an arc of hyperbola by its center, major radius, and endpoints"));
+        "Create an arc of hyperbola by its center, vertex and endpoints"));
     QAction* arcofparabola = a[4];
     arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic",
                                                    "Arc of parabola by focus, vertex, endpoints"));
     arcofparabola->setToolTip(
         QApplication::translate("Sketcher_CreateArcOfParabola",
-                                "Create an arc of parabola by its focus, vertex, and endpoints"));
+                                "Create an arc of parabola by its focus, vertex and endpoints"));
     arcofparabola->setStatusTip(
         QApplication::translate("Sketcher_CreateArcOfParabola",
-                                "Create an arc of parabola by its focus, vertex, and endpoints"));
+                                "Create an arc of parabola by its focus, vertex and endpoints"));
 }
 
 bool CmdSketcherCompCreateConic::isActive()
