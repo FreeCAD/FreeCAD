@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMessageBox>
-# include <QTimer>
+#include <QMessageBox>
+#include <QTimer>
 #endif
 
 #include <App/Document.h>
@@ -53,108 +52,29 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLinearPatternParameters */
 
-TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
+TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed* TransformedView,
+                                                         QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskLinearPatternParameters)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    this->groupLayout()->addWidget(proxy);
-
-    ui->buttonOK->hide();
-    ui->checkBoxUpdateView->setEnabled(true);
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
-TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask), ui(new Ui_TaskLinearPatternParameters)
+TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters* parentTask,
+                                                         QWidget* parameterWidget)
+    : TaskTransformedParameters(parentTask)
+    , ui(new Ui_TaskLinearPatternParameters)
 {
-    proxy = new QWidget(parentTask);
-    ui->setupUi(proxy);
-    connect(ui->buttonOK, &QToolButton::pressed,
-            parentTask, &TaskLinearPatternParameters::onSubTaskButtonOK);
+    setupParameterUI(parameterWidget);
+}
+
+void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
+{
+    ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    layout->addWidget(proxy);
-
-    ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
-    ui->checkBoxUpdateView->hide();
-
-    selectionMode = none;
-
-    // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
-    blockUpdate = false;
-    setupUI();
-}
-
-void TaskLinearPatternParameters::connectSignals()
-{
-    connect(ui->buttonAddFeature, &QToolButton::toggled,
-            this, &TaskLinearPatternParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
-            this, &TaskLinearPatternParameters::onButtonRemoveFeature);
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, &QAction::triggered, this, &TaskLinearPatternParameters::onFeatureDeleted);
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
-            this, &TaskLinearPatternParameters::indexesMoved);
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout,
-            this, &TaskLinearPatternParameters::onUpdateViewTimer);
-
-    connect(ui->comboDirection, qOverload<int>(&QComboBox::activated),
-            this, &TaskLinearPatternParameters::onDirectionChanged);
-    connect(ui->checkReverse, &QCheckBox::toggled,
-            this, &TaskLinearPatternParameters::onCheckReverse);
-    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
-            this, &TaskLinearPatternParameters::onModeChanged);
-    connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskLinearPatternParameters::onLength);
-    connect(ui->spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskLinearPatternParameters::onOffset);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-            this, &TaskLinearPatternParameters::onOccurrences);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            this, &TaskLinearPatternParameters::onUpdateView);
-}
-
-void TaskLinearPatternParameters::setupUI()
-{
     // Get the feature data
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (auto obj : originals) {
-        if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
     ui->spinLength->bind(pcLinearPattern->Length);
     ui->spinOffset->bind(pcLinearPattern->Offset);
@@ -177,55 +97,95 @@ void TaskLinearPatternParameters::setupUI()
 
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         this->fillAxisCombo(dirLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {
         this->fillAxisCombo(dirLinks, nullptr);
     }
 
-    //show the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
-    if(body) {
+    // show the parts coordinate system axis for selection
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+    if (body) {
         try {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            App::Origin* origin = body->getOrigin();
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+        }
+        catch (const Base::Exception& ex) {
+            Base::Console().Error("%s\n", ex.what());
         }
     }
 
     adaptVisibilityToMode();
-    connectSignals();
+
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+    connect(updateViewTimer,
+            &QTimer::timeout,
+            this,
+            &TaskLinearPatternParameters::onUpdateViewTimer);
+
+    connect(ui->comboDirection,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskLinearPatternParameters::onDirectionChanged);
+    connect(ui->checkReverse,
+            &QCheckBox::toggled,
+            this,
+            &TaskLinearPatternParameters::onCheckReverse);
+    connect(ui->comboMode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskLinearPatternParameters::onModeChanged);
+    connect(ui->spinLength,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskLinearPatternParameters::onLength);
+    connect(ui->spinOffset,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskLinearPatternParameters::onOffset);
+    connect(ui->spinOccurrences,
+            &Gui::UIntSpinBox::unsignedChanged,
+            this,
+            &TaskLinearPatternParameters::onOccurrences);
+}
+
+void TaskLinearPatternParameters::retranslateParameterUI(QWidget* widget)
+{
+    ui->retranslateUi(widget);
 }
 
 void TaskLinearPatternParameters::updateUI()
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
     blockUpdate = true;
 
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    PartDesign::LinearPatternMode mode = static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    auto mode = static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
 
     bool reverse = pcLinearPattern->Reversed.getValue();
     double length = pcLinearPattern->Length.getValue();
     double offset = pcLinearPattern->Offset.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
 
-    if (dirLinks.setCurrentLink(pcLinearPattern->Direction) == -1){
-        //failed to set current, because the link isn't in the list yet
-        dirLinks.addLink(pcLinearPattern->Direction, getRefStr(pcLinearPattern->Direction.getValue(),
-                                                               pcLinearPattern->Direction.getSubValues()));
+    if (dirLinks.setCurrentLink(pcLinearPattern->Direction) == -1) {
+        // failed to set current, because the link isn't in the list yet
+        dirLinks.addLink(pcLinearPattern->Direction,
+                         getRefStr(pcLinearPattern->Direction.getValue(),
+                                   pcLinearPattern->Direction.getSubValues()));
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
 
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
-    ui->comboMode->setCurrentIndex((long)mode);
+    ui->comboMode->setCurrentIndex(static_cast<int>(mode));
     ui->spinLength->setValue(length);
     ui->spinOffset->setValue(offset);
     ui->spinOccurrences->setValue(occurrences);
@@ -255,74 +215,54 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
-void TaskLinearPatternParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskLinearPatternParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else if (selectionMode == reference) {
-            // TODO check if this works correctly (2015-09-01, Fat-Zer)
-            exitSelectionMode();
+        else if (selectionMode == SelectionMode::Reference) {
+            auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+
             std::vector<std::string> directions;
             App::DocumentObject* selObj = nullptr;
-            PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-            if (pcLinearPattern) {
-                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-
-                // Note: ReferenceSelection has already checked the selection for validity
-                if (selObj && (selectionMode == reference ||
-                               selObj->isDerivedFrom(App::Line::getClassTypeId()) ||
-                               selObj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
-                               selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ||
-                               selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))) {
-                    setupTransaction();
-                    pcLinearPattern->Direction.setValue(selObj, directions);
-                    recomputeFeature();
-                    updateUI();
-                }
+            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
+            if (!selObj) {
+                return;
             }
+
+            // Note: ReferenceSelection has already checked the selection for validity
+            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
+                || selObj->isDerivedFrom<PartDesign::Line>()
+                || selObj->isDerivedFrom<PartDesign::Plane>()) {
+                setupTransaction();
+                pcLinearPattern->Direction.setValue(selObj, directions);
+                recomputeFeature();
+                updateUI();
+            }
+            exitSelectionMode();
         }
     }
 }
 
-void TaskLinearPatternParameters::clearButtons()
+void TaskLinearPatternParameters::onCheckReverse(const bool on)
 {
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
-}
-
-void TaskLinearPatternParameters::onCheckReverse(const bool on) {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Reversed.setValue(on);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onModeChanged(const int mode) {
-    if (blockUpdate)
+void TaskLinearPatternParameters::onModeChanged(const int mode)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Mode.setValue(mode);
 
     adaptVisibilityToMode();
@@ -331,31 +271,37 @@ void TaskLinearPatternParameters::onModeChanged(const int mode) {
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onLength(const double l) {
-    if (blockUpdate)
+void TaskLinearPatternParameters::onLength(const double length)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Length.setValue(l);
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Length.setValue(length);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOffset(const double o) {
-    if (blockUpdate)
+void TaskLinearPatternParameters::onOffset(const double offset)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Offset.setValue(o);
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Offset.setValue(offset);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOccurrences(const uint n) {
-    if (blockUpdate)
+void TaskLinearPatternParameters::onOccurrences(const uint number)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Occurrences.setValue(n);
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Occurrences.setValue(number);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -363,23 +309,27 @@ void TaskLinearPatternParameters::onOccurrences(const uint n) {
 
 void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
-    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    try{
+    }
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    try {
         if (!dirLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
-            selectionMode = reference;
+            selectionMode = SelectionMode::Reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
-        } else {
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE
+                                      | AllowSelection::PLANAR);
+        }
+        else {
             exitSelectionMode();
             pcLinearPattern->Direction.Paste(dirLinks.getCurrentLink());
         }
-    } catch (Base::Exception &e) {
-        QMessageBox::warning(nullptr,tr("Error"),QApplication::translate("Exception", e.what()));
+    }
+    catch (Base::Exception& e) {
+        QMessageBox::warning(nullptr, tr("Error"), QApplication::translate("Exception", e.what()));
     }
 
     kickUpdateViewTimer();
@@ -390,13 +340,13 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgLinearPatternParameters::accept() but without doCommand
-        PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+        auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
         std::vector<std::string> directions;
-        App::DocumentObject* obj;
+        App::DocumentObject* obj = nullptr;
 
         setupTransaction();
         getDirection(obj, directions);
-        pcLinearPattern->Direction.setValue(obj,directions);
+        pcLinearPattern->Direction.setValue(obj, directions);
         pcLinearPattern->Reversed.setValue(getReverse());
         pcLinearPattern->Length.setValue(getLength());
         pcLinearPattern->Offset.setValue(getOffset());
@@ -406,25 +356,10 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskLinearPatternParameters::onFeatureDeleted()
+void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj,
+                                               std::vector<std::string>& sub) const
 {
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign LinearPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
-}
-
-void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{
-    const App::PropertyLinkSub &lnk = dirLinks.getCurrentLink();
+    const App::PropertyLinkSub& lnk = dirLinks.getCurrentLink();
     obj = lnk.getValue();
     sub = lnk.getSubValues();
 }
@@ -457,42 +392,31 @@ unsigned TaskLinearPatternParameters::getOccurrences() const
 TaskLinearPatternParameters::~TaskLinearPatternParameters()
 {
     try {
-        //hide the parts coordinate system axis for selection
-        PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
+        // hide the parts coordinate system axis for selection
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            App::Origin* origin = body->getOrigin();
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
     }
-    catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what () );
-    }
-
-    if (proxy)
-        delete proxy;
-}
-
-void TaskLinearPatternParameters::changeEvent(QEvent *e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(proxy);
+    catch (const Base::Exception& ex) {
+        Base::Console().Error("%s\n", ex.what());
     }
 }
 
 void TaskLinearPatternParameters::apply()
 {
     std::vector<std::string> directions;
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    auto tobj = TransformedView->getObject();
-    FCMD_OBJ_CMD(tobj,"Direction = " << direction);
-    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
-
+    auto tobj = getObject();
+    FCMD_OBJ_CMD(tobj, "Direction = " << direction);
+    FCMD_OBJ_CMD(tobj, "Reversed = " << getReverse());
+    FCMD_OBJ_CMD(tobj, "Mode = " << getMode());
     ui->spinLength->apply();
     ui->spinOffset->apply();
     ui->spinOccurrences->apply();
@@ -503,7 +427,8 @@ void TaskLinearPatternParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView)
+TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
+    ViewProviderLinearPattern* LinearPatternView)
     : TaskDlgTransformedParameters(LinearPatternView)
 {
     parameter = new TaskLinearPatternParameters(LinearPatternView);
