@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="BaseClassPy"
+        Name="VoronoiPy"
+        PythonName="Path.Voronoi.Diagram"
+        Twin="Voronoi"
+        TwinPointer="Voronoi"
+        Include="Mod/CAM/App/Voronoi.h"
+        Namespace="Path"
+        FatherInclude="Base/BaseClassPy.h"
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="sliptonic" EMail="shopinthewoods@gmail.com" />
+            <UserDocu>Voronoi([segments]): Create voronoi for given collection of line segments</UserDocu>
+        </Documentation>
+        <Attribute Name="Cells" ReadOnly="true">
+            <Documentation>
+                <UserDocu>List of all cells of the voronoi diagram</UserDocu>
+            </Documentation>
+            <Parameter Name="Cells" Type="List"/>
+        </Attribute>
+        <Attribute Name="Edges" ReadOnly="true">
+            <Documentation>
+                <UserDocu>List of all edges of the voronoi diagram</UserDocu>
+            </Documentation>
+            <Parameter Name="Edges" Type="List"/>
+        </Attribute>
+        <Attribute Name="Vertices" ReadOnly="true">
+            <Documentation>
+                <UserDocu>List of all vertices of the voronoi diagram</UserDocu>
+            </Documentation>
+            <Parameter Name="Vertices" Type="List"/>
+        </Attribute>
+        <Methode Name="numCells" Const="true">
+            <Documentation>
+                <UserDocu>Return number of cells</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numEdges" Const="true">
+            <Documentation>
+                <UserDocu>Return number of edges</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numVertices" Const="true">
+            <Documentation>
+                <UserDocu>Return number of vertices</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addPoint">
+            <Documentation>
+                <UserDocu>addPoint(vector|vector2d) add given point to input collection</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addSegment">
+            <Documentation>
+                <UserDocu>addSegment(vector|vector2d, vector|vector2d) add given segment to input collection</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="construct">
+            <Documentation>
+                <UserDocu>constructs the voronoi diagram from the input collections</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="colorExterior">
+            <Documentation>
+                <UserDocu>assign given color to all exterior edges and vertices</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="colorTwins">
+            <Documentation>
+                <UserDocu>assign given color to all twins of edges (which one is considered a twin is arbitrary)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="colorColinear">
+            <Documentation>
+                <UserDocu>assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resetColor">
+            <Documentation>
+                <UserDocu>assign color 0 to all elements with the given color</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getPoints" Const="true">
+            <Documentation>
+                <UserDocu>Get list of all input points.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numPoints" Const="true">
+            <Documentation>
+                <UserDocu>Return number of input points</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSegments" Const="true">
+            <Documentation>
+                <UserDocu>Get list of all input segments.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numSegments" Const="true">
+            <Documentation>
+                <UserDocu>Return number of input segments</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>

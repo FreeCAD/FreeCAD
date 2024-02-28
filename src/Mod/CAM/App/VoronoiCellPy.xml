@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="BaseClassPy"
+        Name="VoronoiCellPy"
+        PythonName="Path.Voronoi.Cell"
+        Twin="VoronoiCell"
+        TwinPointer="VoronoiCell"
+        Include="Mod/CAM/App/VoronoiCell.h"
+        FatherInclude="Base/BaseClassPy.h"
+        Namespace="Path"
+        FatherNamespace="Base"
+        Constructor="true"
+        RichCompare="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="sliptonic" EMail="shopinthewoods@gmail.com" />
+            <UserDocu>Cell of a Voronoi diagram</UserDocu>
+        </Documentation>
+        <Attribute Name="Index" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Internal id of the element.</UserDocu>
+            </Documentation>
+            <Parameter Name="Index" Type="Long"/>
+        </Attribute>
+        <Attribute Name="Color" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Assigned color of the receiver.</UserDocu>
+            </Documentation>
+            <Parameter Name="Color" Type="Long"/>
+        </Attribute>
+        <Attribute Name="SourceIndex" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Returns the index of the cell's source</UserDocu>
+            </Documentation>
+            <Parameter Name="SourceIndex" Type="Long"/>
+        </Attribute>
+        <Attribute Name="SourceCategory" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Returns the cell's category as an integer</UserDocu>
+            </Documentation>
+            <Parameter Name="SourceCategory" Type="Int"/>
+        </Attribute>
+        <Attribute Name="SourceCategoryName" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Returns the cell's category as a string</UserDocu>
+            </Documentation>
+            <Parameter Name="SourceCategory" Type="String"/>
+        </Attribute>
+        <Attribute Name="IncidentEdge" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Incident edge of the cell - if exists</UserDocu>
+            </Documentation>
+            <Parameter Name="IncidentEdge" Type="Object"/>
+        </Attribute>
+        <Methode Name="containsPoint" Const="true">
+            <Documentation>
+                <UserDocu>Returns true if the cell contains a point site</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="containsSegment" Const="true">
+            <Documentation>
+                <UserDocu>Returns true if the cell contains a segment site</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isDegenerate" Const="true">
+            <Documentation>
+                <UserDocu>Returns true if the cell doesn't have an incident edge</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSource" Const="true">
+            <Documentation>
+                <UserDocu>Returns the Source for the cell</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>
