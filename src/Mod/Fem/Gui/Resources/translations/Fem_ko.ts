@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Fem</source>
-      <translation>유한 요소 방법</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation>유한 요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="448"/>
       <source>Fem</source>
-      <translation>유한 요소 방법</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation>유한 요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="554"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
@@ -3221,9 +3221,13 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Diameter:   </source>
       <translation>직경   </translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
+      <source>Outer diameter:   </source>
+      <translation type="unfinished">Outer diameter:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>

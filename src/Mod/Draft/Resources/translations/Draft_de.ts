@@ -765,7 +765,7 @@ Oder eine der folgenden Möglichkeiten auswählen.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation>Oben (XY)</translation>
+      <translation>Draufsicht (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
@@ -2856,7 +2856,7 @@ Diese Linien sind dicker als normale Rasterlinien.</translation>
       <location filename="../../WorkingPlane.py" line="1495"/>
       <location filename="../../WorkingPlane.py" line="1496"/>
       <source>Top</source>
-      <translation>Oben</translation>
+      <translation>Draufsicht</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="957"/>
