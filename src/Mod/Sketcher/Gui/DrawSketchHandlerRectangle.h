@@ -1667,9 +1667,8 @@ void DSHRectangleController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame (J)"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::SecondBox,
-            QApplication::translate(
-                "TaskSketcherTool_c2_rectangle",
-                "Create two rectangles with a constant offset."));
+            QApplication::translate("TaskSketcherTool_c2_rectangle",
+                                    "Create two rectangles with a constant offset."));
         syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame);
 
         if (isConstructionMode()) {
