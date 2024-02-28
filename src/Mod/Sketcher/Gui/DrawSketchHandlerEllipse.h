@@ -430,7 +430,7 @@ void DSHEllipseController::configureToolWidget()
 {
 
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Center"), QStringLiteral("Axis endpoints and radius")};
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("Axis endpoints")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
