@@ -75,7 +75,7 @@ void TaskScaledParameters::setupParameterUI(QWidget* widget)
             &TaskScaledParameters::onOccurrences);
 
     // Get the feature data
-    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
 
     ui->spinFactor->bind(pcScaled->Factor);
     ui->spinOccurrences->setMaximum(INT_MAX);
@@ -99,7 +99,7 @@ void TaskScaledParameters::updateUI()
     }
     blockUpdate = true;
 
-    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
 
     double factor = pcScaled->Factor.getValue();
     unsigned occurrences = pcScaled->Occurrences.getValue();
@@ -110,23 +110,23 @@ void TaskScaledParameters::updateUI()
     blockUpdate = false;
 }
 
-void TaskScaledParameters::onFactor(const double f)
+void TaskScaledParameters::onFactor(const double factor)
 {
     if (blockUpdate) {
         return;
     }
-    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    pcScaled->Factor.setValue(f);
+    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    pcScaled->Factor.setValue(factor);
     recomputeFeature();
 }
 
-void TaskScaledParameters::onOccurrences(const uint n)
+void TaskScaledParameters::onOccurrences(const uint number)
 {
     if (blockUpdate) {
         return;
     }
-    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    pcScaled->Occurrences.setValue(n);
+    auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+    pcScaled->Occurrences.setValue(number);
     recomputeFeature();
 }
 
@@ -135,7 +135,7 @@ void TaskScaledParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgScaledParameters::accept() but without doCommand
-        PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
+        auto pcScaled = static_cast<PartDesign::Scaled*>(getObject());
         pcScaled->Factor.setValue(getFactor());
         pcScaled->Occurrences.setValue(getOccurrences());
         recomputeFeature();

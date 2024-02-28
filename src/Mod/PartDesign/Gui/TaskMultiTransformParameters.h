@@ -80,7 +80,7 @@ private Q_SLOTS:
     void onMoveDown();
     // Note: There is no Cancel button because I couldn't work out how to save the state of
     // a subFeature so as to revert the changes of an edit operation
-    void onUpdateView(bool) override;
+    void onUpdateView(bool /*unsused*/) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;
@@ -91,7 +91,7 @@ private:
 
     void updateUI();
     void closeSubTask();
-    void moveTransformFeature(const int increment);
+    void moveTransformFeature(int increment);
     void finishAdd(std::string& newFeatName);
 
 private:

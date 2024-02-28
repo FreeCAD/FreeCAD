@@ -68,7 +68,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
     QMetaObject::connectSlotsByName(this);
 
     // Create a context menu for the listview of transformation features
-    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
+    auto action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action,
                     &QAction::triggered,
                     this,
@@ -124,8 +124,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
     ui->buttonOK->hide();
 
     // Get the transformFeatures data
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -191,8 +190,7 @@ void TaskMultiTransformParameters::onTransformDelete()
         return;  // Can't delete the hint...
     }
     int row = ui->listTransformFeatures->currentIndex().row();
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -224,8 +222,7 @@ void TaskMultiTransformParameters::onTransformEdit()
                      // without OK'ing first
     ui->listTransformFeatures->currentItem()->setSelected(true);
     int row = ui->listTransformFeatures->currentIndex().row();
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -323,8 +320,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     else {
         // set Direction value before filling up the combo box to avoid creating an empty item
         // inside updateUI()
-        PartDesign::Body* body =
-            static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
+        auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
         if (body) {
             FCMD_OBJ_CMD(Feat,
                          "Direction = (" << Gui::Command::getObjectCmd(body->getOrigin()->getX())
@@ -419,8 +415,7 @@ void TaskMultiTransformParameters::finishAdd(std::string& newFeatName)
     // getOriginals().front()->getNameInDocument().c_str());
 
     setupTransaction();
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     if (editHint) {
         // Remove hint, first feature is being added
         ui->listTransformFeatures->model()->removeRow(0);
@@ -469,8 +464,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
 {
     setupTransaction();
     int row = ui->listTransformFeatures->currentIndex().row();
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
 
@@ -480,7 +474,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
 
     App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);
-    QListWidgetItem* item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
+    auto item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
     ui->listTransformFeatures->model()->removeRow(row);
     // After this operation, if we were to insert at index row again, things will remain unchanged
 
@@ -532,8 +526,7 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
 
 void TaskMultiTransformParameters::apply()
 {
-    PartDesign::MultiTransform* pcMultiTransform =
-        static_cast<PartDesign::MultiTransform*>(getObject());
+    auto pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
     std::vector<App::DocumentObject*> transformFeatures =
         pcMultiTransform->Transformations.getValues();
     std::stringstream str;
@@ -553,8 +546,8 @@ TaskMultiTransformParameters::~TaskMultiTransformParameters()
         closeSubTask();
     }
     catch (const Py::Exception&) {
-        Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        Base::PyException exc;  // extract the Python error text
+        exc.ReportException();
     }
 }
 

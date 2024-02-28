@@ -90,8 +90,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
     if (body) {
         try {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(false, true);
         }
@@ -115,7 +114,7 @@ void TaskMirroredParameters::updateUI()
     }
     blockUpdate = true;
 
-    PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+    auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
 
     if (planeLinks.setCurrentLink(pcMirrored->MirrorPlane) == -1) {
         // failed to set current, because the link isn't in the list yet
@@ -137,8 +136,8 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
         }
         else {
             std::vector<std::string> mirrorPlanes;
-            App::DocumentObject* selObj;
-            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+            App::DocumentObject* selObj = nullptr;
+            auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
             if (!selObj) {
                 return;
@@ -162,7 +161,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
         return;
     }
     setupTransaction();
-    PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+    auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     try {
         if (!planeLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
@@ -190,9 +189,9 @@ void TaskMirroredParameters::onUpdateView(bool on)
     if (on) {
         setupTransaction();
         // Do the same like in TaskDlgMirroredParameters::accept() but without doCommand
-        PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+        auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
         std::vector<std::string> mirrorPlanes;
-        App::DocumentObject* obj;
+        App::DocumentObject* obj = nullptr;
 
         getMirrorPlane(obj, mirrorPlanes);
         pcMirrored->MirrorPlane.setValue(obj, mirrorPlanes);
@@ -212,7 +211,7 @@ void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj,
 void TaskMirroredParameters::apply()
 {
     std::vector<std::string> mirrorPlanes;
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
     getMirrorPlane(obj, mirrorPlanes);
     std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
 
@@ -226,8 +225,7 @@ TaskMirroredParameters::~TaskMirroredParameters()
         PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }

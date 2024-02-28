@@ -65,12 +65,12 @@ protected:
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
-    void onModeChanged(const int mode);
-    void onCheckReverse(const bool on);
-    void onAngle(const double a);
-    void onOffset(const double a);
-    void onOccurrences(const uint n);
-    void onUpdateView(bool) override;
+    void onModeChanged(int mode);
+    void onCheckReverse(bool on);
+    void onAngle(double angle);
+    void onOffset(double offset);
+    void onOccurrences(uint number);
+    void onUpdateView(bool /*unsused*/) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;

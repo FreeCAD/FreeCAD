@@ -74,8 +74,7 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
     QMetaObject::connectSlotsByName(this);
 
     // Get the feature data
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
     ui->spinLength->bind(pcLinearPattern->Length);
     ui->spinOffset->bind(pcLinearPattern->Offset);
@@ -110,8 +109,7 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
     if (body) {
         try {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
         }
@@ -168,10 +166,8 @@ void TaskLinearPatternParameters::updateUI()
     }
     blockUpdate = true;
 
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
-    PartDesign::LinearPatternMode mode =
-        static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    auto mode = static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
 
     bool reverse = pcLinearPattern->Reversed.getValue();
     double length = pcLinearPattern->Length.getValue();
@@ -189,7 +185,7 @@ void TaskLinearPatternParameters::updateUI()
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
-    ui->comboMode->setCurrentIndex((long)mode);
+    ui->comboMode->setCurrentIndex(static_cast<int>(mode));
     ui->spinLength->setValue(length);
     ui->spinOffset->setValue(offset);
     ui->spinOccurrences->setValue(occurrences);
@@ -230,8 +226,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             exitSelectionMode();
             std::vector<std::string> directions;
             App::DocumentObject* selObj = nullptr;
-            PartDesign::LinearPattern* pcLinearPattern =
-                static_cast<PartDesign::LinearPattern*>(getObject());
+            auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
             if (pcLinearPattern) {
                 getReferencedSelection(pcLinearPattern, msg, selObj, directions);
 
@@ -257,8 +252,7 @@ void TaskLinearPatternParameters::onCheckReverse(const bool on)
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Reversed.setValue(on);
 
     exitSelectionMode();
@@ -270,8 +264,7 @@ void TaskLinearPatternParameters::onModeChanged(const int mode)
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     pcLinearPattern->Mode.setValue(mode);
 
     adaptVisibilityToMode();
@@ -280,40 +273,37 @@ void TaskLinearPatternParameters::onModeChanged(const int mode)
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onLength(const double l)
+void TaskLinearPatternParameters::onLength(const double length)
 {
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Length.setValue(l);
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Length.setValue(length);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOffset(const double o)
+void TaskLinearPatternParameters::onOffset(const double offset)
 {
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Offset.setValue(o);
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Offset.setValue(offset);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onOccurrences(const uint n)
+void TaskLinearPatternParameters::onOccurrences(const uint number)
 {
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Occurrences.setValue(n);
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Occurrences.setValue(number);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -324,8 +314,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
     if (blockUpdate) {
         return;
     }
-    PartDesign::LinearPattern* pcLinearPattern =
-        static_cast<PartDesign::LinearPattern*>(getObject());
+    auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     try {
         if (!dirLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
@@ -353,10 +342,9 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgLinearPatternParameters::accept() but without doCommand
-        PartDesign::LinearPattern* pcLinearPattern =
-            static_cast<PartDesign::LinearPattern*>(getObject());
+        auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
         std::vector<std::string> directions;
-        App::DocumentObject* obj;
+        App::DocumentObject* obj = nullptr;
 
         setupTransaction();
         getDirection(obj, directions);
@@ -410,8 +398,7 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
             App::Origin* origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
                 Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
@@ -424,7 +411,7 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
 void TaskLinearPatternParameters::apply()
 {
     std::vector<std::string> directions;
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 

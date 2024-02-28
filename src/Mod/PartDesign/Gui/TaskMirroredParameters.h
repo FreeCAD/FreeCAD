@@ -64,7 +64,7 @@ protected:
 
 private Q_SLOTS:
     void onPlaneChanged(int num);
-    void onUpdateView(bool) override;
+    void onUpdateView(bool /*unused*/) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;

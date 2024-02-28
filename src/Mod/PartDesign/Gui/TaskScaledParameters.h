@@ -58,9 +58,9 @@ public:
     void apply() override;
 
 private Q_SLOTS:
-    void onFactor(const double f);
-    void onOccurrences(const uint n);
-    void onUpdateView(bool) override;
+    void onFactor(double factor);
+    void onOccurrences(uint number);
+    void onUpdateView(bool /*unsused*/) override;
 
 private:
     void setupParameterUI(QWidget* widget) override;

@@ -85,8 +85,8 @@ public:
      * @param itemText
      * @return
      */
-    int addLink(const App::PropertyLinkSub& lnk, QString itemText);
-    int addLink(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+    int addLink(const App::PropertyLinkSub& lnk, QString const& itemText);
+    int addLink(App::DocumentObject* linkObj, std::string const& linkSubname, QString const& itemText);
     void clear();
     App::PropertyLinkSub& getLink(int index) const;
 
@@ -158,7 +158,7 @@ public:
      * instance that does it already, e.g. TaskDlgMultiTransformParameters.
      * By default, transactions are enabled.
      */
-    void setEnabledTransaction(bool);
+    void setEnabledTransaction(bool /*unsused*/);
 
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
@@ -215,10 +215,10 @@ protected:
     void setupTransaction();
 
 private Q_SLOTS:
-    virtual void onUpdateView(bool) = 0;
+    virtual void onUpdateView(bool /*unsused*/) = 0;
 
-    void onButtonAddFeature(const bool checked);
-    void onButtonRemoveFeature(const bool checked);
+    void onButtonAddFeature(bool checked);
+    void onButtonRemoveFeature(bool checked);
     void onFeatureDeleted();
     void indexesMoved();
 
@@ -255,7 +255,7 @@ private:
      */
     PartDesign::Transformed* getTopTransformedObject() const;
 
-    void changeEvent(QEvent* e) override;
+    void changeEvent(QEvent* event) override;
 
     static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 

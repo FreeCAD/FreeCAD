@@ -81,9 +81,7 @@ TaskTransformedParameters::~TaskTransformedParameters()
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
 
-    if (proxy) {
-        delete proxy;
-    }
+    delete proxy;
 }
 
 void TaskTransformedParameters::setupUI()
@@ -103,12 +101,10 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onButtonRemoveFeature);
 
     // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
+    auto action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, &QAction::triggered, this, &TaskTransformedParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -123,13 +119,13 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onUpdateView);
 
     // Get the feature data
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
 
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
+            auto item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
             ui->listWidgetFeatures->addItem(item);
@@ -147,10 +143,10 @@ void TaskTransformedParameters::slotDeletedObject(const Gui::ViewProviderDocumen
     }
 }
 
-void TaskTransformedParameters::changeEvent(QEvent* e)
+void TaskTransformedParameters::changeEvent(QEvent* event)
 {
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange && proxy) {
+    TaskBox::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange && proxy) {
         ui->retranslateUi(proxy);
         retranslateParameterUI(ui->featureUI);
     }
@@ -184,7 +180,7 @@ void TaskTransformedParameters::addObject(App::DocumentObject* obj)
     QString label = QString::fromUtf8(obj->Label.getValue());
     QString objectName = QString::fromLatin1(obj->getNameInDocument());
 
-    QListWidgetItem* item = new QListWidgetItem();
+    auto item = new QListWidgetItem();
     item->setText(label);
     item->setData(Qt::UserRole, objectName);
     ui->listWidgetFeatures->addItem(item);
@@ -213,10 +209,9 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-            std::vector<App::DocumentObject*>::iterator o =
-                std::find(originals.begin(), originals.end(), selectedObject);
+            auto or_iter = std::find(originals.begin(), originals.end(), selectedObject);
             if (selectionMode == SelectionMode::AddFeature) {
-                if (o == originals.end()) {
+                if (or_iter == originals.end()) {
                     originals.push_back(selectedObject);
                     addObject(selectedObject);
                 }
@@ -225,8 +220,8 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
                 }
             }
             else {
-                if (o != originals.end()) {
-                    originals.erase(o);
+                if (or_iter != originals.end()) {
+                    originals.erase(or_iter);
                     removeObject(selectedObject);
                 }
                 else {
@@ -257,14 +252,14 @@ void TaskTransformedParameters::setupTransaction()
 
     int tid = 0;
     App::GetApplication().getActiveTransaction(&tid);
-    if (tid && tid == transactionID) {
+    if (tid != 0 && tid == transactionID) {
         return;
     }
 
     // open a transaction if none is active
-    std::string n("Edit ");
-    n += obj->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+    std::string name("Edit ");
+    name += obj->Label.getValue();
+    transactionID = App::GetApplication().setActiveTransaction(name.c_str());
 }
 
 void TaskTransformedParameters::setEnabledTransaction(bool on)
@@ -302,11 +297,11 @@ void TaskTransformedParameters::checkVisibility()
     }
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
-    for (auto o : body->Group.getValues()) {
-        if (!o->Visibility.getValue() || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    for (auto obj : body->Group.getValues()) {
+        if (!obj->Visibility.getValue() || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
             continue;
         }
-        if (inset.count(o)) {
+        if (inset.count(obj) > 0) {
             break;
         }
         return;
@@ -350,8 +345,7 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget,
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
         for (auto item : items) {
-            QListWidgetItem* it = widget->takeItem(widget->row(item));
-            delete it;
+            delete widget->takeItem(widget->row(item));
         }
     }
 }
@@ -436,15 +430,7 @@ void TaskTransformedParameters::recomputeFeature()
 
 PartDesignGui::ViewProviderTransformed* TaskTransformedParameters::getTopTransformedView() const
 {
-    PartDesignGui::ViewProviderTransformed* rv;
-
-    if (insideMultiTransform) {
-        rv = parentTask->TransformedView;
-    }
-    else {
-        rv = TransformedView;
-    }
-    return rv;
+    return insideMultiTransform ? parentTask->TransformedView : TransformedView;
 }
 
 PartDesign::Transformed* TaskTransformedParameters::getTopTransformedObject() const
@@ -464,12 +450,10 @@ PartDesign::Transformed* TaskTransformedParameters::getObject() const
     if (insideMultiTransform) {
         return parentTask->getSubFeature();
     }
-    else if (TransformedView) {
+    if (TransformedView) {
         return static_cast<PartDesign::Transformed*>(TransformedView->getObject());
     }
-    else {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 App::DocumentObject* TaskTransformedParameters::getBaseObject() const
@@ -544,8 +528,8 @@ void TaskTransformedParameters::exitSelectionMode()
         Gui::Selection().rmvSelectionGate();
         showObject();
     }
-    catch (Base::Exception& e) {
-        e.ReportException();
+    catch (Base::Exception& exc) {
+        exc.ReportException();
     }
 }
 
@@ -560,7 +544,7 @@ void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags al
 
 void TaskTransformedParameters::indexesMoved()
 {
-    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    auto model = qobject_cast<QAbstractItemModel*>(sender());
     if (!model) {
         return;
     }
@@ -624,7 +608,7 @@ ComboLinks::ComboLinks(QComboBox& combo)
     _combo->clear();
 }
 
-int ComboLinks::addLink(const App::PropertyLinkSub& lnk, QString itemText)
+int ComboLinks::addLink(const App::PropertyLinkSub& lnk, QString const& itemText)
 {
     if (!_combo) {
         return 0;
@@ -639,7 +623,9 @@ int ComboLinks::addLink(const App::PropertyLinkSub& lnk, QString itemText)
     return linksInList.size() - 1;
 }
 
-int ComboLinks::addLink(App::DocumentObject* linkObj, std::string linkSubname, QString itemText)
+int ComboLinks::addLink(App::DocumentObject* linkObj,
+                        std::string const& linkSubname,
+                        QString const& itemText)
 {
     if (!_combo) {
         return 0;
