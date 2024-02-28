@@ -222,27 +222,25 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             exitSelectionMode();
         }
         else if (selectionMode == SelectionMode::Reference) {
-            // TODO check if this works correctly (2015-09-01, Fat-Zer)
-            exitSelectionMode();
+            auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+
             std::vector<std::string> directions;
             App::DocumentObject* selObj = nullptr;
-            auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-            if (pcLinearPattern) {
-                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-
-                // Note: ReferenceSelection has already checked the selection for validity
-                if (selObj
-                    && (selectionMode == SelectionMode::Reference
-                        || selObj->isDerivedFrom(App::Line::getClassTypeId())
-                        || selObj->isDerivedFrom(Part::Feature::getClassTypeId())
-                        || selObj->isDerivedFrom(PartDesign::Line::getClassTypeId())
-                        || selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))) {
-                    setupTransaction();
-                    pcLinearPattern->Direction.setValue(selObj, directions);
-                    recomputeFeature();
-                    updateUI();
-                }
+            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
+            if (!selObj) {
+                return;
             }
+
+            // Note: ReferenceSelection has already checked the selection for validity
+            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
+                || selObj->isDerivedFrom<PartDesign::Line>()
+                || selObj->isDerivedFrom<PartDesign::Plane>()) {
+                setupTransaction();
+                pcLinearPattern->Direction.setValue(selObj, directions);
+                recomputeFeature();
+                updateUI();
+            }
+            exitSelectionMode();
         }
     }
 }

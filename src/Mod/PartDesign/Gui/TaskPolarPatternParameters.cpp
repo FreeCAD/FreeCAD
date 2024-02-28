@@ -218,21 +218,21 @@ void TaskPolarPatternParameters::adaptVisibilityToMode()
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
-
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else {
+        else if (selectionMode == SelectionMode::Reference) {
+            auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+
             std::vector<std::string> axes;
             App::DocumentObject* selObj = nullptr;
-            auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
             getReferencedSelection(pcPolarPattern, msg, selObj, axes);
             if (!selObj) {
                 return;
             }
 
-            if (selectionMode == SelectionMode::Reference
-                || selObj->isDerivedFrom(App::Line::getClassTypeId())) {
+            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
+                || selObj->isDerivedFrom<PartDesign::Line>()) {
                 setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
                 recomputeFeature();

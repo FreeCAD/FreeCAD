@@ -134,17 +134,17 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else {
+        else if (selectionMode == SelectionMode::Reference) {
+            auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+
             std::vector<std::string> mirrorPlanes;
             App::DocumentObject* selObj = nullptr;
-            auto pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
             if (!selObj) {
                 return;
             }
 
-            if (selectionMode == SelectionMode::Reference
-                || selObj->isDerivedFrom(App::Plane::getClassTypeId())) {
+            if (selObj->isDerivedFrom<App::Plane>()) {
                 setupTransaction();
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
                 recomputeFeature();
