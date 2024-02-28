@@ -469,4 +469,22 @@ TEST_F(ComplexGeoDataTest, saveDocFileWithElementMap)
 TEST_F(ComplexGeoDataTest, restoreStream)
 {}
 
+TEST_F(ComplexGeoDataTest, traceElement)
+{  // This test barely scratches the surface; see the ToposhapeExtension traceElement test for more
+    Data::MappedName mappedName;
+    Data::IndexedName indexedName;
+    std::string name(Data::ELEMENT_MAP_PREFIX);
+    name.append("TestMappedElement:;");
+    std::tie(indexedName, mappedName) = createMappedName(name);
+
+    // Arrange
+    Data::TraceCallback cb =
+        [name](const Data::MappedName& elementname, int offset, long encodedTag, long tag) {
+            EXPECT_STREQ(elementname.toString().c_str(), name.substr(1).c_str());
+            return false;
+        };
+    // Act
+    cgd().traceElement(mappedName, cb);
+}
+
 // NOLINTEND(readability-magic-numbers)

@@ -508,6 +508,40 @@ TEST_F(TopoShapeExpansionTest, flushElementMapTest)
     EXPECT_NE(childshapeWithMapFlushed.getElementMap()[0].name.find("Vertex1"), -1);
 }
 
+TEST_F(TopoShapeExpansionTest, cacheRelatedElements)
+{
+    // Arrange
+    TopoShape topoShape {3L};
+    QVector<MappedElement> names {
+        {MappedName {"Test1"}, IndexedName {"Test", 1}},
+        {MappedName {"Test2"}, IndexedName {"Test", 2}},
+        {MappedName {"OtherTest1"}, IndexedName {"OtherTest", 1}},
+    };
+    QVector<MappedElement> names2 {
+        {MappedName {"Test3"}, IndexedName {"Test", 3}},
+    };
+    HistoryTraceType traceType = HistoryTraceType::followTypeChange;
+    MappedName keyName {"Key1"};
+    MappedName keyName2 {"Key2"};
+    QVector<MappedElement> returnedNames;
+    QVector<MappedElement> returnedNames2;
+    QVector<MappedElement> returnedNames3;
+    // Act
+    topoShape.cacheRelatedElements(keyName, traceType, names);
+    topoShape.cacheRelatedElements(keyName2, HistoryTraceType::stopOnTypeChange, names2);
+    topoShape.getRelatedElementsCached(keyName, traceType, returnedNames);
+    topoShape.getRelatedElementsCached(keyName, HistoryTraceType::stopOnTypeChange, returnedNames3);
+    topoShape.getRelatedElementsCached(keyName2,
+                                       HistoryTraceType::stopOnTypeChange,
+                                       returnedNames2);
+    // Assert
+    EXPECT_EQ(returnedNames.size(), 3);
+    EXPECT_STREQ(returnedNames[0].name.toString().c_str(), "Test1");
+    EXPECT_EQ(returnedNames2.size(), 1);
+    EXPECT_STREQ(returnedNames2[0].name.toString().c_str(), "Test3");
+    EXPECT_EQ(returnedNames3.size(), 0);  // No entries of this type.
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
 {
     // Arrange
@@ -2515,6 +2549,88 @@ TEST_F(TopoShapeExpansionTest, makeElementEvolve)
     // The resulting Evolved also does not populate the elementMap, but that might be a bug in
     // underutilized code.
     EXPECT_EQ(spine.getElementMap().size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, traceElement)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementCut(
+        {topoShape1, topoShape2});  //, const char* op = nullptr, double tol = 0);
+    std::string name {"Face2;:M;CUT;:H1:7,F"};
+    //    auto faces = result.getSubTopoShapes(TopAbs_FACE);
+    Data::MappedName mappedName(name);
+    // Arrange
+    Data::TraceCallback cb =
+        [name](const Data::MappedName& elementname, int offset, long encodedTag, long tag) {
+            // TODO:  This is likely a flawed way to address testing a callback.
+            // Also, it isn't clear exactly what the correct results are, although as soon as
+            // we start addressing History, we will quickly discover that, and likely the right
+            // things to test.
+            if (encodedTag == 1) {
+                EXPECT_STREQ(elementname.toString().c_str(), name.c_str());
+            }
+            else {
+                EXPECT_STREQ(elementname.toString().c_str(), name.substr(0, 5).c_str());
+            }
+            return false;
+        };
+    // Act
+    result.traceElement(mappedName, cb);
+    // Assert we have the element map we think we do.
+    EXPECT_TRUE(allElementsMatch(
+        result,
+        {
+            "Edge10;:G(Edge2;K-1;:H2:4,E);CUT;:H1:1a,V",
+            "Edge10;:M;CUT;:H1:7,E",
+            "Edge10;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge11;:M;CUT;:H2:7,E",
+            "Edge12;:M;CUT;:H2:7,E",
+            "Edge2;:M;CUT;:H2:7,E",
+            "Edge2;:M;CUT;:H2:7,E;:U;CUT;:H2:7,V",
+            "Edge4;:M;CUT;:H2:7,E",
+            "Edge4;:M;CUT;:H2:7,E;:U;CUT;:H2:7,V",
+            "Edge6;:G(Edge12;K-1;:H2:4,E);CUT;:H1:1b,V",
+            "Edge6;:M;CUT;:H1:7,E",
+            "Edge6;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge8;:G(Edge11;K-1;:H2:4,E);CUT;:H1:1b,V",
+            "Edge8;:M;CUT;:H1:7,E",
+            "Edge8;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge9;:G(Edge4;K-1;:H2:4,E);CUT;:H1:1a,V",
+            "Edge9;:M;CUT;:H1:7,E",
+            "Edge9;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Face1;:M;CUT;:H2:7,F",
+            "Face1;:M;CUT;:H2:7,F;:U;CUT;:H2:7,E",
+            "Face2;:G(Face4;K-1;:H2:4,F);CUT;:H1:1a,E",
+            "Face2;:M;CUT;:H1:7,F",
+            "Face2;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face2;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:"
+            "H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V);CUT;:H1:3c,E|Face5;:M;"
+            "CUT;:H1:7,F;:U;CUT;:H1:7,E|Face6;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E);CUT;:H1:c9,F",
+            "Face3;:G(Face1;K-1;:H2:4,F);CUT;:H1:1a,E",
+            "Face3;:M;CUT;:H1:7,F",
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
+            "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
+            "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F",
+            "Face4;:M;CUT;:H2:7,F",
+            "Face5;:M;CUT;:H1:7,F",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:"
+            "H1:8,E;:U;CUT;:H1:7,V);CUT;:H1:3c,E",
+            "Face5;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face6;:M;CUT;:H1:7,F",
+            "Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E",
+            "Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V",
+            "Face6;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+        }));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
