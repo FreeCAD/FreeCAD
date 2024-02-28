@@ -119,7 +119,7 @@ class _ViewProviderFixture:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path_Datums.svg"
+        return ":/icons/CAM_Datums.svg"
 
     def onChanged(self, vobj, prop):  # optional
         mode = 2
@@ -149,7 +149,7 @@ class _ViewProviderFixture:
 class CommandPathFixture:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Datums",
+            "Pixmap": "CAM_Datums",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Fixture", "Fixture"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_Fixture", "Creates a Fixture Offset"

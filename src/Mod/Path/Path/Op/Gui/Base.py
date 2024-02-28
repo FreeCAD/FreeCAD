@@ -455,7 +455,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
 
         self.panelTitle = "Base Geometry"
-        self.OpIcon = ":/icons/Path_BaseGeometry.svg"
+        self.OpIcon = ":/icons/CAM_BaseGeometry.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -815,7 +815,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = None
         self.safeHeight = None
         self.panelTitle = "Heights"
-        self.OpIcon = ":/icons/Path_Heights.svg"
+        self.OpIcon = ":/icons/CAM_Heights.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -863,7 +863,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finishDepth = None
         self.stepDown = None
         self.panelTitle = "Depths"
-        self.OpIcon = ":/icons/Path_Depths.svg"
+        self.OpIcon = ":/icons/CAM_Depths.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -1342,7 +1342,7 @@ class CommandSetStartPoint:
 
     def GetResources(self):
         return {
-            "Pixmap": "Path_StartPoint",
+            "Pixmap": "CAM_StartPoint",
             "MenuText": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
             "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
         }

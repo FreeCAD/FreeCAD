@@ -77,7 +77,7 @@ class ViewProviderPathCopy:
         return
 
     def getIcon(self):
-        return ":/icons/Path_Copy.svg"
+        return ":/icons/CAM_Copy.svg"
 
     def dumps(self):
         return None
@@ -89,10 +89,10 @@ class ViewProviderPathCopy:
 class CommandPathCopy:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Copy",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
+            "Pixmap": "CAM_Copy",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Copy", "Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Copy", "Creates a linked copy of another path"
+                "CAM_Copy", "Creates a linked copy of another path"
             ),
         }
 
@@ -117,11 +117,11 @@ selection = FreeCADGui.Selection.getSelection()
 proj = selection[0].InList[0] #get the group that the selectied object is inside
 
 if len(selection) != 1:
-    FreeCAD.Console.PrintError(translate("Path_Copy", "Please select one path object")+"\n")
+    FreeCAD.Console.PrintError(translate("CAM_Copy", "Please select one path object")+"\n")
     selGood = False
 
 if not selection[0].isDerivedFrom("Path::Feature"):
-    FreeCAD.Console.PrintError(translate("Path_Copy", "The selected object is not a path")+"\n")
+    FreeCAD.Console.PrintError(translate("CAM_Copy", "The selected object is not a path")+"\n")
     selGood = False
 
 if selGood:
@@ -147,6 +147,6 @@ FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Copy", CommandPathCopy())
+    FreeCADGui.addCommand("CAM_Copy", CommandPathCopy())
 
 FreeCAD.Console.PrintLog("Loading PathCopy... done\n")

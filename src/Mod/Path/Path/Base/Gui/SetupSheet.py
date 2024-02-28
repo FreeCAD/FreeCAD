@@ -65,7 +65,7 @@ class ViewProvider:
         self.obj = vobj.Object
 
     def getIcon(self):
-        return ":/icons/Path_SetupSheet.svg"
+        return ":/icons/CAM_SetupSheet.svg"
 
     def dumps(self):
         return None

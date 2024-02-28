@@ -169,13 +169,13 @@ class CAMWorkbench(Workbench):
                 from Path.Op.Gui import Surface
                 from Path.Op.Gui import Waterline
 
-                threedopcmdlist.extend(["Path_Surface", "Path_Waterline"])
-                threedcmdgroup = ["Path_3dTools"]
+                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+                threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
-                    "Path_3dTools",
+                    "CAM_3dTools",
                     PathCommandGroup(
                         threedopcmdlist,
-                        QT_TRANSLATE_NOOP("Path_3dTools", "3D Operations"),
+                        QT_TRANSLATE_NOOP("CAM_3dTools", "3D Operations"),
                     ),
                 )
             except ImportError:

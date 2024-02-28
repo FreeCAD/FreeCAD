@@ -1,49 +1,42 @@
 <RCC>
     <qresource>
         <file>icons/CAM_Adaptive.svg</file>
-        <file>icons/Path_3DPocket.svg</file>
-        <file>icons/Path_3DSurface.svg</file>
+        <file>icons/CAM_3DPocket.svg</file>
+        <file>icons/CAM_3DSurface.svg</file>
         <file>icons/CAM_Area_View.svg</file>
         <file>icons/CAM_Area_Workplane.svg</file>
         <file>icons/CAM_Area.svg</file>
         <file>icons/CAM_Array.svg</file>
-        <file>icons/Path_Axis.svg</file>
-        <file>icons/Path_BFastForward.svg</file>
-        <file>icons/Path_BPause.svg</file>
-        <file>icons/Path_BPlay.svg</file>
-        <file>icons/Path_BStep.svg</file>
-        <file>icons/Path_BStop.svg</file>
-        <file>icons/Path_BaseGeometry.svg</file>
+        <file>icons/CAM_BFastForward.svg</file>
+        <file>icons/CAM_BPause.svg</file>
+        <file>icons/CAM_BPlay.svg</file>
+        <file>icons/CAM_BStep.svg</file>
+        <file>icons/CAM_BStop.svg</file>
+        <file>icons/CAM_BaseGeometry.svg</file>
         <file>icons/CAM_Camotics.svg</file>
         <file>icons/CAM_Comment.svg</file>
         <file>icons/CAM_Compound.svg</file>
-        <file>icons/Path_Contour.svg</file>
-        <file>icons/Path_Copy.svg</file>
+        <file>icons/CAM_Copy.svg</file>
         <file>icons/CAM_Custom.svg</file>
-        <file>icons/Path_Datums.svg</file>
+        <file>icons/CAM_Datums.svg</file>
         <file>icons/CAM_Deburr.svg</file>
-        <file>icons/Path_Depths.svg</file>
+        <file>icons/CAM_Depths.svg</file>
         <file>icons/CAM_Dressup.svg</file>
         <file>icons/CAM_Drilling.svg</file>
         <file>icons/CAM_Engrave.svg</file>
         <file>icons/CAM_ExportTemplate.svg</file>
-        <file>icons/Path_Face.svg</file>
-        <file>icons/Path_FacePocket.svg</file>
-        <file>icons/Path_FaceProfile.svg</file>
-        <file>icons/Path_Heights.svg</file>
+        <file>icons/CAM_Face.svg</file>
+        <file>icons/CAM_FacePocket.svg</file>
+        <file>icons/CAM_FaceProfile.svg</file>
+        <file>icons/CAM_Heights.svg</file>
         <file>icons/CAM_Helix.svg</file>
         <file>icons/CAM_Inspect.svg</file>
         <file>icons/CAM_Job.svg</file>
-        <file>icons/Path_Kurve.svg</file>
-        <file>icons/Path_LengthOffset.svg</file>
-        <file>icons/Path_Machine.svg</file>
-        <file>icons/Path_MachineLathe.svg</file>
-        <file>icons/Path_MachineMill.svg</file>
+        <file>icons/CAM_LengthOffset.svg</file>
         <file>icons/CAM_OpActive.svg</file>
         <file>icons/CAM_OpCopy.svg</file>
-        <file>icons/Path_OperationA.svg</file>
-        <file>icons/Path_OperationB.svg</file>
-        <file>icons/Path_Plane.svg</file>
+        <file>icons/CAM_OperationA.svg</file>
+        <file>icons/CAM_OperationB.svg</file>
         <file>icons/CAM_Pocket.svg</file>
         <file>icons/CAM_Post.svg</file>
         <file>icons/CAM_Probe.svg</file>
@@ -52,13 +45,11 @@
         <file>icons/CAM_Profile.svg</file>
         <file>icons/CAM_Sanity.svg</file>
         <file>icons/CAM_SelectLoop.svg</file>
-        <file>icons/Path_SetupSheet.svg</file>
+        <file>icons/CAM_SetupSheet.svg</file>
         <file>icons/CAM_Shape.svg</file>
         <file>icons/CAM_SimpleCopy.svg</file>
         <file>icons/CAM_Simulator.svg</file>
         <file>icons/CAM_Slot.svg</file>
-        <file>icons/Path_Speed.svg</file>
-        <file>icons/Path_Stock.svg</file>
         <file>icons/CAM_Stop.svg</file>
         <file>icons/CAM_ThreadMilling.svg</file>
         <file>icons/CAM_ToolBit.svg</file>
@@ -68,7 +59,7 @@
         <file>icons/CAM_Toolpath.svg</file>
         <file>icons/CAM_ToolTable.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
-        <file>icons/Path_Waterline.svg</file>
+        <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>

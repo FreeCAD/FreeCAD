@@ -72,7 +72,7 @@ Command = PathOpGui.SetupOperation(
     "MillFace",
     PathMillFace.Create,
     TaskPanelOpPage,
-    "Path_Face",
+    "CAM_Face",
     QT_TRANSLATE_NOOP("CAM_MillFace", "Face"),
     QT_TRANSLATE_NOOP(
         "CAM_MillFace", "Create a Facing Operation from a model or face"

@@ -161,7 +161,7 @@ Command = PathOpGui.SetupOperation(
     "Profile",
     PathProfile.Create,
     TaskPanelOpPage,
-    "Path_Contour",
+    "CAM_Profile",
     QT_TRANSLATE_NOOP("Path", "Profile"),
     QT_TRANSLATE_NOOP(
         "Path", "Profile entire model, selected face(s) or selected edge(s)"

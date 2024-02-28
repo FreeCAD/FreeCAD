@@ -278,10 +278,10 @@ Command = PathOpGui.SetupOperation(
     "Surface",
     PathSurface.Create,
     TaskPanelOpPage,
-    "Path_3DSurface",
-    QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
+    "CAM_3DSurface",
+    QtCore.QT_TRANSLATE_NOOP("CAM_Surface", "3D Surface"),
     QtCore.QT_TRANSLATE_NOOP(
-        "Path_Surface", "Create a 3D Surface Operation from a model"
+        "CAM_Surface", "Create a 3D Surface Operation from a model"
     ),
     PathSurface.SetupProperties,
 )

@@ -39,7 +39,7 @@
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path_BaseGeometry.svg</normaloff>:/icons/Path_BaseGeometry.svg</iconset>
+        <normaloff>:/icons/CAM_BaseGeometry.svg</normaloff>:/icons/CAM_BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Base Geometry</string>
@@ -117,7 +117,7 @@
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path_Depths.svg</normaloff>:/icons/Path_Depths.svg</iconset>
+        <normaloff>:/icons/CAM_Depths.svg</normaloff>:/icons/CAM_Depths.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Depths</string>
@@ -192,7 +192,7 @@
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path_Heights.svg</normaloff>:/icons/Path_Heights.svg</iconset>
+        <normaloff>:/icons/CAM_Heights.svg</normaloff>:/icons/CAM_Heights.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Heights</string>
@@ -242,7 +242,7 @@
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path_OperationB.svg</normaloff>:/icons/Path_OperationB.svg</iconset>
+        <normaloff>:/icons/CAM_OperationB.svg</normaloff>:/icons/CAM_OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>

@@ -138,7 +138,7 @@ def Create(name="Default Tool", tool=None, toolNumber=1):
 class CommandPathToolController(object):
     def GetResources(self):
         return {
-            "Pixmap": "Path_LengthOffset",
+            "Pixmap": "CAM_LengthOffset",
             "MenuText": QT_TRANSLATE_NOOP(
                 "CAM_ToolController", "Add Tool Controller to the Job"
             ),

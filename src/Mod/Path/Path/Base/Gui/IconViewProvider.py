@@ -69,7 +69,7 @@ class ViewProvider(object):
             self.editCallback = state["editCallback"]
 
     def getIcon(self):
-        return ":/icons/Path_{}.svg".format(self.icon)
+        return ":/icons/CAM_{}.svg".format(self.icon)
 
     def onEdit(self, callback):
         self.editModule = callback.__module__

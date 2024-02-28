@@ -375,9 +375,9 @@ class ObjectOp(object):
 
         enums = {
             "CoolantMode": [
-                (translate("Path_Operation", "None"), "None"),
-                (translate("Path_Operation", "Flood"), "Flood"),
-                (translate("Path_Operation", "Mist"), "Mist"),
+                (translate("CAM_Operation", "None"), "None"),
+                (translate("CAM_Operation", "Flood"), "Flood"),
+                (translate("CAM_Operation", "Mist"), "Mist"),
             ],
         }
 

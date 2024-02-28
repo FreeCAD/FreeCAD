@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../Path.qrc">
-    <normaloff>:/icons/Path_BaseGeometry.svg</normaloff>:/icons/Path_BaseGeometry.svg</iconset>
+    <normaloff>:/icons/CAM_BaseGeometry.svg</normaloff>:/icons/CAM_BaseGeometry.svg</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">

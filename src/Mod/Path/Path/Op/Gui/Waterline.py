@@ -173,9 +173,9 @@ Command = PathOpGui.SetupOperation(
     "Waterline",
     PathWaterline.Create,
     TaskPanelOpPage,
-    "Path_Waterline",
-    QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
-    QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
+    "CAM_Waterline",
+    QT_TRANSLATE_NOOP("CAM_Waterline", "Waterline"),
+    QT_TRANSLATE_NOOP("CAM_Waterline", "Create a Waterline Operation from a model"),
     PathWaterline.SetupProperties,
 )
 

@@ -223,10 +223,10 @@ def insert(filename, docname=None):
         if not _isImportEnvironmentReady():
             return
     except PathNoActiveDocumentException:
-        Path.Log.error(translate("Path_Gcode_pre", "No active document"))
+        Path.Log.error(translate("CAM_Gcode_pre", "No active document"))
         return
     except PathNoJobException:
-        Path.Log.error(translate("Path_Gcode_pre", "No job object"))
+        Path.Log.error(translate("CAM_Gcode_pre", "No job object"))
         return
 
     # Create a Custom operation for each gcode-toolNumber pair

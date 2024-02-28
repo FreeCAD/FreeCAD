@@ -36,7 +36,7 @@ def RegisterDressup(dressup):
 class DressupPreferencesPage:
     def __init__(self, parent=None):
         self.form = QtGui.QToolBox()
-        self.form.setWindowTitle(translate("Path_PreferencesPathDressup", "Dressups"))
+        self.form.setWindowTitle(translate("CAM_PreferencesPathDressup", "Dressups"))
         pages = []
         for dressup in _dressups:
             page = dressup.preferencesPage()
