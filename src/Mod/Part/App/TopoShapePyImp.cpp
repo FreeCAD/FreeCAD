@@ -107,6 +107,7 @@ using namespace Part;
     #define M_PI_2  1.57079632679489661923 /* pi/2 */
 #endif
 
+#ifdef FC_USE_TNP_FIX
 static Py_hash_t _TopoShapeHash(PyObject *self) {
     if (!self) {
         PyErr_SetString(PyExc_TypeError, "descriptor 'hash' of 'Part.TopoShape' object needs an argument");
@@ -124,6 +125,7 @@ struct TopoShapePyInit {
         TopoShapePy::Type.tp_hash = _TopoShapeHash;
     }
 } _TopoShapePyInit;
+#endif
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation() const

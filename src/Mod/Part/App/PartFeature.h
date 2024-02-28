@@ -76,7 +76,10 @@ public:
                                                           const char *name, bool recursive=true, bool sameType=false);
 
     static QVector<Data::MappedElement>
-    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
+    getRelatedElements(App::DocumentObject* obj,
+                       const char* name,
+                       HistoryTraceType sameType = HistoryTraceType::followTypeChange,
+                       bool withCache = true);
 
     /** Obtain the element name from a feature based of the element name of its source feature
      *
@@ -142,6 +145,8 @@ public:
 
     static Feature*
     create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
+
+    static bool isElementMappingDisabled(App::PropertyContainer *container);
 
 protected:
     /// recompute only this object
