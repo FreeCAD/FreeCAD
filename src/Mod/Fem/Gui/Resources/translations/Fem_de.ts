@@ -911,12 +911,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
       <source>PaStiX</source>
-      <translation type="unfinished">PaStiX</translation>
+      <translation>PaStiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
       <source>Pardiso</source>
-      <translation type="unfinished">Pardiso</translation>
+      <translation>Pardiso</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
@@ -1394,7 +1394,7 @@ ein Analysebehälter angelegt wird</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation>Datei nicht gefunden</translation>
+      <translation>Datei existiert nicht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1614,7 +1614,7 @@ iterativen Löser eingesetzt wird und die Fehlermeldung
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="107"/>
       <source>File does not exist</source>
-      <translation>Datei existiert nicht</translation>
+      <translation>Datei nicht gefunden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
@@ -1964,7 +1964,7 @@ Geben Sie bitte eine andere Datei an.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="327"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="398"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Part!</translation>
+      <translation>Ausgewähltes Objekt ist kein Teil!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="363"/>
@@ -1993,7 +1993,7 @@ Geben Sie bitte eine andere Datei an.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="192"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Teilobjekt!</translation>
+      <translation>Ausgewähltes Objekt ist kein Part!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
@@ -2122,7 +2122,7 @@ Geben Sie bitte eine andere Datei an.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="830"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="902"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Teil!</translation>
+      <translation>Ausgewähltes Objekt ist kein Teilobjekt!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
@@ -3211,9 +3211,13 @@ Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Diameter:   </source>
       <translation>Durchmesser:   </translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
+      <source>Outer diameter:   </source>
+      <translation type="unfinished">Outer diameter:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
@@ -3311,7 +3315,7 @@ Hinweis: hat keinen Effekt, wenn ein Volumen ausgewählt wurde</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation>Bezeichnung</translation>
+      <translation>Beschriftung</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
@@ -3476,7 +3480,7 @@ Hinweis: Für 2D ist nur für x möglich,
       <location filename="../../PlaneWidget.ui" line="26"/>
       <location filename="../../PlaneWidget.ui" line="86"/>
       <source>x</source>
-      <translation>х</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="43"/>
@@ -4823,7 +4827,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>х</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="103"/>
@@ -4886,7 +4890,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
       <source>x</source>
-      <translation>х</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="58"/>
@@ -6149,7 +6153,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>х</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="61"/>
@@ -6164,7 +6168,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="124"/>
@@ -6205,7 +6209,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Mitte</translation>
+      <translation>Mittelpunkt</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="104"/>

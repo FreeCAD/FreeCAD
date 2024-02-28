@@ -4413,7 +4413,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Ein optionales Objekt, das ein Volumen definiert, das von Wänden subtrahiert werden soll. Wenn Feld gesetzt ist hat es eine Priorität vor automatisch generierten Untervolumen</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>
@@ -5917,7 +5917,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchEquipment.py" line="232"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation>Erstellt von 3 Ansichten (Oben, Vorne, Seite) von einem netz-basierten Objekt</translation>
+      <translation>Erstellt 3 Ansichten (Draufsicht, Vorderansicht, Seitenansicht) von einem netzbasierten Objekt</translation>
     </message>
   </context>
   <context>

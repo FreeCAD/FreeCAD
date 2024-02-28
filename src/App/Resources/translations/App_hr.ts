@@ -14,7 +14,7 @@ na sve veze koje referenciraju isti konfigurabilni objekt</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="446"/>
+      <location filename="../../Application.cpp" line="448"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>

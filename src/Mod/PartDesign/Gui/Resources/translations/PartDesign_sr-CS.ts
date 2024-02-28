@@ -1601,7 +1601,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="408"/>
       <source>Input error</source>
-      <translation>Greška pri unosu</translation>
+      <translation type="unfinished">Input error</translation>
     </message>
   </context>
   <context>
@@ -2650,7 +2650,7 @@ merena duž zadatog pravca</translation>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
@@ -3128,7 +3128,7 @@ klikni ponovo da bi završio izbor</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="248"/>
       <location filename="../../TaskTransformedParameters.cpp" line="284"/>
       <source>Construction line %1</source>
-      <translation>Pomoćna prava %1</translation>
+      <translation>Pomoćna linija %1</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="262"/>
@@ -3762,7 +3762,7 @@ Ovo može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
       <source>Construction line %1</source>
-      <translation>Pomoćna linija %1</translation>
+      <translation>Pomoćna prava %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
@@ -4962,47 +4962,47 @@ Nije dozvoljeno ukrštanje elemenata na skici.</translation>
       <translation>Greška: Stranica mora biti ravna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Could not build</source>
       <translation>Greška: Nije moguće napraviti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Greška: Rezultat nije puno telo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Greška: Nema šta da se oduzima</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="338"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="368"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
       <source>Error: Result has multiple solids</source>
       <translation>Greška: Rezultat ima više punih tela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="328"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
       <source>Error: Adding the helix failed</source>
       <translation>Greška: Dodavanje heliksa nije uspelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="351"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
       <source>Error: Intersecting the helix failed</source>
       <translation type="unfinished">Error: Intersecting the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="358"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Greška: Oduzimanje heliksa nije uspelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="380"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Greška: Nije moguće napraviti stranicu pomoću skice</translation>
     </message>

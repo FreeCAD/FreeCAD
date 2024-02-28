@@ -1269,7 +1269,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>Percentuale di sovrapposizione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
@@ -1365,7 +1365,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Motivo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
@@ -1735,7 +1735,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Layer Mode</source>
-      <translation type="unfinished">Layer Mode</translation>
+      <translation>Modalità Livello</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
@@ -1770,7 +1770,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
       <source>Scan Type</source>
-      <translation type="unfinished">Scan Type</translation>
+      <translation>Tipo di scansione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
@@ -1781,7 +1781,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
       <source>Profile Edges</source>
-      <translation type="unfinished">Profile Edges</translation>
+      <translation>Bordi del profilo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
@@ -1792,7 +1792,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>Bounding Box</source>
-      <translation type="unfinished">Bounding Box</translation>
+      <translation>Riquadro di delimitazione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1820,7 +1820,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
       <source>Profile the edges of the selection.</source>
-      <translation type="unfinished">Profile the edges of the selection.</translation>
+      <translation>Profila i bordi della selezione.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
@@ -6970,7 +6970,7 @@ Per esempio:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="188"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Arrotondato</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="189"/>
@@ -7076,7 +7076,7 @@ Per esempio:
     <message>
       <location filename="../../../Path/Op/Profile.py" line="204"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Arrotondato</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="205"/>
