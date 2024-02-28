@@ -75,6 +75,8 @@ class WidgetAddonButtons(QtWidgets.QWidget):
         self.retranslateUi(None)
 
     def _setup_ui(self):
+        if self.layout():
+            self.setLayout(None)  # TODO: Check this
         self.horizontal_layout = QtWidgets.QHBoxLayout()
         self.horizontal_layout.setContentsMargins(0, 0, 0, 0)
         self.back = QtWidgets.QToolButton(self)
@@ -97,6 +99,9 @@ class WidgetAddonButtons(QtWidgets.QWidget):
         self.horizontal_layout.addWidget(self.run_macro)
         self.horizontal_layout.addWidget(self.change_branch)
         self.setLayout(self.horizontal_layout)
+
+    def set_show_back_button(self, show: bool) -> None:
+        self.back.setVisible(show)
 
     def _set_icons(self):
         self.back.setIcon(QtGui.QIcon.fromTheme("back", QtGui.QIcon(":/icons/button_left.svg")))

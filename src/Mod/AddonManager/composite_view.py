@@ -23,7 +23,13 @@
 
 """ Provides a class for showing the list view and detail view at the same time. """
 
-import addonmanager_freecad_interface
+from addonmanager_freecad_interface import Preferences
+
+from Addon import Addon
+from Widgets.addonmanager_widget_package_details_view import PackageDetailsView
+from addonmanager_package_details_controller import PackageDetailsController
+from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
+from package_list import PackageList
 
 # Get whatever version of PySide we can
 try:
@@ -43,14 +49,89 @@ from PySide import QtCore, QtWidgets
 
 class CompositeView(QtWidgets.QWidget):
     """A widget that displays the Addon Manager's top bar, the list of Addons, and the detail
-    view, all on a single pane (with no switching). Detail view is shown in its "icon-only" mode
-    for the installation, etc. buttons. The bottom bar remains visible throughout."""
+    view. Depending on the view mode selected, these may all be displayed at once, or selecting
+    an addon in the list may case the list to hide and the detail view to show."""
+
+    install = QtCore.Signal(Addon)
+    uninstall = QtCore.Signal(Addon)
+    update = QtCore.Signal(Addon)
+    execute = QtCore.Signal(Addon)
+    update_status = QtCore.Signal(Addon)
+    check_for_update = QtCore.Signal(Addon)
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.package_details = PackageDetailsView(self)
+        self.package_details_controller = PackageDetailsController(self.package_details)
+        self.package_list = PackageList(self)
+        prefs = Preferences()
+        self.display_style = prefs.get("ViewStyle")
+        self.main_layout = QtWidgets.QHBoxLayout(self)
+        self.splitter = QtWidgets.QSplitter(self)
+        self.splitter.addWidget(self.package_list)
+        self.splitter.addWidget(self.package_details)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setContentsMargins(0, 0, 0, 0)
+        self.splitter.setSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
+        self.main_layout.addWidget(self.splitter)
+        self.layout().setContentsMargins(0, 0, 0, 0)
+        self._setup_ui()
+        self._setup_connections()
 
-    # TODO: Refactor the Addon Manager's display into four custom widgets:
-    # 1) The top bar showing the filter and search
-    # 2) The package list widget, which can take three forms (expanded, compact, and list)
-    # 3) The installer bar, which can take two forms (text and icon)
-    # 4) The bottom bar
+    def setModel(self, model):
+        self.package_list.setModel(model)
+
+    def set_display_style(self, style: AddonManagerDisplayStyle):
+        self.display_style = style
+        self._setup_ui()
+
+    def _setup_ui(self):
+        if self.display_style == AddonManagerDisplayStyle.EXPANDED:
+            self._setup_expanded_ui()
+        elif self.display_style == AddonManagerDisplayStyle.COMPACT:
+            self._setup_compact_ui()
+        elif self.display_style == AddonManagerDisplayStyle.COMPOSITE:
+            self._setup_composite_ui()
+        else:
+            raise RuntimeError("Invalid display style")
+        self.package_list.set_view_style(self.display_style)
+
+    def _setup_expanded_ui(self):
+        self.package_list.show()
+        self.package_details.hide()
+        self.package_details.button_bar.set_show_back_button(True)
+
+    def _setup_compact_ui(self):
+        self.package_list.show()
+        self.package_details.hide()
+        self.package_details.button_bar.set_show_back_button(True)
+
+    def _setup_composite_ui(self):
+        self.package_list.show()
+        self.package_details.show()
+        self.package_details.button_bar.set_show_back_button(False)
+
+    def _setup_connections(self):
+        self.package_list.itemSelected.connect(self.addon_selected)
+        self.package_details_controller.back.connect(self._back_button_clicked)
+        self.package_details_controller.install.connect(self.install)
+        self.package_details_controller.uninstall.connect(self.uninstall)
+        self.package_details_controller.update.connect(self.update)
+        self.package_details_controller.execute.connect(self.execute)
+        self.package_details_controller.update_status.connect(self.update_status)
+        self.package_details_controller.check_for_update.connect(self.check_for_update)
+        self.package_list.ui.view_bar.view_changed.connect(self.set_display_style)
+
+    def addon_selected(self, addon):
+        self.package_details_controller.show_repo(addon)
+        if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
+            self.package_list.hide()
+            self.package_details.show()
+            self.package_details.button_bar.set_show_back_button(True)
+
+    def _back_button_clicked(self):
+        if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
+            self.package_list.show()
+            self.package_details.hide()

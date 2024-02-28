@@ -112,6 +112,7 @@ class PackageDetailsView(QtWidgets.QWidget):
         self.vertical_layout.addWidget(self.message_label)
         self.vertical_layout.addWidget(self.location_label)
         self.vertical_layout.addWidget(self.readme_browser)
+        self.button_bar.hide()  # Start with no bar
 
     def set_location(self, location: Optional[str]):
         if location is not None:

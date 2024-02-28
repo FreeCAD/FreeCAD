@@ -89,6 +89,10 @@ class PackageDetailsController(QtCore.QObject):
         self.addon = repo
         self.readme_controller.set_addon(repo)
         self.original_disabled_state = self.addon.is_disabled()
+        if repo is not None:
+            self.ui.button_bar.show()
+        else:
+            self.ui.button_bar.hide()
 
         if self.worker is not None:
             if not self.worker.isFinished():
@@ -256,3 +260,7 @@ class PackageDetailsController(QtCore.QObject):
         self.addon.set_status(Addon.Status.PENDING_RESTART)
         self.ui.set_new_branch(name)
         self.update_status.emit(self.addon)
+
+    def display_repo_status(self, addon):
+        pass
+        # TODO: what should happen here?
