@@ -111,8 +111,10 @@ def write_femelement_material(f, ccxwriter):
                 # femobj --> dict, FreeCAD document object is nlfemobj["Object"]
                 nl_mat_obj = nlfemobj["Object"]
                 if nl_mat_obj.LinearBaseMaterial == mat_obj:
-                    if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
+                    if nl_mat_obj.MaterialModelNonlinearity == "isotropic hardening":
                         f.write("*PLASTIC\n")
-                        for yield_point in nl_mat_obj.YieldPoints:
-                            f.write("{}\n".format(yield_point))
+                    else:
+                        f.write("*PLASTIC, HARDENING=KINEMATIC\n")
+                    for yield_point in nl_mat_obj.YieldPoints:
+                        f.write("{}\n".format(yield_point))
                 f.write("\n")
