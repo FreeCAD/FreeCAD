@@ -766,9 +766,15 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
                 }
             }
             char elementType {shapeName(type)[0]};
+
+            // Originally in ComplexGeoData::setElementName
+            // LinkStable/src/App/ComplexGeoData.cpp#L1631
+            // No longer possible after map separated in ElementMap.cpp
+
             if (!elementMap()) {
-                resetElementMap();  // TODO: Should never happen, but does while code is in transit
+                resetElementMap(std::make_shared<Data::ElementMap>());
             }
+
             std::ostringstream ss;
             elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
@@ -1503,6 +1509,15 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         }
                     }
                     Data::MappedName other_name = other_key.name;
+
+                    // Originally in ComplexGeoData::setElementName
+                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                    // No longer possible after map separated in ElementMap.cpp
+
+                    if (!elementMap()) {
+                        resetElementMap(std::make_shared<Data::ElementMap>());
+                    }
+
                     elementMap()->encodeElementName(*other_info.shapetype,
                                                     other_name,
                                                     ss2,
@@ -1555,6 +1570,15 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 ss << abs(first_info.index);
             }
             ss << postfix;
+
+            // Originally in ComplexGeoData::setElementName
+            // LinkStable/src/App/ComplexGeoData.cpp#L1631
+            // No longer possible after map separated in ElementMap.cpp
+
+            if (!elementMap()) {
+                resetElementMap(std::make_shared<Data::ElementMap>());
+            }
+
             elementMap()
                 ->encodeElementName(element[0], first_name, ss, &sids, Tag, op, first_key.tag);
             elementMap()->setElementName(element, first_name, Tag, &sids);
@@ -1645,6 +1669,15 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     if (nameInfo.index > 1) {
                         ss << nameInfo.index;
                     }
+
+                    // Originally in ComplexGeoData::setElementName
+                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                    // No longer possible after map separated in ElementMap.cpp
+
+                    if (!elementMap()) {
+                        resetElementMap(std::make_shared<Data::ElementMap>());
+                    }
+
                     elementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
                     elementMap()->setElementName(indexedName, newName, Tag, &sids);
                 }
@@ -1742,6 +1775,15 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         ss << lowerPostfix() << sids.back().toString();
                     }
                 }
+
+                // Originally in ComplexGeoData::setElementName
+                // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                // No longer possible after map separated in ElementMap.cpp
+
+                if (!elementMap()) {
+                    resetElementMap(std::make_shared<Data::ElementMap>());
+                }
+
                 elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
                 elementMap()->setElementName(element, newName, Tag, &sids);
             }
@@ -4177,6 +4219,15 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element
             ss << marker << sids.back().toString();
         }
     }
+
+    // Originally in ComplexGeoData::setElementName
+    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+    // No longer possible after map separated in ElementMap.cpp
+
+    if (!elementMap()) {
+        resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+
     elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
     return elementMap()->setElementName(element, newName, Tag, &sids);
 }
