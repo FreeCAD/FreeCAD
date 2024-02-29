@@ -95,6 +95,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     : QGraphicsScene(parent), pageTemplate(nullptr), m_vpPage(nullptr)
@@ -254,13 +255,21 @@ int QGSPage::addQView(QGIView* view)
         TechDraw::DrawView *viewObj = view->getViewObject();
         // Preserve the desired position, as addToGroup() adjusts the child view's position
         QPointF viewPos(Rez::guiX(viewObj->X.getValue()), -Rez::guiX(viewObj->Y.getValue()));
-
         // Find if it belongs to a parent
         QGIView *parent = findParent(view);
         if (parent) {
+            auto parentDocObj = parent->getViewObject();
+            auto parentDPG = dynamic_cast<TechDraw::DrawProjGroup*>(parentDocObj);
+            if (parentDPG) {
+                // move the DPGI to the center of the DPG.  the DPGI must be placed in the
+                // correct position on the page before adding it to the DPG or it will be
+                // placed at scene(0,0).
+                QPointF posRef(0., 0.);
+                QPointF mapPos = view->mapToItem(parent, posRef);
+                view->moveBy(-mapPos.x(), -mapPos.y());
+            }
             parent->addToGroup(view);
         }
-
         view->setPos(viewPos);
 
         auto viewProvider = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(view->getViewObject()));
@@ -389,7 +398,7 @@ bool QGSPage::attachView(App::DocumentObject* obj)
 
 QGIView* QGSPage::addViewPart(TechDraw::DrawViewPart* partFeat)
 {
-    //    Base::Console().Message("QGSP::addViewPart(%s)\n", part->getNameInDocument());
+    // Base::Console().Message("QGSP::addViewPart(%s)\n", partFeat->Label.getValue());
     auto viewPart(new QGIViewPart);
 
     viewPart->setViewPartFeature(partFeat);
@@ -410,6 +419,7 @@ QGIView* QGSPage::addViewSection(DrawViewSection* sectionFeat)
 
 QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 {
+    // Base::Console().Message("QGSP::addprojectionGroup(%s)\n", projGroupFeat->Label.getValue());
     auto qview(new QGIProjGroup);
 
     qview->setViewFeature(projGroupFeat);
