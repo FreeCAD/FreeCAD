@@ -134,7 +134,10 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
     EXPECT_STREQ(sources[0].shapeName().c_str(), "Compound");
     EXPECT_STREQ(sources[1].shapeName().c_str(), "Compound");
     EXPECT_STREQ(compound.shapeName().c_str(), "Compound");
-    EXPECT_EQ(6, compound.getMappedChildElements().size());
+    EXPECT_EQ(
+        22,
+        compound.getMappedChildElements().size());  // Changed with PR#12471. Probably will change
+                                                    // again after importing other TopoNaming logics
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
