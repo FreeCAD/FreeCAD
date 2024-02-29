@@ -3059,7 +3059,7 @@ TopoShape& TopoShape::makeElementSolid(const TopoShape& shape, const char* op)
     }
     return *this;
 }
-  
+
 TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax2, const char* op)
 {
     if (!op) {
@@ -3106,6 +3106,48 @@ TopoShape& TopoShape::makeElementSlices(const TopoShape& shape,
         cs.slice(++index, distance, wires);
     }
     return makeElementCompound(wires, op, SingleShapeCompoundCreationPolicy::returnShape);
+}
+
+TopoShape& TopoShape::replaceElementShape(const TopoShape& shape,
+                                          const std::vector<std::pair<TopoShape, TopoShape>>& s)
+{
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    BRepTools_ReShape reshape;
+    std::vector<TopoShape> shapes;
+    shapes.reserve(s.size() + 1);
+    for (auto& v : s) {
+        if (v.first.isNull() || v.second.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        reshape.Replace(v.first.getShape(), v.second.getShape());
+        shapes.push_back(v.second);
+    }
+    // TODO:  This does not work when replacing a shape in a compound.  Should we replace with
+    // something else?
+    //  Note that remove works with a compound.
+    shapes.push_back(shape);
+    setShape(reshape.Apply(shape.getShape(), TopAbs_SHAPE));
+    mapSubElement(shapes);
+    return *this;
+}
+
+TopoShape& TopoShape::removeElementShape(const TopoShape& shape, const std::vector<TopoShape>& s)
+{
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    BRepTools_ReShape reshape;
+    for (auto& sh : s) {
+        if (sh.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        reshape.Remove(sh.getShape());
+    }
+    setShape(reshape.Apply(shape.getShape(), TopAbs_SHAPE));
+    mapSubElement(shape);
+    return *this;
 }
 
 TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
@@ -4052,6 +4094,97 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element
     }
     elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
     return elementMap()->setElementName(element, newName, Tag, &sids);
+}
+
+std::vector<Data::MappedName> TopoShape::decodeElementComboName(const Data::IndexedName& element,
+                                                                const Data::MappedName& name,
+                                                                const char* marker,
+                                                                std::string* postfix) const
+{
+    std::vector<Data::MappedName> names;
+    if (!element) {
+        return names;
+    }
+    if (!marker) {
+        marker = "";
+    }
+    int plen = (int)elementMapPrefix().size();
+    int markerLen = strlen(marker);
+    int len;
+    int pos = name.findTagInElementName(nullptr, &len);
+    if (pos < 0) {
+        // It is possible to encode combo name without using a tag, e.g.
+        // Sketcher object creates wire using edges that are created by itself,
+        // so there will be no tag to encode.
+        //
+        // In this case, just search for the brackets
+        len = name.find("(");
+        if (len < 0) {
+            // No bracket is also possible, if there is only one name in the combo
+            pos = len = name.size();
+        }
+        else {
+            pos = name.find(")");
+            if (pos < 0) {
+                // non closing bracket?
+                return {};
+            }
+            ++pos;
+        }
+        if (len <= (int)markerLen) {
+            return {};
+        }
+        len -= markerLen + plen;
+    }
+
+    if (name.find(elementMapPrefix(), len) != len || name.find(marker, len + plen) != len + plen) {
+        return {};
+    }
+
+    names.emplace_back(name, 0, len);
+
+    std::string text;
+    len += plen + markerLen;
+    name.appendToBuffer(text, len, pos - len);
+
+    if (this->Hasher) {
+        if (auto id = App::StringID::fromString(names.back().toRawBytes())) {
+            if (App::StringIDRef sid = this->Hasher->getID(id)) {
+                names.pop_back();
+                names.emplace_back(sid);
+            }
+            else {
+                return names;
+            }
+        }
+        if (auto id = App::StringID::fromString(text.c_str())) {
+            if (App::StringIDRef sid = this->Hasher->getID(id)) {
+                text = sid.dataToText();
+            }
+            else {
+                return names;
+            }
+        }
+    }
+    if (text.empty() || text[0] != '(') {
+        return names;
+    }
+    auto endPos = text.rfind(')');
+    if (endPos == std::string::npos) {
+        return names;
+    }
+
+    if (postfix) {
+        *postfix = text.substr(endPos + 1);
+    }
+
+    text.resize(endPos);
+    std::istringstream iss(text.c_str() + 1);
+    std::string token;
+    while (std::getline(iss, token, '|')) {
+        names.emplace_back(token);
+    }
+    return names;
 }
 
 /**
