@@ -81,7 +81,7 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
             )
 
         if not hasattr(obj, "MaterialModelNonlinearity"):
-            choices_nonlinear_material_models = ["simple hardening"]
+            choices_nonlinear_material_models = ["isotropic hardening","kinematic hardening"]
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "MaterialModelNonlinearity",
