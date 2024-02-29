@@ -2560,8 +2560,8 @@ Efaces
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
-*STATIC, INC=200
+*STEP, INC=200
+*STATIC
 
 
 ***********************************************************
