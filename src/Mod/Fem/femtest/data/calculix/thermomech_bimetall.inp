@@ -7079,7 +7079,7 @@ Nall,273.0
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP, INC=200
+*STEP, INC=2000
 *COUPLED TEMPERATURE-DISPLACEMENT, SOLVER=SPOOLES, STEADY STATE
 1.0,1.0,1e-05,1.0
 
