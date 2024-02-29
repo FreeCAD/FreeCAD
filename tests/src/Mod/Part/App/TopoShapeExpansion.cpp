@@ -142,7 +142,7 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoShapesGeneratesMap)
     EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 2);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 0, 0)));
     // Assert map is correct
-    EXPECT_TRUE(topoShape.getMappedChildElements().empty());
+    EXPECT_FALSE(topoShape.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 6);
     EXPECT_EQ(elements[IndexedName("Edge", 1)], MappedName("Edge1;:H2,E"));
     EXPECT_EQ(elements[IndexedName("Edge", 2)], MappedName("Edge1;:H3,E"));
@@ -442,7 +442,7 @@ TEST_F(TopoShapeExpansionTest, resetElementMapTest)
     EXPECT_EQ(shapeWithMap.getElementMapSize(false), 3);
 
     // Check that the two shapes have the same map
-    EXPECT_EQ(shapeWithoutMapAfterReset.getElementMap(), shapeWithoutMapAfterReset.getElementMap());
+    EXPECT_EQ(shapeWithoutMapAfterReset.getElementMap(), shapeWithMapAfterReset.getElementMap());
     // Check that inside the shape's map there's the element of the new map (same result if
     // checking with the other shape)
     EXPECT_NE(shapeWithoutMapAfterReset.getElementMap()[0].name.find("Edge2"), -1);
@@ -459,23 +459,23 @@ TEST_F(TopoShapeExpansionTest, flushElementMapTest)
     // Creating various TopoShapes to check different conditions
 
     // A TopoShape with a map that won't be flushed
-    auto shapeWithtMapNotFlushed {
+    auto shapeWithMapNotFlushed {
         TopoShape(BRepBuilderAPI_MakeEdge(gp_Pnt(-1.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge(),
                   1)};
-    shapeWithtMapNotFlushed.makeShapeWithElementMap(shapeWithtMapNotFlushed.getShape(),
-                                                    TopoShape::Mapper(),
-                                                    {shapeWithtMapNotFlushed});
+    shapeWithMapNotFlushed.makeShapeWithElementMap(shapeWithMapNotFlushed.getShape(),
+                                                   TopoShape::Mapper(),
+                                                   {shapeWithMapNotFlushed});
 
-    // A TopoShape with a map that will be resetted and then flushed
-    auto shapeWithtMapFlushed {
+    // A TopoShape with a map that will be reset and then flushed
+    auto shapeWithMapFlushed {
         TopoShape(BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, -1.0, 0.0), gp_Pnt(0.0, 1.0, 0.0)).Edge(),
                   2)};
-    shapeWithtMapFlushed.makeShapeWithElementMap(shapeWithtMapFlushed.getShape(),
-                                                 TopoShape::Mapper(),
-                                                 {shapeWithtMapFlushed});
+    shapeWithMapFlushed.makeShapeWithElementMap(shapeWithMapFlushed.getShape(),
+                                                TopoShape::Mapper(),
+                                                {shapeWithMapFlushed});
 
     // A child TopoShape that will be flushed
-    auto childshapeWithMapFlushed {shapeWithtMapFlushed.getSubTopoShape(TopAbs_VERTEX, 1)};
+    auto childshapeWithMapFlushed {shapeWithMapFlushed.getSubTopoShape(TopAbs_VERTEX, 1)};
     childshapeWithMapFlushed.Tag = 3;
 
     // A new map
@@ -487,20 +487,20 @@ TEST_F(TopoShapeExpansionTest, flushElementMapTest)
                                      true);
 
     // Setting a different element map and then resetting otherwise flush won't have effect
-    shapeWithtMapFlushed.resetElementMap(newElementMapPtr);
-    shapeWithtMapFlushed.resetElementMap(nullptr);
+    shapeWithMapFlushed.resetElementMap(newElementMapPtr);
+    shapeWithMapFlushed.resetElementMap(nullptr);
 
     // Act
-    shapeWithtMapNotFlushed.flushElementMap();
-    shapeWithtMapFlushed.flushElementMap();
+    shapeWithMapNotFlushed.flushElementMap();
+    shapeWithMapFlushed.flushElementMap();
     childshapeWithMapFlushed.flushElementMap();
 
     // Assert
     // Check that the original map haven't been modified
-    EXPECT_EQ(shapeWithtMapNotFlushed.getElementMapSize(false), 3);
+    EXPECT_EQ(shapeWithMapNotFlushed.getElementMapSize(false), 3);
 
     // Check that the two maps have been flushed
-    EXPECT_NE(shapeWithtMapFlushed.getElementMap()[0].name.find("Edge2"), -1);
+    EXPECT_NE(shapeWithMapFlushed.getElementMap()[0].name.find("Edge2"), -1);
     EXPECT_NE(childshapeWithMapFlushed.getElementMap()[0].name.find("Vertex1"), -1);
 }
 

@@ -270,12 +270,8 @@ public:
      *
      * @return Returns the existing element map.
      */
-    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr()/* ,
-                                          ElementMapResetPolicy forceEmpty = ForceEmptyMap */)
+    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr())
     {
-        // if (!elementMap && forceEmpty == ForceEmptyMap) {
-        //     elementMap = std::make_shared<Data::ElementMap>();
-        // }
         _elementMap.swap(elementMap);
         return elementMap;
     }

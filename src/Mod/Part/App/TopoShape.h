@@ -1247,8 +1247,8 @@ public:
 
     void flushElementMap() const override;
 
-    virtual Data::ElementMapPtr resetElementMap(
-        Data::ElementMapPtr elementMap=Data::ElementMapPtr());
+    Data::ElementMapPtr resetElementMap(
+        Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *

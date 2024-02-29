@@ -564,6 +564,8 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
 
     // Originally in ComplexGeoData::setElementName
     // LinkStable/src/App/ComplexGeoData.cpp#L1631
+    // No longer possible after map separated in ElementMap.cpp
+
     // if(!_ElementMap)
     //     resetElementMap(std::make_shared<ElementMap>());
 

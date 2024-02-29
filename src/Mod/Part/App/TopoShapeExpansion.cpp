@@ -154,7 +154,7 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
         _subLocation.Identity();
         _parentCache.reset();
     }
-    return Data::ComplexGeoData::resetElementMap(elementMap/* , Data::AllowNoMap */);
+    return Data::ComplexGeoData::resetElementMap(elementMap);
 }
 
 void TopoShape::flushElementMap() const
@@ -769,6 +769,8 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
 
             // Originally in ComplexGeoData::setElementName
             // LinkStable/src/App/ComplexGeoData.cpp#L1631
+            // No longer possible after map separated in ElementMap.cpp
+
             if (!elementMap()) {
                 resetElementMap(std::make_shared<Data::ElementMap>());
             }
@@ -1508,6 +1510,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     }
                     Data::MappedName other_name = other_key.name;
 
+                    // Originally in ComplexGeoData::setElementName
+                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                    // No longer possible after map separated in ElementMap.cpp
+
                     if (!elementMap()) {
                         resetElementMap(std::make_shared<Data::ElementMap>());
                     }
@@ -1564,6 +1570,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 ss << abs(first_info.index);
             }
             ss << postfix;
+
+            // Originally in ComplexGeoData::setElementName
+            // LinkStable/src/App/ComplexGeoData.cpp#L1631
+            // No longer possible after map separated in ElementMap.cpp
 
             if (!elementMap()) {
                 resetElementMap(std::make_shared<Data::ElementMap>());
@@ -1659,6 +1669,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     if (nameInfo.index > 1) {
                         ss << nameInfo.index;
                     }
+
+                    // Originally in ComplexGeoData::setElementName
+                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                    // No longer possible after map separated in ElementMap.cpp
 
                     if (!elementMap()) {
                         resetElementMap(std::make_shared<Data::ElementMap>());
@@ -1761,6 +1775,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         ss << lowerPostfix() << sids.back().toString();
                     }
                 }
+
+                // Originally in ComplexGeoData::setElementName
+                // LinkStable/src/App/ComplexGeoData.cpp#L1631
+                // No longer possible after map separated in ElementMap.cpp
 
                 if (!elementMap()) {
                     resetElementMap(std::make_shared<Data::ElementMap>());
@@ -4201,6 +4219,10 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element
             ss << marker << sids.back().toString();
         }
     }
+
+    // Originally in ComplexGeoData::setElementName
+    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+    // No longer possible after map separated in ElementMap.cpp
 
     if (!elementMap()) {
         resetElementMap(std::make_shared<Data::ElementMap>());
