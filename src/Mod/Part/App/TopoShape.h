@@ -1040,7 +1040,52 @@ public:
                                     const char* op = nullptr,
                                     double tol3d = 0.0,
                                     double tolBound = 0.0,
-                                    double tolAngluar = 0.0);
+                                    double tolAngular = 0.0);
+
+    /* Make a shape with some subshapes replaced.
+     *
+     * @param source: the source shape
+     * @param s: replacement mapping the existing sub shape of source to new shapes
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& replaceElementShape(const TopoShape& source,
+                                   const std::vector<std::pair<TopoShape, TopoShape>>& s);
+    /* Make a new shape using this shape with some subshapes replaced by others
+     *
+     * @param s: replacement mapping the existing sub shape of source to new shapes
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape replaceElementShape(const std::vector<std::pair<TopoShape, TopoShape>>& s) const
+    {
+        return TopoShape(0, Hasher).replaceElementShape(*this, s);
+    }
+
+    /* Make a shape with some subshapes removed
+     *
+     * @param source: the source shape
+     * @param s: the subshapes to be removed
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& removeElementShape(const TopoShape& source, const std::vector<TopoShape>& s);
+    /* Make a new shape using this shape with some subshapes removed
+     *
+     * @param s: the subshapes to be removed
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape removeElementShape(const std::vector<TopoShape>& s) const
+    {
+        return TopoShape(0, Hasher).removeElementShape(*this, s);
+    }
 
     /** Make shape using generalized fusion and return the modified sub shapes
      *
