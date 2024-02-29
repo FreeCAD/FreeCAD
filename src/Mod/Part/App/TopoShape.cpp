@@ -477,17 +477,19 @@ std::pair<TopAbs_ShapeEnum,int> TopoShape::shapeTypeAndIndex(const char *name) {
     return std::make_pair(type,idx);
 }
 
-std::pair<TopAbs_ShapeEnum,int>
-TopoShape::shapeTypeAndIndex(const Data::IndexedName & element)
+std::pair<TopAbs_ShapeEnum, int> TopoShape::shapeTypeAndIndex(const Data::IndexedName& element)
 {
-    if (!element)
+    if (!element) {
         return std::make_pair(TopAbs_SHAPE, 0);
+    }
     static const std::string _subshape("SubShape");
-    if (boost::equals(element.getType(), _subshape))
+    if (boost::equals(element.getType(), _subshape)) {
         return std::make_pair(TopAbs_SHAPE, element.getIndex());
+    }
     TopAbs_ShapeEnum shapetype = shapeType(element.getType(), true);
-    if (shapetype == TopAbs_SHAPE)
+    if (shapetype == TopAbs_SHAPE) {
         return std::make_pair(TopAbs_SHAPE, 0);
+    }
     return std::make_pair(shapetype, element.getIndex());
 }
 

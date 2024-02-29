@@ -88,37 +88,43 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     if(!name)
         return ret;
     auto prop = getPropertyOfGeometry();
-    if(!prop) return std::make_pair("", name);
+    if (!prop) {
+        return std::make_pair("", name);
+    }
 
     auto geo = prop->getComplexData();
-    if(!geo) return std::make_pair("", name);
+    if (!geo) {
+        return std::make_pair("", name);
+    }
 
     return _getElementName(name, geo->getElementName(name));
 }
 
-std::pair<std::string,std::string>
-GeoFeature::_getElementName(const char *name, const Data::MappedElement &mapped) const
+std::pair<std::string, std::string>
+GeoFeature::_getElementName(const char* name, const Data::MappedElement& mapped) const
 {
-    std::pair<std::string,std::string> ret;
+    std::pair<std::string, std::string> ret;
     if (mapped.index && mapped.name) {
         std::ostringstream ss;
-        ss << Data::ComplexGeoData::elementMapPrefix()
-           << mapped.name << '.' << mapped.index;
+        ss << Data::ComplexGeoData::elementMapPrefix() << mapped.name << '.' << mapped.index;
         ret.first = ss.str();
         mapped.index.appendToStringBuffer(ret.second);
-    } else if (mapped.name) {
-//        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
+    }
+    else if (mapped.name) {
+        //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
         ret.first = name;
-        const char *dot = strrchr(name,'.');
-        if(dot) {
+        const char* dot = strrchr(name, '.');
+        if (dot) {
             // deliberately mangle the old style element name to signal a
             // missing reference
             ret.second = Data::MISSING_PREFIX;
-            ret.second += dot+1;
+            ret.second += dot + 1;
         }
-    } else {
+    }
+    else {
         mapped.index.appendToStringBuffer(ret.second);
     }
+
     return ret;
 }
 

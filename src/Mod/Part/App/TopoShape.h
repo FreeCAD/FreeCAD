@@ -1131,7 +1131,7 @@ public:
     static const std::string& shapeName(TopAbs_ShapeEnum type, bool silent = false);
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
-    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const Data::IndexedName &name);
+    static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName &name);
 
     Data::MappedName setElementComboName(const Data::IndexedName & element,
                                          const std::vector<Data::MappedName> &names,
