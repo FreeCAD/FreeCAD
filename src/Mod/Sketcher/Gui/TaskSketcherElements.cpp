@@ -658,15 +658,15 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainPointOnObject",
                  doPointOnObjectConstraint,
                  true)
-    CONTEXT_ITEM("Constraint_Vertical",
-                 "Vertical Constraint",
-                 "Sketcher_ConstrainVertical",
-                 doVerticalConstraint,
-                 true)
     CONTEXT_ITEM("Constraint_Horizontal",
                  "Horizontal Constraint",
                  "Sketcher_ConstrainHorizontal",
                  doHorizontalConstraint,
+                 true)
+    CONTEXT_ITEM("Constraint_Vertical",
+                 "Vertical Constraint",
+                 "Sketcher_ConstrainVertical",
+                 doVerticalConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Parallel",
                  "Parallel Constraint",
@@ -792,8 +792,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident", doPointCoincidence)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject", doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal", doHorizontalConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel", doParallelConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular", doPerpendicularConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent", doTangentConstraint)
