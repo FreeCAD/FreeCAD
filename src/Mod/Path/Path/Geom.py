@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "Geom - geometry utilities for Path"
+__title__ = "Geom - geometry utilities for CAM"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."

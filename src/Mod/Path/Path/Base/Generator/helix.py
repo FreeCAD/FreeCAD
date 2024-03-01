@@ -24,10 +24,10 @@
 from numpy import ceil, linspace, isclose
 import Path
 
-__title__ = "Helix Path Generator"
+__title__ = "Helix toolpath Generator"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Generates the helix for a single spot targetshape"
+__doc__ = "Generates the helical toolpath for a single spot targetshape"
 __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 

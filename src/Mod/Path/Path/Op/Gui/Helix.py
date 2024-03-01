@@ -111,7 +111,7 @@ Command = PathOpGui.SetupOperation(
     "CAM_Helix",
     QT_TRANSLATE_NOOP("CAM_Helix", "Helix"),
     QT_TRANSLATE_NOOP(
-        "CAM_Helix", "Creates a Path Helix from the features of a base object"
+        "CAM_Helix", "Creates a Helical toolpath from the features of a base object"
     ),
     PathHelix.SetupProperties,
 )

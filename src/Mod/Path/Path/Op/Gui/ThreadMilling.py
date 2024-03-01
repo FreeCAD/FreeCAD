@@ -35,10 +35,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore
 
-__title__ = "Path Thread Milling Operation UI."
+__title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "UI and Command for Path Thread Milling Operation."
+__doc__ = "UI and Command for CAM Thread Milling Operation."
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -253,7 +253,7 @@ Command = PathOpGui.SetupOperation(
     QT_TRANSLATE_NOOP("CAM_ThreadMilling", "Thread Milling"),
     QT_TRANSLATE_NOOP(
         "CAM_ThreadMilling",
-        "Creates a Path Thread Milling operation from features of a base object",
+        "Creates a Thread Milling toolpath from features of a base object",
     ),
     PathThreadMilling.SetupProperties,
 )

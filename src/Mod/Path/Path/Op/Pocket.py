@@ -31,7 +31,7 @@ import PathScripts.PathUtils as PathUtils
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-__title__ = "Path 3D Pocket Operation"
+__title__ = "CAM 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
@@ -186,7 +186,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     if obj.FinalDepth.Value < fzmin:
                         Path.Log.warning(
                             translate(
-                                "PathPocket",
+                                "CAM",
                                 "Final depth set below ZMin of face(s) selected.",
                             )
                         )
@@ -328,7 +328,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 Path.Log.warning(ee)
                 Path.Log.error(
                     translate(
-                        "Path",
+                        "CAM",
                         "A planar adaptive start is unavailable. The non-planar will be attempted.",
                     )
                 )
@@ -345,7 +345,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     Path.Log.warning(eee)
                     Path.Log.error(
                         translate(
-                            "Path", "The non-planar adaptive start is also unavailable."
+                            "CAM", "The non-planar adaptive start is also unavailable."
                         )
                         + "(1)"
                     )
@@ -375,7 +375,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     )
                     Path.Log.error(
                         translate(
-                            "Path", "The non-planar adaptive start is also unavailable."
+                            "CAM", "The non-planar adaptive start is also unavailable."
                         )
                         + "(2)"
                     )

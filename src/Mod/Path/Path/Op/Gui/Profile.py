@@ -29,7 +29,7 @@ import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-__title__ = "Path Profile Operation UI"
+__title__ = "CAM Profile Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Profile operation page controller and command implementation."
@@ -162,9 +162,9 @@ Command = PathOpGui.SetupOperation(
     PathProfile.Create,
     TaskPanelOpPage,
     "CAM_Profile",
-    QT_TRANSLATE_NOOP("Path", "Profile"),
+    QT_TRANSLATE_NOOP("CAM", "Profile"),
     QT_TRANSLATE_NOOP(
-        "Path", "Profile entire model, selected face(s) or selected edge(s)"
+        "CAM", "Profile entire model, selected face(s) or selected edge(s)"
     ),
     PathProfile.SetupProperties,
 )

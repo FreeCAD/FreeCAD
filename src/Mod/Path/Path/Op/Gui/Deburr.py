@@ -29,7 +29,7 @@ import Path.Op.Gui.Base as PathOpGui
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Deburr Operation UI"
+__title__ = "CAM Deburr Operation UI"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "https://www.freecad.org"
 __doc__ = "Deburr operation page controller and command implementation."
@@ -144,7 +144,7 @@ Command = PathOpGui.SetupOperation(
     "CAM_Deburr",
     QT_TRANSLATE_NOOP("CAM_Deburr", "Deburr"),
     QT_TRANSLATE_NOOP(
-        "CAM_Deburr", "Creates a Deburr Path along Edges or around Faces"
+        "CAM_Deburr", "Creates a Deburr toolpath along Edges or around Faces"
     ),
     PathDeburr.SetupProperties,
 )

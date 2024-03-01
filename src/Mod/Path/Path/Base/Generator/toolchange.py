@@ -24,7 +24,7 @@
 import Path
 from enum import Enum
 
-__title__ = "Toolchange Path Generator"
+__title__ = "Toolchange toolpath Generator"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Generates the rotation toolpath"

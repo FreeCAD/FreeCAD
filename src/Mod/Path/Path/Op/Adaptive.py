@@ -36,7 +36,7 @@ if FreeCAD.GuiUp:
     from pivy import coin
     import FreeCADGui
 
-__doc__ = "Class and implementation of the Adaptive path operation."
+__doc__ = "Class and implementation of the Adaptive CAM operation."
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

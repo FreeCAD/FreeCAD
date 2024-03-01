@@ -31,7 +31,7 @@ import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
 
 
-__title__ = "Path Engrave Operation UI"
+__title__ = "CAM Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Engrave operation page controller and command implementation."
@@ -72,7 +72,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             if not base:
                 Path.Log.notice(
                     (
-                        translate("Path", "%s is not a Base Model object of the job %s")
+                        translate("CAM", "%s is not a Base Model object of the job %s")
                         + "\n"
                     )
                     % (sel.Object.Label, job.Label)
@@ -80,7 +80,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 continue
             if base in shapes:
                 Path.Log.notice(
-                    (translate("Path", "Base shape %s already in the list") + "\n")
+                    (translate("CAM", "Base shape %s already in the list") + "\n")
                     % (sel.Object.Label)
                 )
                 continue
@@ -171,7 +171,7 @@ Command = PathOpGui.SetupOperation(
     "CAM_Engrave",
     QtCore.QT_TRANSLATE_NOOP("CAM_Engrave", "Engrave"),
     QtCore.QT_TRANSLATE_NOOP(
-        "CAM_Engrave", "Creates an Engraving Path around a Draft ShapeString"
+        "CAM_Engrave", "Creates an Engraving toolpath around a Draft ShapeString"
     ),
     PathEngrave.SetupProperties,
 )

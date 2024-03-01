@@ -29,10 +29,10 @@ import Path.Op.CircularHoleBase as PathCircularHoleBase
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Thread Milling Operation"
+__title__ = "CAM Thread Milling Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Path thread milling operation."
+__doc__ = "CAM thread milling operation."
 
 # math.sqrt(3)/2 ... 60deg triangle height
 SQRT_3_DIVIDED_BY_2 = 0.8660254037844386

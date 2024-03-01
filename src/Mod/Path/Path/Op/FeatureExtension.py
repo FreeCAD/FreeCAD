@@ -32,7 +32,7 @@ from lazy_loader.lazy_loader import LazyLoader
 PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 
 
-__title__ = "Path Features Extensions"
+__title__ = "CAM Features Extensions"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of face extensions features."

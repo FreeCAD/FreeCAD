@@ -56,7 +56,7 @@ class CommandJobCreate:
             "Pixmap": "CAM_Job",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "Job"),
             "Accel": "P, J",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a Path Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM Job"),
         }
 
     def IsActive(self):
@@ -101,7 +101,7 @@ class CommandJobTemplateExport:
             "MenuText": QT_TRANSLATE_NOOP("CAM_ExportTemplate", "Export Template"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ExportTemplate",
-                "Exports Path Job as a template to be used for other jobs",
+                "Exports CAM Job as a template to be used for other jobs",
             ),
         }
 

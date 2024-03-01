@@ -1361,7 +1361,7 @@ class CommandDressupDogbone(object):
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDogbone", "Dogbone"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDogbone",
-                "Creates a Dogbone Dress-up object from a selected path",
+                "Creates a Dogbone Dress-up object from a selected toolpath",
             ),
         }
 
@@ -1378,13 +1378,13 @@ class CommandDressupDogbone(object):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Please select one path object") + "\n"
+                translate("CAM_DressupDogbone", "Please select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "The selected object is not a path")
+                translate("CAM_DressupDogbone", "The selected object is not a toolpath")
                 + "\n"
             )
             return

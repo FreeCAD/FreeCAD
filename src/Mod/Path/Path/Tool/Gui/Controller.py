@@ -113,7 +113,7 @@ class ViewProvider:
         Path.Log.track()
         for action in menu.actions():
             menu.removeAction(action)
-        action = QtGui.QAction(translate("Path", "Edit"), menu)
+        action = QtGui.QAction(translate("CAM", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 

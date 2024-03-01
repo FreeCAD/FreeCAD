@@ -28,10 +28,10 @@ import Path.Op.Base as PathOp
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-__title__ = "Base Path Pocket Operation"
+__title__ = "Base CAM Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Base class and implementation for Path pocket operations."
+__doc__ = "Base class and implementation for pocket operations."
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

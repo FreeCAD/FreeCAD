@@ -217,7 +217,7 @@ CmdPathCompound::CmdPathCompound()
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("Compound");
-    sToolTipText    = QT_TR_NOOP("Creates a compound from selected paths");
+    sToolTipText    = QT_TR_NOOP("Creates a compound from selected toolpaths");
     sWhatsThis      = "CAM_Compound";
     sStatusTip      = sToolTipText;
     sPixmap         = "CAM_Compound";
@@ -269,7 +269,7 @@ CmdPathShape::CmdPathShape()
     sAppModule      = "Path";
     sGroup          = QT_TR_NOOP("Path");
     sMenuText       = QT_TR_NOOP("From Shape");
-    sToolTipText    = QT_TR_NOOP("Creates a path from a selected shape");
+    sToolTipText    = QT_TR_NOOP("Creates a toolpath from a selected shape");
     sWhatsThis      = "CAM_Shape";
     sStatusTip      = sToolTipText;
     sPixmap         = "CAM_Shape";

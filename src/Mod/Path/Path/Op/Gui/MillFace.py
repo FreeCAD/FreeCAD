@@ -29,7 +29,7 @@ import Path.Op.MillFace as PathMillFace
 import Path.Op.PocketShape as PathPocketShape
 import FreeCADGui
 
-__title__ = "Path Face Mill Operation UI"
+__title__ = "CAM Face Mill Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Face Mill operation page controller and command implementation."

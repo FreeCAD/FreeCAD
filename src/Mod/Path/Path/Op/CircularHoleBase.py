@@ -34,7 +34,7 @@ Part = LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
-__title__ = "Path Circular Holes Base Operation"
+__title__ = "CAM Circular Holes Base Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Base class an implementation for operations on circular holes."
@@ -111,7 +111,7 @@ class ObjectOp(PathOp.ObjectOp):
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
             Path.Log.warning(
                 translate(
-                    "Path",
+                    "CAM",
                     "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.",
                 )
             )
@@ -145,7 +145,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         Path.Log.error(
             translate(
-                "Path",
+                "CAM",
                 "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.",
             )
             % (base.Label, sub)

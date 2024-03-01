@@ -35,7 +35,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-__title__ = "Path Pocket Operation UI"
+__title__ = "CAM Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Pocket operation page controller and command implementation."
@@ -56,7 +56,7 @@ Command = PathOpGui.SetupOperation(
     "CAM_3DPocket",
     QT_TRANSLATE_NOOP("CAM_Pocket3D", "3D Pocket"),
     QT_TRANSLATE_NOOP(
-        "CAM_Pocket3D", "Creates a Path 3D Pocket from a face or faces"
+        "CAM_Pocket3D", "Creates a 3D Pocket toolpath from a face or faces"
     ),
     PathPocket.SetupProperties,
 )

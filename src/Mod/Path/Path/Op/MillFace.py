@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "Path Mill Face Operation"
+__title__ = "CAM Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of Mill Facing operation."

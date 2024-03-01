@@ -54,7 +54,7 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
         obj.addProperty(
             "App::PropertyAngle",
@@ -898,7 +898,7 @@ class CommandPathDressupRampEntry:
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupRampEntry", "RampEntry"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupRampEntry",
-                "Creates a Ramp Entry Dress-up object from a selected path",
+                "Creates a Ramp Entry Dress-up object from a selected toolpath",
             ),
         }
 
@@ -914,14 +914,14 @@ class CommandPathDressupRampEntry:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupRampEntry", "Please select one path object")
+                translate("CAM_DressupRampEntry", "Please select one toolpath object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a path")
+                translate("CAM_DressupRampEntry", "The selected object is not a toolpath")
                 + "\n"
             )
             return

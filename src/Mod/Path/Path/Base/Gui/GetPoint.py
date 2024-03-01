@@ -32,7 +32,7 @@ Draft = LazyLoader("Draft", globals(), "Draft")
 from PySide import QtCore, QtGui
 from pivy import coin
 
-__title__ = "Path GetPoint UI"
+__title__ = "CAM GetPoint UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitrary points while the task panel is active."

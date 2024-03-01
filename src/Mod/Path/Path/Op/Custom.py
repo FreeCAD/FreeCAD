@@ -31,7 +31,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 __title__ = "CAM Custom Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Path Custom object and FreeCAD command"
+__doc__ = "CAM Custom object and FreeCAD command"
 
 
 if False:

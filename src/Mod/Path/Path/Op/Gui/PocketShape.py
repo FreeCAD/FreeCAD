@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "Path Pocket Shape Operation UI"
+__title__ = "CAM Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
@@ -69,7 +69,7 @@ Command = PathOpGui.SetupOperation(
     "CAM_Pocket",
     QT_TRANSLATE_NOOP("CAM_Pocket_Shape", "Pocket Shape"),
     QT_TRANSLATE_NOOP(
-        "CAM_Pocket_Shape", "Creates a Path Pocket object from a face or faces"
+        "CAM_Pocket_Shape", "Creates a pocket toolpath from a face or faces"
     ),
     PathPocketShape.SetupProperties,
 )

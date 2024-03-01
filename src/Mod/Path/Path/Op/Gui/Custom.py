@@ -28,7 +28,7 @@ import Path.Op.Gui.Base as PathOpGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-__title__ = "Path Custom Operation UI"
+__title__ = "CAM Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Custom operation page controller and command implementation."

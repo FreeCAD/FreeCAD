@@ -26,7 +26,7 @@ import Path
 import PathScripts
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__doc__ = """Path SimpleCopy command"""
+__doc__ = """CAM SimpleCopy command"""
 
 translate = FreeCAD.Qt.translate
 
@@ -37,7 +37,7 @@ class CommandPathSimpleCopy:
             "Pixmap": "CAM_SimpleCopy",
             "MenuText": QT_TRANSLATE_NOOP("CAM_SimpleCopy", "Simple Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SimpleCopy", "Creates a non-parametric copy of another path"
+                "CAM_SimpleCopy", "Creates a non-parametric copy of another toolpath"
             ),
         }
 
@@ -55,13 +55,13 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one path object")
+                translate("CAM_SimpleCopy", "Please select exactly one toolpath object")
                 + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one path object")
+                translate("CAM_SimpleCopy", "Please select exactly one toolpath object")
                 + "\n"
             )
             return

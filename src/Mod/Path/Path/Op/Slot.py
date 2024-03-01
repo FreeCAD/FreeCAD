@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Path Slot Operation"
+__title__ = "CAM Slot Operation"
 __author__ = "russ4262 (Russell Johnson)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of Slot operation."
@@ -118,7 +118,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Debug",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Show the temporary path construction objects when module is in DEBUG mode.",
+                    "Show the temporary toolpath construction objects when module is in DEBUG mode.",
                 ),
             ),
             (
@@ -126,7 +126,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "CustomPoint1",
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Enter custom start point for slot path."
+                    "App::Property", "Enter custom start point for slot toolpath."
                 ),
             ),
             (
@@ -134,7 +134,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "CustomPoint2",
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Enter custom end point for slot path."
+                    "App::Property", "Enter custom end point for slot toolpath."
                 ),
             ),
             (
@@ -152,7 +152,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Positive extends the beginning of the path, negative shortens.",
+                    "Positive extends the beginning of the toolpath, negative shortens.",
                 ),
             ),
             (
@@ -161,7 +161,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Positive extends the end of the path, negative shortens.",
+                    "Positive extends the end of the toolpath, negative shortens.",
                 ),
             ),
             (
@@ -179,7 +179,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Choose the path orientation with regard to the feature(s) selected.",
+                    "Choose the toolpath orientation with regard to the feature(s) selected.",
                 ),
             ),
             (
@@ -206,7 +206,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "For arcs/circlular edges, offset the radius for the path.",
+                    "For arcs/circlular edges, offset the radius for the toolpath.",
                 ),
             ),
             (
@@ -215,7 +215,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable to reverse the cut direction of the slot path.",
+                    "Enable to reverse the cut direction of the slot toolpath.",
                 ),
             ),
             (
@@ -224,7 +224,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Start Point",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The custom start point for the path of this operation",
+                    "The custom start point for the toolpath of this operation",
                 ),
             ),
             (

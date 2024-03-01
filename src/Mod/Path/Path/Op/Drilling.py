@@ -34,10 +34,10 @@ import Path.Op.CircularHoleBase as PathCircularHoleBase
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Drilling Operation"
+__title__ = "CAM Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Path Drilling operation."
+__doc__ = "CAM Drilling operation."
 __contributors__ = "IMBack!"
 
 if False:

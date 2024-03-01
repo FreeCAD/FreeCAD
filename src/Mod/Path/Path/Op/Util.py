@@ -31,10 +31,10 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "Util - Utility functions for Path operations."
+__title__ = "Util - Utility functions for CAM operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
+__doc__ = "Collection of functions used by various operations. The functions are specific to CAM and the algorithms employed by CAM's operations."
 
 
 PrintWireDebug = False

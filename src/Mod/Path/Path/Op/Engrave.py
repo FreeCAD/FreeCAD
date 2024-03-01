@@ -28,7 +28,7 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__doc__ = "Class and implementation of Path Engrave operation"
+__doc__ = "Class and implementation of CAM Engrave operation"
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -89,7 +89,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "StartVertex",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The vertex index to start the path from"
+                "App::Property", "The vertex index to start the toolpath from"
             ),
         )
         self.setupAdditionalProperties(obj)

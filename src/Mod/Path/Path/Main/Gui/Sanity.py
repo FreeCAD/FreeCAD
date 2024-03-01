@@ -122,11 +122,11 @@ class CommandPathSanity:
         return {
             "Pixmap": "CAM_Sanity",
             "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_Sanity", "Check the path job for common errors"
+                "CAM_Sanity", "Check the CAM job for common errors"
             ),
             "Accel": "P, S",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Sanity", "Check the path job for common errors"
+                "CAM_Sanity", "Check the CAM job for common errors"
             ),
         }
 

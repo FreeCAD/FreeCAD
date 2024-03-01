@@ -31,7 +31,7 @@ import math
 import random
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__doc__ = """Path Array object and FreeCAD command"""
+__doc__ = """CAM Array object and FreeCAD command"""
 
 translate = FreeCAD.Qt.translate
 
@@ -42,7 +42,7 @@ class ObjectArray:
             "App::PropertyLinkList",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The path(s) to array"),
+            QT_TRANSLATE_NOOP("App::Property", "The toolpath(s) to array"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -130,7 +130,7 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The tool controller that will be used to calculate the path",
+                "The tool controller that will be used to calculate the toolpath",
             ),
         )
         obj.addProperty(
@@ -329,7 +329,7 @@ class PathArray:
                 Path.Log.warning(
                     translate(
                         "PathArray",
-                        "Arrays of paths having different tool controllers are handled according to the tool controller of the first path.",
+                        "Arrays of toolpaths having different tool controllers are handled according to the tool controller of the first path.",
                     )
                 )
 
@@ -451,7 +451,7 @@ class CommandPathArray:
             "Pixmap": "CAM_Array",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Array", "Creates an array from selected path(s)"
+                "CAM_Array", "Creates an array from selected toolpath(s)"
             ),
         }
 
@@ -471,7 +471,7 @@ class CommandPathArray:
             if not (sel.isDerivedFrom("Path::Feature")):
                 FreeCAD.Console.PrintError(
                     translate(
-                        "CAM_Array", "Arrays can be created only from Path operations."
+                        "CAM_Array", "Arrays can be created only from toolpath operations."
                     )
                     + "\n"
                 )

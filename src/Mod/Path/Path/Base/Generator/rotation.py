@@ -30,7 +30,7 @@ import Path
 import FreeCAD
 from enum import Enum
 
-__title__ = "Rotation Path Generator"
+__title__ = "Rotation toolpath Generator"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Generates the rotation toolpath"

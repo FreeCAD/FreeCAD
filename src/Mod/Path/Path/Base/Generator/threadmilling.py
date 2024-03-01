@@ -25,10 +25,10 @@ import Path
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Thread Milling generator"
+__title__ = "CAM Thread Milling generator"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Path thread milling operation."
+__doc__ = "CAM thread milling operation."
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

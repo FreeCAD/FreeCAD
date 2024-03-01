@@ -55,7 +55,7 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
         obj.addProperty(
             "App::PropertyAngle",
@@ -601,7 +601,7 @@ class CommandDressupDragknife:
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "DragKnife"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDragKnife",
-                "Modifies a path to add dragknife corner actions",
+                "Modifies a toolpath to add dragknife corner actions",
             ),
         }
 
@@ -618,19 +618,19 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select one path object")
+                translate("CAM_DressupDragKnife", "Please select one toolpath object")
                 + "\n"
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "The selected object is not a path")
+                translate("CAM_DressupDragKnife", "The selected object is not a toolpath")
                 + "\n"
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select a Path object")
+                translate("CAM_DressupDragKnife", "Please select a toolpath object")
             )
             return
 

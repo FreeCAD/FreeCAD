@@ -29,7 +29,7 @@ import PathGui
 
 from PySide import QtCore
 
-__title__ = "Path Slot Operation UI"
+__title__ = "CAM Slot Operation UI"
 __author__ = "russ4262 (Russell Johnson)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Slot operation page controller and command implementation."

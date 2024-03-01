@@ -265,10 +265,10 @@ class CommandPathInspect:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Inspect",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect Path Commands"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect toolPath Commands"),
             "Accel": "P, I",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Inspect", "Inspects the contents of a Path object"
+                "CAM_Inspect", "Inspects the contents of a toolpath object"
             ),
         }
 

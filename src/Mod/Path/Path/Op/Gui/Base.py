@@ -37,10 +37,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
 
-__title__ = "Path Operation UI base classes"
+__title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Base classes and framework for Path operation's UI"
+__doc__ = "Base classes and framework for CAM operation's UI"
 
 translate = FreeCAD.Qt.translate
 

@@ -565,7 +565,7 @@ class CommandPathDressupTag:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected path"
+                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected toolpath"
             ),
         }
 
@@ -581,7 +581,7 @@ class CommandPathDressupTag:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupTag", "Please select one path object") + "\n"
+                translate("CAM_DressupTag", "Please select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]

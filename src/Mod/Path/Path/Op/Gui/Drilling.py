@@ -31,10 +31,10 @@ import PathGui
 
 from PySide import QtCore
 
-__title__ = "Path Drilling Operation UI."
+__title__ = "CAM Drilling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "UI and Command for Path Drilling Operation."
+__doc__ = "UI and Command for Drilling Operation."
 __contributors__ = "IMBack!"
 
 if False:
@@ -189,7 +189,7 @@ Command = PathOpGui.SetupOperation(
     QtCore.QT_TRANSLATE_NOOP("CAM_Drilling", "Drilling"),
     QtCore.QT_TRANSLATE_NOOP(
         "CAM_Drilling",
-        "Creates a Path Drilling object from the features of a base object",
+        "Creates a Drilling toolpath from the features of a base object",
     ),
     PathDrilling.SetupProperties,
 )

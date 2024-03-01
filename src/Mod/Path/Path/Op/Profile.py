@@ -40,11 +40,11 @@ DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 translate = FreeCAD.Qt.translate
 
-__title__ = "Path Profile Operation"
+__title__ = "CAM Profile Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = (
-    "Path Profile operation based on entire model, selected faces or selected edges."
+    "Create a profile toolpath based on entire model, selected faces or selected edges."
 )
 __contributors__ = "Schildkroet"
 

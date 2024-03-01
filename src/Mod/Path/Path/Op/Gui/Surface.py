@@ -30,7 +30,7 @@ import Path.Op.Surface as PathSurface
 import PathGui
 
 
-__title__ = "Path Surface Operation UI"
+__title__ = "CAM Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Surface operation page controller and command implementation."

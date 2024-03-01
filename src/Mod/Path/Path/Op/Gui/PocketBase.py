@@ -28,10 +28,10 @@ import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Pocket as PathPocket
 import PathGui
 
-__title__ = "Path Pocket Base Operation UI"
+__title__ = "CAM Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Base page controller and command implementation for path pocket operations."
+__doc__ = "Base page controller and command implementation for pocket operations."
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

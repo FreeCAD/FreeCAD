@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Tool Controller defines tool, spindle speed and feed rates for Path Operations"""
+"""Tool Controller defines tool, spindle speed and feed rates for CAM Operations"""
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD

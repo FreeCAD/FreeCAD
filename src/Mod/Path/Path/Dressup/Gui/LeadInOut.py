@@ -58,25 +58,25 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadIn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"),
+            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to toolpath"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadOut",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"),
+            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from toolpath"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"),
+            QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in toolpath"),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -94,14 +94,14 @@ class ObjectDressup:
             "App::PropertyEnumeration",
             "StyleOn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the Path"),
+            QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the toolpath"),
         )
         obj.StyleOn = lead_styles
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOff",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the Path"),
+            QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the toolpath"),
         )
         obj.StyleOff = lead_styles
         obj.addProperty(
@@ -479,14 +479,14 @@ class CommandPathDressupLeadInOut:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Please select one path object")
+                translate("CAM_DressupLeadInOut", "Please select one toolpath object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "The selected object is not a path")
+                translate("CAM_DressupLeadInOut", "The selected object is not a toolpath")
                 + "\n"
             )
             return

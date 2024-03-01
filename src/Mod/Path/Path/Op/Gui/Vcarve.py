@@ -30,7 +30,7 @@ import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
 
 
-__title__ = "Path Vcarve Operation UI"
+__title__ = "CAM Vcarve Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Vcarve operation page controller and command implementation."
@@ -61,7 +61,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             if not base:
                 Path.Log.notice(
                     (
-                        translate("Path", "%s is not a Base Model object of the job %s")
+                        translate("CAM", "%s is not a Base Model object of the job %s")
                         + "\n"
                     )
                     % (sel.Object.Label, job.Label)
@@ -164,7 +164,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Vcarve",
     QtCore.QT_TRANSLATE_NOOP("CAM_Vcarve", "Vcarve"),
-    QtCore.QT_TRANSLATE_NOOP("CAM_Vcarve", "Creates a medial line engraving path"),
+    QtCore.QT_TRANSLATE_NOOP("CAM_Vcarve", "Creates a medial line engraving toolpath"),
     PathVcarve.SetupProperties,
 )
 

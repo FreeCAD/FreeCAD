@@ -35,7 +35,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "Path Deburr Operation"
+__title__ = "CAM Deburr Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "https://www.freecad.org"
 __doc__ = "Deburr operation."
@@ -128,7 +128,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyDistance",
             "ExtraDepth",
             "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "The additional depth of the tool path"),
+            QT_TRANSLATE_NOOP("App::Property", "The additional depth of the toolpath"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -142,14 +142,14 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyEnumeration",
             "Direction",
             "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Direction of operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
         )
         # obj.Direction = ["CW", "CCW"]
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
             "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Side of operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Side of base object"),
         )
         obj.Side = ["Outside", "Inside"]
         obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
@@ -158,7 +158,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "EntryPoint",
             "Deburr",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The segment where the operation starts"
+                "App::Property", "The segment where the toolpath starts"
             ),
         )
 

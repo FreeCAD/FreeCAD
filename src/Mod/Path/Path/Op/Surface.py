@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 
-__title__ = "Path Surface Operation"
+__title__ = "CAM Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of 3D Surface operation."

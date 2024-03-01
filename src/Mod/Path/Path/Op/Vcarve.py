@@ -32,7 +32,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore
 
-__doc__ = "Class and implementation of Path Vcarve operation"
+__doc__ = "Class and implementation of CAM Vcarve operation"
 
 PRIMARY = 0
 SECONDARY = 1

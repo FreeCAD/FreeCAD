@@ -30,7 +30,7 @@ import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Waterline as PathWaterline
 
-__title__ = "Path Waterline Operation UI"
+__title__ = "CAM Waterline Operation UI"
 __author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Waterline operation page controller and command implementation."
@@ -175,7 +175,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Waterline",
     QT_TRANSLATE_NOOP("CAM_Waterline", "Waterline"),
-    QT_TRANSLATE_NOOP("CAM_Waterline", "Create a Waterline Operation from a model"),
+    QT_TRANSLATE_NOOP("CAM_Waterline", "Create a Waterline toolpath from a model"),
     PathWaterline.SetupProperties,
 )
 

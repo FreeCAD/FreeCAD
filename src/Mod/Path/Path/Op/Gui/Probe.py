@@ -31,7 +31,7 @@ import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
 
-__title__ = "Path Probing Operation UI"
+__title__ = "CAM Probing Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Probing operation page controller and command implementation."

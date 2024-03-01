@@ -38,7 +38,7 @@ Part = LazyLoader("Part", globals(), "Part")
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
-__doc__ = "Base class and properties implementation for all Path operations."
+__doc__ = "Base class and properties implementation for all CAM operations."
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -632,12 +632,12 @@ class ObjectOp(object):
 
         if not job:
             if not ignoreErrors:
-                Path.Log.error(translate("Path", "No parent job found for operation."))
+                Path.Log.error(translate("CAM", "No parent job found for operation."))
             return False
         if not job.Model.Group:
             if not ignoreErrors:
                 Path.Log.error(
-                    translate("Path", "Parent job %s doesn't have a base object")
+                    translate("CAM", "Parent job %s doesn't have a base object")
                     % job.Label
                 )
             return False
@@ -781,7 +781,7 @@ class ObjectOp(object):
             if tc is None or tc.ToolNumber == 0:
                 Path.Log.error(
                     translate(
-                        "Path",
+                        "CAM",
                         "No Tool Controller is selected. We need a tool to build a Path.",
                     )
                 )
@@ -795,7 +795,7 @@ class ObjectOp(object):
                 if not tool or float(tool.Diameter) == 0:
                     Path.Log.error(
                         translate(
-                            "Path",
+                            "CAM",
                             "No Tool found or diameter is zero. We need a tool to build a Path.",
                         )
                     )
@@ -833,8 +833,8 @@ class ObjectOp(object):
         tc = obj.ToolController
 
         if tc is None or tc.ToolNumber == 0:
-            Path.Log.error(translate("Path", "No Tool Controller selected."))
-            return translate("Path", "Tool Error")
+            Path.Log.error(translate("CAM", "No Tool Controller selected."))
+            return translate("CAM", "Tool Error")
 
         hFeedrate = tc.HorizFeed.Value
         vFeedrate = tc.VertFeed.Value
@@ -846,18 +846,18 @@ class ObjectOp(object):
         ) and not Path.Preferences.suppressAllSpeedsWarning():
             Path.Log.warning(
                 translate(
-                    "Path",
+                    "CAM",
                     "Tool Controller feedrates required to calculate the cycle time.",
                 )
             )
-            return translate("Path", "Feedrate Error")
+            return translate("CAM", "Feedrate Error")
 
         if (
             hRapidrate == 0 or vRapidrate == 0
         ) and not Path.Preferences.suppressRapidSpeedsWarning():
             Path.Log.warning(
                 translate(
-                    "Path",
+                    "CAM",
                     "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
                 )
             )
@@ -866,7 +866,7 @@ class ObjectOp(object):
         seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
 
         if not seconds or math.isnan(seconds):
-            return translate("Path", "Cycletime Error")
+            return translate("CAM", "Cycletime Error")
 
         # Convert the cycle time to a HH:MM:SS format
         cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
@@ -891,7 +891,7 @@ class ObjectOp(object):
                 if p == base and sub in el:
                     Path.Log.notice(
                         (
-                            translate("Path", "Base object %s.%s already in the list")
+                            translate("CAM", "Base object %s.%s already in the list")
                             + "\n"
                         )
                         % (base.Label, sub)
@@ -904,7 +904,7 @@ class ObjectOp(object):
             else:
                 Path.Log.notice(
                     (
-                        translate("Path", "Base object %s.%s rejected by operation")
+                        translate("CAM", "Base object %s.%s rejected by operation")
                         + "\n"
                     )
                     % (base.Label, sub)

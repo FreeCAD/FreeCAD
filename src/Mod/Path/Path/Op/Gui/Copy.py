@@ -26,7 +26,7 @@ from PySide import QtCore
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__doc__ = """Path Copy object and FreeCAD command"""
+__doc__ = """CAM Copy object and FreeCAD command"""
 
 
 translate = FreeCAD.Qt.translate
@@ -38,7 +38,7 @@ class ObjectPathCopy:
             "App::PropertyLink",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The path to be copied"),
+            QT_TRANSLATE_NOOP("App::Property", "The toolpath to be copied"),
         )
         obj.addProperty(
             "App::PropertyLink",
@@ -46,7 +46,7 @@ class ObjectPathCopy:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The tool controller that will be used to calculate the path",
+                "The tool controller that will be used to calculate the toolpath",
             ),
         )
         obj.Proxy = self
@@ -92,7 +92,7 @@ class CommandPathCopy:
             "Pixmap": "CAM_Copy",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Copy", "Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Copy", "Creates a linked copy of another path"
+                "CAM_Copy", "Creates a linked copy of another toolpath"
             ),
         }
 
@@ -117,11 +117,11 @@ selection = FreeCADGui.Selection.getSelection()
 proj = selection[0].InList[0] #get the group that the selectied object is inside
 
 if len(selection) != 1:
-    FreeCAD.Console.PrintError(translate("CAM_Copy", "Please select one path object")+"\n")
+    FreeCAD.Console.PrintError(translate("CAM_Copy", "Please select one toolpath object")+"\n")
     selGood = False
 
 if not selection[0].isDerivedFrom("Path::Feature"):
-    FreeCAD.Console.PrintError(translate("CAM_Copy", "The selected object is not a path")+"\n")
+    FreeCAD.Console.PrintError(translate("CAM_Copy", "The selected object is not a toolpath")+"\n")
     selGood = False
 
 if selGood:
