@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="32"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
       <source>Alt+A</source>
-      <translation>Alt+p</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+C</source>
-      <translation>Alt+F</translation>
+      <translation>Alt+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="169"/>
@@ -120,7 +120,7 @@ Double-cliquer sur une erreur dans la vue en arborescence pour voir plus d'infor
     <message>
       <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>À propos des tests unitaires FreeCAD</translation>
+      <translation>À propos de FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="180"/>

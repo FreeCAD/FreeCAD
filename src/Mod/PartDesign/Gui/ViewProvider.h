@@ -27,6 +27,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
 #include <Gui/ViewProviderPythonFeature.h>
+#include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
@@ -37,7 +38,9 @@ class TaskDlgFeatureParameters;
 /**
  * A common base class for all part design features view providers
  */
-class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
+class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart,
+                                         Gui::ViewProviderSuppressibleExtension,
+                                         PartGui::ViewProviderAttachExtension
 {
     using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);

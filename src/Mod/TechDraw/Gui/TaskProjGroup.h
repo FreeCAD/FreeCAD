@@ -104,7 +104,8 @@ private:
 
     bool blockUpdate;
     /// Translate a view checkbox index into represented view string, depending on projection type
-    const char * viewChkIndexToCStr(int index);
+    const char *  viewChkIndexToCStr(int index);
+    QString getToolTipForBox(int boxNumber);
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;

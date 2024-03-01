@@ -1277,7 +1277,6 @@ Base::Vector3d DrawViewPart::getXDirection() const
 Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                         const bool flip) const
 {
-    //    Base::Console().Message("DVP::getLegacyX() - %s\n", Label.getValue());
     gp_Ax2 viewAxis = ShapeUtils::legacyViewAxis1(pt, axis, flip);
     gp_Dir gXDir = viewAxis.XDirection();
     return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
@@ -1298,7 +1297,6 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 
 void DrawViewPart::addReferencesToGeom()
 {
-    //    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     gVerts.insert(gVerts.end(), m_referenceVerts.begin(), m_referenceVerts.end());
     getGeometryObject()->setVertexGeometry(gVerts);
@@ -1308,11 +1306,7 @@ void DrawViewPart::addReferencesToGeom()
 //ex. LandmarkDimension as a reference
 std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 {
-    //    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n",
-    //                            DrawUtil::formatVector(v).c_str(), getNameInDocument());
     std::string refTag;
-    //    Base::Vector3d scaledV = v * getScale();
-    //    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     Base::Vector3d scaledV = v;
     TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
     ref->isReference(true);

@@ -17,7 +17,7 @@
 
 
 ** Edge elements
-*Element, TYPE=B32, ELSET=Eedges
+*Element, TYPE=B32R, ELSET=Eedges
 1, 1, 7, 3
 2, 3, 8, 4
 3, 4, 9, 5
@@ -56,7 +56,7 @@ Eedges
 
 ***********************************************************
 ** Sections
-*BEAM GENERAL SECTION, ELSET=M0B0RstdD0, MATERIAL=MechanicalMaterial, SECTION=PIPE
+*BEAM SECTION, ELSET=M0B0RstdD0, MATERIAL=MechanicalMaterial, SECTION=PIPE
 500,100
 -0, 1, 0
 
@@ -89,7 +89,7 @@ ConstraintFixed,6
 
 ***********************************************************
 ** Outputs --> frd file
-*NODE FILE, OUTPUT=2d
+*NODE FILE, OUTPUT=3d
 U
 *EL FILE
 S, E

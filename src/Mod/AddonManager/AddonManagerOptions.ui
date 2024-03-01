@@ -112,7 +112,7 @@ installed addons will be checked for available updates
       <string>Hide Addons with non-FSF Free/Libre license</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="prefEntry" stdset="0">
       <cstring>HideNonFSFFreeLibre</cstring>
@@ -315,6 +315,36 @@ installed addons will be checked for available updates
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutScore">
+     <item>
+      <widget class="QLabel" name="label_score">
+       <property name="text">
+        <string>Score source URL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="guipreflineeditscoresourceurl">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>AddonScoreURL</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+       <property name="toolTip">
+        <string>The URL for the Addon Score data (see documentation for formatting and hosting details).</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">

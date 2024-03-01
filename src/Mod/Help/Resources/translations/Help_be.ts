@@ -14,17 +14,29 @@
       <translation>Крыніца</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="46"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="89"/>
+      <source>Set this to a custom URL or the folder where the help files are located.
+You can easily download the documentation for offline use by using the Addon
+Manager and installing the &quot;offline-documentation&quot; addon. If this
+field is left blank, FreeCAD will automatically search for the help files at
+the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
+      <translation>Задаць карыстальніцкі URL-адрас ці каталог, дзе знаходзяцца файлы даведкі.
+Вы можаце лёгка загрузіць дакументацыю для аўтаномнага выкарыстання, калі скарыстаецеся Кіраваннем дадаткамі і ўсталюеце дадатак &quot;аўтаномная дакументацыя&quot;.
+Калі гэтае поле пакінуць пустым, FreeCAD аўтаматычна выканае пошук файлаў даведкі па першапачатковым размяшчэнні ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
       <translation>Карыстальніцкае месцазнаходжанне</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="109"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>    Translation suffix:</source>
       <translation>    Суфікс перакладу:</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="120"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
       <translation>Вікі FreeCAD (анлайн)</translation>
     </message>
@@ -41,31 +53,19 @@ This is currently not available...</source>
       <translation>GitHub (анлайн)</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="46"/>
-      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
-      <source>Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/Documentation).</source>
-      <translation>Задаць карыстальніцкі URL-адрас ці каталог, дзе знаходзяцца файлы даведкі.
-Вы можаце лёгка загрузіць дакументацыю для аўтаномнага выкарыстання, калі скарыстаецеся Кіраваннем дадаткамі і ўсталюеце дадатак &quot;аўтаномная дакументацыя&quot;.
-Калі гэтае поле пакінуць пустым, FreeCAD аўтаматычна выканае пошук файлаў даведкі па першапачатковым размяшчэнні ($USERAPPDATADIR/Mod/Documentation).</translation>
-    </message>
-    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
       <translation>Суфікс перакладу, які варта ўжываць, напрыклад &quot;be&quot;, каб атрымаць пераклад дакументацыі на беларускую мову (якой, нажаль, не існуе).</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="116"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
       <translation>Старонкі дакументацыі будуць узятыя з афіцыйнай вікі FreeCAD па адрасе https://wiki.freecad.org/</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="136"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="139"/>
       <source>The documentation pages will be fetched from an automatic Markdown conversion
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
@@ -75,38 +75,38 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
 Для атрымання аптымальных вынікаў варта ўсталяваць модуль &apos;Markdown&apos; ці &apos;Pandoc&apos; на Python.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="142"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="145"/>
       <source>Markdown version (online)</source>
       <translation>Версія Markdown (анлайн)</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="161"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="164"/>
       <source>Display</source>
       <translation>Праецыраванне</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="167"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface.</source>
       <translation>Дакументацыя будзе адчыненая на новай укладцы ў інтэрфейсе FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="173"/>
       <source>In a FreeCAD tab</source>
       <translation>На ўкладцы FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="186"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in your default web browser.</source>
       <translation>Дакументацыя будзе адчыненая ў вашым першапачатковым інтэрнэт-аглядальніку.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="205"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="208"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open whlle working in the 3D view.</source>
       <translation>Дакументацыя будзе адчыненая ў дыялогавым акне, які замацаваны ўнутры акна FreeCAD, што дазваляе вам захоўваць яе адчыненай падчас працы ў трохмерным прадстаўленні.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="240"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="243"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
@@ -114,22 +114,22 @@ Markdown version above.</source>
 Будзе працаваць толькі ў тым выпадку, калі вы абралі версію Markdown вышэй.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="192"/>
       <source>In your default web browser</source>
       <translation>У вашым першапачатковым інтэрнэт-аглядальніку</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="209"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="212"/>
       <source>In a separate, embeddable dialog</source>
       <translation>У асобным дыялогавым акне, які ўбудаваны</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="225"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="228"/>
       <source>Options</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="233"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="236"/>
       <source>      Custom stylesheet:</source>
       <translation>      Карыстальніцкая табліца стыляў:</translation>
     </message>
@@ -169,7 +169,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="388"/>
+      <location filename="../../Help.py" line="394"/>
       <source>General</source>
       <translation>Асноўныя</translation>
     </message>

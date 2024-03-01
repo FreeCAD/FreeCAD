@@ -106,6 +106,8 @@
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
+#include "SuppressibleExtension.h"
+#include "SuppressibleExtensionPy.h"
 #include "Part.h"
 #include "PartPy.h"
 #include "Placement.h"
@@ -2059,6 +2061,8 @@ void Application::initTypes()
     App::LinkBaseExtensionPython       ::init();
     App::LinkExtension                 ::init();
     App::LinkExtensionPython           ::init();
+    App::SuppressibleExtension         ::init();
+    App::SuppressibleExtensionPython   ::init();
 
     // Document classes
     App::TransactionalObject       ::init();

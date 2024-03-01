@@ -22,31 +22,31 @@
   <context>
     <name>CompactView</name>
     <message>
-      <location filename="../../compact_view.py" line="78"/>
+      <location filename="../../compact_view.py" line="83"/>
       <location filename="../../compact_view.ui" line="59"/>
       <source>Icon</source>
       <translation>Icône</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="81"/>
+      <location filename="../../compact_view.py" line="86"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
       <translation>&lt;b&gt;Nom du paquet&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="82"/>
+      <location filename="../../compact_view.py" line="87"/>
       <location filename="../../compact_view.ui" line="73"/>
       <source>Version</source>
       <translation>Version</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="85"/>
+      <location filename="../../compact_view.py" line="90"/>
       <location filename="../../compact_view.ui" line="86"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../compact_view.py" line="88"/>
+      <location filename="../../compact_view.py" line="93"/>
       <source>Update Available</source>
       <translation>Mise à jour disponible</translation>
     </message>
@@ -259,61 +259,6 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
       <translation>Gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="64"/>
-      <source>Downloading info...</source>
-      <translation>Téléchargement des informations...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="71"/>
-      <source>Stop the cache update</source>
-      <translation>Arrêter la mise à jour du cache</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="103"/>
-      <source>Refresh local cache</source>
-      <translation>Rafraîchir le cache local</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="110"/>
-      <source>Download and apply all available updates</source>
-      <translation>Télécharger et installer toutes les mises à jour disponibles</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="113"/>
-      <source>Update all Addons</source>
-      <translation>Mettre à jour tous les extensions</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="120"/>
-      <source>Check for updates</source>
-      <translation>Vérifier les mises à jour</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="130"/>
-      <source>View and update Python package dependencies</source>
-      <translation>Afficher et mettre à jour les dépendances du paquet Python</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="133"/>
-      <source>Python dependencies...</source>
-      <translation>Dépendances de Python...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="140"/>
-      <source>Developer tools...</source>
-      <translation>Outils du développeur…</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="160"/>
-      <source>Close the Addon Manager</source>
-      <translation>Fermer le gestionnaire des extensions</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="163"/>
-      <source>Close</source>
-      <translation>Fermer</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
       <translation>Modifier les mots-clés</translation>
@@ -415,48 +360,53 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
   <context>
     <name>ExpandedView</name>
     <message>
-      <location filename="../../expanded_view.py" line="117"/>
+      <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="68"/>
       <source>Icon</source>
       <translation>Icône</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="120"/>
+      <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
       <translation>&lt;h1&gt;Nom du paquet&lt;/h1&gt;</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="121"/>
+      <location filename="../../expanded_view.py" line="126"/>
       <location filename="../../expanded_view.ui" line="114"/>
       <source>Version</source>
       <translation>Version</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="122"/>
+      <location filename="../../expanded_view.py" line="127"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
       <translation>(mots-clés)</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="125"/>
-      <location filename="../../expanded_view.ui" line="149"/>
+      <location filename="../../expanded_view.py" line="130"/>
+      <location filename="../../expanded_view.ui" line="156"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="126"/>
-      <location filename="../../expanded_view.ui" line="171"/>
+      <location filename="../../expanded_view.py" line="131"/>
+      <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.py" line="129"/>
+      <location filename="../../expanded_view.py" line="134"/>
       <source>Update Available</source>
       <translation>Mise à jour disponible</translation>
     </message>
     <message>
-      <location filename="../../expanded_view.ui" line="186"/>
+      <location filename="../../expanded_view.ui" line="128"/>
+      <source>labelSort</source>
+      <translation type="unfinished">labelSort</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="193"/>
       <source>UpdateAvailable</source>
       <translation>Mise à jour disponible</translation>
     </message>
@@ -563,9 +513,9 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Si cette option est sélectionnée, lors du lancement du gestionnaire des extensions,
-les mises à jour disponibles seront vérifiées pour les extensions installées
-(cela nécessite l'installation du paquet GitPython sur votre système)</translation>
+      <translation>Si cette option est cochée, lors du lancement du gestionnaire des extensions,
+les mises à jour disponibles seront vérifiées pour les extensions installées.
+Cela nécessite l'installation du paquet GitPython sur votre système.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
@@ -599,76 +549,101 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
+      <source>Hide Addons without a license</source>
+      <translation>Masquer les extensions sans licence</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <source>Hide Addons with non-FSF Free/Libre license</source>
+      <translation>Masquer les extensions avec une licence non-FSF Free/Libre</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <source>Hide Addons with non-OSI-approved license</source>
+      <translation>Masquer les extensions avec une licence non approuvée par l'OSI</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="144"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Masquer les extensions marquées d'une version Python 2 uniquement</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <location filename="../../AddonManagerOptions.ui" line="160"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Masquer les extensions marquées comme obsolètes</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <location filename="../../AddonManagerOptions.ui" line="176"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Masquer les extensions qui nécessitent une version plus récente de FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="150"/>
+      <location filename="../../AddonManagerOptions.ui" line="198"/>
       <source>Custom repositories</source>
       <translation>Dépôts personnalisés</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="204"/>
+      <location filename="../../AddonManagerOptions.ui" line="252"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="210"/>
+      <location filename="../../AddonManagerOptions.ui" line="258"/>
       <source>No proxy</source>
       <translation>Pas de proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="226"/>
+      <location filename="../../AddonManagerOptions.ui" line="274"/>
       <source>User system proxy</source>
       <translation>Proxy du système de l'utilisateur</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="239"/>
+      <location filename="../../AddonManagerOptions.ui" line="287"/>
       <source>User-defined proxy:</source>
       <translation>Proxy défini par l'utilisateur :</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="276"/>
+      <location filename="../../AddonManagerOptions.ui" line="324"/>
+      <source>Score source URL</source>
+      <translation type="unfinished">Score source URL</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="343"/>
+      <source>The URL for the Addon Score data (see documentation for formatting and hosting details).</source>
+      <translation type="unfinished">The URL for the Addon Score data (see documentation for formatting and hosting details).</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Path to git executable (optional):</source>
       <translation>Chemin vers l'exécutable git (facultatif) :</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="295"/>
+      <location filename="../../AddonManagerOptions.ui" line="373"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Le chemin vers l'exécutable git. Détecté automatiquement si nécessaire et non spécifié.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="316"/>
+      <location filename="../../AddonManagerOptions.ui" line="394"/>
       <source>Advanced Options</source>
       <translation>Options avancées</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="322"/>
+      <location filename="../../AddonManagerOptions.ui" line="400"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Afficher l'option pour changer de branche (nécessite git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="335"/>
+      <location filename="../../AddonManagerOptions.ui" line="413"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Désactiver git (revenir aux téléchargements ZIP uniquement)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="348"/>
+      <location filename="../../AddonManagerOptions.ui" line="426"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Activer les options du gestionnaire des extensions destinées aux développeurs des nouvelles extensions.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="351"/>
+      <location filename="../../AddonManagerOptions.ui" line="429"/>
       <source>Addon developer mode</source>
       <translation>Activer le mode développeur des extensions</translation>
     </message>
@@ -960,7 +935,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../change_branch.ui" line="23"/>
       <source>Change to branch:</source>
-      <translation type="unfinished">Change to branch:</translation>
+      <translation>Passer à la branche :</translation>
     </message>
   </context>
   <context>
@@ -1143,17 +1118,17 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="228"/>
+      <location filename="../../AddonManager.py" line="230"/>
       <source>Starting up...</source>
       <translation>Démarrage en cours...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="267"/>
+      <location filename="../../AddonManager.py" line="266"/>
       <source>Loading addon information</source>
       <translation>Chargement des informations de l'extension</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="293"/>
+      <location filename="../../AddonManager.py" line="292"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Le processus de traitement {} prend beaucoup de temps pour s’arrêter...</translation>
     </message>
@@ -1172,84 +1147,115 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="348"/>
+      <location filename="../../AddonManager.py" line="347"/>
       <source>Addon manager</source>
       <translation>Gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="355"/>
+      <location filename="../../AddonManager.py" line="354"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Vous devez redémarrer FreeCAD pour que les modifications soient prises en compte.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="361"/>
+      <location filename="../../AddonManager.py" line="360"/>
       <source>Restart now</source>
       <translation>Redémarrer maintenant</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="362"/>
+      <location filename="../../AddonManager.py" line="361"/>
       <source>Restart later</source>
       <translation>Redémarrer plus tard</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="427"/>
-      <location filename="../../AddonManager.py" line="860"/>
+      <location filename="../../AddonManager.py" line="428"/>
+      <location filename="../../AddonManager.py" line="898"/>
       <source>Refresh local cache</source>
       <translation>Rafraîchir le cache local</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="555"/>
+      <location filename="../../AddonManager.py" line="558"/>
       <source>Updating cache...</source>
       <translation>Mise à jour du cache...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="589"/>
+      <location filename="../../AddonManager.py" line="593"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
       <translation>Impossible de trouver l'extension &apos;{}&apos; à sélectionner
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="617"/>
-      <location filename="../../AddonManager.py" line="650"/>
+      <location filename="../../AddonManager.py" line="623"/>
+      <location filename="../../AddonManager.py" line="654"/>
       <source>Checking for updates...</source>
       <translation>Recherche de mises à jour...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="645"/>
-      <source>Apply {} update(s)</source>
-      <translation>Appliquer {} mise(s) à jour</translation>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="100"/>
+      <source>Close</source>
+      <translation>Fermer</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="654"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="96"/>
+      <source>Update all addons</source>
+      <translation>Mettre à jour toutes les extensions</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
+      <source>Check for updates</source>
+      <translation>Vérifier les mises à jour</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
+      <source>Python dependencies...</source>
+      <translation>Dépendances de Python...</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
+      <source>Developer tools...</source>
+      <translation>Outils pour les développeurs…</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="105"/>
       <source>No updates available</source>
       <translation>Aucune mise à jour disponible</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="787"/>
-      <location filename="../../AddonManager.py" line="813"/>
-      <location filename="../../AddonManager.py" line="914"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="108"/>
+      <source>Apply 1 available update</source>
+      <translation>Appliquer la mise à jour disponible</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="112"/>
+      <source>Apply {} available updates</source>
+      <translation>Appliquer {} mises à jour disponibles</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="827"/>
+      <location filename="../../AddonManager.py" line="853"/>
+      <location filename="../../AddonManager.py" line="952"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Impossible de lancer un nouveau programme d'installation tant que le précédent n'est pas terminé.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="900"/>
+      <location filename="../../AddonManager.py" line="938"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="343"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="355"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1270,7 +1276,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="245"/>
-      <location filename="../../package_details.py" line="613"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Update</source>
       <translation>Mettre à jour</translation>
     </message>
@@ -1285,27 +1291,27 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Impossible d'importer QtNetwork : il ne semble pas être installé sur votre système. Votre fournisseur peut avoir un paquet pour cette dépendance (souvent appelé par exemple "python3-pyside2.qtnetwork")</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="211"/>
+      <location filename="../../NetworkManager.py" line="217"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation>Échec de la conversion du port du proxy spécifié &apos;{}&apos; en un numéro de port</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="240"/>
+      <location filename="../../NetworkManager.py" line="246"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation>Erreur de paramètre : des options de proxy mutuellement exclusives ont été définies. Réinitialisation à la valeur par défaut.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="255"/>
+      <location filename="../../NetworkManager.py" line="261"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation>Erreur de paramètre : le proxy de l'utilisateur est indiqué, mais aucun proxy n'est fourni. Réinitialisation à la valeur par défaut.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="386"/>
+      <location filename="../../NetworkManager.py" line="411"/>
       <source>Addon Manager: Unexpected {} response from server</source>
       <translation>Gestionnaire des extensions : réponse inattendue {} du serveur</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="479"/>
+      <location filename="../../NetworkManager.py" line="512"/>
       <source>Error with encrypted connection</source>
       <translation>Erreur avec la connexion chiffrée</translation>
     </message>
@@ -1346,162 +1352,157 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Échec de la désinstallation</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="139"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="257"/>
       <source>Version {version} installed on {date}</source>
       <translation>Version {version} installée le {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="146"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="264"/>
       <source>Version {version} installed</source>
       <translation>Version installée {version}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="150"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="268"/>
       <source>Installed on {date}</source>
       <translation>Installé le {date}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="153"/>
-      <location filename="../../package_list.py" line="435"/>
-      <location filename="../../package_list.py" line="485"/>
-      <location filename="../../package_list.py" line="772"/>
+      <location filename="../../package_list.py" line="415"/>
+      <location filename="../../package_list.py" line="465"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
       <source>Installed</source>
       <translation>Installé</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="167"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="290"/>
       <source>Currently on branch {}, name changed to {}</source>
-      <translation type="unfinished">Currently on branch {}, name changed to {}</translation>
+      <translation>Pour le moment sur la branche {}, le nom a été changé à {}</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="176"/>
-      <source>On branch {}, update available to version</source>
-      <translation>Sur la branche {}, mise à jour disponible vers la version</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="183"/>
-      <source>Update available to version</source>
-      <translation>Mise à jour disponible vers la version</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="194"/>
-      <source>An update is available</source>
-      <translation>Une mise à jour est disponible</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="214"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="281"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
       <translation>La balise Git &apos;{}&apos; a été retirée, aucune mise à jour possible</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="222"/>
-      <source>This is the latest version available for branch {}</source>
-      <translation>Ceci est la dernière version disponible pour la branche {}</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="227"/>
-      <source>Updated, please restart FreeCAD to use</source>
-      <translation>Mis à jour, veuillez redémarrer FreeCAD pour l’utiliser</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="234"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="276"/>
       <source>Update check in progress</source>
       <translation>Recherche de mise à jour en cours</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="238"/>
-      <source>Automatic update checks disabled</source>
-      <translation>Vérification automatique des mises à jour désactivée</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="256"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="120"/>
       <source>Installation location</source>
       <translation>Emplacement de l’installation</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="301"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="184"/>
+      <source>Changed to branch &apos;{}&apos; -- please restart to use Addon.</source>
+      <translation>A changé pour la branche "{}". Redémarrer pour utiliser l'extension.</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="195"/>
+      <source>This Addon has been updated. Restart FreeCAD to see changes.</source>
+      <translation>Cette extension a été mise à jour. Redémarrer FreeCAD pour voir les changements.</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="229"/>
+      <source>Disabled</source>
+      <translation>Désactivé</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="298"/>
+      <source>Currently on branch {}, update available to version {}</source>
+      <translation>Actuellement sur la branche {}, une mise à jour est disponible vers la version {}.</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="304"/>
+      <source>Update available to version {}</source>
+      <translation>Mise à jour disponible vers la version {}</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="310"/>
+      <source>This is the latest version available</source>
+      <translation>Ceci est la dernière version disponible.</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="332"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation>AVERTISSEMENT : cette extension est obsolète</translation>
+      <translation>ATTENTION : cette extension est obsolète.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="309"/>
-      <source>WARNING: This addon is Python 2 Only</source>
-      <translation>AVERTISSEMENT : cette extension ne fonctionne qu'avec Python 2</translation>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
+      <source>WARNING: This addon is Python 2 only</source>
+      <translation>ATTENTION : cette extension est seulement en Python 2.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="317"/>
-      <source>WARNING: This addon requires FreeCAD </source>
-      <translation>AVERTISSEMENT : cette extension nécessite FreeCAD </translation>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="335"/>
+      <source>WARNING: This addon requires FreeCAD {}</source>
+      <translation>ATTENTION : cette extension nécessite FreeCAD {}.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="329"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="330"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation>AVERTISSEMENT : cette extension est actuellement installée, mais désactivée. Utilisez le bouton &apos;activer&apos; pour la réactiver.</translation>
+      <translation>ATTENTION : cette extension est actuellement installée mais désactivée. Utilisez le bouton "Activer" pour la réactiver.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="447"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="175"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
       <translation>Cette extension sera activée la prochaine fois que vous redémarrerez FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="465"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="171"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
       <translation>Cette extension sera désactivée la prochaine fois que vous redémarrerez FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="474"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../addonmanager_package_details_controller.py" line="238"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Opération réussie</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="478"/>
+      <location filename="../../addonmanager_package_details_controller.py" line="242"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
       <translation>Le changement de branche a réussi, veuillez redémarrer pour utiliser la nouvelle version.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="497"/>
-      <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation>Changé pour la référence git &apos;{}&apos; -- veuillez redémarrer pour utiliser l'extension.</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="607"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="106"/>
       <source>Install</source>
       <translation>Installer</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="610"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="107"/>
       <source>Uninstall</source>
       <translation>Désinstaller</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="616"/>
-      <source>Check for Update</source>
-      <translation>Vérifier les mises à jour</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="619"/>
-      <source>Run Macro</source>
-      <translation>Lancer la macro</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="622"/>
-      <source>Change Branch</source>
-      <translation>Changer de branche</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.py" line="625"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="109"/>
       <source>Enable</source>
       <translation>Activer</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="628"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="108"/>
       <source>Disable</source>
       <translation>Désactiver</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="631"/>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="105"/>
+      <source>Check for update</source>
+      <translation>Vérifier les mises à jour</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
+      <source>Run</source>
+      <translation>Lancer</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="112"/>
+      <source>Change branch...</source>
+      <translation>Changer de branche...</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="113"/>
       <source>Return to package list</source>
       <translation>Retourner à la liste des paquets</translation>
     </message>
@@ -1547,21 +1548,20 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Emplacement du nouveau fichier de licence</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="354"/>
+      <location filename="../../addonmanager_installer.py" line="355"/>
       <source>Received {} response code from server</source>
       <translation>Réception de {} code de réponse du serveur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="503"/>
+      <location filename="../../addonmanager_installer.py" line="517"/>
       <source>Failed to install macro {}</source>
       <translation>Impossible d'installer la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="537"/>
+      <location filename="../../addonmanager_installer.py" line="551"/>
       <source>Failed to create installation manifest file:
 </source>
-      <translation type="unfinished">Failed to create installation manifest file:
-</translation>
+      <translation>Le fichier d'information sur l'installation n'a pas pu être créé :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
@@ -1579,9 +1579,9 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Sélectionner un fichier d'icône pour cet élément de contenu.</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} n'est pas un sous-répertoire de {}</translation>
     </message>
@@ -1597,6 +1597,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="114"/>
       <source>Workbench</source>
       <translation>Atelier</translation>
     </message>
@@ -1781,19 +1782,19 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
-      <location filename="../../install_to_toolbar.py" line="231"/>
+      <location filename="../../install_to_toolbar.py" line="253"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>Une macro installée avec le gestionnaire des extensions de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="735"/>
-      <location filename="../../install_to_toolbar.py" line="233"/>
+      <location filename="../../install_to_toolbar.py" line="255"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>Exécuter</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_utility.py" line="74"/>
+      <location filename="../../addonmanager_workers_utility.py" line="76"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>Impossible de lire les données depuis GitHub : vérifiez votre connexion internet et vos paramètres de proxy et réessayez.</translation>
     </message>
@@ -1810,7 +1811,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation>AVERTISSEMENT : le chemin spécifié dans les métadonnées du package.xml ne correspond pas à la branche actuellement extraite.</translation>
+      <translation>ATTENTION : le chemin spécifié dans les métadonnées du package.xml ne correspond pas à la branche actuellement extraite.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="263"/>
@@ -1902,139 +1903,157 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Sélectionner un fichier d'icône pour ce paquet</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="163"/>
+      <location filename="../../Widgets/addonmanager_widget_search.py" line="87"/>
       <source>Filter is valid</source>
       <translation>Le filtre est valide</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="169"/>
+      <location filename="../../Widgets/addonmanager_widget_search.py" line="93"/>
       <source>Filter regular expression is invalid</source>
       <translation>L'expression régulière du filtre n'est pas valide</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="224"/>
+      <location filename="../../Widgets/addonmanager_widget_search.py" line="104"/>
+      <source>Search...</source>
+      <translation>Rechercher...</translation>
+    </message>
+    <message>
+      <location filename="../../package_list.py" line="172"/>
       <source>Click for details about package {}</source>
       <translation>Cliquer pour plus de détails sur le paquet {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="230"/>
+      <location filename="../../package_list.py" line="178"/>
       <source>Click for details about workbench {}</source>
       <translation>Cliquer pour plus de détails sur l'atelier {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="232"/>
+      <location filename="../../package_list.py" line="180"/>
       <source>Click for details about macro {}</source>
       <translation>Cliquer pour plus de détails sur la macro {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="391"/>
+      <location filename="../../package_list.py" line="348"/>
       <source>Maintainers:</source>
       <translation>Mainteneurs :</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="396"/>
+      <location filename="../../package_list.py" line="313"/>
       <source>Tags</source>
       <translation>Mots-clés</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="416"/>
-      <source>updated</source>
-      <translation>mis à jour</translation>
+      <location filename="../../package_list.py" line="376"/>
+      <source>{} ★ on GitHub</source>
+      <translation type="unfinished">{} ★ on GitHub</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="437"/>
-      <location filename="../../package_list.py" line="489"/>
+      <location filename="../../package_list.py" line="378"/>
+      <source>No ★, or not on GitHub</source>
+      <translation type="unfinished">No ★, or not on GitHub</translation>
+    </message>
+    <message>
+      <location filename="../../package_list.py" line="383"/>
+      <source>Created </source>
+      <translation type="unfinished">Created </translation>
+    </message>
+    <message>
+      <location filename="../../package_list.py" line="391"/>
+      <source>Updated </source>
+      <translation type="unfinished">Updated </translation>
+    </message>
+    <message>
+      <location filename="../../package_list.py" line="394"/>
+      <source>Score: </source>
+      <translation type="unfinished">Score: </translation>
+    </message>
+    <message>
+      <location filename="../../package_list.py" line="417"/>
+      <location filename="../../package_list.py" line="469"/>
       <source>Up-to-date</source>
       <translation>À jour</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="439"/>
-      <location filename="../../package_list.py" line="493"/>
-      <location filename="../../package_list.py" line="780"/>
+      <location filename="../../package_list.py" line="419"/>
+      <location filename="../../package_list.py" line="473"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
+      <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
       <source>Update available</source>
       <translation>Mise à jour disponible</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="442"/>
-      <location filename="../../package_list.py" line="499"/>
+      <location filename="../../package_list.py" line="422"/>
+      <location filename="../../package_list.py" line="479"/>
       <source>Pending restart</source>
       <translation>En attente de redémarrage</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="444"/>
-      <location filename="../../package_list.py" line="502"/>
+      <location filename="../../package_list.py" line="424"/>
+      <location filename="../../package_list.py" line="482"/>
       <source>DISABLED</source>
       <translation>DÉSACTIVÉ</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="459"/>
+      <location filename="../../package_list.py" line="439"/>
       <source>Installed version</source>
       <translation>Version installée</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="468"/>
+      <location filename="../../package_list.py" line="448"/>
       <source>Unknown version</source>
       <translation>Version inconnue</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="470"/>
+      <location filename="../../package_list.py" line="450"/>
       <source>Installed on</source>
       <translation>Installé le</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="479"/>
+      <location filename="../../package_list.py" line="459"/>
       <source>Available version</source>
       <translation>Version disponible</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="749"/>
-      <source>Show Addons containing:</source>
-      <translation>Afficher les extensions contenant :</translation>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>
+      <source>Filter by...</source>
+      <translation>Filtrer par...</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="752"/>
-      <source>All</source>
-      <translation>Tout</translation>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
+      <source>Addon Type</source>
+      <translation>Type d'extension</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="755"/>
-      <source>Workbenches</source>
-      <translation>Ateliers</translation>
-    </message>
-    <message>
-      <location filename="../../package_list.py" line="758"/>
-      <source>Macros</source>
-      <translation>Macros</translation>
-    </message>
-    <message>
-      <location filename="../../package_list.py" line="761"/>
-      <source>Preference Packs</source>
-      <translation>Kits de préférences</translation>
-    </message>
-    <message>
-      <location filename="../../package_list.py" line="765"/>
-      <source>Status:</source>
-      <translation>État :</translation>
-    </message>
-    <message>
-      <location filename="../../package_list.py" line="768"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="111"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="129"/>
       <source>Any</source>
       <translation>Tous</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="776"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="118"/>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="122"/>
+      <source>Preference Pack</source>
+      <translation>Kit de préférences</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
+      <source>Installation Status</source>
+      <translation>Statut des installations</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
       <source>Not installed</source>
       <translation>Non installé</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="784"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="255"/>
       <source>Filter</source>
       <translation>Filtre</translation>
-    </message>
-    <message>
-      <location filename="../../package_list.py" line="787"/>
-      <source>OK</source>
-      <translation>OK</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="87"/>
@@ -2054,25 +2073,25 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../change_branch.py" line="108"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation>AVERTISSEMENT : ce dépôt contient des modifications locales non validées. Êtes-vous sûr de vouloir changer de branche (en apportant les modifications avec vous) ?</translation>
+      <translation>ATTENTION : ce répertoire contient des modifications locales non validées. Êtes-vous sûr de vouloir changer de branche (en apportant les modifications avec vous) ?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="207"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
-      <translation type="unfinished">Local</translation>
+      <translation>Locale</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="213"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
-      <translation type="unfinished">Remote tracking</translation>
+      <translation>Suivi à distance</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="219"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>Dernière mise à jour</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
@@ -2095,83 +2114,83 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>L'installation de l'extension {} a échoué</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="166"/>
+      <location filename="../../addonmanager_workers_installation.py" line="165"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Fichier package.xml téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="197"/>
+      <location filename="../../addonmanager_workers_installation.py" line="196"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Échec du décodage du fichier {} pour l'extension &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="206"/>
+      <location filename="../../addonmanager_workers_installation.py" line="205"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Toutes les informations de dépendance dans ce fichier seront ignorées</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="213"/>
+      <location filename="../../addonmanager_workers_installation.py" line="212"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Fichier metadata.txt téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="256"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Fichier requirements.txt téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="274"/>
+      <location filename="../../addonmanager_workers_installation.py" line="273"/>
       <source>Downloaded icon for {}</source>
       <translation>Icône téléchargée pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="151"/>
+      <location filename="../../addonmanager_macro.py" line="152"/>
       <source>Unable to open macro wiki page at {}</source>
       <translation>Impossible d'ouvrir la page wiki de la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="164"/>
+      <location filename="../../addonmanager_macro.py" line="165"/>
       <source>Unable to fetch the code of this macro.</source>
       <translation>Impossible de récupérer le code de cette macro.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="179"/>
+      <location filename="../../addonmanager_macro.py" line="180"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
       <translation>Impossible de récupérer une description du wiki pour la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="212"/>
+      <location filename="../../addonmanager_macro.py" line="213"/>
       <source>Unable to open macro code URL {}</source>
       <translation>Impossible d'ouvrir l'URL du code de la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="373"/>
+      <location filename="../../addonmanager_macro.py" line="374"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
       <translation>Impossible de récupérer le fichier {} spécifié par la macro à partir de {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="381"/>
+      <location filename="../../addonmanager_macro.py" line="382"/>
       <source>Could not locate macro-specified file {} (expected at {})</source>
       <translation>Impossible de localiser le fichier {} spécifié par la macro (attendu à {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="359"/>
+      <location filename="../../Addon.py" line="442"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{} : atelier interne non reconnu &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="392"/>
+      <location filename="../../Addon.py" line="475"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation>Avertissement du développeur de l'extension : l'URL du répertoire défini dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à l'URL depuis laquelle il a été récupéré ({})</translation>
+      <translation>Avertissement du développeur de l'extension : l'URL du répertoire défini dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à l'URL depuis laquelle il a été récupéré ({}).</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="400"/>
+      <location filename="../../Addon.py" line="483"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
-      <translation>Avertissement du développeur de l'extension : la branche du répertoire définie dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à la branche depuis laquelle il a été récupéré ({})</translation>
+      <translation>Avertissement du développeur de l'extension : la branche du répertoire définie dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à la branche depuis laquelle il a été récupéré ({}).</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="776"/>
-      <location filename="../../Addon.py" line="792"/>
+      <location filename="../../Addon.py" line="859"/>
+      <location filename="../../Addon.py" line="875"/>
       <source>Got an error when trying to import {}</source>
       <translation>Une erreur s'est produite lors de l'importation de {}</translation>
     </message>
@@ -2206,128 +2225,142 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Erreur lors de la suppression du fichier macro {} : </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="122"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>La connexion à GitHub a échoué. Vérifiez vos paramètres de connexion et de proxy.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="180"/>
       <source>WARNING: Duplicate addon {} ignored</source>
-      <translation>ATTENTION : l'extension dupliquée {} est ignorée</translation>
+      <translation>ATTENTION : l'extension dupliquée {} est ignorée.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="253"/>
       <source>Workbenches list was updated.</source>
       <translation>La liste des ateliers a été mise à jour.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="269"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git est désactivé, les macros Git sont ignorées</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="317"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Tentative de changement de la configuration des macro non-Git pour utiliser Git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="334"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Une erreur est survenue lors de la mise à jour des macros depuis GitHub, en tentant un checkout propre...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="338"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Tentative de faire un checkout propre...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="350"/>
       <source>Clean checkout succeeded</source>
       <translation>Checkout propre réussi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="360"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Échec de la mise à jour des macros depuis GitHub -- essayez de vider le cache du gestionnaire des extensions.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="383"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Erreur de connexion au Wiki, FreeCAD ne peut pas récupérer la liste des macros du Wiki pour le moment</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="592"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Ne parvient pas à récupérer les mises à jour git pour l'atelier {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="605"/>
       <source>git status failed for {}</source>
       <translation>le statut de git a échoué pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="670"/>
+      <location filename="../../addonmanager_workers_startup.py" line="671"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Échec de la lecture des métadonnées de {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="693"/>
+      <location filename="../../addonmanager_workers_startup.py" line="694"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Échec de la récupération du code de la macro &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="746"/>
+      <location filename="../../addonmanager_workers_startup.py" line="747"/>
       <source>Caching macro code...</source>
       <translation>Mise en cache du code de la macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="769"/>
+      <location filename="../../addonmanager_workers_startup.py" line="770"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Gestionnaire des extensions : un processus n'a pas abouti lors de la récupération de {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="784"/>
+      <location filename="../../addonmanager_workers_startup.py" line="785"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Sur {num_macros} macros, {num_failed} sont tombées en panne pendant le traitement</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="806"/>
+      <location filename="../../addonmanager_workers_startup.py" line="807"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Gestionnaire des extensions : un processus n'a pas pu être arrêté ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="845"/>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Getting metadata from macro {}</source>
       <translation>Récupération des métadonnées de la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="859"/>
+      <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Dépassement du délai lors de la récupération des métadonnées pour la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="870"/>
+      <location filename="../../addonmanager_workers_startup.py" line="871"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Échec de l'arrêt de la macro {} !
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving macro description...</source>
       <translation>Récupération de la description de la macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving info from git</source>
       <translation>Récupération des informations depuis git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
       <translation>Récupération des informations depuis le wiki</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers_startup.py" line="938"/>
+      <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
+</source>
+      <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
+</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers_startup.py" line="970"/>
+      <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
+</source>
+      <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
+</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="262"/>
@@ -2359,7 +2392,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>
       <source>Git branch rename failed with the following message:</source>
-      <translation type="unfinished">Git branch rename failed with the following message:</translation>
+      <translation>Le renommage de la branche Git a échoué avec le message suivant :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
@@ -2387,25 +2420,70 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>certaines extensions ont peut-être été mises à jour</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_viewer.py" line="60"/>
-      <source>Loading README data...</source>
-      <translation type="unfinished">Loading README data...</translation>
+      <location filename="../../addonmanager_readme_controller.py" line="82"/>
+      <source>Loading page for {} from {}...</source>
+      <translation>Chargement de la page pour {} depuis {}...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_viewer.py" line="84"/>
+      <location filename="../../addonmanager_readme_controller.py" line="100"/>
       <source>Failed to download data from {} -- received response code {}.</source>
-      <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
+      <translation>Échec du téléchargement des données de {}. Le code de réponse reçu est {}.</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <source>Composite view</source>
+      <translation>Vue composite</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <source>Expanded view</source>
+      <translation>Vue étendue</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="155"/>
+      <source>Compact view</source>
+      <translation>Vue compacte</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
+      <source>Alphabetical</source>
+      <comment>Sort order</comment>
+      <translation type="unfinished">Alphabetical</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
+      <source>Last Updated</source>
+      <comment>Sort order</comment>
+      <translation>Dernière mise à jour</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
+      <source>Date Created</source>
+      <comment>Sort order</comment>
+      <translation type="unfinished">Date Created</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
+      <source>GitHub Stars</source>
+      <comment>Sort order</comment>
+      <translation type="unfinished">GitHub Stars</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
+      <source>Score</source>
+      <comment>Sort order</comment>
+      <translation type="unfinished">Score</translation>
     </message>
   </context>
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="150"/>
+      <location filename="../../AddonManager.py" line="159"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="154"/>
+      <location filename="../../AddonManager.py" line="163"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Gérer les ateliers externes, les macros et les kits de préférences</translation>
     </message>
@@ -2442,7 +2520,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="123"/>
+      <location filename="../../AddonManager.py" line="131"/>
       <source>Addon Manager</source>
       <translation>Gestionnaire des extensions</translation>
     </message>

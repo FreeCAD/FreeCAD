@@ -48,6 +48,9 @@ public:
     /// deliver the icon shown in the tree view
     QIcon getIcon() const override;
 
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
+
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
 

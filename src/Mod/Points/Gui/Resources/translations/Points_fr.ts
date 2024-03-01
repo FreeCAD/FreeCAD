@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="485"/>
       <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
-      <translation>Couper des points</translation>
+      <translation>Enlever des points</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special lines</source>
-      <translation>Ligne spéciales</translation>
+      <translation>Lignes spéciales</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
@@ -193,7 +193,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Ensemble de lignes commençant par :</translation>
+      <translation>Regrouper des lignes commençant par :</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format:</source>
-      <translation>Format de points :</translation>
+      <translation>Format des points :</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="188"/>
@@ -254,21 +254,21 @@
       <location filename="../../DlgPointsRead.ui" line="250"/>
       <location filename="../../DlgPointsRead.ui" line="286"/>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (vecteur normal)</translation>
+      <translation>I, J, K (vecteur normal)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="219"/>
       <location filename="../../DlgPointsRead.ui" line="255"/>
       <location filename="../../DlgPointsRead.ui" line="291"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (vecteur normal 2D)</translation>
+      <translation>I, K (vecteur normal 2D)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="224"/>
       <location filename="../../DlgPointsRead.ui" line="260"/>
       <location filename="../../DlgPointsRead.ui" line="296"/>
       <source>R,G,B (color)</source>
-      <translation>R,V,B (couleur)</translation>
+      <translation>R, V, B (couleur)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="229"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines:</source>
-      <translation>Nombre de lignes prévisualisés :</translation>
+      <translation>Nombre de lignes prévisualisées :</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
       <location filename="../../Command.cpp" line="84"/>
       <location filename="../../Command.cpp" line="141"/>
       <source>Point formats</source>
-      <translation>Formats de points</translation>
+      <translation>Formats des points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Enter maximum distance:</source>
-      <translation>Entrez la distance maximale :</translation>
+      <translation>Entrer la distance maximale :</translation>
     </message>
   </context>
   <context>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
-      <translation>Outils points</translation>
+      <translation>Outils des points</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

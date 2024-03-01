@@ -118,7 +118,10 @@ public:
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
+    virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
 protected:
+    void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;
     virtual void validateScale();
     std::string pageFeatName;
@@ -127,6 +130,8 @@ protected:
 
     int prefScaleType();
     double prefScale();
+
+    void touchTreeOwner(App::DocumentObject *owner) const;
 
 private:
     static const char* ScaleTypeEnums[];

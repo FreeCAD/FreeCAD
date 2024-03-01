@@ -592,6 +592,74 @@ int SketchObject::toggleActive(int ConstrId)
     return 0;
 }
 
+int SketchObject::setLabelPosition(int ConstrId, float value)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
+        return -1;
+    }
+
+    // copy the list
+    std::vector<Constraint*> newVals(vals);
+    // clone the changed Constraint
+    Constraint* constNew = vals[ConstrId]->clone();
+    constNew->LabelPosition = value;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(std::move(newVals));
+
+    return 0;
+}
+
+int SketchObject::getLabelPosition(int ConstrId, float& value)
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
+        return -1;
+    }
+
+    value = vals[ConstrId]->LabelPosition;
+
+    return 0;
+}
+
+int SketchObject::setLabelDistance(int ConstrId, float value)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
+        return -1;
+    }
+
+    // copy the list
+    std::vector<Constraint*> newVals(vals);
+    // clone the changed Constraint
+    Constraint* constNew = vals[ConstrId]->clone();
+    constNew->LabelDistance = value;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(std::move(newVals));
+
+    return 0;
+}
+
+int SketchObject::getLabelDistance(int ConstrId, float& value)
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
+        return -1;
+    }
+
+    value = vals[ConstrId]->LabelDistance;
+
+    return 0;
+}
+
 
 /// Make all dimensionals Driving/non-Driving
 int SketchObject::setDatumsDriving(bool isdriving)

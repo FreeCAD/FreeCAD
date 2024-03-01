@@ -197,9 +197,56 @@ enum class MapElement
 /// Defines how to fill the holes that may appear after offset two adjacent faces
 enum class JoinType
 {
-    Arc,
-    Tangent,
-    Intersection,
+    arc,
+    tangent,
+    intersection,
+};
+
+enum class Flip
+{
+    none,
+    flip
+};
+
+enum class AsAngle
+{
+    no,
+    yes
+};
+
+enum class CheckScale
+{
+    noScaleCheck,
+    checkScale
+};
+
+enum class Copy
+{
+    noCopy,
+    copy
+};
+
+/// Filling style when making a BSpline face
+enum FillingStyle
+{
+    /// The style with the flattest patches
+    stretch,
+    /// A rounded style of patch with less depth than those of Curved
+    coons,
+    /// The style with the most rounded patches
+    curved,
+};
+
+enum class CoordinateSystem
+{
+    relativeToSpine,
+    global
+};
+
+enum class Spine
+{
+    notOn,
+    on
 };
 
 /** The representation for a CAD Shape
@@ -234,14 +281,16 @@ public:
 
     void operator=(const TopoShape&);
 
+    bool operator == (const TopoShape &other) const {
+        return _Shape.IsEqual(other._Shape);
+    }
+
+    virtual bool isSame (const Data::ComplexGeoData &other) const;
+
     /** @name Placement control */
     //@{
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf) override;
-    /// set the transformation of the CasCade Shape
-    void setShapePlacement(const Base::Placement& rclTrf);
-    /// get the transformation of the CasCade Shape
-    Base::Placement getShapePlacement() const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform() const override;
     /// Bound box from the CasCade shape
@@ -790,7 +839,7 @@ public:
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
-     * @param source: input shape
+     * @param shape: input shape
      * @param faces: list of faces to remove, must be sub shape of the input shape
      * @param offset: thickness of the walls
      * @param tol: tolerance criterion for coincidence in generated shapes
@@ -806,13 +855,12 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementThickSolid(const TopoShape &source, const std::vector<TopoShape> &faces,
+    TopoShape &makeElementThickSolid(const TopoShape &shape, const std::vector<TopoShape> &faces,
                               double offset, double tol, bool intersection = false, bool selfInter = false,
-                              short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr);
+                              short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr);
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
-     * @param source: input shape
      * @param faces: list of faces to remove, must be sub shape of the input shape
      * @param offset: thickness of the walls
      * @param tol: tolerance criterion for coincidence in generated shapes
@@ -830,10 +878,152 @@ public:
      */
     TopoShape makeElementThickSolid(const std::vector<TopoShape> &faces,
                              double offset, double tol, bool intersection = false, bool selfInter = false,
-                             short offsetMode = 0, JoinType join = JoinType::Arc, const char *op=nullptr) const {
+                             short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr) const {
         return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
                                                    offsetMode,join,op);
     }
+
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the base shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementRevolve(const TopoShape &base, const gp_Ax1& axis, double d,
+                           const char *face_maker=0, const char *op=nullptr);
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the basis shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementRevolve(const gp_Ax1& axis, double d,
+                          const char *face_maker=nullptr, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementRevolve(*this,axis,d,face_maker,op);
+    }
+
+
+    /** Make a prism that is a linear sweep of a basis shape
+     *
+     * @param base: the basis shape
+     * @param vec: vector defines the sweep direction
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape &makeElementPrism(const TopoShape &base, const gp_Vec& vec, const char *op=nullptr);
+
+    /** Make a prism that is a linear sweep of this shape
+     *
+     * @param vec: vector defines the sweep direction
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementPrism(const gp_Vec& vec, const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementPrism(*this,vec,op);
+    }
+
+    /// Operation mode for makeElementPrismUntil()
+    enum PrismMode {
+        /// Remove the generated prism shape from the base shape with boolean cut
+        CutFromBase = 0,
+        /// Add generated prism shape to the base shape with fusion
+        FuseWithBase = 1,
+        /// Return the generated prism shape without base shape
+        None = 2
+    };
+    /** Make a prism that is either depression or protrusion of a profile shape up to a given face
+     *
+     * @param base: the base shape
+     * @param profile: profile shape used for sweeping to make the prism
+     * @param supportFace: optional face serves to determining the type of
+     *                     operation. If it is inside the basis shape, a local
+     *                     operation such as glueing can be performed.
+     * @param upToFace: sweep the profile up until this give face.
+     * @param direction: the direction to sweep the profile
+     * @param mode: defines what shape to return. @sa PrismMode
+     * @param checkLimits: If true, then remove limit (boundary) of up to face.
+     *                     If false, then the generate prism may go beyond the
+     *                     boundary of the up to face.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
+    // unused.  It is potentially useful if debugged.
+//    TopoShape &makeElementPrismUntil(const TopoShape &base,
+//                              const TopoShape& profile,
+//                              const TopoShape& supportFace,
+//                              const TopoShape& upToFace,
+//                              const gp_Dir& direction,
+//                              PrismMode mode,
+//                              Standard_Boolean checkLimits = Standard_True,
+//                              const char *op=nullptr);
+
+    /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
+     *
+     * @param profile: profile shape used for sweeping to make the prism
+     * @param supportFace: optional face serves to determining the type of
+     *                     operation. If it is inside the basis shape, a local
+     *                     operation such as glueing can be performed.
+     * @param upToFace: sweep the profile up until this give face.
+     * @param direction: the direction to sweep the profile
+     * @param mode: defines what shape to return. @sa PrismMode
+     * @param checkLimits: If true, then remove limit (boundary) of up to face.
+     *                     If false, then the generate prism may go beyond the
+     *                     boundary of the up to face.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
+    // unused.  It is potentially useful if debugged.
+//    TopoShape makeElementPrismUntil(const TopoShape& profile,
+//                             const TopoShape& supportFace,
+//                             const TopoShape& upToFace,
+//                             const gp_Dir& direction,
+//                             PrismMode mode,
+//                             Standard_Boolean checkLimits = Standard_True,
+//                             const char *op=nullptr) const
+//    {
+//        return TopoShape(0,Hasher).makeElementPrismUntil(*this,
+//                                                   profile,
+//                                                   supportFace,
+//                                                   upToFace,
+//                                                   direction,
+//                                                   mode,
+//                                                   checkLimits,
+//                                                   op);
+//    }
+
 
     /* Make a shell or solid by sweeping profile wire along a spine
      *
@@ -863,7 +1053,52 @@ public:
                                     const char* op = nullptr,
                                     double tol3d = 0.0,
                                     double tolBound = 0.0,
-                                    double tolAngluar = 0.0);
+                                    double tolAngular = 0.0);
+
+    /* Make a shape with some subshapes replaced.
+     *
+     * @param source: the source shape
+     * @param s: replacement mapping the existing sub shape of source to new shapes
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& replaceElementShape(const TopoShape& source,
+                                   const std::vector<std::pair<TopoShape, TopoShape>>& s);
+    /* Make a new shape using this shape with some subshapes replaced by others
+     *
+     * @param s: replacement mapping the existing sub shape of source to new shapes
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape replaceElementShape(const std::vector<std::pair<TopoShape, TopoShape>>& s) const
+    {
+        return TopoShape(0, Hasher).replaceElementShape(*this, s);
+    }
+
+    /* Make a shape with some subshapes removed
+     *
+     * @param source: the source shape
+     * @param s: the subshapes to be removed
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& removeElementShape(const TopoShape& source, const std::vector<TopoShape>& s);
+    /* Make a new shape using this shape with some subshapes removed
+     *
+     * @param s: the subshapes to be removed
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape removeElementShape(const std::vector<TopoShape>& s) const
+    {
+        return TopoShape(0, Hasher).removeElementShape(*this, s);
+    }
 
     /** Make shape using generalized fusion and return the modified sub shapes
      *
@@ -954,12 +1189,18 @@ public:
     static const std::string& shapeName(TopAbs_ShapeEnum type, bool silent = false);
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
+    static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName &name);
 
-    Data::MappedName setElementComboName(const Data::IndexedName & element, 
+    Data::MappedName setElementComboName(const Data::IndexedName & element,
                                          const std::vector<Data::MappedName> &names,
                                          const char *marker=nullptr,
                                          const char *op=nullptr,
                                          const Data::ElementIDRefs *sids=nullptr);
+
+    std::vector<Data::MappedName> decodeElementComboName(const Data::IndexedName& element,
+                                                         const Data::MappedName& name,
+                                                         const char* marker = nullptr,
+                                                         std::string* postfix = nullptr) const;
 
     /** @name sub shape cached functions
      *
@@ -1004,6 +1245,10 @@ public:
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
+    void flushElementMap() const override;
+
+    Data::ElementMapPtr resetElementMap(
+        Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *
@@ -1025,6 +1270,64 @@ public:
             return _res;
         }
     };
+    /** Make an evolved shape
+     *
+     * An evolved shape is built from a planar spine (face or wire) and a
+     * profile (wire). The evolved shape is the unlooped sweep (pipe) of the
+     * profile along the spine. Self-intersections are removed.
+     * Note that the underlying OCCT method is very finicky about parameters and
+     * make throw "Unimplemented" exceptions for various types.
+     *
+     * @param spine: the spine shape, must be planar face or wire
+     * @param profile: the profile wire, must be planar, or a line segment
+     * @param join: the join type (only support Arc at the moment)
+     * @param axeProf: determine the coordinate system for the profile
+     * @param solid: whether to make a solid
+     * @param profOnSpine: whether the profile is connect with the spine
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementEvolve(const TopoShape& spine,
+                                 const TopoShape& profile,
+                                 JoinType join = JoinType::arc,
+                                 CoordinateSystem = CoordinateSystem::global,
+                                 MakeSolid solid = MakeSolid::noSolid,
+                                 Spine profOnSpine = Spine::notOn,
+                                 double tol = 0.0,
+                                 const char* op = nullptr);
+
+    /** Make an evolved shape using this shape as spine
+     *
+     * An evolved shape is built from a planar spine (face or wire) and a
+     * profile (wire). The evolved shape is the unlooped sweep (pipe) of the
+     * profile along the spine. Self-intersections are removed.
+     *
+     * @param profile: the profile wire, must be planar, or a line segment
+     * @param join: the join type (only support Arc at the moment)
+     * @param axeProf: determine the coordinate system for the profile
+     * @param solid: whether to make a solid
+     * @param profOnSpine: whether the profile is connect with the spine
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementEvolve(const TopoShape& profile,
+                                JoinType join = JoinType::arc,
+                                CoordinateSystem axeProf = CoordinateSystem::global,
+                                MakeSolid solid = MakeSolid::noSolid,
+                                Spine profOnSpine = Spine::notOn,
+                                double tol = 0.0,
+                                const char* op = nullptr)
+    {
+        return TopoShape(0, Hasher)
+            .makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
+    }
 
     /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
      *
@@ -1224,6 +1527,43 @@ public:
         return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
     }
 
+    /** Make a new shape with transformation that may contain non-uniform scaling
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape. If false, the
+     *              shape will still be copied if there is scaling.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape& makeElementGTransform(const TopoShape& source,
+                                     const Base::Matrix4D& mat,
+                                     const char* op = nullptr,
+                                     Copy copy = Copy::noCopy);
+
+    /** Make a new shape with transformation that may contain non-uniform scaling
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape. If false, the
+     *              shape will still be copied if there is scaling.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape makeElementGTransform(const Base::Matrix4D& mat,
+                                    const char* op = nullptr,
+                                    Copy copy = Copy::noCopy) const
+    {
+        return TopoShape(Tag, Hasher).makeElementGTransform(*this, mat, op, copy);
+    }
 
     /** Make a deep copy of the shape
      *
@@ -1313,6 +1653,290 @@ public:
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
+
+    /** Make a mirrored shape
+     *
+     * @param source: the source shape
+     * @param axis: the axis for mirroring
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape&
+    makeElementMirror(const TopoShape& source, const gp_Ax2& axis, const char* op = nullptr);
+    /** Make a mirrored shape
+     *
+     * @param source: the source shape
+     * @param axis: the axis for mirroring
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementMirror(const gp_Ax2& ax, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementMirror(*this, ax, op);
+    }
+
+    /** Make a cross section slice
+     *
+     * @param source: the source shape
+     * @param dir: direction of the normal of the section plane
+     * @param distance: distance to move the section plane
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementSlice(const TopoShape& source,
+                                const Base::Vector3d& dir,
+                                double distance,
+                                const char* op = nullptr);
+    /** Make a cross section slice
+     *
+     * @param source: the source shape
+     * @param dir: direction of the normal of the section plane
+     * @param distance: distance to move the section plane
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementSlice(const Base::Vector3d& dir, double distance, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementSlice(*this, dir, distance, op);
+    }
+
+    /** Make multiple cross section slices
+     *
+     * @param source: the source shape
+     * @param dir: direction of the normal of the section plane
+     * @param distances: distances to move the section plane for making slices
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementSlices(const TopoShape& source,
+                                 const Base::Vector3d& dir,
+                                 const std::vector<double>& distances,
+                                 const char* op = nullptr);
+    /** Make multiple cross section slices
+     *
+     * @param source: the source shape
+     * @param dir: direction of the normal of the section plane
+     * @param distances: distances to move the section plane for making slices
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementSlices(const Base::Vector3d& dir,
+                                const std::vector<double>& distances,
+                                const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementSlices(*this, dir, distances, op);
+    }
+
+    /* Make fillet shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make fillets
+     * @param radius1: the radius of the beginning of the fillet
+     * @param radius2: the radius of the ending of the fillet
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementFillet(const TopoShape& source,
+                                 const std::vector<TopoShape>& edges,
+                                 double radius1,
+                                 double radius2,
+                                 const char* op = nullptr);
+    /* Make fillet shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make fillets
+     * @param radius1: the radius of the beginning of the fillet
+     * @param radius2: the radius of the ending of the fillet
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementFillet(const std::vector<TopoShape>& edges,
+                                double radius1,
+                                double radius2,
+                                const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementFillet(*this, edges, radius1, radius2, op);
+    }
+
+    /* Make chamfer shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make chamfers
+     * @param radius1: the radius of the beginning of the chamfer
+     * @param radius2: the radius of the ending of the chamfer
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementChamfer(const TopoShape& source,
+                                  const std::vector<TopoShape>& edges,
+                                  double radius1,
+                                  double radius2,
+                                  const char* op = nullptr,
+                                  Flip flipDirection = Flip::none,
+                                  AsAngle asAngle = AsAngle::no);
+    /* Make chamfer shape
+     *
+     * @param source: the source shape
+     * @param edges: the edges of the source shape where to make chamfers
+     * @param radius1: the radius of the beginning of the chamfer
+     * @param radius2: the radius of the ending of the chamfer
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementChamfer(const std::vector<TopoShape>& edges,
+                                 double radius1,
+                                 double radius2,
+                                 const char* op = nullptr,
+                                 Flip flipDirection = Flip::none,
+                                 AsAngle asAngle = AsAngle::no) const
+    {
+        return TopoShape(0, Hasher)
+            .makeElementChamfer(*this, edges, radius1, radius2, op, flipDirection, asAngle);
+    }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return Returns true if scaling is performed.
+     *
+     * The original content of this TopoShape is discarded and replaced with
+     * the new transformed shape.
+     */
+    bool _makeElementTransform(const TopoShape& source,
+                               const Base::Matrix4D& mat,
+                               const char* op = nullptr,
+                               CheckScale checkScale = CheckScale::noScaleCheck,
+                               Copy copy = Copy::noCopy);
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape& makeElementTransform(const TopoShape& source,
+                                    const Base::Matrix4D& mat,
+                                    const char* op = nullptr,
+                                    CheckScale checkScale = CheckScale::noScaleCheck,
+                                    Copy copy = Copy::noCopy)
+    {
+        _makeElementTransform(source, mat, op, checkScale, copy);
+        return *this;
+    }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param mat: transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param checkScale: whether to check if the transformation matrix
+     *                    contains scaling factor.
+     * @param copy: whether to perform deep copy of the shape. If noCopy, and
+     *              checkScale, then the shape will be copied if there
+     *              is scaling.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape makeElementTransform(const Base::Matrix4D& mat,
+                                   const char* op = nullptr,
+                                   CheckScale checkScale = CheckScale::noScaleCheck,
+                                   Copy copy = Copy::noCopy) const
+    {
+        return TopoShape(Tag, Hasher).makeElementTransform(*this, mat, op, checkScale, copy);
+    }
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param trsf: OCCT transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new transformed shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape& makeElementTransform(const TopoShape& shape,
+                                    const gp_Trsf& trsf,
+                                    const char* op = nullptr,
+                                    Copy copy = Copy::noCopy);
+
+    /** Make a new shape with transformation
+     *
+     * @param source: input shape
+     * @param trsf: OCCT transformation matrix
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copy: whether to perform deep copy of the shape.
+     *
+     * @return Return a new shape with transformation. The shape itself is not
+     *         modified
+     */
+    TopoShape
+    makeElementTransform(const gp_Trsf& trsf, const char* op = nullptr, Copy copy = Copy::noCopy)
+    {
+        return TopoShape(Tag, Hasher).makeElementTransform(*this, trsf, op, copy);
+    }
+
     /* Make draft shape
      *
      * @param source: the source shape
@@ -1450,16 +2074,64 @@ public:
         return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane);
     }
 
-    /// Filling style when making a BSpline face
-    enum class FillingStyle
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param shapes: input shapes of any type, but only edges inside the shape
+     *                will be used.
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with either BSpline or Bezier
+     *         surface. The original content of this TopoShape is discarded and
+     *         replaced with the new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementBSplineFace(const std::vector<TopoShape> &input,
+                               FillingStyle style = FillingStyle::stretch,
+                               bool keepBezier = false,
+                               const char *op=nullptr);
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param shape: input shape of any type, but only edges inside the shape
+     *               will be used.
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with either BSpline or Bezier
+     *         surface. The original content of this TopoShape is discarded and
+     *         replaced with the new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeElementBSplineFace(const TopoShape &input,
+                               FillingStyle style = FillingStyle::stretch,
+                               bool keepBezier = false,
+                               const char *op=nullptr);
+    /** Make a face with BSpline (or Bezier) surface
+     *
+     * @param style: surface filling style. @sa FillingStyle
+     * @param keepBezier: whether to create Bezier surface if the input edge
+     *                    has Bezier curve.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function returns a new face with either BSpline or Bezier
+     *         surface. The shape itself is not modified.
+     */
+    TopoShape makeElementBSplineFace(FillingStyle style = FillingStyle::stretch,
+                              bool keepBezier = false,
+                              const char *op=nullptr)
     {
-        /// The style with the flattest patches
-        Stretch,
-        /// A rounded style of patch with less depth than those of Curved
-        Coons,
-        /// The style with the most rounded patches
-        Curved,
-    };
+        return TopoShape(0,Hasher).makeElementBSplineFace(*this, style, keepBezier, op);
+    }
+
 
     struct BRepFillingParams;
 
@@ -1495,6 +2167,69 @@ public:
         */
         CN,
     };
+
+    /** Make a non-planar filled face with boundary and/or constraint edge/wire
+     *
+     * @param shapes: input shapes of any type. The function will automatically
+     *                discover connected and closed edges to be used as the
+     *                boundary of the the new face. Any other vertex, edge,
+     *                and/or face will be used as constraints to fine tune the
+     *                surface generation.
+     * @param params: @sa BRepFillingParams
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function creates a face with BSpline surface. The original
+     *         content of this TopoShape is discarded and replaced with the new
+     *         shape. The function returns the TopoShape itself as a self
+     *         reference so that multiple operations can be carried out for the
+     *         same shape in the same line of code.
+     *
+     * @sa OCCT BRepOffsetAPI_MakeFilling
+     */
+    TopoShape &makeElementFilledFace(const std::vector<TopoShape> &shapes,
+                              const BRepFillingParams &params,
+                              const char *op=nullptr);
+
+    /** Make a solid using shells or CompSolid
+     *
+     * @param shapes: input shapes of either shells or CompSolid.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function produces a solid. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a self reference so
+     *         that multiple operations can be carried out for the same shape
+     *         in the same line of code.
+     */
+     // TODO: This does not appear to be called, and the implementation seems impossible
+//    TopoShape &makeElementSolid(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+    /** Make a solid using shells or CompSolid
+     *
+     * @param shape: input shape of either a shell, a compound of shells, or a
+     *               CompSolid.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function produces a solid. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a self reference so
+     *         that multiple operations can be carried out for the same shape
+     *         in the same line of code.
+     */
+    TopoShape &makeElementSolid(const TopoShape &shape, const char *op=nullptr);
+    /** Make a solid using this shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The function returns a new solid using the shell or CompSolid
+     *         inside this shape. The shape itself is not modified.
+     */
+    TopoShape makeElementSolid(const char *op=nullptr) const {
+        return TopoShape(0,Hasher).makeElementSolid(*this,op);
+    }
 
 
     /** Generic shape making with mapped element name from shape history
@@ -1544,6 +2279,22 @@ public:
         return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op);
     }
 
+    /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name
+     *
+     * @param mkShape: OCCT shape maker.
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape built by the shape maker. The function
+     *         returns the TopoShape itself as a self reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape &makeElementShape(BRepFeat_MakePrism &mkShape,
+                         const std::vector<TopoShape> &sources, const TopoShape &uptoface, const char *op);
+
     /* Toponaming migration, February 2014:
      * Note that the specialized versions of makeElementShape for operations that do not
      * inherit from BRepBuilderAPI_MakeShape  ( like BRepBuilderAPI_Sewing ) have been removed.
@@ -1551,7 +2302,7 @@ public:
      * makeShapeWithElementMap directly.  For example:
      * makeElementShape(sewer, sources)
      * makeShapeWithElementMap(sewer.SewedShape(), MapperSewing(sewer), sources, OpCodes::Sewing);
-     * Note that if op exists in the method, it should be checked for null and overriden with
+     * Note that if op exists in the method, it should be checked for null and overridden with
      * the appropriate operation if so.
      */
 

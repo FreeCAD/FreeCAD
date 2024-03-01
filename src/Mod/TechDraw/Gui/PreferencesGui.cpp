@@ -156,19 +156,6 @@ double PreferencesGui::edgeFuzz()
     return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
 }
 
-
-// this is for the iso vs ansi positioning of arrows and text.  rename to sectionLineConvention?
-Qt::PenStyle PreferencesGui::sectionLineStyle()
-{
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("Decorations")->GetInt("SectionLine", 2));
-    return sectStyle;
-}
-
-bool PreferencesGui::sectionLineMarks()
-{
-    return Preferences::getPreferenceGroup("Decorations")->GetBool("SectionLineMarks", true);
-}
-
 QString PreferencesGui::weldingDirectory()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";

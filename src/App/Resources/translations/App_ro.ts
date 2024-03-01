@@ -14,7 +14,7 @@ care fac referire la același obiect configurabil</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="445"/>
+      <location filename="../../Application.cpp" line="448"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>

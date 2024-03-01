@@ -26,7 +26,7 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-
+#include "MappedElement.h"
 
 namespace App
 {
@@ -120,6 +120,10 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+
+protected:
+    std::pair<std::string, std::string> _getElementName(const char* name,
+                                                        const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

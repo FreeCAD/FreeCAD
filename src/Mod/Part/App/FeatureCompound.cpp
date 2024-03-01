@@ -54,16 +54,17 @@ short Compound::mustExecute() const
 App::DocumentObjectExecReturn *Compound::execute()
 {
     try {
+        // avoid duplicates without changing the order
+        // See also ViewProviderCompound::updateData
+        std::set<DocumentObject*> tempLinks;
+
+#ifndef FC_USE_TNP_FIX
         std::vector<ShapeHistory> history;
         int countFaces = 0;
 
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
-
-        // avoid duplicates without changing the order
-        // See also ViewProviderCompound::updateData
-        std::set<DocumentObject*> tempLinks;
 
         const std::vector<DocumentObject*>& links = Links.getValues();
         for (auto link : links) {
@@ -95,6 +96,20 @@ App::DocumentObjectExecReturn *Compound::execute()
         prop.touch();
 
         return App::DocumentObject::StdReturn;
+#else
+        std::vector<TopoShape> shapes;
+        for (auto obj : Links.getValues()) {
+            if (!tempLinks.insert(obj).second) {
+                continue;
+            }
+            auto sh = Feature::getTopoShape(obj);
+            if (!sh.isNull()) {
+                shapes.push_back(sh);
+            }
+        }
+        this->Shape.setValue(TopoShape().makeElementCompound(shapes));
+        return Part::Feature::execute();
+#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

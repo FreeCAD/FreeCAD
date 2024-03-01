@@ -61,16 +61,15 @@ public:
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
-    DrawView *claimParent(void) const override;
     QRectF getRect() const override;
     bool checkFit(TechDraw::DrawPage* p) const override;
+
+    App::PropertyLink *getOwnerProperty() override { return &Owner; }
 
     //return PyObject as DrawViewSymbolPy
     PyObject *getPyObject() override;
 
 protected:
-    void touchTreeOwner();
-    void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
 

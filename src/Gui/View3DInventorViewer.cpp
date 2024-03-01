@@ -2271,7 +2271,6 @@ void View3DInventorViewer::renderFramebuffer()
     glEnd();
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2305,7 +2304,6 @@ void View3DInventorViewer::renderGLImage()
     glDrawPixels(glImage.width(), glImage.height(), GL_BGRA,GL_UNSIGNED_BYTE, glImage.bits());
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2403,7 +2401,6 @@ void View3DInventorViewer::renderScene()
     }
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();

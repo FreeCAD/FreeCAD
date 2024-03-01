@@ -201,7 +201,7 @@ TEST_F(PartFeaturesTest, testReverse)
     EXPECT_EQ(originalFaces[3].getShape().Orientation(), TopAbs_FORWARD);
     EXPECT_EQ(originalFaces[4].getShape().Orientation(), TopAbs_REVERSED);
     EXPECT_EQ(originalFaces[5].getShape().Orientation(), TopAbs_FORWARD);
-    EXPECT_DOUBLE_EQ(volume, -6.0);
+    EXPECT_DOUBLE_EQ(volume, 6.0);
     EXPECT_DOUBLE_EQ(area, 22.0);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 1, 2, 3)));
     // Assert element map is correct

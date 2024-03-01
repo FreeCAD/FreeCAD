@@ -116,8 +116,7 @@ def get_femnodes_by_refshape(
 ):
     nodes = []
     for refelement in ref[1]:
-        # the following method getElement(element) does not return Solid elements
-        r = geomtools.get_element(ref[0], refelement)
+        r = sub_shape_at_global_placement(ref[0], refelement)
         FreeCAD.Console.PrintMessage(
             "    "
             "ReferenceShape ... Type: {0}, "
@@ -1127,7 +1126,7 @@ def get_force_obj_face_nodeload_table(
     sum_node_load = 0  # for debugging
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
+            ref_face = sub_shape_at_global_placement(o, elem)
             FreeCAD.Console.PrintMessage(
                 "    "
                 "ReferenceShape ... Type: {0}, "
@@ -1142,7 +1141,7 @@ def get_force_obj_face_nodeload_table(
         force_per_sum_ref_face_area = force_quantity / sum_ref_face_area
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
+            ref_face = sub_shape_at_global_placement(o, elem)
 
             # face_table:
             #    { meshfaceID : ( nodeID, ... , nodeID ) }
@@ -1666,12 +1665,14 @@ def get_pressure_obj_faces(
                     # How to find the orientation of a FEM mesh face?
                     # https://forum.freecad.org/viewtopic.php?f=18&t=51898
         else:
-            FreeCAD.Console.PrintError(
-                "Pressure on shell mesh at the moment only "
-                "supported for meshes with appropriate group data.\n"
-            )
-    return pressure_faces
+            for obj, elems in femobj["Object"].References:
+                for e in elems:
+                    ref_face = sub_shape_at_global_placement(obj, e)
+                    meshfaces = femmesh.getFacesByFace(ref_face)
+                    for mf in meshfaces:
+                        pressure_faces.append([mf, -1])
 
+    return pressure_faces
 
 # ***** deprecated method for retrieving pressure faces *****************************************
 # for constraint pressure and finite solid element mesh
@@ -1994,21 +1995,13 @@ def get_reference_group_elements(
     else:
         key = obj.Name
     elements = []
-    stype = None
     for r in obj.References:
         parent = r[0]
         childs = r[1]
         # FreeCAD.Console.PrintMessage("{}\n".format(parent))
         # FreeCAD.Console.PrintMessage("{}\n".format(childs))
         for child in childs:
-            # the method getElement(element) does not return Solid elements
-            ref_shape = geomtools.get_element(parent, child)
-            if not stype:
-                stype = ref_shape.ShapeType
-            elif stype != ref_shape.ShapeType:
-                FreeCAD.Console.PrintError(
-                    "Error, two refshapes in References with different ShapeTypes.\n"
-                )
+            ref_shape = parent.getSubObject(child)
             FreeCAD.Console.PrintLog("{}\n".format(ref_shape))
             found_element = geomtools.find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
@@ -2508,4 +2501,32 @@ def compact_mesh(
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)
 
+# ************************************************************************************************
+def beam_reduced_integration(
+    fileName
+):
+    # replace B3x elements with B3xR elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") != -1:
+            line = line.replace("B32", "B32R")
+        if line.find("B31") != -1:
+            line = line.replace("B31", "B31R")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+
+# ************************************************************************************************
+def sub_shape_at_global_placement(obj, sub_name):
+    sub_sh = obj.getSubObject(sub_name)
+    # get partner shape
+    partner = sub_sh.transformed(FreeCAD.Placement().Matrix)
+    partner.Placement = obj.getGlobalPlacement() \
+                        * obj.Placement.inverse() \
+                        * sub_sh.Placement
+
+    return partner
 ##  @}

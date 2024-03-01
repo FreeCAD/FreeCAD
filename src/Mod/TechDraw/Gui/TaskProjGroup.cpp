@@ -28,6 +28,7 @@
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -197,6 +198,7 @@ void TaskProjGroup::viewToggled(bool toggle)
             double scale = multiView->getScale();
             setFractionalScale(scale);
         }
+        multiView->recomputeFeature();
     }
     wc.restoreCursor();
 }
@@ -234,6 +236,19 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
 
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
+
+    // set the tooltips of the checkboxes
+    ui->chkView0->setToolTip(getToolTipForBox(0));
+    ui->chkView1->setToolTip(getToolTipForBox(1));
+    ui->chkView2->setToolTip(getToolTipForBox(2));
+    ui->chkView3->setToolTip(getToolTipForBox(3));
+    ui->chkView4->setToolTip(getToolTipForBox(4));
+    ui->chkView5->setToolTip(getToolTipForBox(5));
+    ui->chkView6->setToolTip(getToolTipForBox(6));
+    ui->chkView7->setToolTip(getToolTipForBox(7));
+    ui->chkView8->setToolTip(getToolTipForBox(8));
+    ui->chkView9->setToolTip(getToolTipForBox(9));
+
     multiView->recomputeFeature();
 }
 
@@ -442,6 +457,25 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
         default: return nullptr;
     }
 }
+
+QString TaskProjGroup::getToolTipForBox(int boxNumber)
+{
+    bool thirdAngle = multiView->usedProjectionType().isValue("Third Angle");
+    switch(boxNumber) {
+        case 0: {return (thirdAngle ? tr("FrontTopLeft") : tr("FrontBottomRight")); break;}
+        case 1: {return (thirdAngle ? tr("Top") : tr("Bottom")); break;}
+        case 2: {return (thirdAngle ? tr("FrontTopRight") : tr("FrontBottomLeft")); break;}
+        case 3: {return (thirdAngle ? tr("Left" ): tr("Right")); break;}
+        case 4: {return (thirdAngle ? tr("Front") : tr("Front")); break;}
+        case 5: {return (thirdAngle ? tr("Right") : tr("Left")); break;}
+        case 6: {return (thirdAngle ? tr("Rear") : tr("Rear")); break;}
+        case 7: {return (thirdAngle ? tr("FrontBottomLeft") : tr("FrontTopRight")); break;}
+        case 8: {return (thirdAngle ? tr("Bottom") : tr("Top")); break;}
+        case 9: {return (thirdAngle ? tr("FrontBottomRight") : tr("FrontTopLeft")); break;}
+        default: {return {}; break;}
+    }
+}
+
 void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
     if (!multiView)
@@ -475,6 +509,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
         } else {
             box->setCheckState(Qt::Unchecked);
         }
+        box->setToolTip(getToolTipForBox(i));
     }
 }
 

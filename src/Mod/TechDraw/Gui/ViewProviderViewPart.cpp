@@ -107,25 +107,15 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters), dgroup, App::Prop_None, "Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
-    std::string bodyName = LineGenerator::getLineStandardsBody();
-    if (bodyName == "ISO") {
-        SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
-        HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
-    } else if (bodyName == "ANSI") {
-        SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
-        HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
-    } else if (bodyName == "ASME") {
-    SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
-        HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
-    }
-
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineStyle, (Preferences::SectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
-    ADD_PROPERTY_TYPE(SectionLineMarks, (PreferencesGui::sectionLineMarks()), sgroup, App::Prop_None,
+
+     bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
+    ADD_PROPERTY_TYPE(SectionLineMarks, (marksDefault), sgroup, App::Prop_None,
                         "Show marks at direction changes for ComplexSection");
 
     //properties that affect Detail Highlights
@@ -135,7 +125,7 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
-    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup, App::Prop_None, "Temporarily show invisible lines");
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
     // Faces related properties
     ADD_PROPERTY_TYPE(FaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
@@ -143,6 +133,18 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(FaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),
                       fgroup, App::Prop_None, "Set transparency of faces");
     FaceTransparency.setConstraints(&intPercent);
+
+    std::string bodyName = LineGenerator::getLineStandardsBody();
+    if (bodyName == "ISO") {
+        SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+    } else if (bodyName == "ANSI") {
+        SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+    } else if (bodyName == "ASME") {
+        SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+    }
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -212,7 +214,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     //    - Leaders
     //    - Hatches
     //    - GeomHatches
-    //    - Leaders
+    //    - any drawing views declaring this view as their parent
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
@@ -242,8 +244,6 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
           } else if ((*it)->isDerivedFrom<TechDraw::DrawGeomHatch>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawViewBalloon>()) {
-              temp.push_back((*it));
-          } else if ((*it)->isDerivedFrom<TechDraw::DrawRichAnno>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
               temp.push_back((*it));
@@ -333,7 +333,6 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-//    Base::Console().Message("VPVP::onDelete() - subs: %d\n", subNames.size());
     // if a cosmetic subelement is in the list of selected subNames then we treat this
     // as a delete of the subelement and not a delete of the DVP
     std::vector<std::string> removables = getSelectedCosmetics(subNames);
@@ -365,7 +364,6 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 
 bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 {
-//    Base::Console().Message("VPVP::canDelete()\n");
     // deletions of part objects (detail view, View etc.) are valid
     // that it cannot be deleted if it has a child view is handled in the onDelete() function
     Q_UNUSED(obj)
@@ -375,7 +373,6 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 //! extract the names of cosmetic subelements from the list of all selected elements
 std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<std::string> subNames)
 {
-//    Base::Console().Message("VPVP::getSelectedCosmetics(%d removables)\n", subNames.size());
 
     std::vector<std::string> result;
     // pick out any cosmetic vertices or edges in the selection
@@ -397,7 +394,6 @@ std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<
 //! delete cosmetic elements for a list of subelement names
 void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> removables)
 {
-//    Base::Console().Message("VPVP::deleteCosmeticElements(%d removables)\n", removables.size());
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex") {
             CosmeticVertex* vert = getViewObject()->getCosmeticVertexBySelection(name);
@@ -443,7 +439,6 @@ int ViewProviderViewPart::prefHighlightStyle()
 // TODO: does this need to be implemented for Leaderlines and ???? others?
 void ViewProviderViewPart::fixSceneDependencies()
 {
-//    Base::Console().Message("VPVP::fixSceneDependencies()\n");
     auto scene = getViewProviderPage()->getQGSPage();
     auto partQView = getQView();
 

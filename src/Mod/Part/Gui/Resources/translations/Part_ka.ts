@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>განხორციელებული არაა.</translation>
+      <translation>ორი სიბრტყის თანაკვეთა.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -4979,31 +4979,31 @@ only created cuts will be visible</source>
       <translation>X მიმართულებით:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი 
 ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>Y მიმართულებით:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>Z მიმართულებით:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>X ღერძის გარშემო:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5011,12 +5011,12 @@ of object being attached.</source>
 შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Y ღერძის გარშემო:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5024,12 +5024,12 @@ of object being attached.</source>
 შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Z ღერძის გარშემო:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5037,12 +5037,12 @@ of object being attached.</source>
 შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>მიმაგრების გადაბრუნების კუთხე და წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>გვერდებისთვის ადგილის გაცვლა</translation>
     </message>
@@ -5665,55 +5665,12 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Bull's-eye facemaker</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>გააჩნია კუნძულიანი ხვრელების მქონე ბრტყელი ზედაპირების შექმნის შესაძლებლობა.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>მარტივი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>თითოეული პოლიხაზისგან სიბრტყის ზედაპირის ცალცალკე შექმნა. არ გააჩნია ხვრელების მხარდაჭერა. პოლიხაზები შეიძლება სხვადასხვა სიბრტყეებზე იყოს.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>ყველისებრი ზედაპირთმკეთი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>გააჩნია უკუნძულო ხვრელების მქონე ბრტყელი ზედაპირების შექმნის შესაძლებლობა.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>ნაწილის გამოწნეხვის ზედაპირი</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>შეუძლია ნახვრეტებიანი სიბრტყეების შექმნა. არ გააჩნია ნესტინგის მხარდაჭერა.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1-ის ჩასწორება</translation>
     </message>
@@ -5805,20 +5762,20 @@ Do you want to continue?</source>
       <translation>მიბმა არჩეული არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>ზედაპირი</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>წიბო</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>წვერო</translation>
     </message>
@@ -6135,7 +6092,7 @@ Do you want to continue?</source>
       <translation>ყველა ზომის გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>ფერების დაყენება...</translation>
     </message>
@@ -6360,7 +6317,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>დააწექით "გაგრძელებას" თვისების მაინც შესაქმნელად, ან "შეწყვეტას", გაუქმებისთვის.</translation>
+      <translation>დააწექით "გაგრძელება"-ს თვისების მაინც შესაქმნელად, ან "შეწყვეტა"-ს, გაუქმებისთვის.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6431,7 +6388,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>დააწექით "გაგრძელება"-ს თვისების მაინც შესაქმნელად, ან "შეწყვეტა"-ს, გაუქმებისთვის.</translation>
+      <translation>დააწექით "გაგრძელებას" თვისების მაინც შესაქმნელად, ან "შეწყვეტას", გაუქმებისთვის.</translation>
     </message>
   </context>
   <context>
@@ -6925,6 +6882,66 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>ყველა მონიშნულის ფილტრი გასუფთავდა</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation>მოხაზულობა უნდა იყოს პოლიხაზი, წიბო ან გადაბმა. მოწოდებულია რაღაც სხვა.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>მარტივი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>თითოეული პოლიხაზისგან სიბრტყის ზედაპირის ცალცალკე შექმნა. არ გააჩნია ხვრელების მხარდაჭერა. პოლიხაზები შეიძლება სხვადასხვა სიბრტყეებზე იყოს.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Bull's-eye facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>გააჩნია კუნძულიანი ხვრელების მქონე ბრტყელი ზედაპირების შექმნის შესაძლებლობა.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>ყველისებრი ზედაპირთმკეთი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>გააჩნია უკუნძულო ხვრელების მქონე ბრტყელი ზედაპირების შექმნის შესაძლებლობა.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>ნაწილის გამოწნეხვის ზედაპირი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>შეუძლია ნახვრეტებიანი სიბრტყეების შექმნა. არ გააჩნია ნესტინგის მხარდაჭერა.</translation>
     </message>
   </context>
 </TS>

@@ -30,48 +30,57 @@
 class QTimer;
 class Ui_TaskLinearPatternParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskMultiTransformParameters;
 
-class TaskLinearPatternParameters : public TaskTransformedParameters
+class TaskLinearPatternParameters: public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskLinearPatternParameters(ViewProviderTransformed* TransformedView,
+                                         QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
+    TaskLinearPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
     ~TaskLinearPatternParameters() override;
 
     void apply() override;
 
+protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
-    void onCheckReverse(const bool on);
-    void onModeChanged(const int mode);
-    void onLength(const double l);
-    void onOffset(const double o);
-    void onOccurrences(const uint n);
-    void onUpdateView(bool) override;
-    void onFeatureDeleted() override;
+    void onCheckReverse(bool on);
+    void onModeChanged(int mode);
+    void onLength(double length);
+    void onOffset(double offset);
+    void onOccurrences(uint number);
+    void onUpdateView(bool /*unused*/) override;
 
-protected:
-    void addObject(App::DocumentObject*) override;
-    void removeObject(App::DocumentObject*) override;
-    void changeEvent(QEvent *e) override;
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void clearButtons() override;
+private:
+    void setupParameterUI(QWidget* widget) override;
+    void retranslateParameterUI(QWidget* widget) override;
+
+    void connectSignals();
+    void updateUI();
+    void adaptVisibilityToMode();
+    void kickUpdateViewTimer() const;
+
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
     int getMode() const;
@@ -80,30 +89,22 @@ protected:
     unsigned getOccurrences() const;
 
 private:
-    void connectSignals();
-    void setupUI();
-    void updateUI();
-    void adaptVisibilityToMode();
-    void kickUpdateViewTimer() const;
-
-private:
     std::unique_ptr<Ui_TaskLinearPatternParameters> ui;
-    QTimer* updateViewTimer;
+    QTimer* updateViewTimer = nullptr;
 
     ComboLinks dirLinks;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
+class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
-    ~TaskDlgLinearPatternParameters() override = default;
+    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern* LinearPatternView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

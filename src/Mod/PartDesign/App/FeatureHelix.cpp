@@ -218,7 +218,12 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         std::vector<TopoDS_Wire> wires;
         try {
-            wires = getProfileWires();
+            // Iterate over wires in sketch shape.
+            for (TopExp_Explorer explorer(sketchshape, TopAbs_WIRE); explorer.More(); explorer.Next())
+            {
+                const TopoDS_Wire& aWire = TopoDS::Wire(explorer.Current());
+                wires.push_back(aWire);
+            }
         }
         catch (const Base::Exception& e) {
             return new App::DocumentObjectExecReturn(e.what());

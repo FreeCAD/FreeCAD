@@ -522,3 +522,8 @@ int Preferences::LineCapIndex()
     return getPreferenceGroup("General")->GetInt("EdgeCapStyle", 0x20);
 }
 
+//! returns 0 (use ANSI style section cut line) or 1 (use ISO style section cut line)
+int Preferences::sectionLineConvention()
+{
+    return getPreferenceGroup("Standards")->GetInt("SectionLineStandard", 1);
+}
