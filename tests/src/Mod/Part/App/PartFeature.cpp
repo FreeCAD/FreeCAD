@@ -34,8 +34,6 @@ protected:
 TEST_F(FeaturePartTest, testGetElementName)
 {
     // Arrange
-    _boxes[0]->Shape.getShape().Tag = 1L;
-    _boxes[1]->Shape.getShape().Tag = 2L;
     _common->Base.setValue(_boxes[0]);
     _common->Tool.setValue(_boxes[1]);
 

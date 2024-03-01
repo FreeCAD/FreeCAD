@@ -723,6 +723,27 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this,*prop);
 }
 
+void DocumentObject::onEarlyChange(const Property *prop)
+{
+    if(GetApplication().isClosingAll())
+        return;
+
+    if(!GetApplication().isRestoring() &&
+        !prop->testStatus(Property::PartialTrigger) &&
+        getDocument() &&
+        getDocument()->testStatus(Document::PartialDoc))
+    {
+        static App::Document *warnedDoc;
+        if(warnedDoc != getDocument()) {
+            warnedDoc = getDocument();
+            FC_WARN("Changes to partial loaded document will not be saved: "
+                    << getFullName() << '.' << prop->getName());
+        }
+    }
+
+    signalEarlyChanged(*this, *prop);
+}
+
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {

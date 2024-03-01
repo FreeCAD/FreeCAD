@@ -14,6 +14,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/PartFeature.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartFeatures.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartTestHelpers.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/PropertyTopoShape.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShape.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeCache.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeExpansion.cpp

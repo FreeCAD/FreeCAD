@@ -38,14 +38,12 @@ TEST_F(PartFeaturesTest, testRuledSurface)
     _edge1->X2.setValue(2);
     _edge1->Y2.setValue(0);
     _edge1->Z2.setValue(0);
-    _edge1->Shape.getShape().Tag = 1L;  // TODO: Can remove when TNP is on?
     _edge2->X1.setValue(0);
     _edge2->Y1.setValue(2);
     _edge2->Z1.setValue(0);
     _edge2->X2.setValue(2);
     _edge2->Y2.setValue(2);
     _edge2->Z2.setValue(0);
-    _edge2->Shape.getShape().Tag = 2L;  // TODO: Can remove when TNP is on?
     auto _ruled = dynamic_cast<RuledSurface*>(_doc->addObject("Part::RuledSurface"));
     _ruled->Curve1.setValue(_edge1);
     _ruled->Curve2.setValue(_edge2);

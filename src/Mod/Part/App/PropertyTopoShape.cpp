@@ -103,8 +103,10 @@ TopoShape PropertyPartShape::getShape() const
 {
     _Shape.initCache(-1);
     auto res = _Shape;
-//    if (Feature::isElementMappingDisabled(getContainer()))
-    if ( false )    // TODO Implement
+    // March, 2024 Toponaming project:  There was originally an unused feature to disable elementMapping
+    // that has not been kept:
+    //    if (Feature::isElementMappingDisabled(getContainer()))
+    if ( false )
         res.Tag = -1;
     else if (!res.Tag) {
         if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer()))
@@ -184,7 +186,9 @@ void PropertyPartShape::setPyObject(PyObject *value)
                 shape = res;
             }else{
                 shape.Tag = owner->getID();
-                shape.Hasher->clear(); // reset();
+                if ( shape.Hasher ) {   // TODO: This null guard added during TNP transition
+                    shape.Hasher->clear();
+                }
             }
         }
         setValue(shape);
@@ -200,20 +204,15 @@ App::Property *PropertyPartShape::Copy() const
 {
     PropertyPartShape *prop = new PropertyPartShape();
 
+    // March, 2024 Toponaming project:  There was originally a feature to enable making an element
+    // copy ( new geometry and map ) that has not been kept:
 //    if (PartParams::getShapePropertyCopy()) {
-    if ( false ) {  // TODO: PartParams
-        // makeElementCopy() consume too much memory for complex geometry.
-        prop->_Shape = this->_Shape.makeElementCopy();
-    } else
-        prop->_Shape = this->_Shape;
-    prop->_Ver = this->_Ver;
-
+//        // makeElementCopy() consume too much memory for complex geometry.
+//        prop->_Shape = this->_Shape.makeElementCopy();
+//    } else
+//        prop->_Shape = this->_Shape;
     prop->_Shape = this->_Shape;
-    if (!_Shape.getShape().IsNull()) {
-        BRepBuilderAPI_Copy copy(_Shape.getShape());
-        prop->_Shape.setShape(copy.Shape());
-    }
-
+    prop->_Ver = this->_Ver;
     return prop;
 }
 
@@ -348,6 +347,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         reader.addFile(file.c_str(),this);
     }
 }
+
 #ifdef NOT_YET_AND_MAYBE_NEVER
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
@@ -433,7 +433,6 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         hasSetValue();
     }
 }
-#endif
 
 void PropertyPartShape::afterRestore()
 {
@@ -447,6 +446,7 @@ void PropertyPartShape::afterRestore()
         _Shape.Hasher->clear(); //reset();
     PropertyComplexGeoData::afterRestore();
 }
+#endif
 
 // The following function is copied from OCCT BRepTools.cxx and modified
 // to disable saving of triangulation
@@ -912,6 +912,10 @@ void PropertyShapeCache::Restore(Base::XMLReader &)
 {
 }
 
+/**
+ * Make a new python List with a tuple for each cache entry containing the key and the shape
+ * @return the python list
+ */
 PyObject *PropertyShapeCache::getPyObject() {
     Py::List res;
     for(auto &v : cache)
@@ -919,6 +923,10 @@ PyObject *PropertyShapeCache::getPyObject() {
     return Py::new_reference_to(res);
 }
 
+/**
+ * Remove the cache entries for every element in the list
+ * @param value A python list of entry names
+ */
 void PropertyShapeCache::setPyObject(PyObject *value) {
     if(!value)
         return;
@@ -933,6 +941,12 @@ void PropertyShapeCache::setPyObject(PyObject *value) {
 }
 
 #define SHAPE_CACHE_NAME "_Part_ShapeCache"
+/**
+ * Find or create the shape cache for a document object
+ * @param obj The document object
+ * @param create True if we should create the cache if it doesn't exist
+ * @return The shape cache, or null if we aren't creating and it doesn't exist
+ */
 PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool create) {
     auto prop = Base::freecad_dynamic_cast<PropertyShapeCache>(
         obj->getDynamicPropertyByName(SHAPE_CACHE_NAME));
@@ -953,9 +967,18 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
     return prop;
 }
 
+/**
+ * Look up and return a shape in the cache
+ * @param obj The document object to look in
+ * @param shape The found shape is returned here
+ * @param subname The key to look up
+ * @return True if the name was found
+ */
 bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname) {
+// March, 2024 Toponaming project:  There was originally a feature to disable shape cache
+// that has not been kept:
 //    if (PartParams::getDisableShapeCache())
-//        return false; //TODO PartParams
+//        return false;
     auto prop = get(obj,false);
     if(!prop)
         return false;
@@ -968,11 +991,19 @@ bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &sha
     return false;
 }
 
+/**
+ * Find or create the property shape cache in a document object and then add an entry
+ * @param obj The Object
+ * @param shape The shape to cache
+ * @param subname The key to point at that shape
+ */
 void PropertyShapeCache::setShape(
     const App::DocumentObject *obj, const TopoShape &shape, const char *subname)
 {
+// March, 2024 Toponaming project:  There was originally a feature to disable shape cache
+// that has not been kept:
 //    if (PartParams::getDisableShapeCache())
-//        return;   // TODO: Part Params
+//        return;
     auto prop = get(obj,true);
     if(!prop)
         return;
