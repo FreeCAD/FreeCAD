@@ -9,7 +9,7 @@ endif(BUILD_GUI)
 set(Path_Scripts
     Init.py
     PathCommands.py
-    TestPathApp.py
+    TestCAMApp.py
 )
 
 if(BUILD_GUI)
@@ -276,65 +276,65 @@ SET(Tools_Shape_SRCS
     Tools/Shape/v-bit.fcstd
 )
 
-SET(PathTests_SRCS
-    PathTests/__init__.py
-    PathTests/boxtest.fcstd
-    PathTests/boxtest1.fcstd
-    PathTests/Drilling_1.FCStd
-    PathTests/drill_test1.FCStd
-    PathTests/PathTestUtils.py
-    PathTests/test_adaptive.fcstd
-    PathTests/test_profile.fcstd
-    PathTests/test_centroid_00.ngc
-    PathTests/test_filenaming.fcstd
-    PathTests/test_geomop.fcstd
-    PathTests/test_holes00.fcstd
-    PathTests/TestCentroidPost.py
-    PathTests/TestGrblPost.py
-    PathTests/TestLinuxCNCPost.py
-    PathTests/TestMach3Mach4Post.py
-    PathTests/TestPathAdaptive.py
-    PathTests/TestPathCore.py
-    PathTests/TestPathDepthParams.py
-    PathTests/TestPathDressupDogbone.py
-    PathTests/TestPathDressupDogboneII.py
-    PathTests/TestPathDressupHoldingTags.py
-    PathTests/TestPathDrillGenerator.py
-    PathTests/TestPathDrillable.py
-    PathTests/TestPathGeneratorDogboneII.py
-    PathTests/TestPathGeom.py
-    PathTests/TestPathHelix.py
-    PathTests/TestPathHelpers.py
-    PathTests/TestPathHelixGenerator.py
-    PathTests/TestPathLanguage.py
-    PathTests/TestPathLog.py
-    PathTests/TestPathOpDeburr.py
-    PathTests/TestPathOpUtil.py
-    PathTests/TestPathPost.py
-    PathTests/TestPathPreferences.py
-    PathTests/TestPathProfile.py
-    PathTests/TestPathPropertyBag.py
-    PathTests/TestPathRotationGenerator.py
-    PathTests/TestPathSetupSheet.py
-    PathTests/TestPathStock.py
-    PathTests/TestPathToolChangeGenerator.py
-    PathTests/TestPathThreadMilling.py
-    PathTests/TestPathThreadMillingGenerator.py
-    PathTests/TestPathToolBit.py
-    PathTests/TestPathToolController.py
-    PathTests/TestPathUtil.py
-    PathTests/TestPathVcarve.py
-    PathTests/TestPathVoronoi.py
-    PathTests/TestRefactoredCentroidPost.py
-    PathTests/TestRefactoredGrblPost.py
-    PathTests/TestRefactoredLinuxCNCPost.py
-    PathTests/TestRefactoredMach3Mach4Post.py
-    PathTests/TestRefactoredTestPost.py
-    PathTests/TestRefactoredTestPostGCodes.py
-    PathTests/TestRefactoredTestPostMCodes.py
-    PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
-    PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
-    PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+SET(Tests_SRCS
+    Tests/__init__.py
+    Tests/boxtest.fcstd
+    Tests/boxtest1.fcstd
+    Tests/Drilling_1.FCStd
+    Tests/drill_test1.FCStd
+    Tests/PathTestUtils.py
+    Tests/test_adaptive.fcstd
+    Tests/test_profile.fcstd
+    Tests/test_centroid_00.ngc
+    Tests/test_filenaming.fcstd
+    Tests/test_geomop.fcstd
+    Tests/test_holes00.fcstd
+    Tests/TestCentroidPost.py
+    Tests/TestGrblPost.py
+    Tests/TestLinuxCNCPost.py
+    Tests/TestMach3Mach4Post.py
+    Tests/TestPathAdaptive.py
+    Tests/TestPathCore.py
+    Tests/TestPathDepthParams.py
+    Tests/TestPathDressupDogbone.py
+    Tests/TestPathDressupDogboneII.py
+    Tests/TestPathDressupHoldingTags.py
+    Tests/TestPathDrillGenerator.py
+    Tests/TestPathDrillable.py
+    Tests/TestPathGeneratorDogboneII.py
+    Tests/TestPathGeom.py
+    Tests/TestPathHelix.py
+    Tests/TestPathHelpers.py
+    Tests/TestPathHelixGenerator.py
+    Tests/TestPathLanguage.py
+    Tests/TestPathLog.py
+    Tests/TestPathOpDeburr.py
+    Tests/TestPathOpUtil.py
+    Tests/TestPathPost.py
+    Tests/TestPathPreferences.py
+    Tests/TestPathProfile.py
+    Tests/TestPathPropertyBag.py
+    Tests/TestPathRotationGenerator.py
+    Tests/TestPathSetupSheet.py
+    Tests/TestPathStock.py
+    Tests/TestPathToolChangeGenerator.py
+    Tests/TestPathThreadMilling.py
+    Tests/TestPathThreadMillingGenerator.py
+    Tests/TestPathToolBit.py
+    Tests/TestPathToolController.py
+    Tests/TestPathUtil.py
+    Tests/TestPathVcarve.py
+    Tests/TestPathVoronoi.py
+    Tests/TestRefactoredCentroidPost.py
+    Tests/TestRefactoredGrblPost.py
+    Tests/TestRefactoredLinuxCNCPost.py
+    Tests/TestRefactoredMach3Mach4Post.py
+    Tests/TestRefactoredTestPost.py
+    Tests/TestRefactoredTestPostGCodes.py
+    Tests/TestRefactoredTestPostMCodes.py
+    Tests/Tools/Bit/test-path-tool-bit-bit-00.fctb
+    Tests/Tools/Library/test-path-tool-bit-library-00.fctl
+    Tests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
 )
 
 SET(PathImages_Ops
@@ -397,15 +397,15 @@ ADD_CUSTOM_TARGET(PathScripts ALL
 
 SET(test_files
   ${Path_Scripts}
-  ${PathTests_SRCS}
+  ${Tests_SRCS}
 )
 
-ADD_CUSTOM_TARGET(PathTests ALL
+ADD_CUSTOM_TARGET(Tests ALL
     SOURCES ${test_files}
 )
 
 fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/CAM" ${all_files})
-fc_copy_sources(PathTests "${CMAKE_BINARY_DIR}/Mod/CAM" ${test_files})
+fc_copy_sources(Tests "${CMAKE_BINARY_DIR}/Mod/CAM" ${test_files})
 
 INSTALL(
     FILES
@@ -512,16 +512,16 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathTests_SRCS}
+        ${Tests_SRCS}
     DESTINATION
-        Mod/CAM/PathTests
+        Mod/CAM/Tests
 )
 
 INSTALL(
   DIRECTORY
-      PathTests/Tools
+      Tests/Tools
   DESTINATION
-        Mod/CAM/PathTests
+        Mod/CAM/Tests
 )
 
 
