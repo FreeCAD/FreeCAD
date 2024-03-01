@@ -90,6 +90,7 @@ public:
     PropertyString CreationDate;
     /// user last modified the document
     PropertyString LastModifiedBy;
+    // TODO: Use timestamp instead, i10n
     PropertyString LastModifiedDate;
     /// company name UTF8(optional)
     PropertyString Company;
@@ -600,6 +601,9 @@ private:
 
     std::string oldLabel;
     std::string myName;
+
+    /// Time document was last modified
+    std::time_t myEditTime;
 };
 
 template<typename T>

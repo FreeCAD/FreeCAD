@@ -59,6 +59,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #ifndef _PreComp_
 # include <bitset>
+# include <chrono>
 # include <stack>
 # include <boost/filesystem.hpp>
 #endif
@@ -812,6 +813,12 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Transient | Prop_ReadOnly),
                       "The path to the file where the document is saved to");
+
+    if (!myName.empty() && fs::exists(fs::absolute(fs::path(FileName.getValue()))))
+        myEditTime = fs::last_write_time(fs::absolute(fs::path(FileName.getValue())));
+    else
+        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
     ADD_PROPERTY_TYPE(CreatedBy, (Author.c_str()), 0, Prop_None, "The creator of the document");
     ADD_PROPERTY_TYPE(
         CreationDate, (CreationDateString.c_str()), 0, Prop_ReadOnly, "Date of creation");
@@ -876,6 +883,7 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden | Prop_ReadOnly),
                       "Link of the tip object of the document");
+
     Uid.touch();
 }
 
@@ -1606,8 +1614,19 @@ bool Document::save ()
             TipName.setValue(Tip.getValue()->getNameInDocument());
         }
 
+        // TODO: First check last modified _time_ of previous stored document if it exists
+        auto filepath = fs::absolute(fs::path(FileName.getValue()));
+        std::time_t lastModifiedTime;
+        if (fs::exists(filepath)) {
+            lastModifiedTime = fs::last_write_time(filepath);
+            if (lastModifiedTime > myEditTime) {
+                throw Base::FileException(
+                    "File was edited externally. Aborting Save.", FileName.getValue());
+            }
+        }
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
+        myEditTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         // set author if needed
         bool saveAuthor = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
