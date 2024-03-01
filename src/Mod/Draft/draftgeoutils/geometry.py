@@ -219,7 +219,6 @@ def get_spline_normal(edge, tol=-1):
         return None
 
 
-# TODO 2023.11.19 - 2024.02.25
 def get_shape_normal(shape):
     """Find the normal of a shape or list of points or colinear edges, if possible."""
 
