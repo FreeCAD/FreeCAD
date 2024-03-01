@@ -420,6 +420,8 @@ void Part::Measure::initialize() {
     app.addMeasureHandler("Part", PartMeasureTypeCb);
 
     std::vector<std::string> proxyList(  { "Part", "PartDesign", "Sketcher" } );
+
+    // wf re win ci: how does this link? Part doesn't have Measure lib in cmake
     // Extend MeasureLength
     MeasureLength::addGeometryHandlers(proxyList, MeasureLengthHandler);
 

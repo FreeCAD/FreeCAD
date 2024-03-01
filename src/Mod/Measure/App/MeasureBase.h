@@ -119,11 +119,11 @@ public:
     }
 
 private:
-    static HandlerMap _mGeometryHandlers;
+    inline static HandlerMap _mGeometryHandlers = MeasureBaseExtendable<T>::HandlerMap();
 };
 
-template <typename T>
-typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers = MeasureBaseExtendable<T>::HandlerMap();
+// template <typename T>
+// typename MeasureBaseExtendable<T>::HandlerMap MeasureBaseExtendable<T>::_mGeometryHandlers = MeasureBaseExtendable<T>::HandlerMap();
 
 
 } //namespace Measure

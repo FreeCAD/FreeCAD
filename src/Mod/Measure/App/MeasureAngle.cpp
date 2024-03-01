@@ -31,7 +31,6 @@
 
 #include "MeasureAngle.h"
 
-
 using namespace Measure;
 
 PROPERTY_SOURCE(Measure::MeasureAngle, Measure::MeasureBase)
@@ -259,4 +258,9 @@ void MeasureAngle::onChanged(const App::Property* prop)
 std::vector<App::DocumentObject*> MeasureAngle::getSubject() const
 {
     return {Element1.getValue()};
+}
+
+namespace Measure{
+// explicit template instantiation
+template class MeasureExport MeasureBaseExtendable<Measure::MeasureAngleInfo>;
 }
