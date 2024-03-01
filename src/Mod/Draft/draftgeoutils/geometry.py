@@ -398,10 +398,7 @@ def is_straight_line(shape, tol=-1):
     if len(shape.Edges) >= 1:
         start_edge = shape.Edges[0]
         dir_start_edge = start_edge.tangentAt(start_edge.FirstParameter)
-
-        # TODO fix - 2024-02-25
         point_start_edge = start_edge.firstVertex().Point
-        #
 
         #set tolerance
         if tol <=0:
@@ -418,7 +415,6 @@ def is_straight_line(shape, tol=-1):
             # enough use the cross product of directions (or dot with a normal)
             if (abs(edge.Length - first_point.distanceToPoint(last_point)) > err
 
-                # TODO fix - 2024-02-25b
                 # https://forum.freecad.org/viewtopic.php?p=726101#p726101
                 # Shape with parallel edges but not colinear used to return True
                 # by this function, below line added fixes this bug.
@@ -437,7 +433,6 @@ def is_straight_line(shape, tol=-1):
                 # ./draftmake/make_wire.py
                 or first_point.distanceToLine(point_start_edge, dir_start_edge) > err \
                 #
-
                 or dir_start_edge.cross(dir_edge).Length > err):
                 return False
 
