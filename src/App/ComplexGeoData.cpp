@@ -189,6 +189,17 @@ const std::string &ComplexGeoData::elementMapPrefix() {
     return prefix;
 }
 
+std::string ComplexGeoData::getElementMapVersion() const {
+    return "4";
+}
+
+bool ComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    return !boost::equals(ver, "3")
+        && !boost::equals(ver, "4")
+        && !boost::starts_with(ver, "3.");
+}
+
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {
@@ -651,6 +662,19 @@ void ComplexGeoData::beforeSave() const
     if (this->_elementMap) {
         this->_elementMap->beforeSave(Hasher);
     }
+}
+
+void ComplexGeoData::hashChildMaps()
+{
+    flushElementMap();
+    if (_elementMap)
+        _elementMap->hashChildMaps(Tag);
+}
+
+bool ComplexGeoData::hasChildElementMap() const
+{
+    flushElementMap();
+    return _elementMap && _elementMap->hasChildElementMap();
 }
 
 

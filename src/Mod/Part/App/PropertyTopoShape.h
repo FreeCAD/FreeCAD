@@ -35,6 +35,7 @@
 namespace Part
 {
 
+class  Feature;
 /** The part shape property class.
  * @author Werner Mayer
  */
@@ -51,10 +52,10 @@ public:
     /// set the part shape
     void setValue(const TopoShape&);
     /// set the part shape
-    void setValue(const TopoDS_Shape&);
+    void setValue(const TopoDS_Shape&, bool resetElementMap=true);
     /// get the part shape
     const TopoDS_Shape& getValue() const;
-    const TopoShape& getShape() const;
+    TopoShape getShape() const;
     const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
@@ -85,6 +86,8 @@ public:
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
 
+    virtual void beforeSave() const override;
+
     void SaveDocFile (Base::Writer &writer) const override;
     void RestoreDocFile(Base::Reader &reader) override;
 
@@ -96,6 +99,13 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
+    virtual std::string getElementMapVersion(bool restored=false) const override;
+    void resetElementMapVersion() {_Ver.clear();}
+
+    virtual void afterRestore() override;
+
+    friend class Feature;
+
 private:
     void saveToFile(Base::Writer &writer) const;
     void loadFromFile(Base::Reader &reader);
@@ -103,6 +113,9 @@ private:
 
 private:
     TopoShape _Shape;
+    std::string _Ver;
+    mutable int _HasherIndex = 0;
+    mutable bool _SaveHasher = false;
 };
 
 struct PartExport ShapeHistory {
@@ -115,6 +128,20 @@ struct PartExport ShapeHistory {
 
     TopAbs_ShapeEnum type;
     MapList shapeMap;
+    ShapeHistory() {}
+    /**
+     * Build a history of changes
+     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * type: The type of object we are interested in, e.g. TopAbs_FACE
+     * newS: The new shape that was created by the operation
+     * oldS: The original shape prior to the operation
+     */
+    ShapeHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+                 const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void reset(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+               const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void join(const ShapeHistory &newH);
+
 };
 
 class PartExport PropertyShapeHistory : public App::PropertyLists
@@ -168,6 +195,20 @@ private:
 struct PartExport FilletElement {
     int edgeid;
     double radius1, radius2;
+
+    FilletElement(int id=0,double r1=1.0,double r2=1.0)
+        :edgeid(id),radius1(r1),radius2(r2)
+    {}
+
+    bool operator<(const FilletElement &other) const {
+        return edgeid < other.edgeid;
+    }
+
+    bool operator==(const FilletElement &other) const {
+        return edgeid == other.edgeid
+            && radius1 == other.radius1
+            && radius2 == other.radius2;
+    }
 };
 
 class PartExport PropertyFilletEdges : public App::PropertyLists
@@ -213,6 +254,34 @@ public:
 
 private:
     std::vector<FilletElement> _lValueList;
+};
+
+
+class PartExport PropertyShapeCache: public App::Property {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    virtual App::Property *Copy(void) const override;
+
+    virtual void Paste(const App::Property &) override;
+
+    virtual PyObject *getPyObject() override;
+
+    virtual void setPyObject(PyObject *value) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    static PropertyShapeCache *get(const App::DocumentObject *obj, bool create);
+    static bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0);
+    static void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0);
+
+private:
+    void slotChanged(const App::DocumentObject &, const App::Property &prop);
+
+private:
+    std::unordered_map<std::string, TopoShape> cache;
+    boost::signals2::scoped_connection connChanged;
 };
 
 } //namespace Part
