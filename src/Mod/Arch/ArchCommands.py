@@ -112,8 +112,8 @@ def addComponents(objectsList,host):
                             g.append(host)
                             o.Hosts = g
                 elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
-                    if o.Support == host:
-                        o.Support = None
+                    if o.AttachmentSupport == host:
+                        o.AttachmentSupport = None
                     host.Tool = o
                 elif Draft.getType(o) == "Axis":
                     if not o in x:

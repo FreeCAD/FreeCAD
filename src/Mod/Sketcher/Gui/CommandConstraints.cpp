@@ -844,7 +844,7 @@ int SketchSelection::setUp()
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[1].getObject() != SketchObj->Support.getValue()) {
+            if (selection[1].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
@@ -856,7 +856,7 @@ int SketchSelection::setUp()
         else if (selection[1].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[0].getObject() != SketchObj->Support.getValue()) {
+            if (selection[0].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }

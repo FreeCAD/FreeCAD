@@ -85,7 +85,7 @@ class TestSubShapeBinder(unittest.TestCase):
         """ Test case for PR #8763 """
         body = self.Doc.addObject('PartDesign::Body','Body')
         sketch = body.newObject('Sketcher::SketchObject','Sketch')
-        sketch.Support = (self.Doc.XZ_Plane,[''])
+        sketch.AttachmentSupport = (self.Doc.XZ_Plane,[''])
         sketch.MapMode = 'FlatFace'
         self.Doc.recompute()
 

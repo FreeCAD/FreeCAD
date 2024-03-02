@@ -119,7 +119,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
             obj.FirstAngle = math.copysign(abs(startangle) % 360, startangle)
             obj.LastAngle = math.copysign(abs(endangle) % 360, endangle)
 
-    obj.Support = support
+    obj.AttachmentSupport = support
 
     if placement:
         obj.Placement = placement

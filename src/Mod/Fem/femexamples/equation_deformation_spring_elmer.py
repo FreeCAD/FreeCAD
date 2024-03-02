@@ -73,7 +73,7 @@ def setup(doc=None, solvertype="elmer"):
     # sketch defining the spring form
     body = doc.addObject("PartDesign::Body", "Body")
     SketchPath = body.newObject("Sketcher::SketchObject", "Spring_Path")
-    SketchPath.Support = (doc.getObject("XY_Plane"), [""])
+    SketchPath.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
     SketchPath.MapMode = "FlatFace"
     SketchPath.addGeometry(Part.LineSegment(Vector(
         -20.0, 30.0, 0.0), Vector(-20.0, 0.0, 0.0)), False)
@@ -91,7 +91,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # sketch defining the spring cross section
     SketchCircle = body.newObject("Sketcher::SketchObject", "Spring_Circle")
-    SketchCircle.Support = (doc.getObject("XZ_Plane"), [""])
+    SketchCircle.AttachmentSupport = (doc.getObject("XZ_Plane"), [""])
     SketchCircle.MapMode = "FlatFace"
     SketchCircle.addGeometry(Part.Circle(Vector(-20.0, 0.0, 0.0), Vector(0, 0, 1), 7.5), False)
     SketchCircle.addConstraint(Sketcher.Constraint('PointOnObject', 0, 3, -1))

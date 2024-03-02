@@ -4003,7 +4003,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 
     // Note: Checking for the body of the support doesn't work when the support are the three base
     // planes
-    // App::DocumentObject *support = this->Support.getValue();
+    // App::DocumentObject *support = this->AttachmentSupport.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
@@ -4068,7 +4068,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // Note: Checking for the body of the support doesn't work when the support are the three base
     // planes
-    // App::DocumentObject *support = this->Support.getValue();
+    // App::DocumentObject *support = this->AttachmentSupport.getValue();
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
@@ -7375,7 +7375,7 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
 bool SketchObject::evaluateSupport()
 {
     // returns false if the shape is broken, null or non-planar
-    App::DocumentObject* link = Support.getValue();
+    App::DocumentObject* link = AttachmentSupport.getValue();
     if (!link || !link->isDerivedFrom<Part::Feature>())
         return false;
     return true;
@@ -8863,7 +8863,7 @@ void SketchObject::onChanged(const App::Property* prop)
 #if 0
     // For now do not delete anything (#0001791). When changing the support
     // face it might be better to check which external geometries can be kept.
-    else if (prop == &Support) {
+    else if (prop == &AttachmentSupport) {
         // make sure not to change anything while restoring this object
         if (!isRestoring()) {
             // if support face has changed then clear the external geometry
