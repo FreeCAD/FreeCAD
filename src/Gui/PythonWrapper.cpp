@@ -485,12 +485,22 @@ Py::Object qt_wrapInstance(qttype object,
 {
     Py::Module mainmod(importShiboken(), true);
     Py::Callable func = mainmod.getDict().getItem("wrapInstance");
+    if (func.isNull()) {
+        // Failure will be handled in the calling instance
+        return func;
+    }
+
+    Py::Module qtmod(importPySide(moduleName));
+    Py::Object item = qtmod.getDict().getItem(className);
+    if (item.isNull()) {
+        // Failure will be handled in the calling instance
+        return item;
+    }
 
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr((void*)object));
+    arguments[1] = item;
 
-    Py::Module qtmod(importPySide(moduleName));
-    arguments[1] = qtmod.getDict().getItem(className);
     return func.apply(arguments);
 }
 
@@ -845,7 +855,9 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
                 }
 
                 Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets"));
-                PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
+                if (!pyChild.isNull()) {
+                    PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
+                }
 #endif
             }
             createChildrenNameAttributes(root, child);
