@@ -470,6 +470,9 @@ qttype* qt_getCppType(PyObject* pyobj)
     // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
     Py::Module mainmod(importShiboken(), true);
     Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+    if (func.isNull()) {
+        throw Py::RuntimeError("Failed to get C++ pointer");
+    }
 
     Py::Tuple arguments(1);
     arguments[0] = Py::Object(pyobj); // PySide pointer
@@ -484,12 +487,22 @@ Py::Object qt_wrapInstance(qttype object,
 {
     Py::Module mainmod(importShiboken(), true);
     Py::Callable func = mainmod.getDict().getItem("wrapInstance");
+    if (func.isNull()) {
+        // Failure will be handled in the calling instance
+        return func;
+    }
 
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr((void*)object));
 
     Py::Module qtmod(importPySide(moduleName));
-    arguments[1] = qtmod.getDict().getItem(className);
+    Py::Object item = qtmod.getDict().getItem(className);
+    if (item.isNull()) {
+        // Failure will be handled in the calling instance
+        return item;
+    }
+
+    arguments[1] = item;
     return func.apply(arguments);
 }
 
@@ -651,7 +664,11 @@ Py::Object PythonWrapper::fromQAction(QAction* action)
     }
 #else
     // Access shiboken/PySide via Python
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    Py::Object obj = qt_wrapInstance<QAction*>(action, "QAction", "QtWidgets");
+#else
     Py::Object obj = qt_wrapInstance<QAction*>(action, "QAction", "QtGui");
+#endif
     if (!obj.isNull()) {
         return obj;
     }
@@ -839,7 +856,9 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
                 }
 
                 Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "QtWidgets"));
-                PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
+                if (!pyChild.isNull()) {
+                    PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
+                }
 #endif
             }
             createChildrenNameAttributes(root, child);
