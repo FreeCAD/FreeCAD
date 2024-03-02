@@ -73,6 +73,12 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "Elastic",
         "Fast curving"
     ]
+    known_mesh_SubdivisionAlgorithms = [
+        "None",
+        "All Quadrangles",
+        "All Hexahedra",
+        "Barycentric"
+    ]
 
     def __init__(self, obj):
         super(MeshGmsh, self).__init__(obj)
@@ -305,3 +311,13 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "For each group create not only the elements but the nodes too."
             )
             obj.GroupsOfNodes = False
+
+        if not hasattr(obj, "SubdivisionAlgorithm"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SubdivisionAlgorithm",
+                "FEM Gmsh Mesh Params",
+                "Mesh subdivision algorithm"
+            )
+            obj.SubdivisionAlgorithm = MeshGmsh.known_mesh_SubdivisionAlgorithms
+            obj.SubdivisionAlgorithm = "None"
