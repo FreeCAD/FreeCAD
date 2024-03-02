@@ -61,7 +61,6 @@ public:
         return PartDesign::FeatureAddSub::execute();
     }
 protected:
-    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
     Type primitiveType = Box;

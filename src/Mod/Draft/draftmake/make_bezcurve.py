@@ -91,7 +91,7 @@ def make_bezcurve(pointslist,
         obj.Degree = min((len(pointslist)-(1 * (not closed))),
                          Part.BezierCurve().MaxDegree)
     obj.Closed = closed
-    obj.Support = support
+    obj.AttachmentSupport = support
     if face is not None:
         obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)

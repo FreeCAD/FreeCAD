@@ -2973,7 +2973,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.Support if not "
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
                     "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
@@ -3012,7 +3012,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a
     // recompute if we just close the sketch without touching anything.
-    if (getSketchObject()->Support.getValue()) {
+    if (getSketchObject()->AttachmentSupport.getValue()) {
         if (!getSketchObject()->evaluateSupport())
             getSketchObject()->validateExternalLinks();
     }

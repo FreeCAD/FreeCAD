@@ -144,7 +144,7 @@ enum eRefType {
 };
 
 
-using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to Support contents for example
+using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to AttachmentSupport contents for example
 using refTypeStringList = std::vector<refTypeString>; //a set of type strings, defines which selection sets are supported by a certain mode
 
 
