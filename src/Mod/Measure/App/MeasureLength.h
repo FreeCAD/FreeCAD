@@ -30,6 +30,7 @@
 #include <App/PropertyUnits.h>
 #include <App/GeoFeature.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "MeasureBase.h"
@@ -37,14 +38,7 @@
 namespace Measure
 {
 
-struct MeasureLengthInfo {
-    bool valid;
-    double length;
-    Base::Placement placement;
-};
-
-
-class MeasureExport MeasureLength : public Measure::MeasureBaseExtendable<MeasureLengthInfo>
+class MeasureExport MeasureLength : public Measure::MeasureBaseExtendable<Part::MeasureLengthInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureLength);
 

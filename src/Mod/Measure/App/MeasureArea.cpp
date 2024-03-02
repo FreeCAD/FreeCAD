@@ -131,7 +131,9 @@ void MeasureArea::recalculateArea()
         }
 
         std::string obName = object->getNameInDocument();
-        result += handler(&obName, &subElement).area;
+        auto info = handler(&obName, &subElement);
+        auto areaInfo = dynamic_cast<Part::MeasureAreaInfo*>(info);
+        result += areaInfo->area;
     }
 
     Area.setValue(result);
@@ -170,7 +172,9 @@ Base::Placement MeasureArea::getPlacement() {
     }
 
     std::string obName = object->getNameInDocument();
-    return handler(&obName, &subElement).placement;
+    auto info = handler(&obName, &subElement);
+    auto areaInfo = dynamic_cast<Part::MeasureAreaInfo*>(info);
+    return areaInfo->placement;
 }
 
 

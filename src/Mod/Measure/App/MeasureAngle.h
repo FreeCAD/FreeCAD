@@ -33,6 +33,8 @@
 #include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
+
 #include "MeasureBase.h"
 
 
@@ -40,14 +42,7 @@ namespace Measure
 {
 
 
-struct MeasureAngleInfo {
-    bool valid;
-    Base::Vector3d orientation;
-    Base::Vector3d position;
-};
-
-
-class MeasureExport MeasureAngle : public Measure::MeasureBaseExtendable<MeasureAngleInfo>
+class MeasureExport MeasureAngle : public Measure::MeasureBaseExtendable<Part::MeasureAngleInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 

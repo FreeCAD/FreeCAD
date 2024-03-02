@@ -37,6 +37,9 @@
 #include <Base/Placement.h>
 #include <Base/Interpreter.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
+#include <Mod/Part/App/MeasureClient.h>  // needed?
+
 
 namespace Measure
 {
@@ -86,7 +89,7 @@ template <typename T>
 class MeasureExport MeasureBaseExtendable : public MeasureBase
 {
 
-    using GeometryHandler = std::function<T (std::string*, std::string*)>;
+    using GeometryHandler = std::function<Part::MeasureInfo* (std::string*, std::string*)>;
     using HandlerMap = std::map<std::string, GeometryHandler>;
 
 

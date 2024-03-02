@@ -129,8 +129,9 @@ void MeasurePosition::recalculatePosition()
     }
 
     std::string obName = object->getNameInDocument();
-    auto result = handler(&obName, &subElement);
-    Position.setValue(result);
+    auto info = handler(&obName, &subElement);
+    auto positionInfo = dynamic_cast<Part::MeasurePositionInfo*>(info);
+    Position.setValue(positionInfo->position);
 }
 
 void MeasurePosition::onChanged(const App::Property* prop)

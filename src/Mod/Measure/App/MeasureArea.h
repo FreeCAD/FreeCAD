@@ -26,14 +26,13 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#include <functional>
 #include <string>
-#include <map>
-#include <tuple>
 
 #include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 #include <App/GeoFeature.h>
+
+#include <Mod/Part/App/MeasureInfo.h>
 
 #include "MeasureBase.h"
 
@@ -41,14 +40,10 @@
 namespace Measure
 {
 
-struct MeasureAreaInfo {
-    bool valid;
-    double area;
-    Base::Placement placement;
-};
 
 
-class MeasureExport MeasureArea : public Measure::MeasureBaseExtendable<MeasureAreaInfo>
+
+class MeasureExport MeasureArea : public Measure::MeasureBaseExtendable<Part::MeasureAreaInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureArea);
 
@@ -74,7 +69,7 @@ public:
     App::Property* getResultProp() override {return &this->Area;}
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement();
+    Base::Placement getPlacement() override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;

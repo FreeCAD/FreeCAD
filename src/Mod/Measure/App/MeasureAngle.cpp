@@ -142,9 +142,9 @@ bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::V
     auto handler = getGeometryHandler(mod);
 
     std::string obName = static_cast<std::string>(ob.getNameInDocument());
-    Measure::MeasureAngleInfo info = handler(&obName, &subName);
-
-    vecOut = info.orientation;
+    auto info = handler(&obName, &subName);
+    auto angleInfo = dynamic_cast<Part::MeasureAngleInfo*>(info);
+    vecOut = angleInfo->orientation;
     return true;
 }
 
@@ -158,9 +158,9 @@ Base::Vector3d MeasureAngle::getLoc(App::DocumentObject& ob, std::string& subNam
 
     auto handler = getGeometryHandler(mod);
     std::string obName = static_cast<std::string>(ob.getNameInDocument());
-    MeasureAngleInfo info = handler(&obName, &subName);
-
-    return info.position;
+    auto info = handler(&obName, &subName);
+    auto angleInfo = dynamic_cast<Part::MeasureAngleInfo*>(info);
+    return angleInfo->position;
 }
 
 gp_Vec MeasureAngle::vector1() {
@@ -260,7 +260,7 @@ std::vector<App::DocumentObject*> MeasureAngle::getSubject() const
     return {Element1.getValue()};
 }
 
-namespace Measure{
-// explicit template instantiation
-template class MeasureExport MeasureBaseExtendable<Measure::MeasureAngleInfo>;
-}
+// namespace Measure{
+// // explicit template instantiation
+// template class MeasureExport MeasureBaseExtendable<Part::MeasureAngleInfo>;
+// }

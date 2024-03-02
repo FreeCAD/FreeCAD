@@ -24,13 +24,16 @@
 #ifndef APP_MEASUREPOSITION_H
 #define APP_MEASUREPOSITION_H
 
+#include <Mod/Measure/MeasureGlobal.h>
+
+#include <QTextStream>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 
-#include <QTextStream>
+#include <Mod/Part/App/MeasureInfo.h>
 
-#include <Mod/Measure/MeasureGlobal.h>
 #include "MeasureBase.h"
 
 
@@ -38,7 +41,7 @@ namespace Measure
 {
 
 
-class MeasureExport MeasurePosition : public Measure::MeasureBaseExtendable<Base::Vector3d>
+class MeasureExport MeasurePosition : public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasurePosition);
 
@@ -58,13 +61,13 @@ public:
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);
-    void parseSelection(const App::MeasureSelection& selection);
+    void parseSelection(const App::MeasureSelection& selection) override;
     
     std::vector<std::string> getInputProps() override {return {"Element"};}
     App::Property* getResultProp() override {return &this->Position;}
     QString getResultString() override;
 
-    Base::Placement getPlacement();
+    Base::Placement getPlacement() override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;

@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *MeasureRadius::execute()
 
 void MeasureRadius::recalculateRadius()
 {
-    Radius.setValue(getMeasureInfoFirst().radius);
+    Radius.setValue(getMeasureInfoFirst()->radius);
 }
 
 void MeasureRadius::onChanged(const App::Property* prop)
@@ -175,7 +175,7 @@ void MeasureRadius::onChanged(const App::Property* prop)
 
 //! return a placement (location + orientation) for the first element
 Base::Placement MeasureRadius::getPlacement() {
-    auto loc = getMeasureInfoFirst().pointOnCurve;
+    auto loc = getMeasureInfoFirst()->pointOnCurve;
     auto p = Base::Placement();
     p.setPosition(loc);
     return p;
@@ -185,18 +185,18 @@ Base::Placement MeasureRadius::getPlacement() {
 //! return the pointOnCurve element in MeasureRadiusInfo for the first element
 Base::Vector3d MeasureRadius::getPointOnCurve() const
 {
-    return getMeasureInfoFirst().pointOnCurve;
+    return getMeasureInfoFirst()->pointOnCurve;
 }
 
 //! get the handler's result for the first element
-MeasureRadiusInfo MeasureRadius::getMeasureInfoFirst() const
+Part::MeasureRadiusInfo* MeasureRadius::getMeasureInfoFirst() const
 {
    const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
     if (!object || subElements.empty()) {
 // NOLINTNEXTLINE(modernize-return-braced-init-list)
-        return MeasureRadiusInfo();
+        return new Part::MeasureRadiusInfo();
     }
 
     std::string subElement = subElements.front();
@@ -209,7 +209,9 @@ MeasureRadiusInfo MeasureRadius::getMeasureInfoFirst() const
     }
 
     std::string obName = object->getNameInDocument();
-    return handler(&obName, &subElement);
+    auto info = handler(&obName, &subElement);
+    auto radiusInfo = dynamic_cast<Part::MeasureRadiusInfo*>(info);
+    return radiusInfo;
 }
 
 //! Return the object we are measuring

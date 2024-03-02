@@ -184,7 +184,7 @@
 #include <ShapeUpgrade/UnifySameDomainPy.h>
 
 #include <OCAF/ImportExportSettings.h>
-#include "Measure.h"
+#include "MeasureClient.h"
 
 
 namespace Part {
@@ -549,7 +549,7 @@ PyMOD_INIT_FUNC(Part)
     STEPControl_Controller::Init();
 
     OCAF::ImportExportSettings::initialize();
-    Part::Measure::initialize();
+    Part::MeasureClient::initialize();
     
     PyMOD_Return(partModule);
 }

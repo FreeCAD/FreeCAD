@@ -138,14 +138,15 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     App::DocumentObject* ob = prop->getValue();
     std::vector<std::string> subs = prop->getSubValues();
     
-    if (!ob || !ob->isValid() || subs.size() < 1 ) {
+    if (!ob || !ob->isValid() || subs.empty() ) {
         return false;
     }
 
     std::string subName = subs.at(0);
     const char* className = ob->getSubObject(subName.c_str())->getTypeId().getName();
-    std::string mod = ob->getClassTypeId().getModuleName(className);
-    
+    std::string mod = Base::Type::getModuleName(className);
+    // std::string mod = ob->getClassTypeId().getModuleName(className);
+
     if (!hasGeometryHandler(mod)) {
         return false;
     }
@@ -154,11 +155,12 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     std::string obName = static_cast<std::string>(ob->getNameInDocument());
 
     auto info = handler(&obName, &subName);
-    if (!info.valid) {
+    if (!info->valid) {
         return false;
     }
+    auto distanceInfo = dynamic_cast<Part::MeasureDistanceInfo*>(info);
 
-    rShape = info.shape;
+    rShape = *distanceInfo->getShape();
     return true;
 }
 

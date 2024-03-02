@@ -39,8 +39,9 @@
 #include <GProp_GProps.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <gp_Circ.hxx>
-#include <DatumFeature.h>
+#include <BRepBuilderAPI_Copy.hxx>
 
+#include <DatumFeature.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,7 +60,7 @@
 #include "VectorAdapter.h"
 #include "PartFeature.h"
 
-#include "Measure.h"
+#include "MeasureClient.h"
 
 // From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
 
@@ -248,18 +249,18 @@ Part::VectorAdapter buildAdapter(const App::DocumentObject* ob, std::string* obj
 }
 
 
-Measure::MeasureLengthInfo MeasureLengthHandler(std::string* objectName, std::string* subName){
+Part::MeasureLengthInfo* MeasureLengthHandler(std::string* objectName, std::string* subName){
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
-        return {false, 0.0, Base::Matrix4D()};
+        return new Part::MeasureLengthInfo{false, 0.0, Base::Matrix4D()};
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_EDGE) {
-        return {false, 0.0, Base::Matrix4D()};
+        return new Part::MeasureLengthInfo{false, 0.0, Base::Matrix4D()};
     }
 
     // Get Center of mass as the attachment point of the label
@@ -278,22 +279,22 @@ Measure::MeasureLengthInfo MeasureLengthHandler(std::string* objectName, std::st
     Base::Rotation rot(axisUp, elementDirection);
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
-    return {true, getLength(shape), placement};
+    return new Part::MeasureLengthInfo{true, getLength(shape), placement};
 }
 
-Measure::MeasureRadiusInfo MeasureRadiusHandler(std::string* objectName, std::string* subName){
+Part::MeasureRadiusInfo* MeasureRadiusHandler(std::string* objectName, std::string* subName){
     Base::Placement placement;      // curve center + orientation
     Base::Vector3d pointOnCurve;
 
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
 
     if (shape.IsNull()) {
-        return { false, 0.0, pointOnCurve, placement};
+        return new Part::MeasureRadiusInfo{ false, 0.0, pointOnCurve, placement};
     }
         TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_EDGE) {
-        return { false, 0.0, pointOnCurve, placement};
+        return new Part::MeasureRadiusInfo{ false, 0.0, pointOnCurve, placement};
     }
 
     // Get Center of mass as the attachment point of the label
@@ -312,22 +313,22 @@ Measure::MeasureRadiusInfo MeasureRadiusHandler(std::string* objectName, std::st
 
     placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
 
-    return { true, getRadius(shape), pointOnCurve, placement};
+    return new Part::MeasureRadiusInfo{ true, getRadius(shape), pointOnCurve, placement};
 }
 
 
-Measure::MeasureAreaInfo MeasureAreaHandler(std::string* objectName, std::string* subName){
+Part::MeasureAreaInfo* MeasureAreaHandler(std::string* objectName, std::string* subName){
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
-        return {false, 0.0, Base::Matrix4D()};
+        return new Part::MeasureAreaInfo{false, 0.0, Base::Matrix4D()};
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_FACE) {
-        return {false, 0.0, Base::Matrix4D()};
+        return new Part::MeasureAreaInfo{false, 0.0, Base::Matrix4D()};
     }
 
     // Get Center of mass as the attachment point of the label
@@ -338,36 +339,36 @@ Measure::MeasureAreaInfo MeasureAreaHandler(std::string* objectName, std::string
     // TODO: Center of Mass might not lie on the surface, somehow snap to the closest point on the surface? 
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
-    return {true, getFaceArea(shape), placement};
+    return new Part::MeasureAreaInfo{true, getFaceArea(shape), placement};
 }
 
 
-Base::Vector3d MeasurePositionHandler(std::string* objectName, std::string* subName) {
+Part::MeasurePositionInfo* MeasurePositionHandler(std::string* objectName, std::string* subName) {
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
 
     if (shape.IsNull()) {
         Base::Console().Message("MeasurePositionHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
-        return Base::Vector3d();
+        return new Part::MeasurePositionInfo{false, Base::Vector3d()};
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_VERTEX) {
-        return Base::Vector3d();
+        return new Part::MeasurePositionInfo{false, Base::Vector3d()};
     }
 
     TopoDS_Vertex vertex = TopoDS::Vertex(shape);    
     auto point = BRep_Tool::Pnt(vertex);
-    return Base::Vector3d(point.X(), point.Y(), point.Z());
+    return new Part::MeasurePositionInfo{ true, Base::Vector3d(point.X(), point.Y(), point.Z())};
 }
 
 
-Measure::MeasureAngleInfo MeasureAngleHandler(std::string* objectName, std::string* subName) {
+Part::MeasureAngleInfo* MeasureAngleHandler(std::string* objectName, std::string* subName) {
     App::DocumentObject* ob = App::GetApplication().getActiveDocument()->getObject(objectName->c_str());
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("MeasureAngleHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
-        return Measure::MeasureAngleInfo();
+        return new Part::MeasureAngleInfo();
     }
 
     TopAbs_ShapeEnum sType = shape.ShapeType();
@@ -393,50 +394,114 @@ Measure::MeasureAngleInfo MeasureAngleHandler(std::string* objectName, std::stri
 
     position.Set(vec.X(), vec.Y(), vec.Z());
 
-    Measure::MeasureAngleInfo info = {vAdapt.isValid(), (Base::Vector3d)vAdapt, position};
+    Part::MeasureAngleInfo* info = new Part::MeasureAngleInfo{vAdapt.isValid(), (Base::Vector3d)vAdapt, position};
     return info;
 }
 
 
-Measure::MeasureDistanceInfo MeasureDistanceHandler(std::string* objectName, std::string* subName) {
+Part::MeasureDistanceInfo* MeasureDistanceHandler(std::string* objectName, std::string* subName) {
+    // this will have to be a smart pointer
     TopoDS_Shape shape = getLocatedShape(*objectName, *subName);
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().Message("MeasureDistanceHandler did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
-        return Measure::MeasureDistanceInfo();
+        return new Part::MeasureDistanceInfo();
     }
 
-    // Just return the TopoDS_Shape here
-    return {true, shape};
+    // return a persistent copy of the TopoDS_Shape here as shape will go out of scope at end
+    BRepBuilderAPI_Copy copy(shape);
+    const TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
+    return new Part::MeasureDistanceInfo{true, newShape};
 }
 
 
-using namespace Measure;
+//using namespace Measure;
 
-void Part::Measure::initialize() {
+void Part::MeasureClient::initialize() {
 
     App::Application& app = App::GetApplication();
     app.addMeasureHandler("Part", PartMeasureTypeCb);
 
-    std::vector<std::string> proxyList(  { "Part", "PartDesign", "Sketcher" } );
+//    std::vector<std::string> proxyList(  { "Part", "PartDesign", "Sketcher" } );
 
-    // wf re win ci: how does this link? Part doesn't have Measure lib in cmake
-    // Extend MeasureLength
-    MeasureLength::addGeometryHandlers(proxyList, MeasureLengthHandler);
+//    // wf re win ci: how does this link? Part doesn't have Measure lib in cmake
+//    // Extend MeasureLength
+//    MeasureLength::addGeometryHandlers(proxyList, MeasureLengthHandler);
 
-    // Extend MeasurePosition
-    MeasurePosition::addGeometryHandlers(proxyList, MeasurePositionHandler);
+//    // Extend MeasurePosition
+//    MeasurePosition::addGeometryHandlers(proxyList, MeasurePositionHandler);
 
-    // Extend MeasureArea
-    MeasureArea::addGeometryHandlers(proxyList, MeasureAreaHandler);
+//    // Extend MeasureArea
+//    MeasureArea::addGeometryHandlers(proxyList, MeasureAreaHandler);
 
-    // Extend MeasureAngle
-    MeasureAngle::addGeometryHandlers(proxyList, MeasureAngleHandler);
+//    // Extend MeasureAngle
+//    MeasureAngle::addGeometryHandlers(proxyList, MeasureAngleHandler);
 
-    // Extend MeasureDistance
-    MeasureDistance::addGeometryHandlers(proxyList, MeasureDistanceHandler);
+//    // Extend MeasureDistance
+//    MeasureDistance::addGeometryHandlers(proxyList, MeasureDistanceHandler);
 
-    // Extend MeasureRadius
-    MeasureRadius::addGeometryHandlers(proxyList, MeasureRadiusHandler);
+//    // Extend MeasureRadius
+//    MeasureRadius::addGeometryHandlers(proxyList, MeasureRadiusHandler);
 }
+    // std::string m_module;
+    // std::string m_measureType;
+    // GeometryHandler m_callback;
+Part::CallbackRegistrationList Part::MeasureClient::reportLengthCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Length", MeasureLengthHandler);
+    callbacks.emplace_back("PartDesign", "Length", MeasureLengthHandler);
+    callbacks.emplace_back("Sketcher", "Length", MeasureLengthHandler);
+    return callbacks;
+}
+
+Part::CallbackRegistrationList Part::MeasureClient::reportPositionCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Position", MeasurePositionHandler);
+    callbacks.emplace_back("PartDesign", "Position", MeasurePositionHandler);
+    callbacks.emplace_back("Sketcher", "Position", MeasurePositionHandler);
+    return callbacks;
+}
+
+Part::CallbackRegistrationList Part::MeasureClient::reportAreaCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Area", MeasureAreaHandler);
+    callbacks.emplace_back("PartDesign", "Area", MeasureAreaHandler);
+    callbacks.emplace_back("Sketcher", "Area", MeasureAreaHandler);
+    return callbacks;
+}
+
+
+Part::CallbackRegistrationList Part::MeasureClient::reportAngleCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Angle", MeasureAngleHandler);
+    callbacks.emplace_back("PartDesign", "Angle", MeasureAngleHandler);
+    callbacks.emplace_back("Sketcher", "Angle", MeasureAngleHandler);
+    return callbacks;
+}
+
+
+Part::CallbackRegistrationList Part::MeasureClient::reportDistanceCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Distance", MeasureDistanceHandler);
+    callbacks.emplace_back("PartDesign", "Distance", MeasureDistanceHandler);
+    callbacks.emplace_back("Sketcher", "Distance", MeasureDistanceHandler);
+    return callbacks;
+}
+
+
+Part::CallbackRegistrationList Part::MeasureClient::reportRadiusCB()
+{
+    CallbackRegistrationList callbacks;
+    callbacks.emplace_back("Part", "Radius", MeasureRadiusHandler);
+    callbacks.emplace_back("PartDesign", "Radius", MeasureRadiusHandler);
+    callbacks.emplace_back("Sketcher", "Radius", MeasureRadiusHandler);
+    return callbacks;
+}
+
+

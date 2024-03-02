@@ -32,19 +32,16 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
+
 #include "MeasureBase.h"
 
 namespace Measure
 {
 
-// Translate geometry reference into an OCC type
-struct MeasureDistanceInfo {
-    bool valid;
-    TopoDS_Shape shape;
-};
 
 
-class MeasureExport MeasureDistance : public Measure::MeasureBaseExtendable<MeasureDistanceInfo>
+class MeasureExport MeasureDistance : public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureDistance);
 

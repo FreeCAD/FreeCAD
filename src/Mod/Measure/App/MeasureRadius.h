@@ -32,21 +32,16 @@
 #include <App/GeoFeature.h>
 #include <Base/Placement.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
+
 #include "MeasureBase.h"
 
 
 namespace Measure
 {
 
-struct MeasureRadiusInfo {
-    bool valid;
-    double radius;
-    Base::Vector3d pointOnCurve;
-    Base::Placement placement;  // curve center & circle orientation
-};
 
-
-class MeasureExport MeasureRadius : public Measure::MeasureBaseExtendable<MeasureRadiusInfo>
+class MeasureExport MeasureRadius : public Measure::MeasureBaseExtendable<Part::MeasureRadiusInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureRadius);
 
@@ -83,7 +78,7 @@ public:
 
 private:
     void onChanged(const App::Property* prop) override;
-    MeasureRadiusInfo getMeasureInfoFirst() const;
+    Part::MeasureRadiusInfo* getMeasureInfoFirst() const;
 
 
 };

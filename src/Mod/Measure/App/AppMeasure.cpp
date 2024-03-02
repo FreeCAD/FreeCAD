@@ -25,6 +25,9 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include <Mod/Part/App/MeasureInfo.h>
+#include <Mod/Part/App/MeasureClient.h>
+
 #include "Measurement.h"
 #include "MeasurementPy.h"
 
@@ -40,6 +43,16 @@
 #include "MeasureRadius.h"
 
 namespace Measure {
+
+// explicit template instantiations
+template class MeasureExport MeasureBaseExtendable<Part::MeasureAngleInfo>;
+template class MeasureExport MeasureBaseExtendable<Part::MeasureAreaInfo>;
+template class MeasureExport MeasureBaseExtendable<Part::MeasureDistanceInfo>;
+template class MeasureExport MeasureBaseExtendable<Part::MeasureLengthInfo>;
+template class MeasureExport MeasureBaseExtendable<Part::MeasurePositionInfo>;
+template class MeasureExport MeasureBaseExtendable<Part::MeasureRadiusInfo>;
+
+
 class Module : public Py::ExtensionModule<Module>
 {
 public:
@@ -137,6 +150,33 @@ PyMOD_INIT_FUNC(Measure)
             MeasureRadius::isValidSelection,
             MeasureRadius::isPrioritizedSelection
         );
+
+    // load measure callbacks from Part module
+    auto lengthList = Part::MeasureClient::reportLengthCB();
+    for (auto& entry : lengthList) {
+        MeasureBaseExtendable<Part::MeasureLengthInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+    auto angleList = Part::MeasureClient::reportAngleCB();
+    for (auto& entry : angleList) {
+        MeasureBaseExtendable<Part::MeasureAngleInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+    auto areaList =  Part::MeasureClient::reportAreaCB();
+    for (auto& entry : areaList) {
+        MeasureBaseExtendable<Part::MeasureAreaInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+    auto distanceList = Part::MeasureClient::reportDistanceCB();
+    for (auto& entry : distanceList) {
+        MeasureBaseExtendable<Part::MeasureDistanceInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+    auto positionList = Part::MeasureClient::reportPositionCB();
+    for (auto& entry : positionList) {
+        MeasureBaseExtendable<Part::MeasurePositionInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+    auto radiusList = Part::MeasureClient::reportRadiusCB();
+        for (auto& entry : radiusList) {
+        MeasureBaseExtendable<Part::MeasureRadiusInfo>::addGeometryHandler(entry.m_module, entry.m_callback);
+    }
+
 
     Base::Console().Log("Loading Measure module... done\n");
     PyMOD_Return(mod);
