@@ -471,6 +471,9 @@ qttype* qt_getCppType(PyObject* pyobj)
     // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
     Py::Module mainmod(importShiboken(), true);
     Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+    if (func.isNull()) {
+        throw Py::RuntimeError("Failed to get C++ pointer");
+    }
 
     Py::Tuple arguments(1);
     arguments[0] = Py::Object(pyobj); // PySide pointer
