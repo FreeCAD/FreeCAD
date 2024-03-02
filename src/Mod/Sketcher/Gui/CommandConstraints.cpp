@@ -6427,8 +6427,8 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain tangent");
-    sToolTipText = QT_TR_NOOP("Create a tangent constraint between two entities");
+    sMenuText = QT_TR_NOOP("Constrain tangent or colinear");
+    sToolTipText = QT_TR_NOOP("Create a tangent or colinear constraint between two entities");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";
