@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QAction>
-# include <QTimer>
+#include <QMessageBox>
+#include <QTimer>
 #endif
 
 #include <Base/UnitsApi.h>
@@ -60,107 +59,29 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPolarPatternParameters */
 
-TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
+TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed* TransformedView,
+                                                       QWidget* parent)
     : TaskTransformedParameters(TransformedView, parent)
     , ui(new Ui_TaskPolarPatternParameters)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    this->groupLayout()->addWidget(proxy);
-
-    ui->buttonOK->hide();
-    ui->checkBoxUpdateView->setEnabled(true);
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
 }
 
-TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask), ui(new Ui_TaskPolarPatternParameters)
+TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters* parentTask,
+                                                       QWidget* parameterWidget)
+    : TaskTransformedParameters(parentTask)
+    , ui(new Ui_TaskPolarPatternParameters)
 {
-    proxy = new QWidget(parentTask);
-    ui->setupUi(proxy);
-    connect(ui->buttonOK, &QToolButton::pressed,
-            parentTask, &TaskMultiTransformParameters::onSubTaskButtonOK);
+    setupParameterUI(parameterWidget);
+}
+
+void TaskPolarPatternParameters::setupParameterUI(QWidget* widget)
+{
+    ui->setupUi(widget);
     QMetaObject::connectSlotsByName(this);
 
-    layout->addWidget(proxy);
-
-    ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
-    ui->checkBoxUpdateView->hide();
-
-    selectionMode = none;
-
-    blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
-    setupUI();
-}
-
-void TaskPolarPatternParameters::connectSignals()
-{
-    connect(ui->buttonAddFeature, &QToolButton::toggled,
-            this, &TaskPolarPatternParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature, &QToolButton::toggled,
-            this, &TaskPolarPatternParameters::onButtonRemoveFeature);
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, &QAction::triggered,
-            this, &TaskPolarPatternParameters::onFeatureDeleted);
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(), &QAbstractListModel::rowsMoved,
-            this, &TaskPolarPatternParameters::indexesMoved);
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout,
-            this, &TaskPolarPatternParameters::onUpdateViewTimer);
-    connect(ui->comboAxis, qOverload<int>(&QComboBox::activated),
-            this, &TaskPolarPatternParameters::onAxisChanged);
-    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
-            this, &TaskPolarPatternParameters::onModeChanged);
-    connect(ui->checkReverse, &QCheckBox::toggled,
-            this, &TaskPolarPatternParameters::onCheckReverse);
-    connect(ui->polarAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPolarPatternParameters::onAngle);
-    connect(ui->angleOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskPolarPatternParameters::onOffset);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-            this, &TaskPolarPatternParameters::onOccurrences);
-    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
-            this, &TaskPolarPatternParameters::onUpdateView);
-}
-
-void TaskPolarPatternParameters::setupUI()
-{
     // Get the feature data
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (auto obj : originals) {
-        if (obj) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
     ui->angleOffset->bind(pcPolarPattern->Offset);
@@ -177,56 +98,96 @@ void TaskPolarPatternParameters::setupUI()
 
     this->axesLinks.setCombo(*(ui->comboAxis));
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {
         this->fillAxisCombo(axesLinks, nullptr);
     }
 
-    //show the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
+    // show the parts coordinate system axis for selection
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
 
-    if(body) {
+    if (body) {
         try {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            App::Origin* origin = body->getOrigin();
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, false);
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+        }
+        catch (const Base::Exception& ex) {
+            Base::Console().Error("%s\n", ex.what());
         }
     }
 
     adaptVisibilityToMode();
     updateUI();
-    connectSignals();
+
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+    connect(updateViewTimer,
+            &QTimer::timeout,
+            this,
+            &TaskPolarPatternParameters::onUpdateViewTimer);
+    connect(ui->comboAxis,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPolarPatternParameters::onAxisChanged);
+    connect(ui->comboMode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskPolarPatternParameters::onModeChanged);
+    connect(ui->checkReverse,
+            &QCheckBox::toggled,
+            this,
+            &TaskPolarPatternParameters::onCheckReverse);
+    connect(ui->polarAngle,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPolarPatternParameters::onAngle);
+    connect(ui->angleOffset,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskPolarPatternParameters::onOffset);
+    connect(ui->spinOccurrences,
+            &Gui::UIntSpinBox::unsignedChanged,
+            this,
+            &TaskPolarPatternParameters::onOccurrences);
+}
+
+void TaskPolarPatternParameters::retranslateParameterUI(QWidget* widget)
+{
+    ui->retranslateUi(widget);
 }
 
 void TaskPolarPatternParameters::updateUI()
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
     blockUpdate = true;
 
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    PartDesign::PolarPatternMode mode = static_cast<PartDesign::PolarPatternMode>(pcPolarPattern->Mode.getValue());
+    auto mode = static_cast<PartDesign::PolarPatternMode>(pcPolarPattern->Mode.getValue());
     bool reverse = pcPolarPattern->Reversed.getValue();
     double angle = pcPolarPattern->Angle.getValue();
     double offset = pcPolarPattern->Offset.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
 
     if (axesLinks.setCurrentLink(pcPolarPattern->Axis) == -1) {
-        //failed to set current, because the link isn't in the list yet
-        axesLinks.addLink(pcPolarPattern->Axis, getRefStr(pcPolarPattern->Axis.getValue(),pcPolarPattern->Axis.getSubValues()));
+        // failed to set current, because the link isn't in the list yet
+        axesLinks.addLink(
+            pcPolarPattern->Axis,
+            getRefStr(pcPolarPattern->Axis.getValue(), pcPolarPattern->Axis.getSubValues()));
         axesLinks.setCurrentLink(pcPolarPattern->Axis);
     }
 
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
-    ui->comboMode->setCurrentIndex((long)mode);
+    ui->comboMode->setCurrentIndex(static_cast<int>(mode));
     ui->polarAngle->setValue(angle);
     ui->angleOffset->setValue(offset);
     ui->spinOccurrences->setValue(occurrences);
@@ -254,39 +215,24 @@ void TaskPolarPatternParameters::adaptVisibilityToMode()
     ui->angleOffsetWrapper->setVisible(mode == PartDesign::PolarPatternMode::offset);
 }
 
-void TaskPolarPatternParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskPolarPatternParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
-
+    if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else {
-            std::vector<std::string> axes;
-            App::DocumentObject* selObj;
-            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            if(!selObj)
-                    return;
+        else if (selectionMode == SelectionMode::Reference) {
+            auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-            if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+            std::vector<std::string> axes;
+            App::DocumentObject* selObj = nullptr;
+            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+            if (!selObj) {
+                return;
+            }
+
+            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
+                || selObj->isDerivedFrom<PartDesign::Line>()) {
                 setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
                 recomputeFeature();
@@ -297,26 +243,24 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
     }
 }
 
-void TaskPolarPatternParameters::clearButtons()
+void TaskPolarPatternParameters::onCheckReverse(const bool on)
 {
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
-}
-
-void TaskPolarPatternParameters::onCheckReverse(const bool on) {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Reversed.setValue(on);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onModeChanged(const int mode) {
-    if (blockUpdate)
+void TaskPolarPatternParameters::onModeChanged(const int mode)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Mode.setValue(mode);
 
     adaptVisibilityToMode();
@@ -325,30 +269,36 @@ void TaskPolarPatternParameters::onModeChanged(const int mode) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onAngle(const double a) {
-    if (blockUpdate)
+void TaskPolarPatternParameters::onAngle(const double angle)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->Angle.setValue(a);
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    pcPolarPattern->Angle.setValue(angle);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onOffset(const double a) {
-    if (blockUpdate)
+void TaskPolarPatternParameters::onOffset(const double offset)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->Offset.setValue(a);
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    pcPolarPattern->Offset.setValue(offset);
 
     exitSelectionMode();
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onOccurrences(const uint n) {
-    if (blockUpdate)
+void TaskPolarPatternParameters::onOccurrences(const uint n)
+{
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     pcPolarPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
@@ -357,24 +307,27 @@ void TaskPolarPatternParameters::onOccurrences(const uint n) {
 
 void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
-    PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+    }
+    auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    try{
+    try {
         if (!axesLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
-            selectionMode = reference;
+            selectionMode = SelectionMode::Reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::CIRCLE);
-        } else {
+        }
+        else {
             exitSelectionMode();
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
         }
-    } catch (Base::Exception &e) {
-        QMessageBox::warning(nullptr,tr("Error"),QApplication::translate("Exception", e.what()));
+    }
+    catch (Base::Exception& e) {
+        QMessageBox::warning(nullptr, tr("Error"), QApplication::translate("Exception", e.what()));
     }
 
     kickUpdateViewTimer();
@@ -385,13 +338,13 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgPolarPatternParameters::accept() but without doCommand
-        PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+        auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
         std::vector<std::string> axes;
-        App::DocumentObject* obj;
+        App::DocumentObject* obj = nullptr;
 
         setupTransaction();
         getAxis(obj, axes);
-        pcPolarPattern->Axis.setValue(obj,axes);
+        pcPolarPattern->Axis.setValue(obj, axes);
         pcPolarPattern->Reversed.setValue(getReverse());
         pcPolarPattern->Angle.setValue(getAngle());
         pcPolarPattern->Occurrences.setValue(getOccurrences());
@@ -400,25 +353,10 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     }
 }
 
-void TaskPolarPatternParameters::onFeatureDeleted()
+void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj,
+                                         std::vector<std::string>& sub) const
 {
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign PolarPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
-    recomputeFeature();
-}
-
-void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{
-    const App::PropertyLinkSub &lnk = axesLinks.getCurrentLink();
+    const App::PropertyLinkSub& lnk = axesLinks.getCurrentLink();
     obj = lnk.getValue();
     sub = lnk.getSubValues();
 }
@@ -426,6 +364,11 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
 bool TaskPolarPatternParameters::getReverse() const
 {
     return ui->checkReverse->isChecked();
+}
+
+int TaskPolarPatternParameters::getMode() const
+{
+    return ui->comboMode->currentIndex();
 }
 
 double TaskPolarPatternParameters::getAngle() const
@@ -441,42 +384,34 @@ unsigned TaskPolarPatternParameters::getOccurrences() const
 
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
-    //hide the parts coordinate system axis for selection
+    // hide the parts coordinate system axis for selection
     try {
-        PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
-        if ( body ) {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->resetTemporaryVisibility ();
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+        if (body) {
+            App::Origin* origin = body->getOrigin();
+            auto vpOrigin = static_cast<ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
         }
-    } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what () );
     }
-
-    if (proxy)
-        delete proxy;
-}
-
-void TaskPolarPatternParameters::changeEvent(QEvent *e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(proxy);
+    catch (const Base::Exception& ex) {
+        Base::Console().Error("%s\n", ex.what());
     }
 }
 
 void TaskPolarPatternParameters::apply()
 {
-    auto tobj = TransformedView->getObject();
     std::vector<std::string> axes;
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
     getAxis(obj, axes);
     std::string axis = buildLinkSingleSubPythonStr(obj, axes);
 
-    FCMD_OBJ_CMD(tobj,"Axis = " << axis.c_str());
-    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
+    auto tobj = getObject();
+    FCMD_OBJ_CMD(tobj, "Axis = " << axis.c_str());
+    FCMD_OBJ_CMD(tobj, "Reversed = " << getReverse());
+    FCMD_OBJ_CMD(tobj, "Mode = " << getMode());
     ui->polarAngle->apply();
+    ui->angleOffset->apply();
     ui->spinOccurrences->apply();
 }
 
@@ -485,7 +420,8 @@ void TaskPolarPatternParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView)
+TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(
+    ViewProviderPolarPattern* PolarPatternView)
     : TaskDlgTransformedParameters(PolarPatternView)
 {
     parameter = new TaskPolarPatternParameters(PolarPatternView);

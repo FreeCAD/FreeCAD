@@ -66,7 +66,6 @@ class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
 class QGILeaderLine;
-class QGIRichAnno;
 class QGITile;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
@@ -102,7 +101,7 @@ public:
     void redraw1View(TechDraw::DrawView* dView);
 
     QGIView* findQViewForDocObj(App::DocumentObject* obj) const;
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
     QGIView* findParent(QGIView*) const;
     void findMissingViews(const std::vector<App::DocumentObject*>& list,
                           std::vector<App::DocumentObject*>& missing);
@@ -113,7 +112,6 @@ public:
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
-    void addAnnoToParent(QGIRichAnno* anno, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
 
@@ -142,7 +140,6 @@ public:
     void setDimensionGroups();
     void setBalloonGroups();
     void setLeaderGroups();
-    void setRichAnnoGroups();
 
 protected:
     QColor getBackgroundColor();

@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "ActionFunction.h"
-#include "Control.h"
-#include "Document.h"
 #include "PreCompiled.h"
 
 #include <App/SuppressibleExtension.h>
+
+#include "ActionFunction.h"
+#include "Control.h"
+#include "Document.h"
 
 #include "Application.h"
 #include "TreeItemMode.h"
@@ -36,7 +37,7 @@
 #include "qmenu.h"
 
 
-namespace Gui {
+using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderSuppressibleExtension, Gui::ViewProviderExtension)
 
@@ -121,6 +122,7 @@ void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, Q
 }
 
 
+namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderSuppressibleExtensionPython, Gui::ViewProviderSuppressibleExtension)
 
 // explicit template instantiation

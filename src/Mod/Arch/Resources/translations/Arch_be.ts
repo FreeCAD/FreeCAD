@@ -4456,7 +4456,8 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Неабавязковы аб'ект, які вызначае аб'ём для аднімання са сцен.
+Калі поле зададзена - яно мае прыярытэт над аўтаматычна створаным укладзеным аб'ёмам</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>

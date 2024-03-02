@@ -129,8 +129,12 @@ class PackageList(QtWidgets.QWidget):
         # TODO: Update to support composite
         if style == AddonManagerDisplayStyle.COMPACT:
             self.ui.listPackages.setSpacing(2)
+            self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
+            self.ui.listPackages.verticalScrollBar().setSingleStep(-1)
         else:
             self.ui.listPackages.setSpacing(5)
+            self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+            self.ui.listPackages.verticalScrollBar().setSingleStep(24)
         self.item_model.layoutChanged.emit()
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -196,8 +200,8 @@ class PackageListItemModel(QtCore.QAbstractListModel):
             if self.repos[row].stats and self.repos[row].stats.stars:
                 return self.repos[row].stats.stars
             return 0
-        if role == SortOptions.Rank:
-            return len(self.repos[row].display_name)
+        if role == SortOptions.Score:
+            return self.repos[row].score
 
     def headerData(self, _unused1, _unused2, _role=QtCore.Qt.DisplayRole):
         """No header in this implementation: always returns None."""
@@ -386,12 +390,9 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
                 time_string = QtCore.QLocale().toString(qdt, QtCore.QLocale.ShortFormat)
                 return translate("AddonsInstaller", "Updated ") + time_string
             return ""
-        elif self.sort_order == SortOptions.Rank:
-            return translate("AddonsInstaller", "Rank: ") + str(len(addon.display_name))
+        elif self.sort_order == SortOptions.Score:
+            return translate("AddonsInstaller", "Score: ") + str(addon.score)
         return ""
-
-    def _set_sort_string_expanded(self, addon: Addon, label: QtWidgets.QLabel) -> None:
-        pass
 
     def _get_compact_description(self, addon: Addon) -> str:
         if addon.metadata:
@@ -723,6 +724,8 @@ class Ui_PackageList:
         self.listPackages.setUniformItemSizes(False)
         self.listPackages.setAlternatingRowColors(True)
         self.listPackages.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.listPackages.verticalScrollBar().setSingleStep(24)
 
         self.verticalLayout.addWidget(self.listPackages)
 

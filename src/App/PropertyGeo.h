@@ -44,7 +44,6 @@ class ComplexGeoData;
 
 namespace App
 {
-class Feature;
 class Placement;
 
 

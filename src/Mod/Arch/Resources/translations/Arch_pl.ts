@@ -4458,7 +4458,8 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Opcjonalny obiekt definiujący objętość do odjęcia od ścian. Jeśli pole jest ustawione, 
+ma pierwszeństwo przed automatycznie generowaną pod objętością.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>

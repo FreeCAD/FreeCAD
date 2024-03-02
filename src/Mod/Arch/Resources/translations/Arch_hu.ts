@@ -4448,7 +4448,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Egy opcionális tárgy, amely meghatározza a falakból kivonandó térfogatot. Ha a mező be van állítva - elsőbbsége van az automatikusan generált résztérfogathoz képest</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>
