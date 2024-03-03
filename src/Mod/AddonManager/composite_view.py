@@ -23,6 +23,8 @@
 
 """ Provides a class for showing the list view and detail view at the same time. """
 
+import base64
+
 from addonmanager_freecad_interface import Preferences
 
 from Addon import Addon
@@ -69,7 +71,9 @@ class CompositeView(QtWidgets.QWidget):
         self.main_layout = QtWidgets.QHBoxLayout(self)
         self.splitter = QtWidgets.QSplitter(self)
         self.splitter.addWidget(self.package_list)
+        self.package_list.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.splitter.addWidget(self.package_details)
+        self.package_details.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setContentsMargins(0, 0, 0, 0)
         self.splitter.setSizePolicy(
@@ -79,6 +83,22 @@ class CompositeView(QtWidgets.QWidget):
         self.layout().setContentsMargins(0, 0, 0, 0)
         self._setup_ui()
         self._setup_connections()
+        self._restore_splitter_state()
+
+    def _save_splitter_state(self):
+        """Write the splitter state into an Addon manager preference, CompositeSplitterState"""
+        prefs = Preferences()
+        state = self.splitter.saveState()
+        encoded = base64.b64encode(state).decode("ASCII")
+        prefs.set("CompositeSplitterState", encoded)
+
+    def _restore_splitter_state(self):
+        """Restore the splitter state from CompositeSplitterState"""
+        prefs = Preferences()
+        encoded = prefs.get("CompositeSplitterState")
+        if encoded:
+            state = base64.b64decode(encoded)
+            self.splitter.restoreState(state)
 
     def setModel(self, model):
         self.package_list.setModel(model)
@@ -121,8 +141,8 @@ class CompositeView(QtWidgets.QWidget):
         self.package_details_controller.update.connect(self.update)
         self.package_details_controller.execute.connect(self.execute)
         self.package_details_controller.update_status.connect(self.update_status)
-        self.package_details_controller.check_for_update.connect(self.check_for_update)
         self.package_list.ui.view_bar.view_changed.connect(self.set_display_style)
+        self.splitter.splitterMoved.connect(self._splitter_moved)
 
     def addon_selected(self, addon):
         self.package_details_controller.show_repo(addon)
@@ -135,3 +155,6 @@ class CompositeView(QtWidgets.QWidget):
         if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
             self.package_list.show()
             self.package_details.hide()
+
+    def _splitter_moved(self, position: int, index: int) -> None:
+        self._save_splitter_state()
