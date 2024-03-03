@@ -442,10 +442,8 @@ class GitManager:
         on the Mac actually requires us to check for that installation."""
         try:
             subprocess.check_output(["xcode-select", "-p"])
-            fci.Console.PrintMessage("XCode command line tools are installed: git is available\n")
             return True
         except subprocess.CalledProcessError:
-            fci.Console.PrintMessage("XCode command line tools are not installed: not using git\n")
             return False
 
     def _synchronous_call_git(self, args: List[str]) -> str:

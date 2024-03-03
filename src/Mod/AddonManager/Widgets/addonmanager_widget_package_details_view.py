@@ -65,6 +65,7 @@ class MessageType(Enum):
 
 @dataclass
 class UpdateInformation:
+    unchecked: bool = True
     check_in_progress: bool = False
     update_available: bool = False
     detached_head: bool = False
@@ -275,6 +276,8 @@ class PackageDetailsView(QtWidgets.QWidget):
     def _get_update_status_string(self) -> str:
         if self.update_info.check_in_progress:
             return translate("AddonsInstaller", "Update check in progress") + "."
+        elif self.update_info.unchecked:
+            return ""
         if self.update_info.detached_head:
             return (
                 translate(
