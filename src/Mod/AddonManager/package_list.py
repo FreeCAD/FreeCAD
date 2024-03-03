@@ -104,6 +104,20 @@ class PackageList(QtWidgets.QWidget):
         )
         self.item_filter.setHideUnlicensed(pref.GetBool("HideUnlicensed", False))
 
+    def select_addon(self, addon_name: str):
+        for index, addon in enumerate(self.item_model.repos):
+            if addon.name == addon_name:
+                row_index = self.item_model.createIndex(index, 0)
+                if self.item_filter.filterAcceptsRow(index):
+                    self.ui.listPackages.setCurrentIndex(row_index)
+                else:
+                    FreeCAD.Console.PrintLog(
+                        f"Addon {addon_name} is not visible given current "
+                        "filter: not selecting it."
+                    )
+                return
+        FreeCAD.Console.PrintLog(f"Could not find addon '{addon_name}' to select it")
+
     def on_listPackages_clicked(self, index: QtCore.QModelIndex):
         """Determine what addon was selected and emit the itemSelected signal with it as
         an argument."""

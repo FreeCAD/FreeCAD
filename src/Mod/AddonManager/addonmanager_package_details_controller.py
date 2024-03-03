@@ -142,6 +142,7 @@ class PackageDetailsController(QtCore.QObject):
         flags.obsolete = repo.obsolete
         flags.python2 = repo.python2
         self.ui.set_warning_flags(flags)
+        self.set_change_branch_button_state()
 
     def requires_newer_freecad(self) -> Optional[Version]:
         """If the current package is not installed, returns the first supported version of
@@ -165,7 +166,7 @@ class PackageDetailsController(QtCore.QObject):
         """The change branch button is only available for installed Addons that have a .git directory
         and in runs where the git is available."""
 
-        self.ui.button_bar.change_branch_button.hide()
+        self.ui.button_bar.change_branch.hide()
 
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
         show_switcher = pref.GetBool("ShowBranchSwitcher", False)
@@ -192,7 +193,7 @@ class PackageDetailsController(QtCore.QObject):
 
         # If all four above checks passed, then it's possible for us to switch
         # branches, if there are any besides the one we are on: show the button
-        self.ui.button_bar.change_branch_button.show()
+        self.ui.button_bar.change_branch.show()
 
     def update_macro_info(self, repo: Addon) -> None:
         if not repo.macro.url:

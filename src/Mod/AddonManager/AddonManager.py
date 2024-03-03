@@ -194,7 +194,6 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         w = pref.GetInt("WindowWidth", 800)
         h = pref.GetInt("WindowHeight", 600)
-        self.dialog.resize(w, h)
         self.composite_view = CompositeView(self.dialog)
         self.button_bar = WidgetGlobalButtonBar(self.dialog)
 
@@ -246,6 +245,7 @@ class CommandAddonManager:
         self.composite_view.update_status.connect(self.status_updated)
 
         # center the dialog over the FreeCAD window
+        self.dialog.resize(w, h)
         mw = FreeCADGui.getMainWindow()
         self.dialog.move(
             mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
@@ -392,14 +392,11 @@ class CommandAddonManager:
             self.check_python_updates,
             self.fetch_addon_stats,
             self.fetch_addon_score,
+            self.select_addon,
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
             self.startup_sequence.append(self.load_macro_metadata)
-        selection = pref.GetString("SelectedAddon", "")
-        if selection:
-            self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
-            pref.SetString("SelectedAddon", "")
         self.number_of_progress_regions = len(self.startup_sequence)
         self.current_progress_region = 0
         self.do_next_startup_phase()
@@ -573,17 +570,12 @@ class CommandAddonManager:
         else:
             self.do_next_startup_phase()
 
-    def select_addon(self, name: str) -> None:
-        found = False
-        for addon in self.item_model.repos:
-            if addon.name == name:
-                self.table_row_activated(addon)
-                found = True
-                break
-        if not found:
-            FreeCAD.Console.PrintWarning(
-                translate("AddonsInstaller", "Could not find addon '{}' to select\n").format(name)
-            )
+    def select_addon(self) -> None:
+        prefs = fci.Preferences()
+        selection = prefs.get("SelectedAddon")
+        if selection:
+            self.composite_view.package_list.select_addon(selection)
+            prefs.set("SelectedAddon", "")
         self.do_next_startup_phase()
 
     def check_updates(self) -> None:
@@ -640,7 +632,11 @@ class CommandAddonManager:
 
         if number_of_updates:
             self.button_bar.set_number_of_available_updates(number_of_updates)
-        elif hasattr(self, "check_worker") and self.check_worker.isRunning():
+        elif (
+            hasattr(self, "check_worker")
+            and self.check_worker is not None
+            and self.check_worker.isRunning()
+        ):
             self.button_bar.update_all_addons.setText(
                 translate("AddonsInstaller", "Checking for updates...")
             )
