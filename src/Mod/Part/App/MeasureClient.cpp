@@ -121,7 +121,7 @@ App::MeasureElementType PartMeasureTypeCb(const char* objectName, const char* su
     TopoDS_Shape shape = Part::Feature::getShape(ob, subName, true);
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::VectorAdapter did not retrieve shape for %s, %s\n", objectName, subName);
+        Base::Console().Message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", objectName, subName);
         return App::MeasureElementType();
     }
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
@@ -193,7 +193,7 @@ Part::VectorAdapter buildAdapter(const App::DocumentObject* ob, std::string* obj
     TopoDS_Shape shape = Part::Feature::getShape(ob, subName->c_str(), true);
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::VectorAdapter did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
+        Base::Console().Message("Part::buildAdapter did not retrieve shape for %s, %s\n", objectName->c_str(), subName->c_str());
         return Part::VectorAdapter();
     }
 

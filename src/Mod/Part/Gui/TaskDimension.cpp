@@ -68,7 +68,6 @@
 #include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/ArcEngine.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
@@ -738,6 +737,98 @@ void PartGui::TaskMeasureLinear::clearAllSlot(bool)
   PartGui::eraseAllDimensions();
 }
 
+PartGui::VectorAdapter::VectorAdapter() : status(false), vector()
+{
+}
+
+PartGui::VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
+  status(false), vector(), origin(pickedPointIn)
+{
+  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
+  if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
+  {
+    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
+    gp_Dir direction = eSurface->Axis().Direction();
+    vector = direction;
+    vector.Normalize();
+    if (faceIn.Orientation() == TopAbs_REVERSED)
+      vector.Reverse();
+    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
+      surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
+    )
+    {
+      origin = eSurface->Axis().Location().XYZ();
+      projectOriginOntoVector(pickedPointIn);
+    }
+    else
+      origin = pickedPointIn + vector;
+    status = true;
+  }
+}
+
+PartGui::VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn) :
+  status(false), vector(), origin(pickedPointIn)
+{
+  TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
+  TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
+  vector = PartGui::convert(lastVertex) - PartGui::convert(firstVertex);
+  if (vector.Magnitude() < Precision::Confusion())
+    return;
+  vector.Normalize();
+
+  status = true;
+  projectOriginOntoVector(pickedPointIn);
+}
+
+PartGui::VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In) :
+  status(false), vector(), origin()
+{
+  vector = PartGui::convert(vertex2In) - PartGui::convert(vertex1In);
+  vector.Normalize();
+
+  //build origin half way.
+  gp_Vec tempVector = (PartGui::convert(vertex2In) - PartGui::convert(vertex1In));
+  double mag = tempVector.Magnitude();
+  tempVector.Normalize();
+  tempVector *= (mag / 2.0);
+  origin = tempVector + PartGui::convert(vertex1In);
+
+  status = true;
+}
+
+PartGui::VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2) :
+  status(false), vector(), origin()
+{
+  vector = vector2- vector1;
+  vector.Normalize();
+
+  //build origin half way.
+  gp_Vec tempVector = vector2 - vector1;
+  double mag = tempVector.Magnitude();
+  tempVector.Normalize();
+  tempVector *= (mag / 2.0);
+  origin = tempVector + vector1;
+
+  status = true;
+}
+
+void PartGui::VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
+{
+  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
+  gp_Pnt tempPoint(pickedPointIn.XYZ());
+  GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
+  if (projection.NbPoints() < 1)
+    return;
+  origin.SetXYZ(projection.Point(1).XYZ());
+}
+
+PartGui::VectorAdapter::operator gp_Lin() const
+{
+  gp_Pnt tempOrigin;
+  tempOrigin.SetXYZ(origin.XYZ());
+  return gp_Lin(tempOrigin, gp_Dir(vector));
+}
+
 gp_Vec PartGui::convert(const TopoDS_Vertex &vertex)
 {
   gp_Pnt point = BRep_Tool::Pnt(vertex);
@@ -1169,7 +1260,7 @@ void PartGui::DimensionAngular::setupDimension()
   setPart("arrow1.material", material);
   setPart("arrow2.material", material);
 
-  Gui::ArcEngine *arcEngine = new Gui::ArcEngine();
+  ArcEngine *arcEngine = new ArcEngine();
   arcEngine->angle.connectFrom(&angle);
   arcEngine->radius.connectFrom(&radius);
   arcEngine->deviation.setValue(0.1f);
@@ -1232,6 +1323,81 @@ void PartGui::DimensionAngular::setupDimension()
   material->unref();
 }
 
+SO_ENGINE_SOURCE(PartGui::ArcEngine)
+
+PartGui::ArcEngine::ArcEngine()
+{
+  SO_ENGINE_CONSTRUCTOR(ArcEngine);
+
+  SO_ENGINE_ADD_INPUT(radius, (10.0));
+  SO_ENGINE_ADD_INPUT(angle, (1.0));
+  SO_ENGINE_ADD_INPUT(deviation, (0.25));
+
+  SO_ENGINE_ADD_OUTPUT(points, SoMFVec3f);
+  SO_ENGINE_ADD_OUTPUT(pointCount, SoSFInt32);
+}
+
+void PartGui::ArcEngine::initClass()
+{
+  SO_ENGINE_INIT_CLASS(ArcEngine, SoEngine, "Engine");
+}
+
+void PartGui::ArcEngine::evaluate()
+{
+  if (radius.getValue() < std::numeric_limits<float>::epsilon() ||
+    angle.getValue() < std::numeric_limits<float>::epsilon() ||
+    deviation.getValue() < std::numeric_limits<float>::epsilon())
+  {
+    defaultValues();
+    return;
+  }
+
+  float deviationAngle(acos((radius.getValue() - deviation.getValue()) / radius.getValue()));
+  std::vector<SbVec3f> tempPoints;
+  int segmentCount;
+  if (deviationAngle >= angle.getValue())
+    segmentCount = 1;
+  else
+  {
+    segmentCount = static_cast<int>(angle.getValue() / deviationAngle) + 1;
+    if (segmentCount < 2)
+    {
+      defaultValues();
+      return;
+    }
+  }
+  float angleIncrement = angle.getValue() / static_cast<float>(segmentCount);
+  for (int index = 0; index < segmentCount + 1; ++index)
+  {
+    SbVec3f currentNormal(1.0, 0.0, 0.0);
+    float currentAngle = index * angleIncrement;
+    SbRotation rotation(SbVec3f(0.0, 0.0, 1.0), currentAngle);
+    rotation.multVec(currentNormal, currentNormal);
+    tempPoints.push_back(currentNormal * radius.getValue());
+  }
+  int tempCount = tempPoints.size(); //for macro.
+  SO_ENGINE_OUTPUT(points, SoMFVec3f, setNum(tempCount));
+  SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(tempCount));
+  std::vector<SbVec3f>::const_iterator it;
+  for (it = tempPoints.begin(); it != tempPoints.end(); ++it)
+  {
+    int currentIndex = it-tempPoints.begin(); //for macro.
+    SbVec3f temp(*it); //for macro
+    SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(currentIndex, temp));
+  }
+
+}
+
+void PartGui::ArcEngine::defaultValues()
+{
+  //just some non-failing info.
+  SO_ENGINE_OUTPUT(points, SoMFVec3f, setNum(2));
+  SbVec3f point1(10.0, 0.0, 0.0);
+  SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(0, point1));
+  SbVec3f point2(7.07f, 7.07f, 0.0);
+  SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(1, point2));
+  SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(2));
+}
 
 PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
   : QWidget(parent)
@@ -1528,7 +1694,7 @@ void PartGui::TaskMeasureAngular::selectionClearDelayedSlot()
   this->blockSelection(false);
 }
 
-VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
+PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
 {
   Base::Matrix4D mat;
   assert(selection.selections.size() > 0 && selection.selections.size() < 3);
