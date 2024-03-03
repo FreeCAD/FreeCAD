@@ -30,7 +30,9 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-// #include <TopoDS_Shape.hxx>
+#include <functional>
+#include <string>
+#include <vector>
 
 #include <Base/Vector3D.h>
 #include <Base/Placement.h>
@@ -50,7 +52,7 @@ class PartExport MeasureAngleInfo : public MeasureInfo {
 public:
     MeasureAngleInfo() = default;
     MeasureAngleInfo(bool val, Base::Vector3d orient, Base::Vector3d pos) { valid = val; orientation = orient; position = pos;};
-    ~MeasureAngleInfo() = default;
+    ~MeasureAngleInfo() override = default;
 
     Base::Vector3d orientation{0.0, 0.0, 0.0};
     Base::Vector3d position{0.0, 0.0, 0.0};
@@ -60,7 +62,7 @@ class PartExport MeasureAreaInfo : public MeasureInfo {
 public:
     MeasureAreaInfo() = default;
     MeasureAreaInfo(bool val, double a2, Base::Placement plm) { valid = val; area = a2; placement = plm;};
-    ~MeasureAreaInfo() = default;
+    ~MeasureAreaInfo() override = default;
 
     double area{0};
     Base::Placement placement{};
@@ -71,7 +73,7 @@ class PartExport MeasureDistanceInfo : public MeasureInfo {
 public:
     MeasureDistanceInfo() = default;
     MeasureDistanceInfo(bool val, const TopoDS_Shape* shp) { valid = val; shape = shp;};
-    ~MeasureDistanceInfo() = default;
+    ~MeasureDistanceInfo() override = default;
 
     // problematic as Gui can not see OCC
     // TopoDS_Shape shape{};
@@ -85,7 +87,7 @@ class PartExport MeasureLengthInfo : public MeasureInfo {
 public:
     MeasureLengthInfo() = default;
     MeasureLengthInfo(bool val, double len, Base::Placement plm) { valid = val; length = len; placement = plm;};
-    ~MeasureLengthInfo() = default;
+    ~MeasureLengthInfo() override = default;
 
     double length{};
     Base::Placement placement{};
@@ -95,16 +97,16 @@ class PartExport MeasurePositionInfo : public MeasureInfo {
 public:
     MeasurePositionInfo() = default;
     MeasurePositionInfo(bool val, Base::Vector3d pos) { valid = val; position = pos;};
-    ~MeasurePositionInfo() = default;
+    ~MeasurePositionInfo() override = default;
 
-    Base::Vector3d position{0.0, 09.0, 0.0};
+    Base::Vector3d position{0.0, 0.0, 0.0};
 };
 
 class PartExport MeasureRadiusInfo : public MeasureInfo {
 public:
     MeasureRadiusInfo() = default;
     MeasureRadiusInfo(bool val, double rad, Base::Vector3d point, Base::Placement plm) { valid = val; radius = rad; pointOnCurve = point;  placement = plm;};
-    ~MeasureRadiusInfo() = default;
+    ~MeasureRadiusInfo() override = default;
 
     double radius{};
     Base::Vector3d pointOnCurve;
