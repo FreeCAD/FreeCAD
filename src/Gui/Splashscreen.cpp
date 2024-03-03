@@ -808,7 +808,6 @@ void AboutDialog::copyToClipboard()
             deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
     }
 
-    str << "```\n";
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
@@ -884,12 +883,11 @@ void AboutDialog::copyToClipboard()
             auto disablingFile = mod.path() / "ADDON_DISABLED";
             if (fs::exists(disablingFile))
                 str << " (Disabled)";
-            
+
             str << "\n";
         }
     }
 
-    str << "```\n";
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
 }
