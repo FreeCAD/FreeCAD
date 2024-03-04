@@ -71,7 +71,7 @@ void FaceMakerBullseye::Build_Essence()
     //validity check
     for (TopoDS_Wire& w : myWires) {
         if (!BRep_Tool::IsClosed(w))
-            throw Base::ValueError("Wire is not closed.");
+            throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Wire is not closed."));
     }
 
 
