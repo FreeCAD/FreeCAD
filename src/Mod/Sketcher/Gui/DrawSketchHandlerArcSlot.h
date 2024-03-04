@@ -546,7 +546,8 @@ template<>
 void DSHArcSlotController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Arc ends"), QStringLiteral("Flat ends")};
+        QStringList names = {QApplication::translate("Sketcher_CreateArcSlot", "Arc ends"),
+                             QApplication::translate("Sketcher_CreateArcSlot", "Flat ends")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {

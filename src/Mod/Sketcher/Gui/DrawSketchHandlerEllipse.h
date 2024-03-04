@@ -430,7 +430,8 @@ void DSHEllipseController::configureToolWidget()
 {
 
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Center"), QStringLiteral("Axis endpoints")};
+        QStringList names = {QApplication::translate("Sketcher_CreateEllipse", "Center"),
+                             QApplication::translate("Sketcher_CreateEllipse", "Axis endpoints")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {

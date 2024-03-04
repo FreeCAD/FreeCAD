@@ -1081,7 +1081,8 @@ template<>
 void DSHOffsetController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Arc"), QStringLiteral("Intersection")};
+        QStringList names = {QApplication::translate("Sketcher_CreateOffset", "Arc"),
+                             QApplication::translate("Sketcher_CreateOffset", "Intersection")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setComboboxItemIcon(WCombobox::FirstCombo,
