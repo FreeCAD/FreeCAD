@@ -242,6 +242,12 @@ public:
     std::vector<std::pair<MappedName, ElementIDRefs> >
     getElementMappedNames(const IndexedName & element, bool needUnmapped=false) const;
 
+    /// Hash the child element map postfixes to shorten element name from hierarchical maps
+    void hashChildMaps();
+
+    /// Check if there is child element map
+    bool hasChildElementMap() const;
+
     /// Append the Tag (if and only if it is non zero) into the element map
     virtual void reTagElementMap(long tag,
                                  App::StringHasherRef hasher,
@@ -284,6 +290,12 @@ public:
 
     /// Get the current element map size
     size_t getElementMapSize(bool flush=true) const;
+
+    /// Return the current element map version
+    virtual std::string getElementMapVersion() const;
+
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
 
     /// Check if the given sub-name only contains an element name
     static bool isElementName(const char *subName) {
