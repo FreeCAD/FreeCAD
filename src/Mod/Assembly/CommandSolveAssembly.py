@@ -45,7 +45,6 @@ class CommandSolveAssembly:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_SolveAssembly",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_SolveAssembly", "Solve Assembly"),

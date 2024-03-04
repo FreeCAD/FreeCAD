@@ -9,7 +9,6 @@ import SubWCRev, getopt, sys, string
 
 
 def main():
-
     input = ""
     output = "."
 

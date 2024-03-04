@@ -41,7 +41,6 @@ translate = FreeCAD.Qt.translate
 
 
 class TestUninstallerGUI(unittest.TestCase):
-
     MODULE = "test_uninstaller_gui"  # file name without extension
 
     def setUp(self):

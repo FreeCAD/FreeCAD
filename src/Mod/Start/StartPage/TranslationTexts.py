@@ -23,7 +23,6 @@ from PySide import QtGui
 
 
 def translate(context, text):
-
     "convenience function for the Qt translator"
 
     try:
@@ -36,7 +35,6 @@ def translate(context, text):
 
 
 def get(handle):
-
     "returns the translated text of the given handle"
 
     T_TITLE = translate("StartPage", "Start")

@@ -560,6 +560,7 @@ class DocumentBasicCases(unittest.TestCase):
     def testNotification_Issue2996(self):
         if not FreeCAD.GuiUp:
             return
+
         # works only if Gui is shown
         class ViewProvider:
             def __init__(self, vobj):
@@ -794,7 +795,6 @@ class DocumentRecomputeCases(unittest.TestCase):
         self.L2.Link = self.L3
 
     def testRecompute(self):
-
         # sequence to test recompute behaviour
         #       L1---\    L7
         #      /  \   \    |
@@ -1130,7 +1130,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertEqual(self.Doc.RedoCount, 0)
 
     def testUndoInList(self):
-
         self.Doc.UndoMode = 1
 
         self.Doc.openTransaction("Box")
@@ -1157,7 +1156,6 @@ class UndoRedoCases(unittest.TestCase):
         self.assertTrue(self.Cylinder.InList[0] == self.Doc.Fuse)
 
     def testUndoIssue0003150Part1(self):
-
         self.Doc.UndoMode = 1
 
         self.Doc.openTransaction("Box")
@@ -1284,7 +1282,6 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.removeObject("Label_3")
 
     def testGroupAndGeoFeatureGroup(self):
-
         # an object can only be in one group at once, that must be enforced
         obj1 = self.Doc.addObject("App::FeatureTest", "obj1")
         grp1 = self.Doc.addObject("App::DocumentObjectGroup", "Group1")
@@ -2162,7 +2159,6 @@ class DocumentObserverCases(unittest.TestCase):
         self.Obs.clear()
 
     def testUndoDisabledDocument(self):
-
         # testing document level signals
         self.Doc1 = FreeCAD.newDocument("Observer1")
         self.Doc1.UndoMode = 0
@@ -2178,7 +2174,6 @@ class DocumentObserverCases(unittest.TestCase):
         self.Obs.clear()
 
     def testGuiObserver(self):
-
         if not FreeCAD.GuiUp:
             return
 

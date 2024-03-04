@@ -26,7 +26,6 @@ import FreeCAD
 
 
 class TestGui(unittest.TestCase):
-
     MODULE = "test_gui"  # file name without extension
 
     def setUp(self):

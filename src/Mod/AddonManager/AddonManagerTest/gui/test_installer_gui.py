@@ -37,7 +37,6 @@ translate = FreeCAD.Qt.translate
 
 
 class TestInstallerGui(unittest.TestCase):
-
     MODULE = "test_installer_gui"  # file name without extension
 
     def setUp(self):
@@ -389,7 +388,6 @@ class TestMacroInstallerGui(unittest.TestCase):
         self.assertEqual(name, "UnitTestCustomToolbar")
 
     def test_ask_for_toolbar_with_dialog_cancelled(self):
-
         # First test: the user cancels the dialog
         self.installer.addon_params.set("alwaysAskForToolbar", True)
         dialog_watcher = DialogWatcher(
@@ -400,7 +398,6 @@ class TestMacroInstallerGui(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_ask_for_toolbar_with_dialog_defaults(self):
-
         # Second test: the user leaves the dialog at all default values, so:
         #   - The checkbox "Ask every time" is unchecked
         #   - The selected toolbar option is "Create new toolbar", which triggers a search for
@@ -422,7 +419,6 @@ class TestMacroInstallerGui(unittest.TestCase):
         self.assertTrue(dialog_watcher.button_found, "Failed to find the expected button")
 
     def test_ask_for_toolbar_with_dialog_selection(self):
-
         # Third test: the user selects a custom toolbar in the dialog, and checks the box to always
         # ask.
         dialog_interactor = DialogInteractor(
@@ -444,7 +440,6 @@ class TestMacroInstallerGui(unittest.TestCase):
         self.assertTrue(self.installer.addon_params.get("alwaysAskForToolbar", False))
 
     def interactor_selection_option_and_checkbox(self, parent):
-
         boxes = parent.findChildren(QtWidgets.QComboBox)
         self.assertEqual(len(boxes), 1)  # Just to make sure...
         box = boxes[0]

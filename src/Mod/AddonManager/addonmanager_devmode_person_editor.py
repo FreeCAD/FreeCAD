@@ -38,7 +38,6 @@ class PersonEditor:
     """Create or edit a maintainer or author record."""
 
     def __init__(self):
-
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "developer_mode_people.ui")
         )

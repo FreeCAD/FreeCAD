@@ -213,7 +213,6 @@ class TestStartPage(unittest.TestCase):
             )
 
     def sanitize(self, html):
-
         # Anonymize all local filenames
         fileRE = re.compile(r'"file:///.*?"')
         html = fileRE.sub(repl=r'"file:///A/B/C"', string=html)

@@ -408,7 +408,6 @@ def handleStrings(theStr, sList):
 
 
 def open(nameXLSX):
-
     if len(nameXLSX) > 0:
         z = zipfile.ZipFile(nameXLSX)
 

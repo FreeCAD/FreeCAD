@@ -152,7 +152,6 @@ class CreateAddonListWorker(QtCore.QThread):
                     )
 
     def _get_custom_addons(self):
-
         # querying custom addons first
         addon_list = (
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
@@ -517,7 +516,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     progress_made = QtCore.Signal(int, int)
 
     def __init__(self, repos: List[Addon]):
-
         QtCore.QThread.__init__(self)
         self.repos = repos
         self.current_thread = None
@@ -630,7 +628,6 @@ class UpdateChecker:
 
         clone_dir = self.moddir + os.sep + package.name
         if os.path.exists(clone_dir):
-
             # First, see if the branch name changed, which automatically triggers an update
             if self._branch_name_changed(package):
                 package.set_status(Addon.Status.UPDATE_AVAILABLE)
@@ -881,7 +878,6 @@ class GetMacroDetailsWorker(QtCore.QThread):
     readme_updated = QtCore.Signal(str)
 
     def __init__(self, repo):
-
         QtCore.QThread.__init__(self)
         self.macro = repo.macro
 

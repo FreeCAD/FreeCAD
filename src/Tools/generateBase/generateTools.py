@@ -26,6 +26,7 @@ def convertMultilineString(str):
 
 import sys
 
+
 # utility stuff to avoid tests in the mainline code
 class _nevermatch:
     "Polymorphic with a regex that never matches"

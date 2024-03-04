@@ -19,6 +19,7 @@ class MainWindow(QtGui.QMainWindow):
     def showEvent(self, event):
         FreeCADGui.showMainWindow()
         self.setCentralWidget(FreeCADGui.getMainWindow())
+
         # Need version >= 0.16.5949
         class BlankWorkbench(FreeCADGui.Workbench):
             MenuText = "Blank"

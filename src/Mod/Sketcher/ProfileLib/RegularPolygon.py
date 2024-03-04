@@ -38,7 +38,6 @@ def makeRegularPolygon(
     firstCornerPoint=App.Vector(-20.00, 34.64, 0),
     construction=False,
 ):
-
     if not sketch:
         App.Console.PrintError("No sketch specified in 'makeRegularPolygon'")
         return

@@ -28,6 +28,7 @@ class MainWindow(QtGui.QMainWindow):
         )
         addr = PyCObject_AsVoidPtr(hwnd)
         FreeCADGui.embedToWindow(hex(addr))
+
         # Need version >= 0.16.5949
         class BlankWorkbench(FreeCADGui.Workbench):
             MenuText = "Blank"

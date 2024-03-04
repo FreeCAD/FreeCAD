@@ -1200,7 +1200,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-
         self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
         self.toggleDistanceVisibility()
         self.toggleOffsetVisibility()

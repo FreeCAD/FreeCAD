@@ -596,7 +596,6 @@ class PackageListFilter(QtCore.QSortFilterProxyModel):
 
         license_manager = get_license_manager()
         if data.status() == Addon.Status.NOT_INSTALLED:
-
             # If it's not installed, check to see if it's Py2 only
             if self.hide_py2 and data.python2:
                 return False

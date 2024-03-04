@@ -101,7 +101,6 @@ except ImportError:
     HAVE_QTNETWORK = False
 
 if HAVE_QTNETWORK:
-
     # Added in Qt 5.15
     if hasattr(QtNetwork.QNetworkRequest, "DefaultTransferTimeoutConstant"):
         default_timeout = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant

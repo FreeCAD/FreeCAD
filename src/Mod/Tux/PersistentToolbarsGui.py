@@ -63,7 +63,6 @@ def onRestore(active):
     pSystem = App.ParamGet("User parameter:Tux/PersistentToolbars/System")
 
     for i in tb:
-
         isConnected(i)
 
         if i.objectName() and not i.isFloating():
@@ -92,7 +91,6 @@ def onRestore(active):
                 and i not in rightRestore
                 and i not in bottomRestore
             ):
-
                 area = mw.toolBarArea(toolbars[i])
 
                 if area == QtCore.Qt.ToolBarArea.LeftToolBarArea:
@@ -156,7 +154,6 @@ def onSave():
 
     for i in tb:
         if i.objectName() and i.isVisible() and not i.isFloating():
-
             area = mw.toolBarArea(i)
 
             x = i.geometry().x()
