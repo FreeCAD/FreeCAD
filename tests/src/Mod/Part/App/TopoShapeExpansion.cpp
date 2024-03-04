@@ -2444,13 +2444,11 @@ TEST_F(TopoShapeExpansionTest, replaceElementShape)
     EXPECT_TRUE(elementsMatch(
         result,
         {
-            "Edge1",         "Edge1;:H1,E",   "Edge1;:H2,E",   "Edge1;:H3,E",   "Edge2",
-            "Edge2;:H1,E",   "Edge2;:H2,E",   "Edge2;:H3,E",   "Edge3",         "Edge3;:H1,E",
-            "Edge3;:H2,E",   "Edge3;:H3,E",   "Edge4;:H1,E",   "Edge4;:H2,E",   "Edge4;:H3,E",
-            "Face1;:H2,F",   "Face1;:H3,F",   "Face1;:H4,F",   "Face1;:H5,F",   "Face1;:H6,F",
-            "Vertex1",       "Vertex1;:H1,V", "Vertex1;:H2,V", "Vertex2",       "Vertex2;:H1,V",
-            "Vertex2;:H2,V", "Vertex3",       "Vertex3;:H1,V", "Vertex3;:H2,V", "Vertex4;:H1,V",
-            "Vertex4;:H2,V",
+            "Edge1;:H1,E",   "Edge1;:H2,E",   "Edge1;:H3,E",   "Edge2;:H1,E",   "Edge2;:H2,E",
+            "Edge2;:H3,E",   "Edge3;:H1,E",   "Edge3;:H2,E",   "Edge3;:H3,E",   "Edge4;:H1,E",
+            "Edge4;:H2,E",   "Edge4;:H3,E",   "Face1;:H2,F",   "Face1;:H3,F",   "Face1;:H4,F",
+            "Face1;:H5,F",   "Face1;:H6,F",   "Vertex1;:H1,V", "Vertex1;:H2,V", "Vertex2;:H1,V",
+            "Vertex2;:H2,V", "Vertex3;:H1,V", "Vertex3;:H2,V", "Vertex4;:H1,V", "Vertex4;:H2,V",
         }));
 }
 

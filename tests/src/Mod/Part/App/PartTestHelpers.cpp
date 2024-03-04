@@ -169,17 +169,17 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
 {
     auto elements = shape.getElementMap();
     if (!elements.empty() || !names.empty()) {
-        if (std::find_first_of(elements.begin(),
-                               elements.end(),
-                               names.begin(),
-                               names.end(),
-                               [&](const Data::MappedElement& element, const std::string& name) {
-                                   return matchStringsWithoutClause(element.name.toString(),
-                                                                    name,
-                                                                    ";D[a-fA-F0-9]+");
-                               })
-            == elements.end()) {
-            return testing::AssertionFailure() << mappedElementVectorToString(elements);
+        for (auto name : names) {
+            if (std::find_if(elements.begin(),
+                             elements.end(),
+                             [&, name](const Data::MappedElement& element) {
+                                 return matchStringsWithoutClause(element.name.toString(),
+                                                                  name,
+                                                                  ";D[a-fA-F0-9]+");
+                             })
+                == elements.end()) {
+                return testing::AssertionFailure() << mappedElementVectorToString(elements);
+            }
         }
     }
     return testing::AssertionSuccess();
