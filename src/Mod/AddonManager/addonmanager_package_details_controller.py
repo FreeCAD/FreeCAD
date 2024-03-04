@@ -55,7 +55,6 @@ class PackageDetailsController(QtCore.QObject):
     update = QtCore.Signal(Addon)
     execute = QtCore.Signal(Addon)
     update_status = QtCore.Signal(Addon)
-    check_for_update = QtCore.Signal(Addon)
 
     def __init__(self, widget=None):
         super().__init__()
@@ -63,9 +62,10 @@ class PackageDetailsController(QtCore.QObject):
         self.readme_controller = ReadmeController(self.ui.readme_browser)
         self.worker = None
         self.addon = None
-        self.status_update_thread = None
+        self.update_check_thread = None
         self.original_disabled_state = None
         self.original_status = None
+        self.check_for_update_worker = None
         try:
             self.git_manager = GitManager()
         except NoGitFound:
@@ -76,9 +76,6 @@ class PackageDetailsController(QtCore.QObject):
         self.ui.button_bar.install.clicked.connect(lambda: self.install.emit(self.addon))
         self.ui.button_bar.uninstall.clicked.connect(lambda: self.uninstall.emit(self.addon))
         self.ui.button_bar.update.clicked.connect(lambda: self.update.emit(self.addon))
-        self.ui.button_bar.check_for_update.clicked.connect(
-            lambda: self.check_for_update.emit(self.addon)
-        )
         self.ui.button_bar.change_branch.clicked.connect(self.change_branch_clicked)
         self.ui.button_bar.enable.clicked.connect(self.enable_clicked)
         self.ui.button_bar.disable.clicked.connect(self.disable_clicked)
@@ -89,6 +86,10 @@ class PackageDetailsController(QtCore.QObject):
         self.addon = repo
         self.readme_controller.set_addon(repo)
         self.original_disabled_state = self.addon.is_disabled()
+        if repo is not None:
+            self.ui.button_bar.show()
+        else:
+            self.ui.button_bar.hide()
 
         if self.worker is not None:
             if not self.worker.isFinished():
@@ -99,6 +100,7 @@ class PackageDetailsController(QtCore.QObject):
         self.ui.set_installed(installed)
         update_info = UpdateInformation()
         if installed:
+            update_info.unchecked = self.addon.status() == Addon.Status.UNCHECKED
             update_info.update_available = self.addon.status() == Addon.Status.UPDATE_AVAILABLE
             update_info.check_in_progress = False  # TODO: Implement the "check in progress" status
             if repo.metadata:
@@ -117,25 +119,30 @@ class PackageDetailsController(QtCore.QObject):
             self.update_macro_info(repo)
 
         if repo.status() == Addon.Status.UNCHECKED:
-            if not self.status_update_thread:
-                self.status_update_thread = QtCore.QThread()
-            self.status_create_addon_list_worker = CheckSingleUpdateWorker(repo)
-            self.status_create_addon_list_worker.moveToThread(self.status_update_thread)
-            self.status_update_thread.finished.connect(
-                self.status_create_addon_list_worker.deleteLater
+            self.ui.button_bar.check_for_update.show()
+            self.ui.button_bar.check_for_update.setText(
+                translate("AddonsInstaller", "Check for " "update")
             )
-            self.check_for_update.connect(self.status_create_addon_list_worker.do_work)
-            self.status_create_addon_list_worker.update_status.connect(self.display_repo_status)
-            self.status_update_thread.start()
-            update_info.check_in_progress = True
-            self.ui.set_update_available(update_info)
-            self.check_for_update.emit(self.addon)
+            self.ui.button_bar.check_for_update.setEnabled(True)
+            if not self.update_check_thread:
+                self.update_check_thread = QtCore.QThread()
+            self.check_for_update_worker = CheckSingleUpdateWorker(repo)
+            self.check_for_update_worker.moveToThread(self.update_check_thread)
+            self.update_check_thread.finished.connect(self.check_for_update_worker.deleteLater)
+            self.ui.button_bar.check_for_update.clicked.connect(
+                self.check_for_update_worker.do_work
+            )
+            self.check_for_update_worker.update_status.connect(self.display_repo_status)
+            self.update_check_thread.start()
+        else:
+            self.ui.button_bar.check_for_update.hide()
 
         flags = WarningFlags()
         flags.required_freecad_version = self.requires_newer_freecad()
         flags.obsolete = repo.obsolete
         flags.python2 = repo.python2
         self.ui.set_warning_flags(flags)
+        self.set_change_branch_button_state()
 
     def requires_newer_freecad(self) -> Optional[Version]:
         """If the current package is not installed, returns the first supported version of
@@ -159,7 +166,7 @@ class PackageDetailsController(QtCore.QObject):
         """The change branch button is only available for installed Addons that have a .git directory
         and in runs where the git is available."""
 
-        self.ui.button_bar.change_branch_button.hide()
+        self.ui.button_bar.change_branch.hide()
 
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
         show_switcher = pref.GetBool("ShowBranchSwitcher", False)
@@ -186,7 +193,7 @@ class PackageDetailsController(QtCore.QObject):
 
         # If all four above checks passed, then it's possible for us to switch
         # branches, if there are any besides the one we are on: show the button
-        self.ui.button_bar.change_branch_button.show()
+        self.ui.button_bar.change_branch.show()
 
     def update_macro_info(self, repo: Addon) -> None:
         if not repo.macro.url:
@@ -256,3 +263,7 @@ class PackageDetailsController(QtCore.QObject):
         self.addon.set_status(Addon.Status.PENDING_RESTART)
         self.ui.set_new_branch(name)
         self.update_status.emit(self.addon)
+
+    def display_repo_status(self, addon):
+        self.update_status.emit(self.addon)
+        self.show_repo(self.addon)

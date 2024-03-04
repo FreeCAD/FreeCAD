@@ -63,6 +63,7 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
     def setMarkdown(self, md: str):
         """Provides an optional fallback to the markdown library for older versions of Qt (prior to 5.15) that did not
         have native markdown support. Lacking that, plaintext is displayed."""
+        geometry = self.geometry()
         if hasattr(super(), "setMarkdown"):
             super().setMarkdown(md)
         else:
@@ -76,6 +77,7 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
                 FreeCAD.Console.Warning(
                     "Qt < 5.15 and no `import markdown` -- falling back to plain text display\n"
                 )
+        self.setGeometry(geometry)
 
     def set_resource(self, resource_url: str, image: Optional[QtGui.QImage]):
         """Once a resource has been fetched (or the fetch has failed), this method should be used to inform the widget
