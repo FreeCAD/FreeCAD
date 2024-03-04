@@ -1,3 +1,6 @@
 [submodule "src/3rdParty/OndselSolver"]
 	path = src/3rdParty/OndselSolver
 	url = https://github.com/Ondsel-Development/OndselSolver.git
+[submodule "tests/lib"]
+	path = tests/lib
+	url = https://github.com/google/googletest
