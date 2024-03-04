@@ -93,19 +93,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not (FeatureRestMachining & self.pocketFeatures()):
             form.useRestMachining.hide()
 
-        # if True:
-        #     # currently doesn't have an effect or is experimental
-        #     form.minTravel.hide()
 
         return form
 
     def updateMinTravel(self, obj, setModel=True):
-        if obj.UseStartPoint:
-            self.form.minTravel.setEnabled(True)
-        else:
-            self.form.minTravel.setChecked(False)
-            self.form.minTravel.setEnabled(False)
-
         if setModel and obj.MinTravel != self.form.minTravel.isChecked():
             obj.MinTravel = self.form.minTravel.isChecked()
 

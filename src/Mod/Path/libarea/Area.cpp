@@ -624,11 +624,108 @@ void CArea::MakePocketToolpath(std::list<CCurve> &curve_list, const CAreaPocketP
 
 	if(params.mode == SingleOffsetPocketMode || params.mode == ZigZagThenSingleOffsetPocketMode)
 	{
+		// if there are already curves, attempt to start the offset from the current tool position
+		bool done = false;
+		if (!curve_list.empty() && !curve_list.back().m_vertices.empty()) {
+			// find the closest curve to the start point
+			const Point start = curve_list.back().m_vertices.back().m_p;
+			auto curve_itmin = a_offset.m_curves.begin();
+			double dmin = Point::tolerance;
+			for (auto it = a_offset.m_curves.begin(); it != a_offset.m_curves.end(); it++) {
+				const double dist = it->NearestPoint(start).dist(start);
+				if (dist < dmin) {
+					dmin = dist;
+					curve_itmin = it;
+				}
+			}
+
+			// if the start point is on that curve (within Point::tolerance), do the profile starting on that curve
+			if (dmin < Point::tolerance) {
+				// split the curve into two parts -- starting with this point, and ending with this point
+				CCurve startCurve;
+				CCurve endCurve;
+
+				std::list<Span> spans;
+				curve_itmin->GetSpans(spans);
+				int imin = -1;
+				double dmin = std::numeric_limits<double>::max();
+				Point nmin;
+				Span smin;
+				{
+					int i = 0;
+					for (auto it = spans.begin(); it != spans.end(); i++, it++) {
+						const Point nearest = it->NearestPoint(start);
+						const double dist = nearest.dist(start);
+						if (dist < dmin) {
+							dmin = dist;
+							imin = i;
+							nmin = nearest;
+							smin = *it;
+						}
+					}
+				}
+					
+				startCurve.append(CVertex(nmin));
+				endCurve.append(curve_itmin->m_vertices.front());
+				{
+					int i =0;
+					for (auto it = spans.begin(); it != spans.end(); i++, it++) {
+						if (i < imin) {
+							endCurve.append(it->m_v);
+						} else if (i > imin) {
+							startCurve.append(it->m_v);
+						} else {
+							if (nmin != endCurve.m_vertices.back().m_p) {
+								endCurve.append(CVertex(smin.m_v.m_type, nmin, smin.m_v.m_c, smin.m_v.m_user_data));
+							}
+							if (nmin != it->m_v.m_p) {
+								startCurve.append(CVertex(smin.m_v.m_type, it->m_v.m_p, smin.m_v.m_c, smin.m_v.m_user_data));
+							}
+						}
+					}
+				}
+
+				// append curves to the curve list: start curve, other curves wrapping around, end curve
+				const auto appendCurve = [&curve_list](const CCurve &curve) {
+					if (curve_list.size() > 0 && curve_list.back().m_vertices.back().m_p == curve.m_vertices.front().m_p) {
+						auto it = curve.m_vertices.begin();
+						for (it++; it != curve.m_vertices.end(); it++) {
+							curve_list.back().append(*it);
+						}
+					} else {
+						curve_list.push_back(curve);
+					}
+				};
+
+				if (startCurve.m_vertices.size() > 1) {
+					appendCurve(startCurve);
+				}
+				{
+					auto it = curve_itmin;
+					for(it++; it != a_offset.m_curves.end(); it++) {
+						appendCurve(*it);
+					}
+				}
+				for(auto it = a_offset.m_curves.begin(); it != curve_itmin; it++) {
+					appendCurve(*it);
+				}
+				if (endCurve.m_vertices.size() > 1) {
+					appendCurve(endCurve);
+				}
+
+
+				done = true;
+			}
+		}
+
 		// add the single offset too
-		for(std::list<CCurve>::iterator It = a_offset.m_curves.begin(); It != a_offset.m_curves.end(); It++)
+		if (!done)
 		{
-			CCurve& curve = *It;
-			curve_list.push_back(curve);
+			for(std::list<CCurve>::iterator It = a_offset.m_curves.begin(); It != a_offset.m_curves.end(); It++)
+			{
+				CCurve& curve = *It;
+				curve_list.push_back(curve);
+			}
 		}
 	}
 }
