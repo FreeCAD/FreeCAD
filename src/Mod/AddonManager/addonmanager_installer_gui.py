@@ -364,9 +364,10 @@ class AddonInstallerGUI(QtCore.QObject):
             translate("AddonsInstaller", "Cannot execute pip"),
             translate(
                 "AddonsInstaller",
-                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: ",
+                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system "
+                "has pip installed and try again. The failed command was:",
             )
-            + f"\n\n{command}\n\n"
+            + f" \n\n{command}\n\n"
             + translate(
                 "AddonsInstaller",
                 "Continue with installation of {} anyway?",
