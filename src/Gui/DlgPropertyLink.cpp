@@ -525,7 +525,13 @@ void DlgPropertyLink::onItemSelectionChanged()
             auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                     doc->getViewProvider(obj));
             if(vp) {
-                doc->setActiveView(vp, Gui::View3DInventor::getClassTypeId());
+                MDIView *view = vp->getMDIView();
+                if (view) {
+                    doc->setActiveWindow(view);
+                }
+                else {
+                    doc->setActiveView(vp, Gui::View3DInventor::getClassTypeId());
+                }
             }
         }
     }
