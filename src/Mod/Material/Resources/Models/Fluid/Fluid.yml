@@ -30,6 +30,7 @@ Model:
     - Density:
       UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
   DynamicViscosity:
+    DisplayName: "Dynamic Viscosity"
     Type: 'Quantity'
     Units: 'Pa*s'
     URL: 'https://en.wikipedia.org/wiki/Viscosity'
@@ -38,11 +39,13 @@ Model:
       flow and deform during mechanical oscillation as a function of
       temperature, frequency, time, or both
   KinematicViscosity:
+    DisplayName: "Kinematic Viscosity"
     Type: 'Quantity'
     Units: 'm^2/s'
     URL: 'https://en.wikipedia.org/wiki/Viscosity'
     Description: "Kinematic Viscosity = Dynamic Viscosity / Density"
   PrandtlNumber:
+    DisplayName: "Prandtl Number"
     Type: 'Float'
     Units: ''
     URL: 'https://en.wikipedia.org/wiki/Prandtl_number'

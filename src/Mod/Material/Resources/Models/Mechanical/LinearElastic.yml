@@ -35,6 +35,7 @@ Model:
     - IsotropicLinearElastic:
       UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
   AngleOfFriction:
+    DisplayName: "Angle Of Friction"
     Type: 'Quantity'
     Units: 'deg'
     URL: 'https://en.wikipedia.org/wiki/Friction#Angle_of_friction'
@@ -42,11 +43,13 @@ Model:
       Further information can be found at
       https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
   CompressiveStrength:
+    DisplayName: "Compressive Strength"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
     Description: "Compressive strength in [FreeCAD Pressure unit]"
   FractureToughness:
+    DisplayName: "Fracture Toughness"
     Type: 'Float'
     Units: ''
     URL: 'https://en.wikipedia.org/wiki/Fracture_toughness'
@@ -55,16 +58,19 @@ Model:
       the unit is fixed MPa * m^0.5.
       https://github.com/FreeCAD/FreeCAD/pull/2156
   UltimateStrain:
+    DisplayName: "Ultimate Strain"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
     Description: " "
   UltimateTensileStrength:
+    DisplayName: "Ultimate Tensile Strength"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
     Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
   YieldStrength:
+    DisplayName: "Yield Strength"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
