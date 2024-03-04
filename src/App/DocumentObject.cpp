@@ -214,6 +214,28 @@ void DocumentObject::touch(bool noRecompute)
 }
 
 /**
+ * @brief Set this document object freezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::freeze()
+{
+    StatusBits.set(ObjectStatus::Freeze);
+    // use the signalTouchedObject to refresh the Gui
+    if (_pDoc)
+        _pDoc->signalTouchedObject(*this);
+}
+
+/**
+ * @brief Set this document object unfreezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::unfreeze(bool noRecompute)
+{
+    StatusBits.set(ObjectStatus::Freeze, false);
+    touch(noRecompute);
+}
+
+/**
  * @brief Check whether the document object is touched or not.
  * @return true if document object is touched, false if not.
  */
@@ -240,6 +262,9 @@ void DocumentObject::enforceRecompute()
  */
 bool DocumentObject::mustRecompute() const
 {
+    if (StatusBits.test(ObjectStatus::Freeze))
+        return false;
+
     if (StatusBits.test(ObjectStatus::Enforce))
         return true;
 
@@ -726,6 +751,9 @@ void DocumentObject::onBeforeChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if (isFreezed())
+        return;
+
     if(GetApplication().isClosingAll())
         return;
 
