@@ -110,6 +110,9 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
+    static Feature*
+    create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
+
 protected:
     /// recompute only this object
     App::DocumentObjectExecReturn *recompute() override;
