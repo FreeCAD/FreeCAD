@@ -3960,11 +3960,15 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
                     std::make_move_iterator(knots2.end()));
 
     // end knots can have a multiplicity of (degree + 1)
-    if (bsp1->getDegree() < newMults.back())
-        if (makeC1Continuous)
+    if (bsp1->getDegree() < newMults.back()) {
+        if (makeC1Continuous) {
             newMults.back() = bsp1->getDegree()-1;
-        else
+        }
+        else {
             newMults.back() = bsp1->getDegree();
+        }
+    }
+
     mults2.erase(mults2.begin());
     newMults.insert(newMults.end(),
                     std::make_move_iterator(mults2.begin()),
