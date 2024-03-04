@@ -65,6 +65,8 @@ public:
     Base::Vector3d getAttachPoint();
     DrawView* getBaseView() const;
     virtual App::DocumentObject* getBaseObject() const;
+    App::PropertyLink *getOwnerProperty() override { return &LeaderParent; }
+
     bool keepUpdated() override;
     double getScale() const override;
     double getBaseScale() const;

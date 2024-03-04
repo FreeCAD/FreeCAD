@@ -102,23 +102,6 @@ bool ViewProviderLeader::doubleClicked()
     return true;
 }
 
-void ViewProviderLeader::updateData(const App::Property* p)
-{
-    if (!getFeature()->isRestoring())  {
-        if (p == &getFeature()->LeaderParent)  {
-            App::DocumentObject* docObj = getFeature()->LeaderParent.getValue();
-            TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(docObj);
-            if (dv) {
-                QGIView* qgiv = getQView();
-                if (qgiv) {
-                    qgiv->onSourceChange(dv);
-                }
-            }
-        }
-    }
-    ViewProviderDrawingView::updateData(p);
-}
-
 void ViewProviderLeader::onChanged(const App::Property* p)
 {
     if ((p == &Color) ||

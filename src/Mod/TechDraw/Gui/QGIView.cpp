@@ -103,11 +103,6 @@ QGIView::QGIView()
     m_lock->hide();
 }
 
-void QGIView::onSourceChange(TechDraw::DrawView* newParent)
-{
-    Q_UNUSED(newParent);
-}
-
 void QGIView::isVisible(bool state)
 {
     auto feat = getViewObject();

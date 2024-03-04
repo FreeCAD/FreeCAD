@@ -163,9 +163,6 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-public Q_SLOTS:
-    virtual void onSourceChange(TechDraw::DrawView* newParent);
-
 protected:
     QGIView* getQGIVByName(std::string name);
 
