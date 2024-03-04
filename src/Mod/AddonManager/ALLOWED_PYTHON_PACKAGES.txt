@@ -29,6 +29,7 @@ pynastran
 requests
 rhino3dm
 scipy
+streamdeck
 xlrd
 xlutils
 xlwt
