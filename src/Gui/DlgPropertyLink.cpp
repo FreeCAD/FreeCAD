@@ -525,6 +525,7 @@ void DlgPropertyLink::onItemSelectionChanged()
             auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                     doc->getViewProvider(obj));
             if(vp) {
+                // If the view provider uses a special window for rendering, switch to it
                 MDIView *view = vp->getMDIView();
                 if (view) {
                     doc->setActiveWindow(view);
