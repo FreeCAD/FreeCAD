@@ -41,6 +41,7 @@
 #include <cctype>
 #include <cstdint>
 #include <cstring>
+#include <iostream>
 #include <ostream>  // NOLINT
 #include <string>
 #include <vector>
@@ -87,7 +88,7 @@ GTEST_API_ std::string ConvertIdentifierNameToWords(const char* id_name) {
                                  (!IsDigit(prev_char) && IsDigit(*p));
 
     if (IsAlNum(*p)) {
-      if (starts_new_word && result != "") result += ' ';
+      if (starts_new_word && !result.empty()) result += ' ';
       result += ToLower(*p);
     }
   }
@@ -181,7 +182,7 @@ GTEST_API_ void Log(LogSeverity severity, const std::string& message,
     }
     std::cout << "Stack trace:\n"
               << ::testing::internal::GetCurrentOsStackTraceExceptTop(
-                     ::testing::UnitTest::GetInstance(), actual_to_skip);
+                     actual_to_skip);
   }
   std::cout << ::std::flush;
 }
@@ -198,16 +199,22 @@ GTEST_API_ void IllegalDoDefault(const char* file, int line) {
       "the variable in various places.");
 }
 
+constexpr char UndoWebSafeEncoding(char c) {
+  return c == '-' ? '+' : c == '_' ? '/' : c;
+}
+
 constexpr char UnBase64Impl(char c, const char* const base64, char carry) {
-  return *base64 == 0   ? static_cast<char>(65)
-         : *base64 == c ? carry
-                        : UnBase64Impl(c, base64 + 1, carry + 1);
+  return *base64 == 0 ? static_cast<char>(65)
+         : *base64 == c
+             ? carry
+             : UnBase64Impl(c, base64 + 1, static_cast<char>(carry + 1));
 }
 
 template <size_t... I>
 constexpr std::array<char, 256> UnBase64Impl(IndexSequence<I...>,
                                              const char* const base64) {
-  return {{UnBase64Impl(static_cast<char>(I), base64, 0)...}};
+  return {
+      {UnBase64Impl(UndoWebSafeEncoding(static_cast<char>(I)), base64, 0)...}};
 }
 
 constexpr std::array<char, 256> UnBase64(const char* const base64) {
