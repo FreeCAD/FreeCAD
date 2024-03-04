@@ -206,7 +206,7 @@ class TaskPanel:
 
         if cleanup:
             self.removeGlobalCallbacks()
-            FreeCADGui.Snapper.off(True)
+            FreeCADGui.Snapper.off()
             if self.buttonBox:
                 self.buttonBox.setEnabled(True)
             self.removeEscapeShortcut()
