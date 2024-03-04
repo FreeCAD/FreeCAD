@@ -112,7 +112,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     Wire(obj)
     obj.Points = pointslist
     obj.Closed = closed
-    obj.Support = support
+    obj.AttachmentSupport = support
 
     if face is not None:
         obj.MakeFace = face

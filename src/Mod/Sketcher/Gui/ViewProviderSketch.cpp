@@ -2973,7 +2973,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.Support if not "
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
                     "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
@@ -3012,7 +3012,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a
     // recompute if we just close the sketch without touching anything.
-    if (getSketchObject()->Support.getValue()) {
+    if (getSketchObject()->AttachmentSupport.getValue()) {
         if (!getSketchObject()->evaluateSupport())
             getSketchObject()->validateExternalLinks();
     }
@@ -4044,8 +4044,8 @@ void ViewProviderSketch::generateContextMenu()
             menu << "Sketcher_Dimension";
             if (selectedConics == 0) {
                 menu << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
 
                 if (selectedLines > 1) {
                     menu << "Sketcher_ConstrainParallel";
@@ -4073,8 +4073,8 @@ void ViewProviderSketch::generateContextMenu()
             if (selectedConics == 0 && selectedBsplines == 0) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
                 if (selectedPoints == 2) {
                     menu << "Sketcher_ConstrainSymmetric";
                 }
@@ -4095,8 +4095,8 @@ void ViewProviderSketch::generateContextMenu()
             if (selectedPoints > 1) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
             }
             if (selectedPoints == 2) {
                 menu << "Sketcher_ConstrainPerpendicular"
@@ -4109,8 +4109,8 @@ void ViewProviderSketch::generateContextMenu()
         else if (selectedLines >= 1 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension"
                  << "Sketcher_ConstrainHorVer"
-                 << "Sketcher_ConstrainVertical"
-                 << "Sketcher_ConstrainHorizontal";
+                 << "Sketcher_ConstrainHorizontal"
+                 << "Sketcher_ConstrainVertical";
         }
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {

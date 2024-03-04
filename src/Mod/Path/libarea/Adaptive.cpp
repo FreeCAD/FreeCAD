@@ -147,6 +147,27 @@ inline DoublePoint GetPathDirectionV(const Path &pth, size_t pointIndex)
 	return DirectionV(p1, p2);
 }
 
+// Returns true if points 'a' and 'b' are coincident or nearly so.
+bool isClose(const IntPoint &a, const IntPoint &b) {
+	return abs(a.X - b.X) <= 1 && abs(a.Y - b.Y) <= 1;
+}
+
+// Remove coincident and almost-coincident points from Paths.
+void filterCloseValues(Paths &ppg) {
+	for (auto& pth : ppg) {
+		while (true) {
+			auto i = std::adjacent_find(pth.begin(), pth.end(), isClose);
+			if (i == pth.end())
+				break;
+			pth.erase(i);
+		}
+		// adjacent_find doesn't compare first with last element, so
+		// do that manually.
+		while (pth.size() > 1 && isClose(pth.front(), pth.back()))
+			pth.pop_back();
+	}
+}
+
 //*****************************************
 // Utils
 //*****************************************
@@ -1654,9 +1675,11 @@ void Adaptive2d::ApplyStockToLeave(Paths &inputPaths)
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		clipof.Execute(inputPaths, -1);
+		filterCloseValues(inputPaths);
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		clipof.Execute(inputPaths, 1);
+		filterCloseValues(inputPaths);
 	}
 }
 

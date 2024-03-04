@@ -120,6 +120,55 @@ bool StdCmdRandomColor::isActive()
     return (Gui::Selection().size() != 0);
 }
 
+//===========================================================================
+// Std_ToggleFreeze
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleFreeze)
+
+StdCmdToggleFreeze::StdCmdToggleFreeze()
+    : Command("Std_ToggleFreeze")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("Toggle freeze");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleFreeze";
+    sPixmap = "Std_ToggleFreeze";
+    sAccel = "";
+    eType = AlterDoc;
+}
+
+void StdCmdToggleFreeze::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle freeze"));
+
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        App::DocumentObject* obj = sel.pObject;
+        if (!obj)
+            continue;
+
+        if (obj->isFreezed())
+            obj->unfreeze();
+        else
+            obj->freeze();
+    }
+
+    getActiveGuiDocument()->commitCommand();
+}
+
+bool StdCmdToggleFreeze::isActive()
+{
+    return (Gui::Selection().size() != 0);
+}
+
+
+
 
 //===========================================================================
 // Std_SendToPythonConsole
@@ -221,6 +270,7 @@ void CreateFeatCommands()
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new StdCmdFeatRecompute());
+    rcCmdMgr.addCommand(new StdCmdToggleFreeze());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
 }

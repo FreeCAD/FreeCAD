@@ -536,6 +536,23 @@ TopLoc_Location Feature::getLocation() const
     return TopLoc_Location(trf);
 }
 
+Feature* Feature::create(const TopoShape& shape, const char* name, App::Document* document)
+{
+    if (!name || !name[0]) {
+        name = "Shape";
+    }
+    if (!document) {
+        document = App::GetApplication().getActiveDocument();
+        if (!document) {
+            document = App::GetApplication().newDocument();
+        }
+    }
+    auto res = static_cast<Part::Feature*>(document->addObject("Part::Feature", name));
+    res->Shape.setValue(shape);
+    res->purgeTouched();
+    return res;
+}
+
 ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
                                    const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
 {
