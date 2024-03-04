@@ -774,6 +774,20 @@ int System::addConstraintAngleViaPoint(Curve& crv1,
     return addConstraint(constr);
 }
 
+int System::addConstraintAngleViaTwoPoints(Curve& crv1,
+                                           Curve& crv2,
+                                           Point& p1,
+                                           Point& p2,
+                                           double* angle,
+                                           int tagId,
+                                           bool driving)
+{
+    Constraint* constr = new ConstraintAngleViaTwoPoints(crv1, crv2, p1, p2, angle);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintAngleViaPointAndParam(Curve& crv1,
                                                Curve& crv2,
                                                Point& p,

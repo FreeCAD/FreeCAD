@@ -3206,7 +3206,12 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     if (e2e) {
         tag = ++ConstraintsCounter;
         GCSsys.addConstraintP2PCoincident(p, *p2, tag, driving);
-        GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
+        if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
+            GCSsys.addConstraintAngleViaTwoPoints(*crv1, *crv2, p, *p2, angle, tag, driving);
+        }
+        else {
+            GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
+        }
     }
     if (avp) {
         tag = ++ConstraintsCounter;

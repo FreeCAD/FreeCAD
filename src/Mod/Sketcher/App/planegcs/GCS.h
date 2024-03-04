@@ -317,6 +317,13 @@ public:
                                    double* angle,
                                    int tagId = 0,
                                    bool driving = true);
+    int addConstraintAngleViaTwoPoints(Curve& crv1,
+                                       Curve& crv2,
+                                       Point& p1,
+                                       Point& p2,
+                                       double* angle,
+                                       int tagId = 0,
+                                       bool driving = true);
     int addConstraintAngleViaPointAndParam(Curve& crv1,
                                            Curve& crv2,
                                            Point& p,
