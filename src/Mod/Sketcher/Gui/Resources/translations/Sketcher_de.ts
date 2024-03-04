@@ -181,12 +181,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="554"/>
       <source>Center and endpoints</source>
-      <translation type="unfinished">Center and endpoints</translation>
+      <translation>Mittel- und Endpunkte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="560"/>
       <source>Endpoints and rim point</source>
-      <translation type="unfinished">Endpoints and rim point</translation>
+      <translation>Endpunkte und Punkt auf Kreisbogen</translation>
     </message>
   </context>
   <context>
@@ -240,22 +240,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="892"/>
       <source>Ellipse by center, radius, rim point</source>
-      <translation type="unfinished">Ellipse by center, radius, rim point</translation>
+      <translation>Ellipse durch Angabe von Mittelpunkt, Hauptradius und Punkt auf Kreisbogen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Ellipse by axis endpoints, rim point</source>
-      <translation type="unfinished">Ellipse by axis endpoints, rim point</translation>
+      <translation>Ellipse durch Angabe von Achsen-Endpunkte und Punkt auf Kreisbogen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="910"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
-      <translation type="unfinished">Arc of ellipse by center, radius, endpoints</translation>
+      <translation>Ellipsenbogen durch Angabe von Mittelpunkt, Hauptradius und Endpunkte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="920"/>
       <source>Arc of hyperbola by center, vertex, endpoints</source>
-      <translation type="unfinished">Arc of hyperbola by center, vertex, endpoints</translation>
+      <translation>Hyperbelbogen durch Angabe von Mittelpunkt, Fokuspunkt und Endpunkte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="929"/>
@@ -283,7 +283,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1575"/>
       <source>Corner-preserving sketch fillet</source>
-      <translation type="unfinished">Corner-preserving sketch fillet</translation>
+      <translation>Randbedingungsserhaltende Verrundung</translation>
     </message>
   </context>
   <context>
@@ -784,7 +784,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1422"/>
       <source>Create fillet</source>
-      <translation>Abrundung erstellen</translation>
+      <translation>Verrundung erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1423"/>
@@ -2035,7 +2035,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../DrawSketchHandlerFillet.h" line="179"/>
       <location filename="../../DrawSketchHandlerFillet.h" line="274"/>
       <source>Create fillet</source>
-      <translation>Verrundung erstellen</translation>
+      <translation>Abrundung erstellen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
@@ -2156,8 +2156,8 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Virtuellen Raum der Einschränkungen aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <location filename="../../DrawSketchHandler.cpp" line="957"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <source>Add auto constraints</source>
       <translation>Automatische Randbedingungen hinzufügen</translation>
     </message>
@@ -2410,8 +2410,20 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Nicht anhängen</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandAlterGeometry.cpp" line="165"/>
       <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2531,15 +2543,6 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="9870"/>
       <location filename="../../CommandConstraints.cpp" line="9946"/>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandSketcherTools.cpp" line="79"/>
       <location filename="../../CommandSketcherTools.cpp" line="361"/>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
@@ -2557,9 +2560,6 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandSketcherTools.cpp" line="2399"/>
       <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherTools.cpp" line="2511"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -2709,9 +2709,9 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Die Anzahl der ausgewählten Objekte ist nicht 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="784"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
+      <location filename="../../CommandConstraints.cpp" line="784"/>
       <source>Error</source>
       <translation>Fehler</translation>
     </message>
@@ -2894,7 +2894,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Es gibt mehrere Möglichkeiten diese Beschränkung anzuwenden.
+      <translation>Es gibt mehrere Möglichkeiten diese Beschränkung anzuwenden.  
 
 Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunkte; zwei Kurven und einen Punkt.</translation>
     </message>
@@ -2932,7 +2932,7 @@ Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunk
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Es gibt eine Reihe von Möglichkeiten, wie diese Einschränkung angewendet werden kann.
+      <translation>Es gibt eine Reihe von Möglichkeiten, wie diese Einschränkung angewendet werden kann. 
 
 Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpunkte; Zwei Kurven und ein Punkt.</translation>
     </message>
@@ -3115,9 +3115,9 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <translation>B-Spline-Grad, zwischen 1 und %1 festlegen:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-Kernel-Fehler</translation>
     </message>
@@ -4467,7 +4467,7 @@ Standardmäßig: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt.
+      <translation>Bei Aktivierung des Bearbeitungsmodus, wird die orthogonale Ansicht der Kamera festgelegt. 
 Funktioniert nur, wenn "Kameraposition nach dem Bearbeiten wiederherstellen" aktiviert ist.</translation>
     </message>
     <message>
@@ -4756,7 +4756,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1813"/>
       <location filename="../../TaskSketcherElements.cpp" line="1819"/>
       <source>Construction</source>
-      <translation>Konstruktion</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1162"/>
@@ -6095,41 +6095,41 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerScale.h" line="130"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
-      <translation>Fehler</translation>
+      <translation>Fehlermeldungen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2269"/>
@@ -6163,6 +6163,9 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Die Randbedingng hat eine ungültige Indexierung und ist fehlerhaft.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="432"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="609"/>
@@ -6170,9 +6173,6 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <location filename="../../CommandConstraints.cpp" line="773"/>
       <location filename="../../CommandConstraints.cpp" line="6068"/>
       <location filename="../../CommandConstraints.cpp" line="6272"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="1066"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <source>Invalid Constraint</source>
@@ -6214,8 +6214,8 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Fehler beim Erstellen des B-spline Kontrollpunktes</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <source>Error creating B-spline</source>
       <translation>Fehler beim Erstellen des B-splines</translation>
     </message>
@@ -6271,17 +6271,17 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Linie hinzufügen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation>Werkzeugausführung abgebrochen</translation>
     </message>
@@ -6316,9 +6316,9 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Trimmen der Kante fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
       <translation>Wertfehler</translation>
     </message>
@@ -6535,7 +6535,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <source>Dimension</source>
-      <translation>Bemaßung</translation>
+      <translation>Abmessung</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
@@ -6565,7 +6565,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Bemaßung</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
@@ -6757,7 +6757,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1670"/>
       <source>Create two rectangles with a constant offset.</source>
-      <translation type="unfinished">Create two rectangles with a constant offset.</translation>
+      <translation>Zwei Rechtecke mit einem konstanten Versatz erstellen.</translation>
     </message>
   </context>
   <context>
@@ -6864,7 +6864,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Darstellung</translation>
+      <translation>Erscheinungsbild</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -7268,7 +7268,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="555"/>
       <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Create an arc by its center and by its endpoints</source>
-      <translation type="unfinished">Create an arc by its center and by its endpoints</translation>
+      <translation>Kreisbogen mit Mittelpunkt und durch die Endpunkte erstellen</translation>
     </message>
   </context>
   <context>
@@ -7277,7 +7277,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="562"/>
       <location filename="../../CommandCreateGeo.cpp" line="565"/>
       <source>Create an arc by its endpoints and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its endpoints and a point along the arc</translation>
+      <translation>Kreisbogen durch die Endpunkte und einen Punkt auf dem Bogen erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7286,7 +7286,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="894"/>
       <location filename="../../CommandCreateGeo.cpp" line="897"/>
       <source>Create an ellipse by its center, one of its radii and a rim point</source>
-      <translation type="unfinished">Create an ellipse by its center, one of its radii and a rim point</translation>
+      <translation>Ellipse durch den Mittelpunkt, einen Radius und einen Punkt auf dem Kreisbogen erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7295,7 +7295,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="903"/>
       <location filename="../../CommandCreateGeo.cpp" line="906"/>
       <source>Create an ellipse by the endpoints of one of its axes and a rim point</source>
-      <translation type="unfinished">Create an ellipse by the endpoints of one of its axes and a rim point</translation>
+      <translation>Ellipse durch dei Endpunkte einer Achse und einen Punkt auf dem Kreisbogen erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7304,7 +7304,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="912"/>
       <location filename="../../CommandCreateGeo.cpp" line="915"/>
       <source>Create an arc of ellipse by its center, one of its radii, and its endpoints</source>
-      <translation type="unfinished">Create an arc of ellipse by its center, one of its radii, and its endpoints</translation>
+      <translation>Ellipsenbogen durch Mittelpunkt, einen Radius und den Endpunkten erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7313,7 +7313,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="923"/>
       <location filename="../../CommandCreateGeo.cpp" line="926"/>
       <source>Create an arc of hyperbola by its center, vertex and endpoints</source>
-      <translation type="unfinished">Create an arc of hyperbola by its center, vertex and endpoints</translation>
+      <translation>Hyperbelbogen durch Angabe von Mittelpunkt, Fokuspunkt und Endpunkte erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7322,7 +7322,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <location filename="../../CommandCreateGeo.cpp" line="935"/>
       <source>Create an arc of parabola by its focus, vertex and endpoints</source>
-      <translation type="unfinished">Create an arc of parabola by its focus, vertex and endpoints</translation>
+      <translation>Parabelbogen durch Fokus, Scheitelpunkt sowie den Endpunkten erzeugen</translation>
     </message>
   </context>
 </TS>

@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis FEM</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="347"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="505"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="506"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1800"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Command.cpp" line="1853"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1854"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Command.cpp" line="2227"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2228"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="2004"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2005"/>
@@ -573,7 +573,7 @@
     <message>
       <location filename="../../Command.cpp" line="2129"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2130"/>
@@ -1037,7 +1037,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1139,7 +1139,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1228,7 +1228,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>A hálócsoportok is exportálásra kerülnek.
-Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll,
+Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll, 
 ahol
 a kényszerítést vagy az anyagot alkalmazzák.</translation>
     </message>
@@ -1402,7 +1402,7 @@ elemzési konténer hozzáadásakor</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1512,7 +1512,7 @@ FreeCAD eredménytárgy: Az importált adatok FreeCAD VEM eredménytárgyá alak
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1607,8 +1607,8 @@ that "MAXKOI" needs to be increased.</source>
 (csomópontok száma elemenként szorozva
  véges elemek száma)
 
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter
+Előfordulhat, hogy növelnie kell ezt a paramétert, ha 
+egy iteratív megoldó használata esetén a "MAXKOI" paraméter 
 értékét növelni kell hibaüzenet jelenik meg.</translation>
     </message>
     <message>
@@ -1622,7 +1622,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott z88r végrehajtható
+      <translation>A megadott z88r végrehajtható 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1649,7 +1649,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="35"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beállítása</translation>
+      <translation>Csomópontok beálítása</translation>
     </message>
   </context>
   <context>
@@ -1657,7 +1657,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="56"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beálítása</translation>
+      <translation>Csomópontok beállítása</translation>
     </message>
   </context>
   <context>
@@ -2543,15 +2543,15 @@ Kérjük, adjon meg egy másik fájlt.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>VEM anyag</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
@@ -2576,9 +2576,9 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Anyag neve</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Szövegfelirat</translation>
     </message>
@@ -2928,17 +2928,17 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Igazítás engedélyezése</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -2948,11 +2948,11 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Centrifugális paraméter</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paraméter</translation>
     </message>
@@ -2982,13 +2982,13 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Keresztmetszeti elválasztó paraméter</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation>Elemzési funkció tulajdonságai</translation>
     </message>
@@ -3003,12 +3003,9 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Feszültség:</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3021,15 +3018,18 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>határozatlan</translation>
     </message>
@@ -3071,16 +3071,16 @@ harmonikus/rezgő hajtóerővel rendelkező egyenletek esetén</translation>
       <translation>A peremfeltétel az elektromos erőre vonatkozik-e</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Valós</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Elképzelt</translation>
     </message>
@@ -3100,9 +3100,9 @@ harmonikus/rezgő hajtóerővel rendelkező egyenletek esetén</translation>
       <translation>A skalárpotenciál képzetes része</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3121,9 +3121,9 @@ Note: has no effect if a solid was selected</source>
 Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3142,9 +3142,9 @@ Note: has no effect if a solid was selected</source>
 Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3194,8 +3194,8 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
       <translation>Gerendaszakasz paraméter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Keresztmetszeti paraméter</translation>
     </message>
@@ -3217,7 +3217,7 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Outer diameter:   </source>
-      <translation type="unfinished">Outer diameter:   </translation>
+      <translation>Külső átmérő:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
@@ -3250,30 +3250,30 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
       <translation>Forgás:     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>képlet</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Sebesség x:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Sebesség y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Sebesség z:</translation>
     </message>
@@ -3403,14 +3403,14 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>A potenciális y-komponens képzetes része</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation>A potenciális z-komponens valós része</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation>A potenciális z-komponens képzetes része</translation>
     </message>
@@ -3528,26 +3528,26 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
       <translation>Mégse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>

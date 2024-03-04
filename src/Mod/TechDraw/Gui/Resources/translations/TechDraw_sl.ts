@@ -1996,8 +1996,8 @@
       <translation>Ustvari preglednični pogled</translation>
     </message>
     <message>
+      <location filename="../../PagePrinter.cpp" line="388"/>
       <location filename="../../Command.cpp" line="1636"/>
-      <location filename="../../PagePrinter.cpp" line="373"/>
       <source>Save page to dxf</source>
       <translation>Shrani stran kot DXF</translation>
     </message>
@@ -2058,7 +2058,7 @@
       <translation>Vleci koto</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="526"/>
+      <location filename="../../QGSPage.cpp" line="536"/>
       <source>Create Balloon</source>
       <translation>Ustvari opisnico</translation>
     </message>
@@ -2073,8 +2073,8 @@
       <translation>Ustvari Središčnico</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <location filename="../../TaskCosmeticLine.cpp" line="187"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <source>Create Cosmetic Line</source>
       <translation>Ustvari dopolnilno črto</translation>
     </message>
@@ -2686,6 +2686,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandCreateDims.cpp" line="1249"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2703,16 +2713,6 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
@@ -2744,10 +2744,9 @@
       <translation>V izboru ni nobenega prereznega predmeta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2759,34 +2758,34 @@
       <location filename="../../CommandCreateDims.cpp" line="1423"/>
       <location filename="../../CommandCreateDims.cpp" line="1431"/>
       <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
       <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>Nepravilen izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
       <location filename="../../CommandCreateDims.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Select an object first</source>
       <translation>Izberite najprej predmet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Too many objects selected</source>
       <translation>Izbranih je preveč predmetov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
       <location filename="../../CommandCreateDims.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Create a page first.</source>
       <translation>Najprej ustvarite stran.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2795,6 +2794,7 @@
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
       <location filename="../../CommandCreateDims.cpp" line="1057"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>No View of a Part in selection.</source>
       <translation>V izboru ni pogleda na del.</translation>
     </message>
@@ -2906,6 +2906,8 @@
       <translation>Izbrani rob je B-zlepek. Polmer bo približen. Nadaljevanje?</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2925,12 +2927,10 @@
       <location filename="../../CommandCreateDims.cpp" line="1084"/>
       <location filename="../../CommandCreateDims.cpp" line="1098"/>
       <location filename="../../CommandCreateDims.cpp" line="1190"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Nepravilna Izbira</translation>
     </message>
@@ -3058,9 +3058,6 @@
       <translation>Izberite dva točkovna predmeta in en pogled. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3087,6 +3084,11 @@
       <location filename="../../CommandCreateDims.cpp" line="938"/>
       <location filename="../../CommandCreateDims.cpp" line="1036"/>
       <location filename="../../CommandCreateDims.cpp" line="1149"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <location filename="../../CommandExtensionDims.cpp" line="546"/>
       <location filename="../../CommandExtensionDims.cpp" line="838"/>
@@ -3094,23 +3096,18 @@
       <location filename="../../CommandExtensionDims.cpp" line="1513"/>
       <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <location filename="../../CommandExtensionDims.cpp" line="2137"/>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandExtensionPack.cpp" line="300"/>
       <location filename="../../CommandExtensionPack.cpp" line="614"/>
       <location filename="../../CommandExtensionPack.cpp" line="1102"/>
       <location filename="../../CommandExtensionPack.cpp" line="1346"/>
       <location filename="../../CommandExtensionPack.cpp" line="1647"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Opravilo je v teku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3137,6 +3134,11 @@
       <location filename="../../CommandCreateDims.cpp" line="939"/>
       <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <location filename="../../CommandCreateDims.cpp" line="1150"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="324"/>
       <location filename="../../CommandExtensionDims.cpp" line="547"/>
       <location filename="../../CommandExtensionDims.cpp" line="839"/>
@@ -3144,16 +3146,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1514"/>
       <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <location filename="../../CommandExtensionDims.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandExtensionPack.cpp" line="301"/>
       <location filename="../../CommandExtensionPack.cpp" line="615"/>
       <location filename="../../CommandExtensionPack.cpp" line="1103"/>
       <location filename="../../CommandExtensionPack.cpp" line="1347"/>
       <location filename="../../CommandExtensionPack.cpp" line="1648"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zapri dejavno pogovorno okno z opravili in poskusi ponovno.</translation>
     </message>
@@ -3411,7 +3411,7 @@
       <translation>Izvozi stran v PDF</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="286"/>
+      <location filename="../../PagePrinter.cpp" line="325"/>
       <source>Document Name: </source>
       <translation>Ime dokumenta: </translation>
     </message>
@@ -3427,8 +3427,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ali ste prepričani da želite nadaljevati?</translation>
     </message>
@@ -3463,9 +3463,9 @@
       <translation>Ustvarjalnik obogatenega besedila</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Urejevalnik obogatenega besedila</translation>
     </message>
@@ -3583,8 +3583,8 @@
       <translation>Uredi podrobni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="123"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -3867,17 +3867,17 @@ oznako za varjenje, ki bi postala okvarjena.</translation>
       <translation>Tega pogleda ne morete izbrisati, ker vsebuje enega ali več odvisnih pogledov, ki bi se tako pokvarili.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="229"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderLeader.cpp" line="229"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <source>Object dependencies</source>
       <translation>Odvisnosti predmetov</translation>
     </message>
@@ -7407,8 +7407,8 @@ Izberete lahko še druge točke, da dobite črtne odseke.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="390"/>
-      <location filename="../../TaskProjGroup.cpp" line="463"/>
-      <location filename="../../TaskProjGroup.cpp" line="470"/>
+      <location filename="../../TaskProjGroup.cpp" line="466"/>
+      <location filename="../../TaskProjGroup.cpp" line="473"/>
       <source>Top</source>
       <translation>Zgoraj</translation>
     </message>
@@ -7419,8 +7419,8 @@ Izberete lahko še druge točke, da dobite črtne odseke.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="437"/>
-      <location filename="../../TaskProjGroup.cpp" line="465"/>
-      <location filename="../../TaskProjGroup.cpp" line="467"/>
+      <location filename="../../TaskProjGroup.cpp" line="468"/>
+      <location filename="../../TaskProjGroup.cpp" line="470"/>
       <source>Left</source>
       <translation>Levo</translation>
     </message>
@@ -7431,14 +7431,14 @@ Izberete lahko še druge točke, da dobite črtne odseke.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="477"/>
-      <location filename="../../TaskProjGroup.cpp" line="465"/>
-      <location filename="../../TaskProjGroup.cpp" line="467"/>
+      <location filename="../../TaskProjGroup.cpp" line="468"/>
+      <location filename="../../TaskProjGroup.cpp" line="470"/>
       <source>Right</source>
       <translation>Desno</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="494"/>
-      <location filename="../../TaskProjGroup.cpp" line="468"/>
+      <location filename="../../TaskProjGroup.cpp" line="471"/>
       <source>Rear</source>
       <translation>Zadaj</translation>
     </message>
@@ -7449,8 +7449,8 @@ Izberete lahko še druge točke, da dobite črtne odseke.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="544"/>
-      <location filename="../../TaskProjGroup.cpp" line="463"/>
-      <location filename="../../TaskProjGroup.cpp" line="470"/>
+      <location filename="../../TaskProjGroup.cpp" line="466"/>
+      <location filename="../../TaskProjGroup.cpp" line="473"/>
       <source>Bottom</source>
       <translation>Spodaj</translation>
     </message>
@@ -7502,31 +7502,31 @@ s pomočjo podanih X/Y odmikov</translation>
       <translation>Navpični odmik med mejami preslikav</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="462"/>
-      <location filename="../../TaskProjGroup.cpp" line="471"/>
+      <location filename="../../TaskProjGroup.cpp" line="465"/>
+      <location filename="../../TaskProjGroup.cpp" line="474"/>
       <source>FrontTopLeft</source>
       <translation>Spredaj-levo-zgoraj</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="462"/>
-      <location filename="../../TaskProjGroup.cpp" line="471"/>
+      <location filename="../../TaskProjGroup.cpp" line="465"/>
+      <location filename="../../TaskProjGroup.cpp" line="474"/>
       <source>FrontBottomRight</source>
       <translation>Spredaj-desno-spodaj</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="464"/>
-      <location filename="../../TaskProjGroup.cpp" line="469"/>
+      <location filename="../../TaskProjGroup.cpp" line="467"/>
+      <location filename="../../TaskProjGroup.cpp" line="472"/>
       <source>FrontTopRight</source>
       <translation>Spredaj-desno-zgoraj</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="464"/>
-      <location filename="../../TaskProjGroup.cpp" line="469"/>
+      <location filename="../../TaskProjGroup.cpp" line="467"/>
+      <location filename="../../TaskProjGroup.cpp" line="472"/>
       <source>FrontBottomLeft</source>
       <translation>Spredaj-levo-spodaj</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="466"/>
+      <location filename="../../TaskProjGroup.cpp" line="469"/>
       <source>Front</source>
       <translation>Spredaj</translation>
     </message>

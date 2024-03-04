@@ -76,12 +76,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Assembly</source>
-      <translation>Ensamblaje</translation>
+      <translation>Ensamble</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Crea un proyecto de ensamblado</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>

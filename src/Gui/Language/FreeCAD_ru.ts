@@ -188,8 +188,8 @@
       <translation>Расположение</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Переместить</translation>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../Application.h" line="260"/>
       <source>Transform</source>
-      <translation>Переместить</translation>
+      <translation>Преобразовать</translation>
     </message>
     <message>
       <location filename="../Application.h" line="261"/>
@@ -1392,7 +1392,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>отсутствует</translation>
+      <translation>Отсутствует</translation>
     </message>
   </context>
   <context>
@@ -2813,7 +2813,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="138"/>
       <source>Help</source>
-      <translation>Помощь</translation>
+      <translation>Справка</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.cpp" line="126"/>
@@ -3411,7 +3411,7 @@ besides the color bar</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="20"/>
       <source>General</source>
-      <translation>Главный</translation>
+      <translation>Основные</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="41"/>
@@ -3919,7 +3919,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Макрокоманда</translation>
+      <translation>Макрос</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
@@ -4459,7 +4459,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
       <source>Other</source>
-      <translation>Другое</translation>
+      <translation>Нечто</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
@@ -6119,15 +6119,15 @@ Do you want to save your changes?</source>
       <translation>Формат PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Graphviz формат</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Экспорт графа</translation>
     </message>
@@ -6874,7 +6874,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../Action.cpp" line="1042"/>
       <source>none</source>
-      <translation>Отсутствует</translation>
+      <translation>отсутствует</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1057"/>
@@ -7190,7 +7190,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>Unsaved document</source>
-      <translation>Документ не сохранён</translation>
+      <translation>Несохраненный документ</translation>
     </message>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="233"/>
@@ -7478,7 +7478,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="3535"/>
       <source>Tree view</source>
-      <translation>Иерархия документа</translation>
+      <translation>В виде дерева</translation>
     </message>
   </context>
   <context>
@@ -7882,7 +7882,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="674"/>
       <source>Tree view</source>
-      <translation>В виде дерева</translation>
+      <translation>Иерархия документа</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="596"/>
@@ -7940,7 +7940,7 @@ Do you want to specify another directory?</source>
       <location filename="../resource.cpp" line="76"/>
       <location filename="../resource.cpp" line="77"/>
       <source>General</source>
-      <translation>Основные</translation>
+      <translation>Главный</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="78"/>
@@ -8054,10 +8054,10 @@ Do you want to specify another directory?</source>
       <translation>Экспорт PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
-      <translation>Несохраненный документ</translation>
+      <translation>Документ не сохранён</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1232"/>
@@ -8922,8 +8922,8 @@ the current copy will be lost.
       <translation>Переключить оверлей</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Переключить плавающее окно</translation>
     </message>
@@ -8966,7 +8966,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Показать значок видимости</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -10067,8 +10067,8 @@ the current copy will be lost.
       <translation>Создать новый пустой документ</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Безымянный</translation>
     </message>
@@ -10691,7 +10691,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Transform</source>
-      <translation>Преобразовать</translation>
+      <translation>Переместить</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1585"/>
@@ -11251,7 +11251,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Полноэкранный режим</translation>
+      <translation>На весь экран</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11489,7 +11489,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandView.cpp" line="1766"/>
       <location filename="../CommandView.cpp" line="1768"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
+      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
     </message>
   </context>
   <context>
@@ -11497,7 +11497,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>На весь экран</translation>
+      <translation>Полноэкранный режим</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11531,7 +11531,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandView.cpp" line="1675"/>
       <location filename="../CommandView.cpp" line="1677"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Отображать активный вид в полноэкранном, закрепленном и откреплённом режиме</translation>
+      <translation>Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
     </message>
   </context>
   <context>
@@ -11752,7 +11752,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Если включено, показывать значок глаз перед элементами дерева, показывающий статус видимости элементов. При нажатии видимость переключается</translation>
     </message>
   </context>
   <context>
@@ -11845,7 +11845,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../Workbench.cpp" line="551"/>
       <source>Help</source>
-      <translation>Справка</translation>
+      <translation>Помощь</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="552"/>
@@ -11855,7 +11855,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../Workbench.cpp" line="553"/>
       <source>Macro</source>
-      <translation>Макрос</translation>
+      <translation>Макрокоманда</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
@@ -12147,22 +12147,22 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation>Плоскость XY</translation>
+      <translation>XY-плоскость</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation>Плоскость XZ</translation>
+      <translation>XZ-плоскость</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation>Плоскость YZ</translation>
+      <translation>YZ-плоскость</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation>Развернуть направление</translation>
+      <translation>В обратном направлении</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
@@ -13548,7 +13548,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
       <source>None</source>
-      <translation>Нет</translation>
+      <translation>Ничего</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>

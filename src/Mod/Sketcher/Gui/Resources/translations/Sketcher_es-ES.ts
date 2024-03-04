@@ -2157,8 +2157,8 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>Actualizar el espacio virtual de la restricción</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <location filename="../../DrawSketchHandler.cpp" line="957"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <source>Add auto constraints</source>
       <translation>Añadir restricciones automáticas</translation>
     </message>
@@ -2411,8 +2411,20 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>No adjuntar</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandAlterGeometry.cpp" line="165"/>
       <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2532,15 +2544,6 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="9870"/>
       <location filename="../../CommandConstraints.cpp" line="9946"/>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandSketcherTools.cpp" line="79"/>
       <location filename="../../CommandSketcherTools.cpp" line="361"/>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
@@ -2558,9 +2561,6 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2399"/>
       <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherTools.cpp" line="2511"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -2710,9 +2710,9 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>El número de objetos seleccionados no es 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="784"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
+      <location filename="../../CommandConstraints.cpp" line="784"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -2932,7 +2932,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Hay varias maneras de que esta restricción se pueda aplicar.
+      <translation>Hay varias maneras de que esta restricción se pueda aplicar. 
 
 Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos curvas y un punto.</translation>
     </message>
@@ -3115,9 +3115,9 @@ Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos c
       <translation>Definir el grado de la B-Spline, entre 1 y %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>Error del Kernel CAD</translation>
     </message>
@@ -4581,7 +4581,7 @@ Haz clic en el botón "Intercambiar los extremos en las restricciones" para reas
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>Se encontraron %1 arcos de geometría externa invertida. Sus extremos están cercados en la vista 3d.
+      <translation>Se encontraron %1 arcos de geometría externa invertida. Sus extremos están cercados en la vista 3d. 
 
 Sin embargo, no se encontraron restricciones a los extremos.</translation>
     </message>
@@ -6096,39 +6096,39 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerScale.h" line="130"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -6164,6 +6164,9 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <translation>La restricción tiene información de índice inválida y está mal formada.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="432"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="609"/>
@@ -6171,9 +6174,6 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <location filename="../../CommandConstraints.cpp" line="773"/>
       <location filename="../../CommandConstraints.cpp" line="6068"/>
       <location filename="../../CommandConstraints.cpp" line="6272"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="1066"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <source>Invalid Constraint</source>
@@ -6215,8 +6215,8 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <translation>Error al crear el polo de B-Spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <source>Error creating B-spline</source>
       <translation>Error al crear B-Spline</translation>
     </message>
@@ -6272,17 +6272,17 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <translation>Fallo al añadir línea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation>Se interrumpió la ejecución de la herramienta</translation>
     </message>
@@ -6317,9 +6317,9 @@ El espaciado de la cuadrícula cambia si es menor que este número de píxeles.<
       <translation>Fallo al recortar arista</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
       <translation>Error del valor</translation>
     </message>
@@ -6787,7 +6787,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
       <source>Horizontal/Vertical</source>
-      <translation>Horizontal/Vertical</translation>
+      <translation type="unfinished">Horizontal/Vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6865,7 +6865,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Aspecto</translation>
+      <translation>Apariencia</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -7239,7 +7239,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="485"/>
       <source>Clone constraints</source>
-      <translation>Clonar restricción</translation>
+      <translation>Clonar restricciones</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="488"/>

@@ -883,8 +883,8 @@ aby se zabránilo sebe.</translation>
       <translation>Vytvořit klon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Make copy</source>
       <translation>Vytvořit kopii</translation>
     </message>
@@ -909,8 +909,8 @@ aby se zabránilo sebe.</translation>
       <translation>Použít booleovské operace</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="190"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="190"/>
       <source>Add a Body</source>
       <translation>Přidat těleso</translation>
     </message>
@@ -940,22 +940,22 @@ aby se zabránilo sebe.</translation>
       <translation>Přesunout objekt dovnitř stromu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="294"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
       <source>Mirrored</source>
       <translation>Zrcadlit</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="325"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
       <source>Make LinearPattern</source>
       <translation>Vytvořit lineární pole</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="363"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
       <source>PolarPattern</source>
       <translation>Kruhové pole</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
       <source>Scaled</source>
       <translation>Změna měřítka</translation>
     </message>
@@ -2057,73 +2057,43 @@ klikněte znovu pro ukončení výběru</translation>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
-      <source>Add feature</source>
-      <translation>Přidat prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
-      <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
-      <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="34"/>
       <source>Direction</source>
       <translation>Směr</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
       <translation>Obrátit směr</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="77"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="55"/>
       <source>Mode</source>
       <translation>Způsob</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="85"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="63"/>
       <source>Overall Length</source>
       <translation>Celková délka</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="90"/>
-      <location filename="../../TaskLinearPatternParameters.ui" line="153"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="131"/>
       <source>Offset</source>
       <translation>Odstup</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="93"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="178"/>
+      <location filename="../../TaskLinearPatternParameters.ui" line="156"/>
       <source>Occurrences</source>
       <translation>Počet výskytů</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="192"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="201"/>
-      <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
-      <source>Remove</source>
-      <translation>Odstranit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="382"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -2184,42 +2154,12 @@ klikněte znovu pro ukončení výběru</translation>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="22"/>
-      <source>Add feature</source>
-      <translation>Přidat prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.ui" line="32"/>
-      <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.ui" line="44"/>
-      <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.ui" line="56"/>
+      <location filename="../../TaskMirroredParameters.ui" line="34"/>
       <source>Plane</source>
       <translation>Rovina</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.ui" line="70"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.ui" line="79"/>
-      <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="101"/>
-      <source>Remove</source>
-      <translation>Odstranit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="244"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="180"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -2227,72 +2167,52 @@ klikněte znovu pro ukončení výběru</translation>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
     <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
-      <source>Add feature</source>
-      <translation>Přidat prvek</translation>
-    </message>
-    <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
-      <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
-      <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
       <source>Transformations</source>
       <translation>Transformace</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
-      <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
+      <location filename="../../TaskMultiTransformParameters.ui" line="52"/>
+      <source>OK</source>
+      <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
-      <source>Remove</source>
-      <translation>Odstranit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Delete</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="83"/>
       <source>Add mirrored transformation</source>
       <translation>Přidat zrcadlovou transformaci</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Add linear pattern</source>
       <translation>Přidat lineární pole</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="95"/>
       <source>Add polar pattern</source>
       <translation>Přidat kruhové pole</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add scaled transformation</source>
       <translation>Přidat transformaci měřítka</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
       <source>Move up</source>
       <translation>Posunout nahorů</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
       <source>Move down</source>
       <translation>Posunout dolů</translation>
     </message>
@@ -2747,77 +2667,47 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
-      <source>Add feature</source>
-      <translation>Přidat prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
-      <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
-      <source>List can be reordered by dragging</source>
-      <translation>Seznam lze přeřadit přetažením</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="34"/>
       <source>Axis</source>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
       <translation>Obrátit směr</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="55"/>
       <source>Mode</source>
       <translation>Způsob</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="85"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="63"/>
       <source>Overall Angle</source>
       <translation>Celkový úhel</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="90"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Offset Angle</source>
       <translation>Úhel odstupu</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="115"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="159"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="137"/>
       <source>Offset</source>
       <translation>Odstup</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="190"/>
+      <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
       <source>Occurrences</source>
       <translation>Počet výskytů</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="204"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="213"/>
-      <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
-      <source>Remove</source>
-      <translation>Odstranit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="377"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -2953,39 +2843,14 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
     <message>
-      <location filename="../../TaskScaledParameters.ui" line="22"/>
-      <source>Add feature</source>
-      <translation>Přidat prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="32"/>
-      <source>Remove feature</source>
-      <translation>Odstranit prvek</translation>
-    </message>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="53"/>
+      <location filename="../../TaskScaledParameters.ui" line="34"/>
       <source>Factor</source>
       <translation>měřítko</translation>
     </message>
     <message>
-      <location filename="../../TaskScaledParameters.ui" line="67"/>
+      <location filename="../../TaskScaledParameters.ui" line="48"/>
       <source>Occurrences</source>
       <translation>Počet výskytů</translation>
-    </message>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="81"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="../../TaskScaledParameters.ui" line="90"/>
-      <source>Update view</source>
-      <translation>Aktualizovat zobrazení</translation>
-    </message>
-    <message>
-      <location filename="../../TaskScaledParameters.cpp" line="92"/>
-      <source>Remove</source>
-      <translation>Odstranit</translation>
     </message>
   </context>
   <context>
@@ -3110,61 +2975,86 @@ klikněte znovu pro ukončení výběru</translation>
   <context>
     <name>PartDesignGui::TaskTransformedParameters</name>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="244"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="104"/>
+      <source>Remove</source>
+      <translation>Odstranit</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="359"/>
       <source>Normal sketch axis</source>
       <translation>Normálová osa roviny náčrtu</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="245"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="360"/>
       <source>Vertical sketch axis</source>
       <translation>Svislá skicovací osa</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="246"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="361"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="248"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="284"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="363"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="399"/>
       <source>Construction line %1</source>
       <translation>Konstrukční čára %1</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="262"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="377"/>
       <source>Base X axis</source>
       <translation>Základní osa X</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="263"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="378"/>
       <source>Base Y axis</source>
       <translation>Základní osa Y</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="264"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="379"/>
       <source>Base Z axis</source>
       <translation>Základní osa Z</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="271"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="307"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="387"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
       <translation>Vyber referenci...</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="298"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="413"/>
       <source>Base XY plane</source>
       <translation>Základní rovina XY</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="299"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="414"/>
       <source>Base YZ plane</source>
       <translation>Základní rovina YZ</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="300"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="415"/>
       <source>Base XZ plane</source>
       <translation>Základní rovina XZ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.ui" line="22"/>
+      <source>Add feature</source>
+      <translation>Přidat prvek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.ui" line="32"/>
+      <source>Remove feature</source>
+      <translation>Odstranit prvek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.ui" line="50"/>
+      <source>List can be reordered by dragging</source>
+      <translation>Seznam lze přeřadit přetažením</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.ui" line="63"/>
+      <source>Update view</source>
+      <translation>Aktualizovat zobrazení</translation>
     </message>
   </context>
   <context>
@@ -3459,28 +3349,28 @@ klikněte znovu pro ukončení výběru</translation>
       <translation>Nejprve vytvořte rovinu nebo vyberte plochu, na kterou chcete vytvořit náčrt</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../SketchWorkflow.cpp" line="591"/>
+      <location filename="../../ViewProvider.cpp" line="96"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="78"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="912"/>
       <location filename="../../Command.cpp" line="1931"/>
-      <location filename="../../SketchWorkflow.cpp" line="591"/>
-      <location filename="../../ViewProvider.cpp" line="95"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dialog je opravdu otevřen v panelu úloh</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../SketchWorkflow.cpp" line="592"/>
+      <location filename="../../ViewProvider.cpp" line="97"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="79"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="913"/>
       <location filename="../../Command.cpp" line="1932"/>
-      <location filename="../../SketchWorkflow.cpp" line="592"/>
-      <location filename="../../ViewProvider.cpp" line="96"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <source>Do you want to close this dialog?</source>
       <translation>Chcete zavřít tento dialog?</translation>
     </message>
@@ -3748,14 +3638,14 @@ To může vést k neočekávaným výsledkům.</translation>
       <translation>Není možné vytvořit odečtový prvek bez základního prvku</translation>
     </message>
     <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="281"/>
       <source>Vertical sketch axis</source>
       <translation>Svislá skicovací osa</translation>
     </message>
     <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="282"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodorovná skicovací osa</translation>
     </message>
@@ -3809,15 +3699,15 @@ Pokud máte starší dokument s objekty PartDesignu bez tělesa, použijte funkc
       <translation>Pro použití tohoto prvku je potřebné, aby patřil k objektu díl v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="62"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <location filename="../../ViewProviderTransformed.cpp" line="76"/>
+      <location filename="../../ViewProvider.cpp" line="63"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
       <source>Edit %1</source>
       <translation>Upravit %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="75"/>
+      <location filename="../../ViewProvider.cpp" line="76"/>
       <source>Set colors...</source>
       <translation>Nastavení barev...</translation>
     </message>
@@ -4737,83 +4627,83 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Základní prvek má prázdný tvar</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="79"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="80"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Booleovský řez nelze provést bez základního prvku</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="93"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="94"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Boolean nelze provést s ničím jiným než prvkem dílu a její derivací</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="100"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="101"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Booleovskou operaci nelze provést s neplatným základním tvarem</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="106"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="107"/>
       <source>Cannot do boolean on feature which is not in a body</source>
       <translation>Boolean nelze provést na prvku, který není v tělesu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="124"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="125"/>
       <source>Base shape is null</source>
       <translation>Základní tvar je null</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="127"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="128"/>
       <source>Tool shape is null</source>
       <translation>Nástroj tvaru je null</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="133"/>
       <source>Fusion of tools failed</source>
       <translation>Sloučení nástrojů se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Výsledný tvar není plné těleso</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="142"/>
       <source>Cut out failed</source>
       <translation>Výřez se nezdařil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="146"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="147"/>
       <source>Common operation failed</source>
       <translation>Operace průniku selhala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePad.cpp" line="233"/>
       <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
       <location filename="../../../App/FeaturePocket.cpp" line="191"/>
       <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Výsledek se skládá z více těles: to není v současné době podporováno.</translation>
     </message>
@@ -4876,8 +4766,8 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Úhel drážky příliš malý</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4888,14 +4778,14 @@ nad 90: větší poloměr díry ve spodní části</translation>
   - vybraný náčrt nepatří k aktivnímu tělesu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <source>Creating a face from sketch failed</source>
       <translation>Vytvoření plochy z náčrtu selhalo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Osa otáčení protíná náčrt</translation>
     </message>
@@ -4905,14 +4795,14 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Výřez zakladního prvku selhal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nelze otočit náčrt!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nelze vytvořit plochu z náčrtu.
@@ -4967,10 +4857,10 @@ Protínání entit náčrtu v náčrtu není povoleno.</translation>
       <translation>Chyba: Nelze vytvořit</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <location filename="../../../App/FeatureHelix.cpp" line="303"/>
       <location filename="../../../App/FeatureHelix.cpp" line="339"/>
       <location filename="../../../App/FeatureHelix.cpp" line="369"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Chyba: Výsledek není plné těleso</translation>
     </message>
@@ -5072,15 +4962,15 @@ Protínání entit náčrtu v náčrtu není povoleno.</translation>
       <translation>Chyba: Přidání závitu selhalo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Booleovská operace selhala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1919"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nelze vytvořit plochu z náčrtu.
