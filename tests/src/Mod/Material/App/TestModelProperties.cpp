@@ -64,12 +64,14 @@ TEST_F(TestModelProperties, TestBasic)
                            QString::fromStdString("2"),
                            QString::fromStdString("3"),
                            QString::fromStdString("4"),
-                           QString::fromStdString("5"));
+                           QString::fromStdString("5"),
+                           QString::fromStdString("6"));
     EXPECT_EQ(prop.getName(), QString::fromStdString("1"));
-    EXPECT_EQ(prop.getPropertyType(), QString::fromStdString("2"));
-    EXPECT_EQ(prop.getUnits(), QString::fromStdString("3"));
-    EXPECT_EQ(prop.getURL(), QString::fromStdString("4"));
-    EXPECT_EQ(prop.getDescription(), QString::fromStdString("5"));
+    EXPECT_EQ(prop.getDisplayName(), QString::fromStdString("2"));
+    EXPECT_EQ(prop.getPropertyType(), QString::fromStdString("3"));
+    EXPECT_EQ(prop.getUnits(), QString::fromStdString("4"));
+    EXPECT_EQ(prop.getURL(), QString::fromStdString("5"));
+    EXPECT_EQ(prop.getDescription(), QString::fromStdString("6"));
     EXPECT_TRUE(prop.getInheritance().isNull());
     EXPECT_FALSE(prop.isInherited());
     EXPECT_EQ(prop.columns(), 0);
@@ -85,17 +87,20 @@ TEST_F(TestModelProperties, TestAddColumns)
                            QString::fromStdString("2"),
                            QString::fromStdString("3"),
                            QString::fromStdString("4"),
-                           QString::fromStdString("5"));
+                           QString::fromStdString("5"),
+                           QString::fromStdString("6"));
     auto prop1 = Materials::ModelProperty(QString::fromStdString("10"),
                            QString::fromStdString("9"),
                            QString::fromStdString("8"),
                            QString::fromStdString("7"),
-                           QString::fromStdString("6"));
+                           QString::fromStdString("6"),
+                           QString::fromStdString("5"));
     auto prop2 = Materials::ModelProperty(QString::fromStdString("a"),
                            QString::fromStdString("b"),
                            QString::fromStdString("c"),
                            QString::fromStdString("d"),
-                           QString::fromStdString("e"));
+                           QString::fromStdString("e"),
+                           QString::fromStdString("f"));
 
     EXPECT_EQ(prop.columns(), 0);
     prop.addColumn(prop1);
@@ -106,20 +111,22 @@ TEST_F(TestModelProperties, TestAddColumns)
     auto columns = prop.getColumns();
     auto entry1 = columns.at(0);
     EXPECT_EQ(entry1.getName(), QString::fromStdString("10"));
-    EXPECT_EQ(entry1.getPropertyType(), QString::fromStdString("9"));
-    EXPECT_EQ(entry1.getUnits(), QString::fromStdString("8"));
-    EXPECT_EQ(entry1.getURL(), QString::fromStdString("7"));
-    EXPECT_EQ(entry1.getDescription(), QString::fromStdString("6"));
+    EXPECT_EQ(entry1.getDisplayName(), QString::fromStdString("9"));
+    EXPECT_EQ(entry1.getPropertyType(), QString::fromStdString("8"));
+    EXPECT_EQ(entry1.getUnits(), QString::fromStdString("7"));
+    EXPECT_EQ(entry1.getURL(), QString::fromStdString("6"));
+    EXPECT_EQ(entry1.getDescription(), QString::fromStdString("5"));
     EXPECT_TRUE(entry1.getInheritance().isNull());
     EXPECT_FALSE(entry1.isInherited());
     EXPECT_EQ(entry1.columns(), 0);
 
     auto entry2 = columns.at(1);
     EXPECT_EQ(entry2.getName(), QString::fromStdString("a"));
-    EXPECT_EQ(entry2.getPropertyType(), QString::fromStdString("b"));
-    EXPECT_EQ(entry2.getUnits(), QString::fromStdString("c"));
-    EXPECT_EQ(entry2.getURL(), QString::fromStdString("d"));
-    EXPECT_EQ(entry2.getDescription(), QString::fromStdString("e"));
+    EXPECT_EQ(entry2.getDisplayName(), QString::fromStdString("b"));
+    EXPECT_EQ(entry2.getPropertyType(), QString::fromStdString("c"));
+    EXPECT_EQ(entry2.getUnits(), QString::fromStdString("d"));
+    EXPECT_EQ(entry2.getURL(), QString::fromStdString("e"));
+    EXPECT_EQ(entry2.getDescription(), QString::fromStdString("f"));
     EXPECT_TRUE(entry2.getInheritance().isNull());
     EXPECT_FALSE(entry2.isInherited());
     EXPECT_EQ(entry2.columns(), 0);
