@@ -418,6 +418,62 @@ toggleActive(constraintIndex:int)
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="getLabelPosition" Const="true">
+        <Documentation>
+            <UserDocu>
+Get label position of the constraint.
+
+getLabelPosition(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        float with the current value.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setLabelPosition">
+        <Documentation>
+            <UserDocu>
+Set label position of the constraint.
+
+setLabelPosition(constraintIndex:int, value:float)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+        value: Value of the label position.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getLabelDistance" Const="true">
+        <Documentation>
+            <UserDocu>
+Get label distance of the constraint.
+
+getLabelDistance(constraintIndex:int)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+
+    Returns:
+        float with the current value.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setLabelDistance">
+        <Documentation>
+            <UserDocu>
+Set label distance of the constraint.
+
+setLabelDistance(constraintIndex:int, value:float)
+
+    Args:
+        constraintIndex: The zero-based index of the constraint to query.
+        value: Value of the label position.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>

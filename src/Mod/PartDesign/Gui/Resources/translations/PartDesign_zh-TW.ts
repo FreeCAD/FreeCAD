@@ -883,8 +883,8 @@ so that self intersection is avoided.</source>
       <translation>建立一個副本</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>製作拷貝</translation>
     </message>
@@ -909,8 +909,8 @@ so that self intersection is avoided.</source>
       <translation>建立布林運算</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="190"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>增加一個實體</translation>
     </message>
@@ -1455,39 +1455,29 @@ If zero, it is equal to Radius2</source>
       <translation>幾何形體參數</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
-      <source>Cone radii are equal</source>
-      <translation>錐體半徑相等</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
-      <source>The radii for cones must not be equal!</source>
-      <translation>錐體之半徑必須不相等!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="830"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="835"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="840"/>
       <source>Invalid wedge parameters</source>
       <translation>無效的楔形體參數</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
       <source>X min must not be equal to X max!</source>
       <translation>X 最小值必須不等於 X 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y 最小值必須不等於 Y 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z 最小值必須不等於 Z 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
       <source>Create primitive</source>
       <translation>建立幾何形體</translation>
     </message>
@@ -2827,7 +2817,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
       <source>Attachment</source>
       <translation>附件</translation>
     </message>
@@ -3375,17 +3365,17 @@ click again to end selection</source>
       <translation>從清單中選擇特徵</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="961"/>
+      <location filename="../../CommandBody.cpp" line="960"/>
       <source>Move tip</source>
       <translation>移動尖點</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="962"/>
+      <location filename="../../CommandBody.cpp" line="961"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>移動特徵出現在當前設置的尖點之後。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="963"/>
+      <location filename="../../CommandBody.cpp" line="962"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>您希望最後一個特徵為新的尖點嗎？</translation>
     </message>
@@ -3460,28 +3450,28 @@ click again to end selection</source>
       <translation>請先創建一個平面或選擇要在其上繪製草圖的面</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="95"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>於工作面板已開啟對話窗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
@@ -3725,12 +3715,12 @@ This may lead to unexpected results.</source>
       <translation>實體的起點</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="947"/>
+      <location filename="../../CommandBody.cpp" line="946"/>
       <source>Dependency violation</source>
       <translation>相依性衝突</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="948"/>
+      <location filename="../../CommandBody.cpp" line="947"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3747,14 +3737,14 @@ This may lead to unexpected results.</source>
       <translation>如果沒有可用的基本特徵，則無法創建除料特徵</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="281"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="281"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草圖軸</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="282"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="282"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草圖軸</translation>
     </message>
@@ -3808,10 +3798,10 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>為了使用此特徵，它需要屬於文件中的一個零件物件。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="62"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>編輯 %1</translation>
     </message>
@@ -4770,17 +4760,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>工具的融合失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="229"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>產成形狀不是固體</translation>
     </message>
@@ -4795,22 +4785,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>通用操作失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="233"/>
-      <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="233"/>
+      <location filename="../../../App/FeaturePad.cpp" line="242"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>產生形狀有多重(非相連)固體：目前尚未支援。</translation>
     </message>
@@ -4873,8 +4863,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>挖槽的角度太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="108"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4884,14 +4874,14 @@ over 90: larger hole radius at the bottom</source>
  - 所選擇的草圖不屬於活躍實體。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <location filename="../../../App/FeatureGroove.cpp" line="130"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <source>Creating a face from sketch failed</source>
       <translation>由草圖建立面失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <source>Revolve axis intersects the sketch</source>
       <translation type="unfinished">Revolve axis intersects the sketch</translation>
     </message>
@@ -4901,14 +4891,14 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Cut out of base feature failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <source>Could not revolve the sketch!</source>
       <translation type="unfinished">Could not revolve the sketch!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <location filename="../../../App/FeatureGroove.cpp" line="236"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -4958,47 +4948,47 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation>錯誤：面必須為平面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Could not build</source>
       <translation>錯誤：無法建立</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2161"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="334"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="364"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>錯誤：產生形狀不是固體</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="314"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
       <source>Error: There is nothing to subtract</source>
       <translation>錯誤：沒有東西可以減</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="338"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="368"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
       <source>Error: Result has multiple solids</source>
       <translation>錯誤：產生形狀有多重(非相連)固體</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="328"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
       <source>Error: Adding the helix failed</source>
       <translation>錯誤：添加螺旋失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="351"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>錯誤：交叉螺旋失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="358"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>錯誤：減去螺旋失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="380"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
       <source>Error: Could not create face from sketch</source>
       <translation>錯誤：無法從草圖建立面</translation>
     </message>
@@ -5068,31 +5058,31 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation>錯誤：添加螺旋失敗</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>布林運算失敗</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>無法從草圖建立面。草圖實體的交叉或草圖中存在多個面不允許製作一個沖孔至一個面。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2041"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2040"/>
       <source>Thread type out of range</source>
       <translation>螺紋類型超出範圍</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2044"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2043"/>
       <source>Thread size out of range</source>
       <translation>螺紋尺寸超出範圍</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2135"/>
       <source>Error: Thread could not be built</source>
       <translation>錯誤：無法建立螺紋</translation>
     </message>
@@ -5396,63 +5386,58 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="358"/>
-      <source>The radii for cones must not be equal</source>
-      <translation>錐體之半徑必須不相等</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="360"/>
       <source>Height of cone too small</source>
       <translation>錐體高度太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="417"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="419"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="421"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="423"/>
       <source>Radius of ellipsoid too small</source>
       <translation>橢球體的半徑太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="501"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="503"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="505"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="507"/>
       <source>Radius of torus too small</source>
       <translation>環形圓(甜甜圈狀)的半徑太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="566"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>角柱體的多邊形為無效的，必須具有3個或更多個邊</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="568"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="572"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>多邊形或角柱體的外接圓半徑太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
       <source>Height of prism is too small</source>
       <translation>角柱體的高度太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
       <source>delta x of wedge too small</source>
       <translation>楔形體的 x 差量太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
       <source>delta y of wedge too small</source>
       <translation>楔形體的 y 差量太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
       <source>delta z of wedge too small</source>
       <translation>楔形體的 z 差量太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="660"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
       <source>delta z2 of wedge is negative</source>
       <translation>楔形體的 z2 差量為負值</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="663"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="667"/>
       <source>delta x2 of wedge is negative</source>
       <translation>楔形體的 x2 差量為負值</translation>
     </message>

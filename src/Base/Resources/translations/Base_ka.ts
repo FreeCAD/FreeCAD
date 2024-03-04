@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>სტანდარტული (მმ, კგ, წმ, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>სი (მ, კგ, წმ, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>იმპერიული საზომი ერთეულები სამოქალაქო ინჟინერიისთვის(ფუტები, ფუტები/წმ)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>

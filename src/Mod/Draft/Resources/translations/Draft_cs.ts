@@ -1545,7 +1545,6 @@ pattern definitions to be added to the standard patterns</translation>
       <translation>Velikost písma</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="73"/>
       <location filename="../ui/preferences-drafttexts.ui" line="310"/>
       <location filename="../ui/preferences-drafttexts.ui" line="501"/>
@@ -1553,6 +1552,7 @@ pattern definitions to be added to the standard patterns</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
       <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1653,8 +1653,8 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
       <translation type="unfinished">The default line width</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <location filename="../ui/preferences-draft.ui" line="305"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1976,9 +1976,9 @@ ze Správce doplňků.</translation>
       <translation>Povolit FreeCADu automaticky stáhnout a aktualizovat DXF knihovny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="26"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
       <translation>Možnosti importu</translation>
     </message>
@@ -2196,8 +2196,8 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
 Pokud je nastavena na '0', celý spline se považuje za přímý segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="107"/>
       <location filename="../ui/preferences-dxf.ui" line="487"/>
+      <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
       <translation>Možnosti exportu</translation>
     </message>
@@ -2474,8 +2474,8 @@ These lines are thicker than normal grid lines.</translation>
       <translation>Toto je metoda, kterou FreeCAD použije k převodu souborů DWG do DXF. Pokud je zvoleno "Automaticky", FreeCAD se pokusí najít jeden z následujících převodníků ve stejném pořadí, v jakém jsou uvedeny zde. Pokud FreeCAD nemůže žádný najít, možná budete muset vybrat konkrétní převodník a uvést jeho cestu zde pod. Vyberte nástroj "dwg2dxf", pokud používáte LibreDWG, "ODAFileConverter", pokud používáte konvertor souborů ODA, nebo nástroj "dwg2dwg", pokud používáte profesionální verzi QCAD.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dwg.ui" line="51"/>
       <location filename="../ui/preferences-draft.ui" line="89"/>
+      <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
       <translation>Automaticky</translation>
     </message>
@@ -2770,8 +2770,8 @@ These lines are thicker than normal grid lines.</translation>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../draftguitools/gui_move.py" line="214"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="287"/>
+      <location filename="../../draftguitools/gui_move.py" line="212"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
       <location filename="../../draftguitools/gui_scale.py" line="227"/>
       <location filename="../../draftguitools/gui_scale.py" line="356"/>
@@ -3180,7 +3180,7 @@ Není k dispozici, pokud je povolena možnost předvolby návrhu „Použít zá
     </message>
     <message>
       <location filename="../../DraftGui.py" line="724"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="290"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <source>Rotate</source>
       <translation>Otočit</translation>
     </message>
@@ -3203,7 +3203,7 @@ Není k dispozici, pokud je povolena možnost předvolby návrhu „Použít zá
       <location filename="../../DraftGui.py" line="774"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
-      <location filename="../../draftguitools/gui_offset.py" line="322"/>
+      <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
       <translation>Odstup</translation>
     </message>
@@ -3396,59 +3396,59 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Nastavte měřítko používané nástroji pro poznámky návrhu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="826"/>
-      <location filename="../../draftutils/utils.py" line="1069"/>
-      <location filename="../../draftmake/make_patharray.py" line="170"/>
-      <location filename="../../draftmake/make_patharray.py" line="332"/>
-      <location filename="../../draftmake/make_label.py" line="194"/>
-      <location filename="../../draftmake/make_pointarray.py" line="90"/>
-      <location filename="../../draftmake/make_text.py" line="92"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
       <location filename="../../draftmake/make_dimension.py" line="212"/>
       <location filename="../../draftmake/make_dimension.py" line="301"/>
       <location filename="../../draftmake/make_dimension.py" line="421"/>
       <location filename="../../draftmake/make_dimension.py" line="535"/>
-      <location filename="../../draftmake/make_array.py" line="86"/>
+      <location filename="../../draftmake/make_label.py" line="194"/>
       <location filename="../../draftmake/make_layer.py" line="54"/>
       <location filename="../../draftmake/make_layer.py" line="143"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_patharray.py" line="169"/>
+      <location filename="../../draftmake/make_patharray.py" line="329"/>
+      <location filename="../../draftmake/make_pointarray.py" line="89"/>
+      <location filename="../../draftmake/make_text.py" line="92"/>
+      <location filename="../../draftmake/make_text.py" line="178"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/gui_utils.py" line="827"/>
+      <location filename="../../draftutils/utils.py" line="1069"/>
       <source>No active document. Aborting.</source>
       <translation>Žádný aktivní dokument. Přerušení.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="834"/>
+      <location filename="../../draftutils/gui_utils.py" line="835"/>
       <source>Wrong input: object {} not in document.</source>
       <translation type="unfinished">Wrong input: object {} not in document.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="159"/>
+      <location filename="../../draftutils/gui_utils.py" line="160"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nelze vložit nový objekt do upravené součásti</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="265"/>
+      <location filename="../../draftutils/gui_utils.py" line="266"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbol není implementován. Použití výchozího symbolu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="710"/>
+      <location filename="../../draftutils/gui_utils.py" line="711"/>
       <source>image is Null</source>
       <translation>obrázek je Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="716"/>
+      <location filename="../../draftutils/gui_utils.py" line="717"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>název_souboru neexistuje v systému ani v souboru prostředků</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="775"/>
+      <location filename="../../draftutils/gui_utils.py" line="776"/>
       <source>unable to load texture</source>
       <translation>nelze načíst texturu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="840"/>
+      <location filename="../../draftutils/gui_utils.py" line="841"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nemá 'ViewObject.RootNode'.</translation>
     </message>
@@ -3556,65 +3556,65 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Vyberte cílový bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="151"/>
+      <location filename="../../draftguitools/gui_labels.py" line="152"/>
       <source>Create Label</source>
       <translation>Vytvořit štítek</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="185"/>
-      <location filename="../../draftguitools/gui_labels.py" line="212"/>
+      <location filename="../../draftguitools/gui_labels.py" line="186"/>
+      <location filename="../../draftguitools/gui_labels.py" line="213"/>
       <source>Pick endpoint of leader line</source>
       <translation>Vyberte koncový bod odkazové čáry</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="196"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick text position</source>
       <translation>Vyberte polohu textu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="82"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="123"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="82"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
       <source>Pick first point</source>
       <translation>Vyberte první bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="160"/>
+      <location filename="../../draftguitools/gui_lines.py" line="162"/>
       <source>Create Line</source>
       <translation>Vytvořit čáru</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="182"/>
+      <location filename="../../draftguitools/gui_lines.py" line="184"/>
       <source>Create Wire</source>
       <translation>Vytvořit drát</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="353"/>
+      <location filename="../../draftguitools/gui_lines.py" line="355"/>
       <source>Polyline</source>
       <translation>Lomená čára</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="215"/>
-      <location filename="../../draftguitools/gui_lines.py" line="223"/>
-      <location filename="../../draftguitools/gui_lines.py" line="230"/>
-      <location filename="../../draftguitools/gui_lines.py" line="238"/>
-      <location filename="../../draftguitools/gui_lines.py" line="248"/>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <location filename="../../draftguitools/gui_splines.py" line="145"/>
       <location filename="../../draftguitools/gui_beziers.py" line="151"/>
       <location filename="../../draftguitools/gui_beziers.py" line="154"/>
+      <location filename="../../draftguitools/gui_lines.py" line="217"/>
+      <location filename="../../draftguitools/gui_lines.py" line="225"/>
+      <location filename="../../draftguitools/gui_lines.py" line="232"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="250"/>
+      <location filename="../../draftguitools/gui_splines.py" line="140"/>
+      <location filename="../../draftguitools/gui_splines.py" line="145"/>
       <source>Pick next point</source>
       <translation>Vybrat další bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="320"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>Nelze vytvořit drát z vybraných objektů</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="345"/>
+      <location filename="../../draftguitools/gui_lines.py" line="347"/>
       <source>Convert to Wire</source>
       <translation>Převést na drát</translation>
     </message>
@@ -3639,54 +3639,54 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Vyberte bod umístění</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_texts.py" line="125"/>
+      <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
       <translation>Vytvořit text</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
       <source>Select an object to convert.</source>
       <translation>Vyberte objekt, který chcete převést.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="100"/>
       <source>Convert to Sketch</source>
       <translation>Převést na Sketch</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
       <translation>Převést na koncept</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
       <source>Convert Draft/Sketch</source>
       <translation>Převést koncept/náčrt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="81"/>
+      <location filename="../../draftguitools/gui_move.py" line="78"/>
       <source>Select an object to move</source>
       <translation>Vyberte objekt, který chcete přesunout</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="103"/>
+      <location filename="../../draftguitools/gui_move.py" line="100"/>
       <source>Pick start point</source>
       <translation>Vyberte počáteční bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="168"/>
-      <location filename="../../draftguitools/gui_move.py" line="315"/>
+      <location filename="../../draftguitools/gui_move.py" line="166"/>
+      <location filename="../../draftguitools/gui_move.py" line="313"/>
       <source>Pick end point</source>
       <translation>Vyberte koncový bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="217"/>
+      <location filename="../../draftguitools/gui_move.py" line="215"/>
       <source>Move</source>
       <translation>Přesun</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="293"/>
+      <location filename="../../draftguitools/gui_move.py" line="218"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Some subelements could not be moved.</source>
       <translation>Některé dílčí prvky nebylo možné přesunout.</translation>
     </message>
@@ -3697,75 +3697,75 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Vyberte středový bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="253"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="269"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="409"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="267"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="268"/>
       <source>Pick radius</source>
       <translation>Vyberte poloměr</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="276"/>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="444"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
       <source>Start angle</source>
       <translation>Počáteční úhel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="282"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Pick start angle</source>
       <translation>Vyberte počáteční úhel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="284"/>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
       <source>Aperture angle</source>
       <translation>Úhel clony</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
       <translation>Vyberte clonu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="319"/>
       <source>Create Circle (Part)</source>
       <translation>Vytvořit kruh (část)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="337"/>
       <source>Create Circle</source>
       <translation>Vytvořte kruh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="368"/>
       <source>Create Arc (Part)</source>
       <translation>Vytvořit oblouk (část)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="388"/>
       <source>Create Arc</source>
       <translation>Vytvořit oblouk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="459"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="462"/>
       <source>Pick aperture angle</source>
       <translation>Vyberte úhel clony</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="502"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="544"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="505"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="547"/>
       <source>Arc by 3 points</source>
       <translation>Oblouk o 3 body</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="561"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="566"/>
       <source>Create Arc by 3 points</source>
       <translation type="unfinished">Create Arc by 3 points</translation>
     </message>
@@ -3775,7 +3775,7 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Přepnout mřížku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="109"/>
       <source>Select an object to edit</source>
       <translation>Vyberte objekt, který chcete upravit</translation>
     </message>
@@ -3790,17 +3790,17 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Upravit uzel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="532"/>
+      <location filename="../../draftguitools/gui_edit.py" line="531"/>
       <source>No edit point found for selected object</source>
       <translation>Pro vybraný objekt nebyl nalezen žádný editační bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="788"/>
+      <location filename="../../draftguitools/gui_edit.py" line="787"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>Je vybráno příliš mnoho objektů, maximální počet nastaven na:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="796"/>
+      <location filename="../../draftguitools/gui_edit.py" line="795"/>
       <source>: this object is not editable</source>
       <translation>: Tento objekt nelze upravovat</translation>
     </message>
@@ -3830,13 +3830,13 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
       <translation>Uložit soubor stylů</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="69"/>
       <source>Select an object to project</source>
       <translation>Vyberte objekt, který chcete promítnout</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="121"/>
-      <location filename="../../draftguitools/gui_points.py" line="133"/>
+      <location filename="../../draftguitools/gui_points.py" line="122"/>
+      <location filename="../../draftguitools/gui_points.py" line="134"/>
       <source>Create Point</source>
       <translation>Vytvořit bod</translation>
     </message>
@@ -3852,31 +3852,31 @@ Chcete-li povolit FreeCAD stahování těchto knihoven, odpovězte Ano.</transla
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="191"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="395"/>
       <source>Base angle</source>
       <translation>Základní úhel</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="192"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
       <source>The base angle you wish to start the rotation from</source>
       <translation>Základní úhel, ze kterého chcete začít otáčení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="197"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="399"/>
       <source>Pick base angle</source>
       <translation>Vyberte úhel základny</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="203"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="408"/>
       <source>Rotation</source>
       <translation>Rotace</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="204"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>Míra rotace, kterou chcete provést.
@@ -3884,7 +3884,7 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="211"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="417"/>
       <source>Pick rotation angle</source>
       <translation>Vyberte úhel natočení</translation>
     </message>
@@ -3989,12 +3989,12 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Mnohoúhelník</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="231"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="232"/>
       <source>Create Polygon (Part)</source>
       <translation>Vytvořit mnohoúhelník (část)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="250"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="251"/>
       <source>Create Polygon</source>
       <translation>Vytvořte mnohoúhelník</translation>
     </message>
@@ -4004,7 +4004,7 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Klepnutím kamkoli na řádek jej rozdělíte.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="106"/>
+      <location filename="../../draftguitools/gui_split.py" line="107"/>
       <source>Split line</source>
       <translation>Dělená čára</translation>
     </message>
@@ -4014,8 +4014,8 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Vyberte objekty, které chcete oříznout nebo prodloužit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <source>Pick distance</source>
       <translation>Vyberte vzdálenost</translation>
     </message>
@@ -4055,14 +4055,14 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Spline byl uzavřen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <location filename="../../draftguitools/gui_beziers.py" line="143"/>
       <location filename="../../draftguitools/gui_beziers.py" line="382"/>
+      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation>Poslední bod byl odstraněn</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="182"/>
+      <location filename="../../draftguitools/gui_splines.py" line="183"/>
       <source>Create B-spline</source>
       <translation>Vytvořit B-splajn</translation>
     </message>
@@ -4224,14 +4224,14 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="127"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="144"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="129"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="146"/>
       <source>Create Ellipse</source>
       <translation>Vytvořte Elipsu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="199"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="201"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="201"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="197"/>
       <source>Pick opposite point</source>
       <translation>Vyberte opačný bod</translation>
     </message>
@@ -4324,25 +4324,25 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="223"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="246"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="260"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="292"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="224"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="247"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="293"/>
       <source>Create Dimension</source>
       <translation>Vytvořit kótu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="307"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="308"/>
       <source>Create Dimension (radial)</source>
       <translation>Vytvořit kótu (radiální)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="517"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
       <source>Edge too short!</source>
       <translation>Hrana je příliš krátká!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="527"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="528"/>
       <source>Edges don't intersect!</source>
       <translation>Hrany se neprotínají!</translation>
     </message>
@@ -4372,12 +4372,12 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Vyberte koncový bod posunutí</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="447"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Proměna jednoho obdélníku na drát</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="476"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
       <source>Stretch</source>
       <translation>Roztažení</translation>
     </message>
@@ -4387,12 +4387,12 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Obdélník</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="128"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="124"/>
       <source>Create Plane</source>
       <translation>Vytvořit rovinu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="145"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="141"/>
       <source>Create Rectangle</source>
       <translation>Vytvořte obdélník</translation>
     </message>
@@ -4407,13 +4407,13 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Vyberte počáteční bod zrcadlové čáry</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="118"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="119"/>
       <source>Mirror</source>
       <translation>Zrcadlo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="164"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="190"/>
       <source>Pick end point of mirror line</source>
       <translation>Vyberte koncový bod přímky zrcadlení</translation>
     </message>
@@ -4423,17 +4423,17 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Zkrocená cesta</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="80"/>
+      <location filename="../../draftguitools/gui_clone.py" line="81"/>
       <source>Select an object to clone</source>
       <translation>Vyberte objekt, který chcete klonovat</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="95"/>
+      <location filename="../../draftguitools/gui_clone.py" line="94"/>
       <source>Cannot clone object(s) without a Shape, aborting</source>
       <translation type="unfinished">Cannot clone object(s) without a Shape, aborting</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="99"/>
+      <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone object(s) without a Shape, skipping them</source>
       <translation type="unfinished">Cannot clone object(s) without a Shape, skipping them</translation>
     </message>
@@ -4443,13 +4443,13 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Změnit sklon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
-      <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="68"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="68"/>
       <source>Select an object to upgrade</source>
       <translation>Vyberte objekt, který chcete upgradovat</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="86"/>
       <source>Upgrade</source>
       <translation>Aktualizovat</translation>
     </message>
@@ -4474,7 +4474,7 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Offset Bézierových křivek není aktuálně podporován</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
       <source>Create 2D view</source>
       <translation>Vytvořte 2D pohled</translation>
     </message>
@@ -4494,14 +4494,14 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Vyléčit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="86"/>
       <source>Downgrade</source>
       <translation>Přejít na nižší verzi</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="82"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="82"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="82"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="82"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="82"/>
       <source>Task panel:</source>
       <translation>Panel úkolů:</translation>
     </message>
@@ -4512,26 +4512,26 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Polární pole</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="186"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="199"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="206"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="199"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="186"/>
       <source>At least one element must be selected.</source>
       <translation>Musí být vybrán alespoň jeden prvek.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="193"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="210"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="217"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="210"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="193"/>
       <source>Selection is not suitable for array.</source>
       <translation>Výběr není vhodný pro pole.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="320"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="211"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="359"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="218"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="365"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="211"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="359"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="320"/>
       <source>Object:</source>
       <translation>Objekt:</translation>
     </message>
@@ -4551,16 +4551,16 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Úhel je pod -360 stupňů. Pro pokračování je nastavena na tuto hodnotu.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="291"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="330"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="330"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="291"/>
       <source>Fuse:</source>
       <translation>Pojistka:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="304"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="348"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="304"/>
       <source>Create Link array:</source>
       <translation>Vytvořit pole odkazů:</translation>
     </message>
@@ -4575,8 +4575,8 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Polární úhel:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="324"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="324"/>
       <source>Center of rotation:</source>
       <translation>Střed otáčení:</translation>
     </message>
@@ -4695,17 +4695,17 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>změněn typ vlastnosti „Tracking“</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <location filename="../../draftobjects/shapestring.py" line="175"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>Tvar písma: kosý úhel musí být v rozmezí od –80 do +80 stupňů</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="185"/>
+      <location filename="../../draftobjects/shapestring.py" line="187"/>
       <source>ShapeString: string has no wires</source>
       <translation>Tvar písma: řetězec nemá žádné dráty</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="219"/>
+      <location filename="../../draftobjects/shapestring.py" line="221"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>Tvar písma: vytvoření plochy se nezdařilo pro jeden znak</translation>
     </message>
@@ -4832,38 +4832,35 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Nelze vygenerovat tvar:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="175"/>
-      <location filename="../../draftmake/make_patharray.py" line="337"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="145"/>
-      <location filename="../../draftmake/make_pointarray.py" line="95"/>
       <location filename="../../draftmake/make_circulararray.py" line="125"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="145"/>
+      <location filename="../../draftmake/make_patharray.py" line="174"/>
+      <location filename="../../draftmake/make_patharray.py" line="334"/>
+      <location filename="../../draftmake/make_pointarray.py" line="94"/>
       <location filename="../../draftmake/make_polararray.py" line="97"/>
       <source>Wrong input: base_object not in document.</source>
       <translation type="unfinished">Wrong input: base_object not in document.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="180"/>
-      <location filename="../../draftmake/make_patharray.py" line="342"/>
+      <location filename="../../draftmake/make_patharray.py" line="179"/>
+      <location filename="../../draftmake/make_patharray.py" line="339"/>
       <source>Wrong input: path_object not in document.</source>
       <translation type="unfinished">Wrong input: path_object not in document.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="187"/>
-      <location filename="../../draftmake/make_patharray.py" line="260"/>
-      <location filename="../../draftmake/make_patharray.py" line="268"/>
-      <location filename="../../draftmake/make_patharray.py" line="348"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="135"/>
       <location filename="../../draftmake/make_label.py" line="297"/>
-      <location filename="../../draftmake/make_polararray.py" line="109"/>
       <location filename="../../draftmake/make_layer.py" line="182"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="135"/>
+      <location filename="../../draftmake/make_patharray.py" line="186"/>
+      <location filename="../../draftmake/make_patharray.py" line="259"/>
+      <location filename="../../draftmake/make_patharray.py" line="267"/>
+      <location filename="../../draftmake/make_patharray.py" line="345"/>
+      <location filename="../../draftmake/make_polararray.py" line="109"/>
       <source>Wrong input: must be a number.</source>
       <translation>Chybné zadání: musí to být číslo.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="195"/>
-      <location filename="../../draftmake/make_patharray.py" line="245"/>
-      <location filename="../../draftmake/make_patharray.py" line="253"/>
-      <location filename="../../draftmake/make_label.py" line="202"/>
+      <location filename="../../draftmake/make_circulararray.py" line="147"/>
       <location filename="../../draftmake/make_dimension.py" line="218"/>
       <location filename="../../draftmake/make_dimension.py" line="224"/>
       <location filename="../../draftmake/make_dimension.py" line="231"/>
@@ -4873,18 +4870,21 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <location filename="../../draftmake/make_dimension.py" line="541"/>
       <location filename="../../draftmake/make_dimension.py" line="567"/>
       <location filename="../../draftmake/make_dimension.py" line="574"/>
-      <location filename="../../draftmake/make_circulararray.py" line="147"/>
+      <location filename="../../draftmake/make_label.py" line="202"/>
+      <location filename="../../draftmake/make_patharray.py" line="194"/>
+      <location filename="../../draftmake/make_patharray.py" line="244"/>
+      <location filename="../../draftmake/make_patharray.py" line="252"/>
       <location filename="../../draftmake/make_polararray.py" line="115"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Chybný vstup: musí to být vektor.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="207"/>
+      <location filename="../../draftmake/make_patharray.py" line="206"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>Chybný vstup: musí to být seznam nebo n-tice řetězců nebo jeden řetězec.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="238"/>
+      <location filename="../../draftmake/make_patharray.py" line="237"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
       <translation>Nesprávný vstup: musí být „Original“, „Frenet“ nebo „Tangent“.</translation>
     </message>
@@ -4901,8 +4901,8 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Vstup: jedna hodnota rozšířena na vektor.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_circulararray.py" line="140"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>Chybný vstup: musí to být celé číslo.</translation>
@@ -4916,7 +4916,7 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="212"/>
-      <location filename="../../draftmake/make_pointarray.py" line="118"/>
+      <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Chybný vstup: musí to být umístění, vektor nebo otočení.</translation>
@@ -4981,12 +4981,12 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>Chybný vstup: musí jít o seznam dvou prvků. Například [objekt, 'Edge1'].</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="100"/>
+      <location filename="../../draftmake/make_pointarray.py" line="99"/>
       <source>Wrong input: point_object not in document.</source>
       <translation type="unfinished">Wrong input: point_object not in document.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="106"/>
+      <location filename="../../draftmake/make_pointarray.py" line="105"/>
       <source>Wrong input: object has the wrong type.</source>
       <translation>Špatný vstup: objekt má nesprávný typ.</translation>
     </message>
@@ -5313,9 +5313,9 @@ Konečný úhel bude základní úhel plus tato hodnota.</translation>
       <translation>přidána vlastnost zobrazení 'TextColor'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="94"/>
-      <location filename="../../draftobjects/label.py" line="258"/>
       <location filename="../../draftobjects/dimension.py" line="215"/>
+      <location filename="../../draftobjects/label.py" line="258"/>
+      <location filename="../../draftobjects/text.py" line="94"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
       <translation>přejmenoval možnosti 'DisplayMode' na 'World/Screen'</translation>
     </message>
@@ -5502,7 +5502,7 @@ z nabídky Nástroje -&gt; Správce doplňků</translation>
       <translation>Chyba: modul json nebyl nalezen. Styl nelze uložit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="102"/>
+      <location filename="../../draftguitools/gui_clone.py" line="101"/>
       <source>Clone</source>
       <translation>Klon</translation>
     </message>
@@ -5513,21 +5513,21 @@ z nabídky Nástroje -&gt; Správce doplňků</translation>
       <translation>Sklon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="327"/>
+      <location filename="../../draftguitools/gui_offset.py" line="328"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Směr odsazení není definován. Nejprve pohybujte myší na obě strany objektu, abyste označili směr</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="155"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
       <source>True</source>
       <translation>Pravda</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="147"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="147"/>
       <source>False</source>
       <translation>Nepravda</translation>
     </message>
@@ -5837,12 +5837,12 @@ budou použity k poskytování informací na štítku.</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="296"/>
+      <location filename="../../draftguitools/gui_lines.py" line="298"/>
       <source>Polyline</source>
       <translation>Lomená čára</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="299"/>
+      <location filename="../../draftguitools/gui_lines.py" line="301"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Vytvoří čáru s více body (křivku). CTRL pro přichycení, SHIFT pro omezení.</translation>
     </message>
@@ -6116,12 +6116,12 @@ Jedna skica s odpojenými stopami však bude převedena na několik samostatnýc
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="63"/>
+      <location filename="../../draftguitools/gui_move.py" line="60"/>
       <source>Move</source>
       <translation>Přesun</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="66"/>
+      <location filename="../../draftguitools/gui_move.py" line="63"/>
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6148,12 +6148,12 @@ CTRL pro přichycení, SHIFT pro omezení.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="477"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Arc by 3 points</source>
       <translation>Oblouk o 3 body</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="483"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Vytvoří kruhový oblouk výběrem 3 bodů.
@@ -6163,12 +6163,12 @@ CTRL pro přichycení, SHIFT pro omezení.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Arc tools</source>
       <translation>Obloukové nástroje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="617"/>
       <source>Create various types of circular arcs.</source>
       <translation>Vytvářejte různé typy kruhových oblouků.</translation>
     </message>
@@ -6214,32 +6214,6 @@ on supported nodes and on supported objects.</source>
       <translation>Upraví aktivní objekt.
 Stisknutím E nebo ALT+levým kliknutím zobrazíte kontextovou nabídku
 na podporovaných uzlech a na podporovaných objektech.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_AddPoint</name>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="57"/>
-      <source>Add point</source>
-      <translation>Přidat bod</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
-      <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation>Přidá bod k existujícímu drátu nebo B-spline.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_DelPoint</name>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="89"/>
-      <source>Remove point</source>
-      <translation>Odstraňte bod</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="92"/>
-      <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation>Odebere bod z existujícího drátu nebo B-spline.</translation>
     </message>
   </context>
   <context>
@@ -7133,19 +7107,19 @@ nastavte True pro fúzi nebo False pro sloučeninu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="57"/>
-      <location filename="../../draftobjects/polygon.py" line="67"/>
       <location filename="../../draftobjects/ellipse.py" line="57"/>
+      <location filename="../../draftobjects/polygon.py" line="67"/>
       <location filename="../../draftobjects/rectangle.py" line="57"/>
       <source>Create a face</source>
       <translation>Vytvořte obličej</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/bezcurve.py" line="69"/>
+      <location filename="../../draftobjects/bspline.py" line="56"/>
       <location filename="../../draftobjects/circle.py" line="61"/>
       <location filename="../../draftobjects/polygon.py" line="71"/>
-      <location filename="../../draftobjects/bezcurve.py" line="69"/>
       <location filename="../../draftobjects/rectangle.py" line="66"/>
       <location filename="../../draftobjects/wire.py" line="92"/>
-      <location filename="../../draftobjects/bspline.py" line="56"/>
       <source>The area of this object</source>
       <translation>Rozloha tohoto objektu</translation>
     </message>
@@ -7189,8 +7163,8 @@ nastavte True pro fúzi nebo False pro sloučeninu</translation>
       <translation>Základní objekt, který bude duplikován.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <location filename="../../draftobjects/patharray.py" line="185"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>Objekt, podél kterého budou kopie distribuovány. Musí obsahovat 'Edges'.</translation>
     </message>
@@ -7205,9 +7179,9 @@ nastavte True pro fúzi nebo False pro sloučeninu</translation>
       <translation>Rotační faktor krouceného pole.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
-      <location filename="../../draftobjects/patharray.py" line="216"/>
       <location filename="../../draftobjects/array.py" line="335"/>
+      <location filename="../../draftobjects/patharray.py" line="216"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>Zobrazit jednotlivé prvky pole (pouze pro pole Link)</translation>
@@ -7336,8 +7310,8 @@ Při použití uloženého stylu se některé vlastnosti pohledu stanou pouze pr
 budou upravitelné pouze změnou stylu pomocí nástroje 'Editor stylu poznámky'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="177"/>
       <location filename="../../draftobjects/array.py" line="97"/>
+      <location filename="../../draftobjects/patharray.py" line="177"/>
       <source>The base object that will be duplicated</source>
       <translation>Základní objekt, který bude duplikován</translation>
     </message>
@@ -8140,14 +8114,14 @@ Pro výchozí nastavení systému ponechte prázdné.
 Použijte 'oblouk' k vynucení americké obloukové notace</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="99"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="200"/>
+      <location filename="../../draftviewproviders/view_label.py" line="99"/>
       <source>Arrow size</source>
       <translation>Velikost šipky</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="209"/>
+      <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <source>Arrow type</source>
       <translation>Typ šipky</translation>
     </message>
@@ -8212,7 +8186,7 @@ za kótovací čárou</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Zkosení</translation>
+      <translation>Návrh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

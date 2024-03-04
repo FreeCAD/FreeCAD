@@ -1626,8 +1626,6 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
     {
         TechDraw::DrawPage *page = DrawGuiUtil::findPage(this);
         if (!page) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("SurfaceFinishSymbols"),
-                                 QObject::tr("No page to insert the symbol!"));
             return;
         }
 
@@ -1652,6 +1650,9 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
     }
 
     Gui::Control().showDialog(new TechDrawGui::TaskDlgSurfaceFinishSymbols(ownerName));
+
+    updateActive();
+    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawSurfaceFinishSymbols::isActive()

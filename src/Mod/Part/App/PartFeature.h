@@ -64,6 +64,9 @@ public:
 
     PyObject* getPyObject() override;
 
+    std::pair<std::string,std::string> getElementName(
+            const char *name, ElementNameType type=Normal) const override;
+
     TopLoc_Location getLocation() const;
 
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,

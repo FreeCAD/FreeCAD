@@ -440,9 +440,9 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>No implementado.</translation>
+      <translation>Intersección de dos caras.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -4978,31 +4978,31 @@ solo los cortes creados serán visibles</translation>
       <translation>En dirección x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Nota: La ubicación se expresa en el sistema de coordenadas local
 del objeto que se adjunta.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>En dirección y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>En la dirección z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>Alrededor del eje x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5011,12 +5011,12 @@ Nota: La ubicación se expresa en el sistema local de coordenadas
 del objeto que se adjunta.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Alrededor del eje y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5025,12 +5025,12 @@ Nota: La ubicación se expresa en el sistema local de coordenadas
 del objeto que se adjunta.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Alrededor del eje z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5039,12 +5039,12 @@ Nota: La ubicación se expresa en el sistema local de coordenadas
 del objeto que se adjunta.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Voltear el lado del adjunto y el desplazamiento</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Voltear caras</translation>
     </message>
@@ -5665,55 +5665,12 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Ojo de buey fabricador de superficies</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Soporta hacer superficies planas con agujeros con islas.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Simple</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Hace caras planas separadas para cada alambre independientemente. No hay soporte para agujeros; los alambres pueden estar en diferentes planos.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Fabricador de superficies cheese</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Ayudas haciendo caras planas con agujeros, pero sin islas dentro de los agujeros.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Extrusión de pieza fabricador de superficies</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Soporta hacer caras con agujeros, no soporta anidación.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -5805,20 +5762,20 @@ Do you want to continue?</source>
       <translation>Ninguna referencia seleccionada</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Arista</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Vértice</translation>
     </message>
@@ -6135,7 +6092,7 @@ Do you want to continue?</source>
       <translation>Borrar todas las cotas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Ajustar colores...</translation>
     </message>
@@ -6925,6 +6882,66 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>Todos los filtros de selección eliminados</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation>La forma debe ser un alambre, una arista o un compuesto. Se ha suministrado otra cosa.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Simple</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Hace caras planas separadas para cada alambre independientemente. No hay soporte para agujeros; los alambres pueden estar en diferentes planos.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Ojo de buey fabricador de superficies</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Soporta hacer superficies planas con agujeros con islas.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Fabricador de superficies cheese</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Ayudas haciendo caras planas con agujeros, pero sin islas dentro de los agujeros.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Extrusión de pieza fabricador de superficies</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Soporta hacer caras con agujeros, no soporta anidación.</translation>
     </message>
   </context>
 </TS>

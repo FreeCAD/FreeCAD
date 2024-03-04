@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Uygulanmadı.</translation>
+      <translation type="unfinished">Intersection of two faces.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -522,7 +522,7 @@
       <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Menşeyi çevir</translation>
+      <translation>Orijini Naklet</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -719,7 +719,7 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Menşeyi çevir</translation>
+      <translation>Orijini Naklet</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
@@ -4967,30 +4967,30 @@ yalnızca oluşturulan kesimler görünür</translation>
       <translation>X yönünde:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>Y yönünde:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>Z yönünde:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>X ekseni etrafında:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -4998,12 +4998,12 @@ of object being attached.</source>
 Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Y ekseni etrafında:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5011,12 +5011,12 @@ of object being attached.</source>
 Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Z ekseni etrafında:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5024,12 +5024,12 @@ of object being attached.</source>
 Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Eklentinin ters tarafı ve ekMiktar</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Yönlerini çevirin</translation>
     </message>
@@ -5651,55 +5651,12 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Bull'ın göz fasiyesi</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Adalı delikli düzlemsel yüzlerin oluşturulmasını destekler.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Basit</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Ayrı düzlemi yüzünü her telden bağımsız olarak yapar. Delikler için destek yok; teller farklı düzlemlerde olabilir.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Peynir makyajcısı</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Delikli düzlemsel yüzeyler oluşturmayı destekler, ancak deliklerin içinde adalar yoktur.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Parça ekstrüzyon yüz ölçümü</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Yüzleri deliklerle destekleme desteği, iç içe yerleştirmeyi desteklemez.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1'i düzenle</translation>
     </message>
@@ -5791,20 +5748,20 @@ Devam etmek istiyor musun?</translation>
       <translation>Seçilen referans yok</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Kenar</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6121,7 +6078,7 @@ Devam etmek istiyor musun?</translation>
       <translation>Tüm ölçüleri temizle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Renkleri ayarla...</translation>
     </message>
@@ -6911,6 +6868,66 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation type="unfinished">All selection filters cleared</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Basit</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Ayrı düzlemi yüzünü her telden bağımsız olarak yapar. Delikler için destek yok; teller farklı düzlemlerde olabilir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Bull'ın göz fasiyesi</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Adalı delikli düzlemsel yüzlerin oluşturulmasını destekler.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Peynir makyajcısı</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Delikli düzlemsel yüzeyler oluşturmayı destekler, ancak deliklerin içinde adalar yoktur.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Parça ekstrüzyon yüz ölçümü</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Yüzleri deliklerle destekleme desteği, iç içe yerleştirmeyi desteklemez.</translation>
     </message>
   </context>
 </TS>

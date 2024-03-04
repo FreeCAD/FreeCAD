@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Není implementováno.</translation>
+      <translation type="unfinished">Intersection of two faces.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -4980,30 +4980,30 @@ budou viditelné pouze vytvořené řezy</translation>
       <translation>Ve směru x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Poznámka: Umístění je určeno v lokálním souřadnicovém systému připojeného objektu.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>Ve směru y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>Ve směru z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>Kolem osy x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5011,12 +5011,12 @@ of object being attached.</source>
 Poznámka: Umístění je určeno v lokálním souřadnicovém systému připojeného objektu.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Kolem osy y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5024,12 +5024,12 @@ of object being attached.</source>
 Poznámka: Umístění je určeno v lokálním souřadnicovém systému připojeného objektu.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Kolem osy z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5037,12 +5037,12 @@ of object being attached.</source>
 Poznámka: Umístění je určeno v lokálním souřadnicovém systému připojeného objektu.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Překlopí stranu přípojení a odsadí</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Otočit strany</translation>
     </message>
@@ -5668,55 +5668,12 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Terčové tvoření plochy</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Podporuje vytváření rovinných ploch s dírami a ostrovy.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Jednoduchý</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Vytvoří samostatnou rovinnou plochu z každého drátu. Bez podpory otvorů; dráty mohou ležet v různých rovinách.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Sýrové tvoření plochy</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Podporuje vytváření rovinných ploch s dírami, ale bez ostrovů v dírách.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Vysunovací tvoření plochy</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Podporuje vytváření ploch s dírami, nepodporuje vnořování.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Upravit %1</translation>
     </message>
@@ -5808,20 +5765,20 @@ Chcete pokračovat?</translation>
       <translation>Není vybrána reference</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Vrchol</translation>
     </message>
@@ -6138,7 +6095,7 @@ Chcete pokračovat?</translation>
       <translation>Vyčistit všechny rozměry</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Nastavení barev...</translation>
     </message>
@@ -6928,6 +6885,66 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>Všechny filtry výběru zrušeny</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Jednoduchý</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Vytvoří samostatnou rovinnou plochu z každého drátu. Bez podpory otvorů; dráty mohou ležet v různých rovinách.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Terčové tvoření plochy</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Podporuje vytváření rovinných ploch s dírami a ostrovy.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Sýrové tvoření plochy</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Podporuje vytváření rovinných ploch s dírami, ale bez ostrovů v dírách.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Vysunovací tvoření plochy</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Podporuje vytváření ploch s dírami, nepodporuje vnořování.</translation>
     </message>
   </context>
 </TS>

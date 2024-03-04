@@ -555,8 +555,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
-მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
+ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -573,7 +573,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>ბმულების მასივი</translation>
+      <translation>მასივების მიბმა</translation>
     </message>
   </context>
   <context>
@@ -652,13 +652,13 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
-ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
+მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>შერწყმა</translation>
+      <translation>შეერთება</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -670,7 +670,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>მასივების მიბმა</translation>
+      <translation>ბმულების მასივი</translation>
     </message>
   </context>
   <context>
@@ -962,7 +962,7 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="136"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> პქს</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="143"/>
@@ -1058,7 +1058,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="463"/>
       <source>Text spacing</source>
-      <translation>სიმბოლოებს შორის დაშორება</translation>
+      <translation>ტექსტში დაშორებები</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
@@ -1549,7 +1549,6 @@ pattern definitions to be added to the standard patterns</source>
       <translation>ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="209"/>
       <location filename="../ui/preferences-drafttexts.ui" line="73"/>
       <location filename="../ui/preferences-drafttexts.ui" line="310"/>
       <location filename="../ui/preferences-drafttexts.ui" line="501"/>
@@ -1557,6 +1556,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
       <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>მმ</translation>
     </message>
@@ -1657,8 +1657,8 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
       <translation>ნაგულისხმევი ხაზის სიგანე</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <location filename="../ui/preferences-draft.ui" line="305"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1803,7 +1803,7 @@ used for linear dimensions.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="585"/>
       <source>Text spacing</source>
-      <translation>ტექსტში დაშორებები</translation>
+      <translation>სიმბოლოებს შორის დაშორება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="447"/>
@@ -1978,9 +1978,9 @@ from the Addon Manager.</source>
       <translation>FreeCAD-სთვის DXF ბიბლიოთეკების ავტომატური გადმოწერის და განახლების უფლების მიცემა</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="26"/>
-      <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-oca.ui" line="26"/>
+      <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
       <translation>შემოტანის მორგება</translation>
     </message>
@@ -2197,8 +2197,8 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
 თუ დაყენებულია '0', მთელი სპლაინი განიხილება, როგორც სწორი სეგმენტი.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="107"/>
       <location filename="../ui/preferences-dxf.ui" line="487"/>
+      <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
       <translation>გატანის მორგება</translation>
     </message>
@@ -2474,8 +2474,8 @@ These lines are thicker than normal grid lines.</source>
       <translation>მეთოდი, რომელსაც FreeCAD-ი DWG ფაილების DXF-ში გადასაყვანად გამოიყენებს. თუ არჩეულია "ავტომატური", FreeCAD-ი შეეცდება იპოვოს ერთ-ერთი გადამყვანებიდან, იმ თანამიმდევრობით, როგორც ისინი აქაა ჩამოთვლილი. თუ FreeCAD-ი ვერ იპოვის ვერცერთს, მაშინ საჭიროა, რომ თქვენ დააყენოთ გადამყვანი და მიუთითოთ ბილიკი მის გამშვებ ფაილებამდე. აირჩიეთ "dwg2dxf", თუ იყენებთ LibreDWG-ს, "ODAFileConverter", თუ ODA-ის ფაილებს გარდამქმნელს იყენებთ და "dwg2dwg", თუ QCAD-ის პროფესიონალურ ვერსიას.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dwg.ui" line="51"/>
       <location filename="../ui/preferences-draft.ui" line="89"/>
+      <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
       <translation>ავტომატური</translation>
     </message>
@@ -2770,8 +2770,8 @@ These lines are thicker than normal grid lines.</source>
     <message>
       <location filename="../../DraftGui.py" line="62"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../draftguitools/gui_move.py" line="214"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="287"/>
+      <location filename="../../draftguitools/gui_move.py" line="212"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <location filename="../../draftguitools/gui_scale.py" line="203"/>
       <location filename="../../draftguitools/gui_scale.py" line="227"/>
       <location filename="../../draftguitools/gui_scale.py" line="356"/>
@@ -3072,7 +3072,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="569"/>
       <source>Undo</source>
-      <translation>დაბრუნება (&amp;U)</translation>
+      <translation>დაბრუნება</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="583"/>
@@ -3179,7 +3179,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     </message>
     <message>
       <location filename="../../DraftGui.py" line="724"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="290"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
       <source>Rotate</source>
       <translation>შემობრუნება</translation>
     </message>
@@ -3202,7 +3202,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="774"/>
       <location filename="../../draftguitools/gui_offset.py" line="241"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
-      <location filename="../../draftguitools/gui_offset.py" line="322"/>
+      <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
       <translation>წანაცვლება</translation>
     </message>
@@ -3392,59 +3392,59 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>დააყენეთ მასშტაბი, რომელიც გამოიყენება მონახაზის ანოტაციის ხელსაწყოების მიერ</translation>
     </message>
     <message>
-      <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="826"/>
-      <location filename="../../draftutils/utils.py" line="1069"/>
-      <location filename="../../draftmake/make_patharray.py" line="170"/>
-      <location filename="../../draftmake/make_patharray.py" line="332"/>
-      <location filename="../../draftmake/make_label.py" line="194"/>
-      <location filename="../../draftmake/make_pointarray.py" line="90"/>
-      <location filename="../../draftmake/make_text.py" line="92"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
       <location filename="../../draftmake/make_dimension.py" line="212"/>
       <location filename="../../draftmake/make_dimension.py" line="301"/>
       <location filename="../../draftmake/make_dimension.py" line="421"/>
       <location filename="../../draftmake/make_dimension.py" line="535"/>
-      <location filename="../../draftmake/make_array.py" line="86"/>
+      <location filename="../../draftmake/make_label.py" line="194"/>
       <location filename="../../draftmake/make_layer.py" line="54"/>
       <location filename="../../draftmake/make_layer.py" line="143"/>
-      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_patharray.py" line="169"/>
+      <location filename="../../draftmake/make_patharray.py" line="329"/>
+      <location filename="../../draftmake/make_pointarray.py" line="89"/>
+      <location filename="../../draftmake/make_text.py" line="92"/>
+      <location filename="../../draftmake/make_text.py" line="178"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
+      <location filename="../../draftutils/gui_utils.py" line="827"/>
+      <location filename="../../draftutils/utils.py" line="1069"/>
       <source>No active document. Aborting.</source>
       <translation>აქტიური დოკუმენტის გარეშე. გაუქმება.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="834"/>
+      <location filename="../../draftutils/gui_utils.py" line="835"/>
       <source>Wrong input: object {} not in document.</source>
-      <translation type="unfinished">Wrong input: object {} not in document.</translation>
+      <translation>არასწორი შეყვანა: ობიექტი {} დოკუმენტში არაა.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="159"/>
+      <location filename="../../draftutils/gui_utils.py" line="160"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>მასშტაბირებად ნაწილში ახალი ობიექტის ჩასმა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="265"/>
+      <location filename="../../draftutils/gui_utils.py" line="266"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>სიმბოლო განხორციელებული არაა. გამოიყენება ნაგულისხმევი სიმბოლო.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="710"/>
+      <location filename="../../draftutils/gui_utils.py" line="711"/>
       <source>image is Null</source>
       <translation>ნულოვანი გამოსახულება</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="716"/>
+      <location filename="../../draftutils/gui_utils.py" line="717"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>ფაილი არ არსებობს არც სისტემაში არც რესურსის ფაილში</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="775"/>
+      <location filename="../../draftutils/gui_utils.py" line="776"/>
       <source>unable to load texture</source>
       <translation>ტექსტურის ჩატვირთვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="840"/>
+      <location filename="../../draftutils/gui_utils.py" line="841"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>არ აქვს 'ViewObject.RootNode'.</translation>
     </message>
@@ -3517,7 +3517,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftutils/utils.py" line="1032"/>
       <source>Wrong input: unknown document {}</source>
-      <translation type="unfinished">Wrong input: unknown document {}</translation>
+      <translation>არასწორი შეყვანა: უცნობი დოკუმენტი {}</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="1110"/>
@@ -3552,65 +3552,65 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>აირჩიეთ სამიზნე წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="151"/>
+      <location filename="../../draftguitools/gui_labels.py" line="152"/>
       <source>Create Label</source>
       <translation>ჭდის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="185"/>
-      <location filename="../../draftguitools/gui_labels.py" line="212"/>
+      <location filename="../../draftguitools/gui_labels.py" line="186"/>
+      <location filename="../../draftguitools/gui_labels.py" line="213"/>
       <source>Pick endpoint of leader line</source>
       <translation>აირჩიეთ ლიდერის ხაზის ბოლო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="195"/>
-      <location filename="../../draftguitools/gui_labels.py" line="222"/>
+      <location filename="../../draftguitools/gui_labels.py" line="196"/>
+      <location filename="../../draftguitools/gui_labels.py" line="223"/>
       <source>Pick text position</source>
       <translation>აირჩიეთ ტექსტის პოზიცია</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="82"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="123"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="82"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
       <source>Pick first point</source>
       <translation>აირჩიეთ პირველი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="160"/>
+      <location filename="../../draftguitools/gui_lines.py" line="162"/>
       <source>Create Line</source>
       <translation>ხაზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="182"/>
+      <location filename="../../draftguitools/gui_lines.py" line="184"/>
       <source>Create Wire</source>
       <translation>პოლიხაზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="353"/>
+      <location filename="../../draftguitools/gui_lines.py" line="355"/>
       <source>Polyline</source>
       <translation>პოლიხაზი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="215"/>
-      <location filename="../../draftguitools/gui_lines.py" line="223"/>
-      <location filename="../../draftguitools/gui_lines.py" line="230"/>
-      <location filename="../../draftguitools/gui_lines.py" line="238"/>
-      <location filename="../../draftguitools/gui_lines.py" line="248"/>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <location filename="../../draftguitools/gui_splines.py" line="145"/>
       <location filename="../../draftguitools/gui_beziers.py" line="151"/>
       <location filename="../../draftguitools/gui_beziers.py" line="154"/>
+      <location filename="../../draftguitools/gui_lines.py" line="217"/>
+      <location filename="../../draftguitools/gui_lines.py" line="225"/>
+      <location filename="../../draftguitools/gui_lines.py" line="232"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="250"/>
+      <location filename="../../draftguitools/gui_splines.py" line="140"/>
+      <location filename="../../draftguitools/gui_splines.py" line="145"/>
       <source>Pick next point</source>
       <translation>აირჩიეთ შემდეგი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="320"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>მონიშნული ობიექტებისგან პოლიხაზის შექმნა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="345"/>
+      <location filename="../../draftguitools/gui_lines.py" line="347"/>
       <source>Convert to Wire</source>
       <translation>პოლიხაზად გარდაქმნა</translation>
     </message>
@@ -3635,54 +3635,54 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>აირჩიეთ მდებარეობის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_texts.py" line="125"/>
+      <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
       <translation>ტექსტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
       <source>Select an object to convert.</source>
       <translation>აირჩიეთ გარდასაქმნელი ობიექტი.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="100"/>
       <source>Convert to Sketch</source>
       <translation>ესკიზად გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
       <translation>მონახაზად გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
       <source>Convert Draft/Sketch</source>
       <translation>მონახაზად/ესკიზად გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="81"/>
+      <location filename="../../draftguitools/gui_move.py" line="78"/>
       <source>Select an object to move</source>
       <translation>აირჩიეთ გადასატანი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="103"/>
+      <location filename="../../draftguitools/gui_move.py" line="100"/>
       <source>Pick start point</source>
       <translation>აირჩიეთ საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="168"/>
-      <location filename="../../draftguitools/gui_move.py" line="315"/>
+      <location filename="../../draftguitools/gui_move.py" line="166"/>
+      <location filename="../../draftguitools/gui_move.py" line="313"/>
       <source>Pick end point</source>
       <translation>აირჩიეთ საბოლოო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="217"/>
+      <location filename="../../draftguitools/gui_move.py" line="215"/>
       <source>Move</source>
       <translation>გადატანა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="293"/>
+      <location filename="../../draftguitools/gui_move.py" line="218"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Some subelements could not be moved.</source>
       <translation>ზოგიერთი ქვეელემენტის გადატანა შეუძლებელია.</translation>
     </message>
@@ -3693,77 +3693,77 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>აირჩიეთ ცენტრის წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="253"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="269"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="409"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="267"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="268"/>
       <source>Pick radius</source>
       <translation>აირჩიეთ რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="276"/>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="444"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
       <source>Start angle</source>
       <translation>საწყისი კუთხე</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="282"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Pick start angle</source>
       <translation>აირჩიეთ საწყისი კუთხე</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="284"/>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
       <source>Aperture angle</source>
       <translation>დიაფრაგმის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="292"/>
       <source>Pick aperture</source>
       <translation>აირჩიეთ დიაფრაგმა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="319"/>
       <source>Create Circle (Part)</source>
       <translation>წრეწირის შექმნა (ნაწილი)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="337"/>
       <source>Create Circle</source>
       <translation>წრის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="368"/>
       <source>Create Arc (Part)</source>
       <translation>რკალის შექმნა (ნაწილი)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="388"/>
       <source>Create Arc</source>
       <translation>რკალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="459"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="462"/>
       <source>Pick aperture angle</source>
       <translation>აირჩიეთ აპერტურის კუთხე</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="502"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="544"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="505"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="547"/>
       <source>Arc by 3 points</source>
       <translation>რკალი 3 წერტილით</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="561"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="566"/>
       <source>Create Arc by 3 points</source>
-      <translation type="unfinished">Create Arc by 3 points</translation>
+      <translation>რკალის სამი წერტილით შექმნა</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="53"/>
@@ -3771,7 +3771,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>ბადის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="109"/>
       <source>Select an object to edit</source>
       <translation>აირჩიეთ ჩასასწორებელი ობიექტი</translation>
     </message>
@@ -3786,17 +3786,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>კვანძის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="532"/>
+      <location filename="../../draftguitools/gui_edit.py" line="531"/>
       <source>No edit point found for selected object</source>
       <translation>მონიშნული ელემენტის ჩასწორების წერტილი ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="788"/>
+      <location filename="../../draftguitools/gui_edit.py" line="787"/>
       <source>Too many objects selected, max number set to:</source>
       <translation>მონიშნულია მეტისმეტად ბევრი ობიექტი. მაქს. შესაძლო რაოდენობა:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="796"/>
+      <location filename="../../draftguitools/gui_edit.py" line="795"/>
       <source>: this object is not editable</source>
       <translation>: ეს ობიექტი ჩასწორებადი არაა</translation>
     </message>
@@ -3826,13 +3826,13 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>სტილის ფაილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="69"/>
       <source>Select an object to project</source>
       <translation>აირჩიეთ ობიექტი პროექციისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="121"/>
-      <location filename="../../draftguitools/gui_points.py" line="133"/>
+      <location filename="../../draftguitools/gui_points.py" line="122"/>
+      <location filename="../../draftguitools/gui_points.py" line="134"/>
       <source>Create Point</source>
       <translation>წერტილის შექმნა</translation>
     </message>
@@ -3848,31 +3848,31 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="191"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="395"/>
       <source>Base angle</source>
       <translation>ბაზისური კუთხე</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="192"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
       <source>The base angle you wish to start the rotation from</source>
       <translation>შებრუნების თქვენთვის სასურველი საწყისი საბაზისო კუთხე</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="197"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="399"/>
       <source>Pick base angle</source>
       <translation>აირჩიეთ საბაზისო კუთხე</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="203"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="408"/>
       <source>Rotation</source>
       <translation>შემობრუნება</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="204"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>შებრუნებების რაოდენობა, რომლის შესრულებაც გსურთ.
@@ -3880,7 +3880,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="211"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="417"/>
       <source>Pick rotation angle</source>
       <translation>აირჩიეთ ბრუნვის კუთხე</translation>
     </message>
@@ -3985,12 +3985,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>მრავალკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="231"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="232"/>
       <source>Create Polygon (Part)</source>
       <translation>მრავალკუთხას შექმნა (ნაწილი)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="250"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="251"/>
       <source>Create Polygon</source>
       <translation>პოლიგონის შექმნა</translation>
     </message>
@@ -4000,7 +4000,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ხაზის გასაყოფად ზედ დააწკაპუნეთ.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="106"/>
+      <location filename="../../draftguitools/gui_split.py" line="107"/>
       <source>Split line</source>
       <translation>ხაზის გაყოფა</translation>
     </message>
@@ -4010,8 +4010,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>აირჩიეთ გასაფართოებელი ან შესავიწროებელი ობიექტები</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <source>Pick distance</source>
       <translation>აირჩიეთ დაშორება</translation>
     </message>
@@ -4051,14 +4051,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>სპლაინი დაიხურა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <location filename="../../draftguitools/gui_beziers.py" line="143"/>
       <location filename="../../draftguitools/gui_beziers.py" line="382"/>
+      <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
       <translation>ბოლო წერტილი მოცილებულია</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="182"/>
+      <location filename="../../draftguitools/gui_splines.py" line="183"/>
       <source>Create B-spline</source>
       <translation>B-სპლაინის შექმნა</translation>
     </message>
@@ -4220,14 +4220,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ოვალი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="127"/>
-      <location filename="../../draftguitools/gui_ellipses.py" line="144"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="129"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="146"/>
       <source>Create Ellipse</source>
       <translation>ოვალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="199"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="201"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="201"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="197"/>
       <source>Pick opposite point</source>
       <translation>აირჩიეთ საპირისპირო წერტილი</translation>
     </message>
@@ -4320,25 +4320,25 @@ The final angle will be the base angle plus this amount.</source>
       <translation>განზომილება</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="223"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="246"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="260"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="292"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="224"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="247"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="293"/>
       <source>Create Dimension</source>
       <translation>განზომილების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="307"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="308"/>
       <source>Create Dimension (radial)</source>
       <translation>ზომის შექმნა (რადიალური)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="517"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
       <source>Edge too short!</source>
       <translation>წიბო ძალიან მოკლეა!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="527"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="528"/>
       <source>Edges don't intersect!</source>
       <translation>წიბოები არ იკვეთებიან!</translation>
     </message>
@@ -4368,12 +4368,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>აირჩიეთ გადაადგილების საბოლოო წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="447"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>ერთი მართკუთხედის პოლიხაზად გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="476"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
       <source>Stretch</source>
       <translation>გაწელვა</translation>
     </message>
@@ -4383,12 +4383,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>მართკუთხედი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="128"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="124"/>
       <source>Create Plane</source>
       <translation>სიბრტყის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="145"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="141"/>
       <source>Create Rectangle</source>
       <translation>ოთხკუთხედის შექმნა</translation>
     </message>
@@ -4403,13 +4403,13 @@ The final angle will be the base angle plus this amount.</source>
       <translation>აირჩიეთ ასლის ხაზის საწყისი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="118"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="119"/>
       <source>Mirror</source>
       <translation>სარკე</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="163"/>
-      <location filename="../../draftguitools/gui_mirror.py" line="189"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="164"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="190"/>
       <source>Pick end point of mirror line</source>
       <translation>აირჩიეთ ასლის ხაზის ბოლო წერტილი</translation>
     </message>
@@ -4419,19 +4419,19 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ჩახვეული ტრაექტორიების მასივი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="80"/>
+      <location filename="../../draftguitools/gui_clone.py" line="81"/>
       <source>Select an object to clone</source>
       <translation>აირჩიეთ ობიექტი კლონირებისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="95"/>
+      <location filename="../../draftguitools/gui_clone.py" line="94"/>
       <source>Cannot clone object(s) without a Shape, aborting</source>
-      <translation type="unfinished">Cannot clone object(s) without a Shape, aborting</translation>
+      <translation>მოხაზულობის არმქონე ობიექტების დაკლონვა შეუძლებელია. ოპერაცია ავარიულად დასრულდება</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="99"/>
+      <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone object(s) without a Shape, skipping them</source>
-      <translation type="unfinished">Cannot clone object(s) without a Shape, skipping them</translation>
+      <translation>მოხაზულობის არმქონე ობიექტების დაკლონვა შეუძლებელია. ისინი გამოტოვებული იქნება</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
@@ -4439,13 +4439,13 @@ The final angle will be the base angle plus this amount.</source>
       <translation>დახრილობის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
-      <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="68"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="68"/>
       <source>Select an object to upgrade</source>
       <translation>აირჩიეთ ობიექტი განახლებისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="86"/>
       <source>Upgrade</source>
       <translation>გართულება</translation>
     </message>
@@ -4470,7 +4470,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ბეზიეს მრუდების წანაცვლების მხარდაჭერა ჯერ არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
       <source>Create 2D view</source>
       <translation>2D ხედის შექმნა</translation>
     </message>
@@ -4490,14 +4490,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>წამლობა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="86"/>
       <source>Downgrade</source>
       <translation>დაქვეითება</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="82"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="82"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="82"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="82"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="82"/>
       <source>Task panel:</source>
       <translation>ამოცანების ზოლი:</translation>
     </message>
@@ -4508,26 +4508,26 @@ The final angle will be the base angle plus this amount.</source>
       <translation>პოლარული მასივი</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="186"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="199"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="206"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="199"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="186"/>
       <source>At least one element must be selected.</source>
       <translation>არჩეული უნდა იყოს მინიმუმ ერთი ელემენტი.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="193"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="210"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="217"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="210"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="193"/>
       <source>Selection is not suitable for array.</source>
       <translation>მონიშნული მასივის მოთხოვნებს არ შეესაბამება.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="320"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="211"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="359"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="218"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="365"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="211"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="359"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="320"/>
       <source>Object:</source>
       <translation>ობიექტი:</translation>
     </message>
@@ -4547,16 +4547,16 @@ The final angle will be the base angle plus this amount.</source>
       <translation>კუთხე არის -360 გრადუსზე დაბლა. გასაგრძელებლად დაყენებულია ამ მნიშვნელობაზე.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="291"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="330"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="335"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="330"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="291"/>
       <source>Fuse:</source>
       <translation>შერწყმა:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="304"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="348"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="304"/>
       <source>Create Link array:</source>
       <translation>ბმულების მასივის შექმნა:</translation>
     </message>
@@ -4571,8 +4571,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>პოლარული ბიჯი:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="324"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="371"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="324"/>
       <source>Center of rotation:</source>
       <translation>შებრუნების ცენტრი:</translation>
     </message>
@@ -4691,17 +4691,17 @@ The final angle will be the base angle plus this amount.</source>
       <translation>თვისების ტიპი 'ტრეკინგი' შეიცვალა</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="173"/>
+      <location filename="../../draftobjects/shapestring.py" line="175"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
       <translation>ShapeString: დახრის კუთხე -80 - +80 შუალედიდან უნდა იყოს</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="185"/>
+      <location filename="../../draftobjects/shapestring.py" line="187"/>
       <source>ShapeString: string has no wires</source>
       <translation>ShapeString: სტრიქონს პოლიხაზები არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="219"/>
+      <location filename="../../draftobjects/shapestring.py" line="221"/>
       <source>ShapeString: face creation failed for one character</source>
       <translation>ShapeString: ზედაპირის შექმნის შეცდომა ერთი სიმბოლოსთვის</translation>
     </message>
@@ -4783,12 +4783,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="70"/>
       <source>Two objects are needed.</source>
-      <translation type="unfinished">Two objects are needed.</translation>
+      <translation>საჭიროა ორი ობიექტი.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="77"/>
       <source>One object is not valid.</source>
-      <translation type="unfinished">One object is not valid.</translation>
+      <translation>ერთი ობიექტი არასწორია.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="82"/>
@@ -4828,38 +4828,35 @@ The final angle will be the base angle plus this amount.</source>
       <translation>მოხაზულობის გენერაცია შეუძლებელია:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="175"/>
-      <location filename="../../draftmake/make_patharray.py" line="337"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="145"/>
-      <location filename="../../draftmake/make_pointarray.py" line="95"/>
       <location filename="../../draftmake/make_circulararray.py" line="125"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="145"/>
+      <location filename="../../draftmake/make_patharray.py" line="174"/>
+      <location filename="../../draftmake/make_patharray.py" line="334"/>
+      <location filename="../../draftmake/make_pointarray.py" line="94"/>
       <location filename="../../draftmake/make_polararray.py" line="97"/>
       <source>Wrong input: base_object not in document.</source>
-      <translation type="unfinished">Wrong input: base_object not in document.</translation>
+      <translation>არასწორი შეყვანა: საბაზისო ობიექტი დოკუმენტში არაა.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="180"/>
-      <location filename="../../draftmake/make_patharray.py" line="342"/>
+      <location filename="../../draftmake/make_patharray.py" line="179"/>
+      <location filename="../../draftmake/make_patharray.py" line="339"/>
       <source>Wrong input: path_object not in document.</source>
-      <translation type="unfinished">Wrong input: path_object not in document.</translation>
+      <translation>არასწორი შეყვანა: ობიექტის ბილიკი დოკუმენტში არაა.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="187"/>
-      <location filename="../../draftmake/make_patharray.py" line="260"/>
-      <location filename="../../draftmake/make_patharray.py" line="268"/>
-      <location filename="../../draftmake/make_patharray.py" line="348"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="135"/>
       <location filename="../../draftmake/make_label.py" line="297"/>
-      <location filename="../../draftmake/make_polararray.py" line="109"/>
       <location filename="../../draftmake/make_layer.py" line="182"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="135"/>
+      <location filename="../../draftmake/make_patharray.py" line="186"/>
+      <location filename="../../draftmake/make_patharray.py" line="259"/>
+      <location filename="../../draftmake/make_patharray.py" line="267"/>
+      <location filename="../../draftmake/make_patharray.py" line="345"/>
+      <location filename="../../draftmake/make_polararray.py" line="109"/>
       <source>Wrong input: must be a number.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს რიცხვი.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="195"/>
-      <location filename="../../draftmake/make_patharray.py" line="245"/>
-      <location filename="../../draftmake/make_patharray.py" line="253"/>
-      <location filename="../../draftmake/make_label.py" line="202"/>
+      <location filename="../../draftmake/make_circulararray.py" line="147"/>
       <location filename="../../draftmake/make_dimension.py" line="218"/>
       <location filename="../../draftmake/make_dimension.py" line="224"/>
       <location filename="../../draftmake/make_dimension.py" line="231"/>
@@ -4869,18 +4866,21 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="541"/>
       <location filename="../../draftmake/make_dimension.py" line="567"/>
       <location filename="../../draftmake/make_dimension.py" line="574"/>
-      <location filename="../../draftmake/make_circulararray.py" line="147"/>
+      <location filename="../../draftmake/make_label.py" line="202"/>
+      <location filename="../../draftmake/make_patharray.py" line="194"/>
+      <location filename="../../draftmake/make_patharray.py" line="244"/>
+      <location filename="../../draftmake/make_patharray.py" line="252"/>
       <location filename="../../draftmake/make_polararray.py" line="115"/>
       <source>Wrong input: must be a vector.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს ვექტორი.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="207"/>
+      <location filename="../../draftmake/make_patharray.py" line="206"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს სტრიქონების სტრუქტურა ან ერთი სტრიქონი.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="238"/>
+      <location filename="../../draftmake/make_patharray.py" line="237"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს 'საწყისი', 'ფრენე' ან 'მხები'.</translation>
     </message>
@@ -4897,8 +4897,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>შეტანა: ერთი მნიშვნელობა, ვექტორამდე გაზრდილი.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_circulararray.py" line="140"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს მთელი რიცხვი.</translation>
@@ -4912,7 +4912,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="212"/>
-      <location filename="../../draftmake/make_pointarray.py" line="118"/>
+      <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს მდებარეობა, ვექტორი ან ბრუნვა.</translation>
@@ -4920,22 +4920,22 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_label.py" line="223"/>
       <source>Wrong input: target_object must not be a list.</source>
-      <translation type="unfinished">Wrong input: target_object must not be a list.</translation>
+      <translation>არასწორი შეყვანა: სამიზნე ობიექტი სია არ უნდა იყოს.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="228"/>
       <source>Wrong input: target_object not in document.</source>
-      <translation type="unfinished">Wrong input: target_object not in document.</translation>
+      <translation>არასწორი შეყვანა: სამიზნე ობიექტი დოკუმენტში არაა.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="240"/>
       <source>Wrong input: subelements must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: subelements must be a list or tuple of strings, or a single string.</translation>
+      <translation>არასწორი შეყვანა: ქვეელემენტები, ან სტრიქონების კორტეჟის სია უნდა იყოს, ან ერთი სტრიქონი.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <source>Wrong input: subelement {} not in object.</source>
-      <translation type="unfinished">Wrong input: subelement {} not in object.</translation>
+      <translation>არასწორი შეყვანა: ქვეელემენტი {} ობიეტში არაა.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="259"/>
@@ -4964,7 +4964,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_label.py" line="301"/>
       <source>Wrong input: points {} must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: points {} must be a list of at least two vectors.</translation>
+      <translation>არასწორი შეყვანა: წერტილები {} უნდა იყოს მინიმუმ ორი ვექტორისგან შედგენილი სია.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="335"/>
@@ -4977,12 +4977,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს ორი ელემენტის სია. მაგალითად, [object, 'Edge1'].</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="100"/>
+      <location filename="../../draftmake/make_pointarray.py" line="99"/>
       <source>Wrong input: point_object not in document.</source>
-      <translation type="unfinished">Wrong input: point_object not in document.</translation>
+      <translation>არასწორი შეყვანა: წერტილის ბილიკი დოკუმენტში არაა.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="106"/>
+      <location filename="../../draftmake/make_pointarray.py" line="105"/>
       <source>Wrong input: object has the wrong type.</source>
       <translation>არასწორი შეყვანა: ობიექტის ტიპი არასწორია.</translation>
     </message>
@@ -4999,13 +4999,13 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="305"/>
       <source>Wrong input: edge_object must not be a list or tuple.</source>
-      <translation type="unfinished">Wrong input: edge_object must not be a list or tuple.</translation>
+      <translation>არასწორი შეყვანა: წიბოს ობიექტი სია ან კორტეჟი არ უნდა იყოს.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="310"/>
       <location filename="../../draftmake/make_dimension.py" line="426"/>
       <source>Wrong input: edge_object not in document.</source>
-      <translation type="unfinished">Wrong input: edge_object not in document.</translation>
+      <translation>არასწორი შეყვანა: წიბოს ობიექტი დოკუმენტში არაა.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="314"/>
@@ -5309,9 +5309,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>თვისება 'TextColor' დამატებულია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="94"/>
-      <location filename="../../draftobjects/label.py" line="258"/>
       <location filename="../../draftobjects/dimension.py" line="215"/>
+      <location filename="../../draftobjects/label.py" line="258"/>
+      <location filename="../../draftobjects/text.py" line="94"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
       <translation>სახელი გადაერქვა პარამეტრს 'DisplayMode'-დან 'World/Screen'-ზე</translation>
     </message>
@@ -5498,7 +5498,7 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>შეცდომა: json მოდული ვერ მოიძებნა. სტილის შენახვა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="102"/>
+      <location filename="../../draftguitools/gui_clone.py" line="101"/>
       <source>Clone</source>
       <translation>კლონი</translation>
     </message>
@@ -5509,21 +5509,21 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>დახრა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="327"/>
+      <location filename="../../draftguitools/gui_offset.py" line="328"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>წანაცვლების მიმართულება აღწერილი არაა. მის მისათითებლად თაგუნა ობიექტის რომელიმე მხარეს, საჭირო მიმართულებით გაამოძრავეთ</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="155"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
       <source>True</source>
       <translation>ჭეშმარიტი</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="147"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="147"/>
       <source>False</source>
       <translation>მცდარი</translation>
     </message>
@@ -5833,12 +5833,12 @@ will be used to provide information to the label.</source>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="296"/>
+      <location filename="../../draftguitools/gui_lines.py" line="298"/>
       <source>Polyline</source>
       <translation>პოლიხაზი</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="299"/>
+      <location filename="../../draftguitools/gui_lines.py" line="301"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>მრავალ წერტილზე გამავალი ხაზის (პოლიხაზის) შექმნა. CTRL მისამაგრებლად, SHIFT შესაზღუდად.</translation>
     </message>
@@ -6112,12 +6112,12 @@ However, a single sketch with disconnected traces will be converted into several
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="63"/>
+      <location filename="../../draftguitools/gui_move.py" line="60"/>
       <source>Move</source>
       <translation>გადატანა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="66"/>
+      <location filename="../../draftguitools/gui_move.py" line="63"/>
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6144,12 +6144,12 @@ CTRL მისაბმელად, SHIFT შესაზღუდად.</tran
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="477"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Arc by 3 points</source>
       <translation>რკალი 3 წერტილით</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="483"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>ქმნის წრიულ რკალს 3 წერტილის არჩევით.
@@ -6159,12 +6159,12 @@ CTRL მისაბმელად, SHIFT შესაზღუდად.</tran
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Arc tools</source>
       <translation>რკალის ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="612"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="617"/>
       <source>Create various types of circular arcs.</source>
       <translation>სხვადასხვა ტიპის მრგვალი რკალების შექმნა.</translation>
     </message>
@@ -6210,32 +6210,6 @@ on supported nodes and on supported objects.</source>
       <translation>აქტიური ობიექტის ჩასწორება.
 მხარდაჭერილ ობიექტებზე და უჯრედებზე კონტექსტური 
 მენიუს გასახსნელად დააჭირეთ E-ს ან Alt+მარცხენაწკაპი.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_AddPoint</name>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="57"/>
-      <source>Add point</source>
-      <translation>წერტილის დამატება</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
-      <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation>არსებულ პოლიხაზზე ან B-სპლაინზე წერტილის დამატება.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_DelPoint</name>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="89"/>
-      <source>Remove point</source>
-      <translation>წერტილის მოცილება</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="92"/>
-      <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation>არსებული პოლიხაზიდან ან B-სპლაინიდან წერტილის წაშლა.</translation>
     </message>
   </context>
   <context>
@@ -6421,7 +6395,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="65"/>
       <source>Fillet</source>
-      <translation>მომრგვალება</translation>
+      <translation>მომრგვალებული ნაზოლი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="68"/>
@@ -6624,7 +6598,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>მასშტაბირება</translation>
+      <translation>მასშტაბი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -6729,7 +6703,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>
@@ -6781,7 +6755,7 @@ then draw a line to specify the distance and direction of stretching.</source>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="54"/>
       <source>Rectangle</source>
-      <translation>ოთხკუთხედი</translation>
+      <translation>მართკუთხედი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
@@ -7126,19 +7100,19 @@ set True for fusion or False for compound</source>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="57"/>
-      <location filename="../../draftobjects/polygon.py" line="67"/>
       <location filename="../../draftobjects/ellipse.py" line="57"/>
+      <location filename="../../draftobjects/polygon.py" line="67"/>
       <location filename="../../draftobjects/rectangle.py" line="57"/>
       <source>Create a face</source>
       <translation>ზედაპირის შექმნა</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/bezcurve.py" line="69"/>
+      <location filename="../../draftobjects/bspline.py" line="56"/>
       <location filename="../../draftobjects/circle.py" line="61"/>
       <location filename="../../draftobjects/polygon.py" line="71"/>
-      <location filename="../../draftobjects/bezcurve.py" line="69"/>
       <location filename="../../draftobjects/rectangle.py" line="66"/>
       <location filename="../../draftobjects/wire.py" line="92"/>
-      <location filename="../../draftobjects/bspline.py" line="56"/>
       <source>The area of this object</source>
       <translation>ობიექტის ფართობი</translation>
     </message>
@@ -7182,8 +7156,8 @@ set True for fusion or False for compound</source>
       <translation>საბაზისო ობიექტი, რომელიც გაორმაგდება.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <location filename="../../draftobjects/patharray.py" line="185"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>ობიექტი, რომლს გასწვრივაც გადანაწილდება ასლები. ის აუცილებლად უნდა შეიცავდეს „წიბოებს“.</translation>
     </message>
@@ -7198,9 +7172,9 @@ set True for fusion or False for compound</source>
       <translation>გრეხილი მასივის ბრუნვის ფაქტორი.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
-      <location filename="../../draftobjects/patharray.py" line="216"/>
       <location filename="../../draftobjects/array.py" line="335"/>
+      <location filename="../../draftobjects/patharray.py" line="216"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
       <location filename="../../draftobjects/pointarray.py" line="100"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>მასივის ელემენტების ჩვენება (მხოლოდ ბმულების მასივებისთვის)</translation>
@@ -7327,8 +7301,8 @@ they will only be editable by changing the style through the 'Annotation style e
 მათი რედაქტირება შესაძლებელია მხოლოდ სტილის შეცვლით "ანოტაციის სტილის რედაქტორის" ხელსაწყოს მეშვეობით.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="177"/>
       <location filename="../../draftobjects/array.py" line="97"/>
+      <location filename="../../draftobjects/patharray.py" line="177"/>
       <source>The base object that will be duplicated</source>
       <translation>საბაზისო ობიექტი, რომელიც გაორმაგდება</translation>
     </message>
@@ -8126,14 +8100,14 @@ Use 'arch' to force US arch notation</source>
 გამოიყენეთ „არქიტექტურა“ აშშ-ის არქიტექტურული ნოტაციისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="99"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="200"/>
+      <location filename="../../draftviewproviders/view_label.py" line="99"/>
       <source>Arrow size</source>
       <translation>ისრის ზომა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="209"/>
+      <location filename="../../draftviewproviders/view_label.py" line="108"/>
       <source>Arrow type</source>
       <translation>ისრის ტიპი</translation>
     </message>
@@ -8198,7 +8172,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>წყალშიგი</translation>
+      <translation>მონახაზი</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

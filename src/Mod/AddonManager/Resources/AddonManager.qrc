@@ -66,6 +66,8 @@
         <file>icons/compact_view.svg</file>
         <file>icons/composite_view.svg</file>
         <file>icons/expanded_view.svg</file>
+        <file>icons/sort_ascending.svg</file>
+        <file>icons/sort_descending.svg</file>
 		<file>licenses/Apache-2.0.txt</file>
 		<file>licenses/BSD-2-Clause.txt</file>
 		<file>licenses/BSD-3-Clause.txt</file>

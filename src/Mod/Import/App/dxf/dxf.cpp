@@ -3067,7 +3067,7 @@ App::Color CDxfRead::ObjectColor(ColorIndex_t index)
         result = App::Color(brightness, brightness, brightness);
     }
     else {
-        static const std::array<float, 5> fades = {1.00, 0.74, 0.50, 0.40, 0.30};
+        static const std::array<float, 5> fades = {1.00F, 0.74F, 0.50F, 0.40F, 0.30F};
         return wheel(index / 10 - 1, (index & 1) != 0 ? 0.69 : 0, fades[(index / 2) % 5]);
     }
     // TODO: These colors are modified to contrast with the background. In the original program

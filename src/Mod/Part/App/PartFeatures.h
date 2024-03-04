@@ -86,7 +86,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderLoft";
     }
-    void setupObject();
+    void setupObject() override;
     //@}
 
 protected:
@@ -118,7 +118,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSweep";
     }
-    void setupObject();
+    void setupObject() override;
     //@}
 
 protected:

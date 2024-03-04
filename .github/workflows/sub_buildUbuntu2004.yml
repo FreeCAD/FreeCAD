@@ -159,8 +159,9 @@ jobs:
         with:
           compiler: ${{ env.CXX }}
       - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |

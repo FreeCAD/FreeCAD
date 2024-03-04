@@ -911,108 +911,118 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
+      <source>PaStiX</source>
+      <translation type="unfinished">PaStiX</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
+      <source>Pardiso</source>
+      <translation type="unfinished">Pardiso</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Spooles</source>
       <translation type="unfinished">Spooles</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Prevelikostenje s približevalnim ponavljanjem</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
       <source>Iterative Cholesky</source>
       <translation type="unfinished">Iterative Cholesky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="366"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
       <source>Non-linear geometry</source>
       <translation type="unfinished">Non-linear geometry</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
       <source>Use non-linear geometry</source>
       <translation type="unfinished">Use non-linear geometry</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="389"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
       <source>Time incrementation control parameter</source>
       <translation type="unfinished">Time incrementation control parameter</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
       <source>Use non ccx defaults</source>
       <translation type="unfinished">Use non ccx defaults</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Time Initial Step</source>
       <translation type="unfinished">Time Initial Step</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="460"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="470"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
       <source>s</source>
       <translation type="unfinished">s</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="477"/>
       <source>Time End</source>
       <translation type="unfinished">Time End</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="516"/>
       <source>Beam, shell element 3D output format </source>
       <translation type="unfinished">Beam, shell element 3D output format </translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="513"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="523"/>
       <source>3D Output, unchecked for 2D</source>
       <translation type="unfinished">3D Output, unchecked for 2D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="534"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="544"/>
       <source>Thermo mechanical defaults</source>
       <translation type="unfinished">Thermo mechanical defaults</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="542"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="552"/>
       <source>Analysis type (transient or steady state)</source>
       <translation type="unfinished">Analysis type (transient or steady state)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="549"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="559"/>
       <source>Use steady state</source>
       <translation type="unfinished">Use steady state</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="565"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="575"/>
       <source>Maximum number of iterations</source>
       <translation>Največje število približevalnih ponavljanj</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="599"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="609"/>
       <source>Frequency defaults</source>
       <translation type="unfinished">Frequency defaults</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="607"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="617"/>
       <source>Eigenmode number</source>
       <translation>Število lastnega načina</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="652"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="662"/>
       <source>High frequency limit</source>
       <translation>Omejitev visoke frekvence</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="690"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="738"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="700"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="748"/>
       <source>Hz</source>
       <translation>Hz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="697"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="707"/>
       <source>Low frequency limit</source>
       <translation>Omejitev nizke frekvence</translation>
     </message>
@@ -2522,7 +2532,7 @@ Določite drugo datoteko.</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="173"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate analysis</source>
       <translation>Aktiviraj analizo</translation>
     </message>
@@ -2543,15 +2553,15 @@ Določite drugo datoteko.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
+      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM material</source>
       <translation type="unfinished">FEM material</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
-      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Snov</translation>
     </message>
@@ -2576,9 +2586,9 @@ Določite drugo datoteko.</translation>
       <translation type="unfinished">Material name</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
-      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Besedilna oznaka</translation>
     </message>
@@ -2928,17 +2938,17 @@ Določite drugo datoteko.</translation>
       <translation type="unfinished">Enable Adjust</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -2948,11 +2958,11 @@ Določite drugo datoteko.</translation>
       <translation type="unfinished">Centrif parameter</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Določilka</translation>
     </message>
@@ -2982,13 +2992,13 @@ Določite drugo datoteko.</translation>
       <translation type="unfinished">SectionPrint parameter</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation type="unfinished">Analysis feature properties</translation>
     </message>
@@ -3003,9 +3013,12 @@ Določite drugo datoteko.</translation>
       <translation type="unfinished">Potential:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3018,18 +3031,15 @@ Določite drugo datoteko.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>nedoločeno</translation>
     </message>
@@ -3071,16 +3081,16 @@ s harminičnim oz. nihajočim gonilom</translation>
       <translation>Ali se robni pogoj nanaša na električno silo</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Dejanska</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Namišljena</translation>
     </message>
@@ -3100,9 +3110,9 @@ s harminičnim oz. nihajočim gonilom</translation>
       <translation>Namišljeni del skalarnega potenciala</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3121,9 +3131,9 @@ Note: has no effect if a solid was selected</source>
 Opomba: nima učinka, če je izbrano telo</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3142,9 +3152,9 @@ Note: has no effect if a solid was selected</source>
 Opomba: nima učinka, če je izbrano telo</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3194,8 +3204,8 @@ Opomba: nima učinka, če je izbrano telo</translation>
       <translation type="unfinished">Beam section parameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation type="unfinished">Cross section parameter</translation>
     </message>
@@ -3211,9 +3221,13 @@ Opomba: nima učinka, če je izbrano telo</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Diameter:   </source>
       <translation type="unfinished">Diameter:   </translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="243"/>
+      <source>Outer diameter:   </source>
+      <translation type="unfinished">Outer diameter:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
@@ -3246,30 +3260,30 @@ Opomba: nima učinka, če je izbrano telo</translation>
       <translation type="unfinished">Rotation:     </translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation type="unfinished">formula</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation type="unfinished">Velocity x:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation type="unfinished">Velocity y:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation type="unfinished">Velocity z:</translation>
     </message>
@@ -3399,14 +3413,14 @@ Opomba: pri 2D je mogoče nastavili le x,
       <translation>Namišljeni del y-komponente potenciala</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
+      <location filename="../ui/Magnetization.ui" line="262"/>
       <source>Real part of potential z-component</source>
       <translation>Dejanski del z-komponente potenciala</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
+      <location filename="../ui/Magnetization.ui" line="306"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Namišljeni del z-komponente potenciala</translation>
     </message>
@@ -3524,26 +3538,26 @@ Opomba: pri 2D je mogoče nastavili le x,
       <translation>Prekliči</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
@@ -3624,7 +3638,7 @@ Opomba: pri 2D je mogoče nastavili le x,
       <translation>Skupine</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="337"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="332"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ali ste prepričani da želite nadaljevati?</translation>
     </message>
@@ -3641,7 +3655,7 @@ Opomba: pri 2D je mogoče nastavili le x,
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="286"/>
       <source>Fixed boundary condition</source>
-      <translation>Pogoj nepremične zamejitve</translation>
+      <translation>Robni pogoj nepremičnosti</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1001"/>
@@ -3651,22 +3665,22 @@ Opomba: pri 2D je mogoče nastavili le x,
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="433"/>
       <source>Force load</source>
-      <translation>Obtežba s silo</translation>
+      <translation type="unfinished">Force load</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="438"/>
       <source>Heat flux load</source>
-      <translation>Obtežba s toplotnim tokom</translation>
+      <translation type="unfinished">Heat flux load</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="312"/>
       <source>Plane multi-point constraint</source>
-      <translation>Ravninsko večtočkovno omejilo</translation>
+      <translation type="unfinished">Plane multi-point constraint</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="302"/>
       <source>Pressure load</source>
-      <translation>Obtežba s pritiskom</translation>
+      <translation type="unfinished">Pressure load</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="366"/>
@@ -3676,10 +3690,10 @@ Opomba: pri 2D je mogoče nastavili le x,
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="591"/>
       <source>Local coordinate system</source>
-      <translation>Krajevni koordinatni sistem</translation>
+      <translation type="unfinished">Local coordinate system</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraint.cpp" line="140"/>
+      <location filename="../../ViewProviderFemConstraint.cpp" line="141"/>
       <source>Edit analysis feature</source>
       <translation type="unfinished">Edit analysis feature</translation>
     </message>
@@ -4017,7 +4031,7 @@ Možne spremenljivke si oglejte v spodnjem opisnem okencu.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="341"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="336"/>
       <source>Object dependencies</source>
       <translation>Odvisnosti predmetov</translation>
     </message>

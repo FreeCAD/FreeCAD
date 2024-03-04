@@ -477,6 +477,22 @@ std::pair<TopAbs_ShapeEnum,int> TopoShape::shapeTypeAndIndex(const char *name) {
     return std::make_pair(type,idx);
 }
 
+std::pair<TopAbs_ShapeEnum, int> TopoShape::shapeTypeAndIndex(const Data::IndexedName& element)
+{
+    if (!element) {
+        return std::make_pair(TopAbs_SHAPE, 0);
+    }
+    static const std::string _subshape("SubShape");
+    if (boost::equals(element.getType(), _subshape)) {
+        return std::make_pair(TopAbs_SHAPE, element.getIndex());
+    }
+    TopAbs_ShapeEnum shapetype = shapeType(element.getType(), true);
+    if (shapetype == TopAbs_SHAPE) {
+        return std::make_pair(TopAbs_SHAPE, 0);
+    }
+    return std::make_pair(shapetype, element.getIndex());
+}
+
 TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(type) {
         initShapeNameMap();
@@ -654,41 +670,6 @@ Base::Matrix4D TopoShape::getTransform() const
     return mtrx;
 }
 
-/*!
- * \obsolete
- */
-void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
-{
-    const Base::Vector3d& pos = rclTrf.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    rclTrf.getRotation().getValue(axis, angle);
-
-    gp_Trsf trsf;
-    trsf.SetRotation(gp_Ax1(gp_Pnt(0.,0.,0.), gp_Dir(axis.x, axis.y, axis.z)), angle);
-    trsf.SetTranslationPart(gp_Vec(pos.x, pos.y, pos.z));
-    TopLoc_Location loc(trsf);
-    _Shape.Location(loc);
-}
-
-/*!
- * \obsolete
- */
-Base::Placement TopoShape::getShapePlacement() const
-{
-    TopLoc_Location loc = _Shape.Location();
-    gp_Trsf trsf = loc.Transformation();
-    gp_XYZ pos = trsf.TranslationPart();
-
-    gp_XYZ axis;
-    Standard_Real angle;
-    trsf.GetRotation(axis, angle);
-
-    Base::Rotation rot(Base::Vector3d(axis.X(), axis.Y(), axis.Z()), angle);
-    Base::Placement placement(Base::Vector3d(pos.X(), pos.Y(), pos.Z()), rot);
-
-    return placement;
-}
 
 void TopoShape::read(const char *FileName)
 {

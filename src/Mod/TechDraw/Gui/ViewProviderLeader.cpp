@@ -135,22 +135,19 @@ void ViewProviderLeader::onChanged(const App::Property* p)
 std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
-    // valid children of a ViewLeader are:
-    //    - Rich Annotations
-    //    - Weld Symbols
+    // Valid children of a ViewLeader are any drawing views declaring the leader line as their parent,
+    // notably Rich Annotations, Weld Symbols and Surface Finish Symbols
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
     try {
-       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             auto view = dynamic_cast<TechDraw::DrawView *>(*it);
             if (view && view->claimParent() == getViewObject()) {
                 temp.push_back(view);
                 continue;
             }
 
-           if ((*it)->isDerivedFrom<TechDraw::DrawRichAnno>()) {
-                temp.push_back((*it));
-           } else if ((*it)->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
+            if ((*it)->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
                 temp.push_back((*it));
             }
         }

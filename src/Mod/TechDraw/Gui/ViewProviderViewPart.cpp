@@ -214,7 +214,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     //    - Leaders
     //    - Hatches
     //    - GeomHatches
-    //    - Leaders
+    //    - any drawing views declaring this view as their parent
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
@@ -244,8 +244,6 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
           } else if ((*it)->isDerivedFrom<TechDraw::DrawGeomHatch>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawViewBalloon>()) {
-              temp.push_back((*it));
-          } else if ((*it)->isDerivedFrom<TechDraw::DrawRichAnno>()) {
               temp.push_back((*it));
           } else if ((*it)->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
               temp.push_back((*it));
@@ -335,7 +333,6 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-//    Base::Console().Message("VPVP::onDelete() - subs: %d\n", subNames.size());
     // if a cosmetic subelement is in the list of selected subNames then we treat this
     // as a delete of the subelement and not a delete of the DVP
     std::vector<std::string> removables = getSelectedCosmetics(subNames);
@@ -367,7 +364,6 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 
 bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 {
-//    Base::Console().Message("VPVP::canDelete()\n");
     // deletions of part objects (detail view, View etc.) are valid
     // that it cannot be deleted if it has a child view is handled in the onDelete() function
     Q_UNUSED(obj)
@@ -377,7 +373,6 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 //! extract the names of cosmetic subelements from the list of all selected elements
 std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<std::string> subNames)
 {
-//    Base::Console().Message("VPVP::getSelectedCosmetics(%d removables)\n", subNames.size());
 
     std::vector<std::string> result;
     // pick out any cosmetic vertices or edges in the selection
@@ -399,7 +394,6 @@ std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<
 //! delete cosmetic elements for a list of subelement names
 void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> removables)
 {
-//    Base::Console().Message("VPVP::deleteCosmeticElements(%d removables)\n", removables.size());
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex") {
             CosmeticVertex* vert = getViewObject()->getCosmeticVertexBySelection(name);
@@ -445,7 +439,6 @@ int ViewProviderViewPart::prefHighlightStyle()
 // TODO: does this need to be implemented for Leaderlines and ???? others?
 void ViewProviderViewPart::fixSceneDependencies()
 {
-//    Base::Console().Message("VPVP::fixSceneDependencies()\n");
     auto scene = getViewProviderPage()->getQGSPage();
     auto partQView = getQView();
 

@@ -44,9 +44,11 @@ public:
     //@{
     /// recalculate the Feature
     short mustExecute() const override;
+
 protected:
-    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
-    virtual const char *opCode() const;
+    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&,
+                                                const TopoDS_Shape&) const override;
+    const char *opCode() const override;
     //@}
 };
 

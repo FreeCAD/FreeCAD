@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Neimplementat.</translation>
+      <translation type="unfinished">Intersection of two faces.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -4978,31 +4978,31 @@ doar comenzile create vor fi vizibile</translation>
       <translation>În direcția x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Notă: Plasamentul este exprimat în sistemul local de coordonate
 al obiectului care este atașat.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>În orientarea-y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>În „z-direcție”:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>În jurul axei x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5011,12 +5011,12 @@ Notă: Plasamentul este exprimat în sistemul local coordonat
 obiectului ce este ataşat.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>În jurul axei y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5025,12 +5025,12 @@ Notă: Plasamentul este exprimat în sistemul local coordonat
 obiectului de ataşat.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>În jurul axei z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5039,12 +5039,12 @@ Notă: Plasamentul este exprimat în sistemul local coordonat
 obiectului ce este ataşat.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Întoarce o parte a atașamentului și a ofsetului</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Întoarce fața</translation>
     </message>
@@ -5671,55 +5671,12 @@ in vizualizarea 3D pentru calea maturarii.</translation>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Générator de fațete țintă</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Sprijină efectuarea feţele plane cu Insule.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Simplu</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Construiți planuri de fațete separate plecând de la fiecare linie independent. fpr suport pentru găuri; liniile pot fi în diferite planuri.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Générator de fațete șvaițer</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Sprijină efectuarea faţete plane cu gauri, dar nu cu Insulele în interiorul găurilor.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Generator de fațete extrudate</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Suportă crearea de fațete cu găuri dar nu suportă imbricare.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Editare %1</translation>
     </message>
@@ -5810,20 +5767,20 @@ Do you want to continue?</source>
       <translation>Nicio referință selecționată</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Margine</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6140,7 +6097,7 @@ Do you want to continue?</source>
       <translation>Șterge toate dimensiunile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Seteaza culorile...</translation>
     </message>
@@ -6930,6 +6887,66 @@ Un "Filtru combinat" poate fi folosit pentru a extrage piesele rămase.</transla
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation type="unfinished">All selection filters cleared</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Simplu</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Construiți planuri de fațete separate plecând de la fiecare linie independent. fpr suport pentru găuri; liniile pot fi în diferite planuri.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Générator de fațete țintă</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Sprijină efectuarea feţele plane cu Insule.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Générator de fațete șvaițer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Sprijină efectuarea faţete plane cu gauri, dar nu cu Insulele în interiorul găurilor.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Generator de fațete extrudate</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Suportă crearea de fațete cu găuri dar nu suportă imbricare.</translation>
     </message>
   </context>
 </TS>

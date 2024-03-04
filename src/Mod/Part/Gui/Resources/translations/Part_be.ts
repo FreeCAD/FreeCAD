@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Не рэалізавана.</translation>
+      <translation>Перасячэнне дзвюх граней.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -4973,31 +4973,31 @@ only created cuts will be visible</source>
       <translation>Па напрамку x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Заўвага: Размяшчэнне выяўляецца ў лакальнай сістэме каардынат
 прымацаванага аб'екту.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>Па напрамку y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>Па напрамку z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>Вакол восі x:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5006,12 +5006,12 @@ of object being attached.</source>
 прымацаванага аб'екту.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Вакол восі y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5020,12 +5020,12 @@ of object being attached.</source>
 прымацаванага аб'екту.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Вакол восі z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5034,12 +5034,12 @@ of object being attached.</source>
 прымацаванага аб'екту.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Павярнуць бок мацавання і зрушэння</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Павярнуць бакі</translation>
     </message>
@@ -5666,55 +5666,12 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Майстар усенакіраваных граняў (Мішэнь яблычак)</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, якія могуць утрымліваць астраўкі.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Просты</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Зрабіць асобную плоскую грані з кожнай ломанай лініі незалежна. Без падтрымкі для адтулін; ломаныя лініі могуць знаходзіцца ў розных плоскасцях.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Майстар перфараваных граняў (Сыр)</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, але без астраўкоў унутры адтулін.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Майстар граняў выдушвання дэталяў</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Падтрымлівае стварэнне граняў з адтулінамі, укладзеннасць не падтрымліваецца.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Змяніць %1</translation>
     </message>
@@ -5806,20 +5763,20 @@ Do you want to continue?</source>
       <translation>Без абраных спасылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
@@ -6136,7 +6093,7 @@ Do you want to continue?</source>
       <translation>Ачысціць усе вымярэнні</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Задаць колеры...</translation>
     </message>
@@ -6926,6 +6883,67 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>Усе фільтры выбару ачышчаныя</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation>Фігура павінна быць ломанай лініяй, рабром ці складовай.
+Было абрана нешта іншае.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Просты</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Зрабіць асобную плоскую грані з кожнай ломанай лініі незалежна. Без падтрымкі для адтулін; ломаныя лініі могуць знаходзіцца ў розных плоскасцях.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Майстар усенакіраваных граняў (Мішэнь яблычак)</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, якія могуць утрымліваць астраўкі.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Майстар перфараваных граняў (Сыр)</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, але без астраўкоў унутры адтулін.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Майстар граняў выдушвання дэталяў</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Падтрымлівае стварэнне граняў з адтулінамі, укладзеннасць не падтрымліваецца.</translation>
     </message>
   </context>
 </TS>

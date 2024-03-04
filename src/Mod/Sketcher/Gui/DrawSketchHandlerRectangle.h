@@ -1647,10 +1647,10 @@ template<>
 void DSHRectangleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Corner, length & width"),
-                             QStringLiteral("Center, length & width"),
+        QStringList names = {QStringLiteral("Corner, width, height"),
+                             QStringLiteral("Center, width, height"),
                              QStringLiteral("3 corners"),
-                             QStringLiteral("Center and 2 corners")};
+                             QStringLiteral("Center, 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setCheckboxLabel(
@@ -1667,9 +1667,8 @@ void DSHRectangleController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame (J)"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::SecondBox,
-            QApplication::translate(
-                "TaskSketcherTool_c2_rectangle",
-                "Create two rectangles, one in the other with a constant thickness."));
+            QApplication::translate("TaskSketcherTool_c2_rectangle",
+                                    "Create two rectangles with a constant offset."));
         syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame);
 
         if (isConstructionMode()) {

@@ -4,7 +4,7 @@
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="653"/>
+      <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Добавить Осевую линию между 2 Линиями</translation>
     </message>
@@ -12,7 +12,7 @@
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="657"/>
+      <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Добавить Осевую линию между 2 Точками</translation>
     </message>
@@ -20,7 +20,7 @@
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="286"/>
+      <location filename="../../CommandAnnotate.cpp" line="287"/>
       <source>Add Midpoint Vertices</source>
       <translation>Добавить вершины по центрам граней</translation>
     </message>
@@ -28,7 +28,7 @@
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="290"/>
+      <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Quadrant Vertices</source>
       <translation>Добавить 4-ре вершины по краям окружности</translation>
     </message>
@@ -36,12 +36,12 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="789"/>
+      <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Добавить Осевую линию между 2 Линиями</translation>
     </message>
@@ -49,12 +49,12 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="864"/>
+      <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Добавить Осевую линию между 2 Точками</translation>
     </message>
@@ -62,12 +62,12 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="977"/>
+      <location filename="../../CommandAnnotate.cpp" line="978"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Add Cosmetic Line Through 2 Points</source>
       <translation>Добавить вспомогательную линию между 2-мя точками</translation>
     </message>
@@ -114,12 +114,12 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="532"/>
+      <location filename="../../CommandAnnotate.cpp" line="533"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="533"/>
+      <location filename="../../CommandAnnotate.cpp" line="534"/>
       <source>Insert Annotation</source>
       <translation>Вставить заметку</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="575"/>
+      <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="576"/>
+      <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Insert Center Line</source>
       <translation>Добавить осевую линию</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="649"/>
+      <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Add Centerline to Faces</source>
       <translation>Добавить Осевую линию к Граням</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1282"/>
+      <location filename="../../CommandAnnotate.cpp" line="1283"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1283"/>
+      <location filename="../../CommandAnnotate.cpp" line="1284"/>
       <source>Remove Cosmetic Object</source>
       <translation>Удалить вспомогательный объект</translation>
     </message>
@@ -246,12 +246,12 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="393"/>
+      <location filename="../../CommandAnnotate.cpp" line="394"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="394"/>
+      <location filename="../../CommandAnnotate.cpp" line="395"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Добавить вспомогательную вершину</translation>
     </message>
@@ -259,17 +259,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="206"/>
+      <location filename="../../CommandAnnotate.cpp" line="207"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="207"/>
+      <location filename="../../CommandAnnotate.cpp" line="208"/>
       <source>Insert Cosmetic Vertex</source>
       <translation>Вставить вспомогательную вершину</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="282"/>
+      <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Добавить вспомогательную вершину</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1400"/>
+      <location filename="../../CommandAnnotate.cpp" line="1401"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1401"/>
+      <location filename="../../CommandAnnotate.cpp" line="1402"/>
       <source>Change Appearance of Lines</source>
       <translation>Изменить внешний вид линий</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1402"/>
+      <location filename="../../CommandAnnotate.cpp" line="1403"/>
       <source>Change Appearance of selected Lines</source>
       <translation>Изменить внешний вид выбранных линий</translation>
     </message>
@@ -424,17 +424,17 @@
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1079"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1080"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Каскад горизонтальных размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1081"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1152"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Равномерное размещение горизонтальных размеров:&lt;br&gt;- Укажите шаг каскада (необязательно)&lt;br&gt;- Выберите два или более горизонтальных размера&lt;br&gt;- Первый размер определяет положение&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -442,19 +442,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="901"/>
+      <location filename="../../CommandExtensionDims.cpp" line="972"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="902"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1156"/>
+      <location filename="../../CommandExtensionDims.cpp" line="973"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1227"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Горизонтальные размеры каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="903"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1157"/>
+      <location filename="../../CommandExtensionDims.cpp" line="974"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1228"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Равномерное размещение горизонтальных размеров:&lt;br&gt;- Укажите шаг каскада (необязательно)&lt;br&gt;- Выберите два или более горизонтальных размера&lt;br&gt;- Первый размер определяет положение&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -462,19 +462,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1043"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1114"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1044"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1174"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1115"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1245"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Каскад наклонных размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1045"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1175"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1246"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Равномерное распределение наклонных размеров:&lt;br&gt;- Укажите шаг каскада (необязательно)&lt;br&gt;- Выберите два или более параллельных наклонных размера&lt;br&gt;- Первый размер определяет положение&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -482,19 +482,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="968"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1039"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="969"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1165"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1040"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1236"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Каскад вертикальных размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="970"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1166"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1041"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1237"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Равномерное размещение вертикальных размеров:&lt;br&gt;- Укажите шаг каскада (необязательно)&lt;br&gt;- Выберите два или более вертикальных размера&lt;br&gt;- Первый размер определяет положение&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -502,17 +502,17 @@
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2123"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2053"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2124"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Создать размер горизонтальной фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2054"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2125"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать горизонтальный размер и размер угла для фаски:&lt;br&gt;- Выберите две вершины&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -576,17 +576,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1428"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1499"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1429"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1500"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Простановка горизонтальной цепочки размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1430"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1501"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать последовательность выравниваемых горизонтальных размеров:&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -594,17 +594,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1791"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1862"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1792"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1863"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Создать горизонтальные размеры координат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1793"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Создать несколько равномерно расположенных горизонтальных размеров, начиная с одной и той же базовой линии:&lt;br&gt;- Укажите каскадный интервал (опционально)&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- Порядок выбора первых двух вершин определяет позицию базовой линии&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -612,19 +612,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1233"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1304"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1234"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1503"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1305"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1574"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Создание горизонтальных размеров цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1235"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1504"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1306"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1575"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать последовательность выравниваемых горизонтальных размеров:&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -632,19 +632,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1950"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1951"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2120"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2022"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2191"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Создать горизонтальный размер фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2121"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2023"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2192"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать горизонтальный размер и размер угла для фаски:&lt;br&gt;- Выберите две вершины&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -652,19 +652,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1652"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1868"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1939"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Создать горизонтальные размеры координат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1869"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1940"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Создать несколько равномерно расположенных горизонтальных размеров, начиная с одной и той же базовой линии:&lt;br&gt;- Укажите каскадный интервал (опционально)&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- Порядок выбора первых двух вершин определяет позицию базовой линии&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -672,17 +672,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2223"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2224"/>
       <source>Create Arc Length Dimension</source>
       <translation>Создать размер дуги</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2225"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
       <translation>Создать размер длины дуги:&lt;br&gt;- Выберите одну дугу&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -690,19 +690,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1394"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1465"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1395"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1517"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1466"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
       <source>Create Oblique Chain Dimensions</source>
       <translation>Создать размеры наклонной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1396"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1518"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1467"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1589"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
       <translation>Создать последовательность выровненных неровностей:&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- первые две вершины определяют направление&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -710,19 +710,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1755"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1826"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1756"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1886"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1827"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
       <source>Create Oblique Coordinate Dimensions</source>
       <translation>Создание наклонных координатных размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1757"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1887"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1828"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1958"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
       <translation>Создайте несколько равномерно расположенных наклонных измерений, начиная с одной и той же базовой линии:&lt;br&gt;- Укажите шаг каскада (необязательно)&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- Порядок выбора первых двух вершин определяет положение базовая линия&lt;br&gt;- Первые две вершины также определяют направление&lt;br&gt;- Щелкните этот инструмент</translation>
     </message>
@@ -730,19 +730,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1300"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1371"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1301"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1372"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
       <source>Create Vertical Chain Dimensions</source>
       <translation>Простановка вертикальной цепочки размеров</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1302"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1511"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1373"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать последовательность выравниваемых горизонтальных размеров:&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -750,19 +750,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2090"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2127"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2091"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2198"/>
       <source>Create Vertical Chamfer Dimension</source>
       <translation>Создать вертикальный размер фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2092"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2199"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Создать горизонтальный размер и размер угла для фаски:&lt;br&gt;- Выберите две вершины&lt;br&gt;- Щёлкните этот инструмент</translation>
     </message>
@@ -770,19 +770,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1725"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1877"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1726"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1948"/>
       <source>Create Vertical Coordinate Dimensions</source>
       <translation>Создать вертикальные координаты</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1656"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1727"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1949"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Создать несколько равномерно расположенных горизонтальных размеров, начиная с одной и той же базовой линии:&lt;br&gt;- Укажите каскадный интервал (опционально)&lt;br&gt;- Выберите три или более вершин&lt;br&gt;- Порядок выбора первых двух вершин определяет позицию базовой линии&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -790,17 +790,17 @@
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2232"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2303"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2233"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2304"/>
       <source>Customize Format Label</source>
       <translation>Настройка формата метки</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2234"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2305"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
       <translation>Выберите размер или воздушный шар&lt;br&gt;    - нажмите на этот инструмент&lt;br&gt;    - отредактируйте поле Формат, используя клавиатуру и/или специальные кнопки</translation>
     </message>
@@ -808,19 +808,19 @@
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="428"/>
+      <location filename="../../CommandExtensionDims.cpp" line="499"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="429"/>
-      <location filename="../../CommandExtensionDims.cpp" line="536"/>
+      <location filename="../../CommandExtensionDims.cpp" line="500"/>
+      <location filename="../../CommandExtensionDims.cpp" line="607"/>
       <source>Decrease Decimal Places</source>
       <translation>Уменьшить десятичные знаки</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="430"/>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="501"/>
+      <location filename="../../CommandExtensionDims.cpp" line="608"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Уменьшить количество десятичных знаков текста размера:&lt;br&gt;- Выберите один или более размеров&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -950,19 +950,19 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="395"/>
+      <location filename="../../CommandExtensionDims.cpp" line="466"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="396"/>
-      <location filename="../../CommandExtensionDims.cpp" line="529"/>
+      <location filename="../../CommandExtensionDims.cpp" line="467"/>
+      <location filename="../../CommandExtensionDims.cpp" line="600"/>
       <source>Increase Decimal Places</source>
       <translation>Увеличить знаки после запятой</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="397"/>
-      <location filename="../../CommandExtensionDims.cpp" line="530"/>
+      <location filename="../../CommandExtensionDims.cpp" line="468"/>
+      <location filename="../../CommandExtensionDims.cpp" line="601"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Увеличить количество знаков после запятой текста размера:&lt;br&gt;- Выберите один или более измерений&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -970,17 +970,17 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="461"/>
+      <location filename="../../CommandExtensionDims.cpp" line="532"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="462"/>
+      <location filename="../../CommandExtensionDims.cpp" line="533"/>
       <source>Increase Decimal Places</source>
       <translation>Увеличить знаки после запятой</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="463"/>
+      <location filename="../../CommandExtensionDims.cpp" line="534"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Увеличить количество знаков после запятой текста размера:&lt;br&gt;- Выберите один или более измерений&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -988,19 +988,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="128"/>
+      <location filename="../../CommandExtensionDims.cpp" line="151"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="129"/>
-      <location filename="../../CommandExtensionDims.cpp" line="327"/>
+      <location filename="../../CommandExtensionDims.cpp" line="152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="391"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Вставьте &apos;&lt;unk>&apos; префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="130"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="392"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Вставьте &apos;&lt;unk>&apos; символ в начале размерного текста:&lt;br&gt;- Выберите один или несколько размеров&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -1008,17 +1008,17 @@
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="252"/>
+      <location filename="../../CommandExtensionDims.cpp" line="309"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="253"/>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Вставьте &apos;&lt;unk>&apos; префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="254"/>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Вставьте &apos;&lt;unk>&apos; символ в начале размерного текста:&lt;br&gt;- Выберите один или несколько размеров&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -1026,19 +1026,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="161"/>
+      <location filename="../../CommandExtensionDims.cpp" line="184"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="162"/>
-      <location filename="../../CommandExtensionDims.cpp" line="334"/>
+      <location filename="../../CommandExtensionDims.cpp" line="185"/>
+      <location filename="../../CommandExtensionDims.cpp" line="398"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>Вставьте &apos;&lt;unk>&apos; префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="163"/>
-      <location filename="../../CommandExtensionDims.cpp" line="335"/>
+      <location filename="../../CommandExtensionDims.cpp" line="186"/>
+      <location filename="../../CommandExtensionDims.cpp" line="399"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Вставьте &apos;&lt;unk>&apos; символ в начале размерного текста:&lt;br&gt;- Выберите один или несколько размеров&lt;br&gt;- нажмите на этот инструмент</translation>
     </message>
@@ -1122,17 +1122,17 @@
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="752"/>
+      <location filename="../../CommandExtensionDims.cpp" line="823"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="753"/>
+      <location filename="../../CommandExtensionDims.cpp" line="824"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Позиция размеров горизонтальной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="754"/>
+      <location filename="../../CommandExtensionDims.cpp" line="825"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выравнивание размеров по горизонтали для создания размера цепочки:&lt;br&gt;- Выберите два или более горизонтальных размера&lt;br&gt;- первый размер определяет позицию&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -1140,19 +1140,19 @@
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="659"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="589"/>
-      <location filename="../../CommandExtensionDims.cpp" line="828"/>
+      <location filename="../../CommandExtensionDims.cpp" line="660"/>
+      <location filename="../../CommandExtensionDims.cpp" line="899"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Позиция размеров горизонтальной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="590"/>
-      <location filename="../../CommandExtensionDims.cpp" line="829"/>
+      <location filename="../../CommandExtensionDims.cpp" line="661"/>
+      <location filename="../../CommandExtensionDims.cpp" line="900"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выравнивание размеров по горизонтали для создания размера цепочки:&lt;br&gt;- Выберите два или более горизонтальных размера&lt;br&gt;- первый размер определяет позицию&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -1160,19 +1160,19 @@
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="717"/>
+      <location filename="../../CommandExtensionDims.cpp" line="788"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="718"/>
-      <location filename="../../CommandExtensionDims.cpp" line="844"/>
+      <location filename="../../CommandExtensionDims.cpp" line="789"/>
+      <location filename="../../CommandExtensionDims.cpp" line="915"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Размеры положения косой цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="719"/>
-      <location filename="../../CommandExtensionDims.cpp" line="845"/>
+      <location filename="../../CommandExtensionDims.cpp" line="790"/>
+      <location filename="../../CommandExtensionDims.cpp" line="916"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выровнять нечеткие размеры для создания размера цепочки:&lt;br&gt;- Выберите два или более параллельных нечетких размеров&lt;br&gt;- первый размер определяет позицию&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -1180,19 +1180,19 @@
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="650"/>
+      <location filename="../../CommandExtensionDims.cpp" line="721"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="651"/>
-      <location filename="../../CommandExtensionDims.cpp" line="836"/>
+      <location filename="../../CommandExtensionDims.cpp" line="722"/>
+      <location filename="../../CommandExtensionDims.cpp" line="907"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Размеры вертикальной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="652"/>
-      <location filename="../../CommandExtensionDims.cpp" line="837"/>
+      <location filename="../../CommandExtensionDims.cpp" line="723"/>
+      <location filename="../../CommandExtensionDims.cpp" line="908"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выравнивание размеров по горизонтали для создания размера цепочки:&lt;br&gt;- Выберите два или более горизонтальных размера&lt;br&gt;- первый размер определяет позицию&lt;br&gt;- Нажмите на этот инструмент</translation>
     </message>
@@ -1200,17 +1200,17 @@
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="219"/>
+      <location filename="../../CommandExtensionDims.cpp" line="276"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="220"/>
+      <location filename="../../CommandExtensionDims.cpp" line="277"/>
       <source>Remove Prefix</source>
       <translation>Удалить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="221"/>
+      <location filename="../../CommandExtensionDims.cpp" line="278"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Удалите символы префикса в начале текста размера:&lt;br&gt;- Выберите один или несколько размеров&lt;br&gt;- Щелкните этот инструмент</translation>
     </message>
@@ -1395,12 +1395,12 @@
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="678"/>
+      <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="679"/>
+      <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Add Centerline to Faces</source>
       <translation>Добавить Осевую линию к Граням</translation>
     </message>
@@ -1502,12 +1502,12 @@
   <context>
     <name>CmdTechDrawLeaderLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="92"/>
+      <location filename="../../CommandAnnotate.cpp" line="93"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="93"/>
+      <location filename="../../CommandAnnotate.cpp" line="94"/>
       <source>Add Leaderline to View</source>
       <translation>Добавить линию-выноску в Вид</translation>
     </message>
@@ -1541,12 +1541,12 @@
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="454"/>
+      <location filename="../../CommandAnnotate.cpp" line="455"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="455"/>
+      <location filename="../../CommandAnnotate.cpp" line="456"/>
       <source>Add Midpoint Vertices</source>
       <translation>Добавить вершины по центрам граней</translation>
     </message>
@@ -1634,12 +1634,12 @@
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="493"/>
+      <location filename="../../CommandAnnotate.cpp" line="494"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="494"/>
+      <location filename="../../CommandAnnotate.cpp" line="495"/>
       <source>Add Quadrant Vertices</source>
       <translation>Добавить 4-ре вершины по краям окружности</translation>
     </message>
@@ -1673,12 +1673,12 @@
   <context>
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="154"/>
+      <location filename="../../CommandAnnotate.cpp" line="155"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="155"/>
+      <location filename="../../CommandAnnotate.cpp" line="156"/>
       <source>Insert Rich Text Annotation</source>
       <translation>Вставка аннотаций форматированным текстом</translation>
     </message>
@@ -1722,12 +1722,12 @@
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1479"/>
+      <location filename="../../CommandAnnotate.cpp" line="1480"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1480"/>
+      <location filename="../../CommandAnnotate.cpp" line="1481"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Показать/скрыть невидимые края</translation>
     </message>
@@ -1838,17 +1838,17 @@
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1608"/>
+      <location filename="../../CommandAnnotate.cpp" line="1609"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1609"/>
+      <location filename="../../CommandAnnotate.cpp" line="1610"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>Создать символ финиширования поверхности</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1610"/>
+      <location filename="../../CommandAnnotate.cpp" line="1611"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>Выберите представление&lt;br&gt; - нажмите эту кнопку&lt;br&gt; - выбрать атрибуты обозначения шероховатости поверхности в открывшейся панели</translation>
     </message>
@@ -1932,12 +1932,12 @@
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1544"/>
+      <location filename="../../CommandAnnotate.cpp" line="1545"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1545"/>
+      <location filename="../../CommandAnnotate.cpp" line="1546"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Добавить информацию о сварке в указательную линию</translation>
     </message>
@@ -1996,23 +1996,23 @@
       <translation>Создать электронную таблицу</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="373"/>
       <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../PagePrinter.cpp" line="373"/>
       <source>Save page to dxf</source>
       <translation>Сохранить лист в DXF формате</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="340"/>
+      <location filename="../../CommandAnnotate.cpp" line="341"/>
       <source>Add Midpoint Vertices</source>
       <translation>Добавить вершины по центрам граней</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="367"/>
+      <location filename="../../CommandAnnotate.cpp" line="368"/>
       <source>Add Quadrant Vertices</source>
       <translation>Добавить 4-ре вершины по краям окружности</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="550"/>
+      <location filename="../../CommandAnnotate.cpp" line="551"/>
       <source>Create Annotation</source>
       <translation>Создать Аннотацию</translation>
     </message>
@@ -2058,7 +2058,7 @@
       <translation>Перетащите размер</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="527"/>
+      <location filename="../../QGSPage.cpp" line="526"/>
       <source>Create Balloon</source>
       <translation>Создать позиционную выноску</translation>
     </message>
@@ -2073,8 +2073,8 @@
       <translation>Создать центральную линию</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>Создать Косметическую Линию</translation>
     </message>
@@ -2150,102 +2150,102 @@
       <translation>Добавить вспомогательную вершину</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="105"/>
+      <location filename="../../CommandExtensionDims.cpp" line="106"/>
       <source>TechDraw Insert Prefix</source>
       <translation>TechDraw. Вставить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="109"/>
+      <location filename="../../CommandExtensionDims.cpp" line="132"/>
       <source>Insert Prefix</source>
       <translation>Вставить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>TechDraw Remove Prefix</source>
       <translation>TechDraw. Удалить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="195"/>
+      <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>Remove Prefix</source>
       <translation>Удалить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="367"/>
+      <location filename="../../CommandExtensionDims.cpp" line="438"/>
       <source>Increase/Decrease Decimal</source>
       <translation>Увеличить/уменьшить десятичный</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="562"/>
+      <location filename="../../CommandExtensionDims.cpp" line="633"/>
       <source>Pos Horiz Chain Dim</source>
       <translation>Позиционный горизонтальный размер цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="623"/>
+      <location filename="../../CommandExtensionDims.cpp" line="694"/>
       <source>Pos Vert Chain Dim</source>
       <translation>Позиционный вертикальный размер цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="756"/>
       <source>Pos Oblique Chain Dim</source>
       <translation>Позиционный размер наклона цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="871"/>
+      <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <source>Cascade Horiz Dim</source>
       <translation>Горизонтальный размер каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="937"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <source>Cascade Vert Dim</source>
       <translation>Вертикальный размер каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1004"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <source>Cascade Oblique Dim</source>
       <translation>Размер наклона каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1203"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1274"/>
       <source>Create Horiz Chain Dim</source>
       <translation>Создать горизонтальный размер цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1269"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <source>Create Vert Chain Dim</source>
       <translation>Создать вертикальный размер цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1335"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1406"/>
       <source>Create Oblique Chain Dim</source>
       <translation>Создать размер наклона цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1545"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1616"/>
       <source>Create Horiz Coord Dim</source>
       <translation>Создать размеры горизонтальных координат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1688"/>
       <source>Create Vert Coord Dim</source>
       <translation>Создать размеры вертикальных координат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1691"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1762"/>
       <source>Create Oblique Coord Dim</source>
       <translation>Создать размеры координат наклона</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1916"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1987"/>
       <source>Create Horiz Chamfer Dim</source>
       <translation>Создать размер фаски по горизонтали</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1985"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2056"/>
       <source>Create Vert Chamfer Dim</source>
       <translation>Создать вертикальный размер фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2171"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2242"/>
       <source>Create Arc Length Dim</source>
       <translation>Создать размерную длину дуги</translation>
     </message>
@@ -2415,7 +2415,7 @@
       <translation>Изменить формат</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="321"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
       <source>Surface Finish Symbols</source>
       <translation>Символы финиша поверхности</translation>
     </message>
@@ -2686,16 +2686,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="318"/>
-      <location filename="../../CommandAnnotate.cpp" line="419"/>
-      <location filename="../../CommandAnnotate.cpp" line="1308"/>
-      <location filename="../../CommandAnnotate.cpp" line="1316"/>
-      <location filename="../../CommandAnnotate.cpp" line="1363"/>
-      <location filename="../../CommandAnnotate.cpp" line="1505"/>
-      <location filename="../../CommandAnnotate.cpp" line="1512"/>
-      <location filename="../../CommandAnnotate.cpp" line="1576"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2713,6 +2703,16 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandCreateDims.cpp" line="1249"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Wrong selection</source>
       <translation>Неправильное выделение</translation>
     </message>
@@ -2744,9 +2744,10 @@
       <translation>Не найдено объектов профиля в выборке</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2758,34 +2759,34 @@
       <location filename="../../CommandCreateDims.cpp" line="1423"/>
       <location filename="../../CommandCreateDims.cpp" line="1431"/>
       <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>Некорректный выбор</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <source>Select an object first</source>
       <translation>Сначала выберите объект</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <source>Too many objects selected</source>
       <translation>Выбрано слишком много объектов</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <source>Create a page first.</source>
       <translation>Сначала создайте страницу.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2794,7 +2795,6 @@
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
       <location filename="../../CommandCreateDims.cpp" line="1057"/>
-      <location filename="../../Command.cpp" line="986"/>
       <source>No View of a Part in selection.</source>
       <translation>Нет видов детали в выбранном.</translation>
     </message>
@@ -2906,8 +2906,6 @@
       <translation>Выбранная грань - BSpline. Радиус будет приблизительным. Продолжить?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2927,10 +2925,12 @@
       <location filename="../../CommandCreateDims.cpp" line="1084"/>
       <location filename="../../CommandCreateDims.cpp" line="1098"/>
       <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Некорректный выбор</translation>
     </message>
@@ -3058,56 +3058,9 @@
       <translation>Выберите 2 точечные объекты и 1 Вид. (2)</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="106"/>
-      <location filename="../../CommandAnnotate.cpp" line="167"/>
-      <location filename="../../CommandAnnotate.cpp" line="219"/>
-      <location filename="../../CommandAnnotate.cpp" line="406"/>
-      <location filename="../../CommandAnnotate.cpp" line="467"/>
-      <location filename="../../CommandAnnotate.cpp" line="506"/>
-      <location filename="../../CommandAnnotate.cpp" line="588"/>
-      <location filename="../../CommandAnnotate.cpp" line="692"/>
-      <location filename="../../CommandAnnotate.cpp" line="803"/>
-      <location filename="../../CommandAnnotate.cpp" line="878"/>
-      <location filename="../../CommandAnnotate.cpp" line="991"/>
-      <location filename="../../CommandAnnotate.cpp" line="1142"/>
-      <location filename="../../CommandAnnotate.cpp" line="1295"/>
-      <location filename="../../CommandAnnotate.cpp" line="1414"/>
-      <location filename="../../CommandAnnotate.cpp" line="1492"/>
-      <location filename="../../CommandAnnotate.cpp" line="1558"/>
-      <location filename="../../CommandCreateDims.cpp" line="146"/>
-      <location filename="../../CommandCreateDims.cpp" line="268"/>
-      <location filename="../../CommandCreateDims.cpp" line="390"/>
-      <location filename="../../CommandCreateDims.cpp" line="486"/>
-      <location filename="../../CommandCreateDims.cpp" line="580"/>
-      <location filename="../../CommandCreateDims.cpp" line="672"/>
-      <location filename="../../CommandCreateDims.cpp" line="764"/>
-      <location filename="../../CommandCreateDims.cpp" line="938"/>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
-      <location filename="../../CommandCreateDims.cpp" line="1149"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
-      <location filename="../../CommandExtensionDims.cpp" line="266"/>
-      <location filename="../../CommandExtensionDims.cpp" line="475"/>
-      <location filename="../../CommandExtensionDims.cpp" line="767"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1095"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1442"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2066"/>
       <location filename="../../Command.cpp" line="491"/>
       <location filename="../../Command.cpp" line="584"/>
       <location filename="../../Command.cpp" line="647"/>
-      <location filename="../../CommandExtensionPack.cpp" line="300"/>
-      <location filename="../../CommandExtensionPack.cpp" line="614"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1102"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1346"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1647"/>
-      <source>Task In Progress</source>
-      <translation>Задача в процессе</translation>
-    </message>
-    <message>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3124,6 +3077,56 @@
       <location filename="../../CommandAnnotate.cpp" line="1415"/>
       <location filename="../../CommandAnnotate.cpp" line="1493"/>
       <location filename="../../CommandAnnotate.cpp" line="1559"/>
+      <location filename="../../CommandCreateDims.cpp" line="146"/>
+      <location filename="../../CommandCreateDims.cpp" line="268"/>
+      <location filename="../../CommandCreateDims.cpp" line="390"/>
+      <location filename="../../CommandCreateDims.cpp" line="486"/>
+      <location filename="../../CommandCreateDims.cpp" line="580"/>
+      <location filename="../../CommandCreateDims.cpp" line="672"/>
+      <location filename="../../CommandCreateDims.cpp" line="764"/>
+      <location filename="../../CommandCreateDims.cpp" line="938"/>
+      <location filename="../../CommandCreateDims.cpp" line="1036"/>
+      <location filename="../../CommandCreateDims.cpp" line="1149"/>
+      <location filename="../../CommandExtensionDims.cpp" line="323"/>
+      <location filename="../../CommandExtensionDims.cpp" line="546"/>
+      <location filename="../../CommandExtensionDims.cpp" line="838"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1166"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1513"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2137"/>
+      <location filename="../../CommandExtensionPack.cpp" line="300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="614"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1102"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1346"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1647"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
+      <source>Task In Progress</source>
+      <translation>Задача в процессе</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../CommandAnnotate.cpp" line="108"/>
+      <location filename="../../CommandAnnotate.cpp" line="169"/>
+      <location filename="../../CommandAnnotate.cpp" line="221"/>
+      <location filename="../../CommandAnnotate.cpp" line="408"/>
+      <location filename="../../CommandAnnotate.cpp" line="469"/>
+      <location filename="../../CommandAnnotate.cpp" line="508"/>
+      <location filename="../../CommandAnnotate.cpp" line="590"/>
+      <location filename="../../CommandAnnotate.cpp" line="694"/>
+      <location filename="../../CommandAnnotate.cpp" line="805"/>
+      <location filename="../../CommandAnnotate.cpp" line="880"/>
+      <location filename="../../CommandAnnotate.cpp" line="993"/>
+      <location filename="../../CommandAnnotate.cpp" line="1144"/>
+      <location filename="../../CommandAnnotate.cpp" line="1297"/>
+      <location filename="../../CommandAnnotate.cpp" line="1416"/>
+      <location filename="../../CommandAnnotate.cpp" line="1494"/>
+      <location filename="../../CommandAnnotate.cpp" line="1560"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
       <location filename="../../CommandCreateDims.cpp" line="269"/>
       <location filename="../../CommandCreateDims.cpp" line="391"/>
@@ -3134,202 +3137,203 @@
       <location filename="../../CommandCreateDims.cpp" line="939"/>
       <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <location filename="../../CommandCreateDims.cpp" line="1150"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
-      <location filename="../../CommandExtensionDims.cpp" line="267"/>
-      <location filename="../../CommandExtensionDims.cpp" line="476"/>
-      <location filename="../../CommandExtensionDims.cpp" line="768"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1096"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1443"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2067"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../CommandExtensionDims.cpp" line="324"/>
+      <location filename="../../CommandExtensionDims.cpp" line="547"/>
+      <location filename="../../CommandExtensionDims.cpp" line="839"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1167"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1514"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2138"/>
       <location filename="../../CommandExtensionPack.cpp" line="301"/>
       <location filename="../../CommandExtensionPack.cpp" line="615"/>
       <location filename="../../CommandExtensionPack.cpp" line="1103"/>
       <location filename="../../CommandExtensionPack.cpp" line="1347"/>
       <location filename="../../CommandExtensionPack.cpp" line="1648"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Закройте окно активной задачи и повторите снова.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="121"/>
-      <location filename="../../CommandAnnotate.cpp" line="126"/>
-      <location filename="../../CommandAnnotate.cpp" line="719"/>
-      <location filename="../../CommandAnnotate.cpp" line="725"/>
-      <location filename="../../CommandAnnotate.cpp" line="752"/>
-      <location filename="../../CommandAnnotate.cpp" line="762"/>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="839"/>
-      <location filename="../../CommandAnnotate.cpp" line="848"/>
-      <location filename="../../CommandAnnotate.cpp" line="905"/>
-      <location filename="../../CommandAnnotate.cpp" line="912"/>
-      <location filename="../../CommandAnnotate.cpp" line="939"/>
-      <location filename="../../CommandAnnotate.cpp" line="951"/>
-      <location filename="../../CommandAnnotate.cpp" line="961"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
-      <location filename="../../CommandAnnotate.cpp" line="1044"/>
-      <location filename="../../CommandAnnotate.cpp" line="1052"/>
-      <location filename="../../CommandAnnotate.cpp" line="1072"/>
-      <location filename="../../CommandAnnotate.cpp" line="1108"/>
-      <location filename="../../CommandAnnotate.cpp" line="1172"/>
-      <location filename="../../CommandAnnotate.cpp" line="1195"/>
-      <location filename="../../CommandAnnotate.cpp" line="1217"/>
-      <location filename="../../CommandAnnotate.cpp" line="1253"/>
-      <location filename="../../CommandAnnotate.cpp" line="1427"/>
-      <location filename="../../CommandAnnotate.cpp" line="1434"/>
-      <location filename="../../CommandAnnotate.cpp" line="1689"/>
-      <location filename="../../CommandAnnotate.cpp" line="1702"/>
+      <location filename="../../CommandAnnotate.cpp" line="122"/>
+      <location filename="../../CommandAnnotate.cpp" line="127"/>
+      <location filename="../../CommandAnnotate.cpp" line="720"/>
+      <location filename="../../CommandAnnotate.cpp" line="726"/>
+      <location filename="../../CommandAnnotate.cpp" line="753"/>
+      <location filename="../../CommandAnnotate.cpp" line="763"/>
+      <location filename="../../CommandAnnotate.cpp" line="769"/>
+      <location filename="../../CommandAnnotate.cpp" line="840"/>
+      <location filename="../../CommandAnnotate.cpp" line="849"/>
+      <location filename="../../CommandAnnotate.cpp" line="906"/>
+      <location filename="../../CommandAnnotate.cpp" line="913"/>
+      <location filename="../../CommandAnnotate.cpp" line="940"/>
+      <location filename="../../CommandAnnotate.cpp" line="952"/>
+      <location filename="../../CommandAnnotate.cpp" line="962"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandAnnotate.cpp" line="1045"/>
+      <location filename="../../CommandAnnotate.cpp" line="1053"/>
+      <location filename="../../CommandAnnotate.cpp" line="1073"/>
+      <location filename="../../CommandAnnotate.cpp" line="1109"/>
+      <location filename="../../CommandAnnotate.cpp" line="1173"/>
+      <location filename="../../CommandAnnotate.cpp" line="1196"/>
+      <location filename="../../CommandAnnotate.cpp" line="1218"/>
+      <location filename="../../CommandAnnotate.cpp" line="1254"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandAnnotate.cpp" line="1435"/>
+      <location filename="../../CommandAnnotate.cpp" line="1711"/>
+      <location filename="../../CommandAnnotate.cpp" line="1724"/>
       <source>Wrong Selection</source>
       <translation>Неправильный выбор</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="122"/>
+      <location filename="../../CommandAnnotate.cpp" line="123"/>
       <source>Can not attach leader.  No base View selected.</source>
       <translation>Не могу прикрепить указательную линию. Базовый вид не выбран.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="127"/>
-      <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
+      <location filename="../../CommandAnnotate.cpp" line="128"/>
+      <location filename="../../CommandAnnotate.cpp" line="727"/>
+      <location filename="../../CommandAnnotate.cpp" line="907"/>
+      <location filename="../../CommandAnnotate.cpp" line="1046"/>
       <source>You must select a base View for the line.</source>
       <translation>Необходимо выбрать базовый вид для линии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="320"/>
+      <location filename="../../CommandAnnotate.cpp" line="421"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>Нет объектов DrawViewPart в выбранном</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
+      <location filename="../../CommandAnnotate.cpp" line="721"/>
+      <location filename="../../CommandAnnotate.cpp" line="914"/>
       <source>No base View in Selection.</source>
       <translation>Нет базового вида в выбранном.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="753"/>
+      <location filename="../../CommandAnnotate.cpp" line="754"/>
       <source>You must select Faces or an existing CenterLine.</source>
       <translation>Вы должны выбрать Грани или существующую Осевую Линию.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="763"/>
+      <location filename="../../CommandAnnotate.cpp" line="764"/>
       <source>No CenterLine in selection.</source>
       <translation>В выбранном нет ОсевойЛинии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
+      <location filename="../../CommandAnnotate.cpp" line="770"/>
+      <location filename="../../CommandAnnotate.cpp" line="841"/>
+      <location filename="../../CommandAnnotate.cpp" line="953"/>
       <source>Selection is not a CenterLine.</source>
       <translation>Выделение не является центральной линией.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
+      <location filename="../../CommandAnnotate.cpp" line="850"/>
       <source>Selection not understood.</source>
       <translation>Выделение не понятно.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
+      <location filename="../../CommandAnnotate.cpp" line="941"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
       <translation>Вы должны выбрать 2 вершины или существующую осевую линию.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
+      <location filename="../../CommandAnnotate.cpp" line="963"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
       <translation>Требуется две вершины или одна центральная линия.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
-      <location filename="../../CommandAnnotate.cpp" line="1173"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
+      <location filename="../../CommandAnnotate.cpp" line="1174"/>
       <source>Selection is empty.</source>
       <translation>Выделение пусто.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
+      <location filename="../../CommandAnnotate.cpp" line="1054"/>
       <source>Not enough points in selection.</source>
       <translation>Выбрано недостаточно точек.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
+      <location filename="../../CommandAnnotate.cpp" line="1074"/>
       <source>Selection is not a Cosmetic Line.</source>
       <translation>Выделенный объект не является вспомогательной линией.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
+      <location filename="../../CommandAnnotate.cpp" line="1110"/>
       <source>You must select 2 Vertexes.</source>
       <translation>Вы должны выбрать 2 Вершины.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1196"/>
+      <location filename="../../CommandAnnotate.cpp" line="1197"/>
       <source>You must select a base View for the circle.</source>
       <translation>Вы должны выбрать базовый вид для круга.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1254"/>
+      <location filename="../../CommandAnnotate.cpp" line="1255"/>
       <source>Please select a center for the circle.</source>
       <translation>Пожалуйста, выберите центр для круга.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1310"/>
+      <location filename="../../CommandAnnotate.cpp" line="1507"/>
       <source>Nothing selected</source>
       <translation>Ничего не выбрано</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1318"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Минимум 1 объект в выбранном не является местным видом</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1365"/>
       <source>Unknown object type in selection</source>
       <translation>Неизвестный тип объекта в выбранном</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1435"/>
+      <location filename="../../CommandAnnotate.cpp" line="1436"/>
       <source>No View in Selection.</source>
       <translation>Нет Вида в выделенном.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <source>You must select a View and/or lines.</source>
       <translation>Вы должны выбрать Вид и/или линии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1218"/>
+      <location filename="../../CommandAnnotate.cpp" line="1219"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>Выбор не является Косметическим кругом или Косметической дугой круга.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1514"/>
       <source>No Part Views in this selection</source>
       <translation>Нет видов Детали в этом выборе</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandAnnotate.cpp" line="1578"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Выберите только одну линию-выноску или один знак сварки.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1624"/>
-      <location filename="../../CommandAnnotate.cpp" line="1630"/>
+      <location filename="../../CommandAnnotate.cpp" line="1638"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Символы шероховатости поверхности</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1690"/>
+      <location filename="../../CommandAnnotate.cpp" line="1639"/>
+      <source>Selected object is not a part view, nor a leader line</source>
+      <translation>Выбранный объект не является ни видом детали, ни линией выноски</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1712"/>
       <source>No Part View in Selection</source>
       <translation>Нет просмотра части(детали) в выделении</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1703"/>
+      <location filename="../../CommandAnnotate.cpp" line="1725"/>
       <source>No %1 in Selection</source>
       <translation>Нет %1 в выборе</translation>
     </message>
@@ -3422,19 +3426,19 @@
       <translation>Экспорт листа в SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="213"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Вы уверены, что хотите продолжить?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="234"/>
+      <location filename="../../ViewProviderPage.cpp" line="233"/>
       <source>Show drawing</source>
       <translation>Показать чертёж</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="236"/>
+      <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle KeepUpdated</source>
       <translation>Вкл/Выкл обновление</translation>
     </message>
@@ -3459,9 +3463,9 @@
       <translation>Создатель форматированного текста</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Редактор форматированного текста</translation>
     </message>
@@ -3579,135 +3583,133 @@
       <translation>Править выносной элемент</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="363"/>
+      <location filename="../../CommandExtensionDims.cpp" line="434"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>TechDraw Увеличение/уменьшение десятичного числа</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="558"/>
-      <location filename="../../CommandExtensionDims.cpp" line="567"/>
+      <location filename="../../CommandExtensionDims.cpp" line="629"/>
+      <location filename="../../CommandExtensionDims.cpp" line="638"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>Чертеж размеров позиций горизонтальной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="568"/>
-      <location filename="../../CommandExtensionDims.cpp" line="877"/>
+      <location filename="../../CommandExtensionDims.cpp" line="639"/>
+      <location filename="../../CommandExtensionDims.cpp" line="948"/>
       <source>No horizontal dimensions selected</source>
       <translation>Не выбраны горизонтальные размеры</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="619"/>
-      <location filename="../../CommandExtensionDims.cpp" line="628"/>
+      <location filename="../../CommandExtensionDims.cpp" line="690"/>
+      <location filename="../../CommandExtensionDims.cpp" line="699"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>Чертеж размеров вертикальной цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="629"/>
-      <location filename="../../CommandExtensionDims.cpp" line="943"/>
+      <location filename="../../CommandExtensionDims.cpp" line="700"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1014"/>
       <source>No vertical dimensions selected</source>
       <translation>Размеры вертикали не выбраны</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="681"/>
-      <location filename="../../CommandExtensionDims.cpp" line="690"/>
+      <location filename="../../CommandExtensionDims.cpp" line="752"/>
+      <location filename="../../CommandExtensionDims.cpp" line="761"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>Чертеж размеров наклона (наклонной?) цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="691"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1010"/>
+      <location filename="../../CommandExtensionDims.cpp" line="762"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1081"/>
       <source>No oblique dimensions selected</source>
       <translation>Размеры наклона не выбраны</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="867"/>
-      <location filename="../../CommandExtensionDims.cpp" line="876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="938"/>
+      <location filename="../../CommandExtensionDims.cpp" line="947"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>Чертёж, горизонтальные размеры каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="933"/>
-      <location filename="../../CommandExtensionDims.cpp" line="942"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1004"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1013"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>Чертёж, вертикальные размеры каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1000"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1009"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1071"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1080"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>Чертёж, размер наклона каскада</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1199"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1270"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>TechDraw Создать размер горизонтальной цепочки</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1265"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1336"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>TechDraw Создать размер вертикальной цепочки</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1331"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1402"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>TechDraw Создать размер косой цепи</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1541"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1612"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
       <translation>TechDraw Создать горизонтальное координатное измерение</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
       <translation>TechDraw Создать вертикальное координатное измерение</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1687"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1758"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>TechDraw Создать косой координатный размер</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1912"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1983"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>TechDraw Создать размер горизонтальной фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1981"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>TechDraw Создание вертикального размера фаски</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2167"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2238"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>TechDraw Создание размера длины дуги</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2246"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2317"/>
       <source>TechDraw Customize Format</source>
       <translation>TechDraw Настройка формата</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2381"/>
       <source>No subelements selected</source>
       <translation>Подэлементы не выбраны</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1624"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2274"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2036"/>
       <source>Selection is empty</source>
       <translation>Пустое выделение</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1630"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2290"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2361"/>
       <location filename="../../CommandExtensionPack.cpp" line="2043"/>
       <source>No object selected</source>
       <translation>Объект не выбран</translation>
@@ -3748,12 +3750,12 @@
       <translation>Выберите 2 вершины или 1 край</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="187"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="207"/>
       <source>Please select a Line Group</source>
       <translation>Пожалуйста, выберите Группу строк</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="198"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="218"/>
       <source>%1 defines these line widths:
  thin: %2
  graphic: %3
@@ -3774,37 +3776,37 @@ thick: %4</source>
       <translation>Изменить штриховку грани</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="199"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
       <source>Method</source>
       <translation>Метод</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="205"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="253"/>
       <source>Addition</source>
       <translation>Дополнительно</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="214"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="262"/>
       <source>Average roughness</source>
       <translation>Средняя шероховатость</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="220"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="268"/>
       <source>Roughness sampling length</source>
       <translation>Длина отсечки измерения шероховатости</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="229"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
       <source>Lay symbol</source>
       <translation>Символы рапространения шероховатости</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="237"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="285"/>
       <source>Minimum roughness grade number</source>
       <translation>Минимальный номер марки шероховатности</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="295"/>
       <source>Maximum roughness grade number</source>
       <translation>Максимальный номер марки шероховатности</translation>
     </message>
@@ -3853,29 +3855,29 @@ thick: %4</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="223"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>Вы не можете удалить эту размерную линию, потому что она
 содержит символ сварки, который может быть повреждён.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="350"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="355"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Вы не можете удалить этот вид, потомучто это повредит один или более других зависимых от него видов.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+      <location filename="../../ViewProviderLeader.cpp" line="229"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="216"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Зависимости объекта</translation>
     </message>
@@ -3900,7 +3902,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Невозможно удалить этот вид, так как он имеет линию выноски, которая может быть разорвана.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="207"/>
+      <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Страница не пуста, поэтому
@@ -7401,6 +7403,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="390"/>
+      <location filename="../../TaskProjGroup.cpp" line="463"/>
+      <location filename="../../TaskProjGroup.cpp" line="470"/>
       <source>Top</source>
       <translation>Сверху</translation>
     </message>
@@ -7411,6 +7415,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="437"/>
+      <location filename="../../TaskProjGroup.cpp" line="465"/>
+      <location filename="../../TaskProjGroup.cpp" line="467"/>
       <source>Left</source>
       <translation>Слева</translation>
     </message>
@@ -7421,11 +7427,14 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="477"/>
+      <location filename="../../TaskProjGroup.cpp" line="465"/>
+      <location filename="../../TaskProjGroup.cpp" line="467"/>
       <source>Right</source>
       <translation>Справа</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="494"/>
+      <location filename="../../TaskProjGroup.cpp" line="468"/>
       <source>Rear</source>
       <translation>Сзади</translation>
     </message>
@@ -7436,6 +7445,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="544"/>
+      <location filename="../../TaskProjGroup.cpp" line="463"/>
+      <location filename="../../TaskProjGroup.cpp" line="470"/>
       <source>Bottom</source>
       <translation>Снизу</translation>
     </message>
@@ -7485,6 +7496,35 @@ using the given X/Y Spacing</source>
       <location filename="../../TaskProjGroup.ui" line="757"/>
       <source>Vertical space between border of projections</source>
       <translation>Вертикальное пространство между границами проекций</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="462"/>
+      <location filename="../../TaskProjGroup.cpp" line="471"/>
+      <source>FrontTopLeft</source>
+      <translation>Спереди сверху слева</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="462"/>
+      <location filename="../../TaskProjGroup.cpp" line="471"/>
+      <source>FrontBottomRight</source>
+      <translation>Спереди снизу справа</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="464"/>
+      <location filename="../../TaskProjGroup.cpp" line="469"/>
+      <source>FrontTopRight</source>
+      <translation>Спереди сверху справа</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="464"/>
+      <location filename="../../TaskProjGroup.cpp" line="469"/>
+      <source>FrontBottomLeft</source>
+      <translation>Спереди снизу слева</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="466"/>
+      <source>Front</source>
+      <translation>Спереди</translation>
     </message>
   </context>
   <context>
@@ -7896,7 +7936,7 @@ using the given X/Y Spacing</source>
     <name>TechDrawGui::TaskSurfaceFinishSymbols</name>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="182"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="230"/>
       <source>Surface Finish Symbols</source>
       <translation>Обозначения шероховатости поверхности</translation>
     </message>
@@ -8090,7 +8130,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="654"/>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Adds a Centerline between 2 Lines</source>
       <translation>Добавить осевую линию между 2 линиями</translation>
     </message>
@@ -8098,7 +8138,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="658"/>
+      <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Adds a Centerline between 2 Points</source>
       <translation>Добавить осевую линию между 2 точками</translation>
     </message>
@@ -8114,7 +8154,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="283"/>
+      <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
       <translation>Вставить вспомогательную вершину в Вид</translation>
     </message>
@@ -8122,12 +8162,12 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="341"/>
+      <location filename="../../CommandExtensionDims.cpp" line="412"/>
       <source>Remove Prefix</source>
       <translation>Удалить префикс</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="342"/>
+      <location filename="../../CommandExtensionDims.cpp" line="413"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Удалите символы префикса в начале текста размера:&lt;br&gt;- Выберите один или несколько размеров&lt;br&gt;- Щелкните этот инструмент</translation>
     </message>
@@ -8135,7 +8175,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="650"/>
+      <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Adds a Centerline to Faces</source>
       <translation>Добавить Осевую линию к Граням</translation>
     </message>
@@ -8151,7 +8191,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="287"/>
+      <location filename="../../CommandAnnotate.cpp" line="288"/>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
       <translation>Вставить вспомогательные вершины по центру выбранных ребер</translation>
     </message>
@@ -8159,7 +8199,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="291"/>
+      <location filename="../../CommandAnnotate.cpp" line="292"/>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
       <translation>Вставить вспомогательные вершины в четырех крайних точках выбранной окружности</translation>
     </message>
@@ -8942,12 +8982,12 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1128"/>
+      <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Add Cosmetic Circle</source>
       <translation>Добавить косметический круг</translation>
     </message>
@@ -9330,6 +9370,26 @@ there is an open task dialog.</source>
                  - Нажмите на этот инструмент&lt;br&gt;
                  - необязательно: выберите одно ребро на виде сечения и соответствующую ему вершину на базовом виде&lt;br&gt;
                    Нажмите на этот инструмент</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionInsertRepetition</name>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="217"/>
+      <source>TechDraw</source>
+      <translation>Технический чертёж</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="218"/>
+      <location filename="../../CommandExtensionDims.cpp" line="405"/>
+      <source>Insert &apos;n×&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;n×&apos; Prefix</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionDims.cpp" line="219"/>
+      <location filename="../../CommandExtensionDims.cpp" line="406"/>
+      <source>Insert repeated feature count at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert repeated feature count at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
 </TS>
