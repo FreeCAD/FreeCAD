@@ -149,7 +149,7 @@ std::string mappedElementVectorToString(std::vector<MappedElement>& elements)
     return output.str();
 }
 
-bool matchStringsWithoutClause(std::string first, std::string second, std::string regex)
+bool matchStringsWithoutClause(std::string first, std::string second, const std::string& regex)
 {
     first = std::regex_replace(first, std::regex(regex), "");
     second = std::regex_replace(second, std::regex(regex), "");
@@ -169,7 +169,7 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
 {
     auto elements = shape.getElementMap();
     if (!elements.empty() || !names.empty()) {
-        for (auto name : names) {
+        for (const auto& name : names) {
             if (std::find_if(elements.begin(),
                              elements.end(),
                              [&, name](const Data::MappedElement& element) {
