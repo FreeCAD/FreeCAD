@@ -125,4 +125,116 @@ TEST_F(WireJoinerTest, addShape)
     EXPECT_EQ(wirevTDS.getSubTopoShapes(TopAbs_EDGE).size(), 4);
 }
 
+TEST_F(WireJoinerTest, setOutline)
+{
+    // Arrange
+
+    // Create various edges that will be used to create wires for the WireJoiner objects testes
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+
+    auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, -0.1, 0.0), gp_Pnt(-0.1, 1.1, 0.0)).Edge()};
+    auto edge5 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 1.1, 0.0), gp_Pnt(1.1, 1.1, 0.0)).Edge()};
+    auto edge6 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjNoOutline.addShape()
+    std::vector<TopoShape> edgesNoOutline = {edge1, edge2, edge3, edge4, edge5, edge6};
+    // A vector of edges used as argument for wjOutline.addShape()
+    std::vector<TopoShape> edgesOutline = {edge1, edge2, edge3, edge4, edge5, edge6};
+
+    // To see the effect of setOutline() it is necessary to set the user parameter "Iteration"
+    // to a value, in this case, less than zero before the WireObjects are initializaed.
+    // To see the correct value for this parameter refer to method WireJoinerP::canShowShape()
+
+    auto hParam {App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/WireJoiner")};
+    auto catchIteration {hParam->GetInt("Iteration", 0)};
+    hParam->SetInt("Iteration", -1);
+
+    // A document where there will WireJoiner.Build() will be called having setOutline() set to
+    // false
+    auto docNoOutline {App::GetApplication().getActiveDocument()};
+
+    auto _docNameOutline {App::GetApplication().getUniqueDocumentName("docOutline")};
+    App::GetApplication().newDocument(_docNameOutline.c_str(), "docOutlineUser");
+    // A document where there will WireJoiner.Build() will be called having setOutline() set to true
+    auto docOutline {App::GetApplication().getActiveDocument()};
+
+    // A WireJoiner object where the value of setOutline() will be changed but no shapes will be
+    // built
+    auto wjNoBuild {WireJoiner()};
+    // A WireJoiner object where setOutline() will be set to false
+    auto wjNoOutline {WireJoiner()};
+    // A WireJoiner object where setOutline() will be set to true
+    auto wjOutline {WireJoiner()};
+
+    // Reset the parameter to its previous value.
+    hParam->SetInt("Iteration", catchIteration);
+
+    // Act
+
+    // Changing only the value of setOutline(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setOutline(true);
+
+    // We can see the effect of setOutline by searching, among all the DocumentObjects created by
+    // the logic, if there are any with a label containing "removed"
+
+    // Testing first the Document where WireJoiner::Build() will be executed with setOutline set to
+    // false
+
+    App::GetApplication().setActiveDocument(docNoOutline);
+
+    wjNoOutline.addShape(edgesNoOutline);
+    wjNoOutline.setOutline(false);
+    wjNoOutline.Build();
+
+    auto objsInDoc {docNoOutline->getObjects()};
+
+    auto foundRemovedNoOutline {false};
+    for (const auto& obj : objsInDoc) {
+        foundRemovedNoOutline =
+            (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
+        if (foundRemovedNoOutline) {
+            break;
+        }
+    }
+
+    // Then testing the Document where WireJoiner::Build() will be executed with setOutline set to
+    // true
+
+    App::GetApplication().setActiveDocument(docOutline);
+
+    wjOutline.addShape(wjNoOutline.Shape());
+    // same as wjOutline.setOutline(true);
+    wjOutline.setOutline();
+    wjOutline.Build();
+
+    objsInDoc = docOutline->getObjects();
+
+    auto foundRemovedOutline {false};
+    for (const auto& obj : objsInDoc) {
+        foundRemovedOutline =
+            (std::string(obj->Label.getValue()).find("removed") != std::string::npos);
+        if (foundRemovedOutline) {
+            break;
+        }
+    }
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setOutline()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // In a document where WireJoiner::Build() is executed with setOutline() set to false there
+    // shouldn't be DocumentObjects with "removed" in their label
+    EXPECT_FALSE(foundRemovedNoOutline);
+
+    // In a document where WireJoiner::Build() is executed with setOutline() set to true there
+    // should be at least a DocumentObject with "removed" in its label
+    EXPECT_TRUE(foundRemovedOutline);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
