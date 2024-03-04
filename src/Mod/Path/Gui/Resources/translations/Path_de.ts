@@ -7602,7 +7602,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="485"/>
       <source>First</source>
-      <translation>First Angle / Europäisch</translation>
+      <translation>Erste</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="486"/>

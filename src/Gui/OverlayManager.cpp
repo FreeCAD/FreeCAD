@@ -989,11 +989,23 @@ public:
     {
         OverlayTitleBar *widget = new OverlayTitleBar(parent);
         widget->setObjectName(QStringLiteral("OverlayTitle"));
+
         QList<QAction*> actions;
         if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
             actions = tabWidget->actions();
+        else if (auto dockWidget = qobject_cast<QDockWidget*>(parent))
+        {
+            const QDockWidget::DockWidgetFeatures features = dockWidget->features();
+
+            actions.append(&_actOverlay);
+            if (features.testFlag(QDockWidget::DockWidgetFloatable))
+                actions.append(&_actFloat);
+            if (features.testFlag(QDockWidget::DockWidgetClosable))
+                actions.append(&_actClose);
+        }
         else
             actions = _actions;
+
         widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
         return widget;
     }
@@ -1528,6 +1540,8 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             this, &OverlayManager::onToggleDockWidget);
     QObject::connect(dw, &QDockWidget::visibilityChanged,
             this, &OverlayManager::onDockVisibleChange);
+    QObject::connect(dw, &QDockWidget::featuresChanged,
+            this, &OverlayManager::onDockFeaturesChange);
     if (auto widget = dw->widget()) {
         QObject::connect(widget, &QWidget::windowTitleChanged,
                 this, &OverlayManager::onDockWidgetTitleChange);
@@ -1575,6 +1589,21 @@ void OverlayManager::onDockVisibleChange(bool visible)
         return;
     FC_TRACE("dock " << dock->objectName().toUtf8().constData()
             << " visible change " << visible << ", " << dock->isVisible());
+}
+
+void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures features)
+{
+    Q_UNUSED(features);
+    auto dw = qobject_cast<QDockWidget*>(sender());
+    if (!dw)
+        return;
+
+    // Rebuild the title widget as it may have a different set of buttons shown.
+    if (QWidget *titleBarWidget = dw->titleBarWidget()) {
+        dw->setTitleBarWidget(nullptr);
+        delete titleBarWidget;
+    }
+    setupTitleBar(dw);
 }
 
 void OverlayManager::onTaskViewUpdate()

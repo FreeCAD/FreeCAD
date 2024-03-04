@@ -31,7 +31,6 @@
 #define FC_CONFIG_H
 
 
-
 //**************************************************************************
 // switching the operating systems
 
@@ -43,7 +42,7 @@
 #   ifndef FC_OS_WIN64
 #   define FC_OS_WIN64
 #   endif
-#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #   ifndef FC_OS_WIN32
 #   define FC_OS_WIN32
 #   endif
@@ -52,10 +51,6 @@
 #   include <config.h>
 #   endif // HAVE_CONFIG_H
 
-#   endif
-#elif defined(__MWERKS__) && defined(__INTEL__)
-#   ifndef FC_OS_WIN32
-#   define FC_OS_WIN32
 #   endif
 #elif defined(__APPLE__)
 #   ifndef FC_OS_MACOSX
@@ -98,9 +93,7 @@
 //**************************************************************************
 // Standard types for Windows
 
-#if defined(__MINGW32__)
-// nothing specific here
-#elif defined (FC_OS_WIN64) || defined (FC_OS_WIN32)
+#if defined (FC_OS_WIN64) || defined (FC_OS_WIN32)
 
 #ifndef HAVE_INT8_T
 #define HAVE_INT8_T
@@ -209,7 +202,7 @@ typedef unsigned __int64    uint64_t;
 # define QT_NO_KEYWORDS
 #endif
 
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+#if defined (FC_OS_WIN32)
 # ifndef QT_DLL
 #  define QT_DLL
 # endif
@@ -226,7 +219,7 @@ typedef unsigned __int64    uint64_t;
 
 //**************************************************************************
 // Coin3D
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+#if defined (FC_OS_WIN32)
 # ifndef FCGui //COIN_DLL is defined in the FreeCADGui target
 #  ifndef COIN_DLL
 #    define COIN_DLL
@@ -236,7 +229,7 @@ typedef unsigned __int64    uint64_t;
 
 //**************************************************************************
 // Quarter
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+#if defined (FC_OS_WIN32)
 # ifndef QUARTER_INTERNAL
 #  ifndef QUARTER_DLL
 #   define QUARTER_DLL

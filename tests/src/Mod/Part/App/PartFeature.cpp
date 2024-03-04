@@ -60,3 +60,72 @@ TEST_F(FeaturePartTest, testGetElementName)
 #endif
     // TBD
 }
+
+TEST_F(FeaturePartTest, create)
+{
+    // Arrange
+
+    // A shape that will be passed to the various calls of Feature::create
+    auto shape {TopoShape(BRepBuilderAPI_MakeVertex(gp_Pnt(1.0, 1.0, 1.0)).Vertex(), 1)};
+
+    auto otherDocName {App::GetApplication().getUniqueDocumentName("otherDoc")};
+    // Another document where it will be created a shape
+    auto otherDoc {App::GetApplication().newDocument(otherDocName.c_str(), "otherDocUser")};
+
+    // _doc is populated by PartTestHelperClass::createTestDoc. Making it an empty document
+    _doc->clearDocument();
+
+    // Setting the active document back to _doc otherwise the first 3 calls to Feature::create will
+    // act on otherDoc
+    App::GetApplication().setActiveDocument(_doc);
+
+    // Act
+
+    // A feature with an empty TopoShape
+    auto featureNoShape {Feature::create(TopoShape())};
+
+    // A feature with a TopoShape
+    auto featureNoName {Feature::create(shape)};
+
+    // A feature with a TopoShape and a name
+    auto featureNoDoc {Feature::create(shape, "Vertex")};
+
+    // A feature with a TopoShape and a name in the document otherDoc
+    auto feature {Feature::create(shape, "Vertex", otherDoc)};
+
+    // Assert
+
+    // Check that the shapes have been added. Only featureNoShape should return an empty shape, the
+    // others should have it as TopoShape shape is passed as argument
+    EXPECT_TRUE(featureNoShape->Shape.getValue().IsNull());
+    EXPECT_FALSE(featureNoName->Shape.getValue().IsNull());
+    EXPECT_FALSE(featureNoDoc->Shape.getValue().IsNull());
+    EXPECT_FALSE(feature->Shape.getValue().IsNull());
+
+    // Check the features names
+
+    // Without a name the feature's name will be set to "Shape"
+    EXPECT_STREQ(_doc->getObjectName(featureNoShape), "Shape");
+
+    // In _doc there's already a shape with name "Shape" and, as there can't be duplicated names in
+    // the same document, the other feature will get an unique name that will still contain "Shape"
+    EXPECT_STREQ(_doc->getObjectName(featureNoName), "Shape001");
+
+    // There aren't other features with name "Vertex" in _doc, therefor that name will be assigned
+    // without modifications
+    EXPECT_STREQ(_doc->getObjectName(featureNoDoc), "Vertex");
+
+    // The feature is created in otherDoc, which doesn't have other features and thertherefor the
+    // feature's name will be assigned without modifications
+    EXPECT_STREQ(otherDoc->getObjectName(feature), "Vertex");
+
+    // Check that the features have been created in the correct document
+
+    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefor the number of
+    // features in that document is the same of the features created with Feature::create
+    EXPECT_EQ(_doc->getObjects().size(), 3);
+
+    // The last call to Feature::create acts on otherDoc, which is empty, and therefor that document
+    // will have only 1 feature
+    EXPECT_EQ(otherDoc->getObjects().size(), 1);
+}

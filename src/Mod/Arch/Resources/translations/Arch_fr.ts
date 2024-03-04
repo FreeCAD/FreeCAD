@@ -4443,7 +4443,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Objet facultatif définissant un volume à soustraire des murs. Si le champ est défini, il a priorité sur le sous-volume généré automatiquement.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>

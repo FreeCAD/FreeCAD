@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers manager</source>
-      <translation>Gestor de capas</translation>
+      <translation>Administrador de capas</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
@@ -5439,9 +5439,9 @@ of existing objects in all opened documents?</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation>Ha fallado la descarga de las bibliotecas de dxf.
-Instale el complemento de las bibliotecas de dxf manualmente
-por medio de la opción Herramientas ▸ Gestor de complementos</translation>
+      <translation>Ha fallado la descarga de las bibliotecas dxf.
+Instale el complemento de las bibliotecas dxf manualmente
+por medio del menú Herramientas ▸ -&gt; Administrador de complementos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="50"/>

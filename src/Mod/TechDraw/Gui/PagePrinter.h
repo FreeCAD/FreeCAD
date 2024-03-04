@@ -51,7 +51,7 @@ class TechDrawGuiExport PaperAttributes
 {
 public:
     PaperAttributes();
-    ~PaperAttributes() = default;
+//    ~PaperAttributes() = default;
 
     QPageLayout::Orientation orientation;
     QPageSize::PageSizeId paperSize;
@@ -62,8 +62,7 @@ public:
 class TechDrawGuiExport PagePrinter
 {
 public:
-    PagePrinter(ViewProviderPage *page);
-    ~PagePrinter() = default;
+    explicit PagePrinter(ViewProviderPage *page);
 
     void print(QPrinter* printer);
     void printPdf();
@@ -74,6 +73,8 @@ public:
                          App::Document* doc);
     static void printAllPdf(QPrinter* printer,
                             App::Document* doc);
+
+    // print banner page is no longer used
     static void printBannerPage(QPrinter* printer, QPainter& painter,
                                 QPageLayout& pageLayout,
                                 App::Document* doc,
@@ -82,8 +83,8 @@ public:
                            QPainter& painter,
                            QRectF& sourceRect,
                            QRect& targetRect);
-    static void setPageLayout(QPageLayout& pageLayout,
-                              TechDraw::DrawPage* dPage,
+    static void makePageLayout(TechDraw::DrawPage* dPage,
+                               QPageLayout& pageLayout,
                               double& width, double& height);
 
     void saveSVG(std::string file);

@@ -903,22 +903,22 @@ en lugar del entorno de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>Color de muro</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="57"/>
       <source>Structure color</source>
-      <translation type="unfinished">Structure color</translation>
+      <translation>Color de estructura</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="81"/>
       <source>Rebar color</source>
-      <translation type="unfinished">Rebar color</translation>
+      <translation>Color de refuerzo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="105"/>
       <source>Window glass transparency</source>
-      <translation type="unfinished">Window glass transparency</translation>
+      <translation>Transparencia de vidrio de ventanas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="118"/>
@@ -929,12 +929,12 @@ en lugar del entorno de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="137"/>
       <source>Window glass color</source>
-      <translation type="unfinished">Window glass color</translation>
+      <translation>Transparencia de vidrio de ventanas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="161"/>
       <source>Panel color</source>
-      <translation type="unfinished">Panel color</translation>
+      <translation>Color de panel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="185"/>
@@ -944,12 +944,12 @@ en lugar del entorno de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="209"/>
       <source>Space transparency</source>
-      <translation type="unfinished">Space transparency</translation>
+      <translation>Transparencia de espacio</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="235"/>
       <source>Space line style</source>
-      <translation type="unfinished">Space line style</translation>
+      <translation>Estilo de la línea de espacio</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="252"/>
@@ -974,7 +974,7 @@ en lugar del entorno de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="275"/>
       <source>Space line color</source>
-      <translation type="unfinished">Space line color</translation>
+      <translation>Color de línea de espacio</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="302"/>
@@ -984,17 +984,17 @@ en lugar del entorno de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="308"/>
       <source>Use sketches for walls</source>
-      <translation type="unfinished">Use sketches for walls</translation>
+      <translation>Usar bocetos para muros</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="324"/>
       <source>Pipe diameter</source>
-      <translation type="unfinished">Pipe diameter</translation>
+      <translation>Diametro de tubería</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="357"/>
       <source>Rebar diameter</source>
-      <translation type="unfinished">Rebar diameter</translation>
+      <translation>Diámetro de refuerzo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="389"/>
@@ -4440,7 +4440,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</translation>
+      <translation>Un objeto opcional que define un volumen a ser restado de las paredes. Si el campo está establecido - tiene prioridad sobre el subvolumen generado automáticamente</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>

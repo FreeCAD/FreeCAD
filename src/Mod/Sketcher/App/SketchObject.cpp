@@ -3840,7 +3840,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     return -1;
 }
 
-int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2)
+int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2, int continuity)
 {
     // No need to check input data validity as this is an sketchobject managed operation
 
@@ -3901,7 +3901,25 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     else if (bsp2->getDegree() < bsp1->getDegree())
         bsp2->increaseDegree(bsp1->getDegree());
 
-    // TODO: set up vectors for new poles, knots, mults
+    // TODO: Check for tangent constraint here
+    bool makeC1Continuous = (continuity >= 1);
+
+    // TODO: Rescale one or both sections to fulfill some purpose.
+    // This could include making param between [0,1], and/or making
+    // C1 continuity possible.
+    if (makeC1Continuous) {
+        // We assume here that there is already G1 continuity.
+        // Just scale parameters to get C1.
+        Base::Vector3d slope1 = bsp1->firstDerivativeAtParameter(bsp1->getLastParameter());
+        Base::Vector3d slope2 = bsp2->firstDerivativeAtParameter(bsp2->getFirstParameter());
+        // TODO: slope2 can technically be a zero vector
+        // But that seems not possible unless the spline is trivial.
+        // Prove or account for the possibility.
+        double scale = slope2.Length() / slope1.Length();
+        bsp2->scaleKnotsToBounds(0, scale * (bsp2->getLastParameter() - bsp2->getFirstParameter()));
+    }
+
+    // set up vectors for new poles, knots, mults
     std::vector<Base::Vector3d> poles1 = bsp1->getPoles();
     std::vector<double> weights1 = bsp1->getWeights();
     std::vector<double> knots1 = bsp1->getKnots();
@@ -3916,13 +3934,18 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
     std::vector<double> newKnots(std::move(knots1));
     std::vector<int> newMults(std::move(mults1));
 
+
     poles2.erase(poles2.begin());
+    if (makeC1Continuous)
+        newPoles.erase(newPoles.end()-1);
     newPoles.insert(newPoles.end(),
                     std::make_move_iterator(poles2.begin()),
                     std::make_move_iterator(poles2.end()));
 
     // TODO: Weights might need to be scaled
     weights2.erase(weights2.begin());
+    if (makeC1Continuous)
+        newWeights.erase(newWeights.end()-1);
     newWeights.insert(newWeights.end(),
                       std::make_move_iterator(weights2.begin()),
                       std::make_move_iterator(weights2.end()));
@@ -3938,7 +3961,10 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
 
     // end knots can have a multiplicity of (degree + 1)
     if (bsp1->getDegree() < newMults.back())
-        newMults.back() = bsp1->getDegree();
+        if (makeC1Continuous)
+            newMults.back() = bsp1->getDegree()-1;
+        else
+            newMults.back() = bsp1->getDegree();
     mults2.erase(mults2.begin());
     newMults.insert(newMults.end(),
                     std::make_move_iterator(mults2.begin()),
@@ -8327,6 +8353,20 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
                 PosIdList.push_back((*it)->SecondPos);
             }
             else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
+                GeoIdList.push_back((*it)->First);
+                PosIdList.push_back((*it)->FirstPos);
+            }
+        }
+        if ((*it)->Type == Sketcher::Tangent) {
+            if ((*it)->First == GeoId && (*it)->FirstPos == PosId &&
+                ((*it)->SecondPos == Sketcher::PointPos::start ||
+                 (*it)->SecondPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back((*it)->Second);
+                PosIdList.push_back((*it)->SecondPos);
+            }
+            if ((*it)->Second == GeoId && (*it)->SecondPos == PosId &&
+                ((*it)->FirstPos == Sketcher::PointPos::start ||
+                 (*it)->FirstPos == Sketcher::PointPos::end)) {
                 GeoIdList.push_back((*it)->First);
                 PosIdList.push_back((*it)->FirstPos);
             }

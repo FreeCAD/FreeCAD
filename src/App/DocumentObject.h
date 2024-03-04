@@ -67,6 +67,7 @@ enum ObjectStatus {
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     RecomputeExtension = 19, // mark the object to recompute its extensions
     TouchOnColorChange = 20, // inform view provider touch object on color change
+    Freeze = 21, // do not recompute ever
 };
 
 /** Return object for feature execution
@@ -177,6 +178,12 @@ public:
     bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
     /// returns true if this objects is currently removed from the document
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
+    /// set this document object freezed (prevent recomputation)
+    void freeze();
+    /// set this document object unfreezed (and touch it)
+    void unfreeze(bool noRecompute=false);
+    /// returns true if this objects is currently freezed
+    bool isFreezed() const {return StatusBits.test(ObjectStatus::Freeze);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}

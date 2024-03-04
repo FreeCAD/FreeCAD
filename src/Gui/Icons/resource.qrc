@@ -270,10 +270,8 @@
         <file>image-plane.svg</file>
         <file>image-scaling.svg</file>
         <file>VarSet.svg</file>
+        <file>Std_ToggleFreeze.svg</file>
     </qresource>
-    <!-- Demonstrating support for an embedded icon theme -->
-    <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
-    <!-- See also https://bugreports.qt.io/browse/QTBUG-75039 -->
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>
     </qresource>

@@ -224,6 +224,9 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::SELECTION;
         break;
     case BUTTON2DOWN:
+        if (newmode != NavigationStyle::DRAGGING) {
+            saveCursorPosition(ev);
+        }
         newmode = NavigationStyle::DRAGGING;
         break;
     case BUTTON3DOWN:
