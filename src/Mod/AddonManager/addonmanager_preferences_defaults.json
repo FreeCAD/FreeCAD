@@ -5,6 +5,7 @@
     "AddonsStatsURL": "https://freecad.org/addon_stats.json",
     "AutoCheck": false,
     "BlockedMacros": "BOLTS,WorkFeatures,how to install,documentation,PartsLibrary,FCGear",
+    "CompositeSplitterState": "",
     "CustomRepoHash": "",
     "CustomRepositories": "",
     "CustomToolbarName": "Auto-Created Macro Toolbar",
