@@ -73,11 +73,11 @@ protected:
 
         // 3D properties
         model3DProp = Materials::ModelProperty(
-            QString::fromStdString("StressStrain"),    // Name
-            QString::fromStdString("Stress / Strain"), // Header
-            QString::fromStdString("3DArray"),         // Type
-            QString::fromStdString(""),                // Units
-            QString::fromStdString(""),                // URL
+            QString::fromStdString("StressStrain"),     // Name
+            QString::fromStdString("Stress / Strain"),  // Header
+            QString::fromStdString("3DArray"),          // Type
+            QString::fromStdString(""),                 // Units
+            QString::fromStdString(""),                 // URL
             QString::fromStdString("3 Dimensional array showing stress and strain as a function of "
                                    "temperature"));  // Description
         model3DProp1 = Materials::ModelProperty(QString::fromStdString("Temperature"),
