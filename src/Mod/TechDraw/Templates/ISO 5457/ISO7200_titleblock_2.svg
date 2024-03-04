@@ -32,7 +32,7 @@
     </rdf:RDF>
   </metadata>
   <g id="Borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-    <rect id="Frame"  x="0" y="0"width="180" height="36" style="stroke-width:0.7" />
+    <rect id="Frame" x="0" y="0" width="180" height="36" style="stroke-width:0.7" />
     <rect id="Owner border" x="140" y="0" width="40" height="24" />
     <rect id="Identification number border" x="0" y="24" width="60" height="12" />
     <rect id="Revision index border" x="100" y="24" width="20" height="12" />
