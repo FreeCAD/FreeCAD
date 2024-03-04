@@ -60,7 +60,7 @@ lower right corner within opened files</string>
         <item row="0" column="2">
          <widget class="QLabel" name="labelCoordSize">
           <property name="text">
-           <string>Relative size :   </string>
+           <string>Relative size:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
