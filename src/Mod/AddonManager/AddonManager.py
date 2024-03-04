@@ -675,8 +675,8 @@ class CommandAddonManager:
 
     def fetch_addon_score(self) -> None:
         """Fetch the Addon score JSON data from a URL"""
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        url = pref.GetString("AddonsScoreURL", "NONE")
+        prefs = fci.Preferences()
+        url = prefs.get("AddonsScoreURL")
         if url and url != "NONE":
             self.get_addon_score_worker = GetAddonScoreWorker(
                 url, self.item_model.repos, self.dialog
