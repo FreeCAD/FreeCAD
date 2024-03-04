@@ -51,6 +51,7 @@
 #include <vtkQuadraticWedge.h>
 #include <vtkTetra.h>
 #include <vtkTriangle.h>
+#include <vtkUnsignedCharArray.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkWedge.h>
 #include <vtkXMLPUnstructuredGridReader.h>
@@ -309,10 +310,8 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
 {
     Base::Console().Log("  Start: VTK mesh builder faces.\n");
 
-    vtkSmartPointer<vtkCellArray> triangleArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadTriangleArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadQuadArray = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
+    std::vector<int> types;
 
     for (; aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -324,7 +323,8 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             tria->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID() - 1);
             tria->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID() - 1);
 
-            triangleArray->InsertNextCell(tria);
+            elemArray->InsertNextCell(tria);
+            types.push_back(VTK_TRIANGLE);
         }
         // quad
         else if (aFace->NbNodes() == 4) {
@@ -334,7 +334,8 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             quad->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID() - 1);
             quad->GetPointIds()->SetId(3, aFace->GetNode(3)->GetID() - 1);
 
-            quadArray->InsertNextCell(quad);
+            elemArray->InsertNextCell(quad);
+            types.push_back(VTK_QUAD);
         }
         // quadratic triangle
         else if (aFace->NbNodes() == 6) {
@@ -346,7 +347,9 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             tria->GetPointIds()->SetId(3, aFace->GetNode(3)->GetID() - 1);
             tria->GetPointIds()->SetId(4, aFace->GetNode(4)->GetID() - 1);
             tria->GetPointIds()->SetId(5, aFace->GetNode(5)->GetID() - 1);
-            quadTriangleArray->InsertNextCell(tria);
+
+            elemArray->InsertNextCell(tria);
+            types.push_back(VTK_QUADRATIC_TRIANGLE);
         }
         // quadratic quad
         else if (aFace->NbNodes() == 8) {
@@ -360,26 +363,16 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid,
             quad->GetPointIds()->SetId(6, aFace->GetNode(6)->GetID() - 1);
             quad->GetPointIds()->SetId(7, aFace->GetNode(7)->GetID() - 1);
 
-            quadQuadArray->InsertNextCell(quad);
+            elemArray->InsertNextCell(quad);
+            types.push_back(VTK_QUADRATIC_QUAD);
         }
         else {
-            throw std::runtime_error("Face not yet supported by FreeCAD's VTK mesh builder\n");
+            throw Base::TypeError("Face not yet supported by FreeCAD's VTK mesh builder\n");
         }
     }
-    if (triangleArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_TRIANGLE, triangleArray);
-    }
 
-    if (quadArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUAD, quadArray);
-    }
-
-    if (quadTriangleArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_TRIANGLE, quadTriangleArray);
-    }
-
-    if (quadQuadArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_QUAD, quadQuadArray);
+    if (elemArray->GetNumberOfCells() > 0) {
+        grid->SetCells(types.data(), elemArray);
     }
 
     Base::Console().Log("  End: VTK mesh builder faces.\n");
@@ -390,14 +383,8 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
 {
     Base::Console().Log("  Start: VTK mesh builder volumes.\n");
 
-    vtkSmartPointer<vtkCellArray> tetraArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> pyramidArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> wedgeArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> hexaArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadTetraArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadPyramidArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadWedgeArray = vtkSmartPointer<vtkCellArray>::New();
-    vtkSmartPointer<vtkCellArray> quadHexaArray = vtkSmartPointer<vtkCellArray>::New();
+    vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
+    std::vector<int> types;
 
     for (; aVolIter->more();) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
@@ -409,7 +396,9 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(1, aVol->GetNode(1)->GetID() - 1);
             cell->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID() - 1);
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID() - 1);
-            tetraArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_TETRA);
         }
         else if (aVol->NbNodes() == 5) {  // pyra5
             Base::Console().Log("    Volume pyra5\n");
@@ -419,7 +408,9 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID() - 1);
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID() - 1);
             cell->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID() - 1);
-            pyramidArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_PYRAMID);
         }
         else if (aVol->NbNodes() == 6) {  // penta6
             Base::Console().Log("    Volume penta6\n");
@@ -430,7 +421,9 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID() - 1);
             cell->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID() - 1);
             cell->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID() - 1);
-            wedgeArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_WEDGE);
         }
         else if (aVol->NbNodes() == 8) {  // hexa8
             Base::Console().Log("    Volume hexa8\n");
@@ -443,15 +436,19 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             cell->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID() - 1);
             cell->GetPointIds()->SetId(6, aVol->GetNode(6)->GetID() - 1);
             cell->GetPointIds()->SetId(7, aVol->GetNode(7)->GetID() - 1);
-            hexaArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_HEXAHEDRON);
         }
         else if (aVol->NbNodes() == 10) {  // tetra10
             Base::Console().Log("    Volume tetra10\n");
-            vtkSmartPointer<vtkQuadraticTetra> tetra = vtkSmartPointer<vtkQuadraticTetra>::New();
+            vtkSmartPointer<vtkQuadraticTetra> cell = vtkSmartPointer<vtkQuadraticTetra>::New();
             for (int i = 0; i < 10; i++) {
-                tetra->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID() - 1);
+                cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID() - 1);
             }
-            quadTetraArray->InsertNextCell(tetra);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_QUADRATIC_TETRA);
         }
 
         else if (aVol->NbNodes() == 13) {  // pyra13
@@ -459,9 +456,10 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             vtkSmartPointer<vtkQuadraticPyramid> cell = vtkSmartPointer<vtkQuadraticPyramid>::New();
             for (int i = 0; i < 13; i++) {
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID() - 1);
-                // Base::Console().Log("node ids: %i\n", aVol->GetNode(i)->GetID()-1);
             }
-            quadPyramidArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_QUADRATIC_PYRAMID);
         }
         else if (aVol->NbNodes() == 15) {  // penta15
             Base::Console().Log("    Volume penta15\n");
@@ -469,7 +467,9 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             for (int i = 0; i < 15; i++) {
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID() - 1);
             }
-            quadWedgeArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_QUADRATIC_WEDGE);
         }
         else if (aVol->NbNodes() == 20) {  // hexa20
             Base::Console().Log("    Volume hexa20\n");
@@ -478,43 +478,17 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid,
             for (int i = 0; i < 20; i++) {
                 cell->GetPointIds()->SetId(i, aVol->GetNode(i)->GetID() - 1);
             }
-            quadHexaArray->InsertNextCell(cell);
+
+            elemArray->InsertNextCell(cell);
+            types.push_back(VTK_QUADRATIC_HEXAHEDRON);
         }
         else {
-            throw std::runtime_error("Volume not yet supported by FreeCAD's VTK mesh builder\n");
+            throw Base::TypeError("Volume not yet supported by FreeCAD's VTK mesh builder\n");
         }
     }
 
-    if (tetraArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_TETRA, tetraArray);
-    }
-
-    if (pyramidArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_PYRAMID, pyramidArray);
-    }
-
-    if (wedgeArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_WEDGE, wedgeArray);
-    }
-
-    if (hexaArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_HEXAHEDRON, hexaArray);
-    }
-
-    if (quadTetraArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_TETRA, quadTetraArray);
-    }
-
-    if (quadPyramidArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_PYRAMID, quadPyramidArray);
-    }
-
-    if (quadWedgeArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_WEDGE, quadWedgeArray);
-    }
-
-    if (quadHexaArray->GetNumberOfCells() > 0) {
-        grid->SetCells(VTK_QUADRATIC_HEXAHEDRON, quadHexaArray);
+    if (elemArray->GetNumberOfCells() > 0) {
+        grid->SetCells(types.data(), elemArray);
     }
 
     Base::Console().Log("  End: VTK mesh builder volumes.\n");
