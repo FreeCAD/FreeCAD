@@ -102,9 +102,6 @@
 #include <StdMeshers_SegmentAroundVertex_0D.hxx>
 #include <StdMeshers_SegmentLengthAroundVertex.hxx>
 #include <StdMeshers_StartEndLength.hxx>
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
 #include <StdMeshers_UseExisting_1D2D.hxx>
 
 // Opencascade
