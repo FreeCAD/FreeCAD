@@ -81,7 +81,6 @@
     <text id="General tolerances data field" x="81" y="-2.8" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
     <text id="Part material data field" x="1" y="-2.8" freecad:editable="general_notes"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
   </g>
-  </g>
   <g id="Outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
     <path id="Trapezoid" d="m 159,-17 -10,2.5 v 5 l 10,2.5 z" />
     <circle id="Inner circle" cx="166" r="2.5" cy="-12" />

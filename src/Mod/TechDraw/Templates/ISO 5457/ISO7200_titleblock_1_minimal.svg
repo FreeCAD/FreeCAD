@@ -55,6 +55,9 @@
     <text id="Creator label" x="80.5" y="3.6">Created by:</text>
     <text id="Document type label" x="0.5" y="15.6">Document type:</text>
     <text id="Paper size label" x="80.5" y="27.6">Paper size:</text>
+    <text id="Sheet scale label" x="120.5" y="-8.4">Scale:</text>
+    <text id="General tolerances label" x="80.5" y="-8.4">General tolerances:</text>
+    <text id="Part material label" x="0.5" y="-8.4">Part Material:</text>
   </g>
   <g id="Data fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
     <text id="Identification number data field" x="1" y="33.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
@@ -66,5 +69,17 @@
     <text id="Creator data field" x="81" y="9.2" freecad:editable="created_by"><tspan>A. Nemesis</tspan></text>
     <text id="Document type data field" x="1" y="21.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
     <text id="Paper size data field" x="90" y="33.2" style="text-align:center;text-anchor:middle">A3</text>
+    <text id="Sheet scale data field" x="130" y="-2.8" style="text-align:center;text-anchor:middle" freecad:editable="page_scale"><tspan>1 : 1</tspan></text>
+    <text id="General tolerances data field" x="81" y="-2.8" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
+    <text id="Part material data field" x="1" y="-2.8" freecad:editable="general_notes"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
+  </g>
+  <g id="Outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
+    <path id="Trapezoid" d="m 159,-17 -10,2.5 v 5 l 10,2.5 z" />
+    <circle id="Inner circle" cx="166" r="2.5" cy="-12" />
+    <circle id="Outer circle" cx="166" r="5" cy="-12" />
+  </g>
+  <g id="Centre lines" style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:6, 0.75, 0.125, 0.75" >
+    <path id="Horizontal" d="m 148,-12 h 24" style="stroke-dashoffset:0.25" />
+    <path id="Vertical" d="m 166,-6 v -12" style="stroke-dashoffset:4.625" />
   </g>
 </svg>
