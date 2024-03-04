@@ -1036,7 +1036,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny 
+      <translation>Wskazany plik wykonywalny
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1138,7 +1138,7 @@ zostaną połączone, aby uczynić granice objętości niewidocznymi.</translati
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny 
+      <translation>Wskazany plik wykonywalny
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1227,9 +1227,9 @@ MES: Tylko elementy MES zostaną wyeksportowane. Oznacza to tylko krawędzie nie
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
-      <translation>Grupy siatki są eksportowane. 
-Każdy element analizy i, jeśli istnieją różne materiały, 
-materiał składa się z dwóch grup siatek, ścian i węzłów, 
+      <translation>Grupy siatki są eksportowane.
+Każdy element analizy i, jeśli istnieją różne materiały,
+materiał składa się z dwóch grup siatek, ścian i węzłów,
 w których zastosowano wiązanie lub materiał.</translation>
     </message>
   </context>
@@ -1402,7 +1402,7 @@ tworzeniu nowej analizy</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny 
+      <translation>Wskazany plik wykonywalny
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1437,7 +1437,7 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation>Obiekt wyników VTK: Obiekt wyników FreeCAD MES VTK zostanie zaimportowany 
+      <translation>Obiekt wyników VTK: Obiekt wyników FreeCAD MES VTK zostanie zaimportowany
 (równe obiektowi, który został wyeksportowany).
 
 Obiekt siatki MES: Wyniki w pliku VTK zostaną pominięte, tylko dane siatki będą zaimportowane i obiekt siatki FreeCAD MES zostanie utworzony.
@@ -1513,7 +1513,7 @@ Obiekt wyników FreeCAD: Zaimportowane dane zostaną przekonwetowane na obiekt w
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny 
+      <translation>Wskazany plik wykonywalny
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1625,7 +1625,7 @@ iteracyjnego solvera, gdy pojawi się komunikat o błędzie,
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny z88r 
+      <translation>Wskazany plik wykonywalny z88r
 '%1'
  nie istnieje!
 Proszę, wybierz inny.</translation>

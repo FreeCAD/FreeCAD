@@ -513,7 +513,7 @@
       <location filename="../../CommandConstraints.cpp" line="3172"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation>Sortu distantzia-murrizketa horizontala eta bertikala 
+      <translation>Sortu distantzia-murrizketa horizontala eta bertikala
 hautatutako erpinean</translation>
     </message>
   </context>

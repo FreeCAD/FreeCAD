@@ -2895,7 +2895,7 @@ invalid constraints, degenerated geometry, etc.</source>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést. 
+      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést.
 
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
@@ -2933,7 +2933,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést. 
+      <translation>Többféleképpen lehet alkalmazni ezt a kényszerítést.
 
 Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpont; két görbe és egy pont.</translation>
     </message>
