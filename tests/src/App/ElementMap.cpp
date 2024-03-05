@@ -553,5 +553,4 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
             return e.indexedName.toString() == "Pong2";
         }));
 }
-
 // NOLINTEND(readability-magic-numbers)

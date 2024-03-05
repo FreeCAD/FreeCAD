@@ -188,8 +188,8 @@
       <translation>Plaatsing</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
@@ -867,7 +867,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="190"/>
       <source>View</source>
-      <translation>Weergave</translation>
+      <translation>Aanzicht</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="197"/>
@@ -1484,7 +1484,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="102"/>
       <source>Command</source>
-      <translation>Opdracht</translation>
+      <translation>Commando</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="73"/>
@@ -2101,7 +2101,7 @@ Misschien een fout met bestandsrechten?</translation>
     <message>
       <location filename="../DlgMacroRecord.ui" line="156"/>
       <source>Close</source>
-      <translation>Afsluiten</translation>
+      <translation>Sluiten</translation>
     </message>
   </context>
   <context>
@@ -2333,7 +2333,7 @@ Kies een andere map, alstublieft.</translation>
       <location filename="../DlgParameterImp.cpp" line="69"/>
       <location filename="../DlgParameterImp.cpp" line="233"/>
       <source>Group</source>
-      <translation>Groeperen</translation>
+      <translation>Groep</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="78"/>
@@ -4780,7 +4780,7 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="203"/>
       <source>Close</source>
-      <translation>Sluiten</translation>
+      <translation>Afsluiten</translation>
     </message>
   </context>
   <context>
@@ -5423,7 +5423,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="655"/>
       <source>Command</source>
-      <translation>Commando</translation>
+      <translation>Opdracht</translation>
     </message>
   </context>
   <context>
@@ -6108,15 +6108,15 @@ Wilt u uw wijzigingen opslaan?</translation>
       <translation>PDF formaat</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Grafiek exporteren</translation>
     </message>
@@ -7517,7 +7517,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../Tree.cpp" line="1061"/>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>Groeperen</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3158"/>
@@ -8041,8 +8041,8 @@ Wilt u een andere map opgeven?</translation>
       <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
@@ -8907,8 +8907,8 @@ de huidige kopie verloren gaat.
       <translation>Schakel scherm zichtbaarheid in/uit</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Zet zwevend venster aan/uit</translation>
     </message>
@@ -8951,7 +8951,7 @@ de huidige kopie verloren gaat.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Pictogram voor zichtbaarheid weergeven</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9139,7 +9139,7 @@ de huidige kopie verloren gaat.
     <message>
       <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
-      <translation>Selectie niet toegestaan door de filter</translation>
+      <translation>Selectie niet toegestaan door het filter</translation>
     </message>
   </context>
   <context>
@@ -10052,8 +10052,8 @@ de huidige kopie verloren gaat.
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>
@@ -11845,7 +11845,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
       <source>View</source>
-      <translation>Aanzicht</translation>
+      <translation>Weergave</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="555"/>

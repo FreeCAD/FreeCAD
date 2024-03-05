@@ -32,7 +32,7 @@ try:
 except ImportError:
     FreeCAD = None
 
-    def translate(_: str, text: str):
+    def translate(_: str, text: str, details: str = "", n: int = 0):
         return text
 
 
@@ -100,14 +100,7 @@ class WidgetGlobalButtonBar(QtWidgets.QWidget):
         self.close.setText(translate("AddonsInstaller", "Close"))
 
     def set_number_of_available_updates(self, updates: int):
-        if updates <= 0:
-            self.update_all_addons.setEnabled(False)
-            self.update_all_addons.setText(translate("AddonsInstaller", "No updates available"))
-        elif updates == 1:
-            self.update_all_addons.setEnabled(True)
-            self.update_all_addons.setText(translate("AddonsInstaller", "Apply 1 available update"))
-        else:
-            self.update_all_addons.setEnabled(True)
-            self.update_all_addons.setText(
-                translate("AddonsInstaller", "Apply {} available updates").format(updates)
-            )
+        self.update_all_addons.setEnabled(True)
+        self.update_all_addons.setText(
+            translate("AddonsInstaller", "Apply %n available update(s)", "", updates)
+        )

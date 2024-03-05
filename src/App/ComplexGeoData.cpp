@@ -637,7 +637,6 @@ unsigned int ComplexGeoData::getMemSize() const
     return 0;
 }
 
-
 void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
 {
     // DO NOT reset element map if there is one. Because we allow mixing child
