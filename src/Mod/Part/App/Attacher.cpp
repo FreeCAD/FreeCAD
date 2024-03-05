@@ -771,15 +771,15 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
-        const Part::TopoShape* shape;
+        Part::TopoShape shape;
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
-            shape = &(static_cast<Part::Feature*>(geof)->Shape.getShape());
-            if (shape->isNull()){
+            shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
+            if (shape.isNull()){
                 throw AttachEngineException("AttachEngine3D: Part has null shape");
             }
             if (sub[i].length()>0){
                 try{
-                    storage.push_back(shape->getSubShape(sub[i].c_str()));
+                    storage.push_back(shape.getSubShape(sub[i].c_str()));
                 } catch (Standard_Failure&){
                     throw AttachEngineException("AttachEngine3D: subshape not found");
                 }
@@ -787,7 +787,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
                     throw AttachEngineException("AttachEngine3D: null subshape");
                 shapes[i] = &(storage[storage.size()-1]);
             } else {
-                shapes[i] = &(shape->getShape());
+                shapes[i] = &(shape.getShape());
             }
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
             //obtain Z axis and origin of placement
