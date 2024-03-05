@@ -5014,11 +5014,13 @@ bool TopoShape::getRelatedElementsCached(const Data::MappedName &name,
                                          HistoryTraceType sameType,
                                          QVector<Data::MappedElement> &names) const
 {
-    if(!_cache)
+    if(!_cache) {
         return false;
+    }
     auto it = _cache->relations.find(ShapeRelationKey(name,sameType));
-    if(it == _cache->relations.end())
+    if(it == _cache->relations.end()) {
         return false;
+    }
     names = it->second;
     return true;
 }

@@ -1379,14 +1379,14 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
     MappedName tmp;
     bool first = true;
 
-    // TODO: element tracing without object is inheriently unsafe, because of
+    // TODO: element tracing without object is inherently unsafe, because of
     // possible external linking object which means the element may be encoded
     // using external string table. Looking up the wrong table may accidentally
     // cause circular mapping, and is actually quite easy to reproduce. See
     //
     // https://github.com/realthunder/FreeCAD_assembly3/issues/968
     //
-    // A random depth limit is set here to not waste time. 'tagSet' above is
+    // An arbitrary depth limit is set here to not waste time. 'tagSet' above is
     // also used for early detection of 'recursive' mapping.
 
     for (int index = 0; index < 50; ++index) {
