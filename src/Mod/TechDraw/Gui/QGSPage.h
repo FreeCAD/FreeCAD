@@ -65,7 +65,6 @@ class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
-class QGILeaderLine;
 class QGITile;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
@@ -111,7 +110,6 @@ public:
     void createBalloon(QPointF origin, TechDraw::DrawView* parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
-    void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
 
@@ -139,7 +137,6 @@ public:
 
     void setDimensionGroups();
     void setBalloonGroups();
-    void setLeaderGroups();
 
 protected:
     QColor getBackgroundColor();
