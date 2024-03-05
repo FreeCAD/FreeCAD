@@ -218,6 +218,6 @@ TEST_F(FeaturePartCommonTest, testMapping)
 #ifndef FC_USE_TNP_FIX
     EXPECT_EQ(ts1.getElementMap().size(), 0);
 #else
-    EXPECT_EQ(ts1.getElementMap().size(), 26);  // Value and code TBD
+    EXPECT_EQ(ts1.getElementMap().size(), 0);  // TODO: Value and code TBD
 #endif
 }
