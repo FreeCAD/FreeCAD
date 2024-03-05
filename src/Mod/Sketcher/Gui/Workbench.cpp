@@ -42,6 +42,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
     qApp->translate("Workbench", "Sketcher B-spline tools");
+    qApp->translate("Workbench", "Sketcher visual");
     qApp->translate("Workbench", "Sketcher virtual space");
     qApp->translate("Workbench", "Sketcher edit tools");
 #endif
