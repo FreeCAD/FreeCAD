@@ -172,6 +172,7 @@
 #include <Base/Writer.h>
 
 #include "TopoShape.h"
+#include "BRepMesh.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "CrossSection.h"
 #include "encodeFilename.h"
@@ -3359,118 +3360,12 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
     }
 }
 
-namespace Part {
-struct MeshVertex
-{
-    Standard_Real x,y,z;
-    Standard_Integer i;
-
-    MeshVertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
-        : x(X),y(Y),z(Z),i(0)
-    {
-    }
-    explicit MeshVertex(const Base::Vector3d& p)
-        : x(p.x),y(p.y),z(p.z),i(0)
-    {
-    }
-
-    Base::Vector3d toPoint() const
-    { return Base::Vector3d(x,y,z); }
-
-    bool operator < (const MeshVertex &v) const
-    {
-        if (fabs ( this->x - v.x) >= MESH_MIN_PT_DIST)
-            return this->x < v.x;
-        if (fabs ( this->y - v.y) >= MESH_MIN_PT_DIST)
-            return this->y < v.y;
-        if (fabs ( this->z - v.z) >= MESH_MIN_PT_DIST)
-            return this->z < v.z;
-        return false; // points are considered to be equal
-    }
-
-private:
-    // use the same value as used inside the Mesh module
-    static const double MESH_MIN_PT_DIST;
-};
-}
-
-const double MeshVertex::MESH_MIN_PT_DIST = 10 * std::numeric_limits<double>::epsilon();
-
 void TopoShape::getFacesFromDomains(const std::vector<Domain>& domains,
                                     std::vector<Base::Vector3d>& points,
                                     std::vector<Facet>& faces) const
 {
-    std::set<MeshVertex> vertices;
-    Standard_Real x1, y1, z1;
-    Standard_Real x2, y2, z2;
-    Standard_Real x3, y3, z3;
-
-    for (const auto & domain : domains) {
-        for (std::vector<Facet>::const_iterator jt = domain.facets.begin(); jt != domain.facets.end(); ++jt) {
-            x1 = domain.points[jt->I1].x;
-            y1 = domain.points[jt->I1].y;
-            z1 = domain.points[jt->I1].z;
-
-            x2 = domain.points[jt->I2].x;
-            y2 = domain.points[jt->I2].y;
-            z2 = domain.points[jt->I2].z;
-
-            x3 = domain.points[jt->I3].x;
-            y3 = domain.points[jt->I3].y;
-            z3 = domain.points[jt->I3].z;
-
-            TopoShape::Facet face;
-            std::set<MeshVertex>::iterator vIt;
-
-            // 1st vertex
-            MeshVertex v1(x1,y1,z1);
-            vIt = vertices.find(v1);
-            if (vIt == vertices.end()) {
-                v1.i = vertices.size();
-                face.I1 = v1.i;
-                vertices.insert(v1);
-            }
-            else {
-                face.I1 = vIt->i;
-            }
-
-            // 2nd vertex
-            MeshVertex v2(x2,y2,z2);
-            vIt = vertices.find(v2);
-            if (vIt == vertices.end()) {
-                v2.i = vertices.size();
-                face.I2 = v2.i;
-                vertices.insert(v2);
-            }
-            else {
-                face.I2 = vIt->i;
-            }
-
-            // 3rd vertex
-            MeshVertex v3(x3,y3,z3);
-            vIt = vertices.find(v3);
-            if (vIt == vertices.end()) {
-                v3.i = vertices.size();
-                face.I3 = v3.i;
-                vertices.insert(v3);
-            }
-            else {
-                face.I3 = vIt->i;
-            }
-
-            // make sure that we don't insert invalid facets
-            if (face.I1 != face.I2 &&
-                face.I2 != face.I3 &&
-                face.I3 != face.I1)
-                faces.push_back(face);
-        }
-    }
-
-    std::vector<Base::Vector3d> meshPoints;
-    meshPoints.resize(vertices.size());
-    for (const auto & vertex : vertices)
-        meshPoints[vertex.i] = vertex.toPoint();
-    points.swap(meshPoints);
+    BRepMesh mesh;
+    mesh.getFacesFromDomains(domains, points, faces);
 }
 
 double TopoShape::getAccuracy() const
