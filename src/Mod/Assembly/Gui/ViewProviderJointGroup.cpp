@@ -45,7 +45,7 @@ ViewProviderJointGroup::~ViewProviderJointGroup() = default;
 
 QIcon ViewProviderJointGroup::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Assembly_CreateJointFixed.svg");
+    return Gui::BitmapFactory().pixmap("Assembly_JointGroup.svg");
 }
 
 // Make the joint group impossible to delete.
