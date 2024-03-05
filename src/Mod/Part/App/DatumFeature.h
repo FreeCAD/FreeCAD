@@ -55,7 +55,6 @@ public:
             Base::Matrix4D *mat, bool transform, int depth) const override;
 protected:
     void onDocumentRestored() override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
 };
 
 } //namespace Part

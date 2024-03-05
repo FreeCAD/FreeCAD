@@ -195,15 +195,15 @@ class _CommandWindow:
                 if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
-                    if hasattr(obj,"Support"):
-                        if obj.Support:
-                            if isinstance(obj.Support,tuple):
-                                host = obj.Support[0]
-                            elif isinstance(obj.Support,list):
-                                host = obj.Support[0][0]
+                    if hasattr(obj,"AttachmentSupport"):
+                        if obj.AttachmentSupport:
+                            if isinstance(obj.AttachmentSupport,tuple):
+                                host = obj.AttachmentSupport[0]
+                            elif isinstance(obj.AttachmentSupport,list):
+                                host = obj.AttachmentSupport[0][0]
                             else:
-                                host = obj.Support
-                            obj.Support = None # remove
+                                host = obj.AttachmentSupport
+                            obj.AttachmentSupport = None # remove
                     elif Draft.isClone(obj,"Window"):
                         if obj.Objects[0].Inlist:
                             host = obj.Objects[0].Inlist[0]

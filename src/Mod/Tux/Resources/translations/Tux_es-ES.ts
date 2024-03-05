@@ -61,12 +61,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="577"/>
       <source>Settings</source>
-      <translation>Opciones</translation>
+      <translation>Ajustes</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="578"/>
       <source>Orbit style</source>
-      <translation>Estilo órbita</translation>
+      <translation>Estilo de órbita</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="579"/>

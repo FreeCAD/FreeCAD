@@ -52,8 +52,7 @@ using namespace TechDraw;
 
 //**************************************************************
 QGILeaderLine::QGILeaderLine()
-    : m_parentItem(nullptr),
-      m_lineColor(Qt::black),
+    : m_lineColor(Qt::black),
       m_lineStyle(Qt::SolidLine),
       m_hasHover(false),
       m_saveX(0.0),
@@ -167,22 +166,6 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
         setPrettyNormal();
     }
     QGIView::hoverLeaveEvent(event);
-}
-
-void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
-{
-    //    Base::Console().Message("QGILL::onSoureChange(%s)\n", newParent->getNameInDocument());
-    std::string parentName = newParent->getNameInDocument();
-    QGIView* qgiParent = getQGIVByName(parentName);
-    if (qgiParent) {
-        m_parentItem = qgiParent;
-        setParentItem(m_parentItem);
-        draw();
-    }
-    else {
-        Base::Console().Warning("QGILL::onSourceChange - new parent %s has no QGIView\n",
-                                parentName.c_str());
-    }
 }
 
 void QGILeaderLine::setNormalColorAll()

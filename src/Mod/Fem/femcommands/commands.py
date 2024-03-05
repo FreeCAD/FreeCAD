@@ -696,8 +696,6 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # set some property of the solver to nonlinear
         # (only if one solver is available and if this solver is a CalculiX solver):
         # nonlinear material
-        # nonlinear geometry --> it is triggered anyway
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
         for m in self.active_analysis.Group:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
@@ -715,11 +713,10 @@ class _MaterialMechanicalNonlinear(CommandManager):
             or is_of_type(solver_object, "Fem::SolverCalculix")
         ):
             FreeCAD.Console.PrintMessage(
-                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
+                "Set MaterialNonlinearity to nonlinear for {}\n"
                 .format(solver_object.Label)
             )
             solver_object.MaterialNonlinearity = "nonlinear"
-            solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()

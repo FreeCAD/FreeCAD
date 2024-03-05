@@ -111,6 +111,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
     /// signal on changed  property of this object
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
+    /// signal on changed property of this object before document scoped signalChangedObject
+    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName() const {
@@ -614,6 +616,8 @@ protected:
     void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
     void onChanged(const Property* prop) override;
+    /// get called by the container when a property was changed
+    void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after an undo/redo transaction is finished

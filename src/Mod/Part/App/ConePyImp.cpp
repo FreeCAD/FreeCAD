@@ -118,7 +118,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pCone;
     static const std::array<const char *, 2> keywords_c{"Cone", nullptr};
     PyErr_Clear();
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_c,
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c,
                                             &(ConePy::Type), &pCone)) {
         ConePy* pcCone = static_cast<ConePy*>(pCone);
         Handle(Geom_ConicalSurface) pcone = Handle(Geom_ConicalSurface)::DownCast
@@ -138,7 +138,6 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_SetString(PyExc_TypeError, "Cone constructor accepts:\n"
         "-- empty parameter list\n"
         "-- Cone\n"
-        "-- Cone, Distance\n"
         "-- Point1, Point2, Radius1, Radius2\n"
         "-- Point1, Point2, Point3, Point4");
     return -1;

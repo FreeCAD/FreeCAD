@@ -188,8 +188,8 @@
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Privzeto</translation>
+      <translation>Privzeti</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>Pritisnite levi miškin gumb</translation>
+      <translation>Pritisnite levo miškino tipko</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
@@ -1098,7 +1098,7 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
       <source>Name</source>
-      <translation>Naziv</translation>
+      <translation>Ime</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="53"/>
@@ -1395,7 +1395,7 @@ tisti z višjo prednostjo.</translation>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>brez</translation>
+      <translation>nobeden</translation>
     </message>
   </context>
   <context>
@@ -4124,7 +4124,7 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Privzeti</translation>
+      <translation>Privzeto</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4418,7 +4418,7 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
       <source>General</source>
-      <translation>Splošno</translation>
+      <translation>Splošne nastavitve</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
@@ -5483,7 +5483,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../SceneInspector.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pogovorno okno</translation>
+      <translation>Pog. okno</translation>
     </message>
     <message>
       <location filename="../SceneInspector.ui" line="25"/>
@@ -5649,7 +5649,7 @@ izbrani pred odprtjem tega pogovrnega okna</translation>
     <message>
       <location filename="../DlgTreeWidget.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pog. okno</translation>
+      <translation>Pogovorno okno</translation>
     </message>
     <message>
       <location filename="../DlgTreeWidget.ui" line="27"/>
@@ -6129,15 +6129,15 @@ Ali želite shraniti spremembe?</translation>
       <translation>PDF zapis</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Izvozi graf</translation>
     </message>
@@ -6886,7 +6886,7 @@ Ali želite končati ne da bi shranili podatke?</translation>
     <message>
       <location filename="../Action.cpp" line="1042"/>
       <source>none</source>
-      <translation>nobeden</translation>
+      <translation>brez</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1057"/>
@@ -7051,7 +7051,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
   </context>
   <context>
@@ -7250,7 +7250,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Pritisnite levo miškino tipko</translation>
+      <translation>Pritisnite levi miškin gumb</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7704,7 +7704,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../View3DInventor.cpp" line="246"/>
       <source>Export PDF</source>
-      <translation>Izvoz PDF</translation>
+      <translation>Izvozi v PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
@@ -7952,7 +7952,7 @@ Ali želite navesti drugo mapo?</translation>
       <location filename="../resource.cpp" line="76"/>
       <location filename="../resource.cpp" line="77"/>
       <source>General</source>
-      <translation>Splošne nastavitve</translation>
+      <translation>Splošno</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="78"/>
@@ -8066,8 +8066,8 @@ Ali želite navesti drugo mapo?</translation>
       <translation>Izvažanje PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Neshranjen dokument</translation>
     </message>
@@ -8938,8 +8938,8 @@ bodo izgubljene.
       <translation>Preklopi prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Preklopi plavajoče okno</translation>
     </message>
@@ -10083,8 +10083,8 @@ bodo izgubljene.
       <translation>Ustvari nov, prazen dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>
@@ -10861,7 +10861,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1489"/>
       <source>Dimetric</source>
-      <translation>Dvomeren</translation>
+      <translation>Dimetrična</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1490"/>
@@ -10973,7 +10973,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1465"/>
       <source>Isometric</source>
-      <translation>Izometrično</translation>
+      <translation>Izometrična</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1466"/>
@@ -11183,7 +11183,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Trimetric</source>
-      <translation>Trimetrično</translation>
+      <translation>Trimetrična</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
@@ -11267,7 +11267,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Celozaslonsko</translation>
+      <translation>Celozaslonski način</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11513,7 +11513,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>Celozaslonski način</translation>
+      <translation>Celozaslonsko</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11894,7 +11894,7 @@ Ali želite vseeno nadaljevati?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Izvozi v PDF</translation>
+      <translation>Izvoz PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -12164,17 +12164,17 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>Ravnina XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>Ravnina XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>Ravnina YZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12184,7 +12184,7 @@ ob zagodu FreeCAD-a</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Odmik:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -12861,7 +12861,7 @@ bo pozdravno okno prikazano</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="436"/>
       <source>Name</source>
-      <translation>Ime</translation>
+      <translation>Naziv</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="447"/>
