@@ -100,7 +100,6 @@ public:
 public Q_SLOTS:
     void onLineEditFinished(QPointF tipDisplace,
                             std::vector<QPointF> points);//QGEPath is finished editing points
-    void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
     void editComplete();//tell caller that edit session is finished
@@ -121,7 +120,6 @@ protected:
 
 private:
     std::vector<QPointF> m_pathPoints;
-    QGraphicsItem* m_parentItem;
     QGIPrimPath* m_line;//actual leader line
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;

@@ -4084,6 +4084,7 @@ TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, RefineF
     return *this;
 }
 
+// TODO: Does the toponaming branch version of this method need to be here?
 bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     if(_Shape.IsNull())
         return false;
