@@ -267,7 +267,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
 
 FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: read FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
 
@@ -301,7 +301,8 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     }
     // Mesh should link to the part feature, in order to set up FemConstraint
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     return mesh;
 }
 
@@ -543,7 +544,7 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh,
 void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 {
 
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: write FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
 
@@ -561,7 +562,8 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 
@@ -611,7 +613,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
 
 App::DocumentObject* FemVTKTools::readResult(const char* filename, App::DocumentObject* res)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log(
         "Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
@@ -667,7 +669,8 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     }
 
     pcDoc->recompute();
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().Log("End: read FemResult with FemMesh from VTK file ======================\n");
 
     return result;
@@ -689,7 +692,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
         return;
     }
 
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: write FemResult to VTK unstructuredGrid dataset =======\n");
     Base::FileInfo f(filename);
 
@@ -702,7 +705,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     FemVTKTools::exportVTKMesh(&fmesh, grid);
 
     Base::Console().Log("    %f: vtk mesh builder finished\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // result
     FemVTKTools::exportFreeCADResult(res, grid);
@@ -719,7 +722,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     }
 
     Base::Console().Log("    %f: writing result object to vtk finished\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().Log("End: write FemResult to VTK unstructuredGrid dataset =======\n");
 }
 

@@ -264,7 +264,6 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     Swap.cpp
     ${SWIG_SRCS}
-    TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp

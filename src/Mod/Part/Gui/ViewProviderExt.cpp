@@ -921,7 +921,7 @@ void ViewProviderPartExt::updateVisual()
     }
 
     // time measurement and book keeping
-    Base::TimeInfo start_time;
+    Base::TimeElapsed start_time;
     int numTriangles=0,numNodes=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
     std::set<int> faceEdges;
 
@@ -1281,7 +1281,7 @@ void ViewProviderPartExt::updateVisual()
 
 #   ifdef FC_DEBUG
         // printing some information
-        Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
+        Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(start_time,Base::TimeElapsed()));
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   else
     (void)numEdges;
