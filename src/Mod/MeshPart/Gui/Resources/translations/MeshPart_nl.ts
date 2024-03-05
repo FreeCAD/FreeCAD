@@ -227,7 +227,7 @@ Dit commando werkt alleen met een 'maaswerk'-object, niet een normaal vlak of op
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Draad</translation>
+      <translation>Polygonale lijn</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>

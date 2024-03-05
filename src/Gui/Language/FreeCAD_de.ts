@@ -188,8 +188,8 @@
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformieren</translation>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../Application.h" line="260"/>
       <source>Transform</source>
-      <translation>Transformieren</translation>
+      <translation>Bewegen</translation>
     </message>
     <message>
       <location filename="../Application.h" line="261"/>
@@ -2346,7 +2346,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <location filename="../DlgParameterImp.cpp" line="78"/>
       <location filename="../DlgParameterImp.cpp" line="235"/>
       <source>Type</source>
-      <translation>Art</translation>
+      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="78"/>
@@ -2742,7 +2742,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
       <source>Clear</source>
-      <translation>Leeren</translation>
+      <translation>Löschen</translation>
     </message>
   </context>
   <context>
@@ -3637,7 +3637,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="665"/>
       <source>Default license</source>
-      <translation>Standard Lizenz</translation>
+      <translation>Standard-Lizenz</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="675"/>
@@ -5563,7 +5563,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Transform.cpp" line="289"/>
       <location filename="../Transform.cpp" line="417"/>
       <source>Transform</source>
-      <translation>Bewegen</translation>
+      <translation>Transformierung</translation>
     </message>
   </context>
   <context>
@@ -6119,15 +6119,15 @@ Sollen die Änderungen gespeichert werden?</translation>
       <translation>PDF-Format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Graphviz-Format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Graphik exportieren</translation>
     </message>
@@ -8056,8 +8056,8 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <translation>Exportiert als PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Nicht gespeichertes Dokument</translation>
     </message>
@@ -8546,7 +8546,7 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <location filename="../MouseSelection.cpp" line="209"/>
       <location filename="../MouseSelection.cpp" line="413"/>
       <source>Clear</source>
-      <translation>Löschen</translation>
+      <translation>Leeren</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="210"/>
@@ -8635,7 +8635,7 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
       <location filename="../ViewProviderDragger.cpp" line="85"/>
       <location filename="../ViewProviderLink.cpp" line="2601"/>
       <source>Transform</source>
-      <translation>Transformierung</translation>
+      <translation>Bewegen</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="76"/>
@@ -8925,8 +8925,8 @@ the current copy will be lost.
       <translation>Überlagerungsmodus umschalten</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Schwebendes Fenster umschalten</translation>
     </message>
@@ -8969,7 +8969,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Sichtbarkeitssymbol anzeigen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9139,12 +9139,12 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Unterdrücken aufheben</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Unterdrücken</translation>
     </message>
   </context>
   <context>
@@ -10070,8 +10070,8 @@ the current copy will be lost.
       <translation>Neues Dokument erstellen</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>
@@ -10694,7 +10694,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <message>
       <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Transform</source>
-      <translation>Bewegen</translation>
+      <translation>Transformieren</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1585"/>
@@ -11755,7 +11755,7 @@ Trotzdem fortfahren?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Wenn aktiviert, wird ein Augensymbol vor den Elementen im Baum angezeigt, das den Sichtbarkeits-Status der Elemente anzeigt. Mit einem Klick darauf wird die Sichtbarkeit umgeschaltet</translation>
     </message>
   </context>
   <context>
@@ -12850,7 +12850,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="447"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Art</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="458"/>

@@ -403,7 +403,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation type="unfinished">labelSort</translation>
+      <translation>ჭდეების დალაგება</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -604,12 +604,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="324"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>წყაროს ბმულის შეფასება</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="343"/>
       <source>The URL for the Addon Score data (see documentation for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see documentation for formatting and hosting details).</translation>
+      <translation>ბმული დამატების ქულების მონაცემისთვის (იხილეთ დოკუმენტაცია ფორმატისა და ჰოსტინგის დეტალებისთვის).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -1242,18 +1242,18 @@ installed addons will be checked for available updates
       <translation>მაკროს შესრულების შეცდომა. მეტი დეტალებისთვის იხილეთ კონსოლი.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="343"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>წამყვანი პროგრამისტი</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="355"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>ავტორი</translation>
     </message>
@@ -1367,8 +1367,8 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="415"/>
       <location filename="../../package_list.py" line="465"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>დაყენებულია</translation>
     </message>
@@ -1578,9 +1578,9 @@ installed addons will be checked for available updates
       <translation>აირჩიეთ ხატულას ფაილი ამ შემცველობის ელემენტისთვის</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} -ი {}-ის ქვესაქაღალდეს არ წარმოადგენს</translation>
     </message>
@@ -1944,27 +1944,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="376"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} ★ GitHub-ზე</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="378"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>★-ის გარეშე, ან GitHub-ზე არაა</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="383"/>
       <source>Created </source>
-      <translation type="unfinished">Created </translation>
+      <translation>შექმნლია </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="391"/>
       <source>Updated </source>
-      <translation type="unfinished">Updated </translation>
+      <translation>განახლებულია </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="394"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>ქულა: </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="417"/>
@@ -1975,9 +1975,9 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="419"/>
       <location filename="../../package_list.py" line="473"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>განახლება ხელმისაწვდომია</translation>
     </message>
@@ -2351,15 +2351,13 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_workers_startup.py" line="938"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
-      <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
-</translation>
+      <translation>{}-დან დამატების სტატისტიკის მიღება ჩავარდა -- სწორი, მხოლოდ, ანბანით დალაგება იქნება</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="970"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
-      <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
-</translation>
+      <translation>&apos;{}&apos;-დან დამატების ქულების გამოთხოვნა ჩავარდა -- ქულებით დალაგება ჩავარდება</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="262"/>
@@ -2447,7 +2445,7 @@ installed addons will be checked for available updates
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
       <source>Alphabetical</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>ანბანის მიხედვით</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
@@ -2459,19 +2457,19 @@ installed addons will be checked for available updates
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
       <source>Date Created</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Date Created</translation>
+      <translation>შექმნის თარიღი</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
       <source>GitHub Stars</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">GitHub Stars</translation>
+      <translation>GitHub-ის ვარსკვლავები</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>ქულა</translation>
     </message>
   </context>
   <context>
