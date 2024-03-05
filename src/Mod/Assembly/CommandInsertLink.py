@@ -139,6 +139,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def deactivated(self):
         pref = Preferences.preferences()
         pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
+        Gui.Selection.clearSelection()
 
     def buildPartList(self):
         self.allParts.clear()
