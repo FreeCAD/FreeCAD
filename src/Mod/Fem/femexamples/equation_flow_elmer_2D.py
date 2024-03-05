@@ -81,6 +81,7 @@ def setup(doc=None, solvertype="elmer"):
     p5 = Vector(0, 50.000, 0)
     p6 = Vector(0, -50.000, 0)
     wire = Draft.make_wire([p1, p2, p3, p4, p5, p6], closed=True)
+    wire.MakeFace = True
     wire.Label = "Wire"
 
     # the circle defining the heating rod
@@ -88,6 +89,7 @@ def setup(doc=None, solvertype="elmer"):
     axisCirc = Vector(1, 0, 0)
     placementCircle = Placement(pCirc, Rotation(axisCirc, 0))
     circle = Draft.make_circle(10, placement=placementCircle)
+    circle.MakeFace = True
     circle.Label = "HeatingRod"
     circle.ViewObject.Visibility = False
 
