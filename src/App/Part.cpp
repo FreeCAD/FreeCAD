@@ -27,6 +27,7 @@
 
 #include "Part.h"
 #include "PartPy.h"
+#include "VarSet.h"
 
 
 using namespace App;
@@ -135,7 +136,6 @@ std::vector<DocumentObject*> Part::removeObjects(std::vector<DocumentObject*> ob
     return GeoFeatureGroupExtension::removeObjects(objs);
 }
 
-
 void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 {
     // Migrate Material from App::PropertyMap to App::PropertyLink
@@ -148,36 +148,6 @@ void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeNa
         }
     } else {
         App::GeoFeature::handleChangedPropertyType(reader, TypeName, prop);
-    }
-}
-
-VarSet *Part::getOriginalVarSet(const PropertyVarSet* prop) const {
-    const PropertyVarSet* propVarSet = dynamic_cast<const PropertyVarSet*>(
-            getDynamicPropertyByName(
-                    VarSet::getNameOriginalVarSetProperty(
-                            prop->getName()).c_str()));
-    if (propVarSet) {
-        return propVarSet->getValue();
-    }
-    return nullptr;
-}
-
-void Part::onChanged(const Property* prop)
-{
-    DocumentObject::onChanged(prop);
-
-    if (prop->isDerivedFrom<PropertyVarSet>()) {
-        auto propVarSet = dynamic_cast<const PropertyVarSet*>(prop);
-        VarSet *varSet = propVarSet->getValue();
-        VarSet *originalVarSet = getOriginalVarSet(propVarSet);
-        if (varSet && originalVarSet) {
-            if (varSet == originalVarSet) {
-                originalVarSet->removeReplacedVarSet();
-            }
-            else {
-                originalVarSet->addReplacedVarSet(varSet);
-            }
-        }
     }
 }
 

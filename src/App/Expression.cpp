@@ -1106,6 +1106,19 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     return ExpressionPtr(expr);
 }
 
+VarSet* Expression::findReferencedVarSet() const {
+    std::map<ObjectIdentifier, bool> objectIdentifiers;
+    getIdentifiers(objectIdentifiers);
+    for (auto oid : objectIdentifiers) {
+        VarSet* varSet = oid.first.findReferencedVarSet();
+        if (varSet) {
+            return varSet;
+        }
+    }
+
+    return nullptr;
+}
+
 App::any Expression::getValueAsAny() const {
     Base::PyGILStateLocker lock;
     return pyObjectToAny(getPyValue());

@@ -189,6 +189,7 @@ private:
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
+    void varSetChanged(const App::DocumentObject &obj, const App::Property &prop);
     void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
     void updateHiddenReference(const std::string &key);
 

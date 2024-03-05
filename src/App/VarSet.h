@@ -29,7 +29,7 @@
 
 namespace App
 {
-    
+
 /**
  * @brief A DocumentObject class with the purpose to store variables.
  *
@@ -112,27 +112,7 @@ public:
      * @param varSet The VarSet to check equivalence with.
      * @return true if varSet is equivalent to this VarSet.
      */
-    bool isEquivalent(VarSet* varSet) const;
-
-    /**
-     * @brief Unregister the VarSet that replaces this VarSet.
-     *
-     * The VarSet remains a PropertyVarSet Replaced that keeps track of which
-     * VarSet this one replaces.  This method removes that VarSet from the
-     * administration.
-     */
-    void removeReplacedVarSet();
-
-    /**
-     * @brief Add varSet as the varSet that replaces this VarSet.
-     *
-     * The VarSet remains a PropertyVarSet Replaced that keeps track of which
-     * VarSet this one replaces.  This method adds that VarSet
-     * to the administration.
-     *
-     * @param varSet The VarSet that replaces this VarSet
-     */
-    void addReplacedVarSet(VarSet* varSet);
+    bool isEquivalent(VarSet* other) const;
 
 private:
     PropertyBool Exposed;
@@ -141,8 +121,8 @@ private:
     
     void exposedChanged();
 
-    const char* getNameParentProperty();
-    void createVarSetPropertiesParent(const char* name, DocumentObject* value);
+    const char* getNameVarSetPropertyParent();
+    void createVarSetPropertiesParent(DocumentObject* varSet);
     void createVarSetPropertyParent(DocumentObject* parent, const char* name,
                                     std::string& doc, DocumentObject* value,
                                     bool hidden = false, bool copyOnChange = false);
@@ -152,8 +132,15 @@ private:
 
     const char* previousNameParentProperty;
 
-    DocumentObject* getParent();
+    /** @brief Get the parent of a VarSet that is exposed
+     *
+     * Get the parent of a VarSet that is exposed.  If there is no such parent or
+     * the parent is not a Part, disable the boolean flag Exposed.
+     *
+     * @return the parent document object of the exposed VarSet or nullptr otherwise
+     */
+    DocumentObject* getParentExposed();
     
-    };
+    }; 
 }
 #endif

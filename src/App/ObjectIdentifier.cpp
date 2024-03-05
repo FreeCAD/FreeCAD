@@ -1524,16 +1524,7 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
     }
 }
 
-void ObjectIdentifier::redirect(VarSet* varSet, ResolveResults &rs) const
-{
-    VarSet* redirected = varSet->getParentVarSet();
-    if (redirected) {
-        rs.resolvedDocumentObject = redirected;
-        rs.resolvedProperty = redirected->getPropertyByName(rs.propertyName.c_str());
-    }
-}
-
-Py::Object ObjectIdentifier::access(ResolveResults &result,
+Py::Object ObjectIdentifier::access(const ResolveResults &result,
         Py::Object *value, Dependencies *deps) const
 {
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
@@ -1541,14 +1532,6 @@ Py::Object ObjectIdentifier::access(ResolveResults &result,
     {
         FC_THROWM(Base::RuntimeError, result.resolveErrorString()
            << " in '" << toString() << "'");
-    }
-
-    // redirect to an exposed VarSet
-    if (result.resolvedDocumentObject->isDerivedFrom<VarSet>()) {
-        auto varSet = dynamic_cast<VarSet*>(result.resolvedDocumentObject);
-        if (varSet->isExposed()) {
-            redirect(varSet, result);
-        }
     }
 
     Py::Object pyobj;
@@ -1752,6 +1735,17 @@ Py::Object ObjectIdentifier::access(ResolveResults &result,
         return Py::Object();
     }
     return pyobj;
+}
+
+VarSet* ObjectIdentifier::findReferencedVarSet() const
+{
+    ResolveResults rs(*this);
+
+    if (rs.resolvedProperty && rs.resolvedProperty->isDerivedFrom<PropertyVarSet>()) {
+        return static_cast<PropertyVarSet*>(rs.resolvedProperty)->getValue();
+    }
+
+    return nullptr;
 }
 
 /**

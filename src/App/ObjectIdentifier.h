@@ -419,6 +419,8 @@ public:
 
     // Getter
 
+    VarSet* findReferencedVarSet() const;
+
     App::any getValue(bool pathValue=false, bool *isPseudoProperty=nullptr) const;
 
     Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=nullptr) const;
@@ -473,8 +475,7 @@ protected:
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
-    void redirect(VarSet* varSet, ResolveResults &rs) const;
-    Py::Object access(ResolveResults &rs,
+    Py::Object access(const ResolveResults &rs,
             Py::Object *value=nullptr, Dependencies *deps=nullptr) const;
 
     void resolve(ResolveResults & results) const;

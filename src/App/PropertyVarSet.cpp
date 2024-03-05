@@ -37,9 +37,24 @@ PropertyVarSet::PropertyVarSet() = default;
 
 void PropertyVarSet::setValue(DocumentObject* obj)
 {
-    if (obj && obj->isDerivedFrom<VarSet>()) {
-        auto varSet = dynamic_cast<VarSet*>(obj);
-        PropertyXLink::setValue(obj);
+    if (obj) {
+        if (obj->isDerivedFrom<VarSet>()) {
+            auto varSet = dynamic_cast<VarSet*>(obj);
+            auto oldVarSet = getValue();
+            if (oldVarSet) {
+                if (!varSet->isEquivalent(oldVarSet)) {
+                    FC_THROWM(Base::ValueError, "Variable Set "
+                              << varSet->getFullName()
+                              << " is not equivalent to "
+                              << oldVarSet->getFullName());
+                }
+            }
+            PropertyXLink::setValue(obj);
+        }
+        else {
+            FC_THROWM(Base::TypeError, obj->getFullName()
+                      << " is not a Variable Set");
+        }
     }
 }
 

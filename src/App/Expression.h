@@ -179,6 +179,8 @@ public:
 
     bool hasComponent() const {return !components.empty();}
 
+    VarSet* findReferencedVarSet() const;
+
     boost::any getValueAsAny() const;
 
     Py::Object getPyValue() const;

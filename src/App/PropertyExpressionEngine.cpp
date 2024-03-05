@@ -75,6 +75,7 @@ struct PropertyExpressionEngine::Private {
     // For some reason, MSVC has trouble with vector of scoped_connection if
     // defined in header, hence the private structure here.
     std::vector<boost::signals2::scoped_connection> conns;
+    std::vector<boost::signals2::scoped_connection> varSetConns;
     std::unordered_map<std::string, std::vector<ObjectIdentifier> > propMap;
 };
 
@@ -152,6 +153,7 @@ void PropertyExpressionEngine::hasSetValue()
 
     if(pimpl) {
         pimpl->conns.clear();
+        pimpl->varSetConns.clear();
         pimpl->propMap.clear();
     }
     // check if there is any hidden references
@@ -173,6 +175,13 @@ void PropertyExpressionEngine::hasSetValue()
                 if(!dep.second)
                     continue;
                 const ObjectIdentifier &var = dep.first;
+                VarSet* varSet = var.findReferencedVarSet();
+                if (varSet) {
+                    //NOLINTBEGIN
+                    pimpl->varSetConns.emplace_back(varSet->signalChanged.connect(std::bind(
+                                &PropertyExpressionEngine::varSetChanged, this, sp::_1, sp::_2)));
+                    //NOLINTEND
+                }
                 for(auto &vdep : var.getDep(true)) {
                     auto obj = vdep.first;
                     auto objName = obj->getFullName() + ".";
@@ -207,6 +216,7 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
     auto it = pimpl->propMap.find(key);
     if(it == pimpl->propMap.end())
         return;
+    bool varSetConnsSet = false;
     for(auto &var : it->second) {
         auto it = expressions.find(var);
         if(it == expressions.end() || it->second.busy)
@@ -218,8 +228,18 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
         App::any value;
         try {
             value = it->second.expression->getValueAsAny();
-            if(!isAnyEqual(value, myProp->getPathValue(var)))
+            if(!isAnyEqual(value, myProp->getPathValue(var))) {
+                VarSet* varSet = it->second.expression->findReferencedVarSet();
+                if (!varSetConnsSet && varSet) {
+                    pimpl->varSetConns.clear();
+                    //NOLINTBEGIN
+                    pimpl->varSetConns.emplace_back(varSet->signalChanged.connect(std::bind(
+                            &PropertyExpressionEngine::varSetChanged, this, sp::_1, sp::_2)));
+                    //NOLINTEND
+                    varSetConnsSet = true; // we don't have to go over more varSets
+                }
                 myProp->setPathValue(var, value);
+            }
         }catch(Base::Exception &e) {
             e.ReportException();
             FC_ERR("Failed to evaluate property binding "
@@ -234,6 +254,10 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
                     << myProp->getFullName() << " on change of " << key);
         }
     }
+}
+
+void PropertyExpressionEngine::varSetChanged(const App::DocumentObject &, const App::Property &) {
+    dynamic_cast<DocumentObject*>(getContainer())->touch(false);
 }
 
 void PropertyExpressionEngine::slotChangedObject(const App::DocumentObject &obj, const App::Property &) {

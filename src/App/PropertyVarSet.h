@@ -41,14 +41,24 @@ class AppExport PropertyVarSet : public PropertyXLink
 public:
 
     /**
-     * @brief Create a PropertyVarSet
+     * @brief Create a PropertyVarSet.
      */
     PropertyVarSet();
 
+    /**
+     * @brief Set the value of this PropertyVarSet.
+     *
+     * @arg obj Should be either a nullptr (typically used in initialization)
+     * or a VarSet.  Once a VarSet has been set, a subsequent new value has to
+     * be equivalent to the already existing VarSet
+     *
+     * @throws Base::ValueError If the VarSet is not equivalent
+     * @throws Base::TypeError If obj is not a VarSet
+     */
     void setValue(DocumentObject* obj) override;
 
     /**
-     * @brief Get the value of this Property
+     * @brief Get the value of this Property.
      *
      * @return The VarSet that this property links to or nullptr if there is no
      * value.
