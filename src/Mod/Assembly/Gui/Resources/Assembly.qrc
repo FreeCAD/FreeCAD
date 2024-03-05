@@ -12,6 +12,7 @@
         <file>icons/Assembly_CreateJointTangent.svg</file>
         <file>icons/Assembly_ExportASMT.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
+        <file>icons/Assembly_JointGroup.svg</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>preferences/Assembly.ui</file>
