@@ -5356,37 +5356,36 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
 
         icon = object()->mergeColorfulOverlayIcons(icon);
+
+        if (isVisibilityIconEnabled()) {
+            static QPixmap pxVisible, pxInvisible;
+            if (pxVisible.isNull()) {
+                pxVisible = BitmapFactory().pixmap("TreeItemVisible");
+            }
+            if (pxInvisible.isNull()) {
+                pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
+            }
+
+            // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
+            QIcon new_icon;
+            for (auto state: {QIcon::On, QIcon::Off}) {
+                QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
+
+                QPixmap px(2*px_org.width(), px_org.height());
+                px.fill(Qt::transparent);
+
+                QPainter pt;
+                pt.begin(&px);
+                pt.setPen(Qt::NoPen);
+                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+                pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+                pt.end();
+
+                new_icon.addPixmap(px, QIcon::Normal, state);
+            }
+            icon = new_icon;
+        }
     }
-
-    if (isVisibilityIconEnabled()) {
-        static QPixmap pxVisible, pxInvisible;
-        if (pxVisible.isNull()) {
-            pxVisible = BitmapFactory().pixmap("TreeItemVisible");
-        }
-        if (pxInvisible.isNull()) {
-            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
-        }
-
-        // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
-        QIcon new_icon;
-        for (auto state: {QIcon::On, QIcon::Off}) {
-            QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
-
-            QPixmap px(2*px_org.width(), px_org.height());
-            px.fill(Qt::transparent);
-
-            QPainter pt;
-            pt.begin(&px);
-            pt.setPen(Qt::NoPen);
-            pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
-            pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
-            pt.end();
-
-            new_icon.addPixmap(px, QIcon::Normal, state);
-        }
-        icon = new_icon;
-    }
-
 
     _Timing(2, setIcon);
     this->setIcon(0, icon);
