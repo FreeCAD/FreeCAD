@@ -211,7 +211,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
         shapes.push_back(sh);
     }
 
-    TopoShape res {};
+    TopoShape res {0};
     res.makeElementBoolean(Part::OpCodes::Common, shapes);
     if (res.isNull()) {
         throw Base::RuntimeError("Resulting shape is null");

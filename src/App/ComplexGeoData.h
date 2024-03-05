@@ -298,8 +298,20 @@ public:
     virtual bool checkElementMapVersion(const char * ver) const;
 
     /// Check if the given sub-name only contains an element name
-    static bool isElementName(const char *subName) {
-        return (subName != nullptr) && (*subName != 0) && findElementName(subName)==subName;
+    static bool isElementName(const char* subName)
+    {
+        return (subName != nullptr) && (*subName != 0) && findElementName(subName) == subName;
+    }
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     * @param cb: trace callback with call signature.
+     * @sa TraceCallback
+     */
+    void traceElement(const MappedName& name, TraceCallback cb) const
+    {
+        _elementMap->traceElement(name, Tag, cb);
     }
 
     /** Flush an internal buffering for element mapping */
