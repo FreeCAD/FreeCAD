@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="180mm"
+   height="48mm"
+   viewBox="0 0 180 48"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
+  <title id="title1">Titleblock ISO 7200</title>
+  <metadata id="metadata1">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Titleblock ISO 7200</dc:title>
+        <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benjamin May</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g id="Borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+    <rect id="Frame" width="180" x="0" height="48" y="0" style="stroke-width:0.7" />
+    <rect id="Owner border" width="40" x="140" height="24" y="0" />
+    <rect id="Identification number border" width="60" x="80" height="12" y="24" />
+    <rect id="Revision index border" width="20" x="140" height="12" y="36" />
+    <rect id="Date of issue border" width="40" x="100" height="12" y="36" />
+    <rect id="Sheet number border" width="20" x="160" height="12" y="36" />
+    <rect id="Language code border" width="20" x="60" height="12" y="36" />
+    <rect id="Title border" width="80" x="0" height="24" y="0" />
+    <rect id="Responsible department border" width="40" x="140" height="12" y="24" />
+    <rect id="Approval person border" width="60" x="80" height="12" y="12" />
+    <rect id="Creator border" width="60" x="80" height="12" y="0" />
+    <rect id="Document type border" width="80" x="0" height="12" y="24" />
+    <rect id="Document status border" width="60" x="0" height="12" y="36" />
+    <rect id="Paper size border" width="20" x="80" height="12" y="36" />
+  </g>
+  <g id="Labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="Owner label" x="140.5" y="3.6">Owner:</text>
+    <text id="Identification number label" x="80.5" y="27.6">Drawing number:</text>
+    <text id="Revision index label" x="140.5" y="39.6">Revision:</text>
+    <text id="Date of issue label" x="100.5" y="39.6">Issue date:</text>
+    <text id="Sheet number label" x="160.5" y="39.6">Sheet:</text>
+    <text id="Language code label" x="60.5" y="39.6">Language:</text>
+    <text id="Title label" x="0.5" y="3.6">Title, supplementary title:</text>
+    <text id="Responsible department label" x="140.5" y="27.6">Responsible department:</text>
+    <text id="Approval person label" x="80.5" y="15.6">Approved by:</text>
+    <text id="Creator label" x="80.5" y="3.6">Created by:</text>
+    <text id="Document type label" x="0.5" y="27.6">Document type:</text>
+    <text id="Document status label" x="0.5" y="39.6">Document status:</text>
+    <text id="Paper size label" x="80.5" y="39.6">Paper size:</text>
+  </g>
+  <g id="Data fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="Identification number data field" x="81" y="33.200001" freecad:editable="drawing_number"><tspan>DN</tspan></text>
+    <text id="Revision index data field" x="150" y="45.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
+    <text id="Date of issue data field" x="101" y="45.2" freecad:editable="issue_date"><tspan>YYYY-MM-DD</tspan></text>
+    <text id="Sheet number data field" x="170" y="45.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
+    <text id="Language code data field" x="70" y="45.2" freecad:editable="language" style="text-align:center;text-anchor:middle"><tspan>EN</tspan></text>
+    <text id="Title data field" x="1" y="9.2" freecad:editable="title"><tspan>ISO 7200 titleblock</tspan></text>
+    <text id="Supplementary title 1 data field" x="1" y="15.2" freecad:editable="supplementary_title_1"><tspan>ST1</tspan></text>
+    <text id="Supplementary title 2 data field" x="1" y="21.2" freecad:editable="supplementary_title_2"><tspan>ST2</tspan></text>
+    <text id="Responsible department data field" x="141" y="33" freecad:editable="responsible_department"><tspan>RD</tspan></text>
+    <text id="Approval person data field" x="81" y="21.2" freecad:editable="approved_by"><tspan>B. Hecate</tspan></text>
+    <text id="Creator data field" x="81" y="9.2" freecad:editable="created_by"><tspan>A. Nemesis</tspan></text>
+    <text id="Document type data field" x="1" y="33.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+    <text id="Document status data field" x="1" y="45.2" freecad:editable="document_status"><tspan>In preparation</tspan></text>
+    <text id="Paper size data field" x="90" y="45.2" style="text-align:center;text-anchor:middle">A3</text>
+  </g>
+</svg>
