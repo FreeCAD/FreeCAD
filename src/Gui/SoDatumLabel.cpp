@@ -565,7 +565,7 @@ void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& 
     // Primitive Shape is only for text as this should only be selectable
     SoPrimitiveVertex pv;
 
-    this->beginShape(action, QUADS);
+    this->beginShape(action, TRIANGLE_STRIP);
 
     pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
 
@@ -616,7 +616,7 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
     // Primitive Shape is only for text as this should only be selectable
     SoPrimitiveVertex pv;
 
-    this->beginShape(action, QUADS);
+    this->beginShape(action, TRIANGLE_STRIP);
 
     pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
 
@@ -653,7 +653,7 @@ void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
     // Primitive Shape is only for text as this should only be selectable
     SoPrimitiveVertex pv;
 
-    this->beginShape(action, QUADS);
+    this->beginShape(action, TRIANGLE_STRIP);
 
     pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
 
