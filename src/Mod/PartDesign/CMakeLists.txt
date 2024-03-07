@@ -8,6 +8,7 @@ set(PartDesign_Scripts
     __init__.py
     Init.py
     TestPartDesignApp.py
+    TestVarSetApp.py
 )
 
 if(BUILD_GUI)
