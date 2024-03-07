@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>682</height>
+    <height>719</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -525,6 +525,9 @@ movement will be disabled until the command finishes.</string>
         </property>
         <property name="suffix">
          <string> seconds</string>
+        </property>
+        <property name="value">
+         <number>1</number>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>MouseDelay</cstring>
