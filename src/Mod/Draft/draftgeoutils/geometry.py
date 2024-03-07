@@ -240,16 +240,6 @@ def get_shape_normal(shape):
     # the way the shape is constructed i.e. by vertexes in clockwise or
     # anti-clockwise.  This cryptic behaviour no longer matters.
 
-    # for points
-    if isinstance(shape, (list, tuple)):
-        if len(shape) <= 2:
-            return None
-        else:
-            try:
-                shape = Part.makePolygon(shape)
-            except:
-                return None
-
     if shape.isNull():
         return None
 
