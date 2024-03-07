@@ -882,6 +882,17 @@ void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIden
     }
 }
 
+void PropertyExpressionEngine::rewriteVarSetExpressions(const DocumentObject* parent, const char* nameProperty,
+                                                        const DocumentObject* varSet, bool add)
+{
+    for (auto & it : expressions) {
+        RewriteVarSetExpressionVisitor<PropertyExpressionEngine> v(*this, parent, nameProperty, varSet, add);
+        Expression* rewrittenExpression = it.second.expression->rewrite(v);
+        // copy the expression because the shared pointer may deconstruct the earlier expression
+        it.second.expression = std::shared_ptr<Expression>(rewrittenExpression->copy());
+    }
+}
+
 PyObject *PropertyExpressionEngine::getPyObject()
 {
     Py::List list;
@@ -1102,4 +1113,9 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
         if (e.second.expression)
             e.second.expression->visit(v);
     }
+}
+
+template<> Expression* RewriteVarSetExpressionVisitor<PropertyExpressionEngine>::rewrite(Expression &node)
+{
+        return this->rewriteVarSetExpression(node, parent, nameProperty, varSet, add);
 }

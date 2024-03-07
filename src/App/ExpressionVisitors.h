@@ -121,6 +121,24 @@ private:
     int colOffset;
 };
 
+template<class P> class RewriteVarSetExpressionVisitor : public ExpressionModifier<P> {
+public:
+    explicit RewriteVarSetExpressionVisitor(P &_prop, const DocumentObject* parent,
+                                            const char* nameProperty, const DocumentObject* varSet, bool add)
+        : ExpressionModifier<P>(_prop),parent(parent),nameProperty(nameProperty),varSet(varSet),add(add)
+        {}
+
+    Expression* rewrite(Expression &node) override;
+    void visit(Expression &) override {}
+
+private:
+    const DocumentObject* parent;
+    const char* nameProperty;
+    const DocumentObject* varSet;
+    bool add;
+};
+
+
 }
 
 #endif // RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H

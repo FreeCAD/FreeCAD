@@ -260,10 +260,29 @@ void VarSet::createVarSetPropertiesParent(DocumentObject* varSet)
     }
 }
 
+void VarSet::rewriteExpressions(DocumentObject* obj, const DocumentObject* parent, const char* nameProperty, bool add)
+{
+    obj->ExpressionEngine.rewriteVarSetExpressions(parent, nameProperty, this, add);
+
+    Property* group = obj->getPropertyByName("Group");
+    if (group && group->isDerivedFrom<PropertyLinkList>()) {
+        for (auto groupObj : static_cast<PropertyLinkList*>(group)->getValue()) {
+            rewriteExpressions(groupObj, parent, nameProperty, add);
+        }
+    }
+}
+
+void VarSet::rewriteExpressionsParent(DocumentObject *parent, bool add)
+{
+    const char* nameProperty = getNameVarSetPropertyParent();
+    rewriteExpressions(parent, parent, nameProperty, add);
+}
+
 void VarSet::addVarSetPropertiesParent()
 {
     try {
         createVarSetPropertiesParent(this);
+        rewriteExpressionsParent(getParentExposed(), ADD);
     }
     catch (Base::NameError &e) {
         // expose failure, set to false
@@ -276,6 +295,8 @@ void VarSet::removeVarSetPropertiesParent()
 {
     DocumentObject* parent = getFirstParent();
     if (parent) {
+        rewriteExpressionsParent(parent, REMOVE);
+        
         // the property may not be there when constructing the object
         const char *nameProperty = getNameVarSetPropertyParent();
         parent->removeDynamicProperty(nameProperty);

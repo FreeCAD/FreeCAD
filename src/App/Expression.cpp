@@ -282,6 +282,13 @@ void ExpressionVisitor::offsetCells(Expression &e, int rowOffset, int colOffset)
     e._offsetCells(rowOffset,colOffset,*this);
 }
 
+Expression* ExpressionVisitor::rewriteVarSetExpression(Expression &e, const DocumentObject* parent,
+                                                       const char* nameProperty, const DocumentObject* varSet,
+                                                       bool add)
+{
+    return e._rewriteVarSetExpression(parent, nameProperty, varSet, add, *this);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////
 // Helper functions
 
@@ -822,6 +829,12 @@ void Expression::Component::visit(ExpressionVisitor &v) {
     if(e3) e3->visit(v);
 }
 
+void Expression::Component::rewrite(ExpressionVisitor &v) {
+    if(e1) Expression::replaceExpression(&e1, e1->rewrite(v));
+    if(e2) Expression::replaceExpression(&e2, e2->rewrite(v));
+    if(e3) Expression::replaceExpression(&e3, e3->rewrite(v));
+}
+
 bool Expression::Component::isTouched() const {
     return (e1&&e1->isTouched()) ||
             (e2&&e2->isTouched()) ||
@@ -1150,6 +1163,25 @@ void Expression::visit(ExpressionVisitor &v) {
     v.visit(*this);
 }
 
+Expression* Expression::rewrite(ExpressionVisitor &v) {
+    // descend into the tree
+    _rewrite(v);
+    // descend into the components
+    for(auto &c : components)
+        c->rewrite(v);
+
+    // Use the visitor to rewrite this expression.
+
+    // This can lead to a new Expression.  The parent expression is responsible
+    // for storing the new pointer and deleting the old one (happens in the
+    // various _rewrite instances).  Note that the new expression and old
+    // expression should not share objects, because the delete of the old
+    // exprssion will destroy those.  In practice this means that if a rewrite
+    // wants to reuse some of the old expression, it should copy that
+    // expression, perform the modifications on the copy and return that one.
+    return v.rewrite(*this);
+}
+
 Expression* Expression::eval() const {
     Base::PyGILStateLocker lock;
     return expressionFromPy(owner,getPyValue());
@@ -1197,6 +1229,13 @@ Expression* Expression::copy() const {
     return expr;
 }
 
+void Expression::replaceExpression(Expression** expression, Expression* newExpression)
+{
+    if (*expression != newExpression) {
+        delete *expression;
+        *expression = newExpression;
+    }
+}
 
 //
 // UnitExpression class
@@ -1674,6 +1713,17 @@ void OperatorExpression::_visit(ExpressionVisitor &v)
         left->visit(v);
     if (right)
         right->visit(v);
+}
+
+void OperatorExpression::_rewrite(ExpressionVisitor &v)
+{
+    if (left) {
+        Expression::replaceExpression(&left, left->rewrite(v));
+    }
+
+    if (right) {
+        Expression::replaceExpression(&right, right->rewrite(v));
+    }
 }
 
 bool OperatorExpression::isCommutative() const
@@ -2880,6 +2930,29 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
     }
 }
 
+void FunctionExpression::_rewrite(ExpressionVisitor &v)
+{
+    for (auto & arg : args) {
+        Expression::replaceExpression(&arg, arg->rewrite(v));
+    }
+}
+
+Expression* FunctionExpression::_rewriteVarSetExpression(const DocumentObject* parent, const char* nameProperty,
+                                                         const DocumentObject*, bool add,
+                                                         ExpressionVisitor& visitor)
+{
+    if (!add && (f == HIDDENREF || f == HREF) && args[0]->isDerivedFrom<VariableExpression>()) {
+        auto* ve = static_cast<VariableExpression*>(args[0]);
+        Expression *e = ve->_restoreVarSetExpression(parent, nameProperty);
+        if (e) {
+            visitor.aboutToChange();
+            return e;
+        }
+    }
+
+    return this;
+}
+
 //
 // VariableExpression class
 //
@@ -3073,6 +3146,64 @@ bool VariableExpression::_renameObjectIdentifier(
         return true;
     }
     return false;
+}
+
+Expression* VariableExpression::_rewriteVarSetExpression(const DocumentObject* parent, const char* nameProperty,
+                                                         const DocumentObject* varSet, bool add,
+                                                         ExpressionVisitor& visitor)
+{
+    const auto& oldPath = var.canonicalPath();
+
+    // We add a hiddenref to this expression if the oldPath is pointing to varSet.
+    if (add && oldPath.getDocumentObject() == varSet) {
+        // In that case, we refer to the parent object by label, use "nameProperty" as
+        // the property that points to a varSet.
+        ObjectIdentifier oid(var.getOwner());
+        ObjectIdentifier::String nameDocumentObject(parent->Label.getValue(), true);
+        oid.setDocumentObjectName(std::move(nameDocumentObject), true);
+        oid.addComponent(ObjectIdentifier::SimpleComponent(nameProperty));
+        // We add all existing components that were there before.
+        for (const auto& c : var.getComponents()) {
+            oid.addComponent(ObjectIdentifier::Component(c));
+        }
+        visitor.aboutToChange();
+
+        // Create the new variable expression.
+        std::vector<Expression*> args;
+        auto* newExpression = new VariableExpression(getOwner(), oid);
+        args.push_back(newExpression);
+
+        // Use it as an argument to the hiddenref function.
+        return new FunctionExpression(getOwner(), FunctionExpression::Function::HIDDENREF, "hiddenref", args);
+    }
+
+    return this;
+}
+
+Expression* VariableExpression::_restoreVarSetExpression(const DocumentObject* parent, const char* nameProperty)
+{
+    const auto& oldPath = var.canonicalPath();
+
+    // We remove the reference to parent and "nameProperty"
+    if (var.getDocumentObject() == parent && var.getPropertyComponent(0).getName() == nameProperty) {
+        // we replace it with the original VarSet
+        std::string nameOriginalProperty = VarSet::getNameOriginalVarSetProperty(nameProperty);
+        Property *originalVarSetProperty = parent->getPropertyByName(nameOriginalProperty.c_str());
+        if (originalVarSetProperty->isDerivedFrom<PropertyVarSet>()) {
+            DocumentObject* originalVarSet = static_cast<PropertyVarSet*>(originalVarSetProperty)->getValue();
+            ObjectIdentifier::String nameDocumentObject(originalVarSet->Label.getValue(), true);
+            ObjectIdentifier oid(var.getOwner());
+            oid.setDocumentObjectName(std::move(nameDocumentObject), true);
+            // We add all the components except the first one because it was referring to "nameProperty" in
+            // the parent.
+            for (size_t i = 1; i < var.getComponents().size(); i++) {
+                oid.addComponent(ObjectIdentifier::Component(var.getPropertyComponent((int) i)));
+            }
+            return new VariableExpression(getOwner(), oid);
+        }
+    }
+
+    return nullptr;
 }
 
 void VariableExpression::_collectReplacement(
@@ -3312,6 +3443,13 @@ void ConditionalExpression::_visit(ExpressionVisitor &v)
     condition->visit(v);
     trueExpr->visit(v);
     falseExpr->visit(v);
+}
+
+void ConditionalExpression::_rewrite(ExpressionVisitor &v)
+{
+    Expression::replaceExpression(&condition, condition->rewrite(v));
+    Expression::replaceExpression(&trueExpr, trueExpr->rewrite(v));
+    Expression::replaceExpression(&falseExpr, falseExpr->rewrite(v));
 }
 
 TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression)

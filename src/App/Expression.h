@@ -57,6 +57,22 @@ class AppExport ExpressionVisitor {
 public:
     virtual ~ExpressionVisitor() = default;
     virtual void visit(Expression &e) = 0;
+
+    /** @brief Rewrite expression e.
+     *
+     * Part of a rewrite-visitor.  Rewrite expression e and return a pointer to
+     * e or a new expression.  The new expression should share data with e
+     * because e will be deleted by the rewrite visitors if a new expression is
+     * returned.  In practice this means that if e is being rewritten and part
+     * of the expression is reused, it is necessary to make a copy of e, change
+     * the copy and return a new expression based on that copy.
+     *
+     * @arg e The expression that is being rewritten.
+     *
+     * @return A pointer to e if the expression is not rewritten or a new
+     * expression that does not share data with e.
+     */
+    virtual Expression* rewrite(Expression &e) { return &e; }
     virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
     virtual void reset() {}
@@ -76,6 +92,27 @@ protected:
             const std::string &ref, const char *newLabel);
     void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
     void offsetCells(Expression &e, int rowOffset, int colOffset);
+    /** @brief Rewrite an expression that references a variable set.
+     *
+     * Rewrite expression e given the parent document object of the VarSet, the
+     * name of the property the parent uses to refer to the VarSet that
+     * replaces an exposed one, the exposed VarSet, and a boolean flag that
+     * indicates whether we are adding a hiddenref expression in the rewrite or
+     * if we are removing a hiddenref expression.
+     *
+     * The rewrite will add a hiddenref to the parent and the property
+     * indicated by nameProperty.
+     *
+     * @arg e The expression to rewrite
+     * @arg parent The parent that contains a property that points to a replacing VarSet
+     * @arg nameProperty the name of the property in the parent that refers to a replacing VarSet
+     * @arg varSet The VarSet that is exposed and is referenced in the expressions
+     * @arg add A boolean flag that indicates whether to add a hidden
+     *
+     * @return a new expression with the relevant expressions rewritten.
+     */
+    Expression* rewriteVarSetExpression(Expression &e, const DocumentObject* parent,
+                                        const char* nameProperty, const DocumentObject* varSet, bool add);
 };
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
@@ -161,6 +198,8 @@ public:
 
     void visit(ExpressionVisitor & v);
 
+    Expression* rewrite(ExpressionVisitor &v);
+
     class Exception : public Base::Exception {
     public:
         explicit Exception(const char *sMessage) : Base::Exception(sMessage) { }
@@ -210,8 +249,17 @@ protected:
     }
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
     virtual void _offsetCells(int, int, ExpressionVisitor &) {}
+    virtual Expression* _rewriteVarSetExpression(const DocumentObject *, const char *,
+                                                 const DocumentObject *, bool, ExpressionVisitor &)
+    {
+        return this;
+    }
     virtual Py::Object _getPyValue() const = 0;
     virtual void _visit(ExpressionVisitor &) {}
+    virtual void _rewrite(ExpressionVisitor &) {}
+
+    static void replaceExpression(Expression** expression, Expression* newExpression);
+
 
 protected:
     App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */

@@ -150,6 +150,9 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
+    void rewriteVarSetExpressions(const DocumentObject * parent, const char * nameProperty,
+                                  const DocumentObject * varSet, bool add);
+
     App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const override;
 
     size_t numExpressions() const;

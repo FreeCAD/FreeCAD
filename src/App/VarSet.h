@@ -130,6 +130,10 @@ private:
     void removeVarSetPropertiesParent();
     void renameVarSetPropertiesParent(const char *oldName);
 
+    void rewriteExpressions(DocumentObject* obj, const DocumentObject* parent,
+                            const char* nameProperty, bool add);
+    void rewriteExpressionsParent(DocumentObject* parent, bool add);
+
     const char* previousNameParentProperty;
 
     /** @brief Get the parent of a VarSet that is exposed
