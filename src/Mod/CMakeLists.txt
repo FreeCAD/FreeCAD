@@ -10,6 +10,10 @@ if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
 endif(BUILD_ASSEMBLY)
 
+if(BUILD_CLEANSTART)
+    add_subdirectory(CleanStart)
+endif(BUILD_CLEANSTART)
+
 if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
