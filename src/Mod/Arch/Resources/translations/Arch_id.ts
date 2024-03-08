@@ -1276,8 +1276,8 @@ are placed in a 'Group' instead.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>Pilihan ekspor</translation>
     </message>
@@ -1730,40 +1730,40 @@ unit untuk digunakan saat membuka file.</translation>
       <translation>Mode Drawing</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1628"/>
-      <location filename="../../ArchProfile.py" line="153"/>
       <location filename="../../ArchStructure.py" line="444"/>
+      <location filename="../../ArchProfile.py" line="153"/>
+      <location filename="../../ArchCommands.py" line="1628"/>
       <source>Category</source>
       <translation>Kategori</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="214"/>
-      <location filename="../../ArchProfile.py" line="160"/>
       <location filename="../../ArchStructure.py" line="451"/>
+      <location filename="../../ArchProfile.py" line="160"/>
       <location filename="../../ArchWindow.py" line="410"/>
+      <location filename="../../ArchPanel.py" line="214"/>
       <source>Preset</source>
       <translation>Preset</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
-      <location filename="../../ArchPanel.py" line="224"/>
-      <location filename="../../ArchPrecast.py" line="1412"/>
       <location filename="../../ArchStructure.py" line="460"/>
+      <location filename="../../ArchPrecast.py" line="1412"/>
+      <location filename="../../ArchPanel.py" line="224"/>
       <location filename="../../ArchWall.py" line="511"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Length</source>
       <translation>Panjangnya</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="231"/>
-      <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchStructure.py" line="470"/>
+      <location filename="../../ArchPrecast.py" line="1413"/>
+      <location filename="../../ArchPanel.py" line="231"/>
       <location filename="../../ArchWall.py" line="517"/>
       <source>Width</source>
       <translation>Lebar</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1414"/>
       <location filename="../../ArchStructure.py" line="477"/>
+      <location filename="../../ArchPrecast.py" line="1414"/>
       <location filename="../../ArchWall.py" line="523"/>
       <source>Height</source>
       <translation>Tinggi</translation>
@@ -1779,8 +1779,8 @@ unit untuk digunakan saat membuka file.</translation>
       <translation>Beralih L/W</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="249"/>
       <location filename="../../ArchStructure.py" line="493"/>
+      <location filename="../../ArchPanel.py" line="249"/>
       <location filename="../../ArchWall.py" line="537"/>
       <source>Con&amp;tinue</source>
       <translation>Melanjutkan</translation>
@@ -1797,8 +1797,8 @@ unit untuk digunakan saat membuka file.</translation>
       <translation>Mesh ini adalah solid yang tidak valid</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="524"/>
       <location filename="../../ArchStructure.py" line="863"/>
+      <location filename="../../ArchPanel.py" line="524"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker mengembalikan sebuah kesalahan</translation>
     </message>
@@ -1911,8 +1911,8 @@ unit untuk digunakan saat membuka file.</translation>
       <translation>Selesai</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="756"/>
       <location filename="../../ArchStructure.py" line="1439"/>
+      <location filename="../../ArchPanel.py" line="756"/>
       <source>Couldn't compute a shape</source>
       <translation>Tidak dapat menghitung bentuk</translation>
     </message>
@@ -2087,8 +2087,8 @@ Pembuatan situs dibatalkan.</translation>
       <translation>Tidak dapat membuat sebuah atap</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1661"/>
       <location filename="../../ArchRoof.py" line="243"/>
+      <location filename="../../ArchComponent.py" line="1661"/>
       <location filename="../../ArchSpace.py" line="256"/>
       <source>Please select a base object</source>
       <translation>Mohon pilih sebuah objek dasar</translation>
@@ -2380,37 +2380,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Pilih yang dipilih</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="807"/>
+      <location filename="../../ArchWindow.py" line="1805"/>
       <location filename="../../ArchAxisSystem.py" line="372"/>
+      <location filename="../../ArchAxis.py" line="807"/>
       <location filename="../../ArchComponent.py" line="1947"/>
       <location filename="../../ArchSectionPlane.py" line="1377"/>
       <location filename="../../ArchSpace.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1805"/>
       <source>Remove</source>
       <translation>Menghapus</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchWindow.py" line="1806"/>
       <location filename="../../ArchAxisSystem.py" line="373"/>
+      <location filename="../../ArchAxis.py" line="808"/>
       <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchSpace.py" line="793"/>
-      <location filename="../../ArchWindow.py" line="1806"/>
       <source>Add</source>
       <translation>Menambahkan</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="636"/>
-      <location filename="../../ArchAxisSystem.py" line="252"/>
-      <location filename="../../ArchComponent.py" line="1503"/>
-      <location filename="../../ArchGrid.py" line="323"/>
+      <location filename="../../ArchSite.py" line="932"/>
+      <location filename="../../ArchReference.py" line="504"/>
+      <location filename="../../ArchWindow.py" line="1807"/>
       <location filename="../../ArchIFCView.py" line="56"/>
+      <location filename="../../ArchAxisSystem.py" line="252"/>
       <location filename="../../ArchMaterial.py" line="495"/>
       <location filename="../../ArchMaterial.py" line="789"/>
-      <location filename="../../ArchReference.py" line="504"/>
+      <location filename="../../ArchGrid.py" line="323"/>
       <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchAxis.py" line="636"/>
+      <location filename="../../ArchComponent.py" line="1503"/>
       <location filename="../../ArchSectionPlane.py" line="1191"/>
-      <location filename="../../ArchSite.py" line="932"/>
-      <location filename="../../ArchWindow.py" line="1807"/>
       <source>Edit</source>
       <translation>Edit</translation>
     </message>
@@ -2431,8 +2431,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Kawat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1955"/>
       <location filename="../../ArchWindow.py" line="1811"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Components</source>
       <translation>Komponen</translation>
     </message>
@@ -2442,30 +2442,30 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create new component</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1813"/>
       <location filename="../../ArchMaterial.py" line="871"/>
       <location filename="../../ArchMaterial.py" line="890"/>
-      <location filename="../../ArchWindow.py" line="1813"/>
       <source>Name</source>
       <translation>Nama</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1630"/>
-      <location filename="../../ArchComponent.py" line="2010"/>
       <location filename="../../ArchWindow.py" line="1814"/>
+      <location filename="../../ArchComponent.py" line="2010"/>
+      <location filename="../../ArchCommands.py" line="1630"/>
       <source>Type</source>
       <translation>Jenis</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1816"/>
       <location filename="../../ArchMaterial.py" line="871"/>
       <location filename="../../ArchMaterial.py" line="890"/>
       <location filename="../../ArchPanel.py" line="238"/>
-      <location filename="../../ArchWindow.py" line="1816"/>
       <source>Thickness</source>
       <translation>Thickness</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1418"/>
       <location filename="../../ArchWindow.py" line="1817"/>
+      <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Mengimbangi</translation>
     </message>
@@ -2533,9 +2533,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Silakan pilih setidaknya satu sumbu</translation>
     </message>
     <message>
+      <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchAxis.py" line="70"/>
       <location filename="../../ArchAxis.py" line="806"/>
-      <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchComponent.py" line="1954"/>
       <source>Axes</source>
       <translation>Sumbu</translation>
@@ -2547,9 +2547,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../importJSON.py" line="61"/>
+      <location filename="../../importWebGL.py" line="874"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
       <source>Successfully written</source>
       <translation>Berhasil ditulis</translation>
     </message>
@@ -2559,8 +2559,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Truss</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="114"/>
       <location filename="../../ArchTruss.py" line="94"/>
+      <location filename="../../ArchCurtainWall.py" line="114"/>
       <source>Please select only one base object or none</source>
       <translation type="unfinished">Please select only one base object or none</translation>
     </message>
@@ -3114,24 +3114,24 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1010"/>
       <location filename="../../ArchSchedule.py" line="665"/>
       <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1631"/>
-      <location filename="../../ArchComponent.py" line="2011"/>
       <location filename="../../ArchSchedule.py" line="665"/>
       <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchComponent.py" line="2011"/>
+      <location filename="../../ArchCommands.py" line="1631"/>
       <source>Value</source>
       <translation>Nilai</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
       <location filename="../../ArchSchedule.py" line="665"/>
       <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchCommands.py" line="1632"/>
       <source>Unit</source>
       <translation>Satuan</translation>
     </message>
@@ -3227,19 +3227,19 @@ Floor creation aborted.</translation>
       <translation type="unfinished">has an invalid shape</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="960"/>
       <location filename="../../ArchPrecast.py" line="130"/>
       <location filename="../../ArchPrecast.py" line="246"/>
       <location filename="../../ArchPrecast.py" line="324"/>
       <location filename="../../ArchPrecast.py" line="456"/>
       <location filename="../../ArchPrecast.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="681"/>
+      <location filename="../../ArchComponent.py" line="960"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1512"/>
       <location filename="../../ArchSite.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="1512"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
     </message>
@@ -3249,8 +3249,8 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="214"/>
       <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchCommands.py" line="214"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
@@ -3447,8 +3447,8 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="206"/>
       <location filename="../../ArchBuildingPart.py" line="233"/>
+      <location filename="../../ArchBuilding.py" line="206"/>
       <source>Building</source>
       <translation>Bangunan</translation>
     </message>
@@ -3827,14 +3827,14 @@ Building creation aborted.</translation>
       <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="392"/>
       <location filename="../../ArchStructure.py" line="692"/>
+      <location filename="../../ArchPanel.py" line="392"/>
       <source>The length of this element, if not based on a profile</source>
       <translation type="unfinished">The length of this element, if not based on a profile</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="394"/>
       <location filename="../../ArchStructure.py" line="694"/>
+      <location filename="../../ArchPanel.py" line="394"/>
       <source>The width of this element, if not based on a profile</source>
       <translation type="unfinished">The width of this element, if not based on a profile</translation>
     </message>
@@ -3844,15 +3844,15 @@ Building creation aborted.</translation>
       <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="421"/>
       <location filename="../../ArchStructure.py" line="698"/>
+      <location filename="../../ArchPanel.py" line="421"/>
       <location filename="../../ArchWall.py" line="757"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="70"/>
       <location filename="../../ArchStructure.py" line="700"/>
+      <location filename="../../ArchPrecast.py" line="70"/>
       <source>The structural nodes of this element</source>
       <translation type="unfinished">The structural nodes of this element</translation>
     </message>
@@ -3867,8 +3867,8 @@ Building creation aborted.</translation>
       <translation type="unfinished">Offset distance between the centerline and the nodes line</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="418"/>
       <location filename="../../ArchStructure.py" line="706"/>
+      <location filename="../../ArchPanel.py" line="418"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
     </message>
@@ -3945,9 +3945,9 @@ Building creation aborted.</translation>
       <translation type="unfinished">The electric power needed by this equipment in Watts</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="281"/>
       <location filename="../../ArchBuildingPart.py" line="234"/>
       <location filename="../../ArchBuildingPart.py" line="258"/>
+      <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
       <translation type="unfinished">The type of this building</translation>
     </message>
@@ -4266,20 +4266,20 @@ Building creation aborted.</translation>
       <translation type="unfinished">A URL that shows this site in a mapping website</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="201"/>
       <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchComponent.py" line="201"/>
       <source>Other shapes that are appended to this object</source>
       <translation type="unfinished">Other shapes that are appended to this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="203"/>
       <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchComponent.py" line="203"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation type="unfinished">Other shapes that are subtracted from this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="226"/>
       <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
     </message>
@@ -4314,8 +4314,8 @@ Building creation aborted.</translation>
       <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="70"/>
       <location filename="../../ArchSite.py" line="643"/>
+      <location filename="../../ArchIFC.py" line="70"/>
       <source>The type of this object</source>
       <translation type="unfinished">The type of this object</translation>
     </message>
@@ -6750,9 +6750,9 @@ Building creation aborted.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchAxis.py" line="648"/>
-      <location filename="../../ArchIFCView.py" line="68"/>
       <location filename="../../ArchSite.py" line="952"/>
+      <location filename="../../ArchIFCView.py" line="68"/>
+      <location filename="../../ArchAxis.py" line="648"/>
       <source>Transform</source>
       <translation type="unfinished">Transform</translation>
     </message>

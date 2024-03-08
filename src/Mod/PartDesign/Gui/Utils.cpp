@@ -273,7 +273,7 @@ App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {
 
 void fixSketchSupport (Sketcher::SketchObject* sketch)
 {
-    App::DocumentObject* support = sketch->Support.getValue();
+    App::DocumentObject* support = sketch->AttachmentSupport.getValue();
 
     if (support)
         return; // Sketch is on a face of a solid, do nothing
@@ -317,7 +317,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
 
     if (fabs(offset) < Precision::Confusion()) {
         // One of the base planes
-        FCMD_OBJ_CMD(sketch,"Support = (" << Gui::Command::getObjectCmd(plane) << ",[''])");
+        FCMD_OBJ_CMD(sketch,"AttachmentSupport = (" << Gui::Command::getObjectCmd(plane) << ",[''])");
         FCMD_OBJ_CMD(sketch,"MapReversed = " << (reverseSketch ? "True" : "False"));
         FCMD_OBJ_CMD(sketch,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
 
@@ -331,12 +331,12 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         std::string Datum = doc->getUniqueObjectName("DatumPlane");
         FCMD_DOC_CMD(doc,"addObject('PartDesign::Plane','"<<Datum<<"')");
         auto obj = doc->getObject(Datum.c_str());
-        FCMD_OBJ_CMD(obj,"Support = [(" << Gui::Command::getObjectCmd(plane) << ",'')]");
+        FCMD_OBJ_CMD(obj,"AttachmentSupport = [(" << Gui::Command::getObjectCmd(plane) << ",'')]");
         FCMD_OBJ_CMD(obj,"MapMode = '" << AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
         FCMD_OBJ_CMD(obj,"AttachmentOffset.Base.z = " << offset);
         FCMD_OBJ_CMD(body,"insertObject("<<Gui::Command::getObjectCmd(obj)<<','<<
                 Gui::Command::getObjectCmd(sketch)<<")");
-        FCMD_OBJ_CMD(sketch,"Support = (" << Gui::Command::getObjectCmd(obj) << ",[''])");
+        FCMD_OBJ_CMD(sketch,"AttachmentSupport = (" << Gui::Command::getObjectCmd(obj) << ",[''])");
         FCMD_OBJ_CMD(sketch,"MapReversed = " <<  (reverseSketch ? "True" : "False"));
         FCMD_OBJ_CMD(sketch,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
     }
@@ -500,7 +500,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
-        App::DocumentObject* support = attachable->Support.getValue();
+        App::DocumentObject* support = attachable->AttachmentSupport.getValue();
         if (support && !support->isDerivedFrom<App::OriginFeature>())
             return false;
     }
@@ -559,12 +559,12 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
 {
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
-        App::DocumentObject* support = attachable->Support.getValue();
+        App::DocumentObject* support = attachable->AttachmentSupport.getValue();
         if (support && support->isDerivedFrom<App::OriginFeature>()) {
             auto originfeat = static_cast<App::OriginFeature*>(support);
             App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
             if (targetOriginFeature) {
-                attachable->Support.setValue(static_cast<App::DocumentObject*>(targetOriginFeature), "");
+                attachable->AttachmentSupport.setValue(static_cast<App::DocumentObject*>(targetOriginFeature), "");
             }
         }
     }

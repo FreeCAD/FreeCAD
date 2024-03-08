@@ -1240,6 +1240,14 @@ public:
 
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
     bool canMapElement(const TopoShape &other) const;
+    void cacheRelatedElements(const Data::MappedName & name,
+                              HistoryTraceType sameType,
+                              const QVector<Data::MappedElement> & names) const;
+
+    bool getRelatedElementsCached(const Data::MappedName & name,
+                                  HistoryTraceType sameType,
+                                  QVector<Data::MappedElement> &names) const;
+
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;

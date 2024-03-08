@@ -188,8 +188,8 @@
       <translation>Umístění</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformace</translation>
@@ -6122,15 +6122,15 @@ Chcete uložit provedené změny?</translation>
       <translation>PDF formát</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Formát Graphvizu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Exportovat graf</translation>
     </message>
@@ -7042,7 +7042,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Poloha</translation>
     </message>
   </context>
   <context>
@@ -8057,8 +8057,8 @@ Do you want to specify another directory?</source>
       <translation>Exportovat PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Neuložený dokument</translation>
     </message>
@@ -8928,8 +8928,8 @@ na aktuální kopii budou ztraceny.
       <translation>Přepnout překrytí</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Přepnout plovoucí okno</translation>
     </message>
@@ -10073,8 +10073,8 @@ na aktuální kopii budou ztraceny.
       <translation>Vytvořit nový prázdný dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>
@@ -12154,17 +12154,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>Rovina XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>Rovina XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>Rovina YZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12174,7 +12174,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Odsazení:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>

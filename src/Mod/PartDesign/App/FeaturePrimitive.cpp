@@ -147,11 +147,6 @@ void FeaturePrimitive::onChanged(const App::Property* prop)
     FeatureAddSub::onChanged(prop);
 }
 
-void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-}
-
 // suppress warning about tp_print for Py3.8
 #if defined(__clang__)
 # pragma clang diagnostic push

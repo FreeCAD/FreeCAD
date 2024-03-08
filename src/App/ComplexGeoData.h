@@ -242,6 +242,12 @@ public:
     std::vector<std::pair<MappedName, ElementIDRefs> >
     getElementMappedNames(const IndexedName & element, bool needUnmapped=false) const;
 
+    /// Hash the child element map postfixes to shorten element name from hierarchical maps
+    void hashChildMaps();
+
+    /// Check if there is child element map
+    bool hasChildElementMap() const;
+
     /// Append the Tag (if and only if it is non zero) into the element map
     virtual void reTagElementMap(long tag,
                                  App::StringHasherRef hasher,
@@ -285,9 +291,27 @@ public:
     /// Get the current element map size
     size_t getElementMapSize(bool flush=true) const;
 
+    /// Return the current element map version
+    virtual std::string getElementMapVersion() const;
+
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
+
     /// Check if the given sub-name only contains an element name
-    static bool isElementName(const char *subName) {
-        return (subName != nullptr) && (*subName != 0) && findElementName(subName)==subName;
+    static bool isElementName(const char* subName)
+    {
+        return (subName != nullptr) && (*subName != 0) && findElementName(subName) == subName;
+    }
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     * @param cb: trace callback with call signature.
+     * @sa TraceCallback
+     */
+    void traceElement(const MappedName& name, TraceCallback cb) const
+    {
+        _elementMap->traceElement(name, Tag, cb);
     }
 
     /** Flush an internal buffering for element mapping */

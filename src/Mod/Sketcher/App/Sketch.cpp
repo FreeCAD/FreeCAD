@@ -197,7 +197,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
                         const std::vector<Constraint*>& ConstraintList,
                         int extGeoCount)
 {
-    Base::TimeInfo start_time;
+    Base::TimeElapsed start_time;
 
     clear();
 
@@ -339,10 +339,10 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     calculateDependentParametersElements();
 
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
-        Base::TimeInfo end_time;
+        Base::TimeElapsed end_time;
 
         Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",
-                            Base::TimeInfo::diffTime(start_time, end_time).c_str());
+                            Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
 
     return GCSsys.dofsNumber();
@@ -4538,21 +4538,21 @@ bool Sketch::updateNonDrivingConstraints()
 
 int Sketch::solve()
 {
-    Base::TimeInfo start_time;
+    Base::TimeElapsed start_time;
     std::string solvername;
 
     auto result = internalSolve(solvername);
 
-    Base::TimeInfo end_time;
+    Base::TimeElapsed end_time;
 
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
         Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",
                             solvername.c_str(),
-                            Base::TimeInfo::diffTime(start_time, end_time).c_str());
+                            Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
 
-    SolveTime = Base::TimeInfo::diffTimeF(start_time, end_time);
+    SolveTime = Base::TimeElapsed::diffTimeF(start_time, end_time);
 
     return result;
 }

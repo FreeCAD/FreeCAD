@@ -43,6 +43,7 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");
+    qApp->translate("Workbench", "Page");
     qApp->translate("Workbench", "TechDraw");
     // Translations for View > Toolbars
     qApp->translate("Workbench", "TechDraw Annotation");
@@ -57,8 +58,11 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "TechDraw Stacking");
     qApp->translate("Workbench", "TechDraw Tool Attributes");
     qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "Views From Other Workbenches");
+    qApp->translate("Workbench", "Clipped Views");
+    qApp->translate("Workbench", "Hatching");
+    qApp->translate("Workbench", "Symbols");
     qApp->translate("Workbench", "Views");
-    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
 #endif
 
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)

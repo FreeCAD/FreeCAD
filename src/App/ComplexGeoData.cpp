@@ -189,6 +189,17 @@ const std::string &ComplexGeoData::elementMapPrefix() {
     return prefix;
 }
 
+std::string ComplexGeoData::getElementMapVersion() const {
+    return "4";
+}
+
+bool ComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    return !boost::equals(ver, "3")
+        && !boost::equals(ver, "4")
+        && !boost::starts_with(ver, "3.");
+}
+
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {
@@ -626,7 +637,6 @@ unsigned int ComplexGeoData::getMemSize() const
     return 0;
 }
 
-
 void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
 {
     // DO NOT reset element map if there is one. Because we allow mixing child
@@ -651,6 +661,19 @@ void ComplexGeoData::beforeSave() const
     if (this->_elementMap) {
         this->_elementMap->beforeSave(Hasher);
     }
+}
+
+void ComplexGeoData::hashChildMaps()
+{
+    flushElementMap();
+    if (_elementMap)
+        _elementMap->hashChildMaps(Tag);
+}
+
+bool ComplexGeoData::hasChildElementMap() const
+{
+    flushElementMap();
+    return _elementMap && _elementMap->hasChildElementMap();
 }
 
 

@@ -99,7 +99,7 @@ void ProfileBased::positionByPrevious()
     else {
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject* sketch = getVerifiedSketch();
-        App::DocumentObject* support = sketch->Support.getValue();
+        App::DocumentObject* support = sketch->AttachmentSupport.getValue();
         if (support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
             this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         }
@@ -307,13 +307,13 @@ const TopoDS_Face ProfileBased::getSupportFace() const
 
 TopoDS_Face ProfileBased::getSupportFace(const Part::Part2DObject* sketch) const
 {
-    if (sketch && sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->Support.getValue()) {
-        const auto& Support = sketch->Support;
-        App::DocumentObject* ref = Support.getValue();
+    if (sketch && sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->AttachmentSupport.getValue()) {
+        const auto& AttachmentSupport = sketch->AttachmentSupport;
+        App::DocumentObject* ref = AttachmentSupport.getValue();
 
         Part::Feature* part = dynamic_cast<Part::Feature*>(ref);
         if (part) {
-            const std::vector<std::string>& sub = Support.getSubValues();
+            const std::vector<std::string>& sub = AttachmentSupport.getSubValues();
             assert(sub.size() == 1);
 
             if (sub.at(0).empty()) {
@@ -385,7 +385,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     Part::Part2DObject* sketch = getVerifiedSketch(silent);
     const char* err = nullptr;
 
-    App::DocumentObject* spt = sketch->Support.getValue();
+    App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
     if (spt) {
         if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
             rv = static_cast<Part::Feature*>(spt);

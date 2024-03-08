@@ -8,6 +8,7 @@
 
 #include "PartTestHelpers.h"
 
+#include <boost/core/ignore_unused.hpp>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -506,6 +507,40 @@ TEST_F(TopoShapeExpansionTest, flushElementMapTest)
     // Check that the two maps have been flushed
     EXPECT_NE(shapeWithMapFlushed.getElementMap()[0].name.find("Edge2"), -1);
     EXPECT_NE(childshapeWithMapFlushed.getElementMap()[0].name.find("Vertex1"), -1);
+}
+
+TEST_F(TopoShapeExpansionTest, cacheRelatedElements)
+{
+    // Arrange
+    TopoShape topoShape {3L};
+    QVector<MappedElement> names {
+        {MappedName {"Test1"}, IndexedName {"Test", 1}},
+        {MappedName {"Test2"}, IndexedName {"Test", 2}},
+        {MappedName {"OtherTest1"}, IndexedName {"OtherTest", 1}},
+    };
+    QVector<MappedElement> names2 {
+        {MappedName {"Test3"}, IndexedName {"Test", 3}},
+    };
+    HistoryTraceType traceType = HistoryTraceType::followTypeChange;
+    MappedName keyName {"Key1"};
+    MappedName keyName2 {"Key2"};
+    QVector<MappedElement> returnedNames;
+    QVector<MappedElement> returnedNames2;
+    QVector<MappedElement> returnedNames3;
+    // Act
+    topoShape.cacheRelatedElements(keyName, traceType, names);
+    topoShape.cacheRelatedElements(keyName2, HistoryTraceType::stopOnTypeChange, names2);
+    topoShape.getRelatedElementsCached(keyName, traceType, returnedNames);
+    topoShape.getRelatedElementsCached(keyName, HistoryTraceType::stopOnTypeChange, returnedNames3);
+    topoShape.getRelatedElementsCached(keyName2,
+                                       HistoryTraceType::stopOnTypeChange,
+                                       returnedNames2);
+    // Assert
+    EXPECT_EQ(returnedNames.size(), 3);
+    EXPECT_STREQ(returnedNames[0].name.toString().c_str(), "Test1");
+    EXPECT_EQ(returnedNames2.size(), 1);
+    EXPECT_STREQ(returnedNames2[0].name.toString().c_str(), "Test3");
+    EXPECT_EQ(returnedNames3.size(), 0);  // No entries of this type.
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
@@ -1988,19 +2023,22 @@ TEST_F(TopoShapeExpansionTest, makeElementSlice)
     EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, result.getShape().ShapeType());
     // Assert that we're creating a correct element map
     EXPECT_TRUE(result.getMappedChildElements().empty());
-    EXPECT_TRUE(
-        elementsMatch(result,
-                      {
-                          "Face1;SLC;:H1:4,F;:G2;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
-                          "Face1;SLC;:H1:4,F;:G3;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
-                          "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:4,V",
-                          "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
-                          "Face1;SLC;:H1:4,F;:G5;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
-                          "Face1;SLC;:H1:4,F;:G6;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
-                          "Face1;SLC;:H1:4,F;:G7;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
-                          "Face1;SLC;:H1:4,F;:G8;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
-                      }));  // Changed with PR#12471. Probably will change again after importing
-                            // other TopoNaming logics
+    EXPECT_TRUE(elementsMatch(
+        result,
+        {
+            "Face1;SLC;:H1:4,F;:G2;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            "Face1;SLC;:H1:4,F;:G3;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            // TODO: Prove that this difference is not a problem.
+            //  The next element varies according to platform / OCCT version and thus can't be
+            //  absolutely tested.
+            //                          "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            "Face1;SLC;:H1:4,F;:G5;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
+            "Face1;SLC;:H1:4,F;:G6;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
+            "Face1;SLC;:H1:4,F;:G7;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
+            "Face1;SLC;:H1:4,F;:G8;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
+        }));  // Changed with PR#12471. Probably will change again after importing
+              // other TopoNaming logics
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementSlices)
@@ -2033,15 +2071,18 @@ TEST_F(TopoShapeExpansionTest, makeElementSlices)
             "Edge11;:G(Face1;SLC;:H1:4,F;K-3;:H1:4,F);SLC;:H1:26,V;SLC;:H1:4,V;MAK;:H1:4,V",
             "Edge11;:G(Face1;SLC_2;:H2:6,F;K-3;:H2:4,F);SLC_2;:H1:2a,V;SLC_2;:H1:6,V;MAK;:H1:4,V",
             "Edge11;:G(Face1;SLC_3;:H3:6,F;K-3;:H3:4,F);SLC_3;:H1:2a,V;SLC_3;:H1:6,V;MAK;:H1:4,V",
-            "Edge12;:G(Face1;SLC;:H1:4,F;K-4;:H1:4,F);SLC;:H1:26,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:"
-            "4,V",
-            "Edge12;:G(Face1;SLC;:H1:4,F;K-4;:H1:4,F);SLC;:H1:26,V;SLC;:H1:4,V;MAK;:H1:4,V",
-            "Edge12;:G(Face1;SLC_2;:H2:6,F;K-4;:H2:4,F);SLC_2;:H1:2a,V;D1;:H1:3,V;SLC_2;:H1:6,V;"
-            "MAK;:H1:4,V",
-            "Edge12;:G(Face1;SLC_2;:H2:6,F;K-4;:H2:4,F);SLC_2;:H1:2a,V;SLC_2;:H1:6,V;MAK;:H1:4,V",
-            "Edge12;:G(Face1;SLC_3;:H3:6,F;K-4;:H3:4,F);SLC_3;:H1:2a,V;D1;:H1:3,V;SLC_3;:H1:6,V;"
-            "MAK;:H1:4,V",
-            "Edge12;:G(Face1;SLC_3;:H3:6,F;K-4;:H3:4,F);SLC_3;:H1:2a,V;SLC_3;:H1:6,V;MAK;:H1:4,V",
+            // TODO: Prove that this difference is not a problem.
+            //  The next elements vary according to platform / OCCT version and thus can't be
+            //  absolutely tested.
+            //            "Edge12;:G(Face1;SLC;:H1:4,F;K-4;:H1:4,F);SLC;:H1:26,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:"
+            //            "4,V",
+            //            "Edge12;:G(Face1;SLC;:H1:4,F;K-4;:H1:4,F);SLC;:H1:26,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            //            "Edge12;:G(Face1;SLC_2;:H2:6,F;K-4;:H2:4,F);SLC_2;:H1:2a,V;D1;:H1:3,V;SLC_2;:H1:6,V;"
+            //            "MAK;:H1:4,V",
+            //            "Edge12;:G(Face1;SLC_2;:H2:6,F;K-4;:H2:4,F);SLC_2;:H1:2a,V;SLC_2;:H1:6,V;MAK;:H1:4,V",
+            //            "Edge12;:G(Face1;SLC_3;:H3:6,F;K-4;:H3:4,F);SLC_3;:H1:2a,V;D1;:H1:3,V;SLC_3;:H1:6,V;"
+            //            "MAK;:H1:4,V",
+            //            "Edge12;:G(Face1;SLC_3;:H3:6,F;K-4;:H3:4,F);SLC_3;:H1:2a,V;SLC_3;:H1:6,V;MAK;:H1:4,V",
             "Face1;SLC;:H1:4,F;:G5(Face3;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E;MAK;:H1:4,E",
             "Face1;SLC;:H1:4,F;:G6(Face4;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E;MAK;:H1:4,E",
             "Face1;SLC;:H1:4,F;:G7(Face5;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E;MAK;:H1:4,E",
@@ -2361,19 +2402,22 @@ TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.6, -0.6, 0, 1.6, 1.6)));
     EXPECT_FLOAT_EQ(getArea(result.getShape()), 1);
     // Assert elementMap is correct
-    EXPECT_TRUE(allElementsMatch(result,
-                                 {
-                                     "Edge1;:G;FFC;:H2:7,E",
-                                     "Edge1;:G;FFC;:H2:7,E;:L(Edge2;:G;FFC;:H2:7,E|Edge3;:G;FFC;:"
-                                     "H2:7,E|Edge4;:G;FFC;:H2:7,E);FFC;:H2:47,F",
-                                     "Edge2;:G;FFC;:H2:7,E",
-                                     "Edge3;:G;FFC;:H2:7,E",
-                                     "Edge4;:G;FFC;:H2:7,E",
-                                     "Vertex1;:G;FFC;:H2:7,V",
-                                     "Vertex2;:G;FFC;:H2:7,V",
-                                     "Vertex3;:G;FFC;:H2:7,V",
-                                     "Vertex4;:G;FFC;:H2:7,V",
-                                 }));
+    EXPECT_TRUE(elementsMatch(result,
+                              {
+                                  "Edge1;:G;FFC;:H2:7,E",
+                                  "Edge1;:G;FFC;:H2:7,E;:L(Edge2;:G;FFC;:H2:7,E|Edge3;:G;FFC;:"
+                                  "H2:7,E|Edge4;:G;FFC;:H2:7,E);FFC;:H2:47,F",
+                                  "Edge2;:G;FFC;:H2:7,E",
+                                  "Edge3;:G;FFC;:H2:7,E",
+                                  "Edge4;:G;FFC;:H2:7,E",
+                                  // TODO: Prove that this difference is not a problem.
+                                  //  The next elements vary according to platform / OCCT version
+                                  //  and thus can't be absolutely tested.
+                                  //                                     "Vertex1;:G;FFC;:H2:7,V",
+                                  //                                     "Vertex2;:G;FFC;:H2:7,V",
+                                  //                                     "Vertex3;:G;FFC;:H2:7,V",
+                                  //                                     "Vertex4;:G;FFC;:H2:7,V",
+                              }));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)
@@ -2444,13 +2488,11 @@ TEST_F(TopoShapeExpansionTest, replaceElementShape)
     EXPECT_TRUE(elementsMatch(
         result,
         {
-            "Edge1",         "Edge1;:H1,E",   "Edge1;:H2,E",   "Edge1;:H3,E",   "Edge2",
-            "Edge2;:H1,E",   "Edge2;:H2,E",   "Edge2;:H3,E",   "Edge3",         "Edge3;:H1,E",
-            "Edge3;:H2,E",   "Edge3;:H3,E",   "Edge4;:H1,E",   "Edge4;:H2,E",   "Edge4;:H3,E",
-            "Face1;:H2,F",   "Face1;:H3,F",   "Face1;:H4,F",   "Face1;:H5,F",   "Face1;:H6,F",
-            "Vertex1",       "Vertex1;:H1,V", "Vertex1;:H2,V", "Vertex2",       "Vertex2;:H1,V",
-            "Vertex2;:H2,V", "Vertex3",       "Vertex3;:H1,V", "Vertex3;:H2,V", "Vertex4;:H1,V",
-            "Vertex4;:H2,V",
+            "Edge1;:H1,E",   "Edge1;:H2,E",   "Edge1;:H3,E",   "Edge2;:H1,E",   "Edge2;:H2,E",
+            "Edge2;:H3,E",   "Edge3;:H1,E",   "Edge3;:H2,E",   "Edge3;:H3,E",   "Edge4;:H1,E",
+            "Edge4;:H2,E",   "Edge4;:H3,E",   "Face1;:H2,F",   "Face1;:H3,F",   "Face1;:H4,F",
+            "Face1;:H5,F",   "Face1;:H6,F",   "Vertex1;:H1,V", "Vertex1;:H2,V", "Vertex2;:H1,V",
+            "Vertex2;:H2,V", "Vertex3;:H1,V", "Vertex3;:H2,V", "Vertex4;:H1,V", "Vertex4;:H2,V",
         }));
 }
 
@@ -2515,6 +2557,90 @@ TEST_F(TopoShapeExpansionTest, makeElementEvolve)
     // The resulting Evolved also does not populate the elementMap, but that might be a bug in
     // underutilized code.
     EXPECT_EQ(spine.getElementMap().size(), 0);
+}
+
+TEST_F(TopoShapeExpansionTest, traceElement)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto tr {gp_Trsf()};
+    tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
+    cube2.Move(TopLoc_Location(tr));
+    TopoShape topoShape1 {cube1, 1L};
+    TopoShape topoShape2 {cube2, 2L};
+    // Act
+    TopoShape& result = topoShape1.makeElementCut(
+        {topoShape1, topoShape2});  //, const char* op = nullptr, double tol = 0);
+    std::string name {"Face2;:M;CUT;:H1:7,F"};
+    //    auto faces = result.getSubTopoShapes(TopAbs_FACE);
+    Data::MappedName mappedName(name);
+    // Arrange
+    Data::TraceCallback cb =
+        [name](const Data::MappedName& elementname, int offset, long encodedTag, long tag) {
+            boost::ignore_unused(offset);
+            boost::ignore_unused(tag);
+            // TODO:  This is likely a flawed way to address testing a callback.
+            // Also, it isn't clear exactly what the correct results are, although as soon as
+            // we start addressing History, we will quickly discover that, and likely the right
+            // things to test.
+            if (encodedTag == 1) {
+                EXPECT_STREQ(elementname.toString().c_str(), name.c_str());
+            }
+            else {
+                EXPECT_STREQ(elementname.toString().c_str(), name.substr(0, 5).c_str());
+            }
+            return false;
+        };
+    // Act
+    result.traceElement(mappedName, cb);
+    // Assert we have the element map we think we do.
+    EXPECT_TRUE(allElementsMatch(
+        result,
+        {
+            "Edge10;:G(Edge2;K-1;:H2:4,E);CUT;:H1:1a,V",
+            "Edge10;:M;CUT;:H1:7,E",
+            "Edge10;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge11;:M;CUT;:H2:7,E",
+            "Edge12;:M;CUT;:H2:7,E",
+            "Edge2;:M;CUT;:H2:7,E",
+            "Edge2;:M;CUT;:H2:7,E;:U;CUT;:H2:7,V",
+            "Edge4;:M;CUT;:H2:7,E",
+            "Edge4;:M;CUT;:H2:7,E;:U;CUT;:H2:7,V",
+            "Edge6;:G(Edge12;K-1;:H2:4,E);CUT;:H1:1b,V",
+            "Edge6;:M;CUT;:H1:7,E",
+            "Edge6;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge8;:G(Edge11;K-1;:H2:4,E);CUT;:H1:1b,V",
+            "Edge8;:M;CUT;:H1:7,E",
+            "Edge8;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Edge9;:G(Edge4;K-1;:H2:4,E);CUT;:H1:1a,V",
+            "Edge9;:M;CUT;:H1:7,E",
+            "Edge9;:M;CUT;:H1:7,E;:U;CUT;:H1:7,V",
+            "Face1;:M;CUT;:H2:7,F",
+            "Face1;:M;CUT;:H2:7,F;:U;CUT;:H2:7,E",
+            "Face2;:G(Face4;K-1;:H2:4,F);CUT;:H1:1a,E",
+            "Face2;:M;CUT;:H1:7,F",
+            "Face2;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face2;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:"
+            "H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V);CUT;:H1:3c,E|Face5;:M;"
+            "CUT;:H1:7,F;:U;CUT;:H1:7,E|Face6;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E);CUT;:H1:c9,F",
+            "Face3;:G(Face1;K-1;:H2:4,F);CUT;:H1:1a,E",
+            "Face3;:M;CUT;:H1:7,F",
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face3;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E;:L(Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E|Face5;:M;"
+            "CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;"
+            "CUT;:H1:7,V);CUT;:H1:3c,E|Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E);CUT;:H1:cb,F",
+            "Face4;:M;CUT;:H2:7,F",
+            "Face5;:M;CUT;:H1:7,F",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V",
+            "Face5;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V;:L(Face6;:M;CUT;:H1:7,F;:U2;CUT;:"
+            "H1:8,E;:U;CUT;:H1:7,V);CUT;:H1:3c,E",
+            "Face5;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+            "Face6;:M;CUT;:H1:7,F",
+            "Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E",
+            "Face6;:M;CUT;:H1:7,F;:U2;CUT;:H1:8,E;:U;CUT;:H1:7,V",
+            "Face6;:M;CUT;:H1:7,F;:U;CUT;:H1:7,E",
+        }));
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

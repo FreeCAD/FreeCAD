@@ -58,12 +58,12 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Toon/Verberg B-spline controle veelhoek</translation>
+      <translation>Toon/Verberg B-spline bepalende veelhoek</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="99"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Hiermee schakelt u tussen het weergeven en verbergen van de knoop multipliciteit voor alle B-splines</translation>
+      <translation>Hiermee schakelt u tussen het weergeven en verbergen van de bepalende veelhoek voor alle B-splines</translation>
     </message>
   </context>
   <context>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>Toon/Verberg B-spline controle veelhoek</translation>
+      <translation>Toon/Verberg B-spline bepalende veelhoek</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="318"/>
@@ -181,12 +181,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="554"/>
       <source>Center and endpoints</source>
-      <translation type="unfinished">Center and endpoints</translation>
+      <translation>Middelpunt en eindpunten</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="560"/>
       <source>Endpoints and rim point</source>
-      <translation type="unfinished">Endpoints and rim point</translation>
+      <translation>Eindpunten en punt op de boog</translation>
     </message>
   </context>
   <context>
@@ -240,22 +240,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="892"/>
       <source>Ellipse by center, radius, rim point</source>
-      <translation type="unfinished">Ellipse by center, radius, rim point</translation>
+      <translation>Ellips met middelpunt, radius, punt op ellips</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Ellipse by axis endpoints, rim point</source>
-      <translation type="unfinished">Ellipse by axis endpoints, rim point</translation>
+      <translation>Ellips door as-eindpunten, punt op ellips</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="910"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
-      <translation type="unfinished">Arc of ellipse by center, radius, endpoints</translation>
+      <translation>Elliptische boog via het middelpunt, radii en eindpunten</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="920"/>
       <source>Arc of hyperbola by center, vertex, endpoints</source>
-      <translation type="unfinished">Arc of hyperbola by center, vertex, endpoints</translation>
+      <translation>Hyperbolische boog via de hoofdas en eindpunten</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="929"/>
@@ -283,7 +283,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1575"/>
       <source>Corner-preserving sketch fillet</source>
-      <translation type="unfinished">Corner-preserving sketch fillet</translation>
+      <translation>Snijpunt behoudende afronding</translation>
     </message>
   </context>
   <context>
@@ -2101,12 +2101,12 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="266"/>
       <source>Cut in Sketcher</source>
-      <translation type="unfinished">Cut in Sketcher</translation>
+      <translation>Knippen in Sketcher</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="311"/>
       <source>Paste in Sketcher</source>
-      <translation type="unfinished">Paste in Sketcher</translation>
+      <translation>Plakken in Sketcher</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1055"/>
@@ -2157,8 +2157,8 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Update beperking's virtuele ruimte</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <location filename="../../DrawSketchHandler.cpp" line="957"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <source>Add auto constraints</source>
       <translation>Voeg automatische beperkingen toe</translation>
     </message>
@@ -2210,27 +2210,27 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="112"/>
       <source>Add polygon</source>
-      <translation>Veelhoek toevoegen</translation>
+      <translation>Regelmatige veelhoek toevoegen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="175"/>
       <source>Add sketch arc slot</source>
-      <translation>Ringvormige sleuf toevoegen</translation>
+      <translation>Boog-sleuf toevoegen in schets</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="119"/>
       <source>Rotate geometries</source>
-      <translation type="unfinished">Rotate geometries</translation>
+      <translation>Roteer geometrieën</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="115"/>
       <source>Scale geometries</source>
-      <translation type="unfinished">Scale geometries</translation>
+      <translation>Schaal geometriën</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="114"/>
       <source>Translate geometries</source>
-      <translation type="unfinished">Translate geometries</translation>
+      <translation>Verplaats geometrieën</translation>
     </message>
   </context>
   <context>
@@ -2411,8 +2411,20 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Niet bijvoegen</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandAlterGeometry.cpp" line="165"/>
       <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2532,15 +2544,6 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="9870"/>
       <location filename="../../CommandConstraints.cpp" line="9946"/>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandSketcherTools.cpp" line="79"/>
       <location filename="../../CommandSketcherTools.cpp" line="361"/>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
@@ -2558,9 +2561,6 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2399"/>
       <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherTools.cpp" line="2511"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
@@ -2710,9 +2710,9 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Het aantal geselecteerde objecten is niet gelijk aan 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="784"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
+      <location filename="../../CommandConstraints.cpp" line="784"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
@@ -3116,9 +3116,9 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <translation>Definieer de B-Spline graad, tussen 1 en %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-kernelfout</translation>
     </message>
@@ -3295,12 +3295,12 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="180"/>
       <source>Offset parameters</source>
-      <translation type="unfinished">Offset parameters</translation>
+      <translation>Afstand parameters</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="205"/>
       <source>Polygon parameters</source>
-      <translation type="unfinished">Polygon parameters</translation>
+      <translation>Regelmatige veelhoek parameters</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="591"/>
@@ -3315,7 +3315,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="272"/>
       <source>Arc Slot parameters</source>
-      <translation type="unfinished">Arc Slot parameters</translation>
+      <translation>Boog sleuf parameters</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="278"/>
@@ -4079,7 +4079,7 @@ wordt gereflecteerd op de kopieën</translation>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
       <source>Number of sides:</source>
-      <translation type="unfinished">Number of sides:</translation>
+      <translation>Aantal zijden:</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="32"/>
@@ -4272,7 +4272,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="217"/>
       <source>Disabled</source>
-      <translation type="unfinished">Disabled</translation>
+      <translation>Uitgeschakeld</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="218"/>
@@ -5261,7 +5261,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
       <location filename="../../CommandSketcherOverlay.cpp" line="311"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="314"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Hiermee schakelt u tussen het weergeven en verbergen van de knoop multipliciteit voor alle B-splines</translation>
+      <translation>Hiermee schakelt u tussen het weergeven en verbergen van de bepalende veelhoek voor alle B-splines</translation>
     </message>
   </context>
   <context>
@@ -6101,39 +6101,39 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
       <location filename="../../DrawSketchHandlerScale.h" line="130"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
@@ -6169,6 +6169,9 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>De beperking heeft ongeldige index informatie en is onjuist vormgegeven.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="432"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="609"/>
@@ -6176,9 +6179,6 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <location filename="../../CommandConstraints.cpp" line="773"/>
       <location filename="../../CommandConstraints.cpp" line="6068"/>
       <location filename="../../CommandConstraints.cpp" line="6272"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="1066"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <source>Invalid Constraint</source>
@@ -6220,8 +6220,8 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>Fout bij het maken van de B-spline pool</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
       <source>Error creating B-spline</source>
       <translation>Fout bij het maken van de B-spline</translation>
     </message>
@@ -6277,17 +6277,17 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>Kon lijn niet toevoegen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation type="unfinished">Tool execution aborted</translation>
     </message>
@@ -6322,9 +6322,9 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>Kon de rand niet inkorten</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
       <translation>Fout in de waarde</translation>
     </message>
@@ -6361,7 +6361,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="184"/>
       <source>Failed to add arc slot</source>
-      <translation type="unfinished">Failed to add arc slot</translation>
+      <translation>Kon de boog-sleuf niet toevoegen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="189"/>
@@ -6612,52 +6612,52 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
       <source>Parameter 1</source>
-      <translation type="unfinished">Parameter 1</translation>
+      <translation>Parameter 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="115"/>
       <source>Parameter 2</source>
-      <translation type="unfinished">Parameter 2</translation>
+      <translation>Parameter 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="136"/>
       <source>Parameter 3</source>
-      <translation type="unfinished">Parameter 3</translation>
+      <translation>Parameter 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="157"/>
       <source>Parameter 4</source>
-      <translation type="unfinished">Parameter 4</translation>
+      <translation>Parameter 4</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="178"/>
       <source>Parameter 5</source>
-      <translation type="unfinished">Parameter 5</translation>
+      <translation>Parameter 5</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="199"/>
       <source>Parameter 6</source>
-      <translation type="unfinished">Parameter 6</translation>
+      <translation>Parameter 6</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="220"/>
       <source>Parameter 7</source>
-      <translation type="unfinished">Parameter 7</translation>
+      <translation>Parameter 7</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="241"/>
       <source>Parameter 8</source>
-      <translation type="unfinished">Parameter 8</translation>
+      <translation>Parameter 8</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="262"/>
       <source>Parameter 9</source>
-      <translation type="unfinished">Parameter 9</translation>
+      <translation>Parameter 9</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="283"/>
       <source>Parameter 10</source>
-      <translation type="unfinished">Parameter 10</translation>
+      <translation>Parameter 10</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="305"/>
@@ -6667,7 +6667,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="308"/>
       <source>Checkbox 1</source>
-      <translation type="unfinished">Checkbox 1</translation>
+      <translation>Selectievak 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="327"/>
@@ -6677,7 +6677,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="330"/>
       <source>Checkbox 2</source>
-      <translation type="unfinished">Checkbox 2</translation>
+      <translation>Selectievak 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="349"/>
@@ -6687,7 +6687,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="352"/>
       <source>Checkbox 3</source>
-      <translation type="unfinished">Checkbox 3</translation>
+      <translation>Selectievak 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="371"/>
@@ -6697,7 +6697,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="374"/>
       <source>Checkbox 4</source>
-      <translation type="unfinished">Checkbox 4</translation>
+      <translation>Selectievak 4</translation>
     </message>
   </context>
   <context>
@@ -6830,12 +6830,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1860"/>
       <source>Create arc slot</source>
-      <translation>Maak een sleuf</translation>
+      <translation>Maak een boog-sleuf</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1861"/>
       <source>Create an arc slot in the sketch</source>
-      <translation>Maak een sleuf in de schets</translation>
+      <translation>Maak een boog-sleuf in de schets</translation>
     </message>
   </context>
   <context>
@@ -6869,7 +6869,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Vormgeving</translation>
+      <translation>Uiterlijk</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -7149,7 +7149,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="307"/>
       <source>Sides (+'U'/ -'J')</source>
-      <translation type="unfinished">Sides (+'U'/ -'J')</translation>
+      <translation>Aantal zijden (+'U'/-'J')</translation>
     </message>
   </context>
   <context>

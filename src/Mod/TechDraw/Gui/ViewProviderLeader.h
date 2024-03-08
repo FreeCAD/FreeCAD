@@ -55,7 +55,6 @@ public:
     App::PropertyColor              Color;
 
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
     void onChanged(const App::Property* p) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;

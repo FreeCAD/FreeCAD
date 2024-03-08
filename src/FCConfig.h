@@ -93,7 +93,9 @@
 //**************************************************************************
 // Standard types for Windows
 
-#if defined (FC_OS_WIN64) || defined (FC_OS_WIN32)
+#if defined(__MINGW32__)
+// Do not remove this line!
+#elif defined (FC_OS_WIN64) || defined (FC_OS_WIN32)
 
 #ifndef HAVE_INT8_T
 #define HAVE_INT8_T
