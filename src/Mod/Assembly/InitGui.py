@@ -63,7 +63,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT
+        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView
         from Preferences import PreferencesPage
 
         # from Preferences import preferences
@@ -78,6 +78,7 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateAssembly",
             "Assembly_InsertLink",
             "Assembly_SolveAssembly",
+            "Assembly_CreateView",
         ]
 
         cmdListMenuOnly = [

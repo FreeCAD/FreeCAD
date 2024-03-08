@@ -603,6 +603,20 @@ def getJointGroup(assembly):
     return joint_group
 
 
+def getViewGroup(assembly):
+    view_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::ViewGroup":
+            view_group = obj
+            break
+
+    if not view_group:
+        view_group = assembly.newObject("Assembly::ViewGroup", "Exploded Views")
+
+    return view_group
+
+
 def isAssemblyGrounded():
     assembly = activeAssembly()
     if not assembly:

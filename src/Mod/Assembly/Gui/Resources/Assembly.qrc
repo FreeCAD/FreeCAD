@@ -13,8 +13,11 @@
         <file>icons/Assembly_ExportASMT.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
         <file>icons/Assembly_JointGroup.svg</file>
+        <file>icons/Assembly_ExplodedView.svg</file>
+        <file>icons/Assembly_ExplodedViewGroup.svg</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
+        <file>panels/TaskAssemblyCreateView.ui</file>
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>

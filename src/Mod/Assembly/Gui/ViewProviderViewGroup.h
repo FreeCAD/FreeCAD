@@ -21,45 +21,47 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderViewGroup_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderViewGroup_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <Mod/Assembly/AssemblyGlobal.h>
 
-#include "AssemblyObject.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
+#include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
-namespace Assembly
+namespace AssemblyGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyApp)
+class AssemblyGuiExport ViewProviderViewGroup: public Gui::ViewProviderDocumentObjectGroup
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderViewGroup);
 
-    PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
+public:
+    ViewProviderViewGroup();
+    ~ViewProviderViewGroup() override;
 
+    /// deliver the icon shown in the tree view. Override from ViewProvider.h
+    QIcon getIcon() const override;
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+    // Prevent dragging of the joints and dropping things inside the joint group.
+    bool canDragObjects() const override
+    {
+        return false;
+    };
+    bool canDropObjects() const override
+    {
+        return false;
+    };
+    bool canDragAndDropObject(App::DocumentObject*) const override
+    {
+        return false;
+    };
 
-    Assembly::AssemblyObject ::init();
-    Assembly::JointGroup ::init();
-    Assembly::ViewGroup ::init();
+    // protected:
+    /// get called by the container whenever a property has been changed
+    // void onChanged(const App::Property* prop) override;
+};
 
-    PyMOD_Return(mod);
-}
+}  // namespace AssemblyGui
+
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderViewGroup_H
