@@ -393,7 +393,6 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     //                                               DrawViewBalloon
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
-    //                                               DrawWeldSymbol
 
     const std::vector<App::DocumentObject*>& views = getDrawPage()->Views.getValues();
 
@@ -413,7 +412,6 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
                 || docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())
                 || docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())
                 || docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())
-                || docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())
                 || (featView && featView->isInClip()))
                 continue;
             else

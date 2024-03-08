@@ -63,7 +63,7 @@ class TechDrawGuiExport QGIWeldSymbol : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 340};
 
-    explicit QGIWeldSymbol(QGILeaderLine* myParent = nullptr);
+    explicit QGIWeldSymbol();
     ~QGIWeldSymbol() override = default;
 
     int type() const override { return Type;}
@@ -78,7 +78,7 @@ public:
     void updateView(bool update = false) override;
 
     virtual TechDraw::DrawWeldSymbol* getFeature();
-    virtual void setFeature(TechDraw::DrawWeldSymbol* feat);
+    virtual TechDraw::DrawLeaderLine *getLeader();
 
     QPointF getTileOrigin();
     QPointF getKinkPoint();
@@ -110,14 +110,11 @@ protected:
     double prefArrowSize();
     double prefFontSize() const;
 
-    TechDraw::DrawWeldSymbol* m_weldFeat;
-    TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawTileWeld*   m_arrowFeat;
     TechDraw::DrawTileWeld*   m_otherFeat;
     std::string               m_arrowName;
     std::string               m_otherName;
 
-    QGILeaderLine* m_qgLead;
     QGCustomText* m_tailText;
     QGIPrimPath* m_fieldFlag;
     QGIVertex* m_allAround;
@@ -126,7 +123,6 @@ protected:
 
     bool m_blockDraw;    //prevent redraws while updating.
 
-    std::string m_weldFeatName;
     virtual QRectF customBoundingRect() const;
 
 };
