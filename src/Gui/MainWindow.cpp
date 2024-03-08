@@ -2537,7 +2537,7 @@ void MainWindow::setWindowTitle(const QString& string)
     }
 
     if (!string.isEmpty()) {
-        title = QString::fromUtf8("%1 - %2").arg(string, title);
+        title = QString::fromUtf8("[*] %1 - %2").arg(string, title);
     }
 
     QMainWindow::setWindowTitle(title);

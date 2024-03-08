@@ -453,7 +453,10 @@ QString MDIView::buildWindowTitle()
     QString windowTitle;
     if (Gui::Document* document = getGuiDocument()) {
         if (document->isModified()) {
-            windowTitle = QString::fromUtf8("* ");
+            getMainWindow()->setWindowModified(TRUE);
+        }
+        else {
+            getMainWindow()->setWindowModified(FALSE);
         }
 
         windowTitle.append(QString::fromUtf8(getAppDocument()->getName()));
