@@ -13,11 +13,35 @@
             <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
             <UserDocu>This is the ViewProviderAssembly class</UserDocu>
         </Documentation>
+
+        <Methode Name="getDragger">
+          <Documentation>
+            <UserDocu>
+              Return the assembly dragger coin object.
+
+              getDragger() -> SoFCCSysDragger
+
+              Returns: dragger coin object of the assembly
+            </UserDocu>
+          </Documentation>
+        </Methode>
         <Attribute Name="EnableMovement">
             <Documentation>
                 <UserDocu>Enable moving the parts by clicking and dragging.</UserDocu>
             </Documentation>
             <Parameter Name="EnableMoving" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="DraggerVisibility">
+            <Documentation>
+                <UserDocu>Show or hide the assembly dragger.</UserDocu>
+            </Documentation>
+            <Parameter Name="DraggerVisibility" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="DraggerPlacement" ReadOnly="false">
+          <Documentation>
+            <UserDocu>Placement of the assembly dragger object.</UserDocu>
+          </Documentation>
+          <Parameter Name="Placement" Type="Object" />
         </Attribute>
     </PythonExport>
 </GenerateModel>
