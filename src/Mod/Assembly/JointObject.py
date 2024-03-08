@@ -386,139 +386,18 @@ class Joint:
             return App.Placement()
 
         obj = UtilsAssembly.getObjectInPart(objName, part)
-        plc = App.Placement()
 
-        if not obj:
-            return App.Placement()
-
-        if not elt or not vtx:
-            # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
-            return App.Placement()
-
-        elt_type, elt_index = UtilsAssembly.extract_type_and_number(elt)
-        vtx_type, vtx_index = UtilsAssembly.extract_type_and_number(vtx)
-
-        isLine = False
-
-        if elt_type == "Vertex":
-            vertex = obj.Shape.Vertexes[elt_index - 1]
-            plc.Base = (vertex.X, vertex.Y, vertex.Z)
-        elif elt_type == "Edge":
-            edge = obj.Shape.Edges[elt_index - 1]
-            curve = edge.Curve
-
-            # First we find the translation
-            if vtx_type == "Edge" or joint.JointType == "Distance":
-                # In this case the wanted vertex is the center.
-                if curve.TypeId == "Part::GeomCircle":
-                    center_point = curve.Location
-                    plc.Base = (center_point.x, center_point.y, center_point.z)
-                elif curve.TypeId == "Part::GeomLine":
-                    edge_points = UtilsAssembly.getPointsFromVertexes(edge.Vertexes)
-                    line_middle = (edge_points[0] + edge_points[1]) * 0.5
-                    plc.Base = line_middle
-            else:
-                vertex = obj.Shape.Vertexes[vtx_index - 1]
-                plc.Base = (vertex.X, vertex.Y, vertex.Z)
-
-            # Then we find the Rotation
-            if curve.TypeId == "Part::GeomCircle":
-                plc.Rotation = App.Rotation(curve.Rotation)
-
-            if curve.TypeId == "Part::GeomLine":
-                isLine = True
-                plane_normal = curve.Direction
-                plane_origin = App.Vector(0, 0, 0)
-                plane = Part.Plane(plane_origin, plane_normal)
-                plc.Rotation = App.Rotation(plane.Rotation)
-        elif elt_type == "Face":
-            face = obj.Shape.Faces[elt_index - 1]
-            surface = face.Surface
-
-            # First we find the translation
-            if vtx_type == "Face" or joint.JointType == "Distance":
-                if surface.TypeId == "Part::GeomCylinder" or surface.TypeId == "Part::GeomCone":
-                    centerOfG = face.CenterOfGravity - surface.Center
-                    centerPoint = surface.Center + centerOfG
-                    centerPoint = centerPoint + App.Vector().projectToLine(centerOfG, surface.Axis)
-                    plc.Base = centerPoint
-                elif surface.TypeId == "Part::GeomTorus" or surface.TypeId == "Part::GeomSphere":
-                    plc.Base = surface.Center
-                else:
-                    plc.Base = face.CenterOfGravity
-            elif vtx_type == "Edge":
-                # In this case the edge is a circle/arc and the wanted vertex is its center.
-                edge = face.Edges[vtx_index - 1]
-                curve = edge.Curve
-                if curve.TypeId == "Part::GeomCircle":
-                    center_point = curve.Location
-                    plc.Base = (center_point.x, center_point.y, center_point.z)
-
-                elif (
-                    surface.TypeId == "Part::GeomCylinder"
-                    and curve.TypeId == "Part::GeomBSplineCurve"
-                ):
-                    # handle special case of 2 cylinder intersecting.
-                    plc.Base = self.findCylindersIntersection(obj, surface, edge, elt_index)
-
-            else:
-                vertex = obj.Shape.Vertexes[vtx_index - 1]
-                plc.Base = (vertex.X, vertex.Y, vertex.Z)
-
-            # Then we find the Rotation
-            if surface.TypeId == "Part::GeomPlane":
-                plc.Rotation = App.Rotation(surface.Rotation)
-            else:
-                plc.Rotation = surface.Rotation
-
-        # Now plc is the placement relative to the origin determined by the object placement.
-        # But it does not take into account Part placements. So if the solid is in a part and
-        # if the part has a placement then plc is wrong.
-
-        # change plc to be relative to the object placement.
-        plc = obj.Placement.inverse() * plc
-
-        # post-process of plc for some special cases
-        if elt_type == "Vertex":
-            plc.Rotation = App.Rotation()
-        elif isLine:
-            plane_normal = plc.Rotation.multVec(App.Vector(0, 0, 1))
-            plane_origin = App.Vector(0, 0, 0)
-            plane = Part.Plane(plane_origin, plane_normal)
-            plc.Rotation = App.Rotation(plane.Rotation)
-
-        # change plc to be relative to the origin of the document.
-        # global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
-        # plc = global_plc * plc
-
-        # change plc to be relative to the assembly.
-        # assembly = self.getAssembly(joint)
-        # plc = assembly.Placement.inverse() * plc
+        ignoreVertex = joint.JointType == "Distance"
+        plc = UtilsAssembly.findPlacement(obj, part, elt, vtx, ignoreVertex)
 
         # We apply rotation / reverse / offset it necessary, but only to the second JCS.
         if isSecond:
             if joint.Offset.Length != 0.0:
-                plc = self.applyOffsetToPlacement(plc, joint.Offset)
+                plc = UtilsAssembly.applyOffsetToPlacement(plc, joint.Offset)
             if joint.Rotation != 0.0:
-                plc = self.applyRotationToPlacement(plc, joint.Rotation)
+                plc = UtilsAssembly.applyRotationToPlacement(plc, joint.Rotation)
 
         return plc
-
-    def applyOffsetToPlacement(self, plc, offset):
-        plc.Base = plc.Base + plc.Rotation.multVec(offset)
-        return plc
-
-    def applyRotationToPlacement(self, plc, angle):
-        return self.applyRotationToPlacementAlongAxis(plc, angle, App.Vector(0, 0, 1))
-
-    def applyRotationToPlacementAlongAxis(self, plc, angle, axis):
-        rot = plc.Rotation
-        zRotation = App.Rotation(axis, angle)
-        plc.Rotation = rot * zRotation
-        return plc
-
-    def flipPlacement(self, plc):
-        return self.applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
 
     def flipOnePart(self, joint):
         assembly = self.getAssembly(joint)
@@ -526,52 +405,26 @@ class Joint:
         part1Grounded = assembly.isPartGrounded(joint.Part1)
         part2Grounded = assembly.isPartGrounded(joint.Part2)
         if part2ConnectedByJoint and not part2Grounded:
-            print("flipOnePart if hasattr(self, part2Connected) and not self.part2Connected")
-            print(joint.Part2.Name)
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement2, joint.Object2, joint.Part2
             )
             globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement2, joint.Object2, joint.Part2
             )
-            jcsPlc = self.flipPlacement(jcsPlc)
+            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
             joint.Part2.Placement = globalJcsPlc * jcsPlc.inverse()
 
         elif not part1Grounded:
-            print("flipOnePart else")
-            print(joint.Part1.Name)
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement1, joint.Object1, joint.Part1
             )
             globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement1, joint.Object1, joint.Part1
             )
-            jcsPlc = self.flipPlacement(jcsPlc)
+            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
             joint.Part1.Placement = globalJcsPlc * jcsPlc.inverse()
 
         solveIfAllowed(self.getAssembly(joint))
-
-    def findCylindersIntersection(self, obj, surface, edge, elt_index):
-        for j, facej in enumerate(obj.Shape.Faces):
-            surfacej = facej.Surface
-            if (elt_index - 1) == j or surfacej.TypeId != "Part::GeomCylinder":
-                continue
-
-            for edgej in facej.Edges:
-                if (
-                    edgej.Curve.TypeId == "Part::GeomBSplineCurve"
-                    and edgej.CenterOfGravity == edge.CenterOfGravity
-                    and edgej.Length == edge.Length
-                ):
-                    # we need intersection between the 2 cylinder axis.
-                    line1 = Part.Line(surface.Center, surface.Center + surface.Axis)
-                    line2 = Part.Line(surfacej.Center, surfacej.Center + surfacej.Axis)
-
-                    res = line1.intersect(line2, Part.Precision.confusion())
-
-                    if res:
-                        return App.Vector(res[0].X, res[0].Y, res[0].Z)
-        return surface.Center
 
     def preSolve(self, joint, obj1, part1, obj2, part2, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
@@ -594,7 +447,7 @@ class Joint:
                 joint.Placement2, joint.Object2, joint.Part2
             )
             if not sameDir:
-                jcsPlc2 = self.flipPlacement(jcsPlc2)
+                jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
             joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
@@ -610,7 +463,7 @@ class Joint:
                 joint.Placement1, joint.Object1, joint.Part1
             )
             if not sameDir:
-                jcsPlc1 = self.flipPlacement(jcsPlc1)
+                jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
             joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
             return True
         return False
