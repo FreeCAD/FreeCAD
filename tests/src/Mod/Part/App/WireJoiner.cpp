@@ -307,4 +307,76 @@ TEST_F(WireJoinerTest, setTightBound)
     EXPECT_EQ(wireTightBound.getSubTopoShapes(TopAbs_EDGE).size(), 1);
 }
 
+TEST_F(WireJoinerTest, setSplitEdges)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjNoSplitEdges.addShape()
+    std::vector<TopoDS_Shape> edgesNoSplitEdges {edge1, edge2};
+    // A vector of edges used as argument for wjSplitEdges.addShape()
+    std::vector<TopoDS_Shape> edgesSplitEdges {edge1, edge2};
+
+    // A WireJoiner object where the value of setSplitEdges() will be changed but no shapes will be
+    // built
+    auto wjNoBuild {WireJoiner()};
+    // A WireJoiner object where setSplitEdges() will be set to false
+    // To see it's effect it's necessary also to call setTightBound(false) otherwise
+    // WireJoiner::WireJoinerP::splitEdges() will be called in any case
+    auto wjNoSplitEdges {WireJoiner()};
+    wjNoSplitEdges.setTightBound(false);
+    // A WireJoiner object where setSplitEdges() will be set to true
+    // To see it's effect it's necessary also to call setTightBound(false) otherwise
+    // WireJoiner::WireJoinerP::splitEdges() will be called in any case
+    auto wjSplitEdges {WireJoiner()};
+    wjSplitEdges.setTightBound(false);
+
+    // An empty TopoShape that will contain the shapes returned by wjNoSplitEdges.getOpenWires()
+    auto wireNoSplitEdges {TopoShape(1)};
+    // An empty TopoShape that will contain the shapes returned by wjSplitEdges.getOpenWires()
+    auto wireSplitEdges {TopoShape(2)};
+
+    // Act
+
+    // Changing only the value of setSplitEdges(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setSplitEdges(false);
+
+    // To see the effect of setSplitEdges() we call WireJoiner::Build() and then
+    // WireJoiner::getOpenWires()
+
+    wjNoSplitEdges.addShape(edgesNoSplitEdges);
+    wjNoSplitEdges.setSplitEdges(false);
+    wjNoSplitEdges.Build();
+    wjNoSplitEdges.getOpenWires(wireNoSplitEdges, nullptr, false);
+
+    wjSplitEdges.addShape(edgesSplitEdges);
+    // same as wjSplitEdges.setSplitEdges(true);
+    wjSplitEdges.setSplitEdges();
+    wjSplitEdges.Build();
+    wjSplitEdges.getOpenWires(wireSplitEdges, nullptr, false);
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setSplitEdges()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // Calling wjNoSplitEdges.Build() will put all the edges that don't contribute to the creation
+    // of a closed wire inside the private object WireJoiner::WireJoinerP::openWireCompound.
+    // In this case the number of edges is equal to the number of edges added with
+    // wjNoSplitEdges.addShape() because none of them is used for the creation of a closed wire.
+    EXPECT_EQ(wireNoSplitEdges.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+
+    // Calling wjSplitEdges.Build() will put inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound all the edges processed by
+    // WireJoiner::WireJoinerP::splitEdges().
+    // In this case the number of those edges is equal to 4 because both the edges added with
+    // wjSplitEdges.addShape() have been split at the intersection point (0.5, 0.5, 0.0)
+    EXPECT_EQ(wireSplitEdges.getSubTopoShapes(TopAbs_EDGE).size(), 4);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
