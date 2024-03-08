@@ -23,43 +23,27 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#ifndef _PreComp_
+#endif
 
-#include "AssemblyObject.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+
+#include "ViewProviderViewGroup.h"
 
 
-namespace Assembly
+using namespace AssemblyGui;
+
+PROPERTY_SOURCE(AssemblyGui::ViewProviderViewGroup, Gui::ViewProviderDocumentObjectGroup)
+
+ViewProviderViewGroup::ViewProviderViewGroup()
+{}
+
+ViewProviderViewGroup::~ViewProviderViewGroup() = default;
+
+QIcon ViewProviderViewGroup::getIcon() const
 {
-extern PyObject* initModule();
-}
-
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyApp)
-{
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import Part");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
-
-    Assembly::AssemblyObject ::init();
-    Assembly::JointGroup ::init();
-    Assembly::ViewGroup ::init();
-
-    PyMOD_Return(mod);
+    return Gui::BitmapFactory().pixmap("Assembly_ExplodedViewGroup.svg");
 }

@@ -22,44 +22,34 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/FeaturePythonPyImp.h>
+#include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <Base/Tools.h>
 
-#include "AssemblyObject.h"
-#include "JointGroup.h"
 #include "ViewGroup.h"
+#include "ViewGroupPy.h"
+
+using namespace Assembly;
 
 
-namespace Assembly
+PROPERTY_SOURCE(Assembly::ViewGroup, App::DocumentObjectGroup)
+
+ViewGroup::ViewGroup()
+{}
+
+ViewGroup::~ViewGroup() = default;
+
+PyObject* ViewGroup::getPyObject()
 {
-extern PyObject* initModule();
-}
-
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyApp)
-{
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import Part");
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewGroupPy(this), true);
     }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = Assembly::initModule();
-    Base::Console().Log("Loading Assembly module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
-
-    Assembly::AssemblyObject ::init();
-    Assembly::JointGroup ::init();
-    Assembly::ViewGroup ::init();
-
-    PyMOD_Return(mod);
+    return Py::new_reference_to(PythonObject);
 }
