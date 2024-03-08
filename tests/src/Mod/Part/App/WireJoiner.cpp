@@ -54,7 +54,7 @@ TEST_F(WireJoinerTest, addShape)
     auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
 
     // A vector of TopoDS_Shape used as argument for wjvTDS.addShape()
-    std::vector<TopoDS_Shape> edges = {edge1, edge2, edge3, edge4};
+    std::vector<TopoDS_Shape> edges {edge1, edge2, edge3, edge4};
 
     // Create various TopoShapes used as arguments for wjvTS.addShape()
 
@@ -129,7 +129,7 @@ TEST_F(WireJoinerTest, setOutline)
 {
     // Arrange
 
-    // Create various edges that will be used to create wires for the WireJoiner objects testes
+    // Create various edges that will be used for the WireJoiner objects tests
 
     auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
     auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
@@ -140,12 +140,12 @@ TEST_F(WireJoinerTest, setOutline)
     auto edge6 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
 
     // A vector of edges used as argument for wjNoOutline.addShape()
-    std::vector<TopoShape> edgesNoOutline = {edge1, edge2, edge3, edge4, edge5, edge6};
+    std::vector<TopoDS_Shape> edgesNoOutline {edge1, edge2, edge3, edge4, edge5, edge6};
     // A vector of edges used as argument for wjOutline.addShape()
-    std::vector<TopoShape> edgesOutline = {edge1, edge2, edge3, edge4, edge5, edge6};
+    std::vector<TopoDS_Shape> edgesOutline {edge1, edge2, edge3, edge4, edge5, edge6};
 
     // To see the effect of setOutline() it is necessary to set the user parameter "Iteration"
-    // to a value, in this case, less than zero before the WireObjects are initializaed.
+    // to a value, in this case, less than zero before the WireObjects are initialized.
     // To see the correct value for this parameter refer to method WireJoinerP::canShowShape()
 
     auto hParam {App::GetApplication().GetParameterGroupByPath(
@@ -206,7 +206,7 @@ TEST_F(WireJoinerTest, setOutline)
 
     App::GetApplication().setActiveDocument(docOutline);
 
-    wjOutline.addShape(wjNoOutline.Shape());
+    wjOutline.addShape(edgesOutline);
     // same as wjOutline.setOutline(true);
     wjOutline.setOutline();
     wjOutline.Build();
@@ -235,6 +235,76 @@ TEST_F(WireJoinerTest, setOutline)
     // In a document where WireJoiner::Build() is executed with setOutline() set to true there
     // should be at least a DocumentObject with "removed" in its label
     EXPECT_TRUE(foundRemovedOutline);
+}
+
+TEST_F(WireJoinerTest, setTightBound)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+    auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjNoTightBound.addShape()
+    std::vector<TopoDS_Shape> edgesNoTightBound {edge1, edge2, edge3, edge4};
+    // A vector of edges used as argument for wjTightBound.addShape()
+    std::vector<TopoDS_Shape> edgesTightBound {edge1, edge2, edge3, edge4};
+
+    // A WireJoiner object where the value of setTightBound() will be changed but no shapes will be
+    // built
+    auto wjNoBuild {WireJoiner()};
+    // A WireJoiner object where setTightBound() will be set to false
+    auto wjNoTightBound {WireJoiner()};
+    // A WireJoiner object where setTightBound() will be set to true
+    auto wjTightBound {WireJoiner()};
+
+    // An empty TopoShape that will contain the shapes returned by wjNoTightBound.getOpenWires()
+    auto wireNoTightBound {TopoShape(1)};
+    // An empty TopoShape that will contain the shapes returned by wjTightBound.getOpenWires()
+    auto wireTightBound {TopoShape(2)};
+
+    // Act
+
+    // Changing only the value of setTightBound(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setTightBound(false);
+
+    // To see the effect of setTightBound() we call WireJoiner::Build() and then
+    // WireJoiner::getOpenWires()
+
+    wjNoTightBound.addShape(edgesNoTightBound);
+    wjNoTightBound.setTightBound(false);
+    wjNoTightBound.Build();
+    wjNoTightBound.getOpenWires(wireNoTightBound, nullptr, false);
+
+    wjTightBound.addShape(edgesTightBound);
+    // same as wjTightBound.setTightBound(true);
+    wjTightBound.setTightBound();
+    wjTightBound.Build();
+    wjTightBound.getOpenWires(wireTightBound, nullptr, false);
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setTightBound()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // Calling wjNoTightBound.Build() will put all the edges inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound.
+    // In this case the number of edges is equal to 6 because:
+    // edge1 and edge2 aren't modified => 2 edges
+    // edge3 and edge4 are both split in 2 edges => 4 edges
+    // The split is made at the intersection point (0.5, 0.5, 0.0)
+    EXPECT_EQ(wireNoTightBound.getSubTopoShapes(TopAbs_EDGE).size(), 6);
+
+    // Calling wjTightBound.Build() will put inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound only the edges that don't contribute to the
+    // creation of any closed wire.
+    // In this case the number of those edges is equal to 1 and that edge is the one with vertexes
+    // at the coordinates (0.5, 0.5, 0.0) - (0.0, 1.0, 0.0)
+    EXPECT_EQ(wireTightBound.getSubTopoShapes(TopAbs_EDGE).size(), 1);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
