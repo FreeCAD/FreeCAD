@@ -28,19 +28,29 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/draggers/SoDragger.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/sensors/SoSensor.h>
 #endif
 
 #include <App/Link.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/MDIView.h>
+#include <Gui/SoFCCSysDragger.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
+
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
@@ -177,6 +187,7 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
 bool ViewProviderAssembly::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
+
     // Set the part as 'Activated' ie bold in the tree.
     Gui::Command::doCommand(Gui::Command::Gui,
                             "Gui.ActiveDocument.ActiveView.setActiveObject('%s', "
@@ -184,6 +195,8 @@ bool ViewProviderAssembly::setEdit(int ModNum)
                             PARTKEY,
                             this->getObject()->getDocument()->getName(),
                             this->getObject()->getNameInDocument());
+
+    setDragger();
 
     return true;
 }
@@ -194,6 +207,8 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
     canStartDragging = false;
     partMoving = false;
     docsToMove = {};
+
+    unsetDragger();
 
     // Check if the view is still active before trying to deactivate the assembly.
     auto doc = getDocument();
@@ -211,6 +226,42 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
                             "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
                             this->getObject()->getDocument()->getName(),
                             PARTKEY);
+}
+
+void ViewProviderAssembly::setDragger()
+{
+    // Create the dragger coin object
+    assert(!asmDragger);
+    asmDragger = new Gui::SoFCCSysDragger();
+    asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
+                              Gui::ViewParams::instance()->getAxisYColor(),
+                              Gui::ViewParams::instance()->getAxisZColor());
+    asmDragger->draggerSize.setValue(0.05f);
+
+    asmDraggerSwitch = new SoSwitch(SO_SWITCH_NONE);
+    asmDraggerSwitch->addChild(asmDragger);
+
+    pcRoot->insertChild(asmDraggerSwitch, 0);
+    asmDraggerSwitch->ref();
+    asmDragger->ref();
+}
+
+void ViewProviderAssembly::unsetDragger()
+{
+    pcRoot->removeChild(asmDraggerSwitch);
+    asmDragger->unref();
+    asmDragger = nullptr;
+    asmDraggerSwitch->unref();
+    asmDraggerSwitch = nullptr;
+}
+
+void ViewProviderAssembly::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    ViewProviderPart::setEditViewer(viewer, ModNum);
+
+    if (asmDragger && viewer) {
+        asmDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+    }
 }
 
 bool ViewProviderAssembly::isInEditMode() const
@@ -240,6 +291,7 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
 bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
     Q_UNUSED(pressed);
+
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
 
@@ -383,6 +435,7 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
 {
     Q_UNUSED(cursorPos);
     Q_UNUSED(viewer);
+
     // Left Mouse button ****************************************************
     if (Button == 1) {
         if (pressed) {
@@ -755,6 +808,45 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
     }
 
     return ViewProviderPart::onDelete(subNames);
+}
+
+void ViewProviderAssembly::setDraggerVisibility(bool val)
+{
+    asmDraggerSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+}
+bool ViewProviderAssembly::getDraggerVisibility()
+{
+    return asmDraggerSwitch->whichChild.getValue() == SO_SWITCH_ALL;
+}
+
+void ViewProviderAssembly::setDraggerPlacement(Base::Placement plc)
+{
+    double q0, q1, q2, q3;
+    plc.getRotation().getValue(q0, q1, q2, q3);
+    Base::Vector3d pos = plc.getPosition();
+    asmDragger->rotation.setValue(q0, q1, q2, q3);
+    asmDragger->translation.setValue(pos.x, pos.y, pos.z);
+}
+
+Base::Placement ViewProviderAssembly::getDraggerPlacement()
+{
+    Base::Placement plc;
+    SbVec3f pos = asmDragger->translation.getValue();
+    plc.setPosition(Base::Vector3d(pos[0], pos[1], pos[2]));
+
+    SbVec3f axis;
+    float angle;
+    asmDragger->rotation.getValue(axis, angle);
+    Base::Vector3d axisV = Base::Vector3d(axis[0], axis[1], axis[2]);
+    Base::Rotation rot(axisV, angle);
+    plc.setRotation(rot);
+
+    return plc;
+}
+
+Gui::SoFCCSysDragger* ViewProviderAssembly::getDragger()
+{
+    return asmDragger;
 }
 
 PyObject* ViewProviderAssembly::getPyObject()

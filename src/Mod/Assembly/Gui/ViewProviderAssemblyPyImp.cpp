@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Interpreter.h>
+#include <Base/PlacementPy.h>
+#include <Base/GeometryPyCXX.h>
+
 // inclusion of the generated files (generated out of ViewProviderAssemblyPy.xml)
 #include "ViewProviderAssemblyPy.h"
 #include "ViewProviderAssemblyPy.cpp"
@@ -46,6 +50,46 @@ Py::Boolean ViewProviderAssemblyPy::getEnableMovement() const
 void ViewProviderAssemblyPy::setEnableMovement(Py::Boolean arg)
 {
     getViewProviderAssemblyPtr()->setEnableMovement(arg);
+}
+
+Py::Boolean ViewProviderAssemblyPy::getDraggerVisibility() const
+{
+    return {getViewProviderAssemblyPtr()->getDraggerVisibility()};
+}
+
+void ViewProviderAssemblyPy::setDraggerVisibility(Py::Boolean arg)
+{
+    getViewProviderAssemblyPtr()->setDraggerVisibility(arg);
+}
+
+PyObject* ViewProviderAssemblyPy::getDragger(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    Gui::SoFCCSysDragger* asmDragger = getViewProviderAssemblyPtr()->getDragger();
+
+    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDragger *", asmDragger, 0);
+}
+
+
+Py::Object ViewProviderAssemblyPy::getDraggerPlacement() const
+{
+    return Py::Placement(getViewProviderAssemblyPtr()->getDraggerPlacement());
+}
+
+void ViewProviderAssemblyPy::setDraggerPlacement(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    if (PyObject_TypeCheck(p, &(Base::PlacementPy::Type))) {
+        Base::Placement* trf = static_cast<Base::PlacementPy*>(p)->getPlacementPtr();
+        getViewProviderAssemblyPtr()->setDraggerPlacement(*trf);
+    }
+    else {
+        std::string error = std::string("type must be 'Placement', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
 }
 
 PyObject* ViewProviderAssemblyPy::getCustomAttributes(const char* /*attr*/) const

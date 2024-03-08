@@ -31,10 +31,16 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderPart.h>
 
+class SoSwitch;
+class SoSensor;
+class SoDragger;
+class SoFieldSensor;
+
 namespace Gui
 {
+class SoFCCSysDragger;
 class View3DInventorViewer;
-}
+}  // namespace Gui
 
 namespace AssemblyGui
 {
@@ -71,6 +77,7 @@ public:
     //@{
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     bool isInEditMode() const;
 
     /// Ask the view provider if it accepts object deletions while in edit
@@ -120,6 +127,15 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
+    // Dragger controls:
+    void setDragger();
+    void unsetDragger();
+    void setDraggerVisibility(bool val);
+    bool getDraggerVisibility();
+    void setDraggerPlacement(Base::Placement plc);
+    Base::Placement getDraggerPlacement();
+    Gui::SoFCCSysDragger* getDragger();
+
     DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
@@ -136,6 +152,11 @@ public:
 
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> docsToMove;
+
+    Gui::SoFCCSysDragger* asmDragger = nullptr;
+    SoSwitch* asmDraggerSwitch = nullptr;
+    SoFieldSensor* translationSensor = nullptr;
+    SoFieldSensor* rotationSensor = nullptr;
 };
 
 }  // namespace AssemblyGui
