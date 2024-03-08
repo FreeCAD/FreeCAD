@@ -98,6 +98,12 @@ void DrawWeldSymbol::onSettingDocument()
 void DrawWeldSymbol::onChanged(const App::Property* prop)
 {
     DrawView::onChanged(prop);
+
+    // If leader was switched, our coordinates were adjusted, but we want to stick to the new leader line
+    if (prop == &Leader && Leader.getValue()) {
+        X.setValue(0.0);
+        Y.setValue(0.0);
+    }
 }
 
 short DrawWeldSymbol::mustExecute() const

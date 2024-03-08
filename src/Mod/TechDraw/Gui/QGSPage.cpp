@@ -623,28 +623,11 @@ QGIView* QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
 
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
-    //    Base::Console().Message("QGSP::addWeldSymbol()\n");
-    QGIWeldSymbol* weldGroup = nullptr;
-    TechDraw::DrawView* parentDV = nullptr;
+    QGIWeldSymbol *weldView = new QGIWeldSymbol;
+    weldView->setViewFeature(weldFeat);
 
-    App::DocumentObject* parentObj = weldFeat->Leader.getValue();
-    if (parentObj) {
-        parentDV = dynamic_cast<TechDraw::DrawView*>(parentObj);
-    }
-    else {
-        //        Base::Console().Message("QGSP::addWeldSymbol - no parent doc obj\n");
-    }
-    if (parentDV) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
-        if (leadParent) {
-            weldGroup = new QGIWeldSymbol(leadParent);
-            weldGroup->setFeature(weldFeat);    //for QGIWS
-            weldGroup->setViewFeature(weldFeat);//for QGIV
-            weldGroup->updateView(true);
-        }
-    }
-    return weldGroup;
+    addQView(weldView);
+    return weldView;
 }
 
 void QGSPage::setDimensionGroups(void)

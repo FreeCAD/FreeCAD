@@ -456,78 +456,32 @@ void TaskWeldingSymbol::getTileFeats()
 TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
-
-    const std::string objectName{QT_TR_NOOP("SectionView")};
-    std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName(objectName.c_str());
-    std::string generatedSuffix {symbolName.substr(objectName.length())};
-
-    std::string symbolType = "TechDraw::DrawWeldSymbol";
-
-    TechDraw::DrawPage* page = m_leadFeat->findParentPage();
-    std::string pageName = page->getNameInDocument();
-
-    Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
-                       symbolType.c_str(), symbolName.c_str());
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       pageName.c_str(), symbolName.c_str());
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.Leader = App.activeDocument().%s",
-                           symbolName.c_str(), m_leadFeat->getNameInDocument());
-
-    bool allAround = ui->cbAllAround->isChecked();
-    std::string allAroundText = allAround ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.AllAround = %s",
-                           symbolName.c_str(), allAroundText.c_str());
-
-    bool fieldWeld = ui->cbFieldWeld->isChecked();
-    std::string fieldWeldText = fieldWeld ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.FieldWeld = %s",
-                           symbolName.c_str(), fieldWeldText.c_str());
-
-    bool altWeld = ui->cbAltWeld->isChecked();
-    std::string altWeldText = altWeld ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.AlternatingWeld = %s",
-                           symbolName.c_str(), altWeldText.c_str());
-
-    std::string tailText = ui->leTailText->text().toStdString();
-    tailText = Base::Tools::escapeEncodeString(tailText);
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.TailText = '%s'",
-                           symbolName.c_str(), tailText.c_str());
-
-    App::DocumentObject* newObj = m_leadFeat->getDocument()->getObject(symbolName.c_str());
-    TechDraw::DrawWeldSymbol* newSym = dynamic_cast<TechDraw::DrawWeldSymbol*>(newObj);
-    if (!newObj || !newSym)
+    App::Document *doc = Application::Instance->activeDocument()->getDocument();
+    auto weldSymbol = dynamic_cast<TechDraw::DrawWeldSymbol*>(doc->addObject("TechDraw::DrawWeldSymbol", "WeldSymbol"));
+    if (!weldSymbol) {
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
+    }
 
-    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
-    newObj->Label.setValue(translatedObjectName + generatedSuffix);
+    weldSymbol->AllAround.setValue(ui->cbAllAround->isChecked());
+    weldSymbol->FieldWeld.setValue(ui->cbFieldWeld->isChecked());
+    weldSymbol->AlternatingWeld.setValue(ui->cbAltWeld->isChecked());
+    weldSymbol->TailText.setValue(ui->leTailText->text().toStdString());
+    weldSymbol->Leader.setValue(m_leadFeat);
 
-    return newSym;
+    TechDraw::DrawPage *page = m_leadFeat->findParentPage();
+    if (page) {
+        page->addView(weldSymbol);
+    }
+
+    return weldSymbol;
 }
 
 void TaskWeldingSymbol::updateWeldingSymbol()
 {
-//    Base::Console().Message("TWS::updateWeldingSymbol()\n");
-    std::string symbolName = m_weldFeat->getNameInDocument();
-
-    bool allAround = ui->cbAllAround->isChecked();
-    std::string allAroundText = allAround ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.AllAround = %s",
-                           symbolName.c_str(), allAroundText.c_str());
-
-    bool fieldWeld = ui->cbFieldWeld->isChecked();
-    std::string fieldWeldText = fieldWeld ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.FieldWeld = %s",
-                           symbolName.c_str(), fieldWeldText.c_str());
-
-    bool altWeld = ui->cbAltWeld->isChecked();
-    std::string altWeldText = altWeld ? "True" : "False";
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.AlternatingWeld = %s",
-                           symbolName.c_str(), altWeldText.c_str());
-
-    std::string tailText = ui->leTailText->text().toStdString();
-    tailText = Base::Tools::escapeEncodeString(tailText);
-    Command::doCommand(Command::Doc, "App.activeDocument().%s.TailText = '%s'",
-                           symbolName.c_str(), tailText.c_str());
+    m_weldFeat->AllAround.setValue(ui->cbAllAround->isChecked());
+    m_weldFeat->FieldWeld.setValue(ui->cbFieldWeld->isChecked());
+    m_weldFeat->AlternatingWeld.setValue(ui->cbAltWeld->isChecked());
+    m_weldFeat->TailText.setValue(ui->leTailText->text().toStdString());
 }
 
 void TaskWeldingSymbol::updateTiles()
