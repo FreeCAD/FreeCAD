@@ -798,7 +798,7 @@ Document::Document(const char* documentName)
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n", this);
 #endif
-    std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
+    std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                              ->GetASCII("prefAuthor", "");
@@ -1606,7 +1606,7 @@ bool Document::save ()
             TipName.setValue(Tip.getValue()->getNameInDocument());
         }
 
-        std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
+        std::string LastModifiedDateString = Base::Tools::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // set author if needed
         bool saveAuthor = App::GetApplication().GetParameterGroupByPath
@@ -1799,7 +1799,7 @@ private:
                     if (useFCBakExtension) {
                         std::stringstream str;
                         Base::TimeInfo ti = fi.lastModified();
-                        time_t s =ti.getSeconds();
+                        time_t s = ti.getTime_t();
                         struct tm * timeinfo = localtime(& s);
                         char buffer[100];
 

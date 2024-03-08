@@ -1621,7 +1621,7 @@ class CHEXA2Element: public NastranElement
 
 void FemMesh::readNastran(const std::string& Filename)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
 
     _Mtrx = Base::Matrix4D();
@@ -1699,7 +1699,7 @@ void FemMesh::readNastran(const std::string& Filename)
     inputfile.close();
 
     Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1709,12 +1709,13 @@ void FemMesh::readNastran(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readNastran95(const std::string& Filename)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readNastran95() =================================\n");
 
     _Mtrx = Base::Matrix4D();
@@ -1825,7 +1826,7 @@ void FemMesh::readNastran95(const std::string& Filename)
     inputfile.close();
 
     Base::Console().Log("    %f: File read, start building mesh\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // Now fill the SMESH datastructure
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -1839,12 +1840,13 @@ void FemMesh::readNastran95(const std::string& Filename)
         it->addToMesh(meshds);
     }
 
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readAbaqus(const std::string& FileName)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
 
     /*
@@ -1878,12 +1880,13 @@ void FemMesh::readAbaqus(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::readZ88(const std::string& FileName)
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
 
     /*
@@ -1917,7 +1920,8 @@ void FemMesh::readZ88(const std::string& FileName)
     catch (Py::Exception& e) {
         e.clear();
     }
-    Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+    Base::Console().Log("    %f: Done \n",
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 void FemMesh::read(const char* FileName)
@@ -2416,7 +2420,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
 
 void FemMesh::writeZ88(const std::string& FileName) const
 {
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::writeZ88() =================================\n");
 
     /*

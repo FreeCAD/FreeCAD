@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
+#include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
@@ -171,9 +172,8 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
         //qApp->processEvents();
 
+        Base::TimeElapsed startTime;
         // open extra scope to close ZipWriter properly
-        Base::StopWatch watch;
-        watch.start();
         {
             if (!this->compressed) {
                 RecoveryWriter writer(saver);
@@ -220,8 +220,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        std::string str = watch.toString(watch.elapsed());
-        Base::Console().Log("Save AutoRecovery file: %s\n", str.c_str());
+        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
