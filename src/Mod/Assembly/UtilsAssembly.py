@@ -102,9 +102,6 @@ def getObject(full_name):
     doc = App.ActiveDocument
 
     if len(names) < 3:
-        App.Console.PrintError(
-            "getObject() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter"
-        )
         return None
 
     prevObj = None
@@ -641,3 +638,297 @@ def removeObjsAndChilds(objs):
     for obj in toremove:
         if obj:
             obj.Document.removeObject(obj.Name)
+
+
+# This function returns all the objects within the argument that can move:
+# - Part::Features (outside of parts)
+# - App::parts
+# - App::Links to Part::Features or App::parts.
+# It does not include Part::Features that are within App::Parts.
+# It includes things inside Groups.
+def getMovablePartsWithin(group, partsAsSolid=False):
+    parts = []
+    for obj in group.OutList:
+        parts = parts + getSubMovingParts(obj, partsAsSolid)
+    return parts
+
+
+def getSubMovingParts(obj, partsAsSolid):
+    if obj.isDerivedFrom("Part::Feature"):
+        return [obj]
+
+    elif obj.isDerivedFrom("App::Part"):
+        objs = []
+        if not partsAsSolid:
+            objs = getMovablePartsWithin(obj)
+        objs.append(obj)
+        return objs
+
+    elif obj.TypeId == "App::DocumentObjectGroup":
+        return getMovablePartsWithin(obj)
+
+    if obj.TypeId == "App::Link":
+        linked_obj = obj.getLinkedObject()
+        if linked_obj.TypeId == "App::Part" or linked_obj.isDerivedFrom("Part::Feature"):
+            return [obj]
+
+    return []
+
+
+# Find the center of mass of a list of parts.
+# Note it could be useful to move this to Measure mod.
+def getCenterOfMass(parts):
+    total_mass = 0
+    total_com = App.Vector(0, 0, 0)
+
+    for part in parts:
+        mass, com = getObjMassAndCom(part)
+        total_mass += mass
+        total_com += com
+
+    # After all parts are processed, calculate the overall center of mass
+    if total_mass > 0:  # Avoid division by zero
+        overall_com = total_com / total_mass
+    else:
+        overall_com = App.Vector(0, 0, 0)  # Default if no mass is found
+
+    return overall_com
+
+
+def getObjMassAndCom(obj, containingPart=None):
+    link_global_plc = None
+
+    if obj.TypeId == "App::Link":
+        link_global_plc = getGlobalPlacement(obj, containingPart)
+        obj = obj.getLinkedObject()
+
+    if obj.TypeId == "PartDesign::Body":
+        part = part.Tip
+
+    if obj.isDerivedFrom("Part::Feature"):
+        mass = obj.Shape.Volume
+        com = obj.Shape.CenterOfGravity
+        # com takes into account obj placement, but not container placements.
+        # So we make com relative to the obj :
+        comPlc = App.Placement()
+        comPlc.Base = com
+        comPlc = obj.Placement.inverse() * comPlc
+        # Then we make it relative to the origin of the doc
+        global_plc = App.Placement()
+        if link_global_plc is None:
+            global_plc = getGlobalPlacement(obj, containingPart)
+        else:
+            global_plc = link_global_plc
+
+        comPlc = global_plc * comPlc
+
+        com = comPlc.Base * mass
+        return mass, com
+
+    elif obj.isDerivedFrom("App::Part") or obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if containingPart is None and obj.isDerivedFrom("App::Part"):
+            containingPart = obj
+
+        total_mass = 0
+        total_com = App.Vector(0, 0, 0)
+
+        for subObj in obj.OutList:
+            mass, com = getObjMassAndCom(subObj, containingPart)
+            total_mass += mass
+            total_com += com
+        return total_mass, total_com
+    return 0, App.Vector(0, 0, 0)
+
+
+def getCenterOfBoundingBox(objs, parts):
+    i = 0
+    center = App.Vector()
+    for obj, part in zip(objs, parts):
+        viewObject = obj.ViewObject
+        if viewObject is None:
+            continue
+        boundingBox = viewObject.getBoundingBox()
+        if boundingBox is None:
+            continue
+        bboxCenter = boundingBox.Center
+        if part != obj:
+            # bboxCenter does not take into account obj global placement
+            plc = App.Placement(bboxCenter, App.Rotation())
+            # change plc to be relative to the object placement.
+            plc = obj.Placement.inverse() * plc
+            # change plc to be relative to the origin of the document.
+            global_plc = getGlobalPlacement(obj, part)
+            plc = global_plc * plc
+            bboxCenter = plc.Base
+
+        center = center + bboxCenter
+        i = i + 1
+
+    if i != 0:
+        center = center / i
+    return center
+
+
+def findCylindersIntersection(obj, surface, edge, elt_index):
+    for j, facej in enumerate(obj.Shape.Faces):
+        surfacej = facej.Surface
+        if (elt_index - 1) == j or surfacej.TypeId != "Part::GeomCylinder":
+            continue
+
+        for edgej in facej.Edges:
+            if (
+                edgej.Curve.TypeId == "Part::GeomBSplineCurve"
+                and edgej.CenterOfGravity == edge.CenterOfGravity
+                and edgej.Length == edge.Length
+            ):
+                # we need intersection between the 2 cylinder axis.
+                line1 = Part.Line(surface.Center, surface.Center + surface.Axis)
+                line2 = Part.Line(surfacej.Center, surfacej.Center + surfacej.Axis)
+
+                res = line1.intersect(line2, Part.Precision.confusion())
+
+                if res:
+                    return App.Vector(res[0].X, res[0].Y, res[0].Z)
+    return surface.Center
+
+
+def applyOffsetToPlacement(plc, offset):
+    plc.Base = plc.Base + plc.Rotation.multVec(offset)
+    return plc
+
+
+def applyRotationToPlacement(plc, angle):
+    return applyRotationToPlacementAlongAxis(plc, angle, App.Vector(0, 0, 1))
+
+
+def applyRotationToPlacementAlongAxis(plc, angle, axis):
+    rot = plc.Rotation
+    zRotation = App.Rotation(axis, angle)
+    plc.Rotation = rot * zRotation
+    return plc
+
+
+def flipPlacement(plc):
+    return applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
+
+
+"""
+So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
+- obj is usually a App::Link to a PartDesign::Body, or primitive, fasteners. But can also be directly the object.1
+- elt can be a face, an edge or a vertex.
+- If elt is a vertex, then vtx = elt And placement is vtx coordinates without rotation.
+- if elt is an edge, then vtx = edge start/end vertex depending on which is closer. If elt is an arc or circle, vtx can also be the center. The rotation is the plane normal to the line positioned at vtx. Or for arcs/circle, the plane of the arc.
+- if elt is a plane face, vtx is the face vertex (to the list of vertex we need to add arc/circle centers) the closer to the mouse. The placement is the plane rotation positioned at vtx
+- if elt is a cylindrical face, vtx can also be the center of the arcs of the cylindrical face.
+"""
+
+
+def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
+    if not obj or not part:
+        return App.Placement()
+
+    if not elt or not vtx:
+        # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
+        return App.Placement()
+
+    plc = App.Placement()
+
+    elt_type, elt_index = extract_type_and_number(elt)
+    vtx_type, vtx_index = extract_type_and_number(vtx)
+
+    isLine = False
+
+    if elt_type == "Vertex":
+        vertex = obj.Shape.Vertexes[elt_index - 1]
+        plc.Base = (vertex.X, vertex.Y, vertex.Z)
+    elif elt_type == "Edge":
+        edge = obj.Shape.Edges[elt_index - 1]
+        curve = edge.Curve
+
+        # First we find the translation
+        if vtx_type == "Edge" or ignoreVertex:
+            # In this case the wanted vertex is the center.
+            if curve.TypeId == "Part::GeomCircle":
+                center_point = curve.Location
+                plc.Base = (center_point.x, center_point.y, center_point.z)
+            elif curve.TypeId == "Part::GeomLine":
+                edge_points = getPointsFromVertexes(edge.Vertexes)
+                line_middle = (edge_points[0] + edge_points[1]) * 0.5
+                plc.Base = line_middle
+        else:
+            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            plc.Base = (vertex.X, vertex.Y, vertex.Z)
+
+        # Then we find the Rotation
+        if curve.TypeId == "Part::GeomCircle":
+            plc.Rotation = App.Rotation(curve.Rotation)
+
+        if curve.TypeId == "Part::GeomLine":
+            isLine = True
+            plane_normal = curve.Direction
+            plane_origin = App.Vector(0, 0, 0)
+            plane = Part.Plane(plane_origin, plane_normal)
+            plc.Rotation = App.Rotation(plane.Rotation)
+    elif elt_type == "Face":
+        face = obj.Shape.Faces[elt_index - 1]
+        surface = face.Surface
+
+        # First we find the translation
+        if vtx_type == "Face" or ignoreVertex:
+            if surface.TypeId == "Part::GeomCylinder" or surface.TypeId == "Part::GeomCone":
+                centerOfG = face.CenterOfGravity - surface.Center
+                centerPoint = surface.Center + centerOfG
+                centerPoint = centerPoint + App.Vector().projectToLine(centerOfG, surface.Axis)
+                plc.Base = centerPoint
+            elif surface.TypeId == "Part::GeomTorus" or surface.TypeId == "Part::GeomSphere":
+                plc.Base = surface.Center
+            else:
+                plc.Base = face.CenterOfGravity
+        elif vtx_type == "Edge":
+            # In this case the edge is a circle/arc and the wanted vertex is its center.
+            edge = face.Edges[vtx_index - 1]
+            curve = edge.Curve
+            if curve.TypeId == "Part::GeomCircle":
+                center_point = curve.Location
+                plc.Base = (center_point.x, center_point.y, center_point.z)
+
+            elif (
+                surface.TypeId == "Part::GeomCylinder" and curve.TypeId == "Part::GeomBSplineCurve"
+            ):
+                # handle special case of 2 cylinder intersecting.
+                plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
+
+        else:
+            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            plc.Base = (vertex.X, vertex.Y, vertex.Z)
+
+        # Then we find the Rotation
+        if surface.TypeId == "Part::GeomPlane":
+            plc.Rotation = App.Rotation(surface.Rotation)
+        else:
+            plc.Rotation = surface.Rotation
+
+    # Now plc is the placement relative to the origin determined by the object placement.
+    # But it does not take into account Part placements. So if the solid is in a part and
+    # if the part has a placement then plc is wrong.
+
+    # change plc to be relative to the object placement.
+    plc = obj.Placement.inverse() * plc
+
+    # post-process of plc for some special cases
+    if elt_type == "Vertex":
+        plc.Rotation = App.Rotation()
+    elif isLine:
+        plane_normal = plc.Rotation.multVec(App.Vector(0, 0, 1))
+        plane_origin = App.Vector(0, 0, 0)
+        plane = Part.Plane(plane_origin, plane_normal)
+        plc.Rotation = App.Rotation(plane.Rotation)
+
+    # change plc to be relative to the origin of the document.
+    # global_plc = getGlobalPlacement(obj, part)
+    # plc = global_plc * plc
+
+    # change plc to be relative to the assembly.
+    # plc = activeAssembly().Placement.inverse() * plc
+
+    return plc
