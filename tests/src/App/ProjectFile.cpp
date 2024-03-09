@@ -73,9 +73,8 @@ TEST_F(ProjectFileTest, getMetadata)
     EXPECT_EQ(std::string("ProjectTest"), metadata.label);
     EXPECT_EQ(std::string("John Doe"), metadata.lastModifiedBy);
     EXPECT_EQ(std::string("2024-03-08T11:03:44Z"), metadata.lastModifiedDate);
-    EXPECT_EQ(std::string("All rights reserved"), metadata.license);
-    EXPECT_EQ(std::string("https://en.wikipedia.org/wiki/All_rights_reserved"),
-              metadata.licenseURL);
+    EXPECT_EQ(std::string("Public Domain"), metadata.license);
+    EXPECT_EQ(std::string("https://en.wikipedia.org/wiki/Public_domain"), metadata.licenseURL);
     EXPECT_EQ(std::string("0.22R36329 (Git)"), metadata.programVersion);
     EXPECT_EQ(std::string("6847155d-dcc3-4dea-92c9-c4d32d6a3055"), metadata.uuid);
 }
