@@ -53,6 +53,8 @@ class SoDrawStyle;
 class SoIndexedFaceSet;
 class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
+class SoTransparencyType;
+class SoDepthBuffer;
 
 namespace Gui
 {
@@ -143,6 +145,9 @@ protected:
     Gui::SoFCColorBar* m_colorBar;
     SoSeparator* m_colorRoot;
     SoDrawStyle* m_colorStyle;
+    SoTransparencyType* m_transpType;
+    SoSeparator* m_sepMarkerLine;
+    SoDepthBuffer* m_depthBuffer;
 
     vtkSmartPointer<vtkPolyDataAlgorithm> m_currentAlgorithm;
     vtkSmartPointer<vtkGeometryFilter> m_surface;

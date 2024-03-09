@@ -33,6 +33,8 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #include <functional>
 
 #include <vtkCellArray.h>
@@ -159,6 +161,11 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     sPixmap = "fem-femmesh-from-shape";
 
     // create the subnodes which do the visualization work
+    m_transpType = new SoTransparencyType();
+    m_transpType->ref();
+    m_transpType->value = SoTransparencyType::BLEND;
+    m_depthBuffer = new SoDepthBuffer();
+    m_depthBuffer->ref();
     m_shapeHints = new SoShapeHints();
     m_shapeHints->ref();
     m_shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -185,6 +192,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_drawStyle->ref();
     m_drawStyle->lineWidth.setValue(2);
     m_drawStyle->pointSize.setValue(3);
+    m_sepMarkerLine = new SoSeparator();
+    m_sepMarkerLine->ref();
     m_separator = new SoSeparator();
     m_separator->ref();
 
@@ -221,6 +230,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
     FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
+    m_transpType->unref();
+    m_depthBuffer->unref();
     m_shapeHints->unref();
     m_coordinates->unref();
     m_materialBinding->unref();
@@ -231,6 +242,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_triangleStrips->unref();
     m_markers->unref();
     m_lines->unref();
+    m_sepMarkerLine->unref();
     m_separator->unref();
     m_material->unref();
     m_colorBar->Detach(this);
@@ -243,19 +255,27 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
 
+    // marker and line nodes
+    m_sepMarkerLine->addChild(m_transpType);
+    m_sepMarkerLine->addChild(m_depthBuffer);
+    m_sepMarkerLine->addChild(m_drawStyle);
+    m_sepMarkerLine->addChild(m_materialBinding);
+    m_sepMarkerLine->addChild(m_material);
+    m_sepMarkerLine->addChild(m_coordinates);
+    m_sepMarkerLine->addChild(m_markers);
+    m_sepMarkerLine->addChild(m_lines);
+
     // face nodes
     m_separator->addChild(m_shapeHints);
-    m_separator->addChild(m_drawStyle);
     m_separator->addChild(m_materialBinding);
     m_separator->addChild(m_material);
     m_separator->addChild(m_coordinates);
-    m_separator->addChild(m_markers);
-    m_separator->addChild(m_lines);
     m_separator->addChild(m_faces);
+    m_separator->addChild(m_sepMarkerLine);
 
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar =
-        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+        static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
         float fMin = m_colorBar->getMinValue();
         float fMax = m_colorBar->getMaxValue();
@@ -318,7 +338,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    // StrList.emplace_back("Nodes (surface only)"); somehow this filter does not work
+    StrList.emplace_back("Nodes (surface only)");
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");
@@ -441,7 +461,6 @@ void ViewProviderFemPostObject::update3D()
 
     // write out point data if any
     WritePointData(points, normals, tcoords);
-    WriteTransparency();
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 
@@ -656,9 +675,19 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
 
 void ViewProviderFemPostObject::WriteTransparency()
 {
-    float trans = float(Transparency.getValue()) / 100.0;
-    m_material->transparency.setValue(trans);
+    float trans = static_cast<float>(Transparency.getValue()) / 100.0;
+    float* value = m_material->transparency.startEditing();
+    for (int i = 0; i < m_material->transparency.getNum(); ++i) {
+        value[i] = trans;
+    }
+    m_material->transparency.finishEditing();
 
+    if (Transparency.getValue() > 99) {
+        m_depthBuffer->test.setValue(false);
+    }
+    else {
+        m_depthBuffer->test.setValue(true);
+    }
     // In order to apply the transparency changes the shape nodes must be touched
     m_faces->touch();
     m_triangleStrips->touch();
@@ -817,11 +846,9 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     if (prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
-        WriteTransparency();
     }
     else if (prop == &VectorMode && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
-        WriteTransparency();
     }
     else if (prop == &Transparency) {
         WriteTransparency();
@@ -832,17 +859,6 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
 
 bool ViewProviderFemPostObject::doubleClicked()
 {
-    // work around for a problem in VTK implementation:
-    // https://forum.freecad.org/viewtopic.php?t=10587&start=130#p125688
-    // check if backlight is enabled
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
-    if (!isBackLightEnabled) {
-        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you "
-                              "really should consider to enable backlight in FreeCAD display "
-                              "preferences if you work with VTK post processing.\n");
-    }
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
