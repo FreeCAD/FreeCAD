@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["centrif", "fixed"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "multimaterial",
         "equations": ["mechanical"]
     }
