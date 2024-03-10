@@ -75,7 +75,7 @@ def setup(doc=None, solvertype="ccxtools"):
     elif solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "frequency"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False

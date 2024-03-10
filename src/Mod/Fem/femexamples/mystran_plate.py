@@ -133,7 +133,7 @@ def setup(doc=None, solvertype="ccxtools"):
             "No solver object was created.\n".format(solvertype)
         )
 
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
