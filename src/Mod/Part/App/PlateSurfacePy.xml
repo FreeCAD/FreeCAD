@@ -13,7 +13,7 @@
         Constructor="true">
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
-            <UserDocu></UserDocu>
+            <UserDocu>Represents a plate surface in FreeCAD. Plate surfaces can be defined by specifying points or curves as constraints, and they can also be approximated to B-spline surfaces using the makeApprox method. This class is commonly used in CAD modeling for creating surfaces that represent flat or curved plates, such as sheet metal components or structural elements.</UserDocu>
         </Documentation>
         <Methode Name="makeApprox" Keyword="true">
             <Documentation>
