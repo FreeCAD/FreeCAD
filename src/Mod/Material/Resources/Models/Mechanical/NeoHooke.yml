@@ -26,7 +26,7 @@ Model:
   UUID: '569ebc58-ef29-434a-83be-555a0980d505'
   URL: 'http://www.dhondt.de/ccx_2.21.pdf'
   Description: >
-    A neo-Hookean solid is a hyperelastic material model, similar to 
+    A neo-Hookean solid is a hyperelastic material model, similar to
     Hooke's law, that can be used for predicting the nonlinear stress-strain
     behavior of materials undergoing large deformations.
   NeoHooke:

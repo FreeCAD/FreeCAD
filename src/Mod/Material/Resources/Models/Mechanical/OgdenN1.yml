@@ -28,7 +28,7 @@ Model:
   Description: >
     The Ogden material model is a hyperelastic material model used to
     describe the non-linear stress–strain behaviour of complex materials
-    such as rubbers, polymers, and biological tissue. 
+    such as rubbers, polymers, and biological tissue.
   OgdenN1:
     DisplayName: "Ogden N=1"
     Type: '2DArray'
