@@ -5714,7 +5714,7 @@ az Elmer megoldóhoz</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculixCcxtools</name>
+    <name>FEM_SolverCalculiXCcxTools</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1058"/>
       <source>Solver CalculiX Standard</source>
