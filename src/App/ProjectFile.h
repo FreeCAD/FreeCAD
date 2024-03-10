@@ -156,11 +156,11 @@ public:
     /**
      * Extracts, via a temporary file the content of an input file of @a name.
      */
-    void readInputFile(const std::string& name, std::stringstream& str);
+    void readInputFile(const std::string& name, std::ostream& str);
     /**
      * Directly extracts the content of an input file of @a name.
      */
-    void readInputFileDirect(const std::string& name, std::stringstream& str);
+    void readInputFileDirect(const std::string& name, std::ostream& str);
     /**
      * Replaces the input file @a name with the content of the given @a stream.
      * The method returns the file name of the newly created project file.
