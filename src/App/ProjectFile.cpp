@@ -143,7 +143,7 @@ private:
         metadata.uuid = propMap.at("Uid");
     }
 
-    void readProperty(DOMNode* propNode, std::map<std::string, std::string>& propMap)
+    static void readProperty(DOMNode* propNode, std::map<std::string, std::string>& propMap)
     {
         DOMNode* nameAttr = propNode->getAttributes()->getNamedItem(XStr("name").unicodeForm());
         if (nameAttr) {
@@ -530,7 +530,7 @@ std::string ProjectFile::extractInputFile(const std::string& name)
     return {};
 }
 
-void ProjectFile::readInputFile(const std::string& name, std::stringstream& str)
+void ProjectFile::readInputFile(const std::string& name, std::ostream& str)
 {
     Base::FileInfo fi(extractInputFile(name));
     if (fi.exists()) {
@@ -543,7 +543,7 @@ void ProjectFile::readInputFile(const std::string& name, std::stringstream& str)
 
 // Read the given input file from the zip directly into the given stream (not using a temporary
 // file)
-void ProjectFile::readInputFileDirect(const std::string& name, std::stringstream& str)
+void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str)
 {
     zipios::ZipFile project(stdFile);
     std::unique_ptr<std::istream> istr(project.getInputStream(name));
