@@ -276,12 +276,17 @@ TEST_F(WireJoinerTest, setTightBound)
 
     wjNoTightBound.addShape(edgesNoTightBound);
     wjNoTightBound.setTightBound(false);
+    // Calling wjNoTightBound.Build() will put all the edges inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound.
     wjNoTightBound.Build();
     wjNoTightBound.getOpenWires(wireNoTightBound, nullptr, false);
 
     wjTightBound.addShape(edgesTightBound);
     // same as wjTightBound.setTightBound(true);
     wjTightBound.setTightBound();
+    // Calling wjTightBound.Build() will put inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound only the edges that don't contribute to the
+    // creation of any closed wire.
     wjTightBound.Build();
     wjTightBound.getOpenWires(wireTightBound, nullptr, false);
 
@@ -291,17 +296,12 @@ TEST_F(WireJoinerTest, setTightBound)
     // only changed the value of setTightBound()
     EXPECT_FALSE(wjNoBuild.IsDone());
 
-    // Calling wjNoTightBound.Build() will put all the edges inside the private object
-    // WireJoiner::WireJoinerP::openWireCompound.
     // In this case the number of edges is equal to 6 because:
     // edge1 and edge2 aren't modified => 2 edges
     // edge3 and edge4 are both split in 2 edges => 4 edges
     // The split is made at the intersection point (0.5, 0.5, 0.0)
     EXPECT_EQ(wireNoTightBound.getSubTopoShapes(TopAbs_EDGE).size(), 6);
 
-    // Calling wjTightBound.Build() will put inside the private object
-    // WireJoiner::WireJoinerP::openWireCompound only the edges that don't contribute to the
-    // creation of any closed wire.
     // In this case the number of those edges is equal to 1 and that edge is the one with vertexes
     // at the coordinates (0.5, 0.5, 0.0) - (0.0, 1.0, 0.0)
     EXPECT_EQ(wireTightBound.getSubTopoShapes(TopAbs_EDGE).size(), 1);
@@ -324,15 +324,17 @@ TEST_F(WireJoinerTest, setSplitEdges)
     // A WireJoiner object where the value of setSplitEdges() will be changed but no shapes will be
     // built
     auto wjNoBuild {WireJoiner()};
+
     // A WireJoiner object where setSplitEdges() will be set to false
-    // To see it's effect it's necessary also to call setTightBound(false) otherwise
-    // WireJoiner::WireJoinerP::splitEdges() will be called in any case
     auto wjNoSplitEdges {WireJoiner()};
-    wjNoSplitEdges.setTightBound(false);
-    // A WireJoiner object where setSplitEdges() will be set to true
     // To see it's effect it's necessary also to call setTightBound(false) otherwise
     // WireJoiner::WireJoinerP::splitEdges() will be called in any case
+    wjNoSplitEdges.setTightBound(false);
+
+    // A WireJoiner object where setSplitEdges() will be set to true
     auto wjSplitEdges {WireJoiner()};
+    // To see it's effect it's necessary also to call setTightBound(false) otherwise
+    // WireJoiner::WireJoinerP::splitEdges() will be called in any case
     wjSplitEdges.setTightBound(false);
 
     // An empty TopoShape that will contain the shapes returned by wjNoSplitEdges.getOpenWires()
@@ -350,12 +352,17 @@ TEST_F(WireJoinerTest, setSplitEdges)
 
     wjNoSplitEdges.addShape(edgesNoSplitEdges);
     wjNoSplitEdges.setSplitEdges(false);
+    // Calling wjNoSplitEdges.Build() will put all the edges that don't contribute to the creation
+    // of a closed wire inside the private object WireJoiner::WireJoinerP::openWireCompound.
     wjNoSplitEdges.Build();
     wjNoSplitEdges.getOpenWires(wireNoSplitEdges, nullptr, false);
 
     wjSplitEdges.addShape(edgesSplitEdges);
     // same as wjSplitEdges.setSplitEdges(true);
     wjSplitEdges.setSplitEdges();
+    // Calling wjSplitEdges.Build() will put inside the private object
+    // WireJoiner::WireJoinerP::openWireCompound all the edges processed by
+    // WireJoiner::WireJoinerP::splitEdges().
     wjSplitEdges.Build();
     wjSplitEdges.getOpenWires(wireSplitEdges, nullptr, false);
 
@@ -365,18 +372,92 @@ TEST_F(WireJoinerTest, setSplitEdges)
     // only changed the value of setSplitEdges()
     EXPECT_FALSE(wjNoBuild.IsDone());
 
-    // Calling wjNoSplitEdges.Build() will put all the edges that don't contribute to the creation
-    // of a closed wire inside the private object WireJoiner::WireJoinerP::openWireCompound.
     // In this case the number of edges is equal to the number of edges added with
     // wjNoSplitEdges.addShape() because none of them is used for the creation of a closed wire.
     EXPECT_EQ(wireNoSplitEdges.getSubTopoShapes(TopAbs_EDGE).size(), 2);
 
-    // Calling wjSplitEdges.Build() will put inside the private object
-    // WireJoiner::WireJoinerP::openWireCompound all the edges processed by
-    // WireJoiner::WireJoinerP::splitEdges().
     // In this case the number of those edges is equal to 4 because both the edges added with
     // wjSplitEdges.addShape() have been split at the intersection point (0.5, 0.5, 0.0)
     EXPECT_EQ(wireSplitEdges.getSubTopoShapes(TopAbs_EDGE).size(), 4);
+}
+
+TEST_F(WireJoinerTest, setMergeEdges)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 0.0, 0.0), gp_Pnt(1.1, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, -0.1, 0.0), gp_Pnt(1.0, 1.1, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjNoMergeEdges.addShape()
+    std::vector<TopoDS_Shape> edgesNoMergeEdges {edge1, edge2, edge3};
+    // A vector of edges used as argument for wjMergeEdges.addShape()
+    std::vector<TopoDS_Shape> edgesMergeEdges {edge1, edge2, edge3};
+
+    // A WireJoiner object where the value of setMergeEdges() will be changed but no shapes will be
+    // built
+    auto wjNoBuild {WireJoiner()};
+
+    // A WireJoiner object where setMergeEdges() will be set to false
+    auto wjNoMergeEdges {WireJoiner()};
+    // To see it's effect it's necessary also to call setTightBound(false) otherwise
+    // WireJoiner::WireJoinerP::MergeEdges() will be called in any case
+    wjNoMergeEdges.setTightBound(false);
+
+    // A WireJoiner object where setMergeEdges() will be set to true
+    auto wjMergeEdges {WireJoiner()};
+    // To see it's effect it's necessary also to call setTightBound(false) otherwise
+    // WireJoiner::WireJoinerP::MergeEdges() will be called in any case
+    wjMergeEdges.setTightBound(false);
+
+    // An empty TopoShape that will contain the shapes returned by wjNoMergeEdges.getOpenWires()
+    auto wireNoMergeEdges {TopoShape(1)};
+    // An empty TopoShape that will contain the shapes returned by wjMergeEdges.getOpenWires()
+    auto wireMergeEdges {TopoShape(2)};
+
+    // Act
+
+    // Changing only the value of setMergeEdges(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setMergeEdges(false);
+
+    // To see the effect of setMergeEdges() we call WireJoiner::Build() and then
+    // WireJoiner::getOpenWires()
+
+    wjNoMergeEdges.addShape(edgesNoMergeEdges);
+    wjNoMergeEdges.setMergeEdges(false);
+    // Calling wjNoMergeEdges.Build() will put all the edges produced by
+    // WireJoiner::WireJoinerP::splitEdges() in the private object
+    // WireJoiner::WireJoinerP::openWireCompound.
+    wjNoMergeEdges.Build();
+    wjNoMergeEdges.getOpenWires(wireNoMergeEdges, nullptr, false);
+
+    wjMergeEdges.addShape(edgesMergeEdges);
+    // same as wjMergeEdges.setMergeEdges(true);
+    wjMergeEdges.setMergeEdges();
+    // Calling wjMergeEdges.Build() will put, among the edges produced by
+    // WireJoiner::WireJoinerP::splitEdges(), only the edges that are connected to only one of the
+    // others by a single vertex in the private object WireJoiner::WireJoinerP::openWireCompound.
+    // In the code those are called SuperEdges and are
+    // processed by WireJoiner::WireJoinerP::findSuperEdges().
+    wjMergeEdges.Build();
+    wjMergeEdges.getOpenWires(wireMergeEdges, nullptr, false);
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setMergeEdges()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // In this case the number of edges is equal to 9 because all the 3 edges intersect the other 2
+    // and are therefor split in 3 edges each.
+    EXPECT_EQ(wireNoMergeEdges.getSubTopoShapes(TopAbs_EDGE).size(), 9);
+
+    // In this case the number of edges is equal to 6 because, among the 9 produced by
+    // WireJoiner::WireJoinerP::splitEdges(), 3 of them are connected to more than one other edge
+    // and therefor aren't added by WireJoiner::WireJoinerP::findSuperEdges()
+    EXPECT_EQ(wireMergeEdges.getSubTopoShapes(TopAbs_EDGE).size(), 6);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
