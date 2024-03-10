@@ -822,7 +822,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Jätä tyhjäksi käyttäessäsi CalculiX cxx oletusbinääritiedostoa</translation>
+      <translation>Jätä tyhjäksi käyttäessäsi CalculiX ccx oletusbinääritiedostoa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -5725,7 +5725,7 @@ used for the Elmer solver</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculixCxxtools</name>
+    <name>FEM_SolverCalculixCcxtools</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1058"/>
       <source>Solver CalculiX Standard</source>

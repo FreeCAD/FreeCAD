@@ -822,7 +822,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Utzi hutsik CalculiX cxx fitxategi bitar lehenetsia erabiltzeko</translation>
+      <translation>Utzi hutsik CalculiX ccx fitxategi bitar lehenetsia erabiltzeko</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -5726,7 +5726,7 @@ elastikotasunerako (estreserako)</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculixCxxtools</name>
+    <name>FEM_SolverCalculixCcxtools</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1058"/>
       <source>Solver CalculiX Standard</source>
