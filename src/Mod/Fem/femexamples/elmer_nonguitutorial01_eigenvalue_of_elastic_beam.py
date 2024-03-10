@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": [],
-        "solvers": ["calculix", "ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
         "equations": ["elasticity"]  # "frequency", but list not allowed here
     }
