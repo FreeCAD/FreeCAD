@@ -1045,19 +1045,19 @@ class _ResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _SolverCxxtools(CommandManager):
+class _SolverCcxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
 
     def __init__(self):
-        super(_SolverCxxtools, self).__init__()
+        super(_SolverCcxtools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculixCcxtools",
             "Solver CalculiX Standard"
         )
         self.accel = "S, X"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculixCcxtools",
             "Creates a standard FEM solver CalculiX with ccx tools"
         )
         self.is_active = "with_analysis"
@@ -1366,8 +1366,8 @@ FreeCADGui.addCommand(
     _ResultsPurge()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculixCxxtools",
-    _SolverCxxtools()
+    "FEM_SolverCalculixCcxtools",
+    _SolverCcxtools()
 )
 FreeCADGui.addCommand(
     "FEM_SolverCalculiX",
