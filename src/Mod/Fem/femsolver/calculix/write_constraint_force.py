@@ -56,13 +56,10 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
             node_load = ref_shape[1][n]
             # the loads in ref_shape[1][n] are without unit
             if abs(direction_vec.x) > dir_zero_tol:
-                v1 = "{}".format(direction_vec.x * node_load)
-                f.write("{},1,{}\n".format(n, v1))
+                f.write("{},1,{:.13G}\n".format(n, float(direction_vec.x * node_load)))
             if abs(direction_vec.y) > dir_zero_tol:
-                v2 = "{}".format(direction_vec.y * node_load)
-                f.write("{},2,{}\n".format(n, v2))
+                f.write("{},2,{:.13G}\n".format(n, float(direction_vec.y * node_load)))
             if abs(direction_vec.z) > dir_zero_tol:
-                v3 = "{}".format(direction_vec.z * node_load)
-                f.write("{},3,{}\n".format(n, v3))
+                f.write("{},3,{:.13G}\n".format(n, float(direction_vec.z * node_load)))
         f.write("\n")
     f.write("\n")
