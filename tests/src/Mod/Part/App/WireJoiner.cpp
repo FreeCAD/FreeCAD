@@ -460,4 +460,132 @@ TEST_F(WireJoinerTest, setMergeEdges)
     EXPECT_EQ(wireMergeEdges.getSubTopoShapes(TopAbs_EDGE).size(), 6);
 }
 
+TEST_F(WireJoinerTest, setTolerance)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto pi {acos(-1)};
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.1, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 1.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+    auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.9, 0.0, 0.0)).Edge()};
+    auto edge5 {
+        BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0),
+                                gp_Pnt(0.9 * std::cos(pi / 18), 0.9 * std::sin(pi / 18), 0.0))
+            .Edge()};
+
+    // A vector of edges used as argument for wjNegtol.addShape()
+    std::vector<TopoDS_Shape> edgesNegtol {edge1, edge2, edge3};
+    // A vector of edges used as argument for wjtol.addShape()
+    std::vector<TopoDS_Shape> edgestol {edge1, edge2, edge3};
+    // A vector of edges used as argument for wjNegatol.addShape()
+    std::vector<TopoDS_Shape> edgesNegatol {edge2, edge3, edge4, edge5};
+    // A vector of edges used as argument for wjatol.addShape()
+    std::vector<TopoDS_Shape> edgesatol {edge2, edge3, edge4, edge5};
+
+    // A WireJoiner object where the value of setTolerance() will be changed but no shapes will be
+    // built
+    auto wjNoBuild {WireJoiner()};
+
+    // A WireJoiner object where setTolerance() will be called passing to the argument tol a
+    // negative value.
+    auto wjNegtol {WireJoiner()};
+    // A WireJoiner object where setTolerance() will be called passing to the argument tol a
+    // value both positive and not equal to WireJoiner::WireJoinerP::myTol
+    auto wjtol {WireJoiner()};
+
+    // A WireJoiner object where setTolerance() will be called passing to the argument atol a
+    // negative value.
+    auto wjNegatol {WireJoiner()};
+    // A WireJoiner object where setTolerance() will be called passing to the argument atol a
+    // value both positive and not equal to WireJoiner::WireJoinerP::myAngularTol
+    auto wjatol {WireJoiner()};
+
+    // An empty TopoShape that will contain the shapes returned by wjNegtol.getOpenWires()
+    auto wireNegtol {TopoShape(1)};
+    // An empty TopoShape that will contain the shapes returned by wjtol.getOpenWires()
+    auto wiretol {TopoShape(2)};
+
+    // An empty TopoShape that will contain the shapes returned by wjNegatol.getOpenWires()
+    auto wireNegatol {TopoShape(3)};
+    // An empty TopoShape that will contain the shapes returned by wjatol.getOpenWires()
+    auto wireatol {TopoShape(4)};
+
+    // Act
+
+    // Changing only the value of setTolerance(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setTolerance(0.1);
+
+    // To see the effect of setTolerance() we call WireJoiner::Build() and then
+    // WireJoiner::getOpenWires() to get the edges, if any, that aren't used to create a closed wire
+
+    wjNegtol.addShape(edgesNegtol);
+    // Setting tol to a negative value won't have effect and therefor wjNegtol.pimpl->myTol will
+    // keep the default value.
+    // It's better also to give a negative value for the argument atol otherwise setTolerance()
+    // will set it to 0.0
+    wjNegtol.setTolerance(-0.1, -pi);
+    wjNegtol.Build();
+    wjNegtol.getOpenWires(wireNegtol, nullptr, false);
+
+    wjtol.addShape(edgestol);
+    // Setting tol to a value that will change wjNegtol.pimpl->myTol.
+    // It's better also to give a negative value for the argument atol otherwise setTolerance()
+    // will set it to 0.0
+    wjtol.setTolerance(0.2, -pi);
+    wjtol.Build();
+    wjtol.getOpenWires(wiretol, nullptr, false);
+
+    wjNegatol.addShape(edgesNegatol);
+    // Setting atol to a negative value won't have effect and therefor wjNegatol.pimpl->myAngularTol
+    // will keep the default value.
+    // The tol value must be given in any case.
+    wjNegatol.setTolerance(-0.1, -pi);
+    wjNegatol.Build();
+    wjNegatol.getOpenWires(wireNegatol, nullptr, false);
+
+    wjatol.addShape(edgesatol);
+    // Setting atol to a negative value won't have effect and therefor wjNegatol.pimpl->myAngularTol
+    // will keep the default value.
+    // We give also the tol value so that a closed wire can be created.
+    wjatol.setTolerance(0.2, pi / 9);
+    wjatol.Build();
+    wjatol.getOpenWires(wireatol, nullptr, false);
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setTolerance()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // In this case, as there's a gap between edge1 and edge3, no closed wires are created.
+    EXPECT_TRUE(wjNegtol.Shape().IsNull());
+    // All the edges added with wjNegtol.addShape() can be extracted with wjNegtol.getOpenWires()
+    EXPECT_EQ(wireNegtol.getSubTopoShapes(TopAbs_EDGE).size(), 3);
+
+    // In this case, as the gap between edge1 and edge3 is smaller than tol, a closed wire can be
+    // created and it contains all the edges added with wjtol.addShape().
+    EXPECT_EQ(TopoShape(wjtol.Shape()).getSubTopoShapes(TopAbs_EDGE).size(), 3);
+    // There are no open wires and therefor no edges that create them
+    EXPECT_EQ(wiretol.getSubTopoShapes(TopAbs_EDGE).size(), 0);
+
+    // In this case, as there's a gap between edge2, edge4 and edge5, no closed wires are created.
+    EXPECT_TRUE(wjNegatol.Shape().IsNull());
+    // All the edges added with wjNegtol.addShape() can be extracted with wjNegatol.getOpenWires()
+    EXPECT_EQ(wireNegatol.getSubTopoShapes(TopAbs_EDGE).size(), 4);
+
+    // In this case, as the gap between edge2, edge4 and edge5 is smaller than tol, a closed wire
+    // can be created.
+    // Because of atol, edge4 and edge5 are considerated as duplicates and therefor one of them is
+    // removed by WireJoiner::WireJoinerP::add().
+    // The closed wire is then created using all the edges added with wjatol.addShape() except the
+    // removed one
+    EXPECT_EQ(TopoShape(wjatol.Shape()).getSubTopoShapes(TopAbs_EDGE).size(), 3);
+    // There are no open wires and therefor no edges that create them
+    EXPECT_EQ(wireatol.getSubTopoShapes(TopAbs_EDGE).size(), 0);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
