@@ -128,6 +128,7 @@ class DraftTool:
         self.pos = []
         self.support = None
         self.ui = Gui.draftToolBar
+        self.ui.mouse = True  # reset mouse movement
         self.ui.sourceCmd = self
         self.view = gui_utils.get_3d_view()
         self.wp = WorkingPlane.get_working_plane()
