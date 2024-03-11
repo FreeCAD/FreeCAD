@@ -34,6 +34,7 @@
 
 class QCloseEvent;
 class SoNode;
+class NavlibInterface;
 
 namespace Gui{
 class BaseView;
@@ -361,6 +362,7 @@ private:
     struct ApplicationP* d;
     /// workbench python dictionary
     PyObject*             _pcWorkbenchDictionary;
+    NavlibInterface* pNavlibInterface;
 };
 
 } //namespace Gui

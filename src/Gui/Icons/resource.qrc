@@ -271,6 +271,7 @@
         <file>image-scaling.svg</file>
         <file>VarSet.svg</file>
         <file>Std_ToggleFreeze.svg</file>
+        <file>3dx_pivot.png</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>

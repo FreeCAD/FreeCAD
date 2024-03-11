@@ -138,6 +138,9 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_CLOUD "Build the FreeCAD cloud module" OFF)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
 
+    set(FREECAD_3CONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3DConnexion support")
+    set_property(CACHE FREECAD_3CONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "SpNav")
+
     if(MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
         option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF) # 3/5/2021 current LibPack uses non-C++17 FLANN
@@ -156,6 +159,11 @@ macro(InitializeFreeCADBuildOptions)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
         option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
     endif(NOT MSVC)
+
+	if(FREECAD_3CONNEXION_SUPPORT STREQUAL "NavLib" AND FREECAD_USE_3DCONNEXION)
+		set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
+		set(FREECAD_USE_3DCONNEXION OFF)
+	endif()
 
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
