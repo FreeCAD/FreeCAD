@@ -573,7 +573,7 @@ def get_femelement_direction1D_set(
         # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
-        rotation_angle = beamrotation_objects[0]["Object"].Rotation
+        rotation_angle = beamrotation_objects[0]["Object"].Rotation.getValueAs("deg").Value
         for rot in rotations_ids:
             rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         beamrotation_objects[0]["FEMRotations1D"] = rotations_ids
@@ -626,8 +626,8 @@ def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> 
     # beam_direction ... FreeCAD vector
     # defined_angle ... degree
     # base for the rotation:
-    # a beam_direction = (1, 0, 0) and angle = 0, returns (0, 0, -1)
-    # changing the angle, changes the normal accordingly, 360 would again return (0, 0, -1)
+    # a beam_direction = (1, 0, 0) and angle = 0, returns (0, -1, 0)
+    # changing the angle, changes the normal accordingly, 360 would again return (0, -1, 0)
     #
     # original thread discussing this (kept for history):
     #   https://forum.freecad.org/viewtopic.php?f=18&t=24878&start=30#p195567
@@ -659,16 +659,25 @@ def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> 
         elif z != 0 and x == y == 0:  # vertical beam
             n = (-1, 0, 0)  # or (0, -1, 0)
         else:
-            # we want the normal to point downwards
+            #             . (x, y, z)
+            #            / \
+            #       vec /   \ n
+            #          /     \
+            # (0,0,0) .-------. (x, y, ?)
+            #
+            # since `n` should be perpendicular to `vec`
+            # calculate the dot product to find `?`
             n = (x, y, -(x**2 + y**2) / z)
-
-        n = normalize(FreeCAD.Vector(n))
+        # we want the normal to point downwards for `vec` with
+        # z < 0 as well
+        n = normalize((1 | -(z > 0)) * FreeCAD.Vector(n))
 
         # sanity check
         dot = vec.dot(n)
         if not math.isclose(dot, 0):
             FreeCAD.Console.PrintError(
-                f"Wrong calculation of normal vector for {vec = }! {n = }, {dot = }\nPlease consider submitting an issue\n"
+                f"Wrong calculation of normal vector for {vec = }! {n = }, {dot = }\n"
+                "Please consider submitting an issue\n"
             )
 
         return n
@@ -692,7 +701,9 @@ def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> 
         # I was getting values of 1e-17 order, hence the threshold is of 1e-15 order
         return FreeCAD.Vector([coord * (abs(coord) > 1e-15) for coord in rot])
 
-    return rotate_around_vector(beam_direction, defined_angle)
+    # `-90` here is because the normal is calculated towards -z axis
+    # and we use 1,2-directions, that are rotated by `-90` degrees
+    return rotate_around_vector(beam_direction, defined_angle - 90)
 
 
 # ************************************************************************************************
