@@ -91,9 +91,9 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject* pcFeat)
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
     int size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
-        pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0f, size));
+        pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0F, size));
         static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit =
-            (unsigned int)(pow(10.0f, size));
+            (unsigned int)(pow(10.0F, size));
     }
 }
 

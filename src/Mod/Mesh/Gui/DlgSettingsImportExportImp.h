@@ -52,6 +52,8 @@ protected:
 
 private:
     Ui_DlgSettingsImportExport* ui;
+
+    Q_DISABLE_COPY_MOVE(DlgSettingsImportExport)
 };  // end class DlgSettingsImportExport
 
 }  // namespace MeshGui

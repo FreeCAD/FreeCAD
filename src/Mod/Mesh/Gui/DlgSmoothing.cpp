@@ -108,7 +108,7 @@ DlgSmoothing::Smooth DlgSmoothing::method() const
     if (ui->radioButtonTaubin->isChecked()) {
         return DlgSmoothing::Taubin;
     }
-    else if (ui->radioButtonLaplace->isChecked()) {
+    if (ui->radioButtonLaplace->isChecked()) {
         return DlgSmoothing::Laplace;
     }
     return DlgSmoothing::None;

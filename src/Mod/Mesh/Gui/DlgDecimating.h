@@ -51,6 +51,8 @@ private:
 private:
     int numberOfTriangles {0};
     std::unique_ptr<Ui_DlgDecimating> ui;
+
+    Q_DISABLE_COPY_MOVE(DlgDecimating)
 };
 
 /**
