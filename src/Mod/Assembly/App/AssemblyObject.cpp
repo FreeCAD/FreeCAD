@@ -426,6 +426,12 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
         }
     }
 
+    // add sub assemblies joints.
+    for (auto& assembly : getSubAssemblies()) {
+        auto subJoints = assembly->getJoints(updateJCS);
+        joints.insert(joints.end(), subJoints.begin(), subJoints.end());
+    }
+
     // Make sure the joints are up to date.
     if (updateJCS) {
         recomputeJointPlacements(joints);
@@ -1192,6 +1198,46 @@ double AssemblyObject::getObjMass(App::DocumentObject* obj)
 void AssemblyObject::setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses)
 {
     objMasses = objectMasses;
+}
+
+std::vector<AssemblyObject*> AssemblyObject::getSubAssemblies()
+{
+    std::vector<AssemblyObject*> subAssemblies = {};
+
+    App::Document* doc = getDocument();
+
+    std::vector<DocumentObject*> assemblies =
+        doc->getObjectsOfType(Assembly::AssemblyObject::getClassTypeId());
+    for (auto assembly : assemblies) {
+        if (hasObject(assembly)) {
+            subAssemblies.push_back(dynamic_cast<AssemblyObject*>(assembly));
+        }
+    }
+
+    return subAssemblies;
+}
+
+void AssemblyObject::updateGroundedJointsPlacements()
+{
+    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
+
+    for (auto gJoint : groundedJoints) {
+        if (!gJoint) {
+            continue;
+        }
+
+        auto* propObj =
+            dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
+        auto* propPlc =
+            dynamic_cast<App::PropertyPlacement*>(gJoint->getPropertyByName("Placement"));
+
+        if (propObj && propPlc) {
+            App::DocumentObject* obj = propObj->getValue();
+            auto* propObjPlc =
+                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            propPlc->setValue(propObjPlc->getValue());
+        }
+    }
 }
 
 // ======================================= Utils ======================================
