@@ -411,7 +411,7 @@ RF
 *NODE PRINT, NSET=ConstraintDisplacmentPrescribed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

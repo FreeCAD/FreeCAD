@@ -83,6 +83,7 @@ def write_step_output(f, ccxwriter):
                     f.write("RF\n")
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("\n")
+        f.write("*OUTPUT, FREQUENCY={}".format(ccxwriter.solver_obj.OutputFrequency))
 
         # there is no need to write all integration point results
         # as long as there is no reader for them
