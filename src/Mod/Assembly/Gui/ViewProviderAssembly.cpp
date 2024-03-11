@@ -196,6 +196,12 @@ bool ViewProviderAssembly::setEdit(int ModNum)
                             this->getObject()->getDocument()->getName(),
                             this->getObject()->getNameInDocument());
 
+    // When we set edit, we update the grounded joints placements to support :
+    // - If user transformed the grounded object
+    // - For nested assemblies where the grounded object moves around.
+    auto* assembly = static_cast<AssemblyObject*>(getObject());
+    assembly->updateGroundedJointsPlacements();
+
     setDragger();
 
     return true;
