@@ -40,6 +40,10 @@ unsigned long MeshKernel::VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor,
     std::vector<FacetIndex>::iterator clCurrIter;
     MeshFacetArray::_TConstIterator clCurrFacet, clNBFacet;
 
+    if (ulStartFacet >= _aclFacetArray.size()) {
+        return 0;
+    }
+
     // pick up start point
     clCurrentLevel.push_back(ulStartFacet);
     _aclFacetArray[ulStartFacet].SetFlag(MeshFacet::VISIT);
@@ -97,6 +101,10 @@ unsigned long MeshKernel::VisitNeighbourFacetsOverCorners(MeshFacetVisitor& rclF
     const MeshFacetArray& raclFAry = _aclFacetArray;
     MeshFacetArray::_TConstIterator pFBegin = raclFAry.begin();
     std::vector<FacetIndex> aclCurrentLevel, aclNextLevel;
+
+    if (ulStartFacet >= _aclFacetArray.size()) {
+        return 0;
+    }
 
     aclCurrentLevel.push_back(ulStartFacet);
     raclFAry[ulStartFacet].SetFlag(MeshFacet::VISIT);
