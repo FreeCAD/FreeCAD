@@ -346,7 +346,7 @@ public://helper functions that may be useful outside of the class
 
     static eRefType getRefTypeByName(const std::string &typeName);
 
-    static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
+    static GProp_GProps getInertialPropsOfShape(const std::vector<TopoDS_Shape> &shapes);
 
     /**
      * @brief verifyReferencesAreSafe: checks if pointers in references still
@@ -406,7 +406,7 @@ protected:
         return ret;
     }
     static void readLinks(const App::PropertyLinkSubList &references, std::vector<App::GeoFeature *> &geofs,
-                          std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
+                          std::vector<TopoDS_Shape>& shapes, std::vector<TopoDS_Shape> &storage,
                           std::vector<eRefType> &types);
 
     static void throwWrongMode(eMapMode mmode);
