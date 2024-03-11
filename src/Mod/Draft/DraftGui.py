@@ -1607,7 +1607,7 @@ class DraftToolBar:
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
                                  "Draft_Downgrade","Draft_Edit"]
-                self.title = "Modify objects"
+                self.title = translate("draft", "Modify objects")
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
