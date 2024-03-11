@@ -65,6 +65,9 @@ protected:
     SoCoordinate3* pcCoords;
     SoDrawStyle* pcDrawStyle;
     // NOLINTEND
+
+private:
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshDefects)
 };
 
 /** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in
@@ -84,6 +87,7 @@ public:
 
 private:
     SoFaceSet* pcFaces;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshOrientation)
 };
 
 /** The ViewProviderMeshNonManifolds class displays edges with more than two faces attached in red.
@@ -102,6 +106,7 @@ public:
 
 private:
     SoLineSet* pcLines;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshNonManifolds)
 };
 
 /** The ViewProviderMeshNonManifoldPoints class displays non-manifold vertexes in red.
@@ -120,6 +125,7 @@ public:
 
 private:
     SoPointSet* pcPoints;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshNonManifoldPoints)
 };
 
 /** The ViewProviderMeshDuplicatedFaces class displays duplicated faces in red.
@@ -138,6 +144,7 @@ public:
 
 private:
     SoFaceSet* pcFaces;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshDuplicatedFaces)
 };
 
 /** The ViewProviderMeshDegenerations class displays degenerated faces to a line or even a point in
@@ -157,6 +164,7 @@ public:
 
 private:
     SoLineSet* pcLines;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshDegenerations)
 };
 
 class MeshGuiExport ViewProviderMeshDuplicatedPoints: public ViewProviderMeshDefects
@@ -172,6 +180,7 @@ public:
 
 private:
     SoPointSet* pcPoints;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshDuplicatedPoints)
 };
 
 class MeshGuiExport ViewProviderMeshIndices: public ViewProviderMeshDefects
@@ -187,6 +196,7 @@ public:
 
 private:
     SoFaceSet* pcFaces;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshIndices)
 };
 
 /** The ViewProviderMeshSelfIntersections class displays lines of self-intersections.
@@ -205,6 +215,7 @@ public:
 
 private:
     SoLineSet* pcLines;
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshSelfIntersections)
 };
 
 class MeshGuiExport ViewProviderMeshFolds: public ViewProviderMeshDefects
@@ -220,6 +231,8 @@ public:
 
 private:
     SoFaceSet* pcFaces;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshFolds)
 };
 
 }  // namespace MeshGui

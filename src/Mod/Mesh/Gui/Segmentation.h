@@ -57,6 +57,8 @@ protected:
 private:
     Ui_Segmentation* ui;
     Mesh::Feature* myMesh;
+
+    Q_DISABLE_COPY_MOVE(Segmentation)
 };
 
 /**

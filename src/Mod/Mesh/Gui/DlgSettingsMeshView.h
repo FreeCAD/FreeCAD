@@ -54,6 +54,8 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgSettingsMeshView> ui;
+
+    Q_DISABLE_COPY_MOVE(DlgSettingsMeshView)
 };
 
 }  // namespace MeshGui
