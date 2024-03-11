@@ -232,11 +232,24 @@ SET(MaterialModel_Files
     Resources/Models/Fluid/Fluid.yml
     Resources/Models/Legacy/Father.yml
     Resources/Models/Legacy/MaterialStandard.yml
+    Resources/Models/Mechanical/ArrudaBoyce.yml
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
+    Resources/Models/Mechanical/MooneyRivlin.yml
+    Resources/Models/Mechanical/NeoHooke.yml
+    Resources/Models/Mechanical/OgdenN1.yml
+    Resources/Models/Mechanical/OgdenN2.yml
+    Resources/Models/Mechanical/OgdenN3.yml
     Resources/Models/Mechanical/OgdenYld2004p18.yml
     Resources/Models/Mechanical/OrthotropicLinearElastic.yml
+    Resources/Models/Mechanical/PolynomialN1.yml
+    Resources/Models/Mechanical/PolynomialN2.yml
+    Resources/Models/Mechanical/PolynomialN3.yml
+    Resources/Models/Mechanical/ReducedPolynomialN1.yml
+    Resources/Models/Mechanical/ReducedPolynomialN2.yml
+    Resources/Models/Mechanical/ReducedPolynomialN3.yml
+    Resources/Models/Mechanical/Yeoh.yml
     Resources/Models/Patterns/PAT.yml
     "Resources/Models/Patterns/Pattern File.yml"
     "Resources/Models/Render Workbench/RenderAppleseed.yml"

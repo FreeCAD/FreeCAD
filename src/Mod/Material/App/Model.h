@@ -56,6 +56,7 @@ class MaterialsExport ModelProperty: public Base::BaseClass
 public:
     ModelProperty();
     ModelProperty(const QString& name,
+                  const QString& header,
                   const QString& type,
                   const QString& units,
                   const QString& url,
@@ -67,6 +68,7 @@ public:
     {
         return _name;
     }
+    const QString getDisplayName() const;
     const QString getPropertyType() const
     {
         return _propertyType;
@@ -95,6 +97,10 @@ public:
     void setName(const QString& name)
     {
         _name = name;
+    }
+    void setColumnHeader(const QString& header)
+    {
+        _displayName = header;
     }
     virtual void setPropertyType(const QString& type)
     {
@@ -139,6 +145,7 @@ public:
 
 private:
     QString _name;
+    QString _displayName;
     QString _propertyType;
     QString _units;
     QString _url;

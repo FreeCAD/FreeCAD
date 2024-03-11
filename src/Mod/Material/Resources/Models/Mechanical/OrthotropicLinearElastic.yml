@@ -30,46 +30,55 @@ Model:
     strain relationship is linear
   DOI: ""
   PoissonRatioXY:
+    DisplayName: "Poisson Ratio XY"
     Type: 'Float'
     Units: ''
     URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
     Description: "Poisson's ratio [unitless]"
   PoissonRatioXZ:
+    DisplayName: "Poisson Ratio XZ"
     Type: 'Float'
     Units: ''
     URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
     Description: "Poisson's ratio [unitless]"
   PoissonRatioYZ:
+    DisplayName: "Poisson Ratio YZ"
     Type: 'Float'
     Units: 'Pressure'
     URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
     Description: "Poisson's ratio [unitless]"
   ShearModulusXY:
+    DisplayName: "Shear Modulus XY"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   ShearModulusXZ:
+    DisplayName: "Shear Modulus XZ"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   ShearModulusYZ:
+    DisplayName: "Shear Modulus YZ"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   YoungsModulusX:
+    DisplayName: "Young's Modulus X"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
   YoungsModulusY:
+    DisplayName: "Young's Modulus Y"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
     Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
   YoungsModulusZ:
+    DisplayName: "Young's Modulus Z"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'
