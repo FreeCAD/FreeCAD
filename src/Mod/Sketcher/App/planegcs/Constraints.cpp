@@ -24,14 +24,14 @@
 #pragma warning(disable : 4251)
 #endif
 
-#include <math.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include <algorithm>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
 #include <cassert>
 #endif
-#include <cmath>
 
 #include <boost/graph/graph_concepts.hpp>
 
