@@ -74,6 +74,14 @@ class ReadmeController(QtCore.QObject):
             self.url = self.addon.macro.wiki
             if not self.url:
                 self.url = self.addon.macro.url
+            if not self.url:
+                self.widget.setText(
+                    translate(
+                        "AddonsInstaller",
+                        "Loading info for {} from the FreeCAD Macro Recipes wiki...",
+                    ).format(self.addon.display_name, self.url)
+                )
+                return
         else:
             self.url = utils.get_readme_url(repo)
         self.widget.setUrl(self.url)
