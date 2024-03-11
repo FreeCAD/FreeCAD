@@ -49,6 +49,7 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
     correctly."""
 
     load_resource = QtCore.Signal(str)  # Str is a URL to a resource
+    follow_link = QtCore.Signal(str)  # Str is a URL to another page
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)
@@ -108,6 +109,12 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
                 self.load_resource.emit(full_url)
                 self.image_map[full_url] = None
             return self.image_map[full_url]
+        elif resource_type == QtGui.QTextDocument.MarkdownResource:
+            self.follow_link.emit(name.toString())
+            return self.toMarkdown()
+        elif resource_type == QtGui.QTextDocument.HtmlResource:
+            self.follow_link.emit(name.toString())
+            return self.toHtml()
         return super().loadResource(resource_type, name)
 
     def _ensure_appropriate_width(self, image: QtGui.QImage) -> QtGui.QImage:
