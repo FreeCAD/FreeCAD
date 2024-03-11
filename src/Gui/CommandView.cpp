@@ -1634,6 +1634,40 @@ bool StdCmdViewFitSelection::isActive()
 }
 
 //===========================================================================
+// Std_ViewCommandGroup
+//===========================================================================
+class StdCmdViewGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdViewGroup()
+        : GroupCommand("Std_ViewGroup")
+    {
+        sGroup = "Standard-View";
+        sMenuText = QT_TR_NOOP("Standard views");
+        sToolTipText = QT_TR_NOOP("Change to a standard view");
+        sStatusTip = QT_TR_NOOP("Change to a standard view");
+        sWhatsThis = "Std_ViewGroup";
+        sPixmap = "view-isometric";
+        eType = Alter3DView;
+
+        setCheckable(false);
+        setRememberLast(true);
+
+        addCommand("Std_ViewIsometric");
+        addCommand("Std_ViewFront");
+        addCommand("Std_ViewRight");
+        addCommand("Std_ViewRear");
+        addCommand("Std_ViewBottom");
+        addCommand("Std_ViewLeft");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdViewGroup";
+    }
+};
+
+//===========================================================================
 // Std_ViewDock
 //===========================================================================
 DEF_STD_CMD_A(StdViewDock)
@@ -4180,6 +4214,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
     rcCmdMgr.addCommand(new StdStoreWorkingView());
     rcCmdMgr.addCommand(new StdRecallWorkingView());
+    rcCmdMgr.addCommand(new StdCmdViewGroup());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
