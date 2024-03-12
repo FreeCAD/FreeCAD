@@ -64,8 +64,11 @@
         <bool>true</bool>
        </property>
        <property name="autoExclusive">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
      </item>
      <item row="0" column="1">
@@ -74,8 +77,11 @@
         <string>3d Point</string>
        </property>
        <property name="autoExclusive">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -90,7 +96,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbx1">
+      <widget class="Gui::QuantitySpinBox" name="qsbx1" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -104,7 +110,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsby1">
+      <widget class="Gui::QuantitySpinBox" name="qsby1" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -118,7 +124,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbz1">
+      <widget class="Gui::QuantitySpinBox" name="qsbz1" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -137,8 +143,11 @@
         <bool>true</bool>
        </property>
        <property name="autoExclusive">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_2</string>
+       </attribute>
       </widget>
      </item>
      <item row="0" column="1">
@@ -147,8 +156,11 @@
         <string>3d Point</string>
        </property>
        <property name="autoExclusive">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup_2</string>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -163,7 +175,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbx2">
+      <widget class="Gui::QuantitySpinBox" name="qsbx2" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -177,7 +189,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsby2">
+      <widget class="Gui::QuantitySpinBox" name="qsby2" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -191,7 +203,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbz2">
+      <widget class="Gui::QuantitySpinBox" name="qsbz2" native="true">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -221,8 +233,10 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

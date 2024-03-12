@@ -380,6 +380,11 @@ void QGIViewPart::drawAllEdges()
 
         item = new QGIEdge(iEdge);
         addToGroup(item);      //item is created at scene(0, 0), not group(0, 0)
+        if ((*itGeom)->getCosmetic()) {
+            // TODO: there is a bug somewhere related to the setting of the clockwise attribute for cosmetic arcs that causes
+            // them to be drawn clockwise.  Since cosmetic arcs are created as anti-clockwise, we force the setting here.
+            (*itGeom)->clockwiseAngle(false);
+        }
         item->setPath(drawPainterPath(*itGeom));
         item->setSource((*itGeom)->source());
 

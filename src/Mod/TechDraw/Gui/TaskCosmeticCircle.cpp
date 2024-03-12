@@ -112,37 +112,32 @@ void TaskCosmeticCircle::setUiPrimary()
     setWindowTitle(QObject::tr("Create Cosmetic Circle"));
 //    Base::Console().Message("TCC::setUiPrimary() - m_center: %s is3d: %d\n",
 //        DU::formatVector(m_center).c_str(), m_is3d);
-    double rotDeg = m_partFeat->Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
-    Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+
     Base::Vector3d p1;
     if (m_is3d) {
         // center, project and invert the 3d point
-        p1 = DrawUtil::invertY(m_partFeat->projectPoint(m_center - centroid));
-        ui->rb2d1->setChecked(false);
-        ui->rb3d1->setChecked(true);
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p1 = m_partFeat->projectPoint(m_center - centroid);
     } else {
-        // invert, unscale and unrotate the selected 2d point
-        // shift by centroid?
-        p1 = DU::invertY(m_center) / m_partFeat->getScale();
-        if (rotDeg != 0.0) {
-            // we always rotate around the origin.
-            p1.RotateZ(-rotRad);
-        }
-        ui->rb2d1->setChecked(true);
-        ui->rb3d1->setChecked(false);
+        // if the points are selected from 2d, they are already inverted
+        // unscale and unrotate the selected 2d point
+        p1 = CosmeticVertex::makeCanonicalPointInverted(m_partFeat, m_center);
     }
+
+    ui->rb2d1->setChecked(true);
+    ui->rb3d1->setChecked(false);
 
     ui->qsbCenterX->setUnit(Base::Unit::Length);
     ui->qsbCenterX->setValue(p1.x);
     ui->qsbCenterY->setUnit(Base::Unit::Length);
-    ui->qsbCenterY->setValue(p1.y);
+    ui->qsbCenterY->setValue(-p1.y);
     ui->qsbCenterY->setUnit(Base::Unit::Length);
     ui->qsbCenterZ->setValue(p1.z);
 }
 
 void TaskCosmeticCircle::setUiEdit()
 {
+    constexpr double DegreesHalfCircle{180.0};
     setWindowTitle(QObject::tr("Edit Cosmetic Circle"));
 
     ui->rb2d1->setChecked(true);
@@ -155,9 +150,9 @@ void TaskCosmeticCircle::setUiEdit()
 
     ui->qsbRadius->setValue(m_ce->permaRadius);
 
-    double angleDeg = m_ce->m_geometry->getStartAngle() * 180.0 / M_PI;
+    double angleDeg = m_ce->m_geometry->getStartAngle() * DegreesHalfCircle / M_PI;
     ui->qsbStartAngle->setValue(angleDeg);
-    angleDeg = m_ce->m_geometry->getEndAngle() * 180.0 / M_PI;
+    angleDeg = m_ce->m_geometry->getEndAngle() * DegreesHalfCircle / M_PI;
     ui->qsbEndAngle->setValue(angleDeg);
 }
 
@@ -171,6 +166,12 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();
     Base::Vector3d p0(x, y, z);
+    if (ui->rb3d1->isChecked()) {
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        p0 = m_partFeat->projectPoint(p0 - centroid);
+    } else {
+        p0 = DU::invertY(p0);
+    }
 
     TechDraw::BaseGeomPtr bg;
     if (ui->qsbStartAngle->value().getValue() == 0.0 &&
@@ -182,9 +183,8 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
                                      ui->qsbEndAngle->value().getValue());
     }
 
-    // note cEdges are inverted when added to the dvp geometry, so we need to
-    // invert them here
-    m_tag = m_partFeat->addCosmeticEdge(bg->inverted());
+
+    m_tag = m_partFeat->addCosmeticEdge(bg);
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
 
     Gui::Command::commitCommand();

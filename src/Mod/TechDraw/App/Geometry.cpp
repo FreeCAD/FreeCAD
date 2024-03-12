@@ -802,10 +802,14 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
     gp_Vec v3(0, 0, 1);      //stdZ
+
+    // this is the wrong determination of cw/ccw.  needs to be determined by edge.
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
     endAngle = fmod(l, 2.0*M_PI);
+
+
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
@@ -845,6 +849,10 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
     gp_Vec v3(0, 0, 1);      //stdZ
+
+    // this is a bit of an arcane method of determining if v2 is clockwise from v1 or counter clockwise from v1.
+    // The v1 x v2 points up if v2 is ccw from v1 and points down if v2 is cw from v1.  Taking (v1 x v2) * stdZ
+    // gives 1 for parallel with stdZ (v2 is ccw from v1) or -1 for antiparallel with stdZ (v2 is clockwise from v1).
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
@@ -888,6 +896,23 @@ bool AOC::isOnArc(Base::Vector3d p)
         return true;
     }
     return false;
+}
+
+BaseGeomPtr AOC::copy()
+{
+    Base::Console().Message("AOC::copy()\n");
+    auto base = BaseGeom::copy();
+    TechDraw::CirclePtr circle =  std::static_pointer_cast<TechDraw::Circle>(base);
+    TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
+    if (aoc) {
+        aoc->clockwiseAngle(clockwiseAngle());
+        aoc->startPnt = startPnt;
+        aoc->startAngle = startAngle;
+        aoc->endPnt = endPnt;
+        aoc->endAngle = endAngle;
+        aoc->largeArc = largeArc;
+    }
+    return base;
 }
 
 double AOC::distToArc(Base::Vector3d p)

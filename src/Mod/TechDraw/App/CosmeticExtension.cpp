@@ -161,13 +161,18 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
 }
 
 /// adds a cosmetic vertex to the property list.  does not add to display geometry until dvp executes.
-/// returns unique CV id
-std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos)
+/// returns unique CV id.  if the pos parameter is in real world coordinates, then invert should be true
+/// (the default).  if pos is in TD geometry or scene coordinates, then it is already inverted, and
+/// invert should be set to false.
+std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool invert)
 {
 //    Base::Console().Message("CEx::addCosmeticVertex(%s)\n",
 //                             DrawUtil::formatVector(pos).c_str());
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    Base::Vector3d tempPos = DrawUtil::invertY(pos);
+    Base::Vector3d tempPos = pos;
+    if (invert) {
+        tempPos = DrawUtil::invertY(pos);
+    }
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
     verts.push_back(cv);
     CosmeticVertexes.setValues(verts);

@@ -56,7 +56,7 @@ public:
     virtual CosmeticVertex* getCosmeticVertex(const std::string& tag) const;
     virtual int             add1CVToGV(const std::string& tag);
     virtual int             getCVIndex(const std::string& tag);
-    virtual std::string     addCosmeticVertex(const Base::Vector3d& pos);
+    virtual std::string     addCosmeticVertex(const Base::Vector3d& pos, bool invert = true);
     virtual void            addCosmeticVertexesToGeom();
     virtual void            clearCosmeticVertexes();
     virtual void            refreshCVGeoms();

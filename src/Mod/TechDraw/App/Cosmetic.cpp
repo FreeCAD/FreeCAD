@@ -110,7 +110,6 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 //note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
 {
-//    Base::Console().Message("CE::CE()\n");
     permaRadius = 0.0;
     m_geometry = std::make_shared<TechDraw::BaseGeom> ();
     initialize();
@@ -118,7 +117,6 @@ CosmeticEdge::CosmeticEdge()
 
 CosmeticEdge::CosmeticEdge(const CosmeticEdge* ce)
 {
-//    Base::Console().Message("CE::CE(ce)\n");
     TechDraw::BaseGeomPtr newGeom = ce->m_geometry->copy();
     //these endpoints are already YInverted
     permaStart = ce->permaStart;
@@ -130,13 +128,12 @@ CosmeticEdge::CosmeticEdge(const CosmeticEdge* ce)
 }
 
 CosmeticEdge::CosmeticEdge(const Base::Vector3d& pt1, const Base::Vector3d& pt2) :
-//                             🠓 returns TopoDS_Edge
-    CosmeticEdge::CosmeticEdge(TopoDS_EdgeFromVectors(pt1, pt2))
+           CosmeticEdge::CosmeticEdge(TopoDS_EdgeFromVectors(pt1, pt2))
 {
 }
 
-//                                                       🠓 returns TechDraw::BaseGeomPtr
-CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) : CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
+CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) : 
+		CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
 {
 }
 
@@ -153,6 +150,15 @@ CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
        permaStart  = circ->center;
        permaEnd    = circ->center;
        permaRadius = circ->radius;
+       if (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+           TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circ);
+           aoc->clockwiseAngle(g->clockwiseAngle());
+           aoc->startPnt = g->getStartPoint();
+           aoc->startAngle = g->getStartAngle();
+           aoc->endPnt = g->getEndPoint();
+           aoc->endAngle = g->getEndAngle();
+           // aoc->largeArc = g->largeArc;
+       }
     }
     initialize();
 }
@@ -173,15 +179,10 @@ void CosmeticEdge::initialize()
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
-// TODO: not sure that this method should be doing the inversion. CV for example
-// accepts input point as is.  The caller should have figured out the correct points.
 TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 {
-    // Base::Console().Message("CE::CE(p1, p2)\n");
-    Base::Vector3d p1 = DrawUtil::invertY(pt1);
-    Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x, p1.y, p1.z);
-    gp_Pnt gp2(p2.x, p2.y, p2.z);
+    gp_Pnt gp1(pt1.x, pt1.y, pt1.z);
+    gp_Pnt gp2(pt2.x, pt2.y, pt2.z);
     return BRepBuilderAPI_MakeEdge(gp1, gp2);
 }
 
@@ -202,7 +203,7 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(const double scale)
 TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale, const double rotDegrees)
 {
     TopoDS_Edge e = m_geometry->getOCCEdge();
-//    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+    bool saveCW = m_geometry->clockwiseAngle();
     // Mirror shape in Y and scale
     TopoDS_Shape s = ShapeUtils::mirrorShape(e, gp_Pnt(0.0, 0.0, 0.0), scale);
     // rotate using OXYZ as the coordinate system
@@ -215,11 +216,11 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     newGeom->setCosmetic(true);
     newGeom->source(COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
+    newGeom->clockwiseAngle(saveCW);
     return newGeom;
 }
 
-//! makes an unscaled, unrotated line from two scaled & rotated end points.  If points is Gui space coordinates,
-//! they should be inverted (DU::invertY) before calling this method.
+//! makes an unscaled, unrotated line from two scaled & rotated end points.
 //! the result of this method should be used in addCosmeticEdge().
 TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end)
 {
@@ -228,7 +229,7 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
     gp_Pnt gStart  = DU::togp_Pnt(cStart);
     gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
-    return TechDraw::BaseGeom::baseFactory(edge)->inverted();
+    return TechDraw::BaseGeom::baseFactory(edge);
 }
 
 std::string CosmeticEdge::toString() const
