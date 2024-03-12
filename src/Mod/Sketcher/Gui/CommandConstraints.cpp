@@ -2735,7 +2735,7 @@ public:
         addCommand("Sketcher_ConstrainVertical");
     }
 
-    const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+    const char* className() const override { return "CmdSketcherCompHorizontalVertical"; }
 };
 
 // ============================================================================
