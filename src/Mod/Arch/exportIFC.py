@@ -369,11 +369,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         assemblyElements = []
 
-        # if ifctype == "IfcArray":
-        # FIXME: the first array element is not placed correct if the array is not on coordinate origin
-        # https://forum.freecad.org/viewtopic.php?f=39&t=50085&p=431476#p431476
-        # workaround: do not use the assembly in ifc but a normal compound instead
-        if False:
+        if ifctype == "IfcArray":
             clonedeltas = []
             if obj.ArrayType == "ortho":
                 for i in range(obj.NumberX):
@@ -384,8 +380,6 @@ def export(exportList, filename, colors=None, preferences=None):
                         for k in range(obj.NumberZ):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
-
-            #print("clonedeltas:",clonedeltas)
             if clonedeltas:
                 ifctype = "IfcElementAssembly"
                 for delta in clonedeltas:
@@ -412,12 +406,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         preferences
                     )
                     assemblyElements.append(subproduct)
-            # if an array was handled assemblyElements is not empty
-            # if assemblyElements is not empty later on
-            # the own Shape is ignored if representation is retrieved
-            # this because we will build an assembly for the assemblyElements
-            # from here and the assembly itself should not have a representation
-        if ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
+        elif ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
             if hasattr(obj,"Group"):
                 group = obj.Group
             elif hasattr(obj,"Links"):
@@ -2302,6 +2291,8 @@ def getRepresentation(
             gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.getGlobalPlacement()
+            if isinstance(forceclone,FreeCAD.Vector):
+                pla.Base += forceclone
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
             origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(preferences['SCALE_FACTOR'])))
