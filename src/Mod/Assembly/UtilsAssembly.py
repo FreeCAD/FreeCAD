@@ -241,6 +241,9 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
 
 
 def getObjectInPart(objName, part):
+    if part is None:
+        return None
+
     if part.Name == objName:
         return part
 
