@@ -39,6 +39,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
@@ -611,9 +612,7 @@ char* Cloud::SHA256Sum(const char* ptr, long size)
     std::string local;
     std::string resultReadable;
     unsigned char result[SHA256_DIGEST_LENGTH];
-    char* Hex;
     output = (char*)malloc(2 * SHA256_DIGEST_LENGTH * sizeof(char) + 1);
-    Hex = (char*)malloc(2 * sizeof(char) + 1);
     SHA256((unsigned char*)ptr, size, result);
 
     strcpy(output, getHexValue(result, SHA256_DIGEST_LENGTH).c_str());
