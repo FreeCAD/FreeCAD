@@ -65,12 +65,20 @@ public:
     int getWidth() const;
     int getHeight() const;
 
+    Reader(const Reader&) = delete;
+    Reader(Reader&&) = delete;
+    Reader& operator=(const Reader&) = delete;
+    Reader& operator=(Reader&&) = delete;
+
 protected:
+    // NOLINTBEGIN
     PointKernel points;
     std::vector<float> intensity;
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
-    int width, height;
+    int width {};
+    int height {};
+    // NOLINTEND
 };
 
 class AscReader: public Reader
@@ -147,13 +155,20 @@ public:
     void setHeight(int);
     void setPlacement(const Base::Placement&);
 
+    Writer(const Writer&) = delete;
+    Writer(Writer&&) = delete;
+    Writer& operator=(const Writer&) = delete;
+    Writer& operator=(Writer&&) = delete;
+
 protected:
+    // NOLINTBEGIN
     const PointKernel& points;
     std::vector<float> intensity;
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
     int width, height;
     Base::Placement placement;
+    // NOLINTEND
 };
 
 class AscWriter: public Writer
