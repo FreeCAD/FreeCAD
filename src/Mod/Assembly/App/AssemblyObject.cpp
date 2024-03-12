@@ -585,6 +585,13 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
         return false;
     }
     App::DocumentObject* part = propPart->getValue();
+
+    // Check if the part is grounded.
+    bool isGrounded = isPartGrounded(part);
+    if (isGrounded) {
+        return false;
+    }
+
     // Check if the part is disconnected even with the joint
     bool isConnected = isPartConnected(part);
     if (!isConnected) {
