@@ -123,8 +123,8 @@ directories = [
         "tsdir": "Gui/Resources/translations",
     },
     {
-        "tsname": "Path",
-        "workingdir": "./src/Mod/Path/",
+        "tsname": "CAM",
+        "workingdir": "./src/Mod/CAM/",
         "tsdir": "Gui/Resources/translations",
     },
     {
@@ -186,12 +186,12 @@ directories = [
 
 # Exclude these files from consideration
 excluded_files = [
-    ("Path", "UtilsArguments.py"),  # Causes lupdate to hang
-    ("Path", "refactored_centroid_post.py"),  # lupdate bug causes failure on line 245
-    ("Path", "refactored_grbl_post.py"),  # lupdate bug causes failure on line 212
-    ("Path", "refactored_linuxcnc_post.py"),  # lupdate bug causes failure on line 178
-    ("Path", "refactored_mach3_mach4_post.py"),  # lupdate bug causes failure on line 186
-    ("Path", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
+    ("CAM", "UtilsArguments.py"),  # Causes lupdate to hang
+    ("CAM", "refactored_centroid_post.py"),  # lupdate bug causes failure on line 245
+    ("CAM", "refactored_grbl_post.py"),  # lupdate bug causes failure on line 212
+    ("CAM", "refactored_linuxcnc_post.py"),  # lupdate bug causes failure on line 178
+    ("CAM", "refactored_mach3_mach4_post.py"),  # lupdate bug causes failure on line 186
+    ("CAM", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
 ]
 
 QMAKE = ""
