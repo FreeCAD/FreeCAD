@@ -406,6 +406,13 @@ def export(exportList, filename, colors=None, preferences=None):
                         preferences
                     )
                     assemblyElements.append(subproduct)
+                    exportIFCHelper.writeQuantities(ifcfile,
+                                                    obj.Base,
+                                                    subproduct,
+                                                    history,
+                                                    preferences['SCALE_FACTOR']
+                    )
+
         elif ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
             if hasattr(obj,"Group"):
                 group = obj.Group
@@ -740,7 +747,9 @@ def export(exportList, filename, colors=None, preferences=None):
                 #if preferences['DEBUG'] : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcData:
-                    if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep"]):
+                    if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep",
+                    "ExportHeight", "ExportWidth", "ExportLength", "ExportHorizontalArea",
+                    "ExportVerticalArea", "ExportVolume"]):
 
                         # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
@@ -789,35 +798,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # Quantities
 
-        if hasattr(obj,"IfcData"):
-            quantities = []
-            if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
-                quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value*preferences['SCALE_FACTOR']))
-            if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
-                quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value*preferences['SCALE_FACTOR']))
-            if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
-                quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value*preferences['SCALE_FACTOR']))
-            if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
-                quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value*(preferences['SCALE_FACTOR']**2)))
-            if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
-                quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value*(preferences['SCALE_FACTOR']**2)))
-            if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
-                quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume*(preferences['SCALE_FACTOR']**3)))
-            if quantities:
-                eltq = ifcfile.createIfcElementQuantity(
-                    ifcopenshell.guid.new(),
-                    history,
-                    "ElementQuantities",
-                    None,
-                    "FreeCAD",quantities
-                )
-                ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.new(),
-                    history,
-                    None,
-                    None,
-                    [product],eltq
-                )
+        exportIFCHelper.writeQuantities(ifcfile, obj, product, history, preferences['SCALE_FACTOR'])
 
         if preferences['FULL_PARAMETRIC']:
 
@@ -2362,7 +2343,7 @@ def getRepresentation(
         representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
         # additional representations?
         if Draft.getType(obj) in ["Wall","Structure"]:
-            addrepr = createAxis(ifcfile,obj,preferences)
+            addrepr = createAxis(ifcfile,obj,preferences, forceclone)
             if addrepr:
                 representation = representation + [addrepr]
         productdef = ifcfile.createIfcProductDefinitionShape(None,None,representation)
@@ -2467,12 +2448,15 @@ def getAxisContext(ifcfile):
     return nctx
 
 
-def createAxis(ifcfile,obj,preferences):
+def createAxis(ifcfile,obj,preferences, delta=None):
     """Creates an axis for a given wall, if applicable"""
 
     shape = None
+    pla = FreeCAD.Placement(obj.Placement)
+    if isinstance(delta,FreeCAD.Vector):
+        pla.Base += delta
     if getattr(obj,"Nodes",None):
-        shape = Part.makePolygon([obj.Placement.multVec(v) for v in obj.Nodes])
+        shape = Part.makePolygon([pla.multVec(v) for v in obj.Nodes])
     elif hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
         shape = obj.Base.Shape
     if shape:

@@ -56,6 +56,40 @@ def writeUnits(ifcfile,unit="metre"):
     return ifcfile
 
 
+def writeQuantities(ifcfile, obj, product, history, scale):
+    "append quantities to the given object"
+
+    if hasattr(obj,"IfcData"):
+        quantities = []
+        if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
+            quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value*scale))
+        if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
+            quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value*scale))
+        if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
+            quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value*scale))
+        if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
+            quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value*(scale**2)))
+        if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
+            quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value*(scale**2)))
+        if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
+            quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume*(scale**3)))
+        if quantities:
+            eltq = ifcfile.createIfcElementQuantity(
+                ifcopenshell.guid.new(),
+                history,
+                "ElementQuantities",
+                None,
+                "FreeCAD",quantities
+            )
+            ifcfile.createIfcRelDefinesByProperties(
+                ifcopenshell.guid.new(),
+                history,
+                None,
+                None,
+                [product],eltq
+            )
+
+
 class SIUnitCreator:
     def __init__(self, file, text, type):
         self.prefixes = [
