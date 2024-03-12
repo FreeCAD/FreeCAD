@@ -84,6 +84,10 @@ CONVERTTXT = translate(
     "Help",
     "There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.",
 )
+INTERNETTXT = translate(
+    "Help",
+    "Internet access has not been granted, the Help module cannot fetch online documentation. <a href=\"allowInternet\">Click here</a> to allow FreeCAD to access the internet, or install the documentation for offline use through the Addon Manager.",
+)
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
 
@@ -117,12 +121,17 @@ def show(page, view=None, conv=None, mode=0):
             mode = 2
         else:
             mode = 3
-    FreeCAD.Console.PrintLog("Help: opening " + location + "mode:" + str(mode) + "\n")
+    FreeCAD.Console.PrintLog("Help: opening " + location + " mode:" + str(mode) + "\n")
     if not location:
         FreeCAD.Console.PrintError(LOCTXT + "\n")
         return
-    md = get_contents(location)
-    html = convert(md, conv)
+    # check if we have allowed internet access
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+    if location.startswith("http") and not p.GetBool("AllowDownload", False):
+        html = INTERNETTXT
+    else:
+        md = get_contents(location)
+        html = convert(md, conv)
     baseurl = get_uri(location)
     pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
@@ -169,6 +178,10 @@ def get_location(page):
     """retrieves the location (online or offline) of a given page"""
 
     location = ""
+    if "allowInternet" in page:
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+        p.SetBool("AllowDownload", True)
+        page = page.replace("allowInternet", "")
     if page.startswith("http"):
         return page
     if page.startswith("file://"):
