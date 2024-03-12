@@ -50,7 +50,7 @@ public:
     }
     //@}
 
-    /** Apply mirrir transformation
+    /** Apply mirror transformation
      * Returns a list containing the original shapes and mirrors of each one.
      * The transformation will mirror a shape it is applied to on a plane
      * If MirrorPlane contains a feature and a face name, then the mirror plane will be

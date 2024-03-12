@@ -55,7 +55,7 @@ void MultiTransform::positionBySupport()
         if (!(f->isDerivedFrom<PartDesign::Transformed>())) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
-        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(f);
+        auto transFeature = static_cast<PartDesign::Transformed*>(f);
         transFeature->Placement.setValue(this->Placement.getValue());
 
         // To avoid that a linked transform feature stays touched after a recompute

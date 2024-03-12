@@ -78,7 +78,7 @@ gp_Trsf Mirrored::calculateTransformation() const
     gp_Pnt axbase;
     gp_Dir axdir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
-        Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
+        auto refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
@@ -104,14 +104,14 @@ gp_Trsf Mirrored::calculateTransformation() const
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     }
     else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
-        PartDesign::Plane const* plane = static_cast<PartDesign::Plane const*>(refObject);
+        auto plane = static_cast<PartDesign::Plane const*>(refObject);
         Base::Vector3d base = plane->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = plane->getNormal();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
     }
     else if (refObject->isDerivedFrom<App::Plane>()) {
-        App::Plane const* plane = static_cast<App::Plane const*>(refObject);
+        auto plane = static_cast<App::Plane const*>(refObject);
         Base::Vector3d base = plane->Placement.getValue().getPosition();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Rotation rot = plane->Placement.getValue().getRotation();

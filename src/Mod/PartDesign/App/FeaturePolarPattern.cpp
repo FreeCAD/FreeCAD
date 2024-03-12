@@ -115,7 +115,7 @@ std::vector<gp_Trsf> PolarPattern::calculateTransformations() const
     gp_Pnt axbase;
     gp_Dir axdir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
-        Part::Part2DObject const* refSketch = static_cast<Part::Part2DObject const*>(refObject);
+        auto refSketch = static_cast<Part::Part2DObject const*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
@@ -137,14 +137,14 @@ std::vector<gp_Trsf> PolarPattern::calculateTransformations() const
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     }
     else if (refObject->isDerivedFrom<PartDesign::Line>()) {
-        PartDesign::Line const* line = static_cast<PartDesign::Line const*>(refObject);
+        auto line = static_cast<PartDesign::Line const*>(refObject);
         Base::Vector3d base = line->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = line->getDirection();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
     }
     else if (refObject->isDerivedFrom<App::Line>()) {
-        App::Line const* line = static_cast<App::Line const*>(refObject);
+        auto line = static_cast<App::Line const*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
         Base::Vector3d d(1, 0, 0);
         rot.multVec(d, d);
@@ -154,7 +154,7 @@ std::vector<gp_Trsf> PolarPattern::calculateTransformations() const
         if (subStrings[0].empty()) {
             throw Base::ValueError("No axis reference specified");
         }
-        Part::Feature const* refFeature = static_cast<Part::Feature const*>(refObject);
+        auto refFeature = static_cast<Part::Feature const*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
 

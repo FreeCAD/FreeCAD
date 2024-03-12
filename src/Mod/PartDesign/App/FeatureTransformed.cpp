@@ -129,17 +129,17 @@ App::DocumentObject* Transformed::getSketchObject() const
     }
     else if (this->isDerivedFrom<LinearPattern>()) {
         // if Originals is empty then try the linear pattern's Direction property
-        const LinearPattern* pattern = static_cast<const LinearPattern*>(this);
+        auto pattern = static_cast<const LinearPattern*>(this);
         return pattern->Direction.getValue();
     }
     else if (this->isDerivedFrom<PolarPattern>()) {
         // if Originals is empty then try the polar pattern's Axis property
-        const PolarPattern* pattern = static_cast<const PolarPattern*>(this);
+        auto pattern = static_cast<const PolarPattern*>(this);
         return pattern->Axis.getValue();
     }
     else if (this->isDerivedFrom<Mirrored>()) {
         // if Originals is empty then try the mirror pattern's MirrorPlane property
-        const Mirrored* pattern = static_cast<const Mirrored*>(this);
+        auto pattern = static_cast<const Mirrored*>(this);
         return pattern->MirrorPlane.getValue();
     }
     else {
