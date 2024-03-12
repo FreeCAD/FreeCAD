@@ -167,7 +167,7 @@ public:
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup();
-    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true);
+    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true, bool delBadJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);

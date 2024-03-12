@@ -235,7 +235,7 @@ void AssemblyObject::undoSolve()
     previousPositions.clear();
 
     // update joint placements:
-    getJoints();
+    getJoints(/*updateJCS*/ true, /*delBadJoints*/ false);
 }
 
 void AssemblyObject::clearUndo()
@@ -398,7 +398,7 @@ JointGroup* AssemblyObject::getJointGroup()
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
+std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool delBadJoints)
 {
     std::vector<App::DocumentObject*> joints = {};
 
@@ -414,7 +414,16 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
         }
 
         auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-        if (prop && !prop->getValue()) {
+        if (!prop || !prop->getValue()) {
+            // Filter grounded joints and deactivated joints.
+            continue;
+        }
+
+        if (!getLinkObjFromProp(joint, "Part1") || !getLinkObjFromProp(joint, "Part2")) {
+            // Remove incomplete joints. Left-over when the user delets a part.
+            if (delBadJoints) {
+                getDocument()->removeObject(joint->getNameInDocument());
+            }
             continue;
         }
 
