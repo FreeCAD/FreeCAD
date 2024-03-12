@@ -139,6 +139,7 @@
         <file>icons/geometry/Sketcher_CreateBSplineByInterpolation_Constr.svg</file>
         <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation.svg</file>
         <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateChamfer.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points.svg</file>
@@ -229,6 +230,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_BSpline.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_BSplineByInterpolation.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Circle.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_Chamfer.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_EllipseByCenter.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Ellipse_3points.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Fillet.svg</file>
@@ -238,6 +240,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Periodic_BSpline.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Periodic_BSplineByInterpolation.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_PointChamfer.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_PointFillet.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Translate.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Offset.svg</file>
