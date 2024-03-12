@@ -54,9 +54,9 @@ public:
 
     /** Apply scale transformation
      * Returns a list containing the same number of shapes as given.
-     * Each shape will be scaled by an additional factor of (Factor / (Occurences - 1)).
-     * If there are less shapes than Occurences, not all factors will be present.
-     * If there are more shapes than Occurences, the factors will repeat.
+     * Each shape will be scaled by an additional factor of (Factor / (Occurrences - 1)).
+     * If there are less shapes than Occurrences, not all factors will be present.
+     * If there are more shapes than Occurrences, the factors will repeat.
      * The centre point of the scaling is the centre of mass of each shape.
      */
     std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
