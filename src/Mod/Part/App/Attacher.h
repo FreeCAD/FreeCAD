@@ -440,10 +440,10 @@ class PartExport AttachEngine3D : public AttachEngine
 public:
     AttachEngine3D();
     AttachEngine3D* copy() const override;
-    virtual Base::Placement _calculateAttachedPlacement(
+    Base::Placement _calculateAttachedPlacement(
         const std::vector<App::DocumentObject*> &objs,
         const std::vector<std::string> &subs,
-        const Base::Placement &origPlacement) const;
+        const Base::Placement &origPlacement) const override;
 private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };
@@ -455,10 +455,10 @@ class PartExport AttachEnginePlane : public AttachEngine
 public:
     AttachEnginePlane();
     AttachEnginePlane* copy() const override;
-    virtual Base::Placement _calculateAttachedPlacement(
+    Base::Placement _calculateAttachedPlacement(
         const std::vector<App::DocumentObject*> &objs,
         const std::vector<std::string> &subs,
-        const Base::Placement &origPlacement) const;
+        const Base::Placement &origPlacement) const override;
 };
 
 //attacher specialized for datum lines
@@ -468,10 +468,10 @@ class PartExport AttachEngineLine : public AttachEngine
 public:
     AttachEngineLine();
     AttachEngineLine* copy() const override;
-    virtual Base::Placement _calculateAttachedPlacement(
+    Base::Placement _calculateAttachedPlacement(
         const std::vector<App::DocumentObject*> &objs,
         const std::vector<std::string> &subs,
-        const Base::Placement &origPlacement) const;
+        const Base::Placement &origPlacement) const override;
 };
 
 //attacher specialized for datum points
@@ -481,10 +481,10 @@ class PartExport AttachEnginePoint : public AttachEngine
 public:
     AttachEnginePoint();
     AttachEnginePoint* copy() const override;
-    virtual Base::Placement _calculateAttachedPlacement(
+    Base::Placement _calculateAttachedPlacement(
         const std::vector<App::DocumentObject*> &objs,
         const std::vector<std::string> &subs,
-        const Base::Placement &origPlacement) const;
+        const Base::Placement &origPlacement) const override;
 
 private:
     gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
