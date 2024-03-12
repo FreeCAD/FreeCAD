@@ -282,6 +282,9 @@ class Joint:
                 self.updateJCSPlacements(joint)
                 obj1 = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
                 obj2 = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+                if obj1 is None or obj2 is None:
+                    return
+
                 presolved = self.preSolve(
                     joint,
                     obj1,
