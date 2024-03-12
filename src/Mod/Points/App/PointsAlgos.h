@@ -45,7 +45,7 @@ public:
     static void LoadAscii(PointKernel&, const char* FileName);
 };
 
-class Reader
+class PointsExport Reader
 {
 public:
     Reader();
@@ -76,19 +76,19 @@ protected:
     std::vector<float> intensity;
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
-    int width {};
-    int height {};
+    int width {0};
+    int height {1};
     // NOLINTEND
 };
 
-class AscReader: public Reader
+class PointsExport AscReader: public Reader
 {
 public:
     AscReader();
     void read(const std::string& filename) override;
 };
 
-class PlyReader: public Reader
+class PointsExport PlyReader: public Reader
 {
 public:
     PlyReader();
@@ -110,7 +110,7 @@ private:
                     Eigen::MatrixXd& data);
 };
 
-class PcdReader: public Reader
+class PointsExport PcdReader: public Reader
 {
 public:
     PcdReader();
@@ -130,7 +130,7 @@ private:
                     Eigen::MatrixXd& data);
 };
 
-class E57Reader: public Reader
+class PointsExport E57Reader: public Reader
 {
 public:
     E57Reader(bool Color, bool State, double Distance);
@@ -141,7 +141,7 @@ protected:
     double minDistance;
 };
 
-class Writer
+class PointsExport Writer
 {
 public:
     explicit Writer(const PointKernel&);
@@ -171,21 +171,21 @@ protected:
     // NOLINTEND
 };
 
-class AscWriter: public Writer
+class PointsExport AscWriter: public Writer
 {
 public:
     explicit AscWriter(const PointKernel&);
     void write(const std::string& filename) override;
 };
 
-class PlyWriter: public Writer
+class PointsExport PlyWriter: public Writer
 {
 public:
     explicit PlyWriter(const PointKernel&);
     void write(const std::string& filename) override;
 };
 
-class PcdWriter: public Writer
+class PointsExport PcdWriter: public Writer
 {
 public:
     explicit PcdWriter(const PointKernel&);

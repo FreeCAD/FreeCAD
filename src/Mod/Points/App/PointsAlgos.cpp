@@ -197,6 +197,8 @@ AscReader::AscReader() = default;
 void AscReader::read(const std::string& filename)
 {
     points.load(filename.c_str());
+    this->height = 1;
+    this->width = points.size();
 }
 
 // ----------------------------------------------------------------------------
@@ -546,8 +548,6 @@ PlyReader::PlyReader() = default;
 void PlyReader::read(const std::string& filename)
 {
     clear();
-    this->width = 1;
-    this->height = 0;
 
     Base::FileInfo fi(filename);
     Base::ifstream inp(fi, std::ios::in | std::ios::binary);
@@ -558,6 +558,9 @@ void PlyReader::read(const std::string& filename)
     std::vector<int> sizes;
     std::size_t offset = 0;
     Eigen::Index numPoints = Eigen::Index(readHeader(inp, format, offset, fields, types, sizes));
+
+    this->width = numPoints;
+    this->height = 1;
 
     Eigen::MatrixXd data(numPoints, fields.size());
     if (format == "ascii") {
@@ -1021,8 +1024,8 @@ PcdReader::PcdReader() = default;
 void PcdReader::read(const std::string& filename)
 {
     clear();
-    this->width = -1;
-    this->height = -1;
+    this->width = 0;
+    this->height = 1;
 
     Base::FileInfo fi(filename);
     Base::ifstream inp(fi, std::ios::in | std::ios::binary);
@@ -1788,6 +1791,8 @@ void E57Reader::read(const std::string& filename)
         normals = reader.getNormals();
         colors = reader.getColors();
         intensity = reader.getItensity();
+        width = points.size();
+        height = 1;
     }
     catch (const Base::BadFormatError&) {
         throw;
