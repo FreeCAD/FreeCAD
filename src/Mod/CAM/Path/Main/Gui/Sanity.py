@@ -51,7 +51,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class CommandPathSanity:
+class CommandCAMSanity:
     def resolveOutputFile(self, job):
         if job.PostProcessorOutputFile != "":
             filepath = job.PostProcessorOutputFile
@@ -648,7 +648,9 @@ class CommandPathSanity:
 			<span style="display: inline-block; border: none; padding: 0cm"><font color="#000000"><img src='
 """
         reportHtmlTemplate += d["stockImage"] + "'" + "name='Image" + str(imageCounter)
-        reportHtmlTemplate += "' alt='stock' align='bottom' width='320' height='320' border='0'/>"
+        reportHtmlTemplate += (
+            "' alt='stock' align='bottom' width='320' height='320' border='0'/>"
+        )
         imageCounter += 1
         reportHtmlTemplate += """
 </span></font></p>
@@ -1055,9 +1057,7 @@ class CommandPathSanity:
         d = data["squawkData"]
         TIPIcon = FreeCAD.getHomePath() + "Mod/CAM/Path/Main/Gui/Sanity_Bulb.svg"
         NOTEIcon = FreeCAD.getHomePath() + "Mod/CAM/Path/Main/Gui/Sanity_Note.svg"
-        WARNINGIcon = (
-            FreeCAD.getHomePath() + "Mod/CAM/Path/Main/Gui/Sanity_Warning.svg"
-        )
+        WARNINGIcon = FreeCAD.getHomePath() + "Mod/CAM/Path/Main/Gui/Sanity_Warning.svg"
         CAUTIONIcon = FreeCAD.getHomePath() + "Mod/CAM/Path/Main/Gui/Sanity_Stop.svg"
 
         reportHtmlTemplate += """
@@ -1189,7 +1189,6 @@ class CommandPathSanity:
 </html>
 """
 
-
         # Save the report
         subsLookup = os.path.splitext(os.path.basename(obj.PostProcessorOutputFile))[0]
         foundSub = False
@@ -1205,13 +1204,16 @@ class CommandPathSanity:
 
             # Make sure the filepath is fully qualified
             if os.path.basename(filepath) == filepath:
-                filepath = f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
+                filepath = (
+                    f"{os.path.dirname(FreeCAD.ActiveDocument.FileName)}/{filepath}"
+                )
             Path.Log.debug("filepath: {}".format(filepath))
             base_name = os.path.splitext(filepath)[0]
             reporthtml = base_name + ".html"
         else:
-            reporthtml = self.outputpath + data["outputData"]["outputfilename"] + ".html"
-
+            reporthtml = (
+                self.outputpath + data["outputData"]["outputfilename"] + ".html"
+            )
 
         # Python 3.11 aware
         with codecs.open(reporthtml, encoding="utf-8", mode="w") as fd:
@@ -1267,7 +1269,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__baseObjectData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__baseObjectData)", e, squawkType="CAUTION")
 
         return data
 
@@ -1308,7 +1310,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__designData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__designData)", e, squawkType="CAUTION")
 
         return data
 
@@ -1324,7 +1326,7 @@ class CommandPathSanity:
             for TC in obj.Tools.Group:
                 if not hasattr(TC.Tool, "BitBody"):
                     self.squawk(
-                        "PathSanity",
+                        "CAMSanity",
                         translate(
                             "CAM_Sanity",
                             "Tool number {} is a legacy tool. Legacy tools not \
@@ -1337,7 +1339,7 @@ class CommandPathSanity:
                 bitshape = tooldata.setdefault("BitShape", "")
                 if bitshape not in ["", TC.Tool.BitShape]:
                     self.squawk(
-                        "PathSanity",
+                        "CAMSanity",
                         translate(
                             "CAM_Sanity", "Tool number {} used by multiple tools"
                         ).format(TC.ToolNumber),
@@ -1352,29 +1354,43 @@ class CommandPathSanity:
                 tooldata["shape"] = TC.Tool.ShapeName
 
                 tooldata["partNumber"] = ""
-                imagedata = TC.Tool.Proxy.getBitThumbnail(TC.Tool)
+
+                if os.path.isfile(TC.Tool.BitShape):
+                    imagedata = TC.Tool.Proxy.getBitThumbnail(TC.Tool)
+                else:
+                    imagedata = None
+                    self.squawk(
+                        "CAMSanity",
+                        translate(
+                            "CAM_Sanity", "Toolbit Shape for TC: {} not found"
+                        ).format(TC.ToolNumber),
+                        squawkType="WARNING",
+                    )
                 imagepath = "{}T{}.png".format(self.outputpath, TC.ToolNumber)
                 tooldata["feedrate"] = str(TC.HorizFeed)
                 if TC.HorizFeed.Value == 0.0:
                     self.squawk(
-                        "PathSanity",
-                        "Tool Controller '{}' has no feedrate".format(TC.Label),
+                        "CAMSanity",
+                        translate(
+                            "CAM_Sanity", "Tool Controller '{}' has no feedrate"
+                        ).format(TC.Label),
                         squawkType="WARNING",
                     )
 
                 tooldata["spindlespeed"] = str(TC.SpindleSpeed)
                 if TC.SpindleSpeed == 0.0:
                     self.squawk(
-                        "PathSanity",
+                        "CAMSanity",
                         translate(
                             "CAM_Sanity", "Tool Controller '{}' has no spindlespeed"
                         ).format(TC.Label),
                         squawkType="WARNING",
                     )
 
-                with open(imagepath, "wb") as fd:
-                    fd.write(imagedata)
-                    fd.close()
+                if imagedata is not None:
+                    with open(imagepath, "wb") as fd:
+                        fd.write(imagedata)
+                        fd.close()
                 tooldata["imagepath"] = imagepath
 
                 used = False
@@ -1393,7 +1409,7 @@ class CommandPathSanity:
                 if used is False:
                     tooldata.setdefault("ops", [])
                     self.squawk(
-                        "PathSanity",
+                        "CAMSanity",
                         translate(
                             "CAM_Sanity", "Tool Controller '{}' is not used"
                         ).format(TC.Label),
@@ -1401,9 +1417,11 @@ class CommandPathSanity:
                     )
 
         except Exception as e:
+            raise e
             data["errors"] = e
-            self.squawk("PathSanity(__toolData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__toolData)", e, squawkType="CAUTION")
 
+        print(data)
         return data
 
     def __runData(self, obj):
@@ -1464,7 +1482,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__runData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__runData)", e, squawkType="CAUTION")
 
         return data
 
@@ -1490,7 +1508,7 @@ class CommandPathSanity:
 
             if data["material"] == "Not Specified":
                 self.squawk(
-                    "PathSanity",
+                    "CAMSanity",
                     translate("CAM_Sanity", "Consider Specifying the Stock Material"),
                     squawkType="TIP",
                 )
@@ -1498,7 +1516,7 @@ class CommandPathSanity:
             data["stockImage"] = self.__makePicture(obj.Stock, "stockImage")
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__stockData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__stockData)", e, squawkType="CAUTION")
 
         return data
 
@@ -1544,7 +1562,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__fixtureData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__fixtureData)", e, squawkType="CAUTION")
 
         return data
 
@@ -1581,7 +1599,7 @@ class CommandPathSanity:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
                 self.squawk(
-                    "PathSanity",
+                    "CAMSanity",
                     translate("CAM_Sanity", "The Job has not been post-processed"),
                 )
             else:
@@ -1594,11 +1612,11 @@ class CommandPathSanity:
 
         except Exception as e:
             data["errors"] = e
-            self.squawk("PathSanity(__outputData)", e, squawkType="CAUTION")
+            self.squawk("CAMSanity(__outputData)", e, squawkType="CAUTION")
 
         return data
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("CAM_Sanity", CommandPathSanity())
+    FreeCADGui.addCommand("CAM_Sanity", CommandCAMSanity())
