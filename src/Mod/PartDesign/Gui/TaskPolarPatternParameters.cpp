@@ -221,7 +221,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else if (selectionMode == SelectionMode::Reference) {
+        else {
             auto pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
             std::vector<std::string> axes;
@@ -231,8 +231,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 return;
             }
 
-            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
-                || selObj->isDerivedFrom<PartDesign::Line>()) {
+            if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Line>()) {
                 setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
                 recomputeFeature();
