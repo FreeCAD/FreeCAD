@@ -86,7 +86,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_rotation">
           <property name="text">
-           <string>Rotation:     </string>
+           <string>Rotation:</string>
           </property>
          </widget>
         </item>

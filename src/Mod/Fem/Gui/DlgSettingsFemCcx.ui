@@ -513,7 +513,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="l_BeamShellOutput">
           <property name="text">
-           <string>Beam, shell element 3D output format </string>
+           <string>Beam, shell element 3D output format</string>
           </property>
          </widget>
         </item>
