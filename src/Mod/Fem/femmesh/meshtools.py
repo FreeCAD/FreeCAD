@@ -701,9 +701,9 @@ def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> 
         # I was getting values of 1e-17 order, hence the threshold is of 1e-15 order
         return FreeCAD.Vector([coord * (abs(coord) > 1e-15) for coord in rot])
 
-    # `-90` here is because the normal is calculated towards -z axis
-    # and we use 1,2-directions, that are rotated by `-90` degrees
-    return rotate_around_vector(beam_direction, defined_angle - 90)
+    # `+90` here is because the normal is calculated towards -z axis
+    # and we use 1,2-directions, that are rotated by `+90` degrees
+    return rotate_around_vector(beam_direction, defined_angle + 90)
 
 
 # ************************************************************************************************
