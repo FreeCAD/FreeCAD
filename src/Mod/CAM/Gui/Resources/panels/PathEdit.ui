@@ -1404,7 +1404,7 @@ Default: "5mm"</string>
        <item row="0" column="0">
         <widget class="QLabel" name="label_18">
          <property name="text">
-          <string>Active Tool </string>
+          <string>Active Tool</string>
          </property>
         </widget>
        </item>

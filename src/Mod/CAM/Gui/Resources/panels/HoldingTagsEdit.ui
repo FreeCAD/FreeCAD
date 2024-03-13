@@ -37,7 +37,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Angle            </string>
+         <string>Angle</string>
         </property>
        </widget>
       </item>

@@ -285,7 +285,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Post Processors Selection </string>
+             <string>Post Processors Selection</string>
             </property>
            </widget>
           </item>
@@ -652,7 +652,7 @@ See the file save policy below on how to deal with name conflicts.</string>
          <property name="toolTip">
           <string>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
-Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. </string>
+Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</string>
          </property>
          <property name="text">
           <string>Store Absolute Paths</string>

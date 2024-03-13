@@ -193,7 +193,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_D">
            <property name="text">
-            <string>D = </string>
+            <string notr="true">D =</string>
            </property>
           </widget>
          </item>
@@ -210,7 +210,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_d">
            <property name="text">
-            <string>d =</string>
+            <string notr="true">d =</string>
            </property>
           </widget>
          </item>
@@ -227,7 +227,7 @@
          <item row="3" column="0">
           <widget class="QLabel" name="label_H">
            <property name="text">
-            <string>H =</string>
+            <string notr="true">H =</string>
            </property>
           </widget>
          </item>
@@ -264,7 +264,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>S = </string>
+            <string notr="true">S = </string>
            </property>
           </widget>
          </item>
