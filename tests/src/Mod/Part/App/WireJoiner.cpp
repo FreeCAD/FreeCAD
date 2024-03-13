@@ -750,7 +750,7 @@ TEST_F(WireJoinerTest, getResultWires)
     // wjOp.Build() is called by wjOp.getResultWires()
     wjOp.getResultWires(wireOp, "getResultWires");
 
-    // Arrange
+    // Assert
 
     // All the edges added with wjNoResultWires.addShape() can't create a closed wire, therefor
     // wireNoResultWires shouldn't have any edges
@@ -770,5 +770,43 @@ TEST_F(WireJoinerTest, getResultWires)
     EXPECT_EQ(wireOp.getElementMap()[0].name.find(Part::OpCodes::Maker), -1);
     EXPECT_NE(wireOp.getElementMap()[0].name.find("getResultWires"), -1);
 }
+
+#if OCC_VERSION_HEX >= 0x070600
+// WireJoiner::Build() has already been tested indirectly in the other tests.
+// Here we check only the difference with OCCT versions >= 7.6.0 that add the parameter theRange
+TEST_F(WireJoinerTest, Build)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 0.0, 0.0), gp_Pnt(1.1, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, -0.1, 0.0), gp_Pnt(1.0, 1.1, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjtheRange.addShape()
+    std::vector<TopoDS_Shape> edgestheRange {edge1, edge2, edge3};
+
+    // A WireJoiner object that will create no closed wires
+    auto wjtheRange {WireJoiner()};
+
+    // A Message_ProgressRange object that will be used as argument for wjtheRange.Build()
+    auto mpr {Message_ProgressRange()};
+
+    // Act
+
+    wjtheRange.addShape(edgestheRange);
+    wjtheRange.Build(mpr);
+
+    // Assert
+
+    // theRange isn't used in WireJoiner::Build() and therefor not attached to any indicator.
+    // For more reference see
+    // https://dev.opencascade.org/doc/occt-7.6.0/refman/html/class_message___progress_range.html
+    // and
+    // https://dev.opencascade.org/doc/occt-7.6.0/refman/html/class_message___progress_indicator.html
+    EXPECT_FALSE(mpr.IsActive());
+}
+#endif
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
