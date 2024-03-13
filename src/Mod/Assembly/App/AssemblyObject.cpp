@@ -419,8 +419,11 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
             continue;
         }
 
-        if (!getLinkObjFromProp(joint, "Part1") || !getLinkObjFromProp(joint, "Part2")) {
+        auto* part1 = getLinkObjFromProp(joint, "Part1");
+        auto* part2 = getLinkObjFromProp(joint, "Part2");
+        if (!part1 || !part2 || part1->getFullName() == part2->getFullName()) {
             // Remove incomplete joints. Left-over when the user delets a part.
+            // Remove incoherent joints (self-pointing joints)
             if (delBadJoints) {
                 getDocument()->removeObject(joint->getNameInDocument());
             }
