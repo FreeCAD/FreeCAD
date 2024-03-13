@@ -1,86 +1,104 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-        Father="GeoFeaturePy"
-		Name="MeshFeaturePy"
-		Twin="Feature"
-		TwinPointer="Feature"
-		Include="Mod/Mesh/App/MeshFeature.h"
-		Namespace="Mesh"
-        FatherInclude="App/GeoFeaturePy.h"
-		FatherNamespace="App">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu>The Mesh::Feature class handles meshes.
+    <PythonExport
+    Father="GeoFeaturePy"
+    Name="MeshFeaturePy"
+    Twin="Feature"
+    TwinPointer="Feature"
+    Include="Mod/Mesh/App/MeshFeature.h"
+    Namespace="Mesh"
+    FatherInclude="App/GeoFeaturePy.h"
+    FatherNamespace="App">
+    <Documentation>
+        <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+        <UserDocu>The Mesh::Feature class handles meshes.
 The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
 Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
 d.addObject("Mesh::Feature").
-			</UserDocu>
-		</Documentation>
-		<Methode Name="countPoints">
-			<Documentation>
-				<UserDocu>Return the number of vertices of the mesh object</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="countFacets">
-			<Documentation>
-				<UserDocu>Return the number of facets of the mesh object</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="harmonizeNormals">
-			<Documentation>
-				<UserDocu>Adjust wrong oriented facets</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="smooth">
-			<Documentation>
-				<UserDocu>Smooth the mesh data</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeNonManifolds">
-			<Documentation>
-				<UserDocu>Remove non-manifolds</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeNonManifoldPoints">
-			<Documentation>
-				<UserDocu>Remove non-manifold points</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="fixIndices">
-			<Documentation>
-				<UserDocu>Repair any invalid indices</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="fixDegenerations">
-			<Documentation>
-				<UserDocu>Remove degenerated facets</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeDuplicatedFacets">
-			<Documentation>
-				<UserDocu>Remove duplicated facets</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeDuplicatedPoints">
-			<Documentation>
-				<UserDocu>Remove duplicated points</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="fixSelfIntersections">
-			<Documentation>
-				<UserDocu>Repair self-intersections</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeFoldsOnSurface">
-			<Documentation>
-				<UserDocu>Remove folds on surfaces</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="removeInvalidPoints">
-			<Documentation>
-				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
-			</Documentation>
-		</Methode>
-	</PythonExport>
+        </UserDocu>
+    </Documentation>
+    <Methode Name="countPoints">
+        <Documentation>
+            <UserDocu>Return the number of vertices of the mesh object</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="countFacets">
+        <Documentation>
+            <UserDocu>Return the number of facets of the mesh object</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="harmonizeNormals">
+        <Documentation>
+            <UserDocu>Adjust wrong oriented facets</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="smooth">
+        <Documentation>
+            <UserDocu>Smooth the mesh data</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="decimate">
+        <Documentation>
+             <UserDocu>
+                 Decimate the mesh
+                 decimate(tolerance(Float), reduction(Float))
+                 tolerance: maximum error
+                 reduction: reduction factor must be in the range [0.0,1.0]
+                 Example:
+                 mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
+                 mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
+
+                 or
+
+                 decimate(targwt size(int))
+                 mesh.decimate(mesh.CountFacets/2)
+             </UserDocu>
+         </Documentation>
+     </Methode>
+    <Methode Name="removeNonManifolds">
+        <Documentation>
+            <UserDocu>Remove non-manifolds</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeNonManifoldPoints">
+        <Documentation>
+            <UserDocu>Remove non-manifold points</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="fixIndices">
+        <Documentation>
+            <UserDocu>Repair any invalid indices</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="fixDegenerations">
+        <Documentation>
+            <UserDocu>Remove degenerated facets</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeDuplicatedFacets">
+        <Documentation>
+            <UserDocu>Remove duplicated facets</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeDuplicatedPoints">
+        <Documentation>
+            <UserDocu>Remove duplicated points</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="fixSelfIntersections">
+        <Documentation>
+            <UserDocu>Repair self-intersections</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeFoldsOnSurface">
+        <Documentation>
+            <UserDocu>Remove folds on surfaces</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeInvalidPoints">
+        <Documentation>
+            <UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
+        </Documentation>
+    </Methode>
+    </PythonExport>
 </GenerateModel>

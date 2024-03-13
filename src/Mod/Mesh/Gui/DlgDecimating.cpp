@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -166,14 +166,12 @@ bool TaskDecimating::accept()
         targetSize = widget->targetNumberOfTriangles();
     }
     for (auto mesh : meshes) {
-        Mesh::MeshObject* mm = mesh->Mesh.startEditing();
         if (absolute) {
-            mm->decimate(targetSize);
+            Gui::cmdAppObjectArgs(mesh, "decimate(%i)", targetSize);
         }
         else {
-            mm->decimate(tolerance, reduction);
+            Gui::cmdAppObjectArgs(mesh, "decimate(%f, %f)", tolerance, reduction);
         }
-        mesh->Mesh.finishEditing();
     }
 
     Gui::Command::commitCommand();
