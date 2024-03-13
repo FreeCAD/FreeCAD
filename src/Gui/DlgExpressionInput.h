@@ -76,13 +76,10 @@ public:
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
-
 public Q_SLOTS:
     void show();
 
 protected:
-    void showEvent(QShowEvent*) override;
     void mouseReleaseEvent(QMouseEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
 

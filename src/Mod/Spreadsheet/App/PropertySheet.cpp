@@ -1561,29 +1561,6 @@ void PropertySheet::onRemoveDep(App::DocumentObject* obj)
     depConnections.erase(obj);
 }
 
-void PropertySheet::renamedDocumentObject(const App::DocumentObject* docObj)
-{
-#if 1
-    (void)docObj;
-#else
-    if (documentObjectName.find(docObj) == documentObjectName.end()) {
-        return;
-    }
-
-    std::map<CellAddress, Cell*>::iterator i = data.begin();
-
-    while (i != data.end()) {
-        RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, docObj);
-        i->second->visit(v);
-        if (v.changed()) {
-            v.reset();
-            recomputeDependencies(i->first);
-            setDirty(i->first);
-        }
-        ++i;
-    }
-#endif
-}
 
 void PropertySheet::onRelabeledDocument(const App::Document& doc)
 {

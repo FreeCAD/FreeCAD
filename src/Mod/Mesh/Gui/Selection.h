@@ -56,6 +56,8 @@ private:
 private:
     MeshSelection meshSel;
     Ui_Selection* ui;
+
+    Q_DISABLE_COPY_MOVE(Selection)
 };
 
 }  // namespace MeshGui

@@ -140,6 +140,8 @@ protected:
 private:
     class Private;
     Private* d;
+
+    Q_DISABLE_COPY_MOVE(DlgEvaluateMeshImp)
 };
 
 /**
@@ -165,6 +167,8 @@ public:
 private:
     QScrollArea* scrollArea;
     static DockEvaluateMeshImp* _instance;
+
+    Q_DISABLE_COPY_MOVE(DockEvaluateMeshImp)
 };
 
 }  // namespace MeshGui

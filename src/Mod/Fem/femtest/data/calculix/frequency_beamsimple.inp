@@ -17069,7 +17069,7 @@ RF
 *NODE PRINT, NSET=Fix_YZ, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

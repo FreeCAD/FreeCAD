@@ -991,7 +991,7 @@ void MeshKernel::RebuildNeighbours(FacetIndex index)
 
     // sort the edges
     // std::sort(edges.begin(), edges.end(), Edge_Less());
-    int threads = QThread::idealThreadCount();
+    int threads = int(std::thread::hardware_concurrency());
     MeshCore::parallel_sort(edges.begin(), edges.end(), Edge_Less(), threads);
 
     PointIndex p0 = POINT_INDEX_MAX, p1 = POINT_INDEX_MAX;

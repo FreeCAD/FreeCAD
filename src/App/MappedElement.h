@@ -99,6 +99,15 @@ struct AppExport MappedElement
     }
 };
 
+struct AppExport HistoryItem {
+    App::DocumentObject *obj;
+    long tag;
+    Data::MappedName element;
+    Data::IndexedName index;
+    std::vector<Data::MappedName> intermediates;
+    HistoryItem(App::DocumentObject *obj, const Data::MappedName &name);
+};
+
 struct AppExport ElementNameComparator {
     /** Comparison function to make topo name more stable
      *

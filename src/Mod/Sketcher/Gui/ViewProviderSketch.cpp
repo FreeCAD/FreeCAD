@@ -3358,7 +3358,10 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     auto vp = proxyVPrdr->vp;
     auto cam = proxyVPrdr->renderMgr->getCamera();
 
-    vp->onCameraChanged(cam);
+    if (cam == nullptr)
+        Base::Console().DeveloperWarning("ViewProviderSketch", "Camera is nullptr!\n");
+    else
+        vp->onCameraChanged(cam);
 }
 
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)

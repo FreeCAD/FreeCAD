@@ -63,6 +63,7 @@ class ReadmeController(QtCore.QObject):
         self.stop = True
         self.widget = widget
         self.widget.load_resource.connect(self.loadResource)
+        self.widget.follow_link.connect(self.follow_link)
 
     def set_addon(self, repo: Addon):
         """Set which Addon's information is displayed"""
@@ -74,6 +75,14 @@ class ReadmeController(QtCore.QObject):
             self.url = self.addon.macro.wiki
             if not self.url:
                 self.url = self.addon.macro.url
+            if not self.url:
+                self.widget.setText(
+                    translate(
+                        "AddonsInstaller",
+                        "Loading info for {} from the FreeCAD Macro Recipes wiki...",
+                    ).format(self.addon.display_name, self.url)
+                )
+                return
         else:
             self.url = utils.get_readme_url(repo)
         self.widget.setUrl(self.url)
@@ -144,6 +153,16 @@ class ReadmeController(QtCore.QObject):
             NetworkManager.AM_NETWORK_MANAGER.abort(request)
         self.resource_requests.clear()
 
+    def follow_link(self, url: str) -> None:
+        final_url = url
+        if not url.startswith("http"):
+            if url.endswith(".md"):
+                final_url = self._create_markdown_url(url)
+            else:
+                final_url = self._create_full_url(url)
+        FreeCAD.Console.PrintLog(f"Loading {final_url} in the system browser")
+        QtGui.QDesktopServices.openUrl(final_url)
+
     def _create_full_url(self, url: str) -> str:
         if url.startswith("http"):
             return url
@@ -151,6 +170,11 @@ class ReadmeController(QtCore.QObject):
             return url
         lhs, slash, _ = self.url.rpartition("/")
         return lhs + slash + url
+
+    def _create_markdown_url(self, file: str) -> str:
+        base_url = utils.get_readme_html_url(self.addon)
+        lhs, slash, _ = base_url.rpartition("/")
+        return lhs + slash + file
 
 
 class WikiCleaner(HTMLParser):

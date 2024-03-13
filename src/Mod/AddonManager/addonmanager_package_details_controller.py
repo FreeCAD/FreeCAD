@@ -267,3 +267,6 @@ class PackageDetailsController(QtCore.QObject):
     def display_repo_status(self, addon):
         self.update_status.emit(self.addon)
         self.show_repo(self.addon)
+
+    def macro_readme_updated(self):
+        self.show_repo(self.addon)

@@ -1647,10 +1647,11 @@ template<>
 void DSHRectangleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Corner, width, height"),
-                             QStringLiteral("Center, width, height"),
-                             QStringLiteral("3 corners"),
-                             QStringLiteral("Center, 2 corners")};
+        QStringList names = {
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Corner, width, height"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Center, width, height"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "3 corners"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Center, 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setCheckboxLabel(

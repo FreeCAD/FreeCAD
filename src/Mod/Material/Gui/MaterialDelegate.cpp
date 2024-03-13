@@ -110,7 +110,8 @@ QVariant MaterialDelegate::getValue(const QModelIndex& index) const
     QVariant propertyValue;
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
+        // auto propertyName = group->child(row, 0)->text();
+        auto propertyName = group->child(row, 0)->data().toString();
         propertyValue = material->getProperty(propertyName)->getValue();
     }
     return propertyValue;
@@ -130,7 +131,8 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
     int row = index.row();
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
+        // auto propertyName = group->child(row, 0)->text();
+        auto propertyName = group->child(row, 0)->data().toString();
         material->getProperty(propertyName)->setValue(value);
         group->child(row, 1)->setText(value.toString());
     }
@@ -152,7 +154,8 @@ void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
     int row = index.row();
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
+        // auto propertyName = group->child(row, 0)->text();
+        auto propertyName = group->child(row, 0)->data().toString();
         auto propertyValue = material->getProperty(propertyName)->getValue();
         material->setEditStateAlter();
         Base::Console().Log("MaterialDelegate::notifyChanged() - marked altered\n");
@@ -181,7 +184,8 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 
             int row = index.row();
 
-            QString propertyName = group->child(row, 0)->text();
+            // QString propertyName = group->child(row, 0)->text();
+            QString propertyName = group->child(row, 0)->data().toString();
 
             auto type = getType(index);
             if (type == Materials::MaterialValue::Color) {

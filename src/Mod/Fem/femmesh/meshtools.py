@@ -2532,7 +2532,9 @@ def plane_stress(
         if line.find("S6") != -1:
             line = line.replace("S6", "CPS6")
         if line.find("S4") != -1:
-            line = line.replace("S4", "CPS4")     
+            line = line.replace("S4", "CPS4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CPS8")
         f.write(line)
     
     f.truncate()
@@ -2550,7 +2552,9 @@ def plane_strain(
         if line.find("S6") != -1:
             line = line.replace("S6", "CPE6")
         if line.find("S4") != -1:
-            line = line.replace("S4", "CPE4")      
+            line = line.replace("S4", "CPE4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CPE8")
         f.write(line)
     
     f.truncate()
@@ -2568,7 +2572,9 @@ def axisymmetric(
         if line.find("S6") != -1:
             line = line.replace("S6", "CAX6")
         if line.find("S4") != -1:
-            line = line.replace("S4", "CAX4")    
+            line = line.replace("S4", "CAX4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CAX8")
         f.write(line)
     
     f.truncate()

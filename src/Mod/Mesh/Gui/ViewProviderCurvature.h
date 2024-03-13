@@ -126,6 +126,8 @@ private:
 
 private:
     static bool addflag;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshCurvature)
 };
 
 }  // namespace MeshGui

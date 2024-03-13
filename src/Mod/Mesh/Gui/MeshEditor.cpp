@@ -94,11 +94,11 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
     SoGroup* markers = new SoGroup();
     SoDrawStyle* pointStyle = new SoDrawStyle();
     pointStyle->style = SoDrawStyle::POINTS;
-    pointStyle->pointSize = 8.0f;
+    pointStyle->pointSize = 8.0F;
     markers->addChild(pointStyle);
 
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoPointSet* marker = new SoPointSet();
     markers->addChild(markcol);
     markers->addChild(pcCoords);
@@ -121,7 +121,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
         basecol->rgb.setValue(col.r, col.g, col.b);
     }
     else {
-        basecol->rgb.setValue(1.0f, 0.0f, 0.0f);
+        basecol->rgb.setValue(1.0F, 0.0F, 0.0F);
     }
 
     faces->addChild(basecol);
@@ -524,8 +524,8 @@ void MeshFillHole::closeBridge()
 {
     // Do the hole-filling
     Gui::WaitCursor wc;
-    TBoundary::iterator it = std::find(myPolygon.begin(), myPolygon.end(), myVertex1);
-    TBoundary::iterator jt = std::find(myPolygon.begin(), myPolygon.end(), myVertex2);
+    auto it = std::find(myPolygon.begin(), myPolygon.end(), myVertex1);
+    auto jt = std::find(myPolygon.begin(), myPolygon.end(), myVertex2);
     if (it != myPolygon.end() && jt != myPolygon.end()) {
         // which iterator comes first
         if (jt < it) {
@@ -533,7 +533,8 @@ void MeshFillHole::closeBridge()
         }
         // split the boundary into two loops and take the shorter one
         std::list<TBoundary> bounds;
-        TBoundary loop1, loop2;
+        TBoundary loop1;
+        TBoundary loop2;
         loop1.insert(loop1.end(), myPolygon.begin(), it);
         loop1.insert(loop1.end(), jt, myPolygon.end());
         loop2.insert(loop2.end(), it, jt);
@@ -694,14 +695,14 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
         }
         SoNode* node = self->getPickedPolygon(rp);
         if (node) {
-            std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
+            auto it = self->myPolygons.find(node);
             if (it != self->myPolygons.end()) {
                 // now check which vertex of the polygon is closest to the ray
                 Mesh::PointIndex vertex_index {};
                 SbVec3f closestPoint;
                 float minDist =
                     self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
-                if (minDist < 1.0f) {
+                if (minDist < 1.0F) {
                     if (self->myNumPoints == 0) {
                         self->myVertex->point.set1Value(0, closestPoint);
                     }
@@ -731,7 +732,7 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
             }
             SoNode* node = self->getPickedPolygon(rp);
             if (node) {
-                std::map<SoNode*, TBoundary>::iterator it = self->myPolygons.find(node);
+                auto it = self->myPolygons.find(node);
                 if (it != self->myPolygons.end()) {
                     // now check which vertex of the polygon is closest to the ray
                     Mesh::PointIndex vertex_index {};
@@ -740,7 +741,7 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
                                                            it->second,
                                                            vertex_index,
                                                            closestPoint);
-                    if (minDist < 1.0f) {
+                    if (minDist < 1.0F) {
                         if (self->myNumPoints == 0) {
                             self->myBoundaryRoot->addChild(node);
                             self->myVertex->point.set1Value(0, closestPoint);

@@ -201,7 +201,6 @@ public:
 
     void invalidateDependants(const App::DocumentObject* docObj);
 
-    void renamedDocumentObject(const App::DocumentObject* docObj);
     void
     renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 

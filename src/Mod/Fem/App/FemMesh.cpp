@@ -565,10 +565,6 @@ void FemMesh::setStandardHypotheses()
     SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, getGenerator()));
     hypoth.push_back(reg);
 
-    // SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, getGenerator()));
-    // static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    // hypoth.push_back(sel);
-
     SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, getGenerator()));
     hypoth.push_back(qdp);
 
@@ -599,10 +595,6 @@ void FemMesh::setStandardHypotheses()
     SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, getGenerator()));
     hypoth.push_back(reg);
 
-    // SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, 1, getGenerator()));
-    // static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
-    // hypoth.push_back(sel);
-
     SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, 1, getGenerator()));
     hypoth.push_back(qdp);
 
@@ -624,12 +616,6 @@ void FemMesh::compute()
 std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float /*Angle*/) const
 {
     std::set<long> result;
-    // const SMESHDS_Mesh* data = myMesh->GetMeshDS();
-
-    // const SMDS_MeshElement * element = data->FindElement(ElemId);
-    // int fNbr = element->NbFaces();
-    // element->
-
     return result;
 }
 
@@ -640,7 +626,6 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
     std::list<std::pair<int, int>> result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
-#if SMESH_VERSION_MAJOR >= 7
     // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible
     // to iterate volume faces
     // In SMESH9 this function has been removed
@@ -697,36 +682,6 @@ std::list<std::pair<int, int>> FemMesh::getVolumesByFace(const TopoDS_Face& face
             }
         }
     }
-#else
-    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
-    while (vol_iter->more()) {
-        const SMDS_MeshVolume* vol = vol_iter->next();
-        SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
-
-        while (face_iter && face_iter->more()) {
-            const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
-            int numNodes = face->NbNodes();
-
-            std::set<int> face_nodes;
-            for (int i = 0; i < numNodes; i++) {
-                face_nodes.insert(face->GetNode(i)->GetID());
-            }
-
-            std::vector<int> element_face_nodes;
-            std::set_intersection(nodes_on_face.begin(),
-                                  nodes_on_face.end(),
-                                  face_nodes.begin(),
-                                  face_nodes.end(),
-                                  std::back_insert_iterator<std::vector<int>>(element_face_nodes));
-
-            // For curved faces it is possible that a volume contributes more than one face
-            if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.emplace_back(vol->GetID(), face->GetID());
-            }
-        }
-    }
-#endif
-
     result.sort();
     return result;
 }
@@ -1955,13 +1910,6 @@ void FemMesh::read(const char* FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
-#if SMESH_VERSION_MAJOR < 7
-    else if (File.hasExtension("dat")) {
-        // read brep-file
-        // vejmarie disable
-        myMesh->DATToMesh(File.filePath().c_str());
-    }
-#endif
     else if (File.hasExtension("bdf")) {
         // read Nastran-file
         readNastran(File.filePath());

@@ -254,6 +254,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
         if (exclude.count(QString::fromStdString(propName)) == 0) {
             // showYaml(it->second);
             auto yamlProp = yamlProperties[propName];
+            auto propDisplayName = yamlValue(yamlProp, "DisplayName", "");
             auto propType = yamlValue(yamlProp, "Type", "");
             auto propUnits = yamlValue(yamlProp, "Units", "");
             auto propURL = yamlValue(yamlProp, "URL", "");
@@ -261,6 +262,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
             // auto inherits = yamlValue(yamlProp, "Inherits", "");
 
             ModelProperty property(QString::fromStdString(propName),
+                                   propDisplayName,
                                    propType,
                                    propUnits,
                                    propURL,
@@ -276,11 +278,13 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                     // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
 
                     auto colProp = cols[colName];
+                    auto colPropDisplayName = yamlValue(colProp, "DisplayName", "");
                     auto colPropType = yamlValue(colProp, "Type", "");
                     auto colPropUnits = yamlValue(colProp, "Units", "");
                     auto colPropURL = yamlValue(colProp, "URL", "");
                     auto colPropDescription = yamlValue(colProp, "Description", "");
                     ModelProperty colProperty(QString::fromStdString(colName),
+                                              colPropDisplayName,
                                               colPropType,
                                               colPropUnits,
                                               colPropURL,

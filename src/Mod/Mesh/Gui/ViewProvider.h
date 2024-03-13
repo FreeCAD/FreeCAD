@@ -111,6 +111,8 @@ public:
     }
     std::vector<std::string> getDisplayModes() const override;
     const char* getDefaultDisplayMode() const override;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderExport)
 };
 
 /**
@@ -284,6 +286,8 @@ private:
     static App::PropertyFloatConstraint::Constraints angleRange;
     static App::PropertyIntegerConstraint::Constraints intPercent;
     static const char* LightingEnums[];
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMesh)
 };
 
 /**
@@ -311,6 +315,8 @@ protected:
 private:
     SoCoordinate3* pcMeshCoord;
     SoIndexedFaceSet* pcMeshFaces;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderIndexedFaceSet)
 };
 
 /**
@@ -337,6 +343,8 @@ protected:
 private:
     SoFCMeshObjectNode* pcMeshNode;
     SoFCMeshObjectShape* pcMeshShape;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshObject)
 };
 
 }  // namespace MeshGui

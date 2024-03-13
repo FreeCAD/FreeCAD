@@ -46,6 +46,8 @@ public:
 private:
     std::unique_ptr<Ui_DlgPointsRead> ui;
     std::string _FileName;
+
+    Q_DISABLE_COPY_MOVE(DlgPointsReadImp)
 };
 
 }  // namespace PointsGui

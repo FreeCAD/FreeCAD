@@ -2028,17 +2028,16 @@ TEST_F(TopoShapeExpansionTest, makeElementSlice)
         {
             "Face1;SLC;:H1:4,F;:G2;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
             "Face1;SLC;:H1:4,F;:G3;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
-            // TODO: Prove that this difference is not a problem.
-            //  The next element varies according to platform / OCCT version and thus can't be
-            //  absolutely tested.
-            //                          "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            // MacOSX difference:
+            // "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;D25fd;:H1:6,V;SLC;:H1:4,V;MAK;:H1:4,V",
+            // "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;D1;:H1:3,V;SLC;:H1:4,V;MAK;:H1:4,V",
             "Face1;SLC;:H1:4,F;:G4;SLC;:H1:8,V;SLC;:H1:4,V;MAK;:H1:4,V",
             "Face1;SLC;:H1:4,F;:G5;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
             "Face1;SLC;:H1:4,F;:G6;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
             "Face1;SLC;:H1:4,F;:G7;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
             "Face1;SLC;:H1:4,F;:G8;SLC;:H1:8,E;SLC;:H1:4,E;MAK;:H1:4,E",
-        }));  // Changed with PR#12471. Probably will change again after importing
-              // other TopoNaming logics
+        }));  // Changed with PR#12471. Probably will change again after
+              //  importing other TopoNaming logics
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementSlices)

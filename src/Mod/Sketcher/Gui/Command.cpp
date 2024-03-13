@@ -1078,6 +1078,7 @@ bool CmdSketcherViewSection::isActive()
 /* Grid tool */
 class GridSpaceAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(GridSpaceAction)
 public:
     GridSpaceAction(QObject* parent)
         : QWidgetAction(parent)
@@ -1315,6 +1316,7 @@ bool CmdSketcherGrid::isActive()
 /* Snap tool */
 class SnapSpaceAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(SnapSpaceAction)
 public:
     SnapSpaceAction(QObject* parent)
         : QWidgetAction(parent)
@@ -1583,6 +1585,7 @@ bool CmdSketcherSnap::isActive()
 /* Rendering Order */
 class RenderingOrderAction: public QWidgetAction
 {
+    Q_DECLARE_TR_FUNCTIONS(RenderingOrderAction)
 public:
     RenderingOrderAction(QObject* parent)
         : QWidgetAction(parent)
