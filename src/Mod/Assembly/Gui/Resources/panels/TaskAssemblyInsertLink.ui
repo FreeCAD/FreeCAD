@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QListWidget" name="partList"/>
+    <widget class="QTreeWidget" name="partList"/>
    </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="hLayout">
