@@ -225,7 +225,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: CantileverLine:Vertex2
-2,3,-9000000.0
+2,3,-9000000
 
 
 
