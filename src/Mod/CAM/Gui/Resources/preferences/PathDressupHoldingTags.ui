@@ -106,7 +106,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Initial # Tags </string>
+         <string>Initial # Tags</string>
         </property>
        </widget>
       </item>

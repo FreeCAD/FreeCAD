@@ -124,7 +124,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Geometry2: </string>
+               <string>Geometry2:</string>
               </property>
              </widget>
             </item>
