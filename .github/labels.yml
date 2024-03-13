@@ -13,6 +13,9 @@ Core:
 Addon Manager:
 - 'src/Mod/AddonManager/**/*'
 
+Materials:
+- 'src/Mod/Material/**/*'
+
 WB Arch:
 - 'src/Mod/Arch/**/*'
 
