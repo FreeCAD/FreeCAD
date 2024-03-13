@@ -160,6 +160,7 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.mouse = True
         self.cancel = None
         self.pointcallback = None
 
@@ -1096,6 +1097,8 @@ class DraftToolBar:
 
         if txt == "" or txt[0] in "0123456789.,-":
             self.updateSnapper()
+            if txt[0] in "0123456789.,-":
+                self.setMouseMode(False)
             return
 
         txt = txt[0].upper()
@@ -1206,6 +1209,20 @@ class DraftToolBar:
                     delta = plane.get_global_coords(
                         FreeCAD.Vector(self.x,self.y,self.z))
                     FreeCADGui.Snapper.trackLine.p2(last.add(delta))
+
+    def setMouseMode(self, mode=True):
+        """Sets self.mouse True (default) or False and sets a timer
+        to set it back to True if applicable. self.mouse is then
+        used by gui_tools_utils.get_point() to know if the mouse can
+        update field values and point position or not."""
+        if mode == True:
+            self.mouse = True
+        else:
+            delay = params.get_param("MouseDelay")
+            if delay:
+                if self.mouse is True:
+                    self.mouse = False
+                    QtCore.QTimer.singleShot(delay*1000, self.setMouseMode)
 
     def checkEnterText(self):
         """this function checks if the entered text ends with two blank lines"""
@@ -1590,7 +1607,7 @@ class DraftToolBar:
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
                                  "Draft_Downgrade","Draft_Edit"]
-                self.title = "Modify objects"
+                self.title = translate("draft", "Modify objects")
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 

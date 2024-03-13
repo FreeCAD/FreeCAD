@@ -34,6 +34,7 @@ body:
         - Addon Manager
         - Arch
         - Assembly
+        - CAM/Path
         - Core
         - Draft
         - Expressions
@@ -43,7 +44,6 @@ body:
         - OpenSCAD
         - Part
         - PartDesign
-        - Path
         - Project Tools & Websites
         - Sketcher
         - Spreadsheet

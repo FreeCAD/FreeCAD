@@ -1059,7 +1059,7 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, 
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
     if(createBox) {
-        parameter  = new TaskAttacher(ViewProvider);
+        parameter  = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
 }

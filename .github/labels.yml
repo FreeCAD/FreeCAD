@@ -40,8 +40,8 @@ WB Part:
 WB PartDesign:
 - 'src/Mod/PartDesign/**/*'
 
-WB Path:
-- 'src/Mod/Path/**/*'
+WB CAM:
+- 'src/Mod/CAM/**/*'
 
 WB Points:
 - 'src/Mod/Points/**/*'

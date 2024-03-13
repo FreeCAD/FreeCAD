@@ -829,6 +829,8 @@ void execAngle3Pt(Gui::Command* cmd)
     positionDimText(dim);
 }
 
+
+// TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
 //! link 3D geometry to Dimension(s) on a Page
 //TODO: should we present all potential Dimensions from all Pages?
 //===========================================================================

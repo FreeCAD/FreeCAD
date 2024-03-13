@@ -69,6 +69,8 @@ Q_SIGNALS:
 private:
     Ui_DlgSmoothing* ui;
     QButtonGroup* bg;
+
+    Q_DISABLE_COPY_MOVE(DlgSmoothing)
 };
 
 /**
@@ -105,6 +107,8 @@ public:
 
 private:
     DlgSmoothing* widget;
+
+    Q_DISABLE_COPY_MOVE(SmoothingDialog)
 };
 
 /**
