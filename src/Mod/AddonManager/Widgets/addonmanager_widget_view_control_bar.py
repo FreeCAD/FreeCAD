@@ -94,6 +94,7 @@ class WidgetViewControlBar(QtWidgets.QWidget):
         self.filter_selector = WidgetFilterSelector(self)
         self.sort_selector = QtWidgets.QComboBox(self)
         self.sort_selector.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+        self.sort_selector.view().setResizeMode(QtWidgets.QListView.Adjust)
         self.sort_order_button = QtWidgets.QToolButton(self)
         self.sort_order_button.setIcon(
             QtGui.QIcon.fromTheme("ascending", QtGui.QIcon(":/icons/sort_ascending.svg"))
