@@ -138,8 +138,10 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_CLOUD "Build the FreeCAD cloud module" OFF)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
 
-    set(FREECAD_3CONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3DConnexion support")
-    set_property(CACHE FREECAD_3CONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "SpNav")
+    if(MSVC)
+        set(FREECAD_3CONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3Dconnexion device integration")
+        set_property(CACHE FREECAD_3CONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "SpNav")
+    endif(MSVC)
 
     if(MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
