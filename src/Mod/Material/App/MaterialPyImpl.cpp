@@ -303,7 +303,7 @@ Py::Dict MaterialPy::getProperties() const
         auto materialProperty = it->second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -314,7 +314,7 @@ Py::Dict MaterialPy::getProperties() const
         auto materialProperty = it->second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -332,7 +332,7 @@ Py::Dict MaterialPy::getPhysicalProperties() const
         auto materialProperty = it->second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -350,7 +350,7 @@ Py::Dict MaterialPy::getAppearanceProperties() const
         auto materialProperty = it->second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
