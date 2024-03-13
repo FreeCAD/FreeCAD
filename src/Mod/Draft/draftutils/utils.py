@@ -426,6 +426,8 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
+    if hasattr(obj, "Class") and "Ifc" in str(obj.Class):
+        return obj.Class
     if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     if hasattr(obj, 'TypeId'):
