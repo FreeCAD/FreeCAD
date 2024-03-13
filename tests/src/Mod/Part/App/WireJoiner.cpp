@@ -3,6 +3,7 @@
 #include "gtest/gtest.h"
 #include "src/App/InitApplication.h"
 #include "Mod/Part/App/WireJoiner.h"
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "PartTestHelpers.h"
 
@@ -682,15 +683,92 @@ TEST_F(WireJoinerTest, getOpenWires)
     EXPECT_EQ(wireNoOriginal.getSubTopoShapes(TopAbs_EDGE).size(), 2);
 
     // In this case, as we haven't set a value for op, WireJoiner::WireJoinerP::getOpenWires() will
-    // call TopoShape::makeShapeWithElementMap() which, without a value for op, will use "MAK" as
-    // value for the various element maps
-    EXPECT_NE(wireNoOp.getElementMap()[0].name.find("MAK"), -1);
+    // call TopoShape::makeShapeWithElementMap() which, without a value for op, will use
+    // Part::OpCodes::Maker as value for the various element maps
+    EXPECT_NE(wireNoOp.getElementMap()[0].name.find(Part::OpCodes::Maker), -1);
 
     // In this case WireJoiner::WireJoinerP::getOpenWires() will call
     // TopoShape::makeShapeWithElementMap() giving "getOpenWires" as value for the op argument.
-    // That value should be found in the various element maps instead of "MAK"
-    EXPECT_EQ(wireOp.getElementMap()[0].name.find("MAK"), -1);
+    // That value should be found in the various element maps instead of Part::OpCodes::Maker
+    EXPECT_EQ(wireOp.getElementMap()[0].name.find(Part::OpCodes::Maker), -1);
     EXPECT_NE(wireOp.getElementMap()[0].name.find("getOpenWires"), -1);
+}
+
+TEST_F(WireJoinerTest, getResultWires)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+    // Unlike calling WireJoiner::Build(), WireJoiner::getResultWires() returns a shape with edges
+    // only if those given as inputs crosses each others
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 0.0, 0.0), gp_Pnt(1.1, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, -0.1, 0.0), gp_Pnt(1.0, 1.1, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(0.1, 0.1, 0.0)).Edge()};
+    auto edge4 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjNoResultWires.addShape()
+    std::vector<TopoDS_Shape> edgesNoResultWires {edge1, edge2, edge3};
+    // A vector of TopoShape edges used as argument for wjNoOp.addShape(). A Tag is needed for every
+    // TopoShape, otherwise no element map will be created and no op can be found
+    std::vector<TopoShape> edgesNoOp {TopoShape(edge1, 4),
+                                      TopoShape(edge2, 5),
+                                      TopoShape(edge4, 6)};
+    // A vector of TopoShape edges used as argument for wjOp.addShape(). A Tag is needed for every
+    // TopoShape, otherwise no element map will be created and no op can be found
+    std::vector<TopoShape> edgesOp {TopoShape(edge1, 7), TopoShape(edge2, 8), TopoShape(edge4, 9)};
+
+    // A WireJoiner object that will create no closed wires
+    auto wjNoResultWires {WireJoiner()};
+
+    // A WireJoiner object where the argument op won't be set and that will create a closed wire
+    auto wjNoOp {WireJoiner()};
+    // A WireJoiner object where the argument op will be set and that will create a closed wire
+    auto wjOp {WireJoiner()};
+
+    // An empty TopoShape that will contain the shapes returned by
+    // wireNoResultWires.getResultWires()
+    auto wireNoResultWires {TopoShape(1)};
+
+    // An empty TopoShape that will contain the shapes returned by wjNoOp.getResultWires()
+    auto wireNoOp {TopoShape(2)};
+    // An empty TopoShape that will contain the shapes returned by wjOp.getResultWires()
+    auto wireOp {TopoShape(3)};
+
+
+    // Act
+
+    wjNoResultWires.addShape(edgesNoResultWires);
+    // wjNoOpenWires.Build() is called by wjNoResultWires.getResultWires()
+    wjNoResultWires.getResultWires(wireNoResultWires);
+
+    wjNoOp.addShape(edgesNoOp);
+    // wjNoOp.Build() is called by wjNoOp.getResultWires()
+    wjNoOp.getResultWires(wireNoOp, nullptr);
+
+    wjOp.addShape(edgesOp);
+    // wjOp.Build() is called by wjOp.getResultWires()
+    wjOp.getResultWires(wireOp, "getResultWires");
+
+    // Arrange
+
+    // All the edges added with wjNoResultWires.addShape() can't create a closed wire, therefor
+    // wireNoResultWires shouldn't have any edges
+    // It's not possible to get an useful result from wireNoResultWires.isNull() because
+    // WireJoiner::WireJoinerP::compound is always created by
+    // WireJoiner::WireJoinerP::builder.MakeCompound(), which doesn't create a null compound
+    EXPECT_EQ(wireNoResultWires.getSubTopoShapes(TopAbs_EDGE).size(), 0);
+
+    // In this case, as we haven't set a value for op, WireJoiner::WireJoinerP::getResultWires()
+    // will call TopoShape::makeShapeWithElementMap() which, without a value for op, will use
+    // Part::OpCodes::Maker as value for the various element maps
+    EXPECT_NE(wireNoOp.getElementMap()[0].name.find(Part::OpCodes::Maker), -1);
+
+    // In this case WireJoiner::WireJoinerP::getResultWires() will call
+    // TopoShape::makeShapeWithElementMap() giving "getResultWires" as value for the op argument.
+    // That value should be found in the various element maps instead of Part::OpCodes::Maker
+    EXPECT_EQ(wireOp.getElementMap()[0].name.find(Part::OpCodes::Maker), -1);
+    EXPECT_NE(wireOp.getElementMap()[0].name.find("getResultWires"), -1);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

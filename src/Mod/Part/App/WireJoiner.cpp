@@ -2297,6 +2297,10 @@ public:
     }
 
     bool getResultWires(TopoShape &shape, const char *op) {
+        // As compound is created by various calls to builder.MakeCompound() it looks that the
+        // following condition is always false.
+        // Probably it may be needed to add something like compound.Nullify() as done for
+        // openWireCompound in WireJoiner::WireJoinerP::clear()
         if (compound.IsNull()) {
             shape.setShape(TopoShape());
             return false;
