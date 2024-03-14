@@ -108,9 +108,11 @@ END-ISO-10303-21;
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
+
+    import ifcopenshell
+
     if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
         FreeCADGui.showPreferences("Import-Export", 1)
-
     ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
@@ -203,7 +205,7 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
-    if filename.lower().endswith("json"):
+    if str(filename).lower().endswith("json"):
         import json
         try:
             from ifcjson import ifc2json5a
@@ -216,47 +218,53 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+
     if preferences is None:
         preferences = getPreferences()
 
-    # process template
+    existing_file = False
+    if isinstance(filename, ifcopenshell.file):
+        ifcfile = filename
+        existing_file = True
+    else:
+        # process template
 
-    version = FreeCAD.Version()
-    owner = FreeCAD.ActiveDocument.CreatedBy
-    email = ''
-    if ("@" in owner) and ("<" in owner):
-        s = owner.split("<")
-        owner = s[0].strip()
-        email = s[1].strip(">")
+        version = FreeCAD.Version()
+        owner = FreeCAD.ActiveDocument.CreatedBy
+        email = ''
+        if ("@" in owner) and ("<" in owner):
+            s = owner.split("<")
+            owner = s[0].strip()
+            email = s[1].strip(">")
 
-    global template
-    template = ifctemplate.replace("$version",
-                                   version[0] + "."
-                                   + version[1] + " build " + version[2])
-    if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
-    template = template.replace("$ifcschema", preferences['SCHEMA'])
-    template = template.replace("$owner", owner)
-    template = template.replace("$company", FreeCAD.ActiveDocument.Company)
-    template = template.replace("$email", email)
-    template = template.replace("$now", str(int(time.time())))
-    template = template.replace("$filename", os.path.basename(filename))
-    template = template.replace("$timestamp",
-                                str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    if hasattr(ifcopenshell, "version"):
-        template = template.replace("IfcOpenShell",
-                                    "IfcOpenShell " + ifcopenshell.version)
-    templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
-    of = pyopen(templatefile, "w")
+        template = ifctemplate.replace("$version",
+                                       version[0] + "."
+                                       + version[1] + " build " + version[2])
+        if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
+        template = template.replace("$ifcschema", preferences['SCHEMA'])
+        template = template.replace("$owner", owner)
+        template = template.replace("$company", FreeCAD.ActiveDocument.Company)
+        template = template.replace("$email", email)
+        template = template.replace("$now", str(int(time.time())))
+        template = template.replace("$filename", os.path.basename(filename))
+        template = template.replace("$timestamp",
+                                    str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
+        if hasattr(ifcopenshell, "version"):
+            template = template.replace("IfcOpenShell",
+                                        "IfcOpenShell " + ifcopenshell.version)
+        templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
+        of = pyopen(templatefile, "w")
 
-    of.write(template)
-    of.close()
-    os.close(templatefilehandle)
+        of.write(template)
+        of.close()
+        os.close(templatefilehandle)
 
-    # create IFC file
+        # create IFC file
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids
-    ifcfile = ifcopenshell.open(templatefile)
-    ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
+        ifcfile = ifcopenshell.open(templatefile)
+        ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
+
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
@@ -286,10 +294,14 @@ def export(exportList, filename, colors=None, preferences=None):
 
     # create project, context and geodata settings
 
-    contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
-    context = contextCreator.model_view_subcontext
-    project = contextCreator.project
-    objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
+    if existing_file:
+        project = ifcfile.by_type("IfcProject")[0]
+        context = ifcfile.by_type("IFcGeometricRepresentationContext")[-1]
+    else:
+        contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
+        context = contextCreator.model_view_subcontext
+        project = contextCreator.project
+        objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
 
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
@@ -298,7 +310,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # reusable entity system
 
     global ifcbin
-    ifcbin = exportIFCHelper.recycler(ifcfile)
+    ifcbin = exportIFCHelper.recycler(ifcfile, template=not existing_file)
 
     # setup analytic model
 
@@ -1035,7 +1047,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # add default site, building and storey as required
 
     if not sites:
-        if preferences['ADD_DEFAULT_SITE']:
+        if preferences['ADD_DEFAULT_SITE'] and not existing_file:
             if preferences['DEBUG']: print("No site found. Adding default site")
             sites = [ifcfile.createIfcSite(
                 ifcopenshell.guid.new(),
@@ -1061,7 +1073,7 @@ def export(exportList, filename, colors=None, preferences=None):
             project,sites
         )
     if not buildings:
-        if preferences['ADD_DEFAULT_BUILDING']:
+        if preferences['ADD_DEFAULT_BUILDING'] and not existing_file:
             if preferences['DEBUG']: print("No building found. Adding default building")
             buildings = [ifcfile.createIfcBuilding(
                 ifcopenshell.guid.new(),
@@ -1085,7 +1097,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 '',
                 project,buildings
             )
-        if floors:
+        if floors and buildings:
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
                 history,
@@ -1117,7 +1129,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
-            if preferences['ADD_DEFAULT_STOREY']:
+            if preferences['ADD_DEFAULT_STOREY'] and not existing_file:
                 if preferences['DEBUG']: print("No floor found. Adding default floor")
                 defaulthost = ifcfile.createIfcBuildingStorey(
                     ifcopenshell.guid.new(),
@@ -1565,25 +1577,30 @@ def export(exportList, filename, colors=None, preferences=None):
                     remaining
                 )
 
-    if preferences['DEBUG']: print("writing ",filename,"...")
+    if not existing_file:
+        if preferences['DEBUG']:
+            print("writing ",filename,"...")
 
-    if filename.lower().endswith("json"):
-        writeJson(filename,ifcfile)
-    else:
-        ifcfile.write(filename)
+        if filename.lower().endswith("json"):
+            writeJson(filename,ifcfile)
+        else:
+            ifcfile.write(filename)
 
-    if preferences['STORE_UID']:
-        # some properties might have been changed
-        FreeCAD.ActiveDocument.recompute()
+        if preferences['STORE_UID']:
+            # some properties might have been changed
+            FreeCAD.ActiveDocument.recompute()
 
-    os.remove(templatefile)
+        os.remove(templatefile)
 
-    if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
-        f = pyopen(filename,"r")
-        s = len(f.read().split("\n"))
-        f.close()
-        print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
+        if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
+            f = pyopen(filename,"r")
+            s = len(f.read().split("\n"))
+            f.close()
+            print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
+
+    if existing_file:
+        return products | spatialelements
 
     endtime = time.time() - starttime
 
