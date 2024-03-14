@@ -191,6 +191,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
     return formattedValueString;
 }
 
+
+//! get the formatted OverTolerance value
+// wf: is this a leftover from when we only had 1 tolerance instead of over/under?
 std::string DimensionFormatter::getFormattedToleranceValue(const int partial) const
 {
     QString FormatSpec = QString::fromUtf8(m_dimension->FormatSpecOverTolerance.getStrValue().data());
@@ -207,7 +210,7 @@ std::string DimensionFormatter::getFormattedToleranceValue(const int partial) co
     return ToleranceString.toStdString();
 }
 
-//get over and under tolerances
+//! get formatted over and under tolerances
 std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceValues(const int partial) const
 {
     QString underFormatSpec = QString::fromUtf8(m_dimension->FormatSpecUnderTolerance.getStrValue().data());
@@ -219,30 +222,14 @@ std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceVal
         underTolerance = underFormatSpec;
         overTolerance = overFormatSpec;
     } else {
-        if (DrawUtil::fpCompare(m_dimension->UnderTolerance.getValue(), 0.0)) {
-            underTolerance = QString::fromUtf8(formatValue(m_dimension->UnderTolerance.getValue(),
-                                                           QString::fromUtf8("%.0f"),
-                                                           partial,
-                                                           false).c_str());
-        }
-        else {
-            underTolerance = QString::fromUtf8(formatValue(m_dimension->UnderTolerance.getValue(),
+        underTolerance = QString::fromUtf8(formatValue(m_dimension->UnderTolerance.getValue(),
                                                            underFormatSpec,
                                                            partial,
                                                            false).c_str());
-        }
-        if (DrawUtil::fpCompare(m_dimension->OverTolerance.getValue(), 0.0)) {
-            overTolerance = QString::fromUtf8(formatValue(m_dimension->OverTolerance.getValue(),
-                                                          QString::fromUtf8("%.0f"),
-                                                          partial,
-                                                          false).c_str());
-        }
-        else {
-            overTolerance = QString::fromUtf8(formatValue(m_dimension->OverTolerance.getValue(),
+        overTolerance = QString::fromUtf8(formatValue(m_dimension->OverTolerance.getValue(),
                                                           overFormatSpec,
                                                           partial,
                                                           false).c_str());
-        }
     }
 
     tolerances.first = underTolerance.toStdString();
