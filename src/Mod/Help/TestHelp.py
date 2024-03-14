@@ -31,8 +31,13 @@ class HelpTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_webwidgets(self):
+    def test_awebwidgets(self):
+        import PySide
         from PySide import QtGui, QtWebEngineWidgets
+        # workaround Qt5.12 bug
+        if PySide.__version_info__[0] == 5:
+            if PySide.__version_info__[1] <= 15:
+                Help.WEBWB = True
 
     def test_browser1(self):
         print("Help: Opening an external browser")

@@ -90,6 +90,7 @@ INTERNETTXT = translate(
 )
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
+WEBWB = False # this allows to work around a crash in certain versions of Qt5
 
 
 def show(page, view=None, conv=None, mode=0):
@@ -254,6 +255,8 @@ def show_dialog(html, baseurl, title, view=None):
             view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
             view.parent().parent().setWindowTitle(title)
         else:
+            if WEBWB:
+                show_web_tab(html, baseurl, title)
             openBrowserHTML(html, baseurl, title, ICON, dialog=True)
 
 
@@ -267,7 +270,7 @@ def show_tab(html, baseurl, title, view=None):
             view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
             view.parent().parent().setWindowTitle(title)
         else:
-            if PREFS.GetBool("UseWebModule", False):
+            if PREFS.GetBool("UseWebModule", False) or WEBWB:
                 show_web_tab(html, baseurl, title)
             else:
                 openBrowserHTML(html,baseurl,title,ICON)
