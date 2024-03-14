@@ -85,7 +85,7 @@ void printPlacement(Base::Placement plc, const char* name)
 PROPERTY_SOURCE(AssemblyGui::ViewProviderAssembly, Gui::ViewProviderPart)
 
 ViewProviderAssembly::ViewProviderAssembly()
-    : SelectionObserver(true)
+    : SelectionObserver(false)
     , dragMode(DragMode::None)
     , canStartDragging(false)
     , partMoving(false)
@@ -204,6 +204,8 @@ bool ViewProviderAssembly::setEdit(int ModNum)
 
     setDragger();
 
+    attachSelection();
+
     return true;
 }
 
@@ -215,6 +217,8 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
     docsToMove.clear();
 
     unsetDragger();
+
+    detachSelection();
 
     // Check if the view is still active before trying to deactivate the assembly.
     auto doc = getDocument();
@@ -860,6 +864,10 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if (!isInEditMode()) {
+        return;
+    }
+
     if (msg.Type == Gui::SelectionChanges::AddSelection
         || msg.Type == Gui::SelectionChanges::ClrSelection
         || msg.Type == Gui::SelectionChanges::RmvSelection) {
