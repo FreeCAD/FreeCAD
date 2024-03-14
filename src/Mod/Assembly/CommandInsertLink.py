@@ -111,6 +111,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.translation = 0
         # self.partMoving = False
         self.totalTranslation = App.Vector()
+        self.prevScreenCenter = App.Vector()
         self.groundedObj = None
 
         self.insertionStack = []  # used to handle cancellation of insertions.
@@ -302,12 +303,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 print(selectedPart.Document.Name)
                 documentItem.setText(0, f"{newDocName}.FCStd")"""
 
-        createdLink = self.assembly.newObject("App::Link", selectedPart.Label)
-        createdLink.LinkedObject = selectedPart
-        createdLink.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
-        createdLink.recompute()
+        addedObject = self.assembly.newObject("App::Link", selectedPart.Label)
+        # set placement of the added object to the center of the screen.
+        view = Gui.activeView()
+        x, y = view.getSize()
+        screenCenter = view.getPointOnFocalPlane(x // 2, y // 2)
+        screenCorner = view.getPointOnFocalPlane(x, y)
 
-        addedObject = createdLink
+        addedObject.LinkedObject = selectedPart
+        addedObject.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
+        addedObject.recompute()
 
         insertionDict = {}
         insertionDict["item"] = item
@@ -315,10 +320,21 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.insertionStack.append(insertionDict)
         self.increment_counter(item)
 
-        translation = self.getTranslationVec(addedObject)
+        translation = App.Vector()
+        resetThreshold = (screenCorner - screenCenter).Length * 0.1
+        if (self.prevScreenCenter - screenCenter).Length > resetThreshold:
+            self.totalTranslation = App.Vector()
+            self.prevScreenCenter = screenCenter
+        else:
+            translation = self.getTranslationVec(addedObject)
+
         insertionDict["translation"] = translation
         self.totalTranslation += translation
-        addedObject.Placement.Base = self.totalTranslation
+
+        bboxCenter = addedObject.ViewObject.getBoundingBox().Center
+        addedObject.Placement.Base = screenCenter - bboxCenter + self.totalTranslation
+
+        self.prevScreenCenter = screenCenter
 
         # highlight the link
         Gui.Selection.clearSelection()
