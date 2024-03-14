@@ -739,7 +739,7 @@ TEST_F(WireJoinerTest, getResultWires)
     // Act
 
     wjNoResultWires.addShape(edgesNoResultWires);
-    // wjNoOpenWires.Build() is called by wjNoResultWires.getResultWires()
+    // wjNoResultWires.Build() is called by wjNoResultWires.getResultWires()
     wjNoResultWires.getResultWires(wireNoResultWires);
 
     wjNoOp.addShape(edgesNoOp);
@@ -808,5 +808,49 @@ TEST_F(WireJoinerTest, Build)
     EXPECT_FALSE(mpr.IsActive());
 }
 #endif
+
+TEST_F(WireJoinerTest, Modified)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 0.0, 0.0), gp_Pnt(1.1, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, -0.1, 0.0), gp_Pnt(1.0, 1.1, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjModified.addShape()
+    std::vector<TopoDS_Shape> edges {edge1, edge2, edge3};
+
+    // A WireJoiner object that will create no closed wires
+    auto wjModified {WireJoiner()};
+
+    // Act
+
+    wjModified.addShape(edges);
+    wjModified.Build();
+
+    // Assert
+
+    // In this case, every edge added with wjModified.addShape() modifies other shapes 3 times
+
+    // edge1 modifies the edges with vertexes:
+    // (0.0, 0.0, 0.0) - (1.0, 1.0, 0.0)
+    // (-0.1, -0.1, 0.0) - (0.0, 0.0, 0.0)
+    // (1.0, -0.1, 0.0) - (1.0, 0.0, 0.0)
+    EXPECT_EQ(wjModified.Modified(edge1).Size(), 3);
+
+    // edge2 modifies the edges with vertexes:
+    // (1.0, 1.0, 0.0) - (1.1, 1.1, 0.0)
+    // (0.0, 0.0, 0.0) - (1.0, 0.0, 0.0)
+    // (1.0, 0.0, 0.0) - (1.1, 0.0, 0.0)
+    EXPECT_EQ(wjModified.Modified(edge2).Size(), 3);
+
+    // edge3 modifies the edges with vertexes:
+    // (1.0, 0.0, 0.0) - (1.0, 1.0, 0.0)
+    // (1.0, 1.0, 0.0) - (1.0, 1.1, 0.0)
+    // (-0.1, 0.0, 0.0) - (0.0, 0.0, 0.0)
+    EXPECT_EQ(wjModified.Modified(edge3).Size(), 3);
+}
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
