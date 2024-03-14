@@ -101,4 +101,7 @@ TEST_F(AttacherTest, TestCalculateAttachedPlacement)
     EXPECT_EQ(orig.getPosition().x, 0);
     EXPECT_EQ(orig.getPosition().y, 0);
     EXPECT_EQ(orig.getPosition().z, 0);
+    EXPECT_EQ(placement.getPosition().x, 0);
+    EXPECT_EQ(placement.getPosition().y, 0);
+    EXPECT_EQ(placement.getPosition().z, 0);
 }

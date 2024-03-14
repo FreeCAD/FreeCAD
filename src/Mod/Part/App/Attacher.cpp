@@ -397,9 +397,8 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
         if (! this->modeEnabled[iMode])
             continue;
         const refTypeStringList &listStrings = modeRefTypes[iMode];
-        for (std::size_t iStr = 0; iStr < listStrings.size(); ++iStr) {
+        for (const auto & str : listStrings) {
             int score = 1; //-1 = topo incompatible, 0 = topo compatible, geom incompatible; 1+ = compatible (the higher - the more specific is the mode for the support)
-            const refTypeString &str = listStrings[iStr];
             for (std::size_t iChr = 0; iChr < str.size() && iChr < typeStr.size(); ++iChr) {
                 int match = AttachEngine::isShapeOfType(typeStr[iChr], str[iChr]);
                 switch(match){
@@ -451,7 +450,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
                 }
             }
             if (score > 0){
-                if(mlist.size() == 0)
+                if(mlist.empty())
                     mlist.push_back(eMapMode(iMode));
                 else if (mlist.back() != eMapMode(iMode))
                     mlist.push_back(eMapMode(iMode));
@@ -734,7 +733,7 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
 {
     //explode compounds
     TopTools_HSequenceOfShape totalSeq;
-    for (const TopoDS_Shape* pSh: shapes){
+    for (const TopoDS_Shape* pSh : shapes) {
         ShapeExtend_Explorer xp;
         totalSeq.Append( xp.SeqFromCompound(*pSh, /*recursive=*/true));
     }
@@ -821,9 +820,8 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            FC_THROWM(AttachEngineException,"AttachEngine3D: attached to a non App::GeoFeature '"
-                          << objs[i]->getNameInDocument() << "'");
+        if (!objs[i]->isDerivedFrom<App::GeoFeature>()) {
+            throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
@@ -831,15 +829,13 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
             shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
             if (shape.isNull()){
-                FC_THROWM(AttachEngineException,"AttachEngine3D: Part has null shape "
-                              << objs[i]->getNameInDocument());
+                throw AttachEngineException("AttachEngine3D: Part has null shape");
             }
             if (sub[i].length()>0){
                 try{
                     shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
                     if (shape.isNull())
-                        FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                                      << objs[i]->getNameInDocument() << '.' << sub[i]);
+                        throw AttachEngineException("AttachEngine3D: null subshape");
                     storage.push_back(shape.getShape());
                 } catch (Standard_Failure &e){
                     FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
@@ -965,7 +961,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
                                                          shadow.c_str(),
                                                          Part::HistoryTraceType::followTypeChange,
                                                          false);
-        if (related.size()) {
+        if (!related.empty()) {
             auto& res = subChanges[i];
             res.first = Data::ComplexGeoData::elementMapPrefix();
             related.front().name.appendToBuffer(res.first);
@@ -974,7 +970,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
         }
         else {
             std::string name = Data::oldElementName(shadow.c_str());
-            if (name.size()) {
+            if (!name.empty()) {
                 auto& res = subChanges[i];
                 res.first.clear();
                 res.second = name;
@@ -984,19 +980,21 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
             }
         }
     }
-    if (subChanges.size()) {
+    if (!subChanges.empty()) {
         // In case there is topological name changes, we only auto change the
         // subname if the calculated placement stays the same. If not, just
         // proceed as normal, which will throw exception and catch user's
         // attention.
         auto subs = subnames;
-        for (auto& v : subChanges) {
-            subs[v.first] = v.second.second;
+        for (auto& change : subChanges) {
+            auto [subkey, namechange] =change;
+            auto [_oldname, newname] = namechange;
+            subs[subkey] = newname;
         }
         auto pla = _calculateAttachedPlacement(objs, subs, origPlacement);
         // check equal placement with some tolerance
-        if (pla.getPosition().IsEqual(origPlacement.getPosition(), 1e-7)
-            && pla.getRotation().isSame(origPlacement.getRotation(), 1e-12)) {
+        if (pla.getPosition().IsEqual(origPlacement.getPosition(),    Precision::Confusion())
+            && pla.getRotation().isSame(origPlacement.getRotation(), Precision::Angular())) {
             // Only make changes if the caller supplies 'subChanged', because
             // otherwise it means the caller just want to do an immutable test.
             // See AttachExtension::isAttacherActive().
@@ -1015,6 +1013,7 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
 
 
 //=================================================================================
+
 
 TYPESYSTEM_SOURCE(Attacher::AttachEngine3D, Attacher::AttachEngine)
 
@@ -1143,7 +1142,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
     std::vector<eRefType> types;
     readLinks(objs, subs, parts, shapes, copiedShapeStorage, types);
 
-    if (parts.size() == 0) {
+    if (parts.empty()) {
         throw ExceptionCancel();
     }
 
@@ -1165,7 +1164,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
             // should have been filtered out already!
             break;
         case mmTranslate: {
-            if (shapes.size() < 1) {
+            if (shapes.empty()) {
                 throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects "
                                        "specified (need one vertex).");
             }
@@ -1291,7 +1290,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
             SketchBasePoint = gpr.CentreOfMass();
         } break;
         case mmFlatFace: {
-            if (shapes.size() < 1) {
+            if (shapes.empty()) {
                 throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects "
                                        "specified (needed one planar face).");
             }
@@ -1436,7 +1435,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
         case mmFrenetTB:
         case mmRevolutionSection:
         case mmConcentric: {  // all alignments to point on curve
-            if (shapes.size() < 1) {
+            if (shapes.empty()) {
                 throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subshapes "
                                        "specified (need one edge, and an optional vertex).");
             }
@@ -1519,7 +1518,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                     adapt.D2(u, p, d, dd);
                 }
                 catch (Standard_Failure& e) {
-                    // ignore. This is brobably due to insufficient continuity.
+                    // ignore. This is probably due to insufficient continuity.
                     dd = gp_Vec(0., 0., 0.);
                     Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement: can't "
                                             "calculate second derivative of curve. OCC error: %s\n",
@@ -1602,8 +1601,8 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
             std::vector<gp_Pnt> points;
 
-            for (std::size_t i = 0; i < shapes.size(); i++) {
-                const TopoDS_Shape& sh = *shapes[i];
+            for (const auto & shape : shapes) {
+                const TopoDS_Shape &sh = *shape;
                 if (sh.IsNull()) {
                     throw Base::ValueError(
                         "Null shape in AttachEngine3D::calculateAttachedPlacement()!");
@@ -1943,7 +1942,7 @@ Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
     const std::vector<std::string> &subs,
     const Base::Placement &origPlacement) const
 {
-    //re-use Attacher3d
+    //reuse Attacher3d
     Base::Placement plm;
     AttachEngine3D attacher3D;
     attacher3D.setUp(*this);
@@ -2059,7 +2058,7 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
         std::vector<eRefType> types;
         readLinks(objs, subs, parts, shapes, copiedShapeStorage, types);
 
-        if (parts.size() == 0) {
+        if (parts.empty()) {
             throw ExceptionCancel();
         }
 
@@ -2126,8 +2125,8 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
             case mm1TwoPoints: {
                 std::vector<gp_Pnt> points;
 
-                for (std::size_t i = 0; i < shapes.size(); i++) {
-                    const TopoDS_Shape& sh = *shapes[i];
+                for (const auto & shape : shapes) {
+                    const TopoDS_Shape &sh = *shape;
                     if (sh.IsNull()) {
                         throw Base::ValueError(
                             "Null shape in AttachEngineLine::calculateAttachedPlacement()!");
@@ -2247,6 +2246,47 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
                     LineBasePoint = dx2.Location();
                 }
             } break;
+            case mm1Intersection: {
+                if (shapes.size() < 2) {
+                    throw Base::ValueError(
+                        "AttachEngineLine::calculateAttachedPlacement: Intersection mode requires "
+                        "two shapes; only one is supplied");
+                }
+                if (shapes[0]->IsNull() || shapes[1]->IsNull()) {
+                    throw Base::ValueError(
+                        "Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+                }
+
+                const TopoDS_Face& face1 = TopoDS::Face(*(shapes[0]));
+                const TopoDS_Face& face2 = TopoDS::Face(*(shapes[1]));
+
+                Handle(Geom_Surface) hSurf1 = BRep_Tool::Surface(face1);
+                Handle(Geom_Surface) hSurf2 = BRep_Tool::Surface(face2);
+                GeomAPI_IntSS intersector(hSurf1, hSurf2, Precision::Confusion());
+                if (!intersector.IsDone()) {
+                    throw Base::ValueError(
+                        "AttachEngineLine::calculateAttachedPlacement: Intersection failed");
+                }
+
+                const Standard_Integer intLines = intersector.NbLines();
+                if (intLines == 0) {
+                    throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: The two "
+                                           "shapes don't intersect");
+                }
+                if (intLines != 1) {
+                    throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: "
+                                           "Intersection is not a single curve");
+                }
+
+                GeomAdaptor_Curve adapt(intersector.Line(1));
+                if (adapt.GetType() != GeomAbs_Line) {
+                    throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: "
+                                           "Intersection is not a straight line");
+                }
+
+                LineBasePoint = adapt.Line().Location();
+                LineDir = adapt.Line().Direction();
+            } break;
             case mm1Proximity: {
                 if (shapes.size() < 2) {
                     throw Base::ValueError(
@@ -2292,7 +2332,7 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
                                      refOrg,
                                      /*useRefOrg_Line = */ true);
     }
-    else {  // re-use 3d mode
+    else {  // reuse 3d mode
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
@@ -2398,7 +2438,7 @@ AttachEnginePoint::_calculateAttachedPlacement(const std::vector<App::DocumentOb
         switch (mmode) {
             case mm0Vertex: {
                 std::vector<gp_Pnt> points;
-                assert(shapes.size() > 0);
+                assert(!shapes.empty());
 
                 const TopoDS_Shape& sh = *shapes[0];
                 if (sh.IsNull()) {
@@ -2500,7 +2540,7 @@ AttachEnginePoint::_calculateAttachedPlacement(const std::vector<App::DocumentOb
                                      BasePoint,
                                      gp_Pnt());
     }
-    else {  // re-use 3d mode
+    else {  // reuse 3d mode
         AttachEngine3D attacher3D;
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
