@@ -83,13 +83,22 @@ App::DocumentObjectExecReturn *Offset::execute()
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
+#ifndef FC_USE_TNP_FIX
+    short join = (short)Join.getValue();
     const TopoShape& shape = Feature::getShape(source);
     if (fabs(offset) > 2*tol)
         this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
     else
         this->Shape.setValue(shape);
+#else
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+    auto join = static_cast<TopoShape::JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0).makeElementOffset(
+        shape,offset,tol,inter,self,mode,join,fill));
+#endif
     return App::DocumentObject::StdReturn;
 }
 
