@@ -853,4 +853,40 @@ TEST_F(WireJoinerTest, Modified)
     EXPECT_EQ(wjModified.Modified(edge3).Size(), 3);
 }
 
+TEST_F(WireJoinerTest, Generated)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(-0.1, 0.0, 0.0), gp_Pnt(1.1, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, -0.1, 0.0), gp_Pnt(1.0, 1.1, 0.0)).Edge()};
+    auto edge3 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.1, 1.1, 0.0), gp_Pnt(-0.1, -0.1, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjGenerated.addShape()
+    std::vector<TopoDS_Shape> edges {edge1, edge2, edge3};
+
+    // A WireJoiner object that will create no closed wires
+    auto wjGenerated {WireJoiner()};
+
+    // Act
+
+    wjGenerated.addShape(edges);
+    wjGenerated.Build();
+
+    // Assert
+
+    // There aren't calls to WireJoiner::WireJoinerP::aHistory->AddGenerated() or similar methods in
+    // WireJoiner::WireJoinerP, therefor nothing is returned by calling
+    // WireJoiner::WireJoinerP::aHistory->Generated().
+    // There's a call to WireJoiner::WireJoinerP::aHistory->Merge() that uses the history produced
+    // by a ShapeFix_Wire object in WireJoiner::WireJoinerP::makeCleanWire() that however looks
+    // always empty as no methods in ShapeFix_Wire call AddGenerated() or similar methods
+    // (checked in OCCT 7.3.0 source
+    // https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=42da0d5115bff683c6b596e66cdeaff957f81e7d;sf=tgz)
+    EXPECT_EQ(wjGenerated.Generated(edge1).Size(), 0);
+    EXPECT_EQ(wjGenerated.Generated(edge2).Size(), 0);
+    EXPECT_EQ(wjGenerated.Generated(edge3).Size(), 0);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
