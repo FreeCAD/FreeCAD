@@ -785,8 +785,12 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 
     if (type == DistanceType::PointPoint) {
         // Point to point distance, or ball joint if distance=0.
+        double distance = getJointDistance(joint);
+        if (distance < Precision::Confusion()) {
+            return CREATE<ASMTSphericalJoint>::With();
+        }
         auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint);
+        mbdJoint->distanceIJ = distance;
         return mbdJoint;
     }
 
