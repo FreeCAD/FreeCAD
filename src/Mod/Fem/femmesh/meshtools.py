@@ -674,7 +674,7 @@ def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> 
 
         # sanity check
         dot = vec.dot(n)
-        if not math.isclose(dot, 0):
+        if not math.isclose(dot, 0, abs_tol=1e-13):
             FreeCAD.Console.PrintError(
                 f"Wrong calculation of normal vector for {vec = }! {n = }, {dot = }\n"
                 "Please consider submitting an issue\n"
