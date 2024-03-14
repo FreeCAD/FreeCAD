@@ -269,7 +269,7 @@ def import_materials(category='Solid', template=False):
         mat = materialManager.getMaterial(matUUID)
         physicalModels = mat.PhysicalModels
         fluid = ('1ae66d8c-1ba1-4211-ad12-b9917573b202' in physicalModels)
-        if not fluid:
+        if (category == 'Solid' and not fluid) or (category != 'Solid' and fluid):
             path = mat.LibraryRoot + "/" + mat.Directory
 
             materials[path] = mat.Properties
