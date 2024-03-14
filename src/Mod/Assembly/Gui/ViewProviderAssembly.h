@@ -114,7 +114,8 @@ public:
         return enableMovement;
     }
 
-    bool getSelectedObjectsWithinAssembly();
+
+    bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
     App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
     std::vector<std::string> parseSubNames(std::string& subNamesStr);
 
@@ -128,6 +129,10 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     // Dragger controls:
+    void initMoveDragger();
+    void endMoveDragger();
+    static void draggerMotionCallback(void* data, SoDragger* d);
+
     void setDragger();
     void unsetDragger();
     void setDraggerVisibility(bool val);
@@ -135,6 +140,9 @@ public:
     void setDraggerPlacement(Base::Placement plc);
     Base::Placement getDraggerPlacement();
     Gui::SoFCCSysDragger* getDragger();
+
+    static Base::Vector3d getCenterOfBoundingBox(const std::vector<App::DocumentObject*>& objs,
+                                                 const std::vector<App::DocumentObject*>& parts);
 
     DragMode dragMode;
     bool canStartDragging;
@@ -147,6 +155,7 @@ public:
     Base::Vector3d initialPositionRot;
     Base::Placement jcsPlc;
     Base::Placement jcsGlobalPlc;
+    Base::Placement draggerInitPlc;
 
     App::DocumentObject* movingJoint;
 
