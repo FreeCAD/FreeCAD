@@ -729,6 +729,10 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
+        task = Gui.Control.activeTaskDialog()
+        if task:
+            task.reject()
+
         assembly = vobj.Object.InList[0]
         if UtilsAssembly.activeAssembly() != assembly:
             Gui.ActiveDocument.setEdit(assembly)
@@ -850,6 +854,12 @@ class MakeJointSelGate:
         full_obj_name = ".".join(objs_names)
         full_element_name = full_obj_name + "." + element_name
         selected_object = UtilsAssembly.getObject(full_element_name)
+
+        if not (
+            selected_object.isDerivedFrom("Part::Feature")
+            or selected_object.isDerivedFrom("App::Part")
+        ):
+            return False
 
         part_containing_selected_object = UtilsAssembly.getContainingPart(
             full_element_name, selected_object, self.assembly
