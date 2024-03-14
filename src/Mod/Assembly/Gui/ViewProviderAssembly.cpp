@@ -212,7 +212,7 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
     Q_UNUSED(ModNum);
     canStartDragging = false;
     partMoving = false;
-    docsToMove = {};
+    docsToMove.clear();
 
     unsetDragger();
 
@@ -444,7 +444,7 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
 
     // Left Mouse button ****************************************************
     if (Button == 1) {
-        if (pressed) {
+        if (pressed && !getDraggerVisibility()) {
             canStartDragging = true;
         }
         else {  // Button 1 released
@@ -462,13 +462,15 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
     return false;
 }
 
-bool ViewProviderAssembly::getSelectedObjectsWithinAssembly()
+bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection, bool onlySolids)
 {
     // check the current selection, and check if any of the selected objects are within this
     // App::Part
     //  If any, put them into the vector docsToMove and return true.
     //  Get the document
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    docsToMove.clear();
 
     if (!doc) {
         return false;
@@ -490,6 +492,12 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly()
         std::vector<std::string> objsSubNames = selObj.getSubNames();
         for (auto& subNamesStr : objsSubNames) {
             std::vector<std::string> subNames = parseSubNames(subNamesStr);
+            if (subNames.empty()) {
+                continue;
+            }
+            if (onlySolids && subNames.back() != "") {
+                continue;
+            }
 
             App::DocumentObject* obj = getObjectFromSubNames(subNames);
             if (!obj) {
@@ -509,7 +517,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly()
 
     // This function is called before the selection is updated. So if a user click and drag a part
     // it is not selected at that point. So we need to get the preselection too.
-    if (Gui::Selection().hasPreselection()) {
+    if (addPreselection && Gui::Selection().hasPreselection()) {
 
         // Base::Console().Warning("Gui::Selection().getPreselection().pSubName %s\n",
         //                         Gui::Selection().getPreselection().pSubName);
@@ -549,6 +557,14 @@ std::vector<std::string> ViewProviderAssembly::parseSubNames(std::string& subNam
     while (std::getline(subNameStream, subName, '.')) {
         subNames.push_back(subName);
     }
+
+    // Check if the last character of the input string is the delimiter.
+    // If so, add an empty string to the subNames vector.
+    // Because the last subname is the element name and can be empty.
+    if (!subNamesStr.empty() && subNamesStr.back() == '.') {
+        subNames.push_back("");  // Append empty string for trailing dot.
+    }
+
     return subNames;
 }
 
@@ -563,6 +579,9 @@ App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std
     else if (subNames.size() == 2) {
         // If two subnames then it can't be a body and the object we want is the first one
         // For example we want box in "box.face1"
+        // "assembly.part.box.face1"
+        // "p.fcstd.assembly.LinkToPart.box.face1"
+        // "p2.fcstd.Part.box."
         return appDoc->getObject(subNames[0].c_str());
     }
 
@@ -764,7 +783,7 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
 
 void ViewProviderAssembly::endMove()
 {
-    docsToMove = {};
+    docsToMove.clear();
     partMoving = false;
     canStartDragging = false;
 
@@ -795,12 +814,70 @@ void ViewProviderAssembly::endMove()
     Gui::Command::commitCommand();
 }
 
+void ViewProviderAssembly::initMoveDragger()
+{
+    setDraggerVisibility(true);
+
+    // find the placement for the dragger.
+    App::DocumentObject* obj = docsToMove[0].first;
+    AssemblyObject* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    draggerInitPlc = AssemblyObject::getGlobalPlacement(obj, obj);
+    std::vector<App::DocumentObject*> listOfObjs;
+    for (auto& pair : docsToMove) {
+        listOfObjs.push_back(pair.first);
+    }
+    Base::Vector3d pos = getCenterOfBoundingBox(listOfObjs, listOfObjs);
+    draggerInitPlc.setPosition(pos);
+
+    setDraggerPlacement(draggerInitPlc);
+    asmDragger->addMotionCallback(draggerMotionCallback, this);
+}
+
+void ViewProviderAssembly::endMoveDragger()
+{
+    if (getDraggerVisibility()) {
+        asmDragger->removeMotionCallback(draggerMotionCallback, this);
+        setDraggerVisibility(false);
+    }
+}
+
+void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
+{
+    auto sudoThis = static_cast<ViewProviderAssembly*>(data);
+
+    Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
+    Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
+
+    for (auto& pair : sudoThis->docsToMove) {
+        App::DocumentObject* obj = pair.first;
+
+        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        if (propPlc) {
+            propPlc->setValue(movePlc * pair.second);
+        }
+    }
+}
+
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection
         || msg.Type == Gui::SelectionChanges::ClrSelection
         || msg.Type == Gui::SelectionChanges::RmvSelection) {
         canStartDragging = false;
+    }
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        // If selected object is a single solid show dragger and init dragger move
+
+        if (enableMovement && getSelectedObjectsWithinAssembly(false, true)) {
+            initMoveDragger();
+        }
+    }
+    if (msg.Type == Gui::SelectionChanges::ClrSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection) {
+        if (enableMovement) {
+            endMoveDragger();
+        }
     }
 }
 
@@ -862,4 +939,48 @@ PyObject* ViewProviderAssembly::getPyObject()
     }
     pyViewObject->IncRef();
     return pyViewObject;
+}
+
+// UTILS
+Base::Vector3d
+ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<App::DocumentObject*>& objs,
+                                             const std::vector<App::DocumentObject*>& parts)
+{
+    int count = 0;
+    Base::Vector3d center;
+
+    for (size_t i = 0; i < objs.size(); ++i) {
+        Gui::ViewProvider* viewProvider = Gui::Application::Instance->getViewProvider(objs[i]);
+        if (!viewProvider) {
+            continue;
+        }
+
+        const Base::BoundBox3d& boundingBox = viewProvider->getBoundingBox();
+        if (!boundingBox.IsValid()) {
+            continue;
+        }
+
+        Base::Vector3d bboxCenter = boundingBox.GetCenter();
+
+        if (parts[i] != objs[i]) {
+            // bboxCenter does not take into account obj global placement
+            Base::Placement plc(bboxCenter, Base::Rotation());
+            // Change plc to be relative to the object placement.
+            Base::Placement objPlc = AssemblyObject::getPlacementFromProp(objs[i], "Placement");
+            plc = objPlc.inverse() * plc;
+            // Change plc to be relative to the origin of the document.
+            Base::Placement global_plc = AssemblyObject::getGlobalPlacement(objs[i], parts[i]);
+            plc = global_plc * plc;
+            bboxCenter = plc.getPosition();
+        }
+
+        center += bboxCenter;
+        ++count;
+    }
+
+    if (count > 0) {
+        center /= static_cast<double>(count);
+    }
+
+    return center;
 }
