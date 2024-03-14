@@ -57,6 +57,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
+    void addAntiAliasing();
     void saveAntiAliasing();
     void loadAntiAliasing();
     void saveRenderCache();

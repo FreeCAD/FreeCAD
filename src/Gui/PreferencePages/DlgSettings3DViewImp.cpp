@@ -25,6 +25,9 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QOffscreenSurface>
+# include <QOpenGLContext>
+# include <QSurfaceFormat>
 #endif
 
 #include <App/Application.h>
@@ -45,6 +48,7 @@ DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     , ui(new Ui_DlgSettings3DView)
 {
     ui->setupUi(this);
+    addAntiAliasing();
 }
 
 DlgSettings3DViewImp::~DlgSettings3DViewImp() = default;
@@ -93,12 +97,79 @@ void DlgSettings3DViewImp::loadSettings()
     loadMarkerSize();
 }
 
+namespace {
+class GLFormatCheck {
+public:
+    GLFormatCheck() {
+        context.setFormat(format);
+        context.create();
+        offscreen.setFormat(format);
+        offscreen.create();
+        context.makeCurrent(&offscreen);
+    }
+
+    bool testSamples(int num) {
+        QOpenGLFramebufferObjectFormat fboFormat;
+        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+        fboFormat.setSamples(num);
+        QOpenGLFramebufferObject fbo(100, 100, fboFormat);  // NOLINT
+        return fbo.format().samples() == num;
+    }
+
+private:
+    QSurfaceFormat format;
+    QOpenGLContext context;
+    QOffscreenSurface offscreen;
+};
+}
+
+void DlgSettings3DViewImp::addAntiAliasing()
+{
+    QString none = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "None");
+    QString line = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "Line Smoothing");
+    QString msaa2x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 2x");
+    QString msaa4x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 4x");
+    QString msaa6x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 6x");
+    QString msaa8x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 8x");
+    ui->comboAliasing->clear();
+    ui->comboAliasing->addItem(none, int(Gui::View3DInventorViewer::None));
+    ui->comboAliasing->addItem(line, int(Gui::View3DInventorViewer::Smoothing));
+
+    // Do the samples checks only once
+    static std::vector<std::pair<QString, int>> modes;
+    static bool formatCheck = true;
+    if (formatCheck) {
+        formatCheck = false;
+
+        GLFormatCheck check;
+        // NOLINTBEGIN
+        if (check.testSamples(2)) {
+            modes.emplace_back(msaa2x, int(Gui::View3DInventorViewer::MSAA2x));
+        }
+        if (check.testSamples(4)) {
+            modes.emplace_back(msaa4x, int(Gui::View3DInventorViewer::MSAA4x));
+        }
+        if (check.testSamples(6)) {
+            modes.emplace_back(msaa6x, int(Gui::View3DInventorViewer::MSAA6x));
+        }
+        if (check.testSamples(8)) {
+            modes.emplace_back(msaa8x, int(Gui::View3DInventorViewer::MSAA8x));
+        }
+        // NOLINTEND
+    }
+
+    for (const auto& it : modes) {
+        ui->comboAliasing->addItem(it.first, it.second);
+    }
+}
+
 void DlgSettings3DViewImp::saveAntiAliasing()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
 
-    int aliasing = ui->comboAliasing->currentIndex();
+    int index = ui->comboAliasing->currentIndex();
+    int aliasing = ui->comboAliasing->itemData(index).toInt();
     hGrp->SetInt("AntiAliasing", aliasing);
 }
 
@@ -108,8 +179,10 @@ void DlgSettings3DViewImp::loadAntiAliasing()
         ("User parameter:BaseApp/Preferences/View");
 
     int aliasing = int(hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None)));
-    aliasing = Base::clamp(aliasing, 0, ui->comboAliasing->count()-1);
-    ui->comboAliasing->setCurrentIndex(aliasing);
+    int index = ui->comboAliasing->findData(aliasing);
+    if (index != -1) {
+        ui->comboAliasing->setCurrentIndex(index);
+    }
 
     // connect after setting current item of the combo box
     connect(ui->comboAliasing, qOverload<int>(&QComboBox::currentIndexChanged),
@@ -191,6 +264,7 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
         ui->comboAliasing->blockSignals(true);
         int aliasing = ui->comboAliasing->currentIndex();
         ui->retranslateUi(this);
+        addAntiAliasing();
         ui->comboAliasing->setCurrentIndex(aliasing);
         ui->comboAliasing->blockSignals(false);
     }

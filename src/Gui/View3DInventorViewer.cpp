@@ -1963,6 +1963,8 @@ int View3DInventorViewer::getNumSamples()
         return 2;
     case View3DInventorViewer::MSAA4x:
         return 4;
+    case View3DInventorViewer::MSAA6x:
+        return 6;
     case View3DInventorViewer::MSAA8x:
         return 8;
     case View3DInventorViewer::Smoothing:
