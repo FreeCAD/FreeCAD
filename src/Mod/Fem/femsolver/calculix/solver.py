@@ -163,7 +163,7 @@ def add_attributes(obj, ccx_prefs):
             "App::PropertyEnumeration",
             "MaterialNonlinearity",
             "Fem",
-            "Set material nonlinearity (needs geometrical nonlinearity)"
+            "Set material nonlinearity"
         )
         obj.MaterialNonlinearity = choices_material_nonlinear
         obj.MaterialNonlinearity = choices_material_nonlinear[0]
