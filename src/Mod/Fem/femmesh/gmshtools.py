@@ -151,6 +151,17 @@ class GmshTools():
         else:
             self.HighOrderOptimize = "0"
 
+        # SubdivisionAlgorithm
+        algoSubdiv = self.mesh_obj.SubdivisionAlgorithm
+        if algoSubdiv == "All Quadrangles":
+            self.SubdivisionAlgorithm = "1"
+        elif algoSubdiv == "All Hexahedra":
+            self.SubdivisionAlgorithm = "2"
+        elif algoSubdiv == "Barycentric":
+            self.SubdivisionAlgorithm = "3"
+        else:
+            self.SubdivisionAlgorithm = "0"
+
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
             self.group_nodes_export = True
@@ -856,6 +867,20 @@ class GmshTools():
             "7=MMG3D, 9=R-tree, 10=HTX)\n"
         )
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
+        geo.write("\n")
+
+        geo.write("// subdivision algorithm\n")
+        geo.write("Mesh.SubdivisionAlgorithm = " + self.SubdivisionAlgorithm + ";\n")
+        geo.write("\n")
+
+        geo.write("// incomplete second order elements\n")
+        if (self.SubdivisionAlgorithm == "1"
+            or  self.SubdivisionAlgorithm == "2"
+            or self.mesh_obj.RecombineAll):
+            sec_order_inc = "1"
+        else:
+            sec_order_inc = "0"
+        geo.write("Mesh.SecondOrderIncomplete = " + sec_order_inc + ";\n")
         geo.write("\n")
 
         geo.write("// meshing\n")

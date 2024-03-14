@@ -18630,9 +18630,9 @@ ConstraintFixed,3
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: BooleanFragments:Edge2
-2,2,1666.6666666666667
-8,2,1666.6666666666667
-385,2,6666.666666666667
+2,2,1666.666666667
+8,2,1666.666666667
+385,2,6666.666666667
 
 
 
@@ -18647,7 +18647,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

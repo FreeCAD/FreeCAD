@@ -3,6 +3,7 @@
 #include "InitApplication.h"
 #include <App/ProjectFile.h>
 #include <App/InventorObject.h>
+#include <Base/Stream.h>
 #include <Base/Type.h>
 
 // NOLINTBEGIN
@@ -22,6 +23,10 @@ protected:
         std::string resDir(DATADIR);
         resDir.append("/tests/ProjectTest.FCStd");
         return resDir;
+    }
+    std::string imageFileName() const
+    {
+        return {"thumbnails/Thumbnail.png"};
     }
     std::list<std::string> getInventorObjects() const
     {
@@ -102,5 +107,26 @@ TEST_F(ProjectFileTest, getTypeId)
     EXPECT_TRUE(proj.loadDocument());
     Base::Type id = proj.getTypeId("Body");
     EXPECT_EQ(id, getInventorId());
+}
+
+TEST_F(ProjectFileTest, getThumbnailBuffer)
+{
+    App::ProjectFile proj(fileName());
+    std::stringstream str;
+    proj.readInputFileDirect(imageFileName(), str);
+    std::string buffer = str.str();
+    EXPECT_EQ(buffer.size(), 2857);
+}
+
+TEST_F(ProjectFileTest, getThumbnailFile)
+{
+    App::ProjectFile proj(fileName());
+    Base::FileInfo fi(Base::FileInfo::getTempFileName());
+    Base::ofstream file(fi, std::ios::out | std::ios::binary);
+    proj.readInputFileDirect(imageFileName(), file);
+    file.flush();
+    file.close();
+    EXPECT_EQ(fi.size(), 2857);
+    fi.deleteFile();
 }
 // NOLINTEND

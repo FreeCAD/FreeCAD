@@ -381,6 +381,15 @@ def add_attributes(obj, ccx_prefs):
         )
         obj.BeamReducedIntegration = True
 
+    if not hasattr(obj, "OutputFrequency"):
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "OutputFrequency",
+            "Fem",
+            "Set the output frequency in increments"
+        )
+        obj.OutputFrequency = 1
+
     if not hasattr(obj, "ModelSpace"):
         model_space_types = [
             "3D",

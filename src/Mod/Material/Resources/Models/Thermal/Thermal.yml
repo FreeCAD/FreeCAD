@@ -28,16 +28,19 @@ Model:
   Description: "default thermal model"
   DOI: ""
   SpecificHeat:
+    DisplayName: "Specific Heat"
     Type: 'Quantity'
     Units: 'J/kg/K'
     URL: 'https://en.wikipedia.org/wiki/Heat_capacity'
     Description: "Specific capacity in [FreeCAD SpecificHeat unit]"
   ThermalConductivity:
+    DisplayName: "Thermal Conductivity"
     Type: 'Quantity'
     Units: 'W/m/K'
     URL: 'https://en.wikipedia.org/wiki/Thermal_conductivity'
     Description: "Thermal conductivity in [FreeCAD ThermalConductivity unit]"
   ThermalExpansionCoefficient:
+    DisplayName: "Thermal Expansion Coefficient"
     Type: 'Quantity'
     Units: 'm/m/K'
     URL:

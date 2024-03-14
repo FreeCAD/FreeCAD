@@ -50,6 +50,11 @@ PointKernel::PointKernel(const PointKernel& pts)
     , _Points(pts._Points)
 {}
 
+PointKernel::PointKernel(PointKernel&& pts) noexcept
+    : _Mtrx(pts._Mtrx)
+    , _Points(std::move(pts._Points))
+{}
+
 std::vector<const char*> PointKernel::getElementTypes() const
 {
     std::vector<const char*> temp;
@@ -121,13 +126,26 @@ Base::BoundBox3d PointKernel::getBoundBox() const
     return bnd;
 }
 
-void PointKernel::operator=(const PointKernel& Kernel)
+PointKernel& PointKernel::operator=(const PointKernel& Kernel)
 {
     if (this != &Kernel) {
         // copy the mesh structure
         setTransform(Kernel._Mtrx);
         this->_Points = Kernel._Points;
     }
+
+    return *this;
+}
+
+PointKernel& PointKernel::operator=(PointKernel&& Kernel) noexcept
+{
+    if (this != &Kernel) {
+        // copy the mesh structure
+        setTransform(Kernel._Mtrx);
+        this->_Points = std::move(Kernel._Points);
+    }
+
+    return *this;
 }
 
 unsigned int PointKernel::getMemSize() const
@@ -204,9 +222,9 @@ void PointKernel::RestoreDocFile(Base::Reader& reader)
     str >> uCt;
     _Points.resize(uCt);
     for (unsigned long i = 0; i < uCt; i++) {
-        float x;
-        float y;
-        float z;
+        float x {};
+        float y {};
+        float z {};
         str >> x >> y >> z;
         _Points[i].Set(x, y, z);
     }
@@ -260,10 +278,16 @@ PointKernel::const_point_iterator::const_point_iterator(
 PointKernel::const_point_iterator::const_point_iterator(
     const PointKernel::const_point_iterator& fi) = default;
 
+PointKernel::const_point_iterator::const_point_iterator(PointKernel::const_point_iterator&& fi) =
+    default;
+
 PointKernel::const_point_iterator::~const_point_iterator() = default;
 
 PointKernel::const_point_iterator&
 PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iterator& pi) = default;
+
+PointKernel::const_point_iterator&
+PointKernel::const_point_iterator::operator=(PointKernel::const_point_iterator&& pi) = default;
 
 void PointKernel::const_point_iterator::dereference()
 {

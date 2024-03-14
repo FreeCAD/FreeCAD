@@ -31,11 +31,13 @@ AppearanceModel:
     - BasicRendering:
       UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
   TexturePath:
+    DisplayName: "Texture Path"
     Type: 'File'
     Units: ''
     URL: ''
     Description: " "
   TextureScaling:
+    DisplayName: "Texture Scaling"
     Type: 'Float'
     Units: ''
     URL: ''

@@ -1538,7 +1538,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
                 Gui::Command::abortCommand();
 
                 Gui::TranslatedUserError(
-                    sketch, tr("Error"), tr("Impossible to update visibility tracking: "));
+                    sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" "));
 
                 return false;
             }

@@ -20,6 +20,7 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+import re
 
 import FreeCAD
 
@@ -48,6 +49,7 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
     correctly."""
 
     load_resource = QtCore.Signal(str)  # Str is a URL to a resource
+    follow_link = QtCore.Signal(str)  # Str is a URL to another page
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)
@@ -65,7 +67,8 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
         have native markdown support. Lacking that, plaintext is displayed."""
         geometry = self.geometry()
         if hasattr(super(), "setMarkdown"):
-            super().setMarkdown(md)
+
+            super().setMarkdown(self._clean_markdown(md))
         else:
             try:
                 import markdown
@@ -78,6 +81,16 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
                     "Qt < 5.15 and no `import markdown` -- falling back to plain text display\n"
                 )
         self.setGeometry(geometry)
+
+    def _clean_markdown(self, md: str):
+        # Remove some HTML tags (for now just img and br, which are the most common offenders that break rendering)
+        br_re = re.compile(r"<br\s*/?>")
+        img_re = re.compile(r"<img\s.*?src=(?:'|\")([^'\">]+)(?:'|\").*?\/?>")
+
+        cleaned = br_re.sub("\n", md)
+        cleaned = img_re.sub("[html tag removed]", cleaned)
+
+        return cleaned
 
     def set_resource(self, resource_url: str, image: Optional[QtGui.QImage]):
         """Once a resource has been fetched (or the fetch has failed), this method should be used to inform the widget
@@ -96,6 +109,12 @@ class WidgetReadmeBrowser(QtWidgets.QTextBrowser):
                 self.load_resource.emit(full_url)
                 self.image_map[full_url] = None
             return self.image_map[full_url]
+        elif resource_type == QtGui.QTextDocument.MarkdownResource:
+            self.follow_link.emit(name.toString())
+            return self.toMarkdown()
+        elif resource_type == QtGui.QTextDocument.HtmlResource:
+            self.follow_link.emit(name.toString())
+            return self.toHtml()
         return super().loadResource(resource_type, name)
 
     def _ensure_appropriate_width(self, image: QtGui.QImage) -> QtGui.QImage:

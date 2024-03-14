@@ -32,7 +32,7 @@ necessarily have the same orientation as the basis surface.</UserDocu>
         </Methode>
         <Attribute Name="BasisSurface" ReadOnly="true">
             <Documentation>
-                <UserDocu></UserDocu>
+                <UserDocu>Represents the basis surface from which the trimmed surface is derived.</UserDocu>
             </Documentation>
             <Parameter Name="BasisSurface" Type="Object"/>
         </Attribute>

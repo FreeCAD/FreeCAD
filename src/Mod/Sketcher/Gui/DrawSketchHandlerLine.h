@@ -276,9 +276,9 @@ template<>
 void DSHLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Point, length, angle"),
-                             QStringLiteral("Point, width, height"),
-                             QStringLiteral("2 points")};
+        QStringList names = {QApplication::translate("Sketcher_CreateLine", "Point, length, angle"),
+                             QApplication::translate("Sketcher_CreateLine", "Point, width, height"),
+                             QApplication::translate("Sketcher_CreateLine", "2 points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
