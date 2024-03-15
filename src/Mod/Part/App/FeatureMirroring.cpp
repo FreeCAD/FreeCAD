@@ -252,11 +252,11 @@ App::DocumentObjectExecReturn *Mirroring::execute()
     Base::Vector3d norm = Normal.getValue();
 
     try {
+        gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
+#ifndef FC_USE_TNP_FIX
         const TopoDS_Shape& shape = Feature::getShape(link);
         if (shape.IsNull())
             Standard_Failure::Raise(std::string(std::string(this->getFullLabel()) + ": Cannot mirror empty shape").c_str());
-        gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
-#ifndef FC_USE_TNP_FIX
         gp_Trsf mat;
         mat.SetMirror(ax2);
         TopLoc_Location loc = shape.Location();
@@ -266,9 +266,9 @@ App::DocumentObjectExecReturn *Mirroring::execute()
         this->Shape.setValue(mkTrf.Shape());
         return App::DocumentObject::StdReturn;
 #else
-//        auto shape = Feature::getTopoShape(link);
-//        if (shape.isNull())
-//            Standard_Failure::Raise("Cannot mirror empty shape");
+        auto shape = Feature::getTopoShape(link);
+        if (shape.isNull())
+            Standard_Failure::Raise("Cannot mirror empty shape");
         this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));
         return Part::Feature::execute();
 #endif
