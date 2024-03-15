@@ -71,7 +71,7 @@ class CommandAxoLengthDimension:
             vertexes.append(edges[0].Vertexes[1])
             
         view = Utils.getSelView()
-        scale = view.Scale
+        scale = view.getScale()
 
         StartPt, EndPt = edges[1].Vertexes[0].Point, edges[1].Vertexes[1].Point
         extLineVec = EndPt.sub(StartPt)
