@@ -302,12 +302,12 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &FormatSpecOverTolerance) {
-        if (!ArbitraryTolerances.getValue()) {
+        if (EqualTolerance.getValue() && !ArbitraryTolerances.getValue()) {
             FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
         }
     }
     else if (prop == &FormatSpecUnderTolerance) {
-        if (!ArbitraryTolerances.getValue()) {
+        if (EqualTolerance.getValue() && !ArbitraryTolerances.getValue()) {
             FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
         }
     }

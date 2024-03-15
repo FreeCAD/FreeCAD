@@ -49,17 +49,20 @@ protected:
     {
         // 2D Properties
         modelProp = Materials::ModelProperty(QString::fromStdString("Density"),  // Name
+                                             QString::fromStdString("D"),        // Header
                                              QString::fromStdString("2DArray"),  // Type
                                              QString::fromStdString(""),         // Units
                                              QString::fromStdString(""),         // URL
                                              QString::fromStdString("desc"));    // Description
         modelProp1 = Materials::ModelProperty(QString::fromStdString("Temperature"),
+                                              QString::fromStdString("T"),
                                               QString::fromStdString("Quantity"),
                                               QString::fromStdString("C"),
                                               QString::fromStdString(""),
                                               QString::fromStdString("desc1"));
         modelProp2 = Materials::ModelProperty(
             QString::fromStdString("Density"),
+            QString::fromStdString("D"),
             QString::fromStdString("Quantity"),
             QString::fromStdString("kg/m^3"),
             QString::fromStdString("https://en.wikipedia.org/wiki/Density"),
@@ -70,23 +73,27 @@ protected:
 
         // 3D properties
         model3DProp = Materials::ModelProperty(
-            QString::fromStdString("StressStrain"),  // Name
-            QString::fromStdString("3DArray"),       // Type
-            QString::fromStdString(""),              // Units
-            QString::fromStdString(""),              // URL
+            QString::fromStdString("StressStrain"),     // Name
+            QString::fromStdString("Stress / Strain"),  // Header
+            QString::fromStdString("3DArray"),          // Type
+            QString::fromStdString(""),                 // Units
+            QString::fromStdString(""),                 // URL
             QString::fromStdString("3 Dimensional array showing stress and strain as a function of "
                                    "temperature"));  // Description
         model3DProp1 = Materials::ModelProperty(QString::fromStdString("Temperature"),
+                                                QString::fromStdString("T"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("C"),
                                                 QString::fromStdString(""),
                                                 QString::fromStdString("desc1"));
         model3DProp2 = Materials::ModelProperty(QString::fromStdString("Stress"),
+                                                QString::fromStdString("Stress"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("MPa"),
                                                 QString::fromStdString(""),
                                                 QString::fromStdString("desc2"));
         model3DProp3 = Materials::ModelProperty(QString::fromStdString("Strain"),
+                                                QString::fromStdString("Strain"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("MPa"),
                                                 QString::fromStdString(""),

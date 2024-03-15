@@ -38,7 +38,7 @@ public:
     Sphere3& operator= (const Sphere3& rkSphere);
 
     Vector3<Real> Center;
-    Real Radius;
+    Real Radius{};
 };
 
 }

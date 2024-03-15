@@ -13,6 +13,9 @@ Core:
 Addon Manager:
 - 'src/Mod/AddonManager/**/*'
 
+Materials:
+- 'src/Mod/Material/**/*'
+
 WB Arch:
 - 'src/Mod/Arch/**/*'
 
@@ -40,8 +43,8 @@ WB Part:
 WB PartDesign:
 - 'src/Mod/PartDesign/**/*'
 
-WB Path:
-- 'src/Mod/Path/**/*'
+WB CAM:
+- 'src/Mod/CAM/**/*'
 
 WB Points:
 - 'src/Mod/Points/**/*'

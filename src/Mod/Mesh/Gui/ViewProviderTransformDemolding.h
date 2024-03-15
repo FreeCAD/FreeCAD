@@ -88,6 +88,8 @@ private:
     SoMaterial* pcColorMat;
     std::vector<SbVec3f> normalVector;
     Base::Vector3f center;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshTransformDemolding)
 };
 
 }  // namespace MeshGui

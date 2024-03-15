@@ -173,6 +173,8 @@ void CosmeticEdge::initialize()
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
+// TODO: not sure that this method should be doing the inversion. CV for example
+// accepts input point as is.  The caller should have figured out the correct points.
 TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 {
     // Base::Console().Message("CE::CE(p1, p2)\n");

@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 #ifndef _PreComp_
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600

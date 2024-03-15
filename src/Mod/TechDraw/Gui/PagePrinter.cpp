@@ -322,7 +322,7 @@ void PagePrinter::printBannerPage(QPrinter* printer, QPainter& painter, QPageLay
     painter.setFont(painterFont);
 
     //print a header
-    QString docLine = QObject::tr("Document Name: ") + QString::fromUtf8(doc->getName());
+    QString docLine = QObject::tr("Document Name:") + QLatin1String(" ") + QString::fromUtf8(doc->getName());
     int leftMargin = pageLayout.margins().left() * dpmm + 5 * dpmm; //layout margin + 5mm
     int verticalPos = pageLayout.margins().top() * dpmm + 20 * dpmm;//layout margin + 20mm
     int verticalSpacing = 2;                                        //double space
