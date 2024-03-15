@@ -171,7 +171,7 @@ protected:
 
     /**
      * Returns the base transformation
-     * For stand alone features it will be object associated with the view provider
+     * For standalone features it will be object associated with the view provider
      * For features inside MultiTransform it will be the parent MultiTransform's sub feature object
      */
     PartDesign::Transformed* getObject() const;
