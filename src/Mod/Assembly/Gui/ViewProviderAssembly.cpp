@@ -173,14 +173,6 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
     }
     Gui::Command::commitCommand();
 
-    // Remove grounded tag if any. (as it is not done in jointObject.py onDelete)
-    std::string label = obj->Label.getValue();
-
-    if (label.size() >= 4 && label.substr(label.size() - 2) == " 🔒") {
-        label = label.substr(0, label.size() - 2);
-        obj->Label.setValue(label.c_str());
-    }
-
     return true;
 }
 
@@ -512,9 +504,17 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             if (assemblyPart->hasObject(obj, true)) {
                 auto* propPlacement =
                     dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                if (propPlacement) {
-                    docsToMove.emplace_back(obj, propPlacement->getValue());
+                if (!propPlacement) {
+                    continue;
                 }
+                // We have to exclude Grounded joints as they happen to have a Placement prop
+                auto* propLink =
+                    dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("ObjectToGround"));
+                if (propLink) {
+                    continue;
+                }
+
+                docsToMove.emplace_back(obj, propPlacement->getValue());
             }
         }
     }
@@ -544,7 +544,12 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                 auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
                     preselectedObj->getPropertyByName("Placement"));
                 if (propPlacement) {
-                    docsToMove.emplace_back(preselectedObj, propPlacement->getValue());
+                    // We have to exclude Grounded joints as they happen to have a Placement prop
+                    auto* propLink = dynamic_cast<App::PropertyLink*>(
+                        preselectedObj->getPropertyByName("ObjectToGround"));
+                    if (!propLink) {
+                        docsToMove.emplace_back(preselectedObj, propPlacement->getValue());
+                    }
                 }
             }
         }
@@ -607,7 +612,7 @@ App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std
             continue;
         }
         else if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
-                 || obj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+                 || obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             return obj;
         }
         else if (obj->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
@@ -619,16 +624,13 @@ App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std
             }
 
             if (linkedObj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
-                || linkedObj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+                || linkedObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 return obj;
             }
         }
     }
 
-    // then its neither a part or body or a link to a part or body. So it is something like
-    // assembly.box.face1
-    objName = subNames[subNames.size() - 2];
-    return appDoc->getObject(objName.c_str());
+    return nullptr;
 }
 
 ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()

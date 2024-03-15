@@ -92,6 +92,19 @@ def solveIfAllowed(assembly, storePrev=False):
         assembly.solve(storePrev)
 
 
+def get_camera_height(gui_doc):
+    camera = gui_doc.ActiveView.getCameraNode()
+
+    # Check if the camera is a perspective camera
+    if isinstance(camera, coin.SoPerspectiveCamera):
+        return camera.focalDistance.getValue()
+    elif isinstance(camera, coin.SoOrthographicCamera):
+        return camera.height.getValue()
+    else:
+        # Default value if camera type is unknown
+        return 200
+
+
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
 # A JCS is a placement that is computed (unless it is detached) from :
 # - An Object name: this is the name of the solid. It can be any Part::Feature solid.
@@ -436,8 +449,14 @@ class Joint:
         # in the current closest direction, ie either matched or flipped.
         sameDir = self.areJcsSameDir(joint)
         assembly = self.getAssembly(joint)
-        part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
-        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        isAssembly = assembly.Type == "Assembly"
+        if isAssembly:
+            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
+            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        else:
+            part1ConnectedByJoint = False
+            part2ConnectedByJoint = True
+
         if part2ConnectedByJoint:
             if savePlc:
                 self.partMovedByPresolved = joint.Part2
@@ -509,14 +528,15 @@ class ViewProviderJoint:
         self.z_axis_so_color = coin.SoBaseColor()
         self.z_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_z_axis_color))
 
-        camera = Gui.ActiveDocument.ActiveView.getCameraNode()
+        self.app_obj = vobj.Object
+        app_doc = self.app_obj.Document
+        self.gui_doc = Gui.getDocument(app_doc)
+        camera = self.gui_doc.ActiveView.getCameraNode()
         self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
         if isinstance(camera, coin.SoPerspectiveCamera):
             self.cameraSensor.attach(camera.focalDistance)
         elif isinstance(camera, coin.SoOrthographicCamera):
             self.cameraSensor.attach(camera.height)
-
-        self.app_obj = vobj.Object
 
         self.transform1 = coin.SoTransform()
         self.transform2 = coin.SoTransform()
@@ -616,18 +636,7 @@ class ViewProviderJoint:
         return face_sep
 
     def get_JCS_size(self):
-        camera = Gui.ActiveDocument.ActiveView.getCameraNode()
-
-        # Check if the camera is a perspective camera
-        if isinstance(camera, coin.SoPerspectiveCamera):
-            return camera.focalDistance.getValue() / 20
-        elif isinstance(camera, coin.SoOrthographicCamera):
-            return camera.height.getValue() / 20
-        else:
-            # Default value if camera type is unknown
-            return 10
-
-        return camera.height.getValue() / 20
+        return get_camera_height(self.gui_doc) / 20
 
     def set_JCS_placement(self, soTransform, placement, objName, part):
         # change plc to be relative to the origin of the document.
@@ -735,7 +744,7 @@ class ViewProviderJoint:
 
         assembly = vobj.Object.InList[0]
         if UtilsAssembly.activeAssembly() != assembly:
-            Gui.ActiveDocument.setEdit(assembly)
+            self.gui_doc.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         Gui.Control.showDialog(panel)
@@ -792,14 +801,127 @@ class ViewProviderGroundedJoint:
         """Set this object to the proxy object of the actual view provider"""
         obj.Proxy = self
 
-    def attach(self, obj):
+    def attach(self, vobj):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
-        pass
+        app_obj = vobj.Object
+        if app_obj is None:
+            return
+        groundedObj = app_obj.ObjectToGround
+        if groundedObj is None:
+            return
+
+        lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
+        self.lockpadColor = coin.SoBaseColor()
+        self.lockpadColor.rgb.setValue(UtilsAssembly.color_from_unsigned(lockpadColorInt))
+
+        self.app_obj = vobj.Object
+        app_doc = self.app_obj.Document
+        self.gui_doc = Gui.getDocument(app_doc)
+        camera = self.gui_doc.ActiveView.getCameraNode()
+        self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
+        if isinstance(camera, coin.SoPerspectiveCamera):
+            self.cameraSensor.attach(camera.focalDistance)
+        elif isinstance(camera, coin.SoOrthographicCamera):
+            self.cameraSensor.attach(camera.height)
+
+        self.cameraSensorRot = coin.SoFieldSensor(self.camera_callback_rotation, camera)
+        self.cameraSensorRot.attach(camera.orientation)
+
+        factor = self.get_lock_factor()
+        self.scale = coin.SoScale()
+        self.scale.scaleFactor.setValue(factor, factor, factor)
+
+        self.draw_style = coin.SoDrawStyle()
+        self.draw_style.lineWidth = 5
+
+        # Create transformation (position and orientation)
+        self.transform = coin.SoTransform()
+        self.set_lock_position(groundedObj)
+        self.set_lock_rotation()
+
+        # Create the 2D components of the lockpad: a square and two arcs
+        # Creating a square
+        squareCoords = [
+            (-5, -4, 0),
+            (5, -4, 0),
+            (5, 4, 0),
+            (-5, 4, 0),
+        ]  # Simple square, adjust size as needed
+        self.square = coin.SoAnnotation()
+        squareVertices = coin.SoCoordinate3()
+        squareVertices.point.setValues(0, 4, squareCoords)
+        squareFace = coin.SoFaceSet()
+        squareFace.numVertices.setValue(4)
+        self.square.addChild(squareVertices)
+        self.square.addChild(squareFace)
+
+        # Creating the arcs (approximated with line segments)
+        self.arc = self.create_arc(0, 4, 3.5, 0, 180)
+
+        self.pick = coin.SoPickStyle()
+        self.pick.style.setValue(coin.SoPickStyle.SHAPE_ON_TOP)
+
+        # Assemble the parts into a scenegraph
+        self.lockpadSeparator = coin.SoAnnotation()
+        self.lockpadSeparator.addChild(self.pick)
+        self.lockpadSeparator.addChild(self.transform)
+        self.lockpadSeparator.addChild(self.scale)
+        self.lockpadSeparator.addChild(self.lockpadColor)
+        self.lockpadSeparator.addChild(self.square)
+        self.lockpadSeparator.addChild(self.arc)
+
+        # Attach the scenegraph to the view provider
+        vobj.addDisplayMode(self.lockpadSeparator, "Wireframe")
+
+    def create_arc(self, centerX, centerY, radius, startAngle, endAngle):
+        arc = coin.SoAnnotation()
+        coords = coin.SoCoordinate3()
+        points = []
+        for angle in range(startAngle, endAngle + 1):  # Increment can be adjusted for smoother arcs
+            rad = math.radians(angle)
+            x = centerX + math.cos(rad) * radius
+            y = centerY + math.sin(rad) * radius
+            points.append((x, y, 0))
+        coords.point.setValues(0, len(points), points)
+        line = coin.SoLineSet()
+        line.numVertices.setValue(len(points))
+        arc.addChild(coords)
+        arc.addChild(self.draw_style)
+        arc.addChild(line)
+        return arc
+
+    def camera_callback(self, *args):
+        factor = self.get_lock_factor()
+        self.scale.scaleFactor.setValue(factor, factor, factor)
+
+    def camera_callback_rotation(self, *args):
+        self.set_lock_rotation()
+
+    def set_lock_rotation(self):
+        camera = self.gui_doc.ActiveView.getCameraNode()
+        rotation = camera.orientation.getValue()
+
+        q = rotation.getValue()
+        self.transform.rotation.setValue(q[0], q[1], q[2], q[3])
+
+    def get_lock_factor(self):
+        return get_camera_height(self.gui_doc) / 300
+
+    def set_lock_position(self, groundedObj):
+        bBox = groundedObj.ViewObject.getBoundingBox()
+        if bBox.isValid():
+            pos = bBox.Center
+        else:
+            pos = groundedObj.Placement.Base
+
+        self.transform.translation.setValue(pos.x, pos.y, pos.z)
 
     def updateData(self, fp, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
         # fp is the handled feature, prop is the name of the property that has changed
-        pass
+
+        if prop == "Placement" and fp.ObjectToGround:
+            self.set_lock_position(fp.ObjectToGround)
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
@@ -815,17 +937,19 @@ class ViewProviderGroundedJoint:
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
         pass
 
-    def onDelete(self, feature, subelements):  # subelements is a tuple of strings
-        # Remove grounded tag.
-        if hasattr(feature.Object, "ObjectToGround"):
-            obj = feature.Object.ObjectToGround
-            if obj is not None and obj.Label.endswith(" 🔒"):
-                obj.Label = obj.Label[:-2]
-
-        return True  # If False is returned the object won't be deleted
-
     def getIcon(self):
         return ":/icons/Assembly_ToggleGrounded.svg"
+
+    def dumps(self):
+        """When saving the document this object gets stored using Python's json module.\
+                Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
+                to return a tuple of all serializable objects or None."""
+        return None
+
+    def loads(self, state):
+        """When restoring the serialized object from document we have the chance to set some internals here.\
+                Since no data were serialized nothing needs to be done here."""
+        return None
 
 
 class MakeJointSelGate:
@@ -859,7 +983,13 @@ class MakeJointSelGate:
             selected_object.isDerivedFrom("Part::Feature")
             or selected_object.isDerivedFrom("App::Part")
         ):
-            return False
+            if selected_object.isDerivedFrom("App::Link"):
+                linked = selected_object.getLinkedObject()
+
+                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
+                    return False
+            else:
+                return False
 
         part_containing_selected_object = UtilsAssembly.getContainingPart(
             full_element_name, selected_object, self.assembly
@@ -890,8 +1020,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.activeType = "Assembly"
 
-        self.view = Gui.activeDocument().activeView()
-        self.doc = App.ActiveDocument
+        self.doc = self.assembly.Document
+        self.gui_doc = Gui.getDocument(doc)
+
+        self.view = self.gui_doc.activeView()
 
         if not self.assembly or not self.view or not self.doc:
             return
