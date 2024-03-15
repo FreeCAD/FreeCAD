@@ -45,7 +45,7 @@ on:
 
 jobs:
   Build:
-    runs-on: macos-13-xlarge
+    runs-on: macos-14
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
