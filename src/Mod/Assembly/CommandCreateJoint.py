@@ -246,7 +246,6 @@ def createGroundedJoint(obj):
 
     joint_group = UtilsAssembly.getJointGroup(assembly)
 
-    obj.Label = obj.Label + " 🔒"
     ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
     JointObject.GroundedJoint(ground, obj)
     JointObject.ViewProviderGroundedJoint(ground.ViewObject)
@@ -310,9 +309,6 @@ class CommandToggleGrounded:
                         hasattr(joint, "ObjectToGround")
                         and joint.ObjectToGround == part_containing_obj
                     ):
-                        # Remove grounded tag.
-                        if part_containing_obj.Label.endswith(" 🔒"):
-                            part_containing_obj.Label = part_containing_obj.Label[:-2]
                         doc = App.ActiveDocument
                         doc.removeObject(joint.Name)
                         doc.recompute()
