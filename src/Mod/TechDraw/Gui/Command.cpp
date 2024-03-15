@@ -61,6 +61,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -79,6 +80,12 @@
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
+void getSelectedShapes(Gui::Command* cmd,
+                      std::vector<App::DocumentObject*>& shapes,
+                      std::vector<App::DocumentObject*>& xShapes,
+                      App::DocumentObject* faceObj,
+                      std::string& faceName);
+
 
 class Vertex;
 using namespace TechDrawGui;
@@ -418,6 +425,111 @@ void CmdTechDrawView::activated(int iMsg)
 }
 
 bool CmdTechDrawView::isActive() { return DrawGuiUtil::needPage(this); }
+
+//===========================================================================
+// TechDraw_BrokenView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawBrokenView)
+
+CmdTechDrawBrokenView::CmdTechDrawBrokenView()
+  : Command("TechDraw_BrokenView")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Broken View");
+    sToolTipText    = QT_TR_NOOP("Insert Broken View");
+    sWhatsThis      = "TechDraw_BrokenView";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_BrokenView";
+}
+
+void CmdTechDrawBrokenView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
+    // get the shape objects from the selection
+    std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
+    App::DocumentObject* faceObj = nullptr;
+    std::string faceName;
+    getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
+
+    // pick the Break objects out of the selected pile
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    std::vector<App::DocumentObject*> breakObjects;
+    for (auto& selObj : selection) {
+        auto temp = selObj.getObject();
+        if (DrawBrokenView::isBreakObject(*temp)) {
+            breakObjects.push_back(selObj.getObject());
+        }
+    }
+    if (breakObjects.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Break objects found in this selection"));
+        return;
+    }
+
+    // remove Break objects from shape pile
+    shapes = DrawBrokenView::removeBreakObjects(breakObjects, shapes);
+    xShapes = DrawBrokenView::removeBreakObjects(breakObjects, xShapes);
+    if (shapes.empty() &&
+        xShapes.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Shapes, Groups or Links in this selection"));
+        return;
+    }
+
+    Gui::WaitCursor wc;
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create broken view"));
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    std::string FeatName = getUniqueObjectName("BrokenView");
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawBrokenView','%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+
+    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
+    TechDraw::DrawBrokenView* dbv = dynamic_cast<TechDraw::DrawBrokenView*>(docObj);
+    if (!dbv) {
+        throw Base::TypeError("CmdTechDrawBrokenView DBV not found\n");
+    }
+    dbv->Source.setValues(shapes);
+    dbv->XSource.setValues(xShapes);
+    dbv->Breaks.setValues(breakObjects);
+
+    //set projection direction from selected Face
+    std::pair<Base::Vector3d, Base::Vector3d> dirs;
+    if (faceName.size()) {
+        dirs = DrawGuiUtil::getProjDirFromFace(faceObj, faceName);
+    }
+    else {
+        dirs = DrawGuiUtil::get3DDirAndRot();
+    }
+
+    Base::Vector3d projDir = dirs.first;
+    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+              FeatName.c_str(), projDir.x, projDir.y, projDir.z);
+    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+
+    commitCommand();
+
+//    Gui::Control().showDialog(new TaskDlgBrokenView(dbv));
+
+    dbv->recomputeFeature();
+}
+
+bool CmdTechDrawBrokenView::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
 
 //===========================================================================
 // TechDraw_ActiveView
@@ -1680,4 +1792,72 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
     rcCmdMgr.addCommand(new CmdTechDrawBalloon());
     rcCmdMgr.addCommand(new CmdTechDrawProjectShape());
+    rcCmdMgr.addCommand(new CmdTechDrawBrokenView());
+
+}
+
+//****************************************
+
+
+//! extract the selected shapes and xShapes and determine if a face has been
+//! selected to define the projection direction
+void getSelectedShapes(Gui::Command* cmd,
+                      std::vector<App::DocumentObject*>& shapes,
+                      std::vector<App::DocumentObject*>& xShapes,
+                      App::DocumentObject* faceObj,
+                      std::string& faceName)
+{
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
+    bool single = false;                                         //mystery
+    auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
+                                                   resolve, single);
+    for (auto& sel : selection) {
+        bool is_linked = false;
+        auto obj = sel.getObject();
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+            continue;
+        }
+        if (obj->isDerivedFrom(App::LinkElement::getClassTypeId())
+            || obj->isDerivedFrom(App::LinkGroup::getClassTypeId())
+            || obj->isDerivedFrom(App::Link::getClassTypeId())) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != cmd->getDocument()) {
+            std::set<App::DocumentObject*> parents = obj->getInListEx(true);
+            for (auto& parent : parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != cmd->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
+                    || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
+                    || parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
+            xShapes.push_back(obj);
+            continue;
+        }
+        //not a Link and not null.  assume to be drawable.  Undrawables will be
+        // skipped later.
+        shapes.push_back(obj);
+        if (faceObj) {
+            continue;
+        }
+        //don't know if this works for an XLink
+        for (auto& sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                faceName = sub;
+                //
+                faceObj = obj;
+                break;
+            }
+        }
+    }
 }

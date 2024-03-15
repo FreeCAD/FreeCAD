@@ -63,9 +63,6 @@
 #include <gp_Vec.hxx>
 #endif// #ifndef _PreComp_
 
-#include <algorithm>
-#include <chrono>
-
 #include <Base/Console.h>
 
 #include "DrawUtil.h"
@@ -343,5 +340,22 @@ bool  ShapeUtils::isShapeReallyNull(TopoDS_Shape shape)
 {
     // if the shape is null or it has no subshapes, then it is really null
     return shape.IsNull() || !TopoDS_Iterator(shape).More();
+}
+
+bool ShapeUtils::edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> ends0 = getEdgeEnds(edge0);
+    Base::Vector3d vec0 = ends0.second - ends0.first;
+    vec0.Normalize();
+    std::pair<Base::Vector3d, Base::Vector3d> ends1 = getEdgeEnds(edge1);
+    Base::Vector3d vec1 = ends1.second - ends1.first;
+    vec1.Normalize();
+    double dot = fabs(vec0.Dot(vec1));
+    if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        // parallel vectors
+        return true;
+    }
+    return false;
+
 }
 
