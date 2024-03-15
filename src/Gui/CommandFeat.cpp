@@ -26,6 +26,7 @@
 #endif
 
 #include <App/DocumentObject.h>
+#include <App/GroupExtension.h>
 #include "Application.h"
 #include "CommandT.h"
 #include "DockWindowManager.h"
@@ -86,29 +87,44 @@ void StdCmdRandomColor::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
+    auto setRandomColor = [](ViewProvider* view) {
+        // NOLINTBEGIN
+        auto fMax = (float)RAND_MAX;
+        auto fRed = (float)rand()/fMax;
+        auto fGrn = (float)rand()/fMax;
+        auto fBlu = (float)rand()/fMax;
+        // NOLINTEND
+        auto objColor = App::Color(fRed, fGrn, fBlu);
+
+        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        if (vpLink) {
+            if (!vpLink->OverrideMaterial.getValue()) {
+                vpLink->OverrideMaterial.setValue(true);
+            }
+            vpLink->ShapeMaterial.setDiffuseColor(objColor);
+        }
+        else if (view) {
+            if (auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"))) {
+                // get the view provider of the selected object and set the shape color
+                color->setValue(objColor);
+            }
+        }
+    };
+
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set Random Color"));
     for (const auto & it : sel) {
-        auto fMax = (float)RAND_MAX;
-        auto fRed = (float)rand()/fMax;
-        auto fGrn = (float)rand()/fMax;
-        auto fBlu = (float)rand()/fMax;
-        auto objColor = App::Color(fRed, fGrn, fBlu);
+        ViewProvider* view = Application::Instance->getViewProvider(it.pObject);
+        setRandomColor(view);
 
-        ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
-        if(vpLink) {
-            if(!vpLink->OverrideMaterial.getValue())
-                vpLink->OverrideMaterial.setValue(true);
-            vpLink->ShapeMaterial.setDiffuseColor(objColor);
-            continue;
-        }
-        auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
-        if (color) {
-            // get the view provider of the selected object and set the shape color
-            color->setValue(objColor);
+        if (auto grp = it.pObject->getExtension<App::GroupExtension>()) {
+            std::vector<App::DocumentObject*> objs = grp->getObjects();
+            for (auto obj : objs) {
+                ViewProvider* view = Application::Instance->getViewProvider(obj);
+                setRandomColor(view);
+            }
         }
     }
 
