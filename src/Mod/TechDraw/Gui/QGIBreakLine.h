@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,50 +20,65 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ShapeExtractor_h_
-#define ShapeExtractor_h_
-
-#include <TopoDS_Shape.hxx>
-
-#include <App/DocumentObject.h>
-#include <App/Link.h>
-#include <Base/Type.h>
-#include <Base/Vector3D.h>
+#ifndef TECHDRAWGUI_QGIBREAKLINE_H
+#define TECHDRAWGUI_QGIBREAKLINE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <QColor>
+#include <QFont>
+#include <QPainterPath>
+#include <QPointF>
 
-namespace TechDraw
+#include <Base/Vector3D.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
+
+#include "QGCustomText.h"
+#include "QGIDecoration.h"
+
+
+namespace TechDrawGui
 {
 
-class TechDrawExport ShapeExtractor
+class TechDrawGuiExport QGIBreakLine : public QGIDecoration
 {
 public:
-    static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links, bool include2d = true);
-    static std::vector<TopoDS_Shape> getShapes2d(const std::vector<App::DocumentObject*> links);
-    static std::vector<TopoDS_Shape> getXShapes(const App::Link* xLink);
-    static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);
-    static TopoDS_Shape getShapesFused(const std::vector<App::DocumentObject*> links);
-    static TopoDS_Shape getShapeFromXLink(const App::Link* xLink);
+    explicit QGIBreakLine();
+    ~QGIBreakLine() override = default;
 
-    static bool is2dObject(const App::DocumentObject* obj);
-    static bool isEdgeType(const App::DocumentObject* obj);
-    static bool isPointType(const App::DocumentObject* obj);
-    static bool isDraftPoint(const App::DocumentObject* obj);
-    static bool isDatumPoint(const App::DocumentObject* obj);
-    static bool isSketchObject(const App::DocumentObject* obj);
-    static Base::Vector3d getLocation3dFromFeat(const App::DocumentObject *obj);
+    enum {Type = QGraphicsItem::UserType + 250};
+    int type() const override { return Type;}
 
-    static TopoDS_Shape stripInfiniteShapes(TopoDS_Shape inShape);
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
-    static TopoDS_Shape getLocatedShape(const App::DocumentObject* docObj);
+    void setBounds(double left, double top, double right, double bottom);
+    void setBounds(Base::Vector3d topLeft, Base::Vector3d bottomRight);
+    void setDirection(Base::Vector3d dir);      // horizontal(1,0,0) vertical(0,1,0);
+    void draw() override;
+
+    void setLinePen(QPen isoPen);
+    void setBreakColor(QColor c);
 
 protected:
 
 private:
+    QPainterPath makeHorizontalZigZag(Base::Vector3d start) const;
+    QPainterPath makeVerticalZigZag(Base::Vector3d start) const;
+    void setTools();
 
+    QGraphicsPathItem* m_line0;
+    QGraphicsPathItem* m_line1;
+    QGraphicsRectItem* m_background;
+
+    Base::Vector3d     m_direction;
+
+    double             m_top;
+    double             m_bottom;
+    double             m_left;
+    double             m_right;
 };
 
-} //namespace TechDraw
+}
 
-#endif  // #ifndef ShapeExtractor_h_
+#endif // TECHDRAWGUI_QGIBREAKLINE_H
+

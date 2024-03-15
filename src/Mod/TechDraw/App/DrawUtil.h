@@ -150,6 +150,7 @@ public:
     static gp_Vec closestBasis(gp_Vec inVec);
     static Base::Vector3d closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys);
     static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
+    static Base::Vector3d closestBasisOriented(Base::Vector3d v);
 
     static double getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
     static gp_Vec maskDirection(gp_Vec inVec, gp_Dir directionToMask);

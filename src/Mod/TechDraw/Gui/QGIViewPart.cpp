@@ -45,6 +45,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -64,6 +65,7 @@
 #include "ViewProviderViewPart.h"
 #include "ZVALUE.h"
 #include "PathBuilder.h"
+#include "QGIBreakLine.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -240,6 +242,7 @@ void QGIViewPart::draw()
 
     drawViewPart();
     drawAllHighlights();
+    drawBreakLines();
     drawMatting();
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
@@ -1032,6 +1035,48 @@ void QGIViewPart::drawMatting()
     mat->show();
 }
 
+
+//! if this is a broken view, draw the break lines.
+void QGIViewPart::drawBreakLines()
+{
+    // Base::Console().Message("QGIVP::drawBreakLines()\n");
+
+    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
+    if (!dbv) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+
+    auto breaks = dbv->Breaks.getValues();
+    for (auto& breakObj : breaks) {
+        QGIBreakLine* breakLine = new QGIBreakLine();
+        addToGroup(breakLine);
+
+        Base::Vector3d direction = dbv->directionFromObj(*breakObj);
+        direction.Normalize();
+        breakLine->setDirection(direction);
+        std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
+        // the bounds are in 3d form, so we need to invert & rez them
+        Base::Vector3d topLeft = Rez::guiX(DU::invertY(bounds.first));
+        Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
+        breakLine->setBounds(topLeft, bottomRight);
+        breakLine->setPos(0.0, 0.0);
+        breakLine->setLinePen(
+            m_dashedLineGenerator->getLinePen(1, vp->HiddenWidth.getValue()));
+        breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        breakLine->setZValue(ZVALUE::SECTIONLINE);
+        App::Color color = prefBreaklineColor();
+        breakLine->setBreakColor(color.asValue<QColor>());
+        breakLine->setRotation(-dbv->Rotation.getValue());
+        breakLine->draw();
+    }
+}
+
+
 void QGIViewPart::toggleCache(bool state)
 {
     QList<QGraphicsItem*> items = childItems();
@@ -1156,6 +1201,11 @@ bool QGIViewPart::prefPrintCenters()
 {
     bool printCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
     return printCenters;
+}
+
+App::Color QGIViewPart::prefBreaklineColor()
+{
+    return  Preferences::getAccessibleColor(PreferencesGui::breaklineColor());
 }
 
 QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) const

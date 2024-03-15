@@ -165,8 +165,12 @@
         result.</UserDocu>
       </Documentation>
     </Methode>
-
-<Methode Name="requestPaint">
+    <Methode Name="getGeometricCenter">
+      <Documentation>
+        <UserDocu>point3d = getGeometricCenter() - returns the geometric center of the source shapes.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="requestPaint">
       <Documentation>
         <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>
