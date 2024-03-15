@@ -301,6 +301,9 @@ class AnalysisMember():
         self.cons_rigidbody = self.get_several_member(
             "Fem::ConstraintRigidBody"
         )
+        self.cons_rigidbody_step = self.get_several_member(
+            "Fem::ConstraintRigidBody"
+        )
         self.cons_force = self.get_several_member(
             "Fem::ConstraintForce"
         )

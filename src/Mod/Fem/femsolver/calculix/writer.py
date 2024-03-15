@@ -46,6 +46,7 @@ from . import write_constraint_initialtemperature as con_itemp
 from . import write_constraint_planerotation as con_planerotation
 from . import write_constraint_pressure as con_pressure
 from . import write_constraint_rigidbody as con_rigidbody
+from . import write_constraint_rigidbody_step as con_rigidbody_step
 from . import write_constraint_sectionprint as con_sectionprint
 from . import write_constraint_selfweight as con_selfweight
 from . import write_constraint_temperature as con_temperature
@@ -190,6 +191,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # constraints dependent from steps
         self.write_constraints_propdata(inpfile, self.member.cons_fixed, con_fixed)
+        self.write_constraints_propdata(inpfile, self.member.cons_rigidbody_step, con_rigidbody_step)
         self.write_constraints_propdata(inpfile, self.member.cons_displacement, con_displacement)
         self.write_constraints_propdata(inpfile, self.member.cons_sectionprint, con_sectionprint)
         self.write_constraints_propdata(inpfile, self.member.cons_selfweight, con_selfweight)

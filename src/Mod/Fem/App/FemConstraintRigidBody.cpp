@@ -77,7 +77,7 @@ void ConstraintRigidBody::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1;  // OvG: Enforce use of scale
+        double scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
