@@ -86,9 +86,9 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     fStates[6] = pcConstraint->xRotation.getValue();
     fStates[7] = pcConstraint->yRotation.getValue();
     fStates[8] = pcConstraint->zRotation.getValue();
-    fStates[9] = pcConstraint->xLoad.getValue();
-    fStates[10] = pcConstraint->yLoad.getValue();
-    fStates[11] = pcConstraint->zLoad.getValue();
+    fStates[9] = pcConstraint->xForce.getValue();
+    fStates[10] = pcConstraint->yForce.getValue();
+    fStates[11] = pcConstraint->zForce.getValue();
     fStates[12] = pcConstraint->xMoment.getValue();
     fStates[13] = pcConstraint->yMoment.getValue();
     fStates[14] = pcConstraint->zMoment.getValue();
@@ -100,12 +100,12 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     ui->if_ref_node_x->setValue(fStates[0]);
     ui->if_ref_node_y->setValue(fStates[1]);
     ui->if_ref_node_z->setValue(fStates[2]);
-    ui->if_ref_load_x->setValue(fStates[9]);
-    ui->if_ref_load_y->setValue(fStates[10]);
-    ui->if_ref_load_z->setValue(fStates[11]);
-    ui->if_rot_load_x->setValue(fStates[12]);
-    ui->if_rot_load_y->setValue(fStates[13]);
-    ui->if_rot_load_z->setValue(fStates[14]);
+    ui->if_ref_force_x->setValue(fStates[9]);
+    ui->if_ref_force_y->setValue(fStates[10]);
+    ui->if_ref_force_z->setValue(fStates[11]);
+    ui->if_rot_force_x->setValue(fStates[12]);
+    ui->if_rot_force_y->setValue(fStates[13]);
+    ui->if_rot_force_z->setValue(fStates[14]);
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -296,29 +296,29 @@ double TaskFemConstraintRigidBody::get_zRefNode() const
 {
     return ui->if_ref_node_z->rawValue();
 }
-double TaskFemConstraintRigidBody::get_xLoad() const
+double TaskFemConstraintRigidBody::get_xForce() const
 {
-    return ui->if_ref_load_x->rawValue();
+    return ui->if_ref_force_x->rawValue();
 }
-double TaskFemConstraintRigidBody::get_yLoad() const
+double TaskFemConstraintRigidBody::get_yForce() const
 {
-    return ui->if_ref_load_y->rawValue();
+    return ui->if_ref_force_y->rawValue();
 }
-double TaskFemConstraintRigidBody::get_zLoad() const
+double TaskFemConstraintRigidBody::get_zForce() const
 {
-    return ui->if_ref_load_z->rawValue();
+    return ui->if_ref_force_z->rawValue();
 }
 double TaskFemConstraintRigidBody::get_xMoment() const
 {
-    return ui->if_rot_load_x->rawValue();
+    return ui->if_rot_force_x->rawValue();
 }
 double TaskFemConstraintRigidBody::get_yMoment() const
 {
-    return ui->if_rot_load_y->rawValue();
+    return ui->if_rot_force_y->rawValue();
 }
 double TaskFemConstraintRigidBody::get_zMoment() const
 {
-    return ui->if_rot_load_z->rawValue();
+    return ui->if_rot_force_z->rawValue();
 }
 // TODO: This needs to be implemented
 bool TaskFemConstraintRigidBody::get_DefineRefNode() const
@@ -394,17 +394,17 @@ bool TaskDlgFemConstraintRigidBody::accept()
                                 name.c_str(),
                                 parameters->get_zRefNode());
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.xLoad = %f",
+                                "App.ActiveDocument.%s.xForce = %f",
                                 name.c_str(),
-                                parameters->get_xLoad());
+                                parameters->get_xForce());
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.yLoad = %f",
+                                "App.ActiveDocument.%s.yForce = %f",
                                 name.c_str(),
-                                parameters->get_yLoad());
+                                parameters->get_yForce());
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.zLoad = %f",
+                                "App.ActiveDocument.%s.zForce = %f",
                                 name.c_str(),
-                                parameters->get_zLoad());
+                                parameters->get_zForce());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.xMoment = %f",
                                 name.c_str(),

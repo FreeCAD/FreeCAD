@@ -40,9 +40,9 @@ ConstraintRigidBody::ConstraintRigidBody()
     ADD_PROPERTY(xRotation, (0.0));
     ADD_PROPERTY(yRotation, (0.0));
     ADD_PROPERTY(zRotation, (0.0));
-    ADD_PROPERTY(xLoad, (0.0));
-    ADD_PROPERTY(yLoad, (0.0));
-    ADD_PROPERTY(zLoad, (0.0));
+    ADD_PROPERTY(xForce, (0.0));
+    ADD_PROPERTY(yForce, (0.0));
+    ADD_PROPERTY(zForce, (0.0));
     ADD_PROPERTY(xMoment, (0.0));
     ADD_PROPERTY(yMoment, (0.0));
     ADD_PROPERTY(zMoment, (0.0));

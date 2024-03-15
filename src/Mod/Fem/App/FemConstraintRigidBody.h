@@ -51,9 +51,9 @@ public:
     App::PropertyFloat xRotation;
     App::PropertyFloat yRotation;
     App::PropertyFloat zRotation;
-    App::PropertyFloat xLoad;
-    App::PropertyFloat yLoad;
-    App::PropertyFloat zLoad;
+    App::PropertyFloat xForce;
+    App::PropertyFloat yForce;
+    App::PropertyFloat zForce;
     App::PropertyFloat xMoment;
     App::PropertyFloat yMoment;
     App::PropertyFloat zMoment;

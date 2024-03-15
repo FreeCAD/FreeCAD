@@ -45,9 +45,9 @@ public:
     double get_xRefNode() const;
     double get_yRefNode() const;
     double get_zRefNode() const;
-    double get_xLoad() const;
-    double get_yLoad() const;
-    double get_zLoad() const;
+    double get_xForce() const;
+    double get_yForce() const;
+    double get_zForce() const;
     double get_xMoment() const;
     double get_yMoment() const;
     double get_zMoment() const;

@@ -147,23 +147,23 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="lbl_ref_load">
+      <widget class="QLabel" name="lbl_ref_force">
        <property name="text">
-        <string>Load on Reference Node</string>
+        <string>Force on Reference Node</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QFormLayout" name="f_layout_ref_load">
+      <layout class="QFormLayout" name="f_layout_ref_force">
        <item row="0" column="0">
-        <widget class="QLabel" name="lbl_ref_load_x">
+        <widget class="QLabel" name="lbl_ref_force_x">
          <property name="text">
           <string>X:</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="Gui::InputField" name="if_ref_load_x">
+        <widget class="Gui::InputField" name="if_ref_force_x">
          <property name="text">
           <string>0 N</string>
          </property>
@@ -176,14 +176,14 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="lbl_ref_load_y">
+        <widget class="QLabel" name="lbl_ref_force_y">
          <property name="text">
           <string>Y:</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="Gui::InputField" name="if_ref_load_y">
+        <widget class="Gui::InputField" name="if_ref_force_y">
          <property name="text">
           <string>0 N</string>
          </property>
@@ -196,14 +196,14 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="lbl_ref_load_z">
+        <widget class="QLabel" name="lbl_ref_force_z">
          <property name="text">
           <string>Z:</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="Gui::InputField" name="if_ref_load_z">
+        <widget class="Gui::InputField" name="if_ref_force_z">
          <property name="text">
           <string>0 N</string>
          </property>
@@ -231,28 +231,28 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="lbl_rot_load">
+      <widget class="QLabel" name="lbl_rot_force">
        <property name="text">
         <string>Moment on Rotation Node</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QFormLayout" name="f_layout_rot_load">
+      <layout class="QFormLayout" name="f_layout_rot_force">
        <item row="0" column="0">
-        <widget class="QLabel" name="lbl_rot_load_x">
+        <widget class="QLabel" name="lbl_rot_force_x">
          <property name="text">
           <string>X:</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="Gui::InputField" name="if_rot_load_x">
+        <widget class="Gui::InputField" name="if_rot_force_x">
          <property name="text">
-          <string>0 N mm</string>
+          <string>0 N*m</string>
          </property>
          <property name="unit" stdset="0">
-          <string notr="true">N mm</string>
+          <string notr="true">N*m</string>
          </property>
          <property name="quantity" stdset="0">
           <double>0.000000000000000</double>
@@ -260,19 +260,19 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="lbl_rot_load_y">
+        <widget class="QLabel" name="lbl_rot_force_y">
          <property name="text">
           <string>Y:</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="Gui::InputField" name="if_rot_load_y">
+        <widget class="Gui::InputField" name="if_rot_force_y">
          <property name="text">
-          <string>0 N mm</string>
+          <string>0 N*m</string>
          </property>
          <property name="unit" stdset="0">
-          <string notr="true">N mm</string>
+          <string notr="true">N*m</string>
          </property>
          <property name="quantity" stdset="0">
           <double>0.000000000000000</double>
@@ -280,19 +280,19 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="lbl_rot_load_z">
+        <widget class="QLabel" name="lbl_rot_force_z">
          <property name="text">
           <string>Z:</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="Gui::InputField" name="if_rot_load_z">
+        <widget class="Gui::InputField" name="if_rot_force_z">
          <property name="text">
-          <string>0 N mm</string>
+          <string>0 N*m</string>
          </property>
          <property name="unit" stdset="0">
-          <string notr="true">N mm</string>
+          <string notr="true">N*m</string>
          </property>
          <property name="quantity" stdset="0">
           <double>0.000000000000000</double>
