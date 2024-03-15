@@ -31,33 +31,39 @@ PROPERTY_SOURCE(Fem::ConstraintRigidBody, Fem::Constraint)
 
 ConstraintRigidBody::ConstraintRigidBody()
 {
-    ADD_PROPERTY(xRefNode,(0.0));
-    ADD_PROPERTY(yRefNode,(0.0));
-    ADD_PROPERTY(zRefNode,(0.0));
-    ADD_PROPERTY(xDisplacement,(0.0));
-    ADD_PROPERTY(yDisplacement,(0.0));
-    ADD_PROPERTY(zDisplacement,(0.0));
-    ADD_PROPERTY(xRotation,(0.0));
-    ADD_PROPERTY(yRotation,(0.0));
-    ADD_PROPERTY(zRotation,(0.0));
-    ADD_PROPERTY(xLoad,(0.0));
-    ADD_PROPERTY(yLoad,(0.0));
-    ADD_PROPERTY(zLoad,(0.0));
-    ADD_PROPERTY(xMoment,(0.0));
-    ADD_PROPERTY(yMoment,(0.0));
-    ADD_PROPERTY(zMoment,(0.0));
-    ADD_PROPERTY(DefineRefNode,(1));
+    ADD_PROPERTY(xRefNode, (0.0));
+    ADD_PROPERTY(yRefNode, (0.0));
+    ADD_PROPERTY(zRefNode, (0.0));
+    ADD_PROPERTY(xDisplacement, (0.0));
+    ADD_PROPERTY(yDisplacement, (0.0));
+    ADD_PROPERTY(zDisplacement, (0.0));
+    ADD_PROPERTY(xRotation, (0.0));
+    ADD_PROPERTY(yRotation, (0.0));
+    ADD_PROPERTY(zRotation, (0.0));
+    ADD_PROPERTY(xLoad, (0.0));
+    ADD_PROPERTY(yLoad, (0.0));
+    ADD_PROPERTY(zLoad, (0.0));
+    ADD_PROPERTY(xMoment, (0.0));
+    ADD_PROPERTY(yMoment, (0.0));
+    ADD_PROPERTY(zMoment, (0.0));
+    ADD_PROPERTY(DefineRefNode, (1));
 
     // For drawing the icons
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintRigidBody",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintRigidBody",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintRigidBody",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintRigidBody",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintRigidBody::execute()
+App::DocumentObjectExecReturn* ConstraintRigidBody::execute()
 {
     return Constraint::execute();
 }
@@ -71,12 +77,12 @@ void ConstraintRigidBody::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1; //OvG: Enforce use of scale
+        int scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale); //OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
+            Scale.setValue(scale);  // OvG: Scale
+            Points.touch();         // This triggers ViewProvider::updateData()
         }
     }
 }

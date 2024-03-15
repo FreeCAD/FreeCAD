@@ -29,7 +29,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintRigidBody : public Fem::Constraint
+class FemExport ConstraintRigidBody: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintRigidBody);
 
@@ -60,10 +60,11 @@ public:
     App::PropertyBool DefineRefNode;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "FemGui::ViewProviderFemConstraintRigidBody";
     }
 
@@ -71,7 +72,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-} // namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTRIGIDBODY_H
+#endif  // FEM_CONSTRAINTRIGIDBODY_H

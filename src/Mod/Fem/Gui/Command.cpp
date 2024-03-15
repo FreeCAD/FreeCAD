@@ -392,30 +392,40 @@ DEF_STD_CMD_A(CmdFemConstraintRigidBody)
 CmdFemConstraintRigidBody::CmdFemConstraintRigidBody()
     : Command("FEM_ConstraintRigidBody")
 {
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Constraint rigid body");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a rigid body");
-    sWhatsThis      = "FEM_ConstraintRigidBody";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "FEM_ConstraintRigidBody";
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Constraint rigid body");
+    sToolTipText = QT_TR_NOOP("Creates a FEM constraint for a rigid body");
+    sWhatsThis = "FEM_ConstraintRigidBody";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_ConstraintRigidBody";
 }
 
 void CmdFemConstraintRigidBody::activated(int)
 {
     Fem::FemAnalysis* Analysis;
 
-    if (getConstraintPrerequisits(&Analysis))
+    if (getConstraintPrerequisits(&Analysis)) {
         return;
+    }
 
     std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint fixed geometry"));
-    doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintRigidBody\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str()); //OvG: set initial scale to 1
-    doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)", Analysis->getNameInDocument(), FeatName.c_str());
+    doCommand(Doc,
+              "App.activeDocument().addObject(\"Fem::ConstraintRigidBody\",\"%s\")",
+              FeatName.c_str());
+    doCommand(Doc,
+              "App.activeDocument().%s.Scale = 1",
+              FeatName.c_str());  // OvG: set initial scale to 1
+    doCommand(Doc,
+              "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+              Analysis->getNameInDocument(),
+              FeatName.c_str());
 
-    doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
+    doCommand(Doc,
+              "%s",
+              gethideMeshShowPartStr(FeatName).c_str());  // OvG: Hide meshes and show parts
 
     updateActive();
 
