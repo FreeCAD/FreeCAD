@@ -69,9 +69,11 @@
 #include "MDIViewPage.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
+#include "Rez.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {
@@ -568,4 +570,29 @@ void DrawGuiUtil::setSelectedTree(QGraphicsItem *item, bool selected)
             setSelectedTree(child, selected);
         }
     }
+}
+
+
+//! convert point from scene coords to mm and conventional Y axis (page coords).
+Base::Vector3d DrawGuiUtil::fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert)
+{
+    Base::Vector3d result;
+    if (invert) {
+        result = Rez::appX(DU::invertY(sceneCoord));
+    } else {
+        result = Rez::appX(sceneCoord);
+    }
+    return Rez::appX(DU::invertY(sceneCoord));
+}
+
+//! convert point from printed page coords to scene units (Rez(mm) and inverted Y axis (scene coords)
+Base::Vector3d DrawGuiUtil::toSceneCoords(const Base::Vector3d& pageCoord, bool invert)
+{
+    Base::Vector3d result;
+    if (invert) {
+        result = Rez::guiX(DU::invertY(pageCoord));
+    } else {
+        result = Rez::guiX(pageCoord);
+    }
+    return result;
 }
