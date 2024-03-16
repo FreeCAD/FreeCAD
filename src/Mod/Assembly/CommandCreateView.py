@@ -166,6 +166,8 @@ class ViewProviderExplodedView:
         panel = TaskAssemblyCreateView(vobj.Object)
         Gui.Control.showDialog(panel)
 
+        return True
+
 
 ######### Exploded View Step #########
 ExplodedViewStepTypes = [

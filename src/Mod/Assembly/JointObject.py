@@ -742,6 +742,8 @@ class ViewProviderJoint:
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         Gui.Control.showDialog(panel)
 
+        return True
+
 
 ################ Grounded Joint object #################
 
