@@ -2,6 +2,7 @@
 target_sources(
     Part_tests_run
         PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/Attacher.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/BRepMesh.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureChamfer.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureCompound.cpp
