@@ -178,9 +178,9 @@ void QGISVGTemplate::createClickHandles()
     // XPath query to select all <text> nodes with "freecad:editable" attribute
     query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                          "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                         "//text[@freecad:editable]"),
+                                         "//text[@" FREECAD_ATTR_EDITABLE "]"),
                        [&](QDomElement& textElement) -> bool {
-        QString name = textElement.attribute(QString::fromUtf8("freecad:editable"));
+        QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
         double x = Rez::guiX(
             textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
         double y = Rez::guiX(
