@@ -40,7 +40,7 @@ WB OpenSCAD:
 WB Part:
 - 'src/Mod/Part/**/*'
 
-WB PartDesign:
+WB Part Design:
 - 'src/Mod/PartDesign/**/*'
 
 WB CAM:
