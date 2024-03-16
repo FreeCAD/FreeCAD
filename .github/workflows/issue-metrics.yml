@@ -12,6 +12,7 @@ jobs:
   build:
     name: issue metrics
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD'
 
     steps:
 
