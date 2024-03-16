@@ -554,13 +554,13 @@ def handle():
 
     SECTION_NEW_FILE = "<h2>" + TranslationTexts.get("T_NEWFILE") + "</h2>"
     SECTION_NEW_FILE += "<ul>"
-    SECTION_NEW_FILE += build_new_file_card("empty_file")
-    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
     SECTION_NEW_FILE += build_new_file_card("assembly")
     # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
     SECTION_NEW_FILE += build_new_file_card("architecture")
+    SECTION_NEW_FILE += build_new_file_card("empty_file")
+    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += "</ul>"
     HTML = HTML.replace("SECTION_NEW_FILE", SECTION_NEW_FILE)
 

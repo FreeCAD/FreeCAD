@@ -51,12 +51,14 @@ def get(handle):
     T_TEMPLATE_EMPTYFILE_DESC = translate("StartPage", "Create an empty FreeCAD file")
     T_TEMPLATE_OPENFILE_NAME = translate("StartPage", "Open File")
     T_TEMPLATE_OPENFILE_DESC = translate("StartPage", "Open an existing CAD file or 3D model")
-    T_TEMPLATE_PARAMETRICPART_NAME = translate("StartPage", "Standard Part")
+    T_TEMPLATE_PARAMETRICPART_NAME = translate("StartPage", "Parametric Part")
     T_TEMPLATE_PARAMETRICPART_DESC = translate(
         "StartPage", "Create a part with the Part Design workbench"
     )
     T_TEMPLATE_ASSEMBLY_NAME = translate("StartPage", "Assembly")
-    T_TEMPLATE_ASSEMBLY_DESC = translate("StartPage", "Create an assembly project")
+    T_TEMPLATE_ASSEMBLY_DESC = translate(
+        "StartPage", "Create an assembly with the Assembly workbench"
+    )
     # T_TEMPLATE_CSGPART_NAME = translate("StartPage", "CSG Part")
     # T_TEMPLATE_CSGPART_DESC = translate("StartPage", "Create a part with the Part workbench")
     T_TEMPLATE_2DDRAFT_NAME = translate("StartPage", "2D Draft")
