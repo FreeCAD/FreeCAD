@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 edi <edi271@a1.net>               *
+# *   Copyright (c) 2023 edi <edi271@a1.net>                                *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -71,7 +71,7 @@ class CommandAxoLengthDimension:
             vertexes.append(edges[0].Vertexes[1])
             
         view = Utils.getSelView()
-        scale = view.Scale
+        scale = view.getScale()
 
         StartPt, EndPt = edges[1].Vertexes[0].Point, edges[1].Vertexes[1].Point
         extLineVec = EndPt.sub(StartPt)

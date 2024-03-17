@@ -527,3 +527,13 @@ int Preferences::sectionLineConvention()
 {
     return getPreferenceGroup("Standards")->GetInt("SectionLineStandard", 1);
 }
+
+
+//! true if the GeometryMatcher should be used in correcting Dimension references
+bool Preferences::useExactMatchOnDims()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
+}
+
+
+

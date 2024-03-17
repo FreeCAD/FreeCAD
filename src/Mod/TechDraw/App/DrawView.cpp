@@ -409,10 +409,14 @@ DrawView *DrawView::claimParent() const
 {
     App::PropertyLink *ownerProp = const_cast<DrawView *>(this)->getOwnerProperty();
     if (ownerProp) {
-        return dynamic_cast<DrawView *>(ownerProp->getValue());
+        auto ownerView = dynamic_cast<DrawView *>(ownerProp->getValue());
+        if (ownerView) {
+            return ownerView;
+        }
     }
 
-    return nullptr;
+    // If there is no parent view we are aware of, return the view collection we may belong to
+    return getCollection();
 }
 
 DrawViewClip* DrawView::getClipGroup()
@@ -427,6 +431,19 @@ DrawViewClip* DrawView::getClipGroup()
 
         }
     }
+    return nullptr;
+}
+
+DrawViewCollection *DrawView::getCollection() const
+{
+    std::vector<App::DocumentObject *> parents = getInList();
+    for (auto it = parents.begin(); it != parents.end(); ++it) {
+        auto parentCollection = dynamic_cast<DrawViewCollection *>(*it);
+        if (parentCollection) {
+            return parentCollection;
+        }
+    }
+
     return nullptr;
 }
 

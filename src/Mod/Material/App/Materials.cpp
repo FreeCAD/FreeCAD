@@ -118,6 +118,8 @@ std::shared_ptr<MaterialValue> MaterialProperty::getMaterialValue() const
 
 QString MaterialProperty::getString() const
 {
+    // This method produces a localized string. For a non-localized string use
+    // getDictionaryString()
     if (isNull()) {
         return {};
     }
@@ -130,7 +132,7 @@ QString MaterialProperty::getString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QString::fromStdString("%1")).arg(value.toFloat(), 0, 'g', PRECISION);
+        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', PRECISION);
     }
     return getValue().toString();
 }
@@ -138,6 +140,30 @@ QString MaterialProperty::getString() const
 QString MaterialProperty::getYAMLString() const
 {
     return _valuePtr->getYAMLString();
+}
+
+QString MaterialProperty::getDictionaryString() const
+{
+    // This method produces a non-localized string. For a localized string use
+    // getString()
+    if (isNull()) {
+        return {};
+    }
+    if (getType() == MaterialValue::Quantity) {
+        auto quantity = getValue().value<Base::Quantity>();
+        auto string = QString(QLatin1String("%1 %2"))
+                          .arg(quantity.getValue(), 0, 'g', PRECISION)
+                          .arg(quantity.getUnit().getString());
+        return string;
+    }
+    if (getType() == MaterialValue::Float) {
+        auto value = getValue();
+        if (value.isNull()) {
+            return {};
+        }
+        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', PRECISION);
+    }
+    return getValue().toString();
 }
 
 void MaterialProperty::setPropertyType(const QString& type)
@@ -449,7 +475,7 @@ QString Material::getAuthorAndLicense() const
     if (!_author.isNull()) {
         authorAndLicense = _author;
         if (!_license.isNull()) {
-            authorAndLicense += QString::fromStdString(" ") + _license;
+            authorAndLicense += QLatin1String(" ") + _license;
         }
     }
     else if (!_license.isNull()) {
@@ -925,7 +951,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return QString(QString::fromStdString("%1"))
+            return QString(QLatin1String("%L1"))
                 .arg(value.toFloat(), 0, 'g', MaterialProperty::PRECISION);
         }
         return property->getValue().toString();

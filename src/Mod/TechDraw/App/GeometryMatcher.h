@@ -33,17 +33,23 @@ namespace Part
 class TopoShape;
 }
 
-namespace TechDraw {
+namespace TechDraw
+{
 
-class TechDrawExport GeometryMatcher {
+class TechDrawExport GeometryMatcher
+{
 public:
-    GeometryMatcher() {}
-    explicit GeometryMatcher(DrawViewDimension* dim) { m_dimension = dim; }
+    GeometryMatcher()
+    {}
+    explicit GeometryMatcher(DrawViewDimension* dim)
+    {
+        m_dimension = dim;
+    }
     ~GeometryMatcher() = default;
 
-    bool compareGeometry(Part::TopoShape geom1,  Part::TopoShape geom2);
-    bool comparePoints(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
-    bool compareEdges(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
+    bool compareGeometry(Part::TopoShape geom1, Part::TopoShape geom2);
+    bool comparePoints(TopoDS_Shape& shape1, TopoDS_Shape& shape2);
+    bool compareEdges(TopoDS_Shape& shape1, TopoDS_Shape& shape2);
 
     bool compareLines(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
     bool compareCircles(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
@@ -53,12 +59,21 @@ public:
     bool compareCircleArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
     bool compareEllipseArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
 
+    double getPointTolerance() const
+    {
+        return m_pointTolerance;
+    }
+    void setPointTolerance(double tol)
+    {
+        m_pointTolerance = tol;
+    }
+
 private:
     bool compareEndPoints(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
 
     DrawViewDimension* m_dimension;
+    double m_pointTolerance {EWTOLERANCE};
 };
 
-} //end namespace TechDraw
+}  // end namespace TechDraw
 #endif
-

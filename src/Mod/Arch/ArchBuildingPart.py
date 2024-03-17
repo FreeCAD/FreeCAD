@@ -497,7 +497,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                     FreeCAD.Console.PrintLog("Auto-updating Height of "+child.Name+"\n")
                     self.touchChildren(child)
                     child.Proxy.execute(child)
-            elif Draft.getType(child) in ["Group","BuildingPart"]:
+            elif Draft.getType(child) in ["App::DocumentObjectGroup","Group","BuildingPart"]:
                 self.touchChildren(child)
 
 

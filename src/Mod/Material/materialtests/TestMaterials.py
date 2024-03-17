@@ -170,19 +170,19 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(len(properties["SpecularColor"]) > 0)
         self.assertTrue(len(properties["Transparency"]) > 0)
 
-        self.assertEqual(properties["Density"],
+        self.assertEqual(parseQuantity(properties["Density"]).UserString,
                          parseQuantity("7900.00 kg/m^3").UserString)
         # self.assertEqual(properties["BulkModulus"], "")
         self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value,
                                parseQuantity("0.3").Value)
-        self.assertEqual(properties["YoungsModulus"],
+        self.assertEqual(parseQuantity(properties["YoungsModulus"]).UserString,
                          parseQuantity("210.00 GPa").UserString)
         # self.assertEqual(properties["ShearModulus"], "")
-        self.assertEqual(properties["SpecificHeat"],
+        self.assertEqual(parseQuantity(properties["SpecificHeat"]).UserString,
                          parseQuantity("590.00 J/kg/K").UserString)
-        self.assertEqual(properties["ThermalConductivity"],
+        self.assertEqual(parseQuantity(properties["ThermalConductivity"]).UserString,
                          parseQuantity("43.00 W/m/K").UserString)
-        self.assertEqual(properties["ThermalExpansionCoefficient"],
+        self.assertEqual(parseQuantity(properties["ThermalExpansionCoefficient"]).UserString,
                          parseQuantity("12.00 µm/m/K").UserString)
         self.assertEqual(properties["AmbientColor"], "(0.0020, 0.0020, 0.0020, 1.0)")
         self.assertEqual(properties["DiffuseColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
