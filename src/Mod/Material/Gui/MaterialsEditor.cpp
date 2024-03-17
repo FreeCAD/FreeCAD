@@ -59,14 +59,33 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
 
+MaterialsEditor::MaterialsEditor(std::shared_ptr<Materials::MaterialFilter> filter, QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui_MaterialsEditor)
+    , _material(std::make_shared<Materials::Material>())
+    , _materialSelected(false)
+    , _rendered(nullptr)
+    , _recentMax(0)
+    , _filter(filter)
+{
+    setup();
+}
+
 MaterialsEditor::MaterialsEditor(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_MaterialsEditor)
     , _material(std::make_shared<Materials::Material>())
+    , _materialSelected(false)
     , _rendered(nullptr)
-    , _edited(false)
     , _recentMax(0)
+    , _filter(nullptr)
 {
+    setup();
+}
+
+void MaterialsEditor::setup()
+{
+    Gui::WaitCursor wc;
     ui->setupUi(this);
 
     _warningIcon = QIcon(QString::fromStdString(":/icons/Warning.svg"));
@@ -158,7 +177,9 @@ void MaterialsEditor::getFavorites()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        _favorites.push_back(uuid);
+        if (!_filter || _filter->modelIncluded(uuid)) {
+            _favorites.push_back(uuid);
+        }
     }
 }
 
@@ -234,7 +255,9 @@ void MaterialsEditor::getRecents()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        _recents.push_back(uuid);
+        if (!_filter || _filter->modelIncluded(uuid)) {
+            _recents.push_back(uuid);
+        }
     }
 }
 
@@ -342,7 +365,6 @@ void MaterialsEditor::propertyChange(const QString& property, const QString valu
         updatePreview();
     }
     update();
-    _edited = true;
 }
 
 void MaterialsEditor::onURL(bool checked)
@@ -486,6 +508,7 @@ void MaterialsEditor::onNewMaterial(bool checked)
     // Create a new material
     _material = std::make_shared<Materials::Material>();
     setMaterialDefaults();
+    _materialSelected = false;
 }
 
 void MaterialsEditor::onInheritNewMaterial(bool checked)
@@ -548,6 +571,7 @@ void MaterialsEditor::saveMaterial()
         updateMaterialGeneral();
         _material->resetEditState();
         refreshMaterialTree();
+        _materialSelected = true;
     }
 }
 
@@ -1147,6 +1171,7 @@ void MaterialsEditor::onSelectMaterial(const QItemSelection& selected,
 
     updateMaterial();
     _material->resetEditState();
+    _materialSelected = true;
 }
 
 void MaterialsEditor::onDoubleClick(const QModelIndex& index)
@@ -1162,6 +1187,7 @@ void MaterialsEditor::onDoubleClick(const QModelIndex& index)
         }
     }
 
+    _materialSelected = true;
     accept();
 }
 

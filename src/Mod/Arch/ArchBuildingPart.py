@@ -607,7 +607,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
             vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
         if not "ChildrenShapeColor" in pl:
-            vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
+            vobj.addProperty("App::PropertyMaterial","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape appearance of child objects"))
             vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))

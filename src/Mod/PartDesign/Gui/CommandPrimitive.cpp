@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
+#include <QApplication>
+#include <QMessageBox>
 #endif
 
 #include <App/Document.h>
@@ -46,63 +46,76 @@ using namespace std;
 
 DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive)
 
-static const char * primitiveIntToName(int id)
+static const char* primitiveIntToName(int id)
 {
-    switch(id) {
-        case 0:  return "Box";
-        case 1:  return "Cylinder";
-        case 2:  return "Sphere";
-        case 3:  return "Cone";
-        case 4:  return "Ellipsoid";
-        case 5:  return "Torus";
-        case 6:  return "Prism";
-        case 7:  return "Wedge";
-        default: return nullptr;
+    switch (id) {
+        case 0:
+            return "Box";
+        case 1:
+            return "Cylinder";
+        case 2:
+            return "Sphere";
+        case 3:
+            return "Cone";
+        case 4:
+            return "Ellipsoid";
+        case 5:
+            return "Torus";
+        case 6:
+            return "Prism";
+        case 7:
+            return "Wedge";
+        default:
+            return nullptr;
     };
 }
 
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
-  : Command("PartDesign_CompPrimitiveAdditive")
+    : Command("PartDesign_CompPrimitiveAdditive")
 {
-    sAppModule      = "PartDesign";
-    sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create an additive primitive");
-    sToolTipText    = QT_TR_NOOP("Create an additive primitive");
-    sWhatsThis      = "PartDesign_CompPrimitiveAdditive";
-    sStatusTip      = sToolTipText;
-    eType           = ForEdit;
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Create an additive primitive");
+    sToolTipText = QT_TR_NOOP("Create an additive primitive");
+    sWhatsThis = "PartDesign_CompPrimitiveAdditive";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
 }
 
 void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
-    App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
+    App::Document* doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc)) {
         return;
+    }
 
     // We need either an active Body, or for there to be no Body objects
     // (in which case, just make one) to make a new additive shape.
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(/* messageIfNot = */ false);
 
-    auto shouldMakeBody( false );
+    auto shouldMakeBody(false);
     if (!pcActiveBody) {
-        if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
+        if (doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty()) {
             shouldMakeBody = true;
-        } else {
+        }
+        else {
             PartDesignGui::DlgActiveBody dia(Gui::getMainWindow(), doc);
-            if (dia.exec() == QDialog::DialogCode::Accepted)
+            if (dia.exec() == QDialog::DialogCode::Accepted) {
                 pcActiveBody = dia.getActiveBody();
-            if (!pcActiveBody)
+            }
+            if (!pcActiveBody) {
                 return;
+            }
         }
     }
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
-    auto shapeType( primitiveIntToName(iMsg) );
+    auto shapeType(primitiveIntToName(iMsg));
 
-    Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
+    Gui::Command::openCommand((std::string("Make additive ") + shapeType).c_str());
     if (shouldMakeBody) {
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
@@ -111,33 +124,36 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         return;
     }
 
-    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
+    auto FeatName(getUniqueObjectName(shapeType, pcActiveBody));
 
-    FCMD_OBJ_DOC_CMD(pcActiveBody,"addObject('PartDesign::Additive"<<shapeType<<"','"<<FeatName<<"')");
+    FCMD_OBJ_DOC_CMD(pcActiveBody,
+                     "addObject('PartDesign::Additive" << shapeType << "','" << FeatName << "')");
 
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
-            pcActiveBody->getDocument()->getObject(FeatName.c_str()));
+        pcActiveBody->getDocument()->getObject(FeatName.c_str()));
 
-    if(!prm)
+    if (!prm) {
         return;
-    FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
+    }
+    FCMD_OBJ_CMD(pcActiveBody, "addObject(" << getObjectCmd(prm) << ")");
     Gui::Command::updateActive();
 
     auto base = prm->BaseFeature.getValue();
     FCMD_OBJ_HIDE(base);
 
-    if(!base)
+    if (!base) {
         base = pcActiveBody;
-    copyVisual(prm, "ShapeColor", base);
+    }
+    copyVisual(prm, "ShapeAppearance", base);
     copyVisual(prm, "LineColor", base);
     copyVisual(prm, "PointColor", base);
     copyVisual(prm, "Transparency", base);
     copyVisual(prm, "DisplayMode", base);
 
-    PartDesignGui::setEdit(prm,pcActiveBody);
+    PartDesignGui::setEdit(prm, pcActiveBody);
 }
 
-Gui::Action * CmdPrimtiveCompAdditive::createAction()
+Gui::Action* CmdPrimtiveCompAdditive::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -190,42 +206,54 @@ void CmdPrimtiveCompAdditive::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height, and length"));
+    arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Box"));
+    arc1->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive",
+                                "Create an additive box by its width, height, and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cylinder"));
-    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height, and angle"));
+    arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Cylinder"));
+    arc2->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive",
+                                "Create an additive cylinder by its radius, height, and angle"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Sphere"));
-    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive sphere by its radius and various angles"));
+    arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Sphere"));
+    arc3->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive",
+                                "Create an additive sphere by its radius and various angles"));
     arc3->setStatusTip(arc3->toolTip());
     QAction* arc4 = a[3];
-    arc4->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cone"));
-    arc4->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cone"));
+    arc4->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Cone"));
+    arc4->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive", "Create an additive cone"));
     arc4->setStatusTip(arc4->toolTip());
     QAction* arc5 = a[4];
-    arc5->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Ellipsoid"));
-    arc5->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive ellipsoid"));
+    arc5->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Ellipsoid"));
+    arc5->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive",
+                                             "Create an additive ellipsoid"));
     arc5->setStatusTip(arc5->toolTip());
     QAction* arc6 = a[5];
-    arc6->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Torus"));
-    arc6->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive torus"));
+    arc6->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Torus"));
+    arc6->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive", "Create an additive torus"));
     arc6->setStatusTip(arc6->toolTip());
     QAction* arc7 = a[6];
-    arc7->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Prism"));
-    arc7->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive prism"));
+    arc7->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Prism"));
+    arc7->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive", "Create an additive prism"));
     arc7->setStatusTip(arc7->toolTip());
     QAction* arc8 = a[7];
-    arc8->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Wedge"));
-    arc8->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive wedge"));
+    arc8->setText(QApplication::translate("CmdPrimtiveCompAdditive", "Additive Wedge"));
+    arc8->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveAdditive", "Create an additive wedge"));
     arc8->setStatusTip(arc8->toolTip());
 }
 
@@ -237,63 +265,68 @@ bool CmdPrimtiveCompAdditive::isActive()
 DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive)
 
 CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
-  : Command("PartDesign_CompPrimitiveSubtractive")
+    : Command("PartDesign_CompPrimitiveSubtractive")
 {
-    sAppModule      = "PartDesign";
-    sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a subtractive primitive");
-    sToolTipText    = QT_TR_NOOP("Create a subtractive primitive");
-    sWhatsThis      = "PartDesign_CompPrimitiveSubtractive";
-    sStatusTip      = sToolTipText;
-    eType           = ForEdit;
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Create a subtractive primitive");
+    sToolTipText = QT_TR_NOOP("Create a subtractive primitive");
+    sWhatsThis = "PartDesign_CompPrimitiveSubtractive";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
 }
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {
-    App::Document *doc = getDocument();
-    if (!PartDesignGui::assureModernWorkflow(doc))
+    App::Document* doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc)) {
         return;
+    }
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(true);
 
-    if (!pcActiveBody)
+    if (!pcActiveBody) {
         return;
+    }
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
-    //check if we already have a feature as subtractive ones work only if we have
-    //something to subtract from.
-    App::DocumentObject *prevSolid = pcActiveBody->Tip.getValue();
-    if(!prevSolid) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No previous feature found"),
-                QObject::tr("It is not possible to create a subtractive feature without a base feature available"));
-            return;
+    // check if we already have a feature as subtractive ones work only if we have
+    // something to subtract from.
+    App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
+    if (!prevSolid) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("No previous feature found"),
+                             QObject::tr("It is not possible to create a subtractive feature "
+                                         "without a base feature available"));
+        return;
     }
 
-    auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
+    auto shapeType(primitiveIntToName(iMsg));
+    auto FeatName(getUniqueObjectName(shapeType, pcActiveBody));
 
-    Gui::Command::openCommand( (std::string("Make subtractive ") + shapeType).c_str() );
-    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
+    Gui::Command::openCommand((std::string("Make subtractive ") + shapeType).c_str());
+    FCMD_OBJ_CMD(pcActiveBody,
+                 "newObject('PartDesign::Subtractive" << shapeType << "','" << FeatName << "')");
     Gui::Command::updateActive();
 
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "ShapeAppearance", prevSolid);
     copyVisual(Feat, "LineColor", prevSolid);
     copyVisual(Feat, "PointColor", prevSolid);
     copyVisual(Feat, "Transparency", prevSolid);
     copyVisual(Feat, "DisplayMode", prevSolid);
 
-    if ( isActiveObjectValid() ) {
+    if (isActiveObjectValid()) {
         // TODO  (2015-08-05, Fat-Zer)
         FCMD_OBJ_HIDE(prevSolid);
     }
 
-    PartDesignGui::setEdit(Feat,pcActiveBody);
+    PartDesignGui::setEdit(Feat, pcActiveBody);
 }
 
-Gui::Action * CmdPrimtiveCompSubtractive::createAction()
+Gui::Action* CmdPrimtiveCompSubtractive::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -346,42 +379,54 @@ void CmdPrimtiveCompSubtractive::languageChange()
 {
     Command::languageChange();
 
-    if (!_pcAction)
+    if (!_pcAction) {
         return;
+    }
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive box by its width, height and length"));
+    arc1->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Box"));
+    arc1->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                "Create a subtractive box by its width, height and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Cylinder"));
-    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive cylinder by its radius, height and angle"));
+    arc2->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Cylinder"));
+    arc2->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                "Create a subtractive cylinder by its radius, height and angle"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Sphere"));
-    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive sphere by its radius and various angles"));
+    arc3->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Sphere"));
+    arc3->setToolTip(
+        QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                "Create a subtractive sphere by its radius and various angles"));
     arc3->setStatusTip(arc3->toolTip());
     QAction* arc4 = a[3];
-    arc4->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Cone"));
-    arc4->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive cone"));
+    arc4->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Cone"));
+    arc4->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                             "Create a subtractive cone"));
     arc4->setStatusTip(arc4->toolTip());
     QAction* arc5 = a[4];
-    arc5->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Ellipsoid"));
-    arc5->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive ellipsoid"));
+    arc5->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Ellipsoid"));
+    arc5->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                             "Create a subtractive ellipsoid"));
     arc5->setStatusTip(arc5->toolTip());
     QAction* arc6 = a[5];
-    arc6->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Torus"));
-    arc6->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive torus"));
+    arc6->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Torus"));
+    arc6->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                             "Create a subtractive torus"));
     arc6->setStatusTip(arc6->toolTip());
     QAction* arc7 = a[6];
-    arc7->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Prism"));
-    arc7->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive prism"));
+    arc7->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Prism"));
+    arc7->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                             "Create a subtractive prism"));
     arc7->setStatusTip(arc7->toolTip());
     QAction* arc8 = a[7];
-    arc8->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Wedge"));
-    arc8->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create a subtractive wedge"));
+    arc8->setText(QApplication::translate("CmdPrimtiveCompSubtractive", "Subtractive Wedge"));
+    arc8->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive",
+                                             "Create a subtractive wedge"));
     arc8->setStatusTip(arc8->toolTip());
 }
 
@@ -396,7 +441,7 @@ bool CmdPrimtiveCompSubtractive::isActive()
 
 void CreatePartDesignPrimitiveCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPrimtiveCompAdditive);
     rcCmdMgr.addCommand(new CmdPrimtiveCompSubtractive);

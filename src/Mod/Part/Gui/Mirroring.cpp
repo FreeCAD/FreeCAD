@@ -26,33 +26,34 @@
 
 // to avoid compiler warnings of redefining contents of basic.h
 // later by #include <Gui/ViewProvider.h>
-# define _USE_MATH_DEFINES
-# include <cmath>
+#define _USE_MATH_DEFINES
+#include <cmath>
 
-# include <gp_Ax2.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pnt.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopExp_Explorer.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <Geom_Plane.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 
-# include <cfloat>
-# include <QMessageBox>
-# include <QRegularExpression>
-# include <QTreeWidget>
-# include <QComboBox>
+#include <QComboBox>
+#include <QMessageBox>
+#include <QRegularExpression>
+#include <QTreeWidget>
+#include <cfloat>
 #endif
 
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -61,10 +62,9 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <App/OriginFeature.h>
 
 #include "Mirroring.h"
 
@@ -73,14 +73,14 @@
 
 using namespace PartGui;
 
-namespace PartGui {
-class MirrorPlaneSelection : public Gui::SelectionFilterGate
+namespace PartGui
+{
+class MirrorPlaneSelection: public Gui::SelectionFilterGate
 {
 public:
     explicit MirrorPlaneSelection()
         : Gui::SelectionFilterGate()
-    {
-    }
+    {}
     /**
      * We can't simply check if the selection is a face or an edge because only certain faces
      * and edges can work.  Bspline faces won't work, and only circle edges are supported.  But we
@@ -94,72 +94,87 @@ public:
         std::string subString(sSubName);
 
         if (pObj->isDerivedFrom(Part::Plane::getClassTypeId()) || pObj->isDerivedFrom<App::Plane>()
-                || (strstr(pObj->getNameInDocument(), "Plane") && pObj->isDerivedFrom(Part::Datum::getClassTypeId()))) {
+            || (strstr(pObj->getNameInDocument(), "Plane")
+                && pObj->isDerivedFrom(Part::Datum::getClassTypeId()))) {
             return true;
             // reference is an app::link or a part::feature or some subobject
-        } else if (pObj->isDerivedFrom<Part::Feature>() || pObj->isDerivedFrom<App::Link>()) {
-            bool isFace = false; //will be true if user selected face subobject or if object only has 1 face
-            bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
+        }
+        else if (pObj->isDerivedFrom<Part::Feature>() || pObj->isDerivedFrom<App::Link>()) {
+            bool isFace =
+                false;  // will be true if user selected face subobject or if object only has 1 face
+            bool isEdge =
+                false;  // will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
-            if (subString.length() > 0){
+            if (subString.length() > 0) {
                 shape = Part::Feature::getTopoShape(pObj, subString.c_str(), true).getShape();
-                if (strstr(subString.c_str(), "Face")){
-                    isFace = true; //was face subobject, e.g. Face3
-                } else {
-                    if (strstr(subString.c_str(), "Edge")){
-                        isEdge = true; //was edge subobject, e.g. Edge7
+                if (strstr(subString.c_str(), "Face")) {
+                    isFace = true;  // was face subobject, e.g. Face3
+                }
+                else {
+                    if (strstr(subString.c_str(), "Edge")) {
+                        isEdge = true;  // was edge subobject, e.g. Edge7
                     }
                 }
-            } else {
-                shape = Part::Feature::getShape(pObj); //no subobjects were selected, so this is entire shape of feature
+            }
+            else {
+                shape = Part::Feature::getShape(
+                    pObj);  // no subobjects were selected, so this is entire shape of feature
             }
 
-            // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
-            // instead we can infer what was intended
+            // if there is only 1 face or 1 edge, then we don't need to force the user to select
+            // that face or edge instead we can infer what was intended
             int faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
             int edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
 
             TopoDS_Face face;
             TopoDS_Edge edge;
 
-            if (isFace) { //user selected a face, so use shape to get the TopoDS::Face
+            if (isFace) {  // user selected a face, so use shape to get the TopoDS::Face
                 face = TopoDS::Face(shape);
-            } else {
-                if (faceCount == 1) { //entire feature selected, but it only has 1 face, so get that face
-                    TopoDS_Shape tdface = Part::TopoShape(shape).getSubShape(std::string("Face1").c_str());
+            }
+            else {
+                if (faceCount
+                    == 1) {  // entire feature selected, but it only has 1 face, so get that face
+                    TopoDS_Shape tdface =
+                        Part::TopoShape(shape).getSubShape(std::string("Face1").c_str());
                     face = TopoDS::Face(tdface);
                     isFace = true;
                 }
             }
-            if (!isFace && isEdge){ //don't bother with edge if we already have a face to work with
-                edge = TopoDS::Edge(shape); //isEdge means an edge was selected
-            } else {
-                if (edgeCount == 1){ //we don't have a face yet and there were no edges in the subobject selection
-                    //but since this object only has 1 edge, we use it
-                    TopoDS_Shape tdedge = Part::TopoShape(shape).getSubShape(std::string("Edge1").c_str());
+            if (!isFace
+                && isEdge) {  // don't bother with edge if we already have a face to work with
+                edge = TopoDS::Edge(shape);  // isEdge means an edge was selected
+            }
+            else {
+                if (edgeCount == 1) {  // we don't have a face yet and there were no edges in the
+                                       // subobject selection
+                    // but since this object only has 1 edge, we use it
+                    TopoDS_Shape tdedge =
+                        Part::TopoShape(shape).getSubShape(std::string("Edge1").c_str());
                     edge = TopoDS::Edge(tdedge);
                     isEdge = true;
                 }
             }
 
-            if (isFace && face.IsNull()) { //ensure we have a good face to work with
+            if (isFace && face.IsNull()) {  // ensure we have a good face to work with
                 return false;
             }
-            if (isEdge && edge.IsNull()){ //ensure we have a good edge to work with
+            if (isEdge && edge.IsNull()) {  // ensure we have a good edge to work with
                 return false;
             }
-            if (!isFace && !isEdge){
+            if (!isFace && !isEdge) {
                 return false;
             }
 
             if (isFace) {
                 BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() != GeomAbs_Plane){
+                if (adapt.GetType() != GeomAbs_Plane) {
                     return false;
                 }
                 return true;
-            } else {
-                if (isEdge){
+            }
+            else {
+                if (isEdge) {
                     BRepAdaptor_Curve curve(edge);
                     if (!(curve.GetType() == GeomAbs_Circle)) {
                         return false;
@@ -167,18 +182,19 @@ public:
                     return true;
                 }
             }
-        } //end of if(derived from part::feature)
+        }  // end of if(derived from part::feature)
         return true;
-    }//end of allow()
+    }  // end of allow()
 
-}; //end of class
-}; //end of namespace block
+};  // end of class
+};  // namespace PartGui
 
 
 /* TRANSLATOR PartGui::Mirroring */
 
 Mirroring::Mirroring(QWidget* parent)
-  : QWidget(parent), ui(new Ui_Mirroring)
+    : QWidget(parent)
+    , ui(new Ui_Mirroring)
 {
     ui->setupUi(this);
     ui->baseX->setRange(-DBL_MAX, DBL_MAX);
@@ -205,18 +221,20 @@ Mirroring::Mirroring(QWidget* parent)
  */
 Mirroring::~Mirroring() = default;
 
-void Mirroring::onSelectButtonClicked(){
-    if (!ui->selectButton->isChecked()){
+void Mirroring::onSelectButtonClicked()
+{
+    if (!ui->selectButton->isChecked()) {
         Gui::Selection().rmvSelectionGate();
         ui->selectButton->setText(tr("Select reference"));
-    } else {
+    }
+    else {
         MirrorPlaneSelection* gate = new MirrorPlaneSelection();
         Gui::Selection().addSelectionGate(gate);
         ui->selectButton->setText(tr("Selecting"));
     }
 }
 
-void Mirroring::changeEvent(QEvent *e)
+void Mirroring::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -224,7 +242,7 @@ void Mirroring::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void Mirroring::onSelectionChanged(const Gui::SelectionChanges &msg)
+void Mirroring::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (ui->selectButton->isChecked()) {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -241,11 +259,13 @@ void Mirroring::onSelectionChanged(const Gui::SelectionChanges &msg)
 void Mirroring::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc)
+    if (!activeDoc) {
         return;
+    }
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui)
+    if (!activeGui) {
         return;
+    }
 
     this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
@@ -261,7 +281,9 @@ void Mirroring::findShapes()
             child->setToolTip(0, label);
             child->setData(0, Qt::UserRole, name);
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-            if (vp) child->setIcon(0, vp->getIcon());
+            if (vp) {
+                child->setIcon(0, vp->getIcon());
+            }
             ui->shapes->addTopLevelItem(child);
         }
     }
@@ -276,15 +298,16 @@ bool Mirroring::reject()
 bool Mirroring::accept()
 {
     if (ui->shapes->selectedItems().isEmpty()) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for mirroring, first."));
+        QMessageBox::critical(this, windowTitle(), tr("Select a shape for mirroring, first."));
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toLatin1());
+    App::Document* activeDoc =
+        App::GetApplication().getDocument((const char*)this->document.toLatin1());
     if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("No such document '%1'.").arg(this->document));
+        QMessageBox::critical(this,
+                              windowTitle(),
+                              tr("No such document '%1'.").arg(this->document));
         return false;
     }
 
@@ -294,19 +317,22 @@ bool Mirroring::accept()
 
     QString shape, label, selectionString;
     QRegularExpression rx(QString::fromLatin1(R"( \(Mirror #\d+\)$)"));
-    QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
-    float normx=0, normy=0, normz=0;
+    QList<QTreeWidgetItem*> items = ui->shapes->selectedItems();
+    float normx = 0, normy = 0, normz = 0;
     int index = ui->comboBox->currentIndex();
-    std::string selection(""); //set MirrorPlane property to empty string unless
-                                //user has selected Use selected reference in combobox
+    std::string selection("");  // set MirrorPlane property to empty string unless
+                                // user has selected Use selected reference in combobox
 
-    if (index == 0){
+    if (index == 0) {
         normz = 1.0f;
-    } else if (index == 1){
+    }
+    else if (index == 1) {
         normy = 1.0f;
-    } else if (index == 2){
+    }
+    else if (index == 2) {
         normx = 1.0f;
-    } else if (index == 3){ //use selected reference
+    }
+    else if (index == 3) {  // use selected reference
         std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
         if (selobjs.size() == 1) {
             selection = selobjs[0].getAsPropertyLinkSubString();
@@ -323,26 +349,30 @@ bool Mirroring::accept()
 
         // if we already have the suffix " (Mirror #<number>)" remove it
         int pos = label.indexOf(rx);
-        if (pos > -1)
+        if (pos > -1) {
             label = label.left(pos);
+        }
         label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
 
-        QString code = QString::fromLatin1(
-            "__doc__=FreeCAD.getDocument(\"%1\")\n"
-            "__doc__.addObject(\"Part::Mirroring\")\n"
-            "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
-            "__doc__.ActiveObject.Label=u\"%3\"\n"
-            "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
-            "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
-            "__doc__.ActiveObject.MirrorPlane=(%10)\n"
-            "del __doc__")
-            .arg(this->document, shape, label)
-            .arg(normx).arg(normy).arg(normz)
-            .arg(basex).arg(basey).arg(basez)
-            .arg(selectionString);
+        QString code = QString::fromLatin1("__doc__=FreeCAD.getDocument(\"%1\")\n"
+                                           "__doc__.addObject(\"Part::Mirroring\")\n"
+                                           "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
+                                           "__doc__.ActiveObject.Label=u\"%3\"\n"
+                                           "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
+                                           "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
+                                           "__doc__.ActiveObject.MirrorPlane=(%10)\n"
+                                           "del __doc__")
+                           .arg(this->document, shape, label)
+                           .arg(normx)
+                           .arg(normy)
+                           .arg(normz)
+                           .arg(basex)
+                           .arg(basey)
+                           .arg(basez)
+                           .arg(selectionString);
         Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
         QByteArray from = shape.toLatin1();
-        Gui::Command::copyVisual("ActiveObject", "ShapeColor", from);
+        Gui::Command::copyVisual("ActiveObject", "ShapeAppearance", from);
         Gui::Command::copyVisual("ActiveObject", "LineColor", from);
         Gui::Command::copyVisual("ActiveObject", "PointColor", from);
     }
@@ -358,9 +388,10 @@ bool Mirroring::accept()
 TaskMirroring::TaskMirroring()
 {
     widget = new Mirroring();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Mirror.svg"),
-        widget->windowTitle(), false, nullptr);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_Mirror.svg"),
+                                         widget->windowTitle(),
+                                         false,
+                                         nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

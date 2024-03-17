@@ -196,7 +196,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     ADD_PROPERTY(LineWidth, (2.0f));
     LineWidth.setConstraints(&floatRange);
 
-    ShapeColor.setValue(App::Color(1.0f, 0.7f, 0.0f));
+    ShapeAppearance.setDiffuseColor(App::Color(1.0f, 0.7f, 0.0f));
     Transparency.setValue(0);
     ADD_PROPERTY(BackfaceCulling, (true));
     ADD_PROPERTY(ShowInner, (false));
@@ -597,7 +597,7 @@ void ViewProviderFemMesh::resetColorByNodeId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
-    const App::Color& c = ShapeColor.getValue();
+    const App::Color& c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
 }
 
@@ -710,7 +710,7 @@ void ViewProviderFemMesh::resetColorByElementId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
-    const App::Color& c = ShapeColor.getValue();
+    const App::Color& c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
 }
 

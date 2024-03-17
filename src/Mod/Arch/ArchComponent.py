@@ -1217,7 +1217,6 @@ class ViewProviderComponent:
                         if len(obj.Base.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-                        #self.onChanged(obj.ViewObject,"ShapeColor")
         elif prop == "CloneOf":
             if obj.CloneOf:
                 mat = None
@@ -1229,7 +1228,6 @@ class ViewProviderComponent:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-                            #self.onChanged(obj.ViewObject,"ShapeColor")
         return
 
     def getIcon(self):

@@ -164,7 +164,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                             std::vector<App::Color> colors;
                             TopTools_IndexedMapOfShape fMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-                            colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
+                            colors.resize(fMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
 
                             for (const auto& jt : it.second) {
                                 std::size_t idx =

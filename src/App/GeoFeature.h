@@ -25,8 +25,9 @@
 #define APP_GEOFEATURE_H
 
 #include "DocumentObject.h"
-#include "PropertyGeo.h"
 #include "MappedElement.h"
+#include "Material.h"
+#include "PropertyGeo.h"
 
 namespace App
 {
@@ -34,7 +35,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport GeoFeature : public App::DocumentObject
+class AppExport GeoFeature: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeature);
 
@@ -52,7 +53,7 @@ public:
      * was only called by alignment task (Edit->Alignment)
      * @param transform (input).
      */
-    virtual void transformPlacement(const Base::Placement &transform);
+    virtual void transformPlacement(const Base::Placement& transform);
     /**
      * This method returns the main property of a geometric object that holds
      * the actual geometry. For a part object this is the Shape property, for
@@ -66,14 +67,15 @@ public:
      */
     PyObject* getPyObject() override;
 
-    /// Specify the type of element name to return when calling getElementName() 
-    enum ElementNameType {
+    /// Specify the type of element name to return when calling getElementName()
+    enum ElementNameType
+    {
         /// Normal usage
-        Normal=0,
+        Normal = 0,
         /// For importing
-        Import=1,
+        Import = 1,
         /// For exporting
-        Export=2,
+        Export = 2,
     };
     /** Return the new and old style sub-element name
      *
@@ -85,13 +87,13 @@ public:
      * This function currently is does nothing. The new style element name
      * generation will be added in the next batch of patches.
      */
-    virtual std::pair<std::string,std::string> getElementName(
-            const char *name, ElementNameType type=Normal) const;
+    virtual std::pair<std::string, std::string> getElementName(const char* name,
+                                                               ElementNameType type = Normal) const;
 
     /** Resolve both the new and old style element name
      *
      * @param obj: top parent object
-     * @param subname: subname reference 
+     * @param subname: subname reference
      * @param elementName: output of a pair(newElementName,oldElementName)
      * @param append: Whether to include subname prefix into the returned
      *                element name
@@ -102,31 +104,53 @@ public:
      *
      * @return Return the owner object of the element
      */
-    static DocumentObject *resolveElement(App::DocumentObject *obj, 
-            const char *subname, std::pair<std::string,std::string> &elementName, 
-            bool append=false, ElementNameType type=Normal,
-            const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
+    static DocumentObject* resolveElement(App::DocumentObject* obj,
+                                          const char* subname,
+                                          std::pair<std::string, std::string>& elementName,
+                                          bool append = false,
+                                          ElementNameType type = Normal,
+                                          const DocumentObject* filter = nullptr,
+                                          const char** element = nullptr,
+                                          GeoFeature** geo = nullptr);
 
     /**
      * @brief Calculates the placement in the global reference coordinate system
-     * 
-     * In FreeCAD the GeoFeature placement describes the local placement of the object in its parent
-     * coordinate system. This is however not always the same as the global reference system. If the
-     * object is in a GeoFeatureGroup, hence in another local coordinate system, the Placement
-     * property does only give the local transformation. This function can be used to calculate the 
-     * placement of the object in the global reference coordinate system taking all stacked local 
-     * systems into account.
-     * 
+     *
+     * In FreeCAD the GeoFeature placement describes the local placement of the object in its
+     * parent coordinate system. This is however not always the same as the global reference
+     * system. If the object is in a GeoFeatureGroup, hence in another local coordinate system,
+     * the Placement property does only give the local transformation. This function can be used
+     * to calculate the placement of the object in the global reference coordinate system taking
+     * all stacked local systems into account.
+     *
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+    /**
+     * @brief Virtual function to get an App::Material object describing the appearance
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtal function will return a
+     * App::Material object describing the appearance properties of the material.
+     *
+     * @return App::Material the appearance properties of the object material
+     */
+    virtual App::Material getMaterialAppearance() const;
+    /**
+     * @brief Virtual function to set the appearance with an App::Material object
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtal function will set the
+     * appearance from an App::Material object.
+     */
+    virtual void setMaterialAppearance(const App::Material& material);
 
 protected:
     std::pair<std::string, std::string> _getElementName(const char* name,
                                                         const Data::MappedElement& mapped) const;
 };
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_GEOFEATURE_H
+#endif  // APP_GEOFEATURE_H
