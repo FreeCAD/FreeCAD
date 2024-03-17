@@ -62,7 +62,6 @@
 #include "Control.h"
 #include "Clipping.h"
 #include "DemoMode.h"
-#include "DlgDisplayPropertiesImp.h"
 #include "DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
@@ -1260,36 +1259,6 @@ void StdCmdHideObjects::activated(int iMsg)
 bool StdCmdHideObjects::isActive()
 {
     return App::GetApplication().getActiveDocument();
-}
-
-//===========================================================================
-// Std_SetAppearance
-//===========================================================================
-DEF_STD_CMD_A(StdCmdSetAppearance)
-
-StdCmdSetAppearance::StdCmdSetAppearance()
-  : Command("Std_SetAppearance")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Appearance...");
-    sToolTipText  = QT_TR_NOOP("Sets the display properties of the selected object");
-    sWhatsThis    = "Std_SetAppearance";
-    sStatusTip    = QT_TR_NOOP("Sets the display properties of the selected object");
-    sPixmap       = "Std_SetAppearance";
-    sAccel        = "Ctrl+D";
-    eType         = Alter3DView;
-}
-
-void StdCmdSetAppearance::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
-}
-
-bool StdCmdSetAppearance::isActive()
-{
-    return (Gui::Control().activeDialog() == nullptr) &&
-           (Gui::Selection().size() != 0);
 }
 
 //===========================================================================
@@ -4123,7 +4092,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdViewLoadImage());
     rcCmdMgr.addCommand(new StdMainFullscreen());
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
-    rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
     rcCmdMgr.addCommand(new StdCmdToggleTransparency());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());

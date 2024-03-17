@@ -66,6 +66,7 @@
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
+#include <Mod/Material/App/MaterialManager.h>
 
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
@@ -83,6 +84,9 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature()
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+    auto mat = Materials::MaterialManager::defaultMaterial();
+    // ADD_PROPERTY_TYPE(ShapeMaterial, (mat), osgroup, App::Prop_None, "Shape material");
+    ADD_PROPERTY(ShapeMaterial, (*mat));
 }
 
 Feature::~Feature() = default;
@@ -589,6 +593,15 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
     return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
 }
 
+App::Material Feature::getMaterialAppearance() const
+{
+    return ShapeMaterial.getValue().getMaterialAppearance();
+}
+
+void Feature::setMaterialAppearance(const App::Material& material)
+{
+    ShapeMaterial.setValue(material);
+}
 
 // Toponaming project March 2024:  This method should be going away when we get to the python layer.
 void Feature::clearShapeCache() {

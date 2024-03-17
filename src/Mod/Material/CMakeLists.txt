@@ -34,6 +34,7 @@ SET(Material_Icon_Files
 
 # collect all the material cards:
 SET(MaterialLib_Files
+    Resources/Materials/Standard/Default.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/Standard/Aggregate/Reinforcement-FIB-B500.FCMat

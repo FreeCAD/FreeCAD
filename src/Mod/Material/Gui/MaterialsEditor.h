@@ -36,6 +36,7 @@
 #include <Base/Handle.h>
 #include <Base/Parameter.h>
 
+#include <Mod/Material/App/MaterialFilter.h>
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
@@ -52,6 +53,8 @@ class MaterialsEditor: public QDialog
     Q_OBJECT
 
 public:
+    explicit MaterialsEditor(std::shared_ptr<Materials::MaterialFilter> filter,
+                             QWidget* parent = nullptr);
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override = default;
 
@@ -96,6 +99,15 @@ public:
     void onDoubleClick(const QModelIndex& index);
     void onContextMenu(const QPoint& pos);
 
+    bool isMaterialSelected() const
+    {
+        return _materialSelected;
+    }
+    std::shared_ptr<Materials::Material> getMaterial()
+    {
+        return _material;
+    }
+
 protected:
     int confirmSave(QWidget* parent);
     void saveMaterial();
@@ -106,11 +118,14 @@ private:
     Materials::ModelManager _modelManager;
     std::shared_ptr<Materials::Material> _material;
     AppearancePreview* _rendered;
-    bool _edited;
+    bool _materialSelected;
     std::list<QString> _favorites;
     std::list<QString> _recents;
     int _recentMax;
     QIcon _warningIcon;
+    std::shared_ptr<Materials::MaterialFilter> _filter;
+
+    void setup();
 
     void saveWindow();
     void saveMaterialTreeChildren(const Base::Reference<ParameterGrp>& param,

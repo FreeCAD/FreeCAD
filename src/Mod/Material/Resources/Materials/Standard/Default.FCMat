@@ -1,0 +1,15 @@
+---
+# File created by ConvertFCMat.py
+General:
+  UUID: "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
+  Name: "Default"
+  Description: "Generic material with density of 1"
+Inherits:
+  Default:
+    UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
+Models:
+  Density:
+    UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+    Density: "1 kg/m^3"

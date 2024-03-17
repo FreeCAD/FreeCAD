@@ -458,7 +458,7 @@ class ViewProviderArchReference:
     def onChanged(self,vobj,prop):
 
         if prop == "ShapeColor":
-            # prevent ShapeColor to override DiffuseColor
+            # prevent ShapeColor from overriding DiffuseColor
             if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors"):
                 if vobj.DiffuseColor and vobj.UpdateColors:
                     vobj.DiffuseColor = vobj.DiffuseColor

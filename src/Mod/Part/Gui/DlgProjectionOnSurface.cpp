@@ -655,7 +655,7 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(
     if (vp) {
         const unsigned int color = 0x8ae23400;
         vp->LineColor.setValue(color);
-        vp->ShapeColor.setValue(color);
+        vp->ShapeAppearance.setDiffuseColor(App::Color(color));
         vp->PointColor.setValue(color);
         vp->Transparency.setValue(0);
     }
@@ -716,20 +716,22 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
     }
     auto index = anIndices.FindIndex(currentShape);
 
-    // set color
-    auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
-        Gui::Application::Instance->getViewProvider(iCurrentObject));
-    if (vp) {
-        std::vector<App::Color> colors;
-        App::Color defaultColor;
-        if (currentShapeType == TopAbs_FACE) {
-            colors = vp->DiffuseColor.getValues();
-            defaultColor = vp->ShapeColor.getValue();
-        }
-        else if (currentShapeType == TopAbs_EDGE) {
-            colors = vp->LineColorArray.getValues();
-            defaultColor = vp->LineColor.getValue();
-        }
+  //set color
+  PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(iCurrentObject));
+  if (vp)
+  {
+    std::vector<App::Color> colors;
+    App::Color defaultColor;
+    if (currentShapeType == TopAbs_FACE)
+    {
+      colors = vp->DiffuseColor.getValues();
+      defaultColor = vp->ShapeAppearance.getDiffuseColor();
+    }
+    else if ( currentShapeType == TopAbs_EDGE )
+    {
+      colors = vp->LineColorArray.getValues();
+      defaultColor = vp->LineColor.getValue();
+    }
 
         if (static_cast<Standard_Integer>(colors.size()) != anIndices.Extent()) {
             colors.resize(anIndices.Extent(), defaultColor);
