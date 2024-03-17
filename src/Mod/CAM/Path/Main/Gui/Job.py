@@ -94,7 +94,7 @@ class ViewProvider:
         vobj.setEditorMode("BoundingBox", mode)
         vobj.setEditorMode("DisplayMode", mode)
         vobj.setEditorMode("Selectable", mode)
-        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("ShapeAppearance", mode)
         vobj.setEditorMode("Transparency", mode)
         self.deleteOnReject = True
 

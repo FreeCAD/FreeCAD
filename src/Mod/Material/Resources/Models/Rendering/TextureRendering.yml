@@ -35,7 +35,12 @@ AppearanceModel:
     Type: 'File'
     Units: ''
     URL: ''
-    Description: " "
+    Description: "Path to file containing a texture image. Only used if TextureImage is unpopulated"
+  TextureImage:
+    Type: 'Image'
+    Units: ''
+    URL: ''
+    Description: "Embedded texture image"
   TextureScaling:
     DisplayName: "Texture Scaling"
     Type: 'Float'

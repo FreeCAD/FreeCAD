@@ -685,9 +685,9 @@ class MaterialEditor:
 
                 from importFCMat import write
                 write(filename, d)
-                import Material
+                import Materials
                 # Load the material
-                manager = Material.MaterialManager()
+                manager = Materials.MaterialManager()
                 manager.getMaterialByPath(filename)
                 self.edited = False
                 self.updateCardsInCombo()

@@ -431,7 +431,7 @@ void DlgRevolution::accept()
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
             QByteArray from = shape.toLatin1();
-            Gui::Command::copyVisual(to, "ShapeColor", from);
+            Gui::Command::copyVisual(to, "ShapeAppearance", from);
             Gui::Command::copyVisual(to, "LineColor", from);
             Gui::Command::copyVisual(to, "PointColor", from);
         }

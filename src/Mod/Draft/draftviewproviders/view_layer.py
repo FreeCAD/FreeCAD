@@ -70,16 +70,16 @@ class ViewProviderLayer:
                              _tip)
             vobj.OverrideLineColorChildren = True
 
-        if "OverrideShapeColorChildren" not in properties:
+        if "OverrideShapeAppearanceChildren" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
                                      "the shape color of the layer")
             vobj.addProperty("App::PropertyBool",
-                             "OverrideShapeColorChildren",
+                             "OverrideShapeAppearanceChildren",
                              "Layer",
                              _tip)
-            vobj.OverrideShapeColorChildren = True
+            vobj.OverrideShapeAppearanceChildren = True
 
         if "UsePrintColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",

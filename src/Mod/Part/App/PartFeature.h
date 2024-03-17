@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <TopoDS_Face.hxx>
@@ -57,6 +58,7 @@ public:
     ~Feature() override;
 
     PropertyPartShape Shape;
+    Materials::PropertyMaterial ShapeMaterial;
 
     /** @name methods override feature */
     //@{
@@ -104,6 +106,9 @@ public:
 
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    App::Material getMaterialAppearance() const override;
+    void setMaterialAppearance(const App::Material& material) override;
 
     /** Convenience function to extract shape from fully qualified subname
      *
