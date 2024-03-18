@@ -28,7 +28,7 @@
 
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"
-
+#include "ExtrusionHelper.h"
 
 namespace Part
 {
@@ -53,22 +53,6 @@ public:
     App::PropertyAngle TaperAngleRev;
     App::PropertyString FaceMakerClass;
 
-
-    /**
-     * @brief The ExtrusionParameters struct is supposed to be filled with final
-     * extrusion parameters, after resolving links, applying mode logic,
-     * reversing, etc., and be passed to extrudeShape.
-     */
-    struct ExtrusionParameters {
-        gp_Dir dir;
-        double lengthFwd{0};
-        double lengthRev{0};
-        bool solid{false};
-        double taperAngleFwd{0}; //in radians
-        double taperAngleRev{0};
-        std::string faceMakerClass;
-    };
-
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -82,11 +66,11 @@ public:
 
     /**
      * @brief extrudeShape powers the extrusion feature.
+     * @param result: result of extrusion
      * @param source: the shape to be extruded
      * @param params: extrusion parameters
-     * @return result of extrusion
      */
-    static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
