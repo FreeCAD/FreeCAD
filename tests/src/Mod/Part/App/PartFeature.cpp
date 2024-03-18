@@ -120,12 +120,12 @@ TEST_F(FeaturePartTest, create)
 
     // Check that the features have been created in the correct document
 
-    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefore the number of
-    // features in that document is the same of the features created with Feature::create
+    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefore the number
+    // of features in that document is the same of the features created with Feature::create
     EXPECT_EQ(_doc->getObjects().size(), 3);
 
-    // The last call to Feature::create acts on otherDoc, which is empty, and therefore that document
-    // will have only 1 feature
+    // The last call to Feature::create acts on otherDoc, which is empty, and therefore that
+    // document will have only 1 feature
     EXPECT_EQ(otherDoc->getObjects().size(), 1);
 }
 
