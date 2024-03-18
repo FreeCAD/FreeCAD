@@ -90,8 +90,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 #endif
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
-
-        qApp->installEventFilter(this);
     }
     else {
         ui->expression->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -109,7 +107,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
-    qApp->removeEventFilter(this);
     delete ui;
 }
 
@@ -280,35 +277,6 @@ void DlgExpressionInput::show()
     QDialog::show();
     this->activateWindow();
     ui->expression->selectAll();
-}
-
-void DlgExpressionInput::showEvent(QShowEvent* ev)
-{
-    QDialog::showEvent(ev);
-}
-
-bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
-{
-    // if the user clicks on a widget different to this
-    if (ev->type() == QEvent::MouseButtonPress && obj != this) {
-        // Since the widget has a transparent background we cannot rely
-        // on the size of the widget. Instead, it must be checked if the
-        // cursor is on this or an underlying widget or outside.
-        if (!underMouse()) {
-            // if the expression fields context-menu is open do not close the dialog
-            auto menu = qobject_cast<QMenu*>(obj);
-            if (menu && menu->parentWidget() == ui->expression) {
-                return false;
-            }
-            bool on = ui->expression->completerActive();
-            // Do this only if the completer is not shown
-            if (!on) {
-                qApp->removeEventFilter(this);
-                reject();
-            }
-        }
-    }
-    return false;
 }
 
 

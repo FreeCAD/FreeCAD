@@ -78,6 +78,7 @@ public:
     std::shared_ptr<MaterialValue> getMaterialValue() const;
     QString getString() const;
     QString getYAMLString() const;
+    QString getDictionaryString() const;  // Non-localized string
     bool getBoolean() const;
     int getInt() const;
     double getFloat() const;

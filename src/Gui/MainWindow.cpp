@@ -1270,6 +1270,7 @@ void MainWindow::tabChanged(MDIView* view)
 {
     Q_UNUSED(view);
     updateActions();
+    getMainWindow()->setWindowTitle(view->buildWindowTitle());
 }
 
 void MainWindow::tabCloseRequested(int index)
@@ -1665,6 +1666,7 @@ void MainWindow::_updateActions()
         Application::Instance->commandManager().testActive();
     }
     d->actionUpdateDelay = 0;
+    getMainWindow()->setWindowTitle(activeWindow()->buildWindowTitle());
 }
 
 void MainWindow::updateEditorActions()
@@ -2368,6 +2370,7 @@ void MainWindow::changeEvent(QEvent *e)
                     d->activeView = view;
                     Application::Instance->viewActivated(view);
                 }
+                getMainWindow()->setWindowTitle(view->buildWindowTitle());
             }
         }
     }
@@ -2509,97 +2512,132 @@ QMdiArea *MainWindow::getMdiArea() const
     return d->mdiArea;
 }
 
-// ----------------------------------------------------------
-
-StatusBarObserver::StatusBarObserver()
-  : WindowParameter("OutputWindow")
+void MainWindow::setWindowTitle(const QString& string)
 {
-    msg = QString::fromLatin1("#statusBar{color: #000000}"); // black
-    wrn = QString::fromLatin1("#statusBar{color: #ffaa00}"); // orange
-    err = QString::fromLatin1("#statusBar{color: #ff0000}"); // red
-    Base::Console().AttachObserver(this);
-    getWindowParameter()->Attach(this);
-    getWindowParameter()->NotifyAll();
-}
+    QString title;
+    QString appname =
+        QString(static_cast<QApplication*>(QCoreApplication::instance())->applicationName());
 
-StatusBarObserver::~StatusBarObserver()
-{
-    getWindowParameter()->Detach(this);
-    Base::Console().DetachObserver(this);
-}
+    // allow to disable version number
+    ParameterGrp::handle hGen = +App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General");
+    bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
 
-void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
-{
-    ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-    auto format = QString::fromLatin1("#statusBar{color: %1}");
-    if (strcmp(sReason, "colorText") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+    if (showVersion) {
+        // set main window title with FreeCAD Version
+        auto config = App::Application::Config();
+        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+        title = QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix);
     }
-    else if (strcmp(sReason, "colorWarning") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
-    }
-    else if (strcmp(sReason, "colorError") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
-    }
-    else if (strcmp(sReason, "colorCritical") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->critical = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
-    }
-}
-
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
-                                Base::IntendedRecipient recipient, Base::ContentType content)
-{
-    (void) notifiername;
-
-    // Do not log untranslated messages, or messages intended only to a developer to status bar
-    if( recipient == Base::IntendedRecipient::Developer ||
-        content == Base::ContentType::Untranslated ||
-        content == Base::ContentType::Untranslatable )
-        return;
-
-    int messageType = -1;
-    switch(level){
-        case Base::LogStyle::Warning:
-            messageType = MainWindow::Wrn;
-            break;
-        case Base::LogStyle::Message:
-            messageType = MainWindow::Msg;
-            break;
-        case Base::LogStyle::Error:
-            messageType = MainWindow::Err;
-            break;
-        case Base::LogStyle::Log:
-            messageType = MainWindow::Log;
-            break;
-        case Base::LogStyle::Critical:
-            messageType = MainWindow::Critical;
-            break;
-        default:
-            break;
+    else {
+        title = appname;
     }
 
-    // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    auto ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
-    QApplication::postEvent(getMainWindow(), ev);
+    if (!string.isEmpty()) {
+        title = QString::fromUtf8("[*] %1 - %2").arg(string, title);
+    }
+
+    QMainWindow::setWindowTitle(title);
 }
 
-// -------------------------------------------------------------
+    // ----------------------------------------------------------
 
-int ActionStyleEvent::EventType = -1;
+    StatusBarObserver::StatusBarObserver()
+        : WindowParameter("OutputWindow")
+    {
+        msg = QString::fromLatin1("#statusBar{color: #000000}");  // black
+        wrn = QString::fromLatin1("#statusBar{color: #ffaa00}");  // orange
+        err = QString::fromLatin1("#statusBar{color: #ff0000}");  // red
+        Base::Console().AttachObserver(this);
+        getWindowParameter()->Attach(this);
+        getWindowParameter()->NotifyAll();
+    }
 
-ActionStyleEvent::ActionStyleEvent(Style type)
-  : QEvent(QEvent::Type(EventType)), type(type)
-{
-}
+    StatusBarObserver::~StatusBarObserver()
+    {
+        getWindowParameter()->Detach(this);
+        Base::Console().DetachObserver(this);
+    }
 
-ActionStyleEvent::Style ActionStyleEvent::getType() const
-{
-    return type;
-}
+    void StatusBarObserver::OnChange(Base::Subject<const char*> & rCaller, const char* sReason)
+    {
+        ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+        auto format = QString::fromLatin1("#statusBar{color: %1}");
+        if (strcmp(sReason, "colorText") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorWarning") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorError") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorCritical") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->critical = format.arg(
+                QColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff).name());
+        }
+    }
+
+    void StatusBarObserver::SendLog(const std::string& notifiername,
+                                    const std::string& msg,
+                                    Base::LogStyle level,
+                                    Base::IntendedRecipient recipient,
+                                    Base::ContentType content)
+    {
+        (void)notifiername;
+
+        // Do not log untranslated messages, or messages intended only to a developer to status bar
+        if (recipient == Base::IntendedRecipient::Developer
+            || content == Base::ContentType::Untranslated
+            || content == Base::ContentType::Untranslatable)
+            return;
+
+        int messageType = -1;
+        switch (level) {
+            case Base::LogStyle::Warning:
+                messageType = MainWindow::Wrn;
+                break;
+            case Base::LogStyle::Message:
+                messageType = MainWindow::Msg;
+                break;
+            case Base::LogStyle::Error:
+                messageType = MainWindow::Err;
+                break;
+            case Base::LogStyle::Log:
+                messageType = MainWindow::Log;
+                break;
+            case Base::LogStyle::Critical:
+                messageType = MainWindow::Critical;
+                break;
+            default:
+                break;
+        }
+
+        // Send the event to the main window to allow thread-safety. Qt will delete it when done.
+        auto ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
+        QApplication::postEvent(getMainWindow(), ev);
+    }
+
+    // -------------------------------------------------------------
+
+    int ActionStyleEvent::EventType = -1;
+
+    ActionStyleEvent::ActionStyleEvent(Style type)
+        : QEvent(QEvent::Type(EventType))
+        , type(type)
+    {}
+
+    ActionStyleEvent::Style ActionStyleEvent::getType() const
+    {
+        return type;
+    }
 
 
 #include "moc_MainWindow.cpp"

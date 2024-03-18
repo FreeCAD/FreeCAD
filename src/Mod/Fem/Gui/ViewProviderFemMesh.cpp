@@ -796,7 +796,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         lines->coordIndex.setNum(0);
         return;
     }
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log(
         "Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
@@ -834,7 +834,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     std::vector<FemFace> facesHelper(numTries);
 
     Base::Console().Log("    %f: Start build up %i face helper\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()),
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
                         facesHelper.size());
     Base::BoundBox3d BndBox;
 
@@ -1359,7 +1359,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     if (FaceSize < MaxFacesShowInner) {
         Base::Console().Log("    %f: Start eliminate internal faces SIMPLE\n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
         // search for double (inside) faces and hide them
         if (!ShowInner) {
@@ -1376,7 +1376,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
     else {
         Base::Console().Log("    %f: Start eliminate internal faces GRID\n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
         BndBox.Enlarge(BndBox.CalcDiagonalLength() / 10000.0);
         // calculate grid properties
         double edge = pow(FaceSize, 1.0 / 3.0);
@@ -1444,7 +1444,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     Base::Console().Log("    %f: Start build up node map\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // sort out double nodes and build up index map
     std::map<const SMDS_MeshNode*, int> mapNodeIndex;
@@ -1477,7 +1477,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
     Base::Console().Log("    %f: Start set point vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // set the point coordinates
     coords->point.setNum(mapNodeIndex.size());
@@ -1495,7 +1495,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     // count triangle size
     Base::Console().Log("    %f: Start count triangle size\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     int triangleCount = 0;
     for (int l = 0; l < FaceSize; l++) {
         if (!facesHelper[l].hide) {
@@ -1551,7 +1551,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
 
     Base::Console().Log("    %f: Start build up triangle vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // set the triangle face indices
     faces->coordIndex.setNum(4 * triangleCount);
     vFaceElementIdx.resize(triangleCount);
@@ -2971,7 +2971,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     faces->coordIndex.finishEditing();
 
     Base::Console().Log("    %f: Start build up edge vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // std::map<int,std::set<int> > EdgeMap;
     // count edges
     int EdgeSize = 0;
@@ -3000,7 +3000,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     Base::Console().Log(
         "    %f: Finish =========================================================\n",
-        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 

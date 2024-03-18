@@ -31,6 +31,8 @@
 #include <TopExp.hxx>
 
 #include <App/GeoFeature.h>
+#include <App/DocumentObject.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -44,16 +46,65 @@
 using namespace TechDraw;
 using DU = DrawUtil;
 
+
+ReferenceEntry::ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document)
+{
+    setObject(docObject);
+    setSubName(subName);
+    setDocument(document);
+    if (docObject) {
+        setObjectName(docObject->getNameInDocument());
+        if (document == nullptr) {
+            setDocument(docObject->getDocument());
+        }
+    }
+}
+
+ReferenceEntry::ReferenceEntry(const ReferenceEntry& other)
+{
+    setObject(other.getObject());
+    setSubName(other.getSubName());
+    setObjectName(other.getObjectName());
+    setDocument(other.getDocument());
+}
+
+
+
+ReferenceEntry& ReferenceEntry::operator=(const ReferenceEntry& otherRef)
+{
+    setObject(otherRef.getObject());
+    setSubName(otherRef.getSubName());
+    setObjectName(otherRef.getObjectName());
+    setDocument(otherRef.getDocument());
+    return *this;
+}
+
+
 TopoDS_Shape ReferenceEntry::getGeometry() const
 {
-//    Base::Console().Message("RE::getGeometry() - obj: %s  sub: %s\n",
-//                            getObject()->getNameInDocument(), getSubName());
+    // Base::Console().Message("RE::getGeometry() - objectName: %s  sub: **%s**\n",
+    //                        getObjectName(), getSubName());
+    // first, make sure the object has not been deleted!
+    App::DocumentObject* obj = getDocument()->getObject(getObjectName().c_str());
+    if (!obj) {
+        Base::Console().Message("RE::getGeometry - %s no longer exists!\n", getObjectName().c_str());
+        return {};
+    }
+
+    if (getSubName().empty()) {
+        Base::Console().Message("RE::getGeometry - Reference has no subelement!\n");
+        return {};
+    }
+
     if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+        // Base::Console().Message("RE::getGeometry - getting 2d geometry\n");
         std::string gType;
         try {
             auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
             gType = geomType();
             if (gType == "Vertex") {
+                // getVertex throws on not found, but we want to return null
+                // shape
                 auto vgeom = dvp->getVertex(getSubName());
                 return vgeom->getOCCVertex();
             }
@@ -67,11 +118,12 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
             }
         }
         catch (...) {
-//            Base::Console().Message("RE::getGeometry - no shape for dimension reference - gType: %s\n", gType.c_str());
+            Base::Console().Message("RE::getGeometry - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
             return {};
         }
     }
 
+    // Base::Console().Message("RE::getGeometry - getting 2d geometry\n");
     Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
     auto geoFeat = dynamic_cast<App::GeoFeature*>(getObject());
     if (geoFeat) {
@@ -100,13 +152,15 @@ std::string ReferenceEntry::getSubName(bool longForm) const
 
 App::DocumentObject* ReferenceEntry::getObject() const
 {
-    // For PartDesign objects, when the reference is created from a selection,
-    // the SelectionObject is a Feature within the Body.
-    PartDesign::Body* pdBody = PartDesign::Body::findBodyOf(m_object);
-    if (pdBody && pdBody->Tip.getValue()) {
-        return pdBody->Tip.getValue();
+    if (!getDocument()) {
+        return nullptr;
     }
-    return m_object;
+    App::DocumentObject* obj = getDocument()->getObject(getObjectName().c_str());
+    if (!obj) {
+        return nullptr;
+    }
+
+    return obj;
 }
 
 Part::TopoShape ReferenceEntry::asTopoShape() const
@@ -114,7 +168,9 @@ Part::TopoShape ReferenceEntry::asTopoShape() const
 //    Base::Console().Message("RE::asTopoShape()\n");
     TopoDS_Shape geom = getGeometry();
     if (geom.IsNull()) {
-        throw Base::RuntimeError("Dimension Reference has null geometry");
+        // throw Base::RuntimeError("Dimension Reference has null geometry");
+        Base::Console().Message("RE::asTopoShape - reference geometry is null\n");
+        return {};
     }
     if (geom.ShapeType() == TopAbs_VERTEX) {
         TopoDS_Vertex vert = TopoDS::Vertex(geom);
@@ -153,6 +209,7 @@ Part::TopoShape ReferenceEntry::asTopoShapeEdge(TopoDS_Edge &edge) const
 
 std::string ReferenceEntry::geomType() const
 {
+    // Base::Console().Message("RE::geomType() - subName: **%s**\n", getSubName().c_str());
     return DrawUtil::getGeomTypeFromName(getSubName());
 }
 
@@ -163,15 +220,61 @@ bool ReferenceEntry::isWholeObject() const
 
 bool ReferenceEntry::is3d() const
 {
-    return !getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId());
-}
-
-//! check if this reference has valid geometry
-bool ReferenceEntry::isValid() const
-{
-    TopoDS_Shape geom = getGeometry();
-    if (geom.IsNull()) {
+    if (getObject() &&
+        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        !getSubName().empty()) {
+        // this is a well formed 2d reference
         return false;
     }
+
+    if (getObject() &&
+        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        getSubName().empty()) {
+        // this is a broken 3d reference, so it should be treated as 3d
+        return true;
+    }
+
+    // either we have no object or we have an object and it is a 3d object
     return true;
+}
+
+//! check if this reference has valid geometry in the model
+bool ReferenceEntry::hasGeometry() const
+{
+    // Base::Console().Message("RE::hasGeometry()\n");
+    if (!getObject()) {
+        return false;
+    }
+
+    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+        // 2d reference
+        auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
+        if (getSubName().empty()) {
+            return false;
+        }
+        int geomNumber = DU::getIndexFromName(getSubName());
+        std::string gType = geomType();
+        if (gType == "Vertex") {
+            auto vert = dvp->getProjVertexByIndex(geomNumber);
+            if (vert) {
+                return true;
+            }
+        } else if (gType == "Edge") {
+            auto edge = dvp->getGeomByIndex(geomNumber);
+            if (edge) {
+                return true;
+            }
+        }
+        // if we ever have dimensions for faces, add something here.
+        return false;
+    }
+
+    // 3d reference
+    auto shape = Part::Feature::getTopoShape(getObject());
+    auto subShape = shape.getSubShape(getSubName().c_str());
+    if (!subShape.IsNull()) {
+        return true;
+    }
+
+    return false;
 }

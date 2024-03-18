@@ -5043,7 +5043,7 @@ int System::diagnose(Algorithm alg)
 
     if (qrAlgorithm == EigenDenseQR) {
 #ifdef PROFILE_DIAGNOSE
-        Base::TimeInfo DenseQR_start_time;
+        Base::TimeElapsed DenseQR_start_time;
 #endif
         if (J.rows() > 0) {
             int rank = 0;  // rank is not cheap to retrieve from qrJT in DenseQR
@@ -5101,9 +5101,9 @@ int System::diagnose(Algorithm alg)
             }
         }
 #ifdef PROFILE_DIAGNOSE
-        Base::TimeInfo DenseQR_end_time;
+        Base::TimeElapsed DenseQR_end_time;
 
-        auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time, DenseQR_end_time);
+        auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
         Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
@@ -5112,7 +5112,7 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if (qrAlgorithm == EigenSparseQR) {
 #ifdef PROFILE_DIAGNOSE
-        Base::TimeInfo SparseQR_start_time;
+        Base::TimeElapsed SparseQR_start_time;
 #endif
         if (J.rows() > 0) {
             int rank = 0;
@@ -5178,9 +5178,9 @@ int System::diagnose(Algorithm alg)
         }
 
 #ifdef PROFILE_DIAGNOSE
-        Base::TimeInfo SparseQR_end_time;
+        Base::TimeElapsed SparseQR_end_time;
 
-        auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time, SparseQR_end_time);
+        auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
         Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif

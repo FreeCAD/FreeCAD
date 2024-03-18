@@ -186,7 +186,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
         this->getViewProviderFemMeshPtr()->resetColorByNodeId();
     }
     else {
-        Base::TimeInfo Start;
+        Base::TimeElapsed Start;
         Base::Console().Log(
             "Start: ViewProviderFemMeshPy::setNodeColor() =================================\n");
         // std::map<long,App::Color> NodeColorMap;
@@ -209,12 +209,12 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
                 App::Color(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]), 0);
         }
         Base::Console().Log("    %f: Start ViewProviderFemMeshPy::setNodeColor() call \n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
         // this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
         this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeIds, NodeColors);
         Base::Console().Log("    %f: Finish ViewProviderFemMeshPy::setNodeColor() call \n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     }
 }
 

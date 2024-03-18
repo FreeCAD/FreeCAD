@@ -1,3 +1,5 @@
+target_compile_definitions(Tests_run PRIVATE DATADIR="${CMAKE_SOURCE_DIR}/data")
+
 target_sources(
     Tests_run
         PRIVATE
@@ -13,6 +15,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/MappedElement.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/MappedName.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Metadata.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/ProjectFile.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Property.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PropertyExpressionEngine.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/StringHasher.cpp

@@ -74,6 +74,9 @@ public:
     void onRelabel(Gui::Document *pDoc) override;
     virtual void viewAll();
 
+    /// build window title
+    QString buildWindowTitle();
+
     /// Message handler
     bool onMsg(const char* pMsg,const char** ppReturn) override;
     /// Message handler test

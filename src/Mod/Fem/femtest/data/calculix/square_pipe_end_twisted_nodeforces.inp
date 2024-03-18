@@ -2631,42 +2631,42 @@ ConstraintFixed,6
 
 ** ConstraintForce5
 ** node load on shape: Forces:Vertex43
-1376,1,-11111.111666666666
+1376,1,-11111.11166667
 
 ** node load on shape: Forces:Vertex44
-1378,1,-11111.111666666666
+1378,1,-11111.11166667
 
 ** node load on shape: Forces:Vertex45
-1380,1,-11111.111666666666
+1380,1,-11111.11166667
 
 ** node load on shape: Forces:Vertex46
-1383,1,-11111.111666666666
+1383,1,-11111.11166667
 
 ** node load on shape: Forces:Vertex47
-1386,1,-11111.111666666666
+1386,1,-11111.11166667
 
 ** node load on shape: Forces:Vertex48
-1390,1,-11111.111666666666
+1390,1,-11111.11166667
 
 
 ** ConstraintForce6
 ** node load on shape: Forces:Vertex31
-758,1,11111.111666666666
+758,1,11111.11166667
 
 ** node load on shape: Forces:Vertex32
-762,1,11111.111666666666
+762,1,11111.11166667
 
 ** node load on shape: Forces:Vertex33
-764,1,11111.111666666666
+764,1,11111.11166667
 
 ** node load on shape: Forces:Vertex34
-766,1,11111.111666666666
+766,1,11111.11166667
 
 ** node load on shape: Forces:Vertex35
-769,1,11111.111666666666
+769,1,11111.11166667
 
 ** node load on shape: Forces:Vertex36
-772,1,11111.111666666666
+772,1,11111.11166667
 
 
 ** ConstraintForce7
@@ -2721,42 +2721,42 @@ ConstraintFixed,6
 
 ** ConstraintForce11
 ** node load on shape: Forces:Vertex25
-429,2,-11111.111666666666
+429,2,-11111.11166667
 
 ** node load on shape: Forces:Vertex26
-431,2,-11111.111666666666
+431,2,-11111.11166667
 
 ** node load on shape: Forces:Vertex27
-437,2,-11111.111666666666
+437,2,-11111.11166667
 
 ** node load on shape: Forces:Vertex28
-440,2,-11111.111666666666
+440,2,-11111.11166667
 
 ** node load on shape: Forces:Vertex29
-443,2,-11111.111666666666
+443,2,-11111.11166667
 
 ** node load on shape: Forces:Vertex30
-446,2,-11111.111666666666
+446,2,-11111.11166667
 
 
 ** ConstraintForce12
 ** node load on shape: Forces:Vertex37
-1067,2,11111.111666666666
+1067,2,11111.11166667
 
 ** node load on shape: Forces:Vertex38
-1071,2,11111.111666666666
+1071,2,11111.11166667
 
 ** node load on shape: Forces:Vertex39
-1073,2,11111.111666666666
+1073,2,11111.11166667
 
 ** node load on shape: Forces:Vertex40
-1075,2,11111.111666666666
+1075,2,11111.11166667
 
 ** node load on shape: Forces:Vertex41
-1078,2,11111.111666666666
+1078,2,11111.11166667
 
 ** node load on shape: Forces:Vertex42
-1081,2,11111.111666666666
+1081,2,11111.11166667
 
 
 
@@ -2771,7 +2771,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

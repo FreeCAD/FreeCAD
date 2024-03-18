@@ -147,12 +147,12 @@ class WizardShaftTable:
         widget.editingFinished.connect(self.slotEditingFinished)
         # Constraint type
         widget = QtGui.QComboBox(self.widget)
-        widget.insertItem(0, "None")
-        widget.insertItem(1, "Fixed")
-        widget.insertItem(2, "Force")
-        widget.insertItem(3, "Bearing")
-        widget.insertItem(4, "Gear")
-        widget.insertItem(5, "Pulley")
+        widget.insertItem(0, translate("WizardShaftTable", "None"), "None")
+        widget.insertItem(1, translate("WizardShaftTable", "Fixed"), "Fixed")
+        widget.insertItem(2, translate("WizardShaftTable", "Force"), "Force")
+        widget.insertItem(3, translate("WizardShaftTable", "Bearing"), "Bearing")
+        widget.insertItem(4, translate("WizardShaftTable", "Gear"), "Gear")
+        widget.insertItem(5, translate("WizardShaftTable", "Pulley"), "Pulley")
         action = QtGui.QAction("Edit constraint", widget)
         action.triggered.connect(self.slotEditConstraint)
         widget.addAction(action)
@@ -162,10 +162,10 @@ class WizardShaftTable:
         self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotConstraintType)
         # Start edge type
         widget = QtGui.QComboBox(self.widget)
-        widget.insertItem(0, "None",)
-        widget.insertItem(1, "Chamfer")
-        widget.insertItem(2, "Fillet")
-        self.widget.setCellWidget(self.rowDict["StartEdgeType"],index, widget)
+        widget.insertItem(0, translate("WizardShaftTable", "None"), "None",)
+        widget.insertItem(1, translate("WizardShaftTable", "Chamfer"), "Chamfer")
+        widget.insertItem(2, translate("WizardShaftTable", "Fillet"), "Fillet")
+        self.widget.setCellWidget(self.rowDict["StartEdgeType"], index, widget)
         widget.setCurrentIndex(0)
         widget.setEnabled(False)
         #self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
@@ -213,7 +213,7 @@ class WizardShaftTable:
             self.shaft.updateSegment(self.editedColumn, diameter = self.getDoubleValue(rowName, self.editedColumn))
         elif rowName == "InnerDiameter":
             self.shaft.updateSegment(self.editedColumn, innerdiameter = self.getDoubleValue(rowName, self.editedColumn))
-        elif rowName == "Constraintype":
+        elif rowName == "ConstraintType":
             self.shaft.updateConstraint(self.editedColumn, self.getListValue(rowName, self.editedColumn))
         elif rowName == "StartEdgeType":
             pass
@@ -316,7 +316,11 @@ class WizardShaftTable:
     def getListValue(self, row, column):
         widget = self.widget.cellWidget(self.rowDict[row], column)
         if widget is not None:
-            return widget.currentText() #[0].upper()
+            if widget.data(QtCore.Qt.UserRole):
+                # If the widget has user data attached, assume that is the "value" we are seeking
+                return widget.data(QtCore.Qt.UserRole)
+            else:
+                return widget.currentText() #[0].upper()
         else:
             return None
 

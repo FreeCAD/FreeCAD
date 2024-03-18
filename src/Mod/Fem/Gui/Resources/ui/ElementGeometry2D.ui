@@ -74,7 +74,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_thickness">
           <property name="text">
-           <string>Thickness:     </string>
+           <string>Thickness:</string>
           </property>
          </widget>
         </item>

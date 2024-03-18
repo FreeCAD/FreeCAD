@@ -1961,7 +1961,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             if (reverse) {
                 obj->reverseAngleConstraintToSupplementary(constr, constNum);
 
-                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                ap3 = intersection + dir1 - dir2; //- dir2 instead of std::swap(dir1, dir2) and dir1 = -dir1
                 sign1 = isLeftOfLine(p11, p12, ap3);
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
@@ -3140,13 +3140,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
             QString::fromUtf8("conflicting_constraints"),
-            tr("Over-constrained: "),
+            tr("Over-constrained:") + QLatin1String(" "),
             QString::fromUtf8("#conflicting"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
         signalSetUp(QString::fromUtf8("malformed_constraints"),
-                    tr("Malformed constraints: "),
+                    tr("Malformed constraints:") + QLatin1String(" "),
                     QString::fromUtf8("#malformed"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
@@ -3154,13 +3154,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (hasRedundancies) {
         signalSetUp(
             QString::fromUtf8("redundant_constraints"),
-            tr("Redundant constraints:"),
+            tr("Redundant constraints:") + QLatin1String(" "),
             QString::fromUtf8("#redundant"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
-                    tr("Partially redundant:"),
+                    tr("Partially redundant:") + QLatin1String(" "),
                     QString::fromUtf8("#partiallyredundant"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
@@ -3173,7 +3173,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:"),
+                    tr("Under constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
@@ -3358,7 +3358,10 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     auto vp = proxyVPrdr->vp;
     auto cam = proxyVPrdr->renderMgr->getCamera();
 
-    vp->onCameraChanged(cam);
+    if (cam == nullptr)
+        Base::Console().DeveloperWarning("ViewProviderSketch", "Camera is nullptr!\n");
+    else
+        vp->onCameraChanged(cam);
 }
 
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)
@@ -4065,7 +4068,8 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainEqual";
             }
             else if (selectedConics == 1 && selectedLines == 1) {
-                menu << "Sketcher_ConstrainTangent";
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
             }
         }
         else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
@@ -4158,7 +4162,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_ToggleConstruction"
              << "Separator"
-             << "Sketcher_CreatePointFillet"
+             << "Sketcher_CreateFillet"
+             << "Sketcher_CreateChamfer"
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"

@@ -275,20 +275,13 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
 
     //set tolerance position
     QRectF overBox = m_tolTextOver->boundingRect();
-    double overWidth = overBox.width();
-    QRectF underBox = m_tolTextUnder->boundingRect();
-    double underWidth = underBox.width();
-    double width = underWidth;
-    if (overWidth > underWidth) {
-        width = overWidth;
-    }
-    double tolRight = unitRight + width;
+    double tolLeft  = unitRight;
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
     QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
-    m_tolTextOver->justifyRightAt(tolRight + tol_adj.x(), middle - tol_adj.y(), false);
+    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle - tol_adj.y(), false);
     tol_adj = m_tolTextUnder->tightBoundingAdjust();
-    m_tolTextUnder->justifyRightAt(tolRight + tol_adj.x(), middle + overBox.height() - tol_adj.y(),
+    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() - tol_adj.y(),
                                    false);
 }
 
@@ -637,10 +630,9 @@ void QGIViewDimension::updateView(bool update)
         updateDim();
     }
 
-    if (dim->goodReferenceGeometry()) {
+    if (dim->hasGoodReferences()) {
         m_refFlag->hide();
     } else {
-//        m_refFlag->setPos(datumLabel->pos());
         m_refFlag->centerAt(datumLabel->pos() + datumLabel->boundingRect().center());
         m_refFlag->show();
     }

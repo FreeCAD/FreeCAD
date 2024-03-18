@@ -50,6 +50,7 @@
 #include "PartPyCXX.h"
 #include "PropertyTopoShape.h"
 #include "TopoShapePy.h"
+#include "PartFeature.h"
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
@@ -103,14 +104,15 @@ TopoShape PropertyPartShape::getShape() const
 {
     _Shape.initCache(-1);
     auto res = _Shape;
-    // March, 2024 Toponaming project:  There was originally an unused feature to disable elementMapping
-    // that has not been kept:
+    // March, 2024 Toponaming project:  There was originally an unused feature to disable
+    // elementMapping that has not been kept:
     //    if (Feature::isElementMappingDisabled(getContainer()))
-    if ( false )
-        res.Tag = -1;
-    else if (!res.Tag) {
-        if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer()))
+    //        res.Tag = -1;
+    //    else if (!res.Tag) {
+    if (!res.Tag) {
+        if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer())) {
             res.Tag = parent->getID();
+        }
     }
     return res;
 }

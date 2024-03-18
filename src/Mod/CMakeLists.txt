@@ -71,7 +71,7 @@ if(BUILD_PART_DESIGN)
 endif(BUILD_PART_DESIGN)
 
 if(BUILD_PATH)
-    add_subdirectory(Path)
+    add_subdirectory(CAM)
 endif(BUILD_PATH)
 
 if(BUILD_PLOT)

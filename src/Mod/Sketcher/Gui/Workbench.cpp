@@ -375,8 +375,8 @@ void SketcherAddWorkspaceFillets(T& geom);
 template<>
 inline void SketcherAddWorkspaceFillets<Gui::MenuItem>(Gui::MenuItem& geom)
 {
-    geom << "Sketcher_CreatePointFillet"
-         << "Sketcher_CreateFillet";
+    geom << "Sketcher_CreateFillet"
+         << "Sketcher_CreateChamfer";
 }
 
 template<>
@@ -450,14 +450,14 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainBlock"
          << "Separator"
          << "Sketcher_Dimension"
-         << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
          << "Sketcher_ConstrainDistance"
+         << "Sketcher_ConstrainRadiam"
          << "Sketcher_ConstrainRadius"
          << "Sketcher_ConstrainDiameter"
-         << "Sketcher_ConstrainRadiam"
          << "Sketcher_ConstrainAngle"
+         << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainSnellsLaw"
          << "Separator"
          << "Sketcher_ToggleDrivingConstraint"
@@ -504,12 +504,12 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
         }
     }
     if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
-        cons << "Sketcher_ConstrainLock"
-             << "Sketcher_ConstrainDistanceX"
+        cons << "Sketcher_ConstrainDistanceX"
              << "Sketcher_ConstrainDistanceY"
              << "Sketcher_ConstrainDistance"
              << "Sketcher_CompConstrainRadDia"
-             << "Sketcher_ConstrainAngle";
+             << "Sketcher_ConstrainAngle"
+             << "Sketcher_ConstrainLock";
         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
     }
     cons << "Separator"

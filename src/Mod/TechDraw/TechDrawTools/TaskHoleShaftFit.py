@@ -114,9 +114,10 @@ class TaskHoleShaftFit:
         iso.calculate(value,fieldChar,quality)
         rangeValues = iso.getValues()
         mainFormat = dim.FormatSpec
-        dim.FormatSpec = mainFormat+selectedField
+        dim.FormatSpec = mainFormat+' '+selectedField
         dim.EqualTolerance = False
-        dim.FormatSpecOverTolerance = '(%+.3f)'
+        dim.FormatSpecOverTolerance = '(%-0.6w)'
+        dim.FormatSpecUnderTolerance = '(%-0.6w)'
         dim.OverTolerance = rangeValues[0]
         dim.UnderTolerance = rangeValues[1]
         Gui.Control.closeDialog()
@@ -178,12 +179,9 @@ class ISO286:
         if fieldChar == 'H':
             self.upperValue = -self.lowerValue
             self.lowerValue = 0
-        # hack to print zero tolerance value as (+0.000)
-        if self.upperValue == 0:
-            self.upperValue = 0.1
-        if self.lowerValue == 0:
-            self.lowerValue = 0.1
 
     def getValues(self):
         '''return range values in mm'''
         return (self.upperValue/1000,self.lowerValue/1000)
+
+

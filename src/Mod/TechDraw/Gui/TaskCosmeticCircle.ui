@@ -204,7 +204,7 @@
      <item row="1" column="1">
       <widget class="Gui::QuantitySpinBox" name="qsbStartAngle">
        <property name="toolTip">
-        <string>Start angle (conventional) of arc in degrees. </string>
+        <string>Start angle (conventional) of arc in degrees.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

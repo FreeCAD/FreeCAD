@@ -59,7 +59,7 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshFolds, MeshGui::ViewProviderMeshDefects
 
 ViewProviderMeshDefects::ViewProviderMeshDefects()
 {
-    ADD_PROPERTY(LineWidth, (2.0f));
+    ADD_PROPERTY(LineWidth, (2.0F));
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
@@ -124,14 +124,14 @@ void ViewProviderMeshOrientation::attach(App::DocumentObject* pcFeat)
     // Draw faces
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcFaces);
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -160,7 +160,7 @@ void ViewProviderMeshOrientation::showDefects(const std::vector<Mesh::ElementInd
         cF.Set(ind);
         for (auto cP : cF->_aclPoints) {
             // move a bit in opposite normal direction to overlay the original faces
-            cP -= 0.001f * cF->GetNormal();
+            cP -= 0.001F * cF->GetNormal();
             pcCoords->point.set1Value(i++, cP.x, cP.y, cP.z);
         }
         pcFaces->numVertices.set1Value(j++, 3);
@@ -195,7 +195,7 @@ void ViewProviderMeshNonManifolds::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.0f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.0F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcLines);
@@ -203,7 +203,7 @@ void ViewProviderMeshNonManifolds::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -268,7 +268,7 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
     // Draw points
     SoSeparator* pointsep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     pointsep->addChild(basecol);
     pointsep->addChild(pcCoords);
     pointsep->addChild(pcPoints);
@@ -276,7 +276,7 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -338,7 +338,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.0f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.0F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcFaces);
@@ -346,7 +346,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -373,7 +373,7 @@ void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<Mesh::Elemen
         cF.Set(ind);
         for (auto cP : cF->_aclPoints) {
             // move a bit in normal direction to overlay the original faces
-            cP += 0.001f * cF->GetNormal();
+            cP += 0.001F * cF->GetNormal();
             pcCoords->point.set1Value(i++, cP.x, cP.y, cP.z);
         }
         pcFaces->numVertices.set1Value(j++, 3);
@@ -408,7 +408,7 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
     // Draw points
     SoSeparator* pointsep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     pointsep->addChild(basecol);
     pointsep->addChild(pcCoords);
     pointsep->addChild(pcPoints);
@@ -416,7 +416,7 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -471,7 +471,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcLines);
@@ -479,7 +479,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -511,7 +511,7 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
         // check if the points are coincident
         if (rE0 == rE1 && rE0 == rE2) {
             // set a small tolerance to get a non-degenerated line
-            float eps = 0.005f;
+            float eps = 0.005F;
             Base::Vector3f cP1, cP2;
             cP1.Set(rE1.x + eps, rE1.y + eps, rE1.z + eps);
             cP2.Set(rE2.x - eps, rE2.y - eps, rE2.z - eps);
@@ -536,7 +536,7 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
                 Base::Vector3f cVec2 = cF->_aclPoints[(j + 2) % 3] - cF->_aclPoints[j];
 
                 // adjust the neighbourhoods and point indices
-                if (cVec1 * cVec2 < 0.0f) {
+                if (cVec1 * cVec2 < 0.0F) {
                     pcCoords->point.set1Value(i++,
                                               cF->_aclPoints[(j + 1) % 3].x,
                                               cF->_aclPoints[(j + 1) % 3].y,
@@ -589,7 +589,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcFaces);
@@ -597,7 +597,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -625,7 +625,7 @@ void ViewProviderMeshIndices::showDefects(const std::vector<Mesh::ElementIndex>&
             cF.Set(ind);
             for (auto cP : cF->_aclPoints) {
                 // move a bit in opposite normal direction to overlay the original faces
-                cP -= 0.001f * cF->GetNormal();
+                cP -= 0.001F * cF->GetNormal();
                 pcCoords->point.set1Value(i++, cP.x, cP.y, cP.z);
             }
             pcFaces->numVertices.set1Value(j++, 3);
@@ -661,7 +661,7 @@ void ViewProviderMeshSelfIntersections::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcLines);
@@ -669,7 +669,7 @@ void ViewProviderMeshSelfIntersections::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -750,7 +750,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
     SoBaseColor* basecol = new SoBaseColor;
-    basecol->rgb.setValue(1.0f, 0.0f, 0.0f);
+    basecol->rgb.setValue(1.0F, 0.0F, 0.0F);
     linesep->addChild(basecol);
     linesep->addChild(pcCoords);
     linesep->addChild(pcFaces);
@@ -758,7 +758,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
 
     // Draw markers
     SoBaseColor* markcol = new SoBaseColor;
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
     SoMarkerSet* marker = new SoMarkerSet;
     marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "PLUS",
@@ -785,7 +785,7 @@ void ViewProviderMeshFolds::showDefects(const std::vector<Mesh::ElementIndex>& i
         cF.Set(ind);
         for (auto cP : cF->_aclPoints) {
             // move a bit in normal direction to overlay the original faces
-            cP += 0.001f * cF->GetNormal();
+            cP += 0.001F * cF->GetNormal();
             pcCoords->point.set1Value(i++, cP.x, cP.y, cP.z);
         }
         pcFaces->numVertices.set1Value(j++, 3);

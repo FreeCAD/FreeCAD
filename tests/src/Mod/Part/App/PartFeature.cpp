@@ -6,6 +6,7 @@
 #include <src/App/InitApplication.h>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include "PartTestHelpers.h"
+#include "App/MappedElement.h"
 
 using namespace Part;
 using namespace PartTestHelpers;
@@ -54,7 +55,7 @@ TEST_F(FeaturePartTest, testGetElementName)
 #ifndef FC_USE_TNP_FIX
     EXPECT_EQ(ts.getElementMap().size(), 0);
 #else
-    EXPECT_EQ(ts.getElementMap().size(), 0);  // TODO: Value and code TBD
+    EXPECT_EQ(ts.getElementMap().size(), 26);
 #endif
     // TBD
 }
@@ -109,7 +110,7 @@ TEST_F(FeaturePartTest, create)
     // the same document, the other feature will get an unique name that will still contain "Shape"
     EXPECT_STREQ(_doc->getObjectName(featureNoName), "Shape001");
 
-    // There aren't other features with name "Vertex" in _doc, therefor that name will be assigned
+    // There aren't other features with name "Vertex" in _doc, therefore that name will be assigned
     // without modifications
     EXPECT_STREQ(_doc->getObjectName(featureNoDoc), "Vertex");
 
@@ -119,11 +120,96 @@ TEST_F(FeaturePartTest, create)
 
     // Check that the features have been created in the correct document
 
-    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefor the number of
-    // features in that document is the same of the features created with Feature::create
+    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefore the number
+    // of features in that document is the same of the features created with Feature::create
     EXPECT_EQ(_doc->getObjects().size(), 3);
 
-    // The last call to Feature::create acts on otherDoc, which is empty, and therefor that document
-    // will have only 1 feature
+    // The last call to Feature::create acts on otherDoc, which is empty, and therefore that
+    // document will have only 1 feature
     EXPECT_EQ(otherDoc->getObjects().size(), 1);
+}
+
+TEST_F(FeaturePartTest, getElementHistory)
+{
+    // Arrange
+    const char* name = "Part__Box";
+    const char* name2 = "Edge2";  // Edge, Vertex, or Face. will work here.
+    // Act
+    auto result = Feature::getElementHistory(_boxes[0], name2, true, false);
+    Data::HistoryItem histItem = result.front();
+    // Assert
+    EXPECT_EQ(result.size(), 1);
+    EXPECT_NE(histItem.tag, 0);  // Make sure we have one.  It will vary.
+    EXPECT_EQ(histItem.index.getIndex(), 2);
+    EXPECT_STREQ(histItem.index.getType(), "Edge");
+    EXPECT_STREQ(histItem.element.toString().c_str(), name2);
+    EXPECT_EQ(histItem.obj, _boxes[0]);
+}
+
+TEST_F(FeaturePartTest, getRelatedElements)
+{
+    // Arrange
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[1]);
+    // Act
+    _common->execute();
+    auto label1 = _common->Label.getValue();
+    auto label2 = _boxes[1]->Label.getValue();
+    const TopoShape& ts = _common->Shape.getShape();
+    auto result = Feature::getRelatedElements(_doc->getObject(label1),
+                                              "Edge2",
+                                              HistoryTraceType::followTypeChange,
+                                              true);
+    auto result2 = Feature::getRelatedElements(_doc->getObject(label2),
+                                               "Edge1",
+                                               HistoryTraceType::followTypeChange,
+                                               true);
+    // Assert
+#ifdef FC_USE_TNP_FIX
+    EXPECT_EQ(result.size(), 1);   // Found the one.
+    EXPECT_EQ(result2.size(), 0);  // No element map, so no related elements
+    // The results are always going to vary, so we can't test for specific values:
+    // EXPECT_STREQ(result.front().name.toString().c_str(),"Edge3;:M;CMN;:H38d:7,E");
+#else
+    EXPECT_EQ(result.size(), 0);
+#endif
+}
+
+// Note that this test is pretty trivial and useless .. but the method in question is never
+// called in the codebase.
+TEST_F(FeaturePartTest, getElementFromSource)
+{
+    // Arrange
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[1]);
+    App::DocumentObject sourceObject;
+    //    const char *sourceSubElement;
+    // Act
+    _common->execute();
+    auto label1 = _common->Label.getValue();
+    auto label2 = _boxes[1]->Label.getValue();
+    const TopoShape& ts = _common->Shape.getShape();
+    auto element = Feature::getElementFromSource(_common,
+                                                 "Part__Box001",  // "Edge1",
+                                                 _boxes[0],
+                                                 "Face1",  // "Edge1",
+                                                 false);
+    // Assert
+    EXPECT_EQ(element.size(), 0);
+}
+
+TEST_F(FeaturePartTest, getSubObject)
+{
+    // Arrange
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[1]);
+    App::DocumentObject sourceObject;
+    const char* sourceSubElement;
+    PyObject* pyObj;
+    // Act
+    _common->execute();
+    auto result = _boxes[1]->getSubObject("Face5", &pyObj, nullptr, false, 10);
+    // Assert
+    ASSERT_NE(result, nullptr);
+    EXPECT_STREQ(result->getNameInDocument(), "Part__Box001");
 }

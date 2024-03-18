@@ -19,7 +19,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QRegExp>
+#include <QRegularExpression>
 #endif
 
 #include <App/Document.h>
@@ -143,12 +143,14 @@ Gui::Action* CmdDrawingNewPage::createAction(void)
     path += "Mod/Drawing/Templates/";
     QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.svg"));
     for (unsigned int i = 0; i < dir.count(); i++) {
-        QRegExp rx(QString::fromLatin1("(A|B|C|D|E)(\\d)_(Landscape|Portrait)(_.*\\.|\\.)svg$"));
-        if (rx.indexIn(dir[i]) > -1) {
-            QString paper = rx.cap(1);
-            int id = rx.cap(2).toInt();
-            QString orientation = rx.cap(3);
-            QString info = rx.cap(4).mid(1);
+        QRegularExpression rx(
+            QString::fromLatin1("(A|B|C|D|E)(\\d)_(Landscape|Portrait)(_.*\\.|\\.)svg$"));
+        auto match = rx.match(dir[i]);
+        if (match.hasMatch()) {
+            QString paper = match.captured(1);
+            int id = match.captured(2).toInt();
+            QString orientation = match.captured(3);
+            QString info = match.captured(4).mid(1);
             info.chop(1);
             if (!info.isEmpty()) {
                 info[0] = info[0].toUpper();

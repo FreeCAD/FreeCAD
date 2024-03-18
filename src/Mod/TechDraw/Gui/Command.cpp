@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <sstream>
 #include <vector>
 #endif
 
@@ -75,7 +74,7 @@
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
+#include "ViewProviderDrawingView.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);

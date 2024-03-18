@@ -177,6 +177,8 @@ class ViewProviderLayer:
         These are the elements of the `Group` property of the Proxy object.
         """
         if hasattr(self, "Object") and hasattr(self.Object, "Group"):
+            if getattr(self.Object.ViewObject, "HideChildren", False):
+                return []
             return self.Object.Group
 
     def getDisplayModes(self, vobj):

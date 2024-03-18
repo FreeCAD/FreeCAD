@@ -257,16 +257,6 @@ int QGSPage::addQView(QGIView* view)
         // Find if it belongs to a parent
         QGIView *parent = findParent(view);
         if (parent) {
-            auto parentDocObj = parent->getViewObject();
-            auto parentDPG = dynamic_cast<TechDraw::DrawProjGroup*>(parentDocObj);
-            if (parentDPG) {
-                // move the DPGI to the center of the DPG.  the DPGI must be placed in the
-                // correct position on the page before adding it to the DPG or it will be
-                // placed at scene(0,0).
-                QPointF posRef(0., 0.);
-                QPointF mapPos = view->mapToItem(parent, posRef);
-                view->moveBy(-mapPos.x(), -mapPos.y());
-            }
             parent->addToGroup(view);
         }
         view->setPos(viewPos);
@@ -623,28 +613,11 @@ QGIView* QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
 
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
-    //    Base::Console().Message("QGSP::addWeldSymbol()\n");
-    QGIWeldSymbol* weldGroup = nullptr;
-    TechDraw::DrawView* parentDV = nullptr;
+    QGIWeldSymbol *weldView = new QGIWeldSymbol;
+    weldView->setViewFeature(weldFeat);
 
-    App::DocumentObject* parentObj = weldFeat->Leader.getValue();
-    if (parentObj) {
-        parentDV = dynamic_cast<TechDraw::DrawView*>(parentObj);
-    }
-    else {
-        //        Base::Console().Message("QGSP::addWeldSymbol - no parent doc obj\n");
-    }
-    if (parentDV) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
-        if (leadParent) {
-            weldGroup = new QGIWeldSymbol(leadParent);
-            weldGroup->setFeature(weldFeat);    //for QGIWS
-            weldGroup->setViewFeature(weldFeat);//for QGIV
-            weldGroup->updateView(true);
-        }
-    }
-    return weldGroup;
+    addQView(weldView);
+    return weldView;
 }
 
 void QGSPage::setDimensionGroups(void)
@@ -761,24 +734,6 @@ QGIView* QGSPage::findParent(QGIView* view) const
         }
     }
 
-    // Check if part of view collection
-    for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        QGIViewCollection* grp = nullptr;
-        grp = dynamic_cast<QGIViewCollection*>(*it);
-        if (grp) {
-            TechDraw::DrawViewCollection* collection = nullptr;
-            collection = dynamic_cast<TechDraw::DrawViewCollection*>(grp->getViewObject());
-            if (collection) {
-                std::vector<App::DocumentObject*> objs = collection->Views.getValues();
-                for (std::vector<App::DocumentObject*>::iterator it = objs.begin();
-                     it != objs.end(); ++it) {
-                    if (strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
-
-                        return grp;
-                }
-            }
-        }
-    }
     // Not found a parent
     return nullptr;
 }
