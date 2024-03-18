@@ -29,6 +29,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 
@@ -55,6 +56,10 @@ short VRMLObject::mustExecute() const
 
 void VRMLObject::onChanged(const App::Property* prop)
 {
+    if (restoreData) {
+        return;
+    }
+
     if (prop == &VrmlFile) {
         std::string orig = VrmlFile.getOriginalFileName();
         if (!orig.empty()) {
@@ -183,8 +188,9 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void VRMLObject::RestoreDocFile(Base::Reader &reader)
+bool VRMLObject::restoreTextureFinished(Base::Reader &reader)
 {
+    Base::StateLocker locker(restoreData, true);
     if (this->indexRestore < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
         std::string url = Resources[this->indexRestore];
@@ -204,11 +210,23 @@ void VRMLObject::RestoreDocFile(Base::Reader &reader)
             file.close();
         }
 
-        // after restoring all inline files reload the VRML file
-        if (this->indexRestore == Urls.getSize()) {
-            VrmlFile.touch();
-            Base::FileInfo fi(VrmlFile.getValue());
-            this->vrmlPath = fi.dirPath();
-        }
+        return (this->indexRestore == Urls.getSize());
+    }
+
+    return false;
+}
+
+void VRMLObject::reloadFile()
+{
+    // after restoring all inline files reload the VRML file
+    VrmlFile.touch();
+    Base::FileInfo fi(VrmlFile.getValue());
+    this->vrmlPath = fi.dirPath();
+}
+
+void VRMLObject::RestoreDocFile(Base::Reader &reader)
+{
+    if (restoreTextureFinished(reader)) {
+        reloadFile();
     }
 }
