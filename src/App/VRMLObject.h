@@ -63,9 +63,9 @@ protected:
     void onChanged(const App::Property*) override;
 
 private:
-    std::string getRelativePath(const std::string&, const std::string&) const;
-    std::string fixRelativePath(const std::string&, const std::string&) const;
-    void makeDirectories(const std::string&, const std::string&);
+    std::string getRelativePath(const std::string& prefix, const std::string& resource) const;
+    static std::string fixRelativePath(const std::string& name, const std::string& resource);
+    static void makeDirectories(const std::string& path, const std::string& subdir);
     bool restoreTextureFinished(Base::Reader &reader);
     void reloadFile();
 
