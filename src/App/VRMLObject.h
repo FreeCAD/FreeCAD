@@ -67,7 +67,8 @@ protected:
 
 private:
     mutable std::string vrmlPath;
-    mutable int index{0};
+    mutable int indexRestore{0};
+    mutable int indexSave{0};
 };
 
 } //namespace App
