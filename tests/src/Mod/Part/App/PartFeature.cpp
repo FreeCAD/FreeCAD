@@ -110,7 +110,7 @@ TEST_F(FeaturePartTest, create)
     // the same document, the other feature will get an unique name that will still contain "Shape"
     EXPECT_STREQ(_doc->getObjectName(featureNoName), "Shape001");
 
-    // There aren't other features with name "Vertex" in _doc, therefor that name will be assigned
+    // There aren't other features with name "Vertex" in _doc, therefore that name will be assigned
     // without modifications
     EXPECT_STREQ(_doc->getObjectName(featureNoDoc), "Vertex");
 
@@ -120,11 +120,11 @@ TEST_F(FeaturePartTest, create)
 
     // Check that the features have been created in the correct document
 
-    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefor the number of
+    // The first 3 calls to Feature::create acts on _doc, which is empty, and therefore the number of
     // features in that document is the same of the features created with Feature::create
     EXPECT_EQ(_doc->getObjects().size(), 3);
 
-    // The last call to Feature::create acts on otherDoc, which is empty, and therefor that document
+    // The last call to Feature::create acts on otherDoc, which is empty, and therefore that document
     // will have only 1 feature
     EXPECT_EQ(otherDoc->getObjects().size(), 1);
 }

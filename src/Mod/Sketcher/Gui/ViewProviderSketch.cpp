@@ -1961,7 +1961,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             if (reverse) {
                 obj->reverseAngleConstraintToSupplementary(constr, constNum);
 
-                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                ap3 = intersection + dir1 - dir2; //- dir2 instead of std::swap(dir1, dir2) and dir1 = -dir1
                 sign1 = isLeftOfLine(p11, p12, ap3);
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
