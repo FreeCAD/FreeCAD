@@ -75,7 +75,7 @@ public:
     virtual void viewAll();
 
     /// build window title
-    QString buildWindowTitle();
+    QString buildWindowTitle() const;
 
     /// Message handler
     bool onMsg(const char* pMsg,const char** ppReturn) override;
