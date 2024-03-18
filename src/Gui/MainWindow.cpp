@@ -1268,9 +1268,8 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 
 void MainWindow::tabChanged(MDIView* view)
 {
-    Q_UNUSED(view);
+    Q_UNUSED(view)
     updateActions();
-    getMainWindow()->setWindowTitle(view->buildWindowTitle());
 }
 
 void MainWindow::tabCloseRequested(int index)
@@ -1665,8 +1664,15 @@ void MainWindow::_updateActions()
         d->activityTimer->stop();
         Application::Instance->commandManager().testActive();
     }
+
     d->actionUpdateDelay = 0;
-    getMainWindow()->setWindowTitle(activeWindow()->buildWindowTitle());
+
+    if (auto view = activeWindow()) {
+        setWindowTitle(view->buildWindowTitle());
+        if (auto document = view->getGuiDocument()) {
+            setWindowModified(document->isModified());
+        }
+    }
 }
 
 void MainWindow::updateEditorActions()
@@ -2370,7 +2376,6 @@ void MainWindow::changeEvent(QEvent *e)
                     d->activeView = view;
                     Application::Instance->viewActivated(view);
                 }
-                getMainWindow()->setWindowTitle(view->buildWindowTitle());
             }
         }
     }
@@ -2515,8 +2520,10 @@ QMdiArea *MainWindow::getMdiArea() const
 void MainWindow::setWindowTitle(const QString& string)
 {
     QString title;
-    QString appname =
-        QString(static_cast<QApplication*>(QCoreApplication::instance())->applicationName());
+    QString appname = QCoreApplication::applicationName();
+    if (appname.isEmpty()) {
+        appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+    }
 
     // allow to disable version number
     ParameterGrp::handle hGen = +App::GetApplication().GetParameterGroupByPath(
