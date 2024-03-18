@@ -927,7 +927,7 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
         page->resetSettingsToDefaults();
         /**
          * Let's save the restart request before the page object is deleted and replaced with
-         * the newPage object (wich has restartRequired initialized to false)
+         * the newPage object (which has restartRequired initialized to false)
          */
         restartRequired = restartRequired || page->isRestartRequired();
         

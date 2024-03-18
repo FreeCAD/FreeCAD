@@ -565,7 +565,7 @@ QVector<Data::MappedElement> Feature::getRelatedElements(App::DocumentObject* ob
         for (auto rit = src.rbegin(); idx >= 0 && rit != src.rend(); ++rit, --idx) {
             // TODO: shall we ignore source tag when comparing? It could cause
             // matching unrelated element, but it does help dealing with feature
-            // reording in PartDesign::Body.
+            // recording in PartDesign::Body.
             if (rit->second != source[idx].second) {
                 ++idx;
                 break;

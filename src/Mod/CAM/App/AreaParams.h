@@ -68,7 +68,7 @@
         "behave like wire cutting. Without exploding, 'Difference' in ClipperLib\n"\
         "behave like face cutting."))\
     ((enum,open_mode,OpenMode,0,\
-        "Specify how to handle open wires. 'None' means combin without openeration.\n"\
+        "Specify how to handle open wires. 'None' means combine without openeration.\n"\
         "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"\
         "urge to close open wires.",(None)(Union)(Edges)))\
     AREA_PARAMS_DEFLECTION \

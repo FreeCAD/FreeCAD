@@ -1270,7 +1270,8 @@ class _Wall(ArchComponent.Component):
 
                     # If the object is a single edge, use that as the
                     # basewires.
-                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
+                    # TODO 2023.11.26: Need to check if it isn't Sketch after all first
+                    # or use algorithm for Sketch altogether?
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 

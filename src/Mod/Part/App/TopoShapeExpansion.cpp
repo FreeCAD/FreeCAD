@@ -4185,7 +4185,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
 //                // DO NOT include uptoface for element mapping. Because OCCT
 //                // BRepFeat_MakePrism will report all top extruded face being
 //                // modified by the uptoface. If there are more than one face in
-//                // the profile, this will cause uncessary duplicated element
+//                // the profile, this will cause unnecessary duplicated element
 //                // mapped name. And will also disrupte element history tracing
 //                // back to the profile sketch.
 //                //

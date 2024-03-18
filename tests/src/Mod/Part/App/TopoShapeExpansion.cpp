@@ -249,7 +249,8 @@ TEST_F(TopoShapeExpansionTest, MapperMakerModified)
 
     // Check the result of the operations
     EXPECT_EQ(transformMprMkr.modified(wire).size(), 1);  // The Transformation acts on the Wire...
-    EXPECT_EQ(transformMprMkr.modified(face).size(), 1);  // ... and therefor on the created Face...
+    EXPECT_EQ(transformMprMkr.modified(face).size(),
+              1);  // ... and therefore on the created Face...
     EXPECT_EQ(transformMprMkr.modified(edge).size(), 1);  // ... and on the Edge added to the Face
 
     EXPECT_EQ(splitMprMkr.modified(edge).size(), 0);  // The Split doesn't modify the Edge
