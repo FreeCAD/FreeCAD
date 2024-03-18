@@ -141,7 +141,7 @@ void VRMLObject::Save (Base::Writer &writer) const
         writer.addFile(url.c_str(), this);
     }
 
-    this->index = 0;
+    this->indexSave = 0;
 }
 
 void VRMLObject::Restore(Base::XMLReader &reader)
@@ -155,14 +155,14 @@ void VRMLObject::Restore(Base::XMLReader &reader)
         reader.addFile(url.c_str(), this);
     }
 
-    this->index = 0;
+    this->indexRestore = 0;
 }
 
 void VRMLObject::SaveDocFile (Base::Writer &writer) const
 {
     // store the inline files of the VRML file
-    if (this->index < Urls.getSize()) {
-        std::string url = Urls[this->index];
+    if (this->indexSave < Urls.getSize()) {
+        std::string url = Urls[this->indexSave];
 
         Base::FileInfo fi(url);
         // it can happen that the transient directory has changed after
@@ -170,12 +170,12 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
         // try again with the new transient directory.
         if (!fi.exists()) {
             std::string path = getDocument()->TransientDir.getValue();
-            url = Resources[this->index];
+            url = Resources[this->indexSave];
             url = path + "/" + url;
             fi.setFile(url);
         }
 
-        this->index++;
+        this->indexSave++;
         Base::ifstream file(fi, std::ios::in | std::ios::binary);
         if (file) {
             writer.Stream() << file.rdbuf();
@@ -185,18 +185,18 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
 
 void VRMLObject::RestoreDocFile(Base::Reader &reader)
 {
-    if (this->index < Resources.getSize()) {
+    if (this->indexRestore < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
-        std::string url = Resources[this->index];
+        std::string url = Resources[this->indexRestore];
         std::string intname = this->getNameInDocument();
         url = fixRelativePath(intname, url);
-        Resources.set1Value(this->index, url);
+        Resources.set1Value(this->indexRestore, url);
         makeDirectories(path, url);
 
         url = path + "/" + url;
         Base::FileInfo fi(url);
-        Urls.set1Value(this->index, url);
-        this->index++;
+        Urls.set1Value(this->indexRestore, url);
+        this->indexRestore++;
 
         Base::ofstream file(fi, std::ios::out | std::ios::binary);
         if (file) {
@@ -205,7 +205,7 @@ void VRMLObject::RestoreDocFile(Base::Reader &reader)
         }
 
         // after restoring all inline files reload the VRML file
-        if (this->index == Urls.getSize()) {
+        if (this->indexRestore == Urls.getSize()) {
             VrmlFile.touch();
             Base::FileInfo fi(VrmlFile.getValue());
             this->vrmlPath = fi.dirPath();
