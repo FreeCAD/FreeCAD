@@ -72,10 +72,11 @@ void VRMLObject::onChanged(const App::Property* prop)
         // save the relative paths to the resource files in the project file
         Resources.setSize(Urls.getSize());
         const std::vector<std::string>& urls = Urls.getValues();
-        int index=0;
-        for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it, ++index) {
-            std::string output = getRelativePath(this->vrmlPath, *it);
+        int index = 0;
+        for (const auto& it : urls) {
+            std::string output = getRelativePath(this->vrmlPath, it);
             Resources.set1Value(index, output);
+            ++index;
         }
     }
     GeoFeature::onChanged(prop);
@@ -109,7 +110,7 @@ std::string VRMLObject::getRelativePath(const std::string& prefix, const std::st
     return str;
 }
 
-std::string VRMLObject::fixRelativePath(const std::string& name, const std::string& resource) const
+std::string VRMLObject::fixRelativePath(const std::string& name, const std::string& resource)
 {
     // the part before the first '/' must match with object's internal name
     std::string::size_type pos = resource.find('/');
@@ -128,10 +129,13 @@ void VRMLObject::makeDirectories(const std::string& path, const std::string& sub
     std::string::size_type pos = subdir.find('/');
     while (pos != std::string::npos) {
         std::string sub = subdir.substr(0, pos);
-        std::string dir = path + "/" + sub;
+        std::string dir = path;
+        dir += '/';
+        dir += sub;
         Base::FileInfo fi(dir);
-        if (!fi.createDirectory())
+        if (!fi.createDirectory()) {
             break;
+        }
         pos = subdir.find('/', pos+1);
     }
 }
