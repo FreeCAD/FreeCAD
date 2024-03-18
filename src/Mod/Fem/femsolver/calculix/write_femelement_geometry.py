@@ -51,11 +51,15 @@ def write_femelement_geometry(f, ccxwriter):
                 if beamsec_obj.SectionType == "Rectangular":
                     # see meshtools.get_beam_main_axis_m(beam_direction, defined_angle)
                     # the method get_beam_main_axis_m() which calculates the beam_axis_m vector
-                    # returns for a line in x direction and angle 0 degree
-                    # the y-axis as local main direction (beam_axis_m vector)
-                    # in users head and in beam section object this is the Width
-                    len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
+                    # unless rotated, this vector points towards +y axis
+                    # doesn't follow 1,2-direction order of CalculiX
+                    # ^ (n, 2-direction)
+                    # |
+                    # |
+                    # .----> (m, 1-direction)
+                    #
                     len_beam_axis_n = beamsec_obj.RectHeight.getValueAs("mm").Value
+                    len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
                     section_type = ", SECTION=RECT"
                     section_geo = "{:.13G},{:.13G}\n".format(len_beam_axis_m, len_beam_axis_n)
                     section_def = "*BEAM SECTION, {}{}{}\n".format(
