@@ -68,6 +68,11 @@ public:
                                          double offset,
                                          bool isSecond,
                                          TopoDS_Wire& result);
+    /** Same as makeDraft() with support of element mapping
+     */
+    static void makEDraft(const ExtrusionParameters& params, const TopoShape&,
+                          std::vector<TopoShape>&, App::StringHasherRef hasher);
+
 };
 
 } //namespace Part
