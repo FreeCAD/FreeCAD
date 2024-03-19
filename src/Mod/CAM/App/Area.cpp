@@ -756,7 +756,12 @@ static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
     p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
 }
 
-
+// Toponaming integration note: there's a new class called WireJoiner in Mod/Part/App/ that has been
+// imported from RT's fork. Is's an improved version of the following struct, therefor
+// probably at some point this struct should be replaced with the new imported class.
+// See https://github.com/realthunder/FreeCAD/blob/LinkStable/src/Mod/Part/App/WireJoiner.h for the
+// original implementation of the class and https://github.com/FreeCAD/FreeCAD/pull/12535 for the
+// import conversation.
 struct WireJoiner {
 
     using Box = bg::model::box<gp_Pnt>;

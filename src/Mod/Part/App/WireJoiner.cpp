@@ -59,6 +59,7 @@
 #include <unordered_set>
 #include <deque>
 #include <boost_geometry.hpp>
+#include <utility>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -77,7 +78,8 @@
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
 
-using RParameters = bgi::linear<16>;
+const size_t RParametersNumber = 16UL;
+using RParameters = bgi::linear<RParametersNumber>;
 
 BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
         gp_Pnt,double,bg::cs::cartesian,X,Y,Z,SetX,SetY,SetZ)
@@ -116,7 +118,7 @@ public:
     bool doTightBound = true;
 
     std::string catchObject;
-    int catchIteration;
+    int catchIteration {};
     int iteration = 0;
 
     using Box = bg::model::box<gp_Pnt>;
@@ -137,11 +139,14 @@ public:
     }
 
     WireJoinerP()
-    {
-        auto hParam = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/WireJoiner");
-        catchObject = hParam->GetASCII("ObjectName");
-        catchIteration = hParam->GetInt("Iteration", 0);
-    }
+        : catchObject(App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/WireJoiner")
+                          ->GetASCII("ObjectName"))
+        , catchIteration(static_cast<int>(
+              App::GetApplication()
+                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/WireJoiner")
+                  ->GetInt("Iteration", 0)))
+    {}
 
     bool getBBox(const TopoDS_Shape &eForBBox, Bnd_Box &bound) {
         BRepBndLib::AddOptimal(eForBBox,bound,Standard_False);
@@ -189,27 +194,32 @@ public:
         gp_Pnt p2;
         gp_Pnt mid;
         Box box;
-        int iStart[2]; // adjacent list index start for p1 and p2
-        int iEnd[2]; // adjacent list index end
-        int iteration;
-        int iteration2;
+        std::array<int, 2> iStart {};  // adjacent list index start for p1 and p2
+        std::array<int, 2> iEnd {};    // adjacent list index end
+        int iteration {};
+        int iteration2 {};
         bool queryBBox;
-        std::shared_ptr<WireInfo> wireInfo;
-        std::shared_ptr<WireInfo> wireInfo2; // an edge can be shared by at most two tight bound wires.
-        std::unique_ptr<Geometry> geo;
-        Standard_Real firstParam;
-        Standard_Real lastParam;
+        std::shared_ptr<WireInfo> wireInfo {};
+        std::shared_ptr<WireInfo> wireInfo2 {}; // an edge can be shared by at most two tight bound wires.
+        std::unique_ptr<Geometry> geo {};
+        Standard_Real firstParam {};
+        Standard_Real lastParam {};
         Handle_Geom_Curve curve;
-        GeomAbs_CurveType type;
+        GeomAbs_CurveType type {};
         bool isLinear;
 
-        EdgeInfo(const TopoDS_Edge &eForInfo,
-                 const gp_Pnt &pt1,
-                 const gp_Pnt &pt2,
-                 const Box &bound,
+        EdgeInfo(const TopoDS_Edge& eForInfo,
+                 const gp_Pnt& pt1,
+                 const gp_Pnt& pt2,
+                 const Box& bound,
                  bool bbox,
                  bool isLinear)
-            :edge(eForInfo),p1(pt1),p2(pt2),box(bound),queryBBox(bbox),isLinear(isLinear)
+            : edge(eForInfo)
+            , p1(pt1)
+            , p2(pt2)
+            , box(bound)
+            , queryBBox(bbox)
+            , isLinear(isLinear)
         {
             curve = BRep_Tool::Curve(eForInfo, firstParam, lastParam);
             type = GeomAdaptor_Curve(curve).GetType();
@@ -218,15 +228,16 @@ public:
             // been replaced with the precompiler macro assert()
 
             assert(!curve.IsNull());
-            GeomLProp_CLProps prop(curve,(firstParam+lastParam)*0.5,0,Precision::Confusion());
+            const double halving {0.5};
+            GeomLProp_CLProps prop(curve,(firstParam+lastParam)*halving,0,Precision::Confusion());
             mid = prop.Value();
 
-            iteration = 0;
             reset();
         }
         Geometry *geometry() {
-            if (!geo)
-                geo = Geometry::fromShape(edge, /*silent*/true);
+            if (!geo) {
+                geo = Geometry::fromShape(edge, /*silent*/ true);
+            }
             return geo.get();
         }
         void reset() {
@@ -279,8 +290,10 @@ public:
         bool contains(const T &vForContains)
         {
             if (!sorted) {
-                if (data.size() < 30)
+                const size_t dataSizeMax = 30;
+                if (data.size() < dataSizeMax) {
                     return std::find(data.begin(), data.end(), vForContains) != data.end();
+                }
                 sort();
             }
             auto it = std::lower_bound(data.begin(), data.end(), vForContains);
@@ -291,40 +304,46 @@ public:
             if (other.size() < size()) {
                 return other.intersects(*this);
             }
-            else if (!sorted) {
-                for (const auto &v : data) {
-                    if (other.contains(v))
+            if (!sorted) {
+                for (const auto &vector : data) {
+                    if (other.contains(vector)) {
                         return true;
+                    }
                 }
-            } else {
+            }
+            else {
                 other.sort();
                 auto it = other.data.begin();
-                for (const auto &v : data) {
-                    it = std::lower_bound(it, other.data.end(), v);
-                    if (it == other.data.end())
+                for (const auto &vertex : data) {
+                    it = std::lower_bound(it, other.data.end(), vertex);
+                    if (it == other.data.end()) {
                         return false;
-                    if (*it == v)
+                    }
+                    if (*it == vertex) {
                         return true;
+                    }
                 }
             }
             return false;
         }
         void insert(const T &vToInsert)
         {
-            if (sorted)
+            if (sorted) {
                 data.insert(std::upper_bound(data.begin(), data.end(), vToInsert), vToInsert);
-            else
+            }
+            else {
                 data.push_back(vToInsert);
+            }
         }
         bool insertUnique(const T &vToInsertUnique)
         {
             if (sorted) {
                 auto it = std::lower_bound(data.begin(), data.end(), vToInsertUnique);
-                if (it != data.end() && *it == vToInsertUnique) {
-                    return false;
+                bool insert = !(it != data.end() && *it == vToInsertUnique);
+                if (insert) {
+                    data.insert(it, vToInsertUnique);
                 }
-                data.insert(it, vToInsertUnique);
-                return true;
+                return insert;
             }
 
             if (contains(vToInsertUnique)) {
@@ -346,7 +365,8 @@ public:
                 }
                 data.erase(it, itEnd);
             }
-            if (data.size() < 20) {
+            const size_t dataSizeMax = 20;
+            if (data.size() < dataSizeMax) {
                 sorted = false;
             }
         }
@@ -365,26 +385,25 @@ public:
         }
     private:
         bool sorted = false;
-        std::vector<T> data;
+        std::vector<T> data {};
     };
 
     Handle(BRepTools_History) aHistory = new BRepTools_History;
 
     using Edges = std::list<EdgeInfo>;
-    Edges edges;
+    Edges edges {};
 
-    std::map<EdgeInfo*, Edges::iterator> edgesTable;
+    std::map<EdgeInfo*, Edges::iterator> edgesTable {};
 
     struct VertexInfo {
-        Edges::iterator it;
-        bool start;
-        VertexInfo()
-        {}
+        Edges::iterator it {};
+        bool start {};
+        VertexInfo() = default;
         VertexInfo(Edges::iterator it, bool start)
             :it(it),start(start)
         {}
         VertexInfo reversed() const {
-            return VertexInfo(it, !start);
+            return {it, !start};
         }
         bool operator==(const VertexInfo &other) const {
             return it==other.it && start==other.start;
@@ -398,7 +417,7 @@ public:
             if (thisInfo > otherInfo) {
                 return false;
             }
-            return start < other.start;
+            return static_cast<int>(start) < static_cast<int>(other.start);
         }
         const gp_Pnt &pt() const {
             return start?it->p1:it->p2;
@@ -437,14 +456,14 @@ public:
         {}
     };
 
-    std::vector<StackInfo> stack;
-    std::vector<VertexInfo> vertexStack;
-    std::vector<VertexInfo> tmpVertices;
-    std::vector<VertexInfo> adjacentList;
+    std::vector<StackInfo> stack {};
+    std::vector<VertexInfo> vertexStack {};
+    std::vector<VertexInfo> tmpVertices {};
+    std::vector<VertexInfo> adjacentList {};
 
     struct WireInfo {
-        std::vector<VertexInfo> vertices;
-        mutable std::vector<int> sorted;
+        std::vector<VertexInfo> vertices {};
+        mutable std::vector<int> sorted {};
         TopoDS_Wire wire;
         TopoDS_Face face;
         mutable Bnd_Box box;
@@ -462,24 +481,26 @@ public:
 
             assert(sorted.size() < vertices.size());
             sorted.reserve(vertices.size());
-            for (int i=(int)sorted.size(); i<(int)vertices.size(); ++i)
+            for (int i = (int)sorted.size(); i < (int)vertices.size(); ++i) {
                 sorted.push_back(i);
-            std::sort(sorted.begin(), sorted.end(), [&](int a, int b) {
-                return vertices[a] < vertices[b];
+            }
+            std::sort(sorted.begin(), sorted.end(), [&](int vA, int vB) {
+                return vertices[vA] < vertices[vB];
             });
         }
         int find(const VertexInfo &info) const
         {
-            if (vertices.size() < 20) {
+            const size_t verticesSizeMax = 20;
+            if (vertices.size() < verticesSizeMax) {
                 auto it = std::find(vertices.begin(), vertices.end(), info);
                 if (it == vertices.end()) {
                     return 0;
                 }
-                return it - vertices.begin() + 1;
+                return (static_cast<int>(it - vertices.begin()) + 1);
             }
             sort();
             auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const VertexInfo &v) {return vertices[idx]<v;});
+                    [&](int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it] == info) {
                 res = *it + 1;
@@ -488,16 +509,18 @@ public:
         }
         int find(const EdgeInfo *info) const
         {
-            if (vertices.size() < 20) {
+            const size_t verticesSizeMax = 20;
+            if (vertices.size() < verticesSizeMax) {
                 for (auto it=vertices.begin(); it!=vertices.end(); ++it) {
-                    if (it->edgeInfo() == info)
-                        return it - vertices.begin() + 1;
+                    if (it->edgeInfo() == info) {
+                        return (static_cast<int>(it - vertices.begin()) + 1);
+                    }
                 }
                 return 0;
             }
             sort();
             auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const EdgeInfo *v) {return vertices[idx].edgeInfo()<v;});
+                    [&](int idx, const EdgeInfo *vertex) {return vertices[idx].edgeInfo()<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it].edgeInfo() == info) {
                 res = *it + 1;
@@ -519,11 +542,13 @@ public:
             if (idx < 0) {
                 return false;
             }
-            for (auto &v : other.vertices) {
-                if (v.edgeInfo() != vertices[idx].edgeInfo())
+            for (auto &vertex : other.vertices) {
+                if (vertex.edgeInfo() != vertices[idx].edgeInfo()) {
                     return false;
-                if (++idx == (int)vertices.size())
+                }
+                if (++idx == (int)vertices.size()) {
                     idx = 0;
+                }
             }
             return true;
         }
@@ -540,11 +565,41 @@ public:
     const Bnd_Box &getWireBound(const WireInfo &wireInfo) const
     {
         if (wireInfo.box.IsVoid()) {
-            for (auto &v : wireInfo.vertices)
-                BRepBndLib::Add(v.it->shape(),wireInfo.box);
+            for (auto& vertex : wireInfo.vertices) {
+                BRepBndLib::Add(vertex.it->shape(), wireInfo.box);
+            }
             wireInfo.box.Enlarge(myTol);
         }
         return wireInfo.box;
+    }
+
+    // This method was originally part of WireJoinerP::initWireInfo(), split to reduce cognitive
+    // complexity
+    bool initWireInfoWireClosed(const WireInfo& wireInfo)
+    {
+        if (!BRep_Tool::IsClosed(wireInfo.wire)) {
+            showShape(wireInfo.wire, "FailedToClose");
+            FC_ERR("Wire not closed");
+            for (auto& vertex : wireInfo.vertices) {
+                showShape(vertex.edgeInfo(), vertex.start ? "failed" : "failed_r", iteration);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::initWireInfo(), split to reduce cognitive
+    // complexity
+    bool initWireInfoFaceDone(WireInfo& wireInfo)
+    {
+        BRepBuilderAPI_MakeFace mkFace(wireInfo.wire);
+        if (!mkFace.IsDone()) {
+            FC_ERR("Failed to create face for wire");
+            showShape(wireInfo.wire, "FailedFace");
+            return false;
+        }
+        wireInfo.face = mkFace.Face();
+        return true;
     }
 
     bool initWireInfo(WireInfo &wireInfo)
@@ -555,27 +610,20 @@ public:
         getWireBound(wireInfo);
         if (wireInfo.wire.IsNull()) {
             wireData->Clear();
-            for (auto &v : wireInfo.vertices)
-                wireData->Add(v.it->shape(v.start));
+            for (auto& vertex : wireInfo.vertices) {
+                wireData->Add(vertex.it->shape(vertex.start));
+            }
             wireInfo.wire = makeCleanWire();
         }
 
-        if (!BRep_Tool::IsClosed(wireInfo.wire)) {
-            showShape(wireInfo.wire, "FailedToClose");
-            FC_ERR("Wire not closed");
-            for (auto &v : wireInfo.vertices) {
-                showShape(v.edgeInfo(), v.start ? "failed" : "failed_r", iteration);
-            }
+        if (!initWireInfoWireClosed(wireInfo)) {
             return false;
         }
 
-        BRepBuilderAPI_MakeFace mkFace(wireInfo.wire);
-        if (!mkFace.IsDone()) {
-            FC_ERR("Failed to create face for wire");
-            showShape(wireInfo.wire, "FailedFace");
+        if (!initWireInfoFaceDone(wireInfo)) {
             return false;
         }
-        wireInfo.face = mkFace.Face();
+
         return true;
     }
 
@@ -605,7 +653,7 @@ public:
         }
     };
 
-    bgi::rtree<VertexInfo,RParameters, PntGetter> vmap;
+    bgi::rtree<VertexInfo, RParameters, PntGetter> vmap {};
 
     struct BoxGetter
     {
@@ -614,13 +662,13 @@ public:
             return it->box;
         }
     };
-    bgi::rtree<Edges::iterator,RParameters, BoxGetter> boxMap;
+    bgi::rtree<Edges::iterator, RParameters, BoxGetter> boxMap {};
 
     BRep_Builder builder;
     TopoDS_Compound compound;
 
-    std::unordered_set<TopoShape, ShapeHasher, ShapeHasher> sourceEdges;
-    std::vector<TopoShape> sourceEdgeArray;
+    std::unordered_set<TopoShape, ShapeHasher, ShapeHasher> sourceEdges {};
+    std::vector<TopoShape> sourceEdgeArray {};
     TopoDS_Compound openWireCompound;
 
     Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
@@ -644,8 +692,9 @@ public:
 
     Edges::iterator remove(Edges::iterator it)
     {
-        if (it->queryBBox)
+        if (it->queryBBox) {
             boxMap.remove(it);
+        }
         vmap.remove(VertexInfo(it,true));
         vmap.remove(VertexInfo(it,false));
         return edges.erase(it);
@@ -654,8 +703,9 @@ public:
     void remove(EdgeInfo *info)
     {
         if (edgesTable.empty()) {
-            for (auto it=edges.begin(); it!=edges.end(); ++it)
+            for (auto it = edges.begin(); it != edges.end(); ++it) {
                 edgesTable[&(*it)] = it;
+            }
         }
         auto it = edgesTable.find(info);
         if (it != edgesTable.end()) {
@@ -668,8 +718,9 @@ public:
     {
         vmap.insert(VertexInfo(it,true));
         vmap.insert(VertexInfo(it,false));
-        if (it->queryBBox)
+        if (it->queryBBox) {
             boxMap.insert(it);
+        }
         showShape(it->edge, "add");
     }
 
@@ -690,6 +741,71 @@ public:
         return add(eToAdd, queryBBox, bbox, it) ? 1 : -1;
     }
 
+    // This method was originally part of WireJoinerP::add(), split to reduce cognitive complexity
+    bool addNoDuplicates(const TopoDS_Edge& eToAdd,
+                         TopoDS_Vertex& v2,
+                         TopoDS_Edge& ev2,
+                         const bool isLinear,
+                         const VertexInfo& vinfo,
+                         std::unique_ptr<Geometry>& geo)
+    {
+        if (v2.IsNull()) {
+            ev2 = vinfo.edge();
+            v2 = vinfo.otherVertex();
+        }
+        if (isLinear && vinfo.edgeInfo()->isLinear) {
+            showShape(eToAdd, "duplicate");
+            aHistory->Remove(eToAdd);
+            return false;
+        }
+        if (auto geoEdge = vinfo.edgeInfo()->geometry()) {
+            if (!geo) {
+                geo = Geometry::fromShape(eToAdd, /*silent*/ true);
+            }
+            if (geo && geo->isSame(*geoEdge, myTol, myAngularTol)) {
+                showShape(eToAdd, "duplicate");
+                aHistory->Remove(eToAdd);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::add(), split to reduce cognitive complexity
+    bool addValidEdges(const TopoDS_Edge& eToAdd,
+                       const gp_Pnt p1,
+                       const double tol,
+                       TopoDS_Vertex& v1,
+                       TopoDS_Edge& ev1,
+                       const gp_Pnt p2,
+                       TopoDS_Vertex& v2,
+                       TopoDS_Edge& ev2,
+                       const bool isLinear)
+    {
+        std::unique_ptr<Geometry> geo;
+        for (auto vit = vmap.qbegin(bgi::nearest(p1, INT_MAX)); vit != vmap.qend(); ++vit) {
+            auto& vinfo = *vit;
+            if (canShowShape()) {
+                FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
+            }
+            double d1 = vinfo.pt().SquareDistance(p1);
+            if (d1 >= tol) {
+                break;
+            }
+            if (v1.IsNull()) {
+                ev1 = vinfo.edge();
+                v1 = vinfo.vertex();
+            }
+            double d2 = vinfo.ptOther().SquareDistance(p2);
+            if (d2 < tol) {
+                if (!addNoDuplicates(eToAdd, v2, ev2, isLinear, vinfo, geo)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     bool add(const TopoDS_Edge &eToAdd, bool queryBBox, const Box &bbox, Edges::iterator &it)
     {
         gp_Pnt p1 = gp_Pnt();
@@ -703,41 +819,11 @@ public:
         // search for duplicate edges
         showShape(eToAdd, "addcheck");
         bool isLinear = TopoShape(eToAdd).isLinearEdge();
-        std::unique_ptr<Geometry> geo;
 
-        for (auto vit=vmap.qbegin(bgi::nearest(p1,INT_MAX));vit!=vmap.qend();++vit) {
-            auto &vinfo = *vit;
-            if (canShowShape())
-                FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
-            double d1 = vinfo.pt().SquareDistance(p1);
-            if (d1 >= tol)
-                break;
-            if (v1.IsNull()) {
-                ev1 = vinfo.edge();
-                v1 = vinfo.vertex();
-            }
-            double d2 = vinfo.ptOther().SquareDistance(p2);
-            if (d2 < tol) {
-                if (v2.IsNull()) {
-                    ev2 = vinfo.edge();
-                    v2 = vinfo.otherVertex();
-                }
-                if (isLinear && vinfo.edgeInfo()->isLinear) {
-                    showShape(eToAdd, "duplicate");
-                    aHistory->Remove(eToAdd);
-                    return false;
-                }
-                else if (auto geoEdge = vinfo.edgeInfo()->geometry()) {
-                    if (!geo)
-                        geo = Geometry::fromShape(eToAdd, /*silent*/true);
-                    if (geo && geo->isSame(*geoEdge, myTol, myAngularTol)) {
-                        showShape(eToAdd, "duplicate");
-                        aHistory->Remove(eToAdd);
-                        return false;
-                    }
-                }
-            }
+        if (!addValidEdges(eToAdd, p1, tol, v1, ev1, p2, v2, ev2, isLinear)){
+            return false;
         }
+
         if (v2.IsNull()) {
             for (auto vit=vmap.qbegin(bgi::nearest(p2,1));vit!=vmap.qend();++vit) {
                 auto &vinfo = *vit;
@@ -767,7 +853,8 @@ public:
                                   BRep_Tool::Tolerance(vOther));
             if (tol >= BRep_Tool::Tolerance(vCurrent)) {
                 ShapeFix_ShapeTolerance fix;
-                fix.SetTolerance(vCurrent, std::max(tol*0.5, myTol), TopAbs_VERTEX);
+                const double halving {0.5};
+                fix.SetTolerance(vCurrent, std::max(tol*halving, myTol), TopAbs_VERTEX);
             }
             BRepBuilderAPI_MakeWire mkWire(eOther);
             mkWire.Add(eCurrent);
@@ -810,6 +897,67 @@ public:
         }
     }
 
+    // This method was originally part of WireJoinerP::join(), split to reduce cognitive complexity
+    void joinMakeWire(const int idx,
+                      BRepBuilderAPI_MakeWire& mkWire,
+                      const Edges::iterator it,
+                      bool& done)
+    {
+        double tol = myTol2;
+        gp_Pnt pstart(it->p1);
+        gp_Pnt pend(it->p2);
+        while (!edges.empty()) {
+            std::vector<VertexInfo> ret;
+            ret.reserve(1);
+            const gp_Pnt& pt = idx == 0 ? pstart : pend;
+            vmap.query(bgi::nearest(pt, 1), std::back_inserter(ret));
+
+            // Originally here there was a call to the precompiler macro assertCheck(),
+            // which has been replaced with the precompiler macro assert()
+
+            assert(ret.size() == 1);
+            double dist = ret[0].pt().SquareDistance(pt);
+            if (dist > tol) {
+                break;
+            }
+
+            const auto& info = *ret[0].it;
+            bool start = ret[0].start;
+            if (dist > Precision::SquareConfusion()) {
+                // insert a filling edge to solve the tolerance problem
+                const gp_Pnt& pt = ret[idx].pt();
+                if (idx != 0) {
+                    mkWire.Add(BRepBuilderAPI_MakeEdge(pend, pt).Edge());
+                }
+                else {
+                    mkWire.Add(BRepBuilderAPI_MakeEdge(pt, pstart).Edge());
+                }
+            }
+
+            if (idx == 1 && start) {
+                pend = info.p2;
+                mkWire.Add(info.edge);
+            }
+            else if (idx == 0 && !start) {
+                pstart = info.p1;
+                mkWire.Add(info.edge);
+            }
+            else if (idx == 0 && start) {
+                pstart = info.p2;
+                mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
+            }
+            else {
+                pend = info.p1;
+                mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
+            }
+            remove(ret[0].it);
+            if (pstart.SquareDistance(pend) <= Precision::SquareConfusion()) {
+                done = true;
+                break;
+            }
+        }
+    }
+
     //This algorithm tries to join connected edges into wires
     //
     //tol*tol>Precision::SquareConfusion() can be used to join points that are
@@ -818,65 +966,17 @@ public:
     //
     void join()
     {
-        double tol = myTol2;
-        while (edges.size()) {
+        while (!edges.empty()) {
             auto it = edges.begin();
             BRepBuilderAPI_MakeWire mkWire;
             mkWire.Add(it->edge);
-            gp_Pnt pstart(it->p1);
-            gp_Pnt pend(it->p2);
             remove(it);
 
             bool done = false;
             for (int idx=0;!done&&idx<2;++idx) {
-                while (edges.size()) {
-                    std::vector<VertexInfo> ret;
-                    ret.reserve(1);
-                    const gp_Pnt &pt = idx==0?pstart:pend;
-                    vmap.query(bgi::nearest(pt,1),std::back_inserter(ret));
-
-                    // Originally here there was a call to the precompiler macro assertCheck(),
-                    // which has been replaced with the precompiler macro assert()
-
-                    assert(ret.size() == 1);
-                    double d = ret[0].pt().SquareDistance(pt);
-                    if (d > tol) {
-                        break;
-                    }
-
-                    const auto &info = *ret[0].it;
-                    bool start = ret[0].start;
-                    if (d > Precision::SquareConfusion()) {
-                        // insert a filling edge to solve the tolerance problem
-                        const gp_Pnt &pt = ret[idx].pt();
-                        if (idx) {
-                            mkWire.Add(BRepBuilderAPI_MakeEdge(pend, pt).Edge());
-                        }
-                        else {
-                            mkWire.Add(BRepBuilderAPI_MakeEdge(pt, pstart).Edge());
-                        }
-                    }
-
-                    if (idx==1 && start) {
-                        pend = info.p2;
-                        mkWire.Add(info.edge);
-                    }else if (idx==0 && !start) {
-                        pstart = info.p1;
-                        mkWire.Add(info.edge);
-                    }else if (idx==0 && start) {
-                        pstart = info.p2;
-                        mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
-                    }else {
-                        pend = info.p1;
-                        mkWire.Add(TopoDS::Edge(info.edge.Reversed()));
-                    }
-                    remove(ret[0].it);
-                    if (pstart.SquareDistance(pend)<=Precision::SquareConfusion()){
-                        done = true;
-                        break;
-                    }
-                }
+                joinMakeWire(idx, mkWire, it, done);
             }
+
             builder.Add(compound,mkWire.Wire());
         }
     }
@@ -885,15 +985,17 @@ public:
         double param;
         TopoDS_Shape intersectShape;
         gp_Pnt point;
-        IntersectInfo(double pToIntersect, const gp_Pnt &pt, const TopoDS_Shape &sToIntersect)
-            :param(pToIntersect), intersectShape(sToIntersect), point(pt)
+        IntersectInfo(double pToIntersect, const gp_Pnt& pt, TopoDS_Shape sToIntersect)
+            : param(pToIntersect)
+            , intersectShape(std::move(sToIntersect))
+            , point(pt)
         {}
         bool operator<(const IntersectInfo &other) const {
             return param < other.param;
         }
     };
 
-    void checkSelfIntersection(const EdgeInfo &info, std::set<IntersectInfo> &params)
+    void checkSelfIntersection(const EdgeInfo &info, std::set<IntersectInfo> &params) const
     {
         // Early return if checking for self intersection (only for non linear spline curves)
         if (info.type <= GeomAbs_Parabola || info.isLinear) {
@@ -919,7 +1021,7 @@ public:
         if (!mkFace.IsDone()) {
             return;
         }
-        TopoDS_Face face = mkFace.Face();
+        const TopoDS_Face& face = mkFace.Face();
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckSelfIntersectingEdge(1, points2d, points3d);
 
@@ -933,10 +1035,12 @@ public:
         }
     }
 
-    void checkIntersection(const EdgeInfo &info,
-                           const EdgeInfo &other,
-                           std::set<IntersectInfo> &params1,
-                           std::set<IntersectInfo> &params2)
+    // This method was originally part of WireJoinerP::checkIntersection(), split to reduce
+    // cognitive complexity
+    bool checkIntersectionPlanar(const EdgeInfo& info,
+                                 const EdgeInfo& other,
+                                 std::set<IntersectInfo>& params1,
+                                 std::set<IntersectInfo>& params2)
     {
         gp_Pln pln;
         bool planar = TopoShape(info.edge).findPlane(pln);
@@ -951,25 +1055,121 @@ public:
                 extss.Perform();
                 if (extss.IsDone() && extss.NbSolution() > 0) {
                     if (!extss.IsDone() || extss.NbSolution() <= 0 || extss.Value() >= myTol) {
-                        return;
+                        return false;
                     }
                 }
-                for (int i=1; i<=extss.NbSolution(); ++i) {
-                    Standard_Real p = Standard_Real();
+                for (int i = 1; i <= extss.NbSolution(); ++i) {
+                    Standard_Real par = Standard_Real();
                     auto s1 = extss.SupportOnShape1(i);
                     auto s2 = extss.SupportOnShape2(i);
                     if (s1.ShapeType() == TopAbs_EDGE) {
-                        extss.ParOnEdgeS1(i,p);
-                        pushIntersection(params1, p, extss.PointOnShape1(i), other.edge);
+                        extss.ParOnEdgeS1(i, par);
+                        pushIntersection(params1, par, extss.PointOnShape1(i), other.edge);
                     }
                     if (s2.ShapeType() == TopAbs_EDGE) {
-                        extss.ParOnEdgeS2(i,p);
-                        pushIntersection(params2, p, extss.PointOnShape2(i), info.edge);
+                        extss.ParOnEdgeS2(i, par);
+                        pushIntersection(params2, par, extss.PointOnShape2(i), info.edge);
                     }
                 }
-                return;
+                return false;
             }
         }
+
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::checkIntersection(), split to reduce
+    // cognitive complexity
+    static bool checkIntersectionEdgeDone(const BRepBuilderAPI_MakeEdge& mkEdge)
+    {
+        if (!mkEdge.IsDone()) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Failed to build edge for checking intersection");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::checkIntersection(), split to reduce
+    // cognitive complexity
+    static bool checkIntersectionWireDone(const BRepBuilderAPI_MakeWire& mkWire)
+    {
+        if (!mkWire.IsDone()) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Failed to build wire for checking intersection");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::checkIntersection(), split to reduce
+    // cognitive complexity
+    static bool checkIntersectionMakeWire(const EdgeInfo& info,
+                                          const EdgeInfo& other,
+                                          int& idx,
+                                          TopoDS_Wire& wire)
+    {
+        BRepBuilderAPI_MakeWire mkWire(info.edge);
+        mkWire.Add(other.edge);
+        if (mkWire.IsDone()) {
+            idx = 2;
+        }
+        else if (mkWire.Error() == BRepBuilderAPI_DisconnectedWire) {
+            idx = 3;
+            BRepBuilderAPI_MakeEdge mkEdge(info.p1, other.p1);
+
+            if (!checkIntersectionEdgeDone(mkEdge)) {
+                return false;
+            }
+
+            mkWire.Add(mkEdge.Edge());
+            mkWire.Add(other.edge);
+        }
+
+        if (!checkIntersectionWireDone(mkWire)) {
+            return false;
+        }
+
+        wire = mkWire.Wire();
+        if (!BRep_Tool::IsClosed(wire)) {
+            gp_Pnt p1 = gp_Pnt();
+            gp_Pnt p2 = gp_Pnt();
+            getEndPoints(wire, p1, p2);
+            BRepBuilderAPI_MakeEdge mkEdge(p1, p2);
+
+            if (!checkIntersectionEdgeDone(mkEdge)) {
+                return false;
+            }
+
+            mkWire.Add(mkEdge.Edge());
+        }
+        return true;
+    }
+
+    // This method was originally part of WireJoinerP::checkIntersection(), split to reduce
+    // cognitive complexity
+    static bool checkIntersectionFaceDone(const BRepBuilderAPI_MakeFace& mkFace)
+    {
+        if (!mkFace.IsDone()) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Failed to build face for checking intersection");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    void checkIntersection(const EdgeInfo &info,
+                           const EdgeInfo &other,
+                           std::set<IntersectInfo> &params1,
+                           std::set<IntersectInfo> &params2)
+    {
+        if(!checkIntersectionPlanar(info, other, params1, params2)){
+            return;
+        }
+
         // BRepExtrema_DistShapeShape has trouble finding all solutions for a
         // spline curve. ShapeAnalysis_Wire is better. Besides, it can check
         // for self intersection. It's slightly more troublesome to use, as it
@@ -981,53 +1181,17 @@ public:
         TColStd_SequenceOfReal errors;
         TopoDS_Wire wire;
         int idx = 0;
-        BRepBuilderAPI_MakeWire mkWire(info.edge);
-        mkWire.Add(other.edge);
-        if (mkWire.IsDone()) {
-            idx = 2;
-        }
-        else if (mkWire.Error() == BRepBuilderAPI_DisconnectedWire) {
-            idx = 3;
-            BRepBuilderAPI_MakeEdge mkEdge(info.p1, other.p1);
-            if (!mkEdge.IsDone()) {
-                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                    FC_WARN("Failed to build edge for checking intersection");
-                }
-                return;
-            }
-            mkWire.Add(mkEdge.Edge());
-            mkWire.Add(other.edge);
-        }
 
-        if (!mkWire.IsDone()) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                FC_WARN("Failed to build wire for checking intersection");
-            }
+        if (!checkIntersectionMakeWire(info, other, idx, wire)){
             return;
-        }
-        wire = mkWire.Wire();
-        if (!BRep_Tool::IsClosed(wire)) {
-            gp_Pnt p1 = gp_Pnt();
-            gp_Pnt p2 = gp_Pnt();
-            getEndPoints(wire, p1, p2);
-            BRepBuilderAPI_MakeEdge mkEdge(p1, p2);
-            if (!mkEdge.IsDone()) {
-                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                    FC_WARN("Failed to build edge for checking intersection");
-                }
-                return;
-            }
-            mkWire.Add(mkEdge.Edge());
         }
 
         BRepBuilderAPI_MakeFace mkFace(wire);
-        if (!mkFace.IsDone()) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                FC_WARN("Failed to build face for checking intersection");
-            }
+        if (!checkIntersectionFaceDone(mkFace)) {
             return;
         }
-        TopoDS_Face face = mkFace.Face();
+
+        const TopoDS_Face& face = mkFace.Face();
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckIntersectingEdges(1, idx, points2d, points3d, errors);
 
@@ -1041,7 +1205,10 @@ public:
         }
     }
 
-    void pushIntersection(std::set<IntersectInfo> &params, double param, const gp_Pnt &pt, const TopoDS_Shape &shape)
+    void pushIntersection(std::set<IntersectInfo>& params,
+                          double param,
+                          const gp_Pnt& pt,
+                          const TopoDS_Shape& shape)
     {
         IntersectInfo info(param, pt, shape);
         auto it = params.upper_bound(info);
@@ -1058,7 +1225,6 @@ public:
             }
         }
         params.insert(it, info);
-        return;
     }
 
     struct SplitInfo {
@@ -1067,29 +1233,83 @@ public:
         Box bbox;
     };
 
+    // This method was originally part of WireJoinerP::splitEdges(), split to reduce cognitive
+    // complexity
+    void splitEdgesMakeEdge(const std::set<IntersectInfo>::iterator& itParam,
+                            const EdgeInfo& info,
+                            std::vector<SplitInfo>& splits,
+                            std::set<IntersectInfo>::iterator& itPrevParam,
+                            const TopoDS_Shape& intersectShape)
+    {
+        // Using points cause MakeEdge failure for some reason. Using
+        // parameters is better.
+        //
+        const gp_Pnt& p1 = itPrevParam->point;
+        const gp_Pnt& p2 = itParam->point;
+        const Standard_Real& param1 = itPrevParam->param;
+        const Standard_Real& param2 = itParam->param;
+
+        BRepBuilderAPI_MakeEdge mkEdge(info.curve, param1, param2);
+        if (mkEdge.IsDone()) {
+            splits.emplace_back();
+            auto& entry = splits.back();
+            entry.edge = mkEdge.Edge();
+            entry.intersectShape = intersectShape;
+            if (getBBox(entry.edge, entry.bbox)) {
+                itPrevParam = itParam;
+            }
+            else {
+                splits.pop_back();
+            }
+        }
+        else if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("edge split failed " << std::setprecision(16) << FC_XYZ(p1) << FC_XYZ(p2)
+                                         << ": " << mkEdge.Error());
+        }
+    }
+
+    // This method was originally part of WireJoinerP::splitEdges(), split to reduce cognitive
+    // complexity
+    void splitEdgesMakeEdges(std::set<IntersectInfo>::iterator& itParam,
+                             const std::set<IntersectInfo>& params,
+                             const EdgeInfo& info,
+                             std::vector<SplitInfo>& splits)
+    {
+        for (auto itPrevParam = itParam++; itParam != params.end(); ++itParam) {
+            const auto& intersectShape = itParam->intersectShape.IsNull()
+                ? itPrevParam->intersectShape
+                : itParam->intersectShape;
+            if (intersectShape.IsNull()) {
+                break;
+            }
+
+            splitEdgesMakeEdge(itParam, info, splits, itPrevParam, intersectShape);
+        }
+    }
+
     // Try splitting any edges that intersects other edge
     void splitEdges()
     {
         std::unordered_map<const EdgeInfo*, std::set<IntersectInfo>> intersects;
 
-        int i=0;
-        for (auto &info : edges)
-            info.iteration = ++i;
+        int idx=0;
+        for (auto& info : edges) {
+            info.iteration = ++idx;
+        }
 
         std::unique_ptr<Base::SequencerLauncher> seq(
                 new Base::SequencerLauncher("Splitting edges", edges.size()));
 
-        i = 0;
-        for (auto it=edges.begin(); it!=edges.end();++it) {
+        idx = 0;
+        for (auto& info : edges) {
             seq->next(true);
-            ++i;
-            auto &info = *it;
+            ++idx;
             auto &params = intersects[&info];
             checkSelfIntersection(info, params);
 
             for (auto vit=boxMap.qbegin(bgi::intersects(info.box)); vit!=boxMap.qend(); ++vit) {
                 const auto &other = *(*vit);
-                if (other.iteration <= i) {
+                if (other.iteration <= idx) {
                     // means the edge is before us, and we've already checked intersection
                     continue;
                 }
@@ -1097,10 +1317,10 @@ public:
             }
         }
 
-        i=0;
-        std::vector<SplitInfo> split;
+        idx=0;
+        std::vector<SplitInfo> splits;
         for (auto it=edges.begin(); it!=edges.end(); ) {
-            ++i;
+            ++idx;
             auto iter = intersects.find(&(*it));
             if (iter == intersects.end()) {
                 ++it;
@@ -1114,13 +1334,15 @@ public:
             }
 
             auto itParam = params.begin();
-            if (itParam->point.SquareDistance(info.p1) < myTol2)
+            if (itParam->point.SquareDistance(info.p1) < myTol2) {
                 params.erase(itParam);
+            }
             params.emplace(info.firstParam, info.p1, TopoDS_Shape());
             itParam = params.end();
             --itParam;
-            if (itParam->point.SquareDistance(info.p2) < myTol2)
+            if (itParam->point.SquareDistance(info.p2) < myTol2) {
                 params.erase(itParam);
+            }
             params.emplace(info.lastParam, info.p2, TopoDS_Shape());
 
             if (params.size() <= 2) {
@@ -1128,41 +1350,12 @@ public:
                 continue;
             }
 
-            split.clear();
+            splits.clear();
             itParam = params.begin();
-            for (auto itPrevParam=itParam++; itParam!=params.end(); ++itParam) {
-                const auto &intersectShape = itParam->intersectShape.IsNull()
-                    ? itPrevParam->intersectShape : itParam->intersectShape;
-                if (intersectShape.IsNull())
-                    break;
 
-                // Using points cause MakeEdge failure for some reason. Using
-                // parameters is better.
-                //
-                const gp_Pnt &p1 = itPrevParam->point;
-                const gp_Pnt &p2 = itParam->point;
-                const Standard_Real &param1 = itPrevParam->param;
-                const Standard_Real &param2 = itParam->param;
+            splitEdgesMakeEdges(itParam, params, info, splits);
 
-                BRepBuilderAPI_MakeEdge mkEdge(info.curve, param1, param2);
-                if (mkEdge.IsDone()) {
-                    split.emplace_back();
-                    auto& entry = split.back();
-                    entry.edge = mkEdge.Edge();
-                    entry.intersectShape = intersectShape;
-                    if (getBBox(entry.edge, entry.bbox))
-                        itPrevParam = itParam;
-                    else
-                        split.pop_back();
-                    }
-                else if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                    FC_WARN("edge split failed "
-                            << std::setprecision(16)
-                            << FC_XYZ(p1) << FC_XYZ(p2)
-                            << ": " << mkEdge.Error());
-                }
-            }
-            if (split.size() <= 1) { 
+            if (splits.size() <= 1) {
                 ++it;
                 continue;
             }
@@ -1170,11 +1363,12 @@ public:
             showShape(info.edge, "remove");
             auto removedEdge = info.edge;
             it = remove(it);
-            for (const auto& v : split) {
-                if (!add(v.edge, false, v.bbox, it))
+            for (const auto& split : splits) {
+                if (!add(split.edge, false, split.bbox, it)) {
                     continue;
+                }
                 auto &newInfo = *it++;
-                aHistory->AddModified(v.intersectShape, newInfo.edge);
+                aHistory->AddModified(split.intersectShape, newInfo.edge);
                 // if (v.intersectShape != removedEdge)
                 //     aHistory->AddModified(removedEdge, newInfo.edge);
                 showShape(newInfo.edge, "split");
@@ -1182,10 +1376,122 @@ public:
         }
     }
 
+    // This method was originally part of WireJoinerP::findSuperEdges(), split to reduce cognitive
+    // complexity
+    void findSuperEdgeFromAdjacent(std::deque<VertexInfo>& vertices, const int direction)
+    {
+        bool done = false;
+        auto begin = direction == 1 ? vertices.back().reversed() : vertices.front();
+        while (true) {
+            auto currentVertex = direction == 1 ? vertices.front() : vertices.back();
+            auto current = currentVertex.edgeInfo();
+            // showShape(current, "siter", k);
+            const int idx = (currentVertex.start ? 1 : 0) ^ direction;
+            EdgeInfo* found = nullptr;
+            for (int i = current->iStart[idx]; i < current->iEnd[idx]; ++i) {
+                const auto& vertex = adjacentList[i];
+                auto next = vertex.edgeInfo();
+                if (next->iteration < 0    // skipped
+                    || next == current) {  // skip self (see how adjacent list is built)
+                    continue;
+                }
+                if (vertex == begin) {
+                    // closed
+                    done = true;
+                    break;
+                }
+                if (found                       // more than one branch
+                    || edgeSet.contains(next))  // or, self intersect
+                {
+
+                    // Originally here there were some lines of code that have been removed
+                    // as them are commented out.
+                    // See
+                    // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1141
+                    // for reference.
+
+                    found = nullptr;
+                    break;
+                }
+                found = next;
+                currentVertex = vertex;
+            }
+            if (done || !found) {
+                break;
+            }
+            // showShape(found, "snext", k);
+            if (direction == 1) {
+                edgeSet.insert(current);
+                vertices.push_front(currentVertex.reversed());
+            }
+            else {
+                edgeSet.insert(found);
+                vertices.push_back(currentVertex);
+            }
+        }
+    }
+
+    // This method was originally part of WireJoinerP::findSuperEdges(), split to reduce cognitive
+    // complexity
+    void findSuperEdge(std::deque<VertexInfo>& vertices, const Edges::iterator it)
+    {
+        vertices.clear();
+        vertices.emplace_back(it, true);
+        edgeSet.clear();
+
+        for (int direction = 0; direction < 2; ++direction) {  // search in both direction
+            findSuperEdgeFromAdjacent(vertices, direction);
+        }
+    }
+
+    // This method was originally part of WireJoinerP::findSuperEdges(), split to reduce cognitive
+    // complexity
+    void findSuperEdgesUpdateFirst(std::deque<VertexInfo> vertices)
+    {
+        Bnd_Box bbox;
+        for (const auto& vertex : vertices) {
+            auto current = vertex.edgeInfo();
+            bbox.Add(current->box.min_corner());
+            bbox.Add(current->box.max_corner());
+            wireData->Add(current->shape(vertex.start));
+            showShape(current, "edge");
+            current->iteration = -1;
+        }
+
+        auto first = vertices.front().edgeInfo();
+        first->superEdge = makeCleanWire(false);
+        first->superEdgeReversed.Nullify();
+        if (BRep_Tool::IsClosed(first->superEdge)) {
+            first->iteration = -2;
+            showShape(first, "super_done");
+        }
+        else {
+            first->iteration = iteration;
+            showShape(first, "super");
+            auto& vFirst = vertices.front();
+            auto& vLast = vertices.back();
+            auto last = vLast.edgeInfo();
+            vFirst.ptOther() = vLast.ptOther();
+            const int idx = vFirst.start ? 1 : 0;
+            first->iStart[idx] = last->iStart[vLast.start ? 1 : 0];
+            first->iEnd[idx] = last->iEnd[vLast.start ? 1 : 0];
+
+            for (int i = first->iStart[idx]; i < first->iEnd[idx]; ++i) {
+                auto& vertex = adjacentList[i];
+                if (vertex.it == vLast.it) {
+                    vertex.it = vFirst.it;
+                    vertex.start = !vFirst.start;
+                }
+            }
+            bbox.Enlarge(myTol);
+            first->box = Box(bbox.CornerMin(), bbox.CornerMax());
+        }
+    }
+
     void findSuperEdges()
     {
         std::unique_ptr<Base::SequencerLauncher> seq(
-                new Base::SequencerLauncher("Combining edges", edges.size()));
+            new Base::SequencerLauncher("Combining edges", edges.size()));
 
         std::deque<VertexInfo> vertices;
 
@@ -1194,123 +1500,31 @@ public:
         // Join edges (let's call it super edge) that are connected to only one
         // other edges (count == 2 counts this and the other edge) on one of
         // its vertices to save traverse time.
-        for (auto it=edges.begin(); it!=edges.end(); ++it) {
+        for (auto it = edges.begin(); it != edges.end(); ++it) {
             seq->next(true);
-            auto &info = *it;
-            if (info.iteration == iteration || info.iteration < 0)
+            auto& info = *it;
+            if (info.iteration == iteration || info.iteration < 0) {
                 continue;
+            }
             info.iteration = iteration;
             // showShape(&info, "scheck");
 
-            vertices.clear();
-            vertices.emplace_back(it, true);
-            edgeSet.clear();
+            findSuperEdge(vertices, it);
 
-            bool done = false;
-            for (int k=0; k<2; ++k) { // search in both direction
-                auto begin = k==1 ? vertices.back().reversed() : vertices.front();
-                while (true) {
-                    auto currentVertex = k==1 ? vertices.front() : vertices.back();
-                    auto current = currentVertex.edgeInfo();
-                    // showShape(current, "siter", k);
-                    int idx = (currentVertex.start?1:0)^k;
-                    EdgeInfo *found = nullptr;
-                    for (int i=current->iStart[idx]; i<current->iEnd[idx]; ++i) {
-                        const auto &v = adjacentList[i];
-                        auto next = v.edgeInfo();
-                        if (next->iteration < 0 // skipped
-                                || next == current) // skip self (see how adjacent list is built)
-                            continue;
-                        if (v == begin) {
-                            // closed
-                            done = true;
-                            break;
-                        }
-                        if (found // more than one branch
-                            || edgeSet.contains(next)) // or, self intersect
-                        {
-
-                            // Originally here there were some lines of code that have been removed
-                            // as them are commented out.
-                            // See
-                            // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1141
-                            // for reference.
-
-                            found = nullptr;
-                            break;
-                        }
-                        found = next;
-                        currentVertex = v;
-                    }
-                    if (done || !found)
-                        break;
-                    // showShape(found, "snext", k);
-                    if (k==1) {
-                        edgeSet.insert(current);
-                        vertices.push_front(currentVertex.reversed());
-                    } else {
-                        edgeSet.insert(found);
-                        vertices.push_back(currentVertex);
-                    }
-                }
-                if (done)
-                    break;
-            }
-
-            if (vertices.size() <= 1)
+            if (vertices.size() <= 1) {
                 continue;
+            }
 
             wireData->Clear();
-            Bnd_Box bbox;
-            for (const auto &v : vertices) {
-                auto current = v.edgeInfo();
-                bbox.Add(current->box.min_corner());
-                bbox.Add(current->box.max_corner());
-                wireData->Add(current->shape(v.start));
-                showShape(current, "edge");
-                current->iteration = -1;
-            }
-            auto first = vertices.front().edgeInfo();
-            first->superEdge = makeCleanWire(false);
-            first->superEdgeReversed.Nullify();
-            if (BRep_Tool::IsClosed(first->superEdge)) {
-                first->iteration = -2;
-                showShape(first, "super_done");
-            } else {
-                first->iteration = iteration;
-                showShape(first, "super");
-                auto &vFirst = vertices.front();
-                auto &vLast = vertices.back();
-                auto last = vLast.edgeInfo();
-                vFirst.ptOther() = vLast.ptOther();
-                int idx = vFirst.start ? 1 : 0;
-                first->iStart[idx] = last->iStart[vLast.start?1:0];
-                first->iEnd[idx] = last->iEnd[vLast.start?1:0];
 
-                for (int i=first->iStart[idx];i<first->iEnd[idx];++i) {
-                    auto &v = adjacentList[i];
-                    if (v.it == vLast.it) {
-                        v.it = vFirst.it;
-                        v.start = !vFirst.start;
-                    }
-                }
-                bbox.Enlarge(myTol);
-                first->box = Box(bbox.CornerMin(), bbox.CornerMax());
-            }
+            findSuperEdgesUpdateFirst(vertices);
         }
     }
 
-    void buildAdjacentList()
+    void buildAdjacentListPopulate()
     {
-        builder.MakeCompound(compound);
-
-        for (auto &info : edges)
-            info.reset();
-
-        adjacentList.clear();
-
         // populate adjacent list
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             if (info.iteration == -2) {
 
                 // Originally there was the following precompiler directive around assertCheck():
@@ -1320,32 +1534,41 @@ public:
 
                 assert(BRep_Tool::IsClosed(info.shape()));
 
-                showShape(&info,"closed");
-                if (!doTightBound)
-                    builder.Add(compound,info.wire());
+                showShape(&info, "closed");
+                if (!doTightBound) {
+                    builder.Add(compound, info.wire());
+                }
                 continue;
-            } else if (info.iteration < 0)
-                continue;
+            }
 
-            if (info.p1.SquareDistance(info.p2)<=myTol2) {
-                if (!doTightBound)
-                    builder.Add(compound,info.wire());
+            if (info.iteration < 0) {
+                continue;
+            }
+
+            if (info.p1.SquareDistance(info.p2) <= myTol2) {
+                if (!doTightBound) {
+                    builder.Add(compound, info.wire());
+                }
                 info.iteration = -2;
                 continue;
             }
 
-            gp_Pnt pt[2];
+            std::array<gp_Pnt, 2> pt {};
             pt[0] = info.p1;
             pt[1] = info.p2;
-            for (int i=0;i<2;++i) {
-                if (info.iStart[i]>=0)
+            for (int i = 0; i < 2; ++i) {
+                const int ic = i;
+                if (info.iStart[ic] >= 0) {
                     continue;
-                info.iEnd[i] = info.iStart[i] = (int)adjacentList.size();
+                }
+                info.iEnd[ic] = info.iStart[ic] = (int)adjacentList.size();
 
-                for (auto vit=vmap.qbegin(bgi::nearest(pt[i],INT_MAX));vit!=vmap.qend();++vit) {
-                    auto &vinfo = *vit;
-                    if (vinfo.pt().SquareDistance(pt[i]) > myTol2)
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], INT_MAX)); vit != vmap.qend();
+                     ++vit) {
+                    auto& vinfo = *vit;
+                    if (vinfo.pt().SquareDistance(pt[ic]) > myTol2) {
                         break;
+                    }
 
                     // We must push ourself too, because the adjacency
                     // information is shared among all connected edges.
@@ -1353,28 +1576,31 @@ public:
                     // if (&(*vinfo.it) == &info)
                     //     continue;
 
-                    if (vinfo.it->iteration < 0)
+                    if (vinfo.it->iteration < 0) {
                         continue;
+                    }
 
                     adjacentList.push_back(vinfo);
-                    ++info.iEnd[i];
+                    ++info.iEnd[ic];
                 }
 
                 // copy the adjacent indices to all connected edges
-                for (int j=info.iStart[i];j<info.iEnd[i];++j) {
-                    auto &other = adjacentList[j];
-                    auto &otherInfo = *other.it;
+                for (int j = info.iStart[ic]; j < info.iEnd[ic]; ++j) {
+                    auto& other = adjacentList[j];
+                    auto& otherInfo = *other.it;
                     if (&otherInfo != &info) {
-                        int k = other.start?0:1;
-                        otherInfo.iStart[k] = info.iStart[i];
-                        otherInfo.iEnd[k] = info.iEnd[i];
+                        const int kc = other.start ? 0 : 1;
+                        otherInfo.iStart[kc] = info.iStart[ic];
+                        otherInfo.iEnd[kc] = info.iEnd[ic];
                     }
                 }
             }
         }
+    }
 
+    void buildAdjacentListSkipEdges()
+    {
         bool done = false;
-
         while (!done) {
             done = true;
 
@@ -1382,22 +1608,25 @@ public:
                 findSuperEdges();
             }
 
-            //Skip edges that are connected to only one end
-            for (auto &info : edges) {
-                if (info.iteration<0)
+            // Skip edges that are connected to only one end
+            for (auto& info : edges) {
+                if (info.iteration < 0) {
                     continue;
-                for (int k=0; k<2; ++k) {
-                    int i;
-                    for (i=info.iStart[k]; i<info.iEnd[k]; ++i) {
-                        const auto &v = adjacentList[i];
-                        auto other = v.edgeInfo();
-                        if (other->iteration >= 0 && other != &info)
+                }
+                for (int k = 0; k < 2; ++k) {
+                    const int kc = k;
+                    int idx = 0;
+                    for (idx = info.iStart[kc]; idx < info.iEnd[kc]; ++idx) {
+                        const auto& vertex = adjacentList[idx];
+                        auto other = vertex.edgeInfo();
+                        if (other->iteration >= 0 && other != &info) {
                             break;
+                        }
                     }
-                    if (i == info.iEnd[k]) {
+                    if (idx == info.iEnd[kc]) {
                         // If merge or tight bound, then repeat until no edges
                         // can be skipped.
-                        done = !doMergeEdge & !doTightBound;
+                        done = !doMergeEdge && !doTightBound;
                         info.iteration = -3;
                         showShape(&info, "skip");
                         break;
@@ -1405,6 +1634,21 @@ public:
                 }
             }
         }
+    }
+
+    void buildAdjacentList()
+    {
+        builder.MakeCompound(compound);
+
+        for (auto& info : edges) {
+            info.reset();
+        }
+
+        adjacentList.clear();
+
+        buildAdjacentListPopulate();
+
+        buildAdjacentListSkipEdges();
     }
 
     // This algorithm tries to find a set of closed wires that includes as many
@@ -1425,8 +1669,9 @@ public:
             auto &beginInfo = *it;
             seq->next(true);
             ++iteration;
-            if (beginInfo.iteration < 0 || beginInfo.wireInfo)
+            if (beginInfo.iteration < 0 || beginInfo.wireInfo) {
                 continue;
+            }
 
             VertexInfo currentVertex(it, true);
             EdgeInfo *currentInfo = &beginInfo;
@@ -1436,8 +1681,9 @@ public:
             edgeSet.clear();
 
             TopoDS_Wire wire = _findClosedWires(beginVertex, currentVertex);
-            if (wire.IsNull())
+            if (wire.IsNull()) {
                 continue;
+            }
 
             if (tightBound) {
 
@@ -1445,23 +1691,25 @@ public:
                 // has been replaced with the precompiler macro assert()
 
                 assert(!beginInfo.wireInfo);
-                beginInfo.wireInfo.reset(new WireInfo);
+                beginInfo.wireInfo.reset(new WireInfo());
                 beginInfo.wireInfo->vertices.emplace_back(it, true);
                 beginInfo.wireInfo->wire = wire;
             }
-            for (auto &r : stack) {
-                const auto &v = vertexStack[r.iCurrent];
-                auto &info = *v.it;
-                if (tightBound)
-                    beginInfo.wireInfo->vertices.push_back(v);
+            for (auto &entry : stack) {
+                const auto &vertex = vertexStack[entry.iCurrent];
+                auto &info = *vertex.it;
+                if (tightBound) {
+                    beginInfo.wireInfo->vertices.push_back(vertex);
+                }
                 if (!info.wireInfo) {
                     info.wireInfo = beginInfo.wireInfo;
                     // showShape(&info, "visited");
                 }
             }
             showShape(wire,"joined");
-            if (!tightBound)
+            if (!tightBound) {
                 builder.Add(compound, wire);
+            }
         }
     }
 
@@ -1476,24 +1724,246 @@ public:
         if (FC_LOG_INSTANCE.level() <= FC_LOGLEVEL_TRACE) {
             return;
         }
-        int i = 0;
+        int idx = 0;
         for (auto &info : edges) {
-            ++i;
-            if (auto w = info.wireInfo.get()) {
+            ++idx;
+            if (auto wire = info.wireInfo.get()) {
 
                 // Originally here there was a call to the precompiler macro assertCheck(), which
                 // has been replaced with the precompiler macro assert()
 
-                assert(w->vertices.front().edgeInfo()->wireInfo.get() == w);
+                assert(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
             }
         }
     }
 
+    // This method was originally part of WireJoinerP::_findClosedWires(), split to reduce cognitive
+    // complexity
+    void _findClosedWiresBeginEdge(const std::shared_ptr<WireInfo>& wireInfo,
+                                   const EdgeInfo& beginInfo,
+                                   int& idx)
+    {
+        auto info = wireInfo->vertices[idx].edgeInfo();
+        showShape(info, "merge", iteration);
+
+        if (info != &beginInfo) {
+            while (true) {
+                if (++idx == (int)wireInfo->vertices.size()) {
+                    idx = 0;
+                }
+
+                info = wireInfo->vertices[idx].edgeInfo();
+                if (info == &beginInfo) {
+                    break;
+                }
+                stack.emplace_back(vertexStack.size());
+                vertexStack.push_back(wireInfo->vertices[idx]);
+                ++stack.back().iEnd;
+
+                // Originally here there was a call to the method checkStack(),
+                // which does nothing and therefor has been removed.
+            }
+        }
+    }
+
+    // This method was originally part of WireJoinerP::_findClosedWires(), split to reduce cognitive
+    // complexity
+    int _findClosedWiresWithExisting(int* idxVertex,
+                                     const std::shared_ptr<WireInfo>& wireInfo,
+                                     int* const stackPos,
+                                     bool& proceed,
+                                     const VertexInfo& vinfo,
+                                     const int ic,
+                                     StackInfo& stackBack,
+                                     const EdgeInfo& beginInfo,
+                                     EdgeInfo& info)
+    {
+        if (wireInfo) {
+            // We may be called by findTightBound() with an existing wire
+            // to try to find a new wire by splitting the current one. So
+            // check if we've iterated to some edge in the existing wire.
+
+            int idx = wireInfo->find(vinfo);
+
+            if (idx != 0) {
+                vertexStack.push_back(adjacentList[ic]);
+                stackBack.iCurrent = stackBack.iEnd++;
+                --idx;
+                proceed = false;
+                if (idxVertex) {
+                    *idxVertex = idx;
+                }
+                if (stackPos) {
+                    *stackPos = (int)stack.size() - 2;
+                }
+
+                _findClosedWiresBeginEdge(wireInfo, beginInfo, idx);
+
+                return 1;
+            }
+
+            if (wireInfo->find(VertexInfo(vinfo.it, !vinfo.start)) != 0) {
+                showShape(&info, "rintersect", iteration);
+                // Only used when exhausting tight bound.
+                wireInfo->purge = true;
+                return 2;
+            }
+
+            if (isOutside(*wireInfo, info.mid)) {
+                showShape(&info, "outside", iteration);
+                return 2;
+            }
+        }
+        return 0;
+    }
+
+    // This method was originally part of WireJoinerP::_findClosedWires(), split to reduce cognitive
+    // complexity
+    void _findClosedWiresUpdateStack(int* idxVertex,
+                                     const std::shared_ptr<WireInfo>& wireInfo,
+                                     int* stackPos,
+                                     const EdgeInfo* currentInfo,
+                                     const int currentIdx,
+                                     bool& proceed,
+                                     const EdgeInfo& beginInfo)
+    {
+        auto& stackBack = stack.back();
+
+        // The loop below is to find all edges connected to pend, and save them into stack.back()
+        auto size = vertexStack.size();
+        for (int i = currentInfo->iStart[currentIdx]; i < currentInfo->iEnd[currentIdx]; ++i) {
+            auto& vinfo = adjacentList[i];
+            auto& info = *vinfo.it;
+            if (info.iteration < 0 || currentInfo == &info) {
+                continue;
+            }
+
+            bool abort = false;
+            if (!wireSet.empty() && wireSet.contains(info.wireInfo.get())) {
+                showShape(&info, "wired", iteration);
+                if (wireInfo) {
+                    wireInfo->purge = true;
+                }
+                abort = true;
+            }
+
+            if (edgeSet.contains(&info)) {
+                showShape(&info, "intersect", iteration);
+                // This means the current edge connects to an
+                // existing edge in the middle of the stack.
+                // skip the current edge.
+                stackBack.iEnd = stackBack.iStart;
+                vertexStack.resize(size);
+                break;
+            }
+
+            if (abort || currentInfo->wireInfo2) {
+                if (wireInfo) {
+                    wireInfo->purge = true;
+                }
+                continue;
+            }
+
+            if (info.iteration == iteration) {
+                continue;
+            }
+            info.iteration = iteration;
+
+            int exists = _findClosedWiresWithExisting(idxVertex,
+                                                      wireInfo,
+                                                      stackPos,
+                                                      proceed,
+                                                      vinfo,
+                                                      i,
+                                                      stackBack,
+                                                      beginInfo,
+                                                      info);
+
+            if (exists == 1) {
+                break;
+            }
+
+            if (exists == 2) {
+                continue;
+            }
+
+            vertexStack.push_back(adjacentList[i]);
+            ++stackBack.iEnd;
+        }
+    }
+
+    // This method was originally part of WireJoinerP::_findClosedWires(), split to reduce cognitive
+    // complexity
+    bool _findClosedWiresUpdateEdges(VertexInfo& currentVertex,
+                                     gp_Pnt& pend,
+                                     EdgeInfo* currentInfo,
+                                     int& currentIdx,
+                                     const size_t stackEnd)
+    {
+        while (true) {
+            auto& stackBack = stack.back();
+            if (stackBack.iCurrent < stackBack.iEnd) {
+                // now pick one edge from stack.back(), connect it to
+                // pend, then extend pend
+                currentVertex = vertexStack[stackBack.iCurrent];
+                pend = currentVertex.ptOther();
+                // update current edge info
+                currentInfo = currentVertex.edgeInfo();
+                showShape(currentInfo, "iterate", iteration);
+                currentIdx = currentVertex.start ? 1 : 0;
+                edgeSet.insert(currentInfo);
+                if (!wireSet.empty()) {
+                    wireSet.insert(currentInfo->wireInfo.get());
+                }
+                break;
+            }
+            vertexStack.erase(vertexStack.begin() + static_cast<long>(stackBack.iStart), vertexStack.end());
+
+            stack.pop_back();
+            if (stack.size() == stackEnd) {
+                // If stack reaches the end, it means this wire is open.
+                return true;
+            }
+
+            auto& lastInfo = *vertexStack[stack.back().iCurrent].it;
+            edgeSet.erase(&lastInfo);
+            wireSet.erase(lastInfo.wireInfo.get());
+            showShape(&lastInfo, "pop", iteration);
+            ++stack.back().iCurrent;
+        }
+        return false;
+    }
+
+    // This method was originally part of WireJoinerP::_findClosedWires(), split to reduce cognitive
+    // complexity
+    bool _findClosedWiresIsClosed(const VertexInfo& beginVertex,
+                                  const TopoDS_Wire& wire,
+                                  const EdgeInfo& beginInfo)
+    {
+        if (!BRep_Tool::IsClosed(wire)) {
+            FC_WARN("failed to close some wire in iteration " << iteration);
+            showShape(wire, "_FailedToClose", iteration);
+            showShape(beginInfo.shape(beginVertex.start), "failed", iteration);
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                auto& info = *vertex.it;
+                showShape(info.shape(vertex.start), vertex.start ? "failed" : "failed_r", iteration);
+            }
+
+            // Originally here there was a call to the precompiler macro assertCheck(), which
+            // has been replaced with the precompiler macro assert()
+
+            assert(false);
+            return false;
+        }
+        return true;
+    }
+
     TopoDS_Wire _findClosedWires(VertexInfo beginVertex,
                                  VertexInfo currentVertex,
-                                 std::shared_ptr<WireInfo> wireInfo = std::shared_ptr<WireInfo>(),
                                  int *idxVertex = nullptr,
-                                 int *stackPos = nullptr)
+                                 const std::shared_ptr<WireInfo>& wireInfo = std::shared_ptr<WireInfo>(),
+                                 int* stackPos = nullptr)
     {
         Base::SequencerBase::Instance().checkAbort();
         EdgeInfo &beginInfo = *beginVertex.it;
@@ -1514,138 +1984,28 @@ public:
         while (true) {
             // push a new stack entry
             stack.emplace_back(vertexStack.size());
-            auto &r = stack.back();
             showShape(currentInfo, "check", iteration);
 
             bool proceed = true;
 
-            // The loop below is to find all edges connected to pend, and save them into stack.back()
-            auto size = vertexStack.size();
-            for (int i=currentInfo->iStart[currentIdx];i<currentInfo->iEnd[currentIdx];++i) {
-                auto &vinfo = adjacentList[i];
-                auto &info = *vinfo.it;
-                if (info.iteration < 0 || currentInfo == &info) {
-                    continue;
-                }
-
-                bool abort = false;
-                if (!wireSet.empty() && wireSet.contains(info.wireInfo.get())) {
-                    showShape(&info, "wired", iteration);
-                    if (wireInfo) {
-                        wireInfo->purge = true;
-                    }
-                    abort = true;
-                }
-
-                if (edgeSet.contains(&info)) {
-                    showShape(&info, "intersect", iteration);
-                    // This means the current edge connects to an
-                    // existing edge in the middle of the stack.
-                    // skip the current edge.
-                    r.iEnd = r.iStart;
-                    vertexStack.resize(size);
-                    break;
-                }
-
-                if (abort || currentInfo->wireInfo2) {
-                    if (wireInfo) {
-                        wireInfo->purge = true;
-                    }
-                    continue;
-                }
-
-                if (info.iteration == iteration) {
-                    continue;
-                }
-                info.iteration = iteration;
-
-                if (wireInfo) {
-                    // We may be called by findTightBound() with an existing wire
-                    // to try to find a new wire by splitting the current one. So
-                    // check if we've iterated to some edge in the existing wire.
-                    if (int idx = wireInfo->find(vinfo)) {
-                        vertexStack.push_back(adjacentList[i]);
-                        r.iCurrent = r.iEnd++;
-                        --idx;
-                        proceed = false;
-                        if (idxVertex) {
-                            *idxVertex = idx;
-                        }
-                        if (stackPos)
-                            *stackPos = (int)stack.size()-2;
-
-                        auto info = wireInfo->vertices[idx].edgeInfo();
-                        showShape(info, "merge", iteration);
-
-                        if (info != &beginInfo) {
-                            while (true) {
-                                if (++idx == (int)wireInfo->vertices.size()) {
-                                    idx = 0;
-                                }
-                                info = wireInfo->vertices[idx].edgeInfo();
-                                if (info == &beginInfo) {
-                                    break;
-                                }
-                                stack.emplace_back(vertexStack.size());
-                                vertexStack.push_back(wireInfo->vertices[idx]);
-                                ++stack.back().iEnd;
-
-                                // Originally here there was a call to the method checkStack(),
-                                // which does nothing and therefor has been removed.
-                            }
-                        }
-                        break;
-                    }
-
-                    if (wireInfo->find(VertexInfo(vinfo.it, !vinfo.start))) {
-                        showShape(&info, "rintersect", iteration);
-                        // Only used when exhausting tight bound.
-                        wireInfo->purge = true;
-                        continue;
-                    }
-
-                    if (isOutside(*wireInfo, info.mid)) {
-                        showShape(&info, "outside", iteration);
-                        continue;
-                    }
-                }
-                vertexStack.push_back(adjacentList[i]);
-                ++r.iEnd;
-            }
+            _findClosedWiresUpdateStack(idxVertex,
+                                        wireInfo,
+                                        stackPos,
+                                        currentInfo,
+                                        currentIdx,
+                                        proceed,
+                                        beginInfo);
 
             // Originally here there was a call to the method checkStack(), which does nothing and
             // therefor has been removed.
 
             if (proceed) {
-                while (true) {
-                    auto &r = stack.back();
-                    if (r.iCurrent<r.iEnd) {
-                        // now pick one edge from stack.back(), connect it to
-                        // pend, then extend pend
-                        currentVertex = vertexStack[r.iCurrent];
-                        pend = currentVertex.ptOther();
-                        // update current edge info
-                        currentInfo = currentVertex.edgeInfo();
-                        showShape(currentInfo, "iterate", iteration);
-                        currentIdx = currentVertex.start?1:0;
-                        edgeSet.insert(currentInfo);
-                        if (!wireSet.empty())
-                            wireSet.insert(currentInfo->wireInfo.get());
-                        break;
-                    }
-                    vertexStack.erase(vertexStack.begin()+r.iStart,vertexStack.end());
-
-                    stack.pop_back();
-                    if (stack.size() == stackEnd) {
-                        // If stack reaches the end, it means this wire is open.
-                        return TopoDS_Wire();
-                    }
-
-                    auto &lastInfo = *vertexStack[stack.back().iCurrent].it;
-                    edgeSet.erase(&lastInfo);
-                    wireSet.erase(lastInfo.wireInfo.get());
-                    showShape(&lastInfo, "pop", iteration);
-                    ++stack.back().iCurrent;
+                if (_findClosedWiresUpdateEdges(currentVertex,
+                                                pend,
+                                                currentInfo,
+                                                currentIdx,
+                                                stackEnd)) {
+                    return {};
                 }
 
                 if (pstart.SquareDistance(pend) > myTol2) {
@@ -1657,37 +2017,292 @@ public:
                     if (idxVertex) {
                         *idxVertex = (int)wireInfo->vertices.size();
                     }
-                    if (stackPos)
-                        *stackPos = (int)stack.size()-1;
+                    if (stackPos) {
+                        *stackPos = (int)stack.size() - 1;
+                    }
                 }
             }
 
             wireData->Clear();
             wireData->Add(beginInfo.shape(beginVertex.start));
-            for (auto &r : stack) {
-                const auto &v = vertexStack[r.iCurrent];
-                auto &info = *v.it;
-                wireData->Add(info.shape(v.start));
+            for (auto &entry : stack) {
+                const auto &vertex = vertexStack[entry.iCurrent];
+                auto &info = *vertex.it;
+                wireData->Add(info.shape(vertex.start));
             }
             TopoDS_Wire wire = makeCleanWire();
-            if (!BRep_Tool::IsClosed(wire)) {
-                FC_WARN("failed to close some wire in iteration " << iteration);
-                showShape(wire,"_FailedToClose", iteration);
-                showShape(beginInfo.shape(beginVertex.start), "failed", iteration);
-                for (auto &r : stack) {
-                    const auto &v = vertexStack[r.iCurrent];
-                    auto &info = *v.it;
-                    showShape(info.shape(v.start), v.start ? "failed" : "failed_r", iteration);
-                }
-
-                // Originally here there was a call to the precompiler macro assertCheck(), which
-                // has been replaced with the precompiler macro assert()
-
-                assert(false);
+            if (!_findClosedWiresIsClosed(beginVertex, wire, beginInfo)) {
                 continue;
             }
             return wire;
         }
+    }
+
+    // This method was originally part of WireJoinerP::findTightBound(), split to reduce cognitive
+    // complexity
+    void findTightBoundSplitWire(const std::shared_ptr<WireInfo>& wireInfo,
+                                 const EdgeInfo& beginInfo,
+                                 const std::vector<VertexInfo>& wireVertices,
+                                 std::shared_ptr<WireInfo>& splitWire,
+                                 const int idxV,
+                                 int& idxStart,
+                                 const int idxEnd)
+    {
+        for (int idx = idxV; idx != idxEnd; ++idx) {
+            auto info = wireVertices[idx].edgeInfo();
+            if (info == &beginInfo) {
+                showShape(*wireInfo, "exception", iteration, true);
+                showShape(info, "exception", iteration, true);
+
+                // Originally here there was a call to the precompiler macro
+                // assertCheck(), which has been replaced with the precompiler macro
+                // assert()
+
+                assert(info != &beginInfo);
+            }
+            if (info->wireInfo == wireInfo) {
+                if (!splitWire) {
+                    idxStart = idx;
+                    splitWire.reset(new WireInfo());
+                }
+                info->wireInfo = splitWire;
+            }
+        }
+    }
+
+    // This method was originally part of WireJoinerP::findTightBound(), split to reduce cognitive
+    // complexity
+    void findTightBoundWithSplit(const std::vector<VertexInfo>& wireVertices,
+                                 const int idxV,
+                                 const std::shared_ptr<WireInfo>& splitWire,
+                                 const int idxStart,
+                                 const int idxEnd,
+                                 const int stackPos,
+                                 const int stackStart)
+    {
+        auto& splitEdges = splitWire->vertices;
+        gp_Pnt pstart;
+        gp_Pnt pt;
+        bool first = true;
+        for (int idx = idxStart; idx != idxEnd; ++idx) {
+            auto& vertex = wireVertices[idx];
+            if (first) {
+                first = false;
+                pstart = vertex.pt();
+            }
+            else {
+
+                // Originally here there was a call to the precompiler macro
+                // assertCheck(), which has been replaced with the precompiler
+                // macro assert()
+
+                assert(pt.SquareDistance(vertex.pt()) < myTol2);
+            }
+            pt = vertex.ptOther();
+            splitEdges.push_back(vertex);
+        }
+        for (int i = stackPos; i >= stackStart; --i) {
+            const auto& vertex = vertexStack[stack[i].iCurrent];
+
+            // Originally here there was a call to the precompiler macro
+            // assertCheck(), which has been replaced with the precompiler macro
+            // assert()
+
+            assert(pt.SquareDistance(vertex.ptOther()) < myTol2);
+            pt = vertex.pt();
+            // The edges in the stack are the ones to slice
+            // the wire in half. We construct a new wire
+            // that includes the original beginning edge in
+            // the loop above. And this loop contains the
+            // other half. Note that the slicing edges
+            // should run in the oppsite direction, hence reversed
+            splitEdges.push_back(vertex.reversed());
+        }
+        for (int idx = idxV; idx != idxStart; ++idx) {
+            auto& vertex = wireVertices[idx];
+
+            // Originally here there was a call to the precompiler macro
+            // assertCheck(), which has been replaced with the precompiler macro
+            // assert()
+
+            assert(pt.SquareDistance(vertex.pt()) < myTol2);
+            pt = vertex.ptOther();
+            splitEdges.push_back(vertex);
+        }
+
+        // Originally here there was a call to the precompiler macro
+        // assertCheck(), which has been replaced with the precompiler macro
+        // assert()
+
+        assert(pt.SquareDistance(pstart) < myTol2);
+        showShape(*splitWire, "swire", iteration);
+    }
+
+    // This method was originally part of WireJoinerP::findTightBound(), split to reduce cognitive
+    // complexity
+    void findTightBoundByVertices(EdgeInfo& beginInfo,
+                                  const std::vector<VertexInfo>& wireVertices,
+                                  int& idxV,
+                                  const int iteration2,
+                                  const gp_Pnt& pstart,
+                                  const std::shared_ptr<WireInfo>& wireInfo,
+                                  const VertexInfo& beginVertex,
+                                  std::shared_ptr<WireInfo>& newWire)
+    {
+        const int idx = wireVertices[idxV].start ? 1 : 0;
+
+        auto current = wireVertices[idxV].edgeInfo();
+        showShape(current, "current", iteration);
+
+        for (int vertex = current->iStart[idx]; vertex < current->iEnd[idx]; ++vertex) {
+            const auto& currentVertex = adjacentList[vertex];
+            auto next = currentVertex.edgeInfo();
+            if (next == current || next->iteration2 == iteration2 || next->iteration < 0) {
+                continue;
+            }
+
+            showShape(next, "tcheck", iteration);
+
+            if (!isInside(*wireInfo, next->mid)) {
+                showShape(next, "ninside", iteration);
+                next->iteration2 = iteration2;
+                continue;
+            }
+
+            edgeSet.insert(next);
+            stack.emplace_back(vertexStack.size());
+            ++stack.back().iEnd;
+            vertexStack.push_back(currentVertex);
+
+            // Originally here there was a call to the method checkStack(), which does
+            // nothing and therefor has been removed.
+
+            int idxEnd = (int)wireVertices.size();
+            int stackStart = (int)stack.size() - 1;
+            int stackPos = (int)stack.size() - 1;
+
+            TopoDS_Wire wire;
+            if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
+                wire = _findClosedWires(beginVertex,
+                                        currentVertex,
+                                        &idxEnd,
+                                        beginInfo.wireInfo,
+                                        &stackPos);
+                if (wire.IsNull()) {
+                    vertexStack.pop_back();
+                    stack.pop_back();
+                    edgeSet.erase(next);
+                    continue;
+                }
+            }
+
+            newWire.reset(new WireInfo());
+            auto& newWireVertices = newWire->vertices;
+            newWireVertices.push_back(beginVertex);
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                newWireVertices.push_back(vertex);
+            }
+            if (!wire.IsNull()) {
+                newWire->wire = wire;
+            }
+            else if (!initWireInfo(*newWire)) {
+                newWire.reset();
+                vertexStack.pop_back();
+                stack.pop_back();
+                edgeSet.erase(next);
+                continue;
+            }
+            for (auto& vertex : newWire->vertices) {
+                if (vertex.edgeInfo()->wireInfo == wireInfo) {
+                    vertex.edgeInfo()->wireInfo = newWire;
+                }
+            }
+            beginInfo.wireInfo = newWire;
+            showShape(*newWire, "nwire", iteration);
+
+            std::shared_ptr<WireInfo> splitWire;
+            if (idxEnd == 0) {
+                idxEnd = (int)wireVertices.size();
+            }
+            ++idxV;
+
+            // Originally here there was a call to the precompiler macro assertCheck(),
+            // which has been replaced with the precompiler macro assert()
+
+            assert(idxV <= idxEnd);
+            int idxStart = idxV;
+
+            findTightBoundSplitWire(wireInfo,
+                                    beginInfo,
+                                    wireVertices,
+                                    splitWire,
+                                    idxV,
+                                    idxStart,
+                                    idxEnd);
+
+            if (splitWire) {
+                findTightBoundWithSplit(wireVertices,
+                                        idxV,
+                                        splitWire,
+                                        idxStart,
+                                        idxEnd,
+                                        stackPos,
+                                        stackStart);
+            }
+
+            checkWireInfo(*newWire);
+            break;
+        }
+    }
+
+    // This method was originally part of WireJoinerP::findTightBound(), split to reduce cognitive
+    // complexity
+    void findTightBoundUpdateVertices(EdgeInfo& beginInfo)
+    {
+        showShape(*beginInfo.wireInfo, "done", iteration);
+        beginInfo.wireInfo->done = true;
+        // If a wire is done, make sure all edges of this wire is
+        // marked as done. This can also prevent duplicated wires.
+        for (auto& vertex : beginInfo.wireInfo->vertices) {
+            auto info = vertex.edgeInfo();
+            if (!info->wireInfo) {
+                info->wireInfo = beginInfo.wireInfo;
+                continue;
+            }
+            if (info->wireInfo->done) {
+                continue;
+            }
+            auto otherWire = info->wireInfo;
+            auto& otherWireVertices = info->wireInfo->vertices;
+            if (info == otherWireVertices.front().edgeInfo()) {
+                // About to change the first edge of the other wireInfo.
+                // Try to find a new first edge for it.
+                tmpVertices.clear();
+                auto it = otherWireVertices.begin();
+                tmpVertices.push_back(*it);
+                for (++it; it != otherWireVertices.end(); ++it) {
+                    if (it->edgeInfo()->wireInfo == otherWire) {
+                        break;
+                    }
+                    tmpVertices.push_back(*it);
+                }
+                if (tmpVertices.size() != otherWireVertices.size()) {
+                    otherWireVertices.erase(otherWireVertices.begin(), it);
+                    otherWireVertices.insert(otherWireVertices.end(),
+                                             tmpVertices.begin(),
+                                             tmpVertices.end());
+                }
+            }
+
+            // Originally here there was a call to the precompiler macro assertCheck(),
+            // which has been replaced with the precompiler macro assert()
+
+            assert(info != &beginInfo);
+            info->wireInfo = beginInfo.wireInfo;
+            checkWireInfo(*otherWire);
+        }
+        checkWireInfo(*beginInfo.wireInfo);
     }
 
     void findTightBound()
@@ -1709,8 +2324,9 @@ public:
         for (auto &info : edges) {
             ++iteration;
             seq->next(true);
-            if (info.iteration < 0 || !info.wireInfo)
+            if (info.iteration < 0 || !info.wireInfo) {
                 continue;
+            }
 
             ++iteration2;
             while(!info.wireInfo->done) {
@@ -1721,8 +2337,9 @@ public:
                 auto &beginInfo = *beginVertex.it;
                 initWireInfo(*wireInfo);
                 showShape(wireInfo->wire, "iwire", iteration);
-                for (auto &v : wireVertices)
-                    v.it->iteration2 = iteration2;
+                for (auto& vertex : wireVertices) {
+                    vertex.it->iteration2 = iteration2;
+                }
 
                 stack.clear();
                 vertexStack.clear();
@@ -1733,168 +2350,24 @@ public:
 
                 int idxV = 0;
                 while (true) {
-                    int idx = wireVertices[idxV].start ? 1 : 0;
-                    auto current = wireVertices[idxV].edgeInfo();
-                    showShape(current, "current", iteration);
+                    findTightBoundByVertices(beginInfo,
+                                             wireVertices,
+                                             idxV,
+                                             iteration2,
+                                             pstart,
+                                             wireInfo,
+                                             beginVertex,
+                                             newWire);
 
-                    for (int n=current->iStart[idx]; n<current->iEnd[idx]; ++n) {
-                        const auto &currentVertex = adjacentList[n];
-                        auto next = currentVertex.edgeInfo();
-                        if (next == current || next->iteration2 == iteration2 || next->iteration<0)
-                            continue;
-
-                        showShape(next, "tcheck", iteration);
-
-                        if (!isInside(*wireInfo, next->mid)) {
-                            showShape(next, "ninside", iteration);
-                            next->iteration2 = iteration2;
-                            continue;
-                        }
-
-                        edgeSet.insert(next);
-                        stack.emplace_back(vertexStack.size());
-                        ++stack.back().iEnd;
-                        vertexStack.push_back(currentVertex);
-
-                        // Originally here there was a call to the method checkStack(), which does
-                        // nothing and therefor has been removed.
-
-                        int idxEnd = (int)wireVertices.size();
-                        int stackStart = (int)stack.size()-1;
-                        int stackPos = (int)stack.size()-1;
-
-                        TopoDS_Wire wire;
-                        if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
-                            wire = _findClosedWires(beginVertex, currentVertex, beginInfo.wireInfo, &idxEnd, &stackPos);
-                            if (wire.IsNull()) {
-                                vertexStack.pop_back();
-                                stack.pop_back();
-                                edgeSet.erase(next);
-                                continue;
-                            }
-                        }
-
-                        newWire.reset(new WireInfo);
-                        auto &newWireVertices = newWire->vertices;
-                        newWireVertices.push_back(beginVertex);
-                        for (auto &r : stack) {
-                            const auto &v = vertexStack[r.iCurrent];
-                            newWireVertices.push_back(v);
-                        }
-                        if (!wire.IsNull())
-                            newWire->wire = wire;
-                        else if (!initWireInfo(*newWire)) {
-                            newWire.reset();
-                            vertexStack.pop_back();
-                            stack.pop_back();
-                            edgeSet.erase(next);
-                            continue;
-                        }
-                        for (auto &v : newWire->vertices) {
-                            if (v.edgeInfo()->wireInfo == wireInfo)
-                                v.edgeInfo()->wireInfo = newWire;
-                        }
-                        beginInfo.wireInfo = newWire;
-                        showShape(*newWire, "nwire", iteration);
-
-                        std::shared_ptr<WireInfo> splitWire;
-                        if (idxEnd == 0)
-                            idxEnd = (int)wireVertices.size();
-                        ++idxV;
-
-                        // Originally here there was a call to the precompiler macro assertCheck(),
-                        // which has been replaced with the precompiler macro assert()
-
-                        assert(idxV <= idxEnd);
-                        int idxStart = idxV;
-                        for (int idx=idxV; idx!=idxEnd; ++idx) {
-                            auto info = wireVertices[idx].edgeInfo();
-                            if (info == &beginInfo) {
-                                showShape(*wireInfo, "exception", iteration, true);
-                                showShape(info, "exception", iteration, true);
-
-                                // Originally here there was a call to the precompiler macro
-                                // assertCheck(), which has been replaced with the precompiler macro
-                                // assert()
-
-                                assert(info != &beginInfo);
-                            }
-                            if (info->wireInfo == wireInfo) {
-                                if (!splitWire) {
-                                    idxStart = idx;
-                                    splitWire.reset(new WireInfo);
-                                }
-                                info->wireInfo = splitWire;
-                            }
-                        }
-                        if (splitWire) {
-                            auto &splitEdges = splitWire->vertices;
-                            gp_Pnt pstart, pt;
-                            bool first = true;
-                            for (int idx=idxStart; idx!=idxEnd; ++idx) {
-                                auto &v = wireVertices[idx];
-                                if (first) {
-                                    first = false;
-                                    pstart = v.pt();
-                                }
-                                else {
-
-                                    // Originally here there was a call to the precompiler macro
-                                    // assertCheck(), which has been replaced with the precompiler
-                                    // macro assert()
-
-                                    assert(pt.SquareDistance(v.pt()) < myTol2);
-                                }
-                                pt = v.ptOther();
-                                splitEdges.push_back(v);
-                            }
-                            for (int i=stackPos; i>=stackStart; --i) {
-                                const auto &v = vertexStack[stack[i].iCurrent];
-
-                                // Originally here there was a call to the precompiler macro
-                                // assertCheck(), which has been replaced with the precompiler macro
-                                // assert()
-
-                                assert(pt.SquareDistance(v.ptOther()) < myTol2);
-                                pt = v.pt();
-                                // The edges in the stack are the ones to slice
-                                // the wire in half. We construct a new wire
-                                // that includes the original beginning edge in
-                                // the loop above. And this loop contains the
-                                // other half. Note that the slicing edges
-                                // should run in the oppsite direction, hence reversed
-                                splitEdges.push_back(v.reversed());
-                            }
-                            for (int idx=idxV; idx!=idxStart; ++idx) {
-                                auto &v = wireVertices[idx];
-
-                                // Originally here there was a call to the precompiler macro
-                                // assertCheck(), which has been replaced with the precompiler macro
-                                // assert()
-
-                                assert(pt.SquareDistance(v.pt()) < myTol2);
-                                pt = v.ptOther();
-                                splitEdges.push_back(v);
-                            }
-
-                            // Originally here there was a call to the precompiler macro
-                            // assertCheck(), which has been replaced with the precompiler macro
-                            // assert()
-
-                            assert(pt.SquareDistance(pstart) < myTol2);
-                            showShape(*splitWire, "swire", iteration);
-                        }
-
-                        checkWireInfo(*newWire);
-                        break;
-                    }
                     if (newWire) {
                         ++iteration;
                         break;
                     }
 
-                    if (++idxV == (int)wireVertices.size())
+                    if (++idxV == (int)wireVertices.size()) {
                         break;
+                    }
+
                     stack.emplace_back(vertexStack.size());
                     ++stack.back().iEnd;
                     vertexStack.push_back(wireVertices[idxV]);
@@ -1905,48 +2378,280 @@ public:
                 }
 
                 if (!newWire) {
-                    showShape(*beginInfo.wireInfo, "done", iteration);
-                    beginInfo.wireInfo->done = true;
-                    // If a wire is done, make sure all edges of this wire is
-                    // marked as done. This can also prevent duplicated wires.
-                    for (auto &v : beginInfo.wireInfo->vertices) {
-                        auto info = v.edgeInfo();
-                        if (!info->wireInfo) {
-                            info->wireInfo = beginInfo.wireInfo;
-                            continue;
-                        }
-                        else if (info->wireInfo->done)
-                            continue;
-                        auto otherWire = info->wireInfo;
-                        auto &otherWireVertices = info->wireInfo->vertices;
-                        if (info == otherWireVertices.front().edgeInfo()) {
-                            // About to change the first edge of the other wireInfo.
-                            // Try to find a new first edge for it.
-                            tmpVertices.clear();
-                            auto it = otherWireVertices.begin();
-                            tmpVertices.push_back(*it);
-                            for (++it;it!=otherWireVertices.end();++it) {
-                                if (it->edgeInfo()->wireInfo == otherWire)
-                                    break;
-                                tmpVertices.push_back(*it);
-                            }
-                            if (tmpVertices.size() != otherWireVertices.size()) {
-                                otherWireVertices.erase(otherWireVertices.begin(), it);
-                                otherWireVertices.insert(otherWireVertices.end(),
-                                        tmpVertices.begin(), tmpVertices.end());
-                            }
-                        }
-
-                        // Originally here there was a call to the precompiler macro assertCheck(),
-                        // which has been replaced with the precompiler macro assert()
-
-                        assert(info != &beginInfo);
-                        info->wireInfo = beginInfo.wireInfo;
-                        checkWireInfo(*otherWire);
-                    }
-                    checkWireInfo(*beginInfo.wireInfo);
+                    findTightBoundUpdateVertices(beginInfo);
                 }
             }
+        }
+    }
+
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
+    // complexity
+    void exhaustTightBoundUpdateVertex(const int iteration2,
+                                       const VertexInfo& beginVertex,
+                                       const int idxV,
+                                       const gp_Pnt& pstart,
+                                       const std::vector<VertexInfo>& wireVertices,
+                                       std::shared_ptr<WireInfo>& newWire,
+                                       const std::shared_ptr<WireInfo>& wireInfo)
+    {
+        const int idx = wireVertices[idxV].start ? 1 : 0;
+        auto current = wireVertices[idxV].edgeInfo();
+
+        for (int vertex = current->iStart[idx]; vertex < current->iEnd[idx]; ++vertex) {
+            const auto& currentVertex = adjacentList[vertex];
+            auto next = currentVertex.edgeInfo();
+            if (next == current || next->iteration2 == iteration2 || next->iteration < 0) {
+                continue;
+            }
+
+            showShape(next, "check2", iteration);
+
+            if (!isInside(*wireInfo, next->mid)) {
+                showShape(next, "ninside2", iteration);
+                next->iteration2 = iteration2;
+                continue;
+            }
+
+            edgeSet.insert(next);
+            stack.emplace_back(vertexStack.size());
+            ++stack.back().iEnd;
+            vertexStack.push_back(currentVertex);
+
+            // Originally here there a call to the method checkStack(), which
+            // does nothing and therefor has been removed.
+
+            TopoDS_Wire wire;
+            if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
+                wire = _findClosedWires(beginVertex, currentVertex, nullptr, wireInfo);
+                if (wire.IsNull()) {
+                    vertexStack.pop_back();
+                    stack.pop_back();
+                    edgeSet.erase(next);
+                    wireSet.erase(next->wireInfo.get());
+                    continue;
+                }
+            }
+
+            newWire.reset(new WireInfo());
+            auto& newWireVertices = newWire->vertices;
+            newWireVertices.push_back(beginVertex);
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                newWireVertices.push_back(vertex);
+            }
+            if (!wire.IsNull()) {
+                newWire->wire = wire;
+            }
+            else if (!initWireInfo(*newWire)) {
+                newWire.reset();
+                vertexStack.pop_back();
+                stack.pop_back();
+                edgeSet.erase(next);
+                wireSet.erase(next->wireInfo.get());
+                continue;
+            }
+            for (auto& vertex : newWire->vertices) {
+                if (vertex.edgeInfo()->wireInfo == wireInfo) {
+                    vertex.edgeInfo()->wireInfo = newWire;
+                }
+            }
+            showShape(*newWire, "nwire2", iteration);
+            checkWireInfo(*newWire);
+            break;
+        }
+    }
+
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
+    // complexity
+    void exhaustTightBoundUpdateEdge(const int iteration2,
+                                     const VertexInfo& beginVertex,
+                                     const std::vector<VertexInfo>& wireVertices,
+                                     const gp_Pnt& pstart,
+                                     std::shared_ptr<WireInfo>& wireInfo)
+    {
+        std::shared_ptr<WireInfo> newWire;
+
+        int idxV = 1;
+        while (true) {
+            exhaustTightBoundUpdateVertex(iteration2,
+                                          beginVertex,
+                                          idxV,
+                                          pstart,
+                                          wireVertices,
+                                          newWire,
+                                          wireInfo);
+
+            if (newWire) {
+                ++iteration;
+                wireInfo = newWire;
+                break;
+            }
+
+            if (++idxV == (int)wireVertices.size()) {
+                if (wireInfo->purge) {
+                    showShape(*wireInfo, "discard2", iteration);
+                    wireInfo.reset();
+                }
+                else {
+                    wireInfo->done = true;
+                    showShape(*wireInfo, "done2", iteration);
+                }
+                break;
+            }
+            stack.emplace_back(vertexStack.size());
+            ++stack.back().iEnd;
+            vertexStack.push_back(wireVertices[idxV]);
+            edgeSet.insert(wireVertices[idxV].edgeInfo());
+
+            // Originally here there a call to the method checkStack(), which does
+            // nothing and therefor has been removed.
+        }
+    }
+
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
+    // complexity
+    void exhaustTightBoundWithAdjacent(const EdgeInfo& info,
+                                       int& iteration2,
+                                       const VertexInfo beginVertex,
+                                       const EdgeInfo* check)
+    {
+        const gp_Pnt& pstart = beginVertex.pt();
+        const int vidx = beginVertex.start ? 1 : 0;
+
+        edgeSet.clear();
+        vertexStack.clear();
+        stack.clear();
+        stack.emplace_back();
+        for (int i = info.iStart[vidx]; i < info.iEnd[vidx]; ++i) {
+            const auto& currentVertex = adjacentList[i];
+            auto next = currentVertex.edgeInfo();
+            if (next == &info || next == check || next->iteration < 0 || !next->wireInfo
+                || !next->wireInfo->done || next->wireInfo2) {
+                continue;
+            }
+
+            showShape(next, "n2", iteration);
+
+            stack.clear();
+            stack.emplace_back();
+            ++stack.back().iEnd;
+            vertexStack.clear();
+            vertexStack.push_back(currentVertex);
+
+            edgeSet.clear();
+            edgeSet.insert(next);
+            wireSet.clear();
+            wireSet.insert(next->wireInfo.get());
+
+            TopoDS_Wire wire;
+            if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
+                wire = _findClosedWires(beginVertex, currentVertex);
+                if (wire.IsNull()) {
+                    continue;
+                }
+            }
+
+            std::shared_ptr<WireInfo> wireInfo(new WireInfo());
+            wireInfo->vertices.push_back(beginVertex);
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                wireInfo->vertices.push_back(vertex);
+            }
+            if (!wire.IsNull()) {
+                wireInfo->wire = wire;
+            }
+            else if (!initWireInfo(*wireInfo)) {
+                continue;
+            }
+
+            showShape(*wireInfo, "nw2", iteration);
+
+            ++iteration;
+            ++iteration2;
+
+            while (wireInfo && !wireInfo->done) {
+                showShape(next, "next2", iteration);
+
+                vertexStack.resize(1);
+                stack.resize(1);
+                edgeSet.clear();
+                edgeSet.insert(next);
+                wireSet.clear();
+                wireSet.insert(next->wireInfo.get());
+
+                const auto& wireVertices = wireInfo->vertices;
+                initWireInfo(*wireInfo);
+                for (auto& vertex : wireVertices) {
+                    vertex.it->iteration2 = iteration2;
+                }
+
+                exhaustTightBoundUpdateEdge(iteration2,
+                                            beginVertex,
+                                            wireVertices,
+                                            pstart,
+                                            wireInfo);
+            }
+
+            if (wireInfo && wireInfo->done) {
+                for (auto& vertex : wireInfo->vertices) {
+                    auto edgeInfo = vertex.edgeInfo();
+
+                    // Originally here there was a call to the precompiler macro
+                    // assertCheck(), which has been replaced with the precompiler macro
+                    // assert()
+
+                    assert(edgeInfo->wireInfo != nullptr);
+                    if (edgeInfo->wireInfo->isSame(*wireInfo)) {
+                        wireInfo = edgeInfo->wireInfo;
+                        break;
+                    }
+                }
+                for (auto& vertex : wireInfo->vertices) {
+                    auto edgeInfo = vertex.edgeInfo();
+                    if (!edgeInfo->wireInfo2 && edgeInfo->wireInfo != wireInfo) {
+                        edgeInfo->wireInfo2 = wireInfo;
+                    }
+                }
+
+                // Originally here there were two calls to the precompiler macro
+                // assertCheck(), which have been replaced with the precompiler macro
+                // assert()
+
+                assert(info.wireInfo2 == wireInfo);
+                assert(info.wireInfo2 != info.wireInfo);
+                showShape(*wireInfo, "exhaust");
+                break;
+            }
+        }
+    }
+
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
+    // complexity
+    void exhaustTightBoundUpdateWire(const EdgeInfo& info, int& iteration2)
+    {
+
+        showShape(*info.wireInfo, "iwire2", iteration);
+        showShape(&info, "begin2", iteration);
+
+        int idx = info.wireInfo->find(&info);
+
+        // Originally here there was a call to the precompiler macro assertCheck(), which has
+        // been replaced with the precompiler macro assert()
+
+        assert(idx > 0);
+        const auto& vertices = info.wireInfo->vertices;
+        --idx;
+        int nextIdx = idx == (int)vertices.size() - 1 ? 0 : idx + 1;
+        int prevIdx = idx == 0 ? (int)vertices.size() - 1 : idx - 1;
+        int count = prevIdx == nextIdx ? 1 : 2;
+        for (int idxV = 0; idxV < count && !info.wireInfo2; ++idxV) {
+            auto check = vertices[idxV == 0 ? nextIdx : prevIdx].edgeInfo();
+            auto beginVertex = vertices[idx];
+            if (idxV == 1) {
+                beginVertex.start = !beginVertex.start;
+            }
+
+            exhaustTightBoundWithAdjacent(info, iteration2, beginVertex, check);
         }
     }
 
@@ -1961,12 +2666,14 @@ public:
                 new Base::SequencerLauncher("Exhaust tight bound", edges.size()));
 
         for (auto &info : edges) {
-            if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done)
+            if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
                 continue;
-            for (auto &v : info.wireInfo->vertices) {
-                auto edgeInfo = v.edgeInfo();
-                if (edgeInfo->wireInfo != info.wireInfo)
+            }
+            for (auto &vertex : info.wireInfo->vertices) {
+                auto edgeInfo = vertex.edgeInfo();
+                if (edgeInfo->wireInfo != info.wireInfo) {
                     edgeInfo->wireInfo2 = info.wireInfo;
+                }
             }
         }
 
@@ -1978,10 +2685,12 @@ public:
                     || !info.wireInfo
                     || !info.wireInfo->done)
             {
-                if (info.wireInfo)
+                if (info.wireInfo) {
                     showShape(*info.wireInfo, "iskip");
-                else
+                }
+                else {
                     showShape(&info, "iskip");
+                }
                 continue;
             }
 
@@ -1990,221 +2699,35 @@ public:
                 continue;
             }
 
-            showShape(*info.wireInfo, "iwire2", iteration);
-            showShape(&info, "begin2", iteration);
+            exhaustTightBoundUpdateWire(info, iteration2);
 
-            int idx = info.wireInfo->find(&info);
-
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(idx > 0);
-            const auto &vertices = info.wireInfo->vertices;
-            --idx;
-            int nextIdx = idx == (int)vertices.size()-1 ? 0 : idx + 1;
-            int prevIdx = idx == 0 ? (int)vertices.size()-1 : idx - 1;
-            int count = prevIdx == nextIdx ? 1 : 2;
-            for (int n=0; n<count && !info.wireInfo2; ++n) {
-                auto check = vertices[n==0 ? nextIdx : prevIdx].edgeInfo();
-                auto beginVertex = vertices[idx];
-                if (n == 1)
-                    beginVertex.start = !beginVertex.start;
-                const gp_Pnt &pstart = beginVertex.pt();
-                int vidx = beginVertex.start ? 1 : 0;
-
-                edgeSet.clear();
-                vertexStack.clear();
-                stack.clear();
-                stack.emplace_back();
-
-                for (int i=info.iStart[vidx]; i<info.iEnd[vidx]; ++i) {
-                    const auto &currentVertex = adjacentList[i];
-                    auto next = currentVertex.edgeInfo();
-                    if (next == &info
-                            || next == check
-                            || next->iteration<0
-                            || !next->wireInfo
-                            || !next->wireInfo->done
-                            || next->wireInfo2)
-                        continue;
-
-                    showShape(next, "n2", iteration);
-
-                    stack.clear();
-                    stack.emplace_back();
-                    ++stack.back().iEnd;
-                    vertexStack.clear();
-                    vertexStack.push_back(currentVertex);
-
-                    edgeSet.clear();
-                    edgeSet.insert(next);
-                    wireSet.clear();
-                    wireSet.insert(next->wireInfo.get());
-
-                    TopoDS_Wire wire;
-                    if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
-                        wire = _findClosedWires(beginVertex, currentVertex);
-                        if (wire.IsNull())
-                            continue;
-                    }
-
-                    std::shared_ptr<WireInfo> wireInfo(new WireInfo);
-                    wireInfo->vertices.push_back(beginVertex);
-                    for (auto &r : stack) {
-                        const auto &v = vertexStack[r.iCurrent];
-                        wireInfo->vertices.push_back(v);
-                    }
-                    if (!wire.IsNull())
-                        wireInfo->wire = wire;
-                    else if (!initWireInfo(*wireInfo))
-                        continue;
-
-                    showShape(*wireInfo, "nw2", iteration);
-
-                    ++iteration;
-                    ++iteration2;
-
-                    while (wireInfo && !wireInfo->done) {
-                        showShape(next, "next2", iteration);
-
-                        vertexStack.resize(1);
-                        stack.resize(1);
-                        edgeSet.clear();
-                        edgeSet.insert(next);
-                        wireSet.clear();
-                        wireSet.insert(next->wireInfo.get());
-
-                        const auto &wireVertices = wireInfo->vertices;
-                        initWireInfo(*wireInfo);
-                        for (auto &v : wireVertices)
-                            v.it->iteration2 = iteration2;
-
-                        std::shared_ptr<WireInfo> newWire;
-
-                        int idxV = 1;
-                        while (true) {
-                            int idx = wireVertices[idxV].start ? 1 : 0;
-                            auto current = wireVertices[idxV].edgeInfo();
-
-                            for (int n=current->iStart[idx]; n<current->iEnd[idx]; ++n) {
-                                const auto &currentVertex = adjacentList[n];
-                                auto next = currentVertex.edgeInfo();
-                                if (next == current || next->iteration2 == iteration2 || next->iteration<0)
-                                    continue;
-
-                                showShape(next, "check2", iteration);
-
-                                if (!isInside(*wireInfo, next->mid)) {
-                                    showShape(next, "ninside2", iteration);
-                                    next->iteration2 = iteration2;
-                                    continue;
-                                }
-
-                                edgeSet.insert(next);
-                                stack.emplace_back(vertexStack.size());
-                                ++stack.back().iEnd;
-                                vertexStack.push_back(currentVertex);
-
-                                // Originally here there a call to the method checkStack(), which
-                                // does nothing and therefor has been removed.
-
-                                TopoDS_Wire wire;
-                                if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
-                                    wire = _findClosedWires(beginVertex, currentVertex, wireInfo);
-                                    if (wire.IsNull()) {
-                                        vertexStack.pop_back();
-                                        stack.pop_back();
-                                        edgeSet.erase(next);
-                                        wireSet.erase(next->wireInfo.get());
-                                        continue;
-                                    }
-                                }
-
-                                newWire.reset(new WireInfo);
-                                auto &newWireVertices = newWire->vertices;
-                                newWireVertices.push_back(beginVertex);
-                                for (auto &r : stack) {
-                                    const auto &v = vertexStack[r.iCurrent];
-                                    newWireVertices.push_back(v);
-                                }
-                                if (!wire.IsNull())
-                                    newWire->wire = wire;
-                                else if (!initWireInfo(*newWire)) {
-                                    newWire.reset();
-                                    vertexStack.pop_back();
-                                    stack.pop_back();
-                                    edgeSet.erase(next);
-                                    wireSet.erase(next->wireInfo.get());
-                                    continue;
-                                }
-                                for (auto &v : newWire->vertices) {
-                                    if (v.edgeInfo()->wireInfo == wireInfo)
-                                        v.edgeInfo()->wireInfo = newWire;
-                                }
-                                showShape(*newWire, "nwire2", iteration);
-                                checkWireInfo(*newWire);
-                                break;
-                            }
-
-                            if (newWire) {
-                                ++iteration;
-                                wireInfo = newWire;
-                                break;
-                            }
-
-                            if (++idxV == (int)wireVertices.size()) {
-                                if (wireInfo->purge) {
-                                    showShape(*wireInfo, "discard2", iteration);
-                                    wireInfo.reset();
-                                } else {
-                                    wireInfo->done = true;
-                                    showShape(*wireInfo, "done2", iteration);
-                                }
-                                break;
-                            }
-                            stack.emplace_back(vertexStack.size());
-                            ++stack.back().iEnd;
-                            vertexStack.push_back(wireVertices[idxV]);
-                            edgeSet.insert(wireVertices[idxV].edgeInfo());
-
-                            // Originally here there a call to the method checkStack(), which does
-                            // nothing and therefor has been removed.
-                        }
-                    }
-
-                    if (wireInfo && wireInfo->done) {
-                        for (auto &v : wireInfo->vertices) {
-                            auto edgeInfo = v.edgeInfo();
-
-                            // Originally here there was a call to the precompiler macro
-                            // assertCheck(), which has been replaced with the precompiler macro
-                            // assert()
-
-                            assert(edgeInfo->wireInfo != nullptr);
-                            if (edgeInfo->wireInfo->isSame(*wireInfo)) {
-                                wireInfo = edgeInfo->wireInfo;
-                                break;
-                            }
-                        }
-                        for (auto &v : wireInfo->vertices) {
-                            auto edgeInfo = v.edgeInfo();
-                            if (!edgeInfo->wireInfo2 && edgeInfo->wireInfo != wireInfo)
-                                edgeInfo->wireInfo2 = wireInfo;
-                        }
-
-                        // Originally here there were two calls to the precompiler macro
-                        // assertCheck(), which have been replaced with the precompiler macro
-                        // assert()
-
-                        assert(info.wireInfo2 == wireInfo);
-                        assert(info.wireInfo2 != info.wireInfo);
-                        showShape(*wireInfo, "exhaust");
-                        break;
-                    }
-                }
-            }
         }
         wireSet.clear();
+    }
+
+    // This method was originally part of WireJoinerP::makeCleanWire(), split to reduce cognitive
+    // complexity
+    void printHistoryInit(const Handle_BRepTools_History& newHistory,
+                          const std::vector<TopoShape>& inputEdges)
+    {
+        FC_MSG("init:");
+        for (const auto& shape : sourceEdges) {
+            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(INT_MAX));
+        }
+        printHistory(aHistory, sourceEdges);
+        printHistory(newHistory, inputEdges);
+    }
+
+    // This method was originally part of WireJoinerP::makeCleanWire(), split to reduce cognitive
+    // complexity
+    void printHistoryFinal()
+    {
+        printHistory(aHistory, sourceEdges);
+        FC_MSG("final:");
+        for (int i = 1; i <= wireData->NbEdges(); ++i) {
+            auto shape = wireData->Edge(i);
+            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(INT_MAX));
+        }
     }
 
     TopoDS_Wire makeCleanWire(bool fixGap=true)
@@ -2220,7 +2743,8 @@ public:
         }
 
         ShapeFix_Wire fixer;
-        fixer.SetContext(new ShapeBuild_ReShape);
+        Handle(ShapeBuild_ReShape) reshape = new ShapeBuild_ReShape();
+        fixer.SetContext(reshape);
         fixer.Load(wireData);
         fixer.SetMaxTolerance(myTol);
         fixer.ClosedWireMode() = Standard_True;
@@ -2240,36 +2764,40 @@ public:
         result = fixer.Wire();
         auto newHistory = fixer.Context()->History();
 
-        if (FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE+1) {
-            FC_MSG("init:");
-            for (const auto &s : sourceEdges)
-                FC_MSG(s.getShape().TShape().get() << ", " << s.getShape().HashCode(INT_MAX));
-            printHistory(aHistory, sourceEdges);
-            printHistory(newHistory, inputEdges);
+
+        if (FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE + 1) {
+            printHistoryInit(newHistory, inputEdges);
         }
 
         aHistory->Merge(newHistory);
 
-        if (FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE+1) {
-            printHistory(aHistory, sourceEdges);
-            FC_MSG("final:");
-            for (int i=1; i<=wireData->NbEdges(); ++i) {
-                auto s = wireData->Edge(i);
-                FC_MSG(s.TShape().get() << ", " << s.HashCode(INT_MAX));
-            }
+
+        if (FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE + 1) {
+            printHistoryFinal();
         }
+
         return result;
+    }
+
+    // This method was originally part of WireJoinerP::printHistory(), split to reduce cognitive
+    // complexity
+    template<class T>
+    void printHistoryOfShape(const Handle(BRepTools_History)& hist, const T& shape)
+    {
+        for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
+             it.Next()) {
+            FC_MSG(shape.getShape().TShape().get()
+                   << ", " << shape.getShape().HashCode(INT_MAX) << " -> "
+                   << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
+        }
     }
 
     template<class T>
     void printHistory(Handle(BRepTools_History) hist, const T &input)
     {
         FC_MSG("\nHistory:\n");
-        for (const auto &s : input) {
-            for(TopTools_ListIteratorOfListOfShape it(hist->Modified(s.getShape())); it.More(); it.Next()) {
-                FC_MSG(s.getShape().TShape().get() << ", " << s.getShape().HashCode(INT_MAX)
-                        << " -> " << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
-            }
+        for (const auto& shape : input) {
+            printHistoryOfShape(hist, shape);
         }
     }
 
@@ -2283,7 +2811,7 @@ public:
         return true;
     }
 
-    void showShape(const EdgeInfo *info, const char *name, int idx=-1, bool forced=false)
+    void showShape(const EdgeInfo* info, const char* name, int idx = -1, bool forced = false) const
     {
         if (!canShowShape(idx, forced)) {
             return;
@@ -2302,7 +2830,10 @@ public:
         showShape(wireInfo.wire, name, idx, forced);
     }
 
-    void showShape(const TopoDS_Shape &sToShow, const char *name, int idx=-1, bool forced=false)
+    void showShape(const TopoDS_Shape& sToShow,
+                   const char* name,
+                   int idx = -1,
+                   bool forced = false) const
     {
         if (!canShowShape(idx, forced)) {
             return;
@@ -2320,7 +2851,76 @@ public:
         if (catchObject == obj->getNameInDocument()) {
             FC_MSG("found");
         }
-        return;
+    }
+
+    // This method was originally part of WireJoinerP::build(), split to reduce cognitive complexity
+    void buildClosedWire()
+    {
+        findClosedWires(true);
+        findTightBound();
+        exhaustTightBound();
+        bool done = !doOutline;
+        while (!done) {
+            ++iteration;
+            done = true;
+            std::unordered_map<EdgeInfo*, int> counter;
+            std::unordered_set<WireInfo*> wires;
+            for (auto& info : edges) {
+                if (info.iteration == -2) {
+                    continue;
+                }
+                if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
+                    if (info.iteration >= 0) {
+                        info.iteration = -1;
+                        done = false;
+                        showShape(&info, "removed", iteration);
+                        aHistory->Remove(info.edge);
+                    }
+                    continue;
+                }
+                if (info.wireInfo2 && wires.insert(info.wireInfo2.get()).second) {
+                    for (auto& vertex : info.wireInfo2->vertices) {
+                        if (++counter[vertex.edgeInfo()] == 2) {
+                            vertex.edgeInfo()->iteration = -1;
+                            done = false;
+                            showShape(vertex.edgeInfo(), "removed2", iteration);
+                            aHistory->Remove(info.edge);
+                        }
+                    }
+                }
+                if (!wires.insert(info.wireInfo.get()).second) {
+                    continue;
+                }
+                for (auto& vertex : info.wireInfo->vertices) {
+                    if (++counter[vertex.edgeInfo()] == 2) {
+                        vertex.edgeInfo()->iteration = -1;
+                        done = false;
+                        showShape(vertex.edgeInfo(), "removed1", iteration);
+                        aHistory->Remove(info.edge);
+                    }
+                }
+            }
+            findClosedWires(true);
+            findTightBound();
+        }
+
+        builder.MakeCompound(compound);
+        wireSet.clear();
+        for (auto& info : edges) {
+            if (info.iteration == -2) {
+                if (!info.wireInfo) {
+                    builder.Add(compound, info.wire());
+                    continue;
+                }
+                addWire(info.wireInfo);
+                addWire(info.wireInfo2);
+            }
+            else if (info.iteration >= 0) {
+                addWire(info.wireInfo2);
+                addWire(info.wireInfo);
+            }
+        }
+        wireSet.clear();
     }
 
     void build()
@@ -2328,8 +2928,9 @@ public:
         clear();
         sourceEdges.clear();
         sourceEdges.insert(sourceEdgeArray.begin(), sourceEdgeArray.end());
-        for (const auto &e : sourceEdgeArray)
-            add(TopoDS::Edge(e.getShape()), true);
+        for (const auto& edge : sourceEdgeArray) {
+            add(TopoDS::Edge(edge.getShape()), true);
+        }
 
         if (doTightBound || doSplitEdge) {
             splitEdges();
@@ -2341,69 +2942,7 @@ public:
             findClosedWires();
         }
         else {
-            findClosedWires(true);
-            findTightBound();
-            exhaustTightBound();
-            bool done = !doOutline;
-            while(!done) {
-                ++iteration;
-                done = true;
-                std::unordered_map<EdgeInfo*, int> counter;
-                std::unordered_set<WireInfo*> wires;
-                for (auto &info : edges) {
-                    if (info.iteration == -2)
-                        continue;
-                    if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
-                        if (info.iteration >= 0) {
-                            info.iteration = -1;
-                            done = false;
-                            showShape(&info, "removed", iteration);
-                            aHistory->Remove(info.edge);
-                        }
-                        continue;
-                    }
-                    if (info.wireInfo2 && wires.insert(info.wireInfo2.get()).second) {
-                        for (auto &v : info.wireInfo2->vertices) {
-                            if (++counter[v.edgeInfo()] == 2) {
-                                v.edgeInfo()->iteration = -1;
-                                done = false;
-                                showShape(v.edgeInfo(), "removed2", iteration);
-                                aHistory->Remove(info.edge);
-                            }
-                        }
-                    }
-                    if (!wires.insert(info.wireInfo.get()).second)
-                        continue;
-                    for (auto &v : info.wireInfo->vertices) {
-                        if (++counter[v.edgeInfo()] == 2) {
-                            v.edgeInfo()->iteration = -1;
-                            done = false;
-                            showShape(v.edgeInfo(), "removed1", iteration);
-                            aHistory->Remove(info.edge);
-                        }
-                    }
-                }
-                findClosedWires(true);
-                findTightBound();
-            }
-
-            builder.MakeCompound(compound);
-            wireSet.clear();
-            for (auto &info : edges) {
-                if (info.iteration == -2) {
-                    if (!info.wireInfo) {
-                        builder.Add(compound, info.wire());
-                        continue;
-                    }
-                    addWire(info.wireInfo);
-                    addWire(info.wireInfo2);
-                }
-                else if (info.iteration >= 0) {
-                    addWire(info.wireInfo2);
-                    addWire(info.wireInfo);
-                }
-            }
-            wireSet.clear();
+            buildClosedWire();
         }
 
         // TODO: We choose to put open wires in a separated shape from the final
@@ -2448,8 +2987,8 @@ public:
             bool touched = false;
             for (auto it=wires.begin(); it!=wires.end();) {
                 bool purge = true;
-                for (const auto &e : it->getSubShapes(TopAbs_EDGE)) {
-                    if (source.findSubShapesWithSharedVertex(TopoShape(e, -1)).empty()) {
+                for (const auto &edge : it->getSubShapes(TopAbs_EDGE)) {
+                    if (source.findSubShapesWithSharedVertex(TopoShape(edge, -1)).empty()) {
                         purge = false;
                         break;
                     }
@@ -2496,27 +3035,27 @@ public:
 
 
 WireJoiner::WireJoiner()
-    :pimpl(new WireJoinerP)
+    :pimpl(new WireJoinerP())
 {
 }
 
-WireJoiner::~WireJoiner()
-{
-}
+WireJoiner::~WireJoiner() = default;
 
 void WireJoiner::addShape(const TopoShape &shape)
 {
     NotDone();
-    for (auto &e : shape.getSubTopoShapes(TopAbs_EDGE))
-        pimpl->sourceEdgeArray.push_back(e);
+    for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
+        pimpl->sourceEdgeArray.push_back(edge);
+    }
 }
 
 void WireJoiner::addShape(const std::vector<TopoShape> &shapes)
 {
     NotDone();
     for (const auto &shape : shapes) {
-        for (auto &e : shape.getSubTopoShapes(TopAbs_EDGE))
-            pimpl->sourceEdgeArray.push_back(e);
+        for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
+            pimpl->sourceEdgeArray.push_back(edge);
+        }
     }
 }
 
@@ -2524,8 +3063,9 @@ void WireJoiner::addShape(const std::vector<TopoDS_Shape> &shapes)
 {
     NotDone();
     for (const auto &shape : shapes) {
-        for (TopExp_Explorer xp(shape,TopAbs_EDGE); xp.More(); xp.Next())
+        for (TopExp_Explorer xp(shape, TopAbs_EDGE); xp.More(); xp.Next()) {
             pimpl->sourceEdgeArray.emplace_back(TopoDS::Edge(xp.Current()), -1);
+        }
     }
 }
 
@@ -2576,10 +3116,12 @@ void WireJoiner::setTolerance(double tol, double atol)
 
 #if OCC_VERSION_HEX < 0x070600
 void WireJoiner::Build()
-#else
-void WireJoiner::Build(const Message_ProgressRange&)
-#endif
 {
+#else
+void WireJoiner::Build(const Message_ProgressRange& theRange)
+{
+    (void)theRange;
+#endif
     if (IsDone()) {
         return;
     }

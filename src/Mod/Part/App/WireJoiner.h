@@ -33,7 +33,7 @@ namespace Part{
 class PartExport WireJoiner: public BRepBuilderAPI_MakeShape {
 public:
     WireJoiner();
-    virtual ~WireJoiner();
+    ~WireJoiner() override;
 
     void addShape(const TopoShape &shape);
     void addShape(const std::vector<TopoShape> &shapes);
@@ -43,7 +43,7 @@ public:
     void setTightBound(bool enable=true);
     void setSplitEdges(bool enable=true);
     void setMergeEdges(bool enable=true);
-    void setTolerance(double tolerance, double angularTol=0.0);
+    void setTolerance(double tolerance, double atol=0.0);
 
     bool getOpenWires(TopoShape &shape, const char *op="", bool noOriginal=true);
     bool getResultWires(TopoShape &shape, const char *op="");
@@ -53,9 +53,9 @@ public:
 #else
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
 #endif
-    const TopTools_ListOfShape& Modified (const TopoDS_Shape& S) override;
-    const TopTools_ListOfShape& Generated (const TopoDS_Shape& S) override;
-    Standard_Boolean IsDeleted (const TopoDS_Shape& S) override;
+    const TopTools_ListOfShape& Modified (const TopoDS_Shape& SThatModifies) override;
+    const TopTools_ListOfShape& Generated (const TopoDS_Shape& SThatGenerates) override;
+    Standard_Boolean IsDeleted (const TopoDS_Shape& SDeleted) override;
 
 private:
     class WireJoinerP;
