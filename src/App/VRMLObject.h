@@ -63,10 +63,14 @@ protected:
     std::string getRelativePath(const std::string&, const std::string&) const;
     std::string fixRelativePath(const std::string&, const std::string&) const;
     void makeDirectories(const std::string&, const std::string&);
+    bool restoreTextureFinished(Base::Reader &reader);
+    void reloadFile();
 
 private:
     mutable std::string vrmlPath;
-    mutable int index;
+    mutable int indexRestore {0};
+    mutable int indexSave {0};
+    mutable bool restoreData {false};
 };
 
 } //namespace App
