@@ -549,7 +549,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Map sketch to face...");
+    sMenuText = QT_TR_NOOP("Attach sketch...");
     sToolTipText = QT_TR_NOOP(
         "Set the 'AttachmentSupport' of a sketch.\n"
         "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
