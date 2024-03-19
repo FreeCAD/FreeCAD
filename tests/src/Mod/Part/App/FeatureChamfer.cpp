@@ -71,7 +71,6 @@ TEST_F(FeatureChamferTest, testOther)
     // Assert
     EXPECT_EQ(sec, 24);
     // Act
-    // _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, chamfer, chamfer));
     _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, chamfer, chamfer));
     double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
