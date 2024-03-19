@@ -46,6 +46,12 @@ public:
 
 private:
     SoCoordinate3 *pCoords;
+
+protected:
+    void onChanged(const App::Property* prop) override;
+
+protected:
+    SoMaterial * pPlaneFaceMaterial;
 };
 
 } // namespace PartDesignGui
