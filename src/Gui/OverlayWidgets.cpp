@@ -783,8 +783,14 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         setAutoMode(AutoMode::EditShow);
     else if (handle->GetBool("TaskShow", false))
         setAutoMode(AutoMode::TaskShow);
-    else
+    else {
         setAutoMode(AutoMode::NoAutoMode);
+        if (handle->GetBool("Closed", false)) {
+            setState(State::Hidden);
+        } else if (!isVisible() && !checkAutoHide()) {
+            setState(State::Showing);
+        }
+    }
 
     setTransparent(handle->GetBool("Transparent", false));
 
@@ -923,7 +929,7 @@ void OverlayTabWidget::onAction(QAction *action)
     OverlayManager::instance()->refresh(this);
 }
 
-void OverlayTabWidget::setState(State state)
+void OverlayTabWidget::setState(State state, StateChangeSource source)
 {
     if (_state == state)
         return;
@@ -939,6 +945,11 @@ void OverlayTabWidget::setState(State state)
         }
         // fall through
     case State::Showing:
+        if (source == StateChangeSource::User && !_saving) {
+            Base::StateLocker lock(_saving);
+            hGrp->SetBool("Closed", false);
+        }
+
         _state = state;
         hide();
         if (dockArea == Qt::RightDockWidgetArea)
@@ -980,10 +991,16 @@ void OverlayTabWidget::setState(State state)
         hide();
         _graphicsEffectTab->setEnabled(true);
         break;
+
     case State::Hidden:
+        if (source == StateChangeSource::User && !_saving) {
+            Base::StateLocker lock(_saving);
+            hGrp->SetBool("Closed", true);
+        }
         startHide();
         _state = state;
         break;
+
     default:
         break;
     }
