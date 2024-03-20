@@ -75,6 +75,7 @@
 #include "AssemblyObject.h"
 #include "AssemblyObjectPy.h"
 #include "JointGroup.h"
+#include "ViewGroup.h"
 
 namespace PartApp = Part;
 
@@ -393,6 +394,22 @@ JointGroup* AssemblyObject::getJointGroup()
     for (auto jointGroup : jointGroups) {
         if (hasObject(jointGroup)) {
             return dynamic_cast<JointGroup*>(jointGroup);
+        }
+    }
+    return nullptr;
+}
+
+ViewGroup* AssemblyObject::getExplodedViewGroup()
+{
+    App::Document* doc = getDocument();
+
+    std::vector<DocumentObject*> viewGroups = doc->getObjectsOfType(ViewGroup::getClassTypeId());
+    if (viewGroups.empty()) {
+        return nullptr;
+    }
+    for (auto viewGroup : viewGroups) {
+        if (hasObject(viewGroup)) {
+            return dynamic_cast<ViewGroup*>(viewGroup);
         }
     }
     return nullptr;
