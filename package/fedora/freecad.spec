@@ -65,9 +65,6 @@ BuildRequires:  python3-pivy
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
-%if 0%{?fedora} < 35
-BuildRequires:  Inventor-devel
-%endif
 # Qt5 dependencies
 BuildRequires:  qt5-qtwebengine-devel
 #BuildRequires:  qt5-qtwebkit-devel
