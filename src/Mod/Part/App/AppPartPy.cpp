@@ -952,8 +952,8 @@ private:
 
         return shape2pyshape(Part::TopoShape().makeElementCompound(getPyShapes(pcObj), op, policy));
 #else
-Py::Object makeCompound(const Py::Tuple& args)
-{
+    Py::Object makeCompound(const Py::Tuple& args)
+    {
         PyObject *pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
             throw Py::Exception();
@@ -989,8 +989,8 @@ Py::Object makeCompound(const Py::Tuple& args)
         return shape2pyshape(
             Part::TopoShape().makeElementBoolean(Part::OpCodes::Shell, getPyShapes(obj), op));
 #else
-Py::Object makeShell(const Py::Tuple& args)
-{
+    Py::Object makeShell(const Py::Tuple& args)
+    {
         PyObject *obj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
             throw Py::Exception();
@@ -1044,8 +1044,8 @@ Py::Object makeShell(const Py::Tuple& args)
         }
         return shape2pyshape(TopoShape().makeElementFace(getPyShapes(obj), op, className));
 #else
-Py::Object makeFace(const Py::Tuple& args)
-{
+    Py::Object makeFace(const Py::Tuple& args)
+    {
         try {
             char* className = nullptr;
             PyObject* pcPyShapeOrList = nullptr;
@@ -1194,8 +1194,8 @@ Py::Object makeFace(const Py::Tuple& args)
         return shape2pyshape(
             TopoShape(0, shapes.front().Hasher).makeElementFilledFace(shapes, params, op));
 #else
-Py::Object makeFilledSurface(const Py::Tuple &args)
-{
+    Py::Object makeFilledSurface(const Py::Tuple &args)
+    {
         PyObject *obj;
         double tolerance;
         if (!PyArg_ParseTuple(args.ptr(), "Od", &obj, &tolerance))
@@ -1304,8 +1304,8 @@ Py::Object makeFilledSurface(const Py::Tuple &args)
         return shape2pyshape(
             TopoShape(0, shapes.front().Hasher).makeElementFilledFace(shapes, params, op));
 #else
-Py::Object makeFilledFace(const Py::Tuple& args)
-{
+    Py::Object makeFilledFace(const Py::Tuple& args)
+    {
         // TODO: BRepFeat_SplitShape
         PyObject *obj;
         PyObject *surf=nullptr;
@@ -1382,8 +1382,8 @@ Py::Object makeFilledFace(const Py::Tuple& args)
         return shape2pyshape(
             TopoShape().makeElementSolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr(), op));
 #else
-Py::Object makeSolid(const Py::Tuple& args)
-{
+    Py::Object makeSolid(const Py::Tuple& args)
+    {
         PyObject *obj;
         if (!PyArg_ParseTuple(args.ptr(), "O!", &(TopoShapePy::Type), &obj))
             throw Py::Exception();
@@ -2017,8 +2017,8 @@ Py::Object makeSolid(const Py::Tuple& args)
         shapes.push_back(*static_cast<TopoShapePy*>(sh2)->getTopoShapePtr());
         return shape2pyshape(TopoShape().makeElementRuledSurface(shapes, orientation, op));
 #else
-Py::Object makeRuledSurface(const Py::Tuple& args)
-{
+    Py::Object makeRuledSurface(const Py::Tuple& args)
+    {
         // http://opencascade.blogspot.com/2009/10/surface-modeling-part1.html
         PyObject *sh1, *sh2;
         if (!PyArg_ParseTuple(args.ptr(), "O!O!", &(TopoShapePy::Type), &sh1,
@@ -2068,9 +2068,9 @@ Py::Object makeRuledSurface(const Py::Tuple& args)
             throw Py::Exception(PartExceptionOCCError, "creation of shell failed");
         }
 #else
-Py::Object makeShellFromWires(const Py::Tuple& args)
-{
-    PyObject *pylist;
+    Py::Object makeShellFromWires(const Py::Tuple& args)
+    {
+        PyObject *pylist;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pylist))
             throw Py::Exception();
 
@@ -2182,6 +2182,7 @@ Py::Object makeShellFromWires(const Py::Tuple& args)
         PyObject *pruled=Py_False;
         PyObject *pclosed=Py_False;
         int degMax = 5;
+
         const char* op = nullptr;
         const std::array<const char*, 7> kwd_list =
             {"shapes", "solid", "ruled", "closed", "max_degree", "op", nullptr};
@@ -2212,13 +2213,14 @@ Py::Object makeShellFromWires(const Py::Tuple& args)
             degMax,
             op));
 #else
-Py::Object makeLoft(const Py::Tuple& args)
-{
-    PyObject *pcObj;
-    PyObject *psolid=Py_False;
-    PyObject *pruled=Py_False;
-    PyObject *pclosed=Py_False;
-    int degMax = 5;
+    Py::Object makeLoft(const Py::Tuple& args)
+    {
+        PyObject *pcObj;
+        PyObject *psolid=Py_False;
+        PyObject *pruled=Py_False;
+        PyObject *pclosed=Py_False;
+        int degMax = 5;
+
         if (!PyArg_ParseTuple(args.ptr(), "O|O!O!O!i", &pcObj,
                                               &(PyBool_Type), &psolid,
                                               &(PyBool_Type), &pruled,
