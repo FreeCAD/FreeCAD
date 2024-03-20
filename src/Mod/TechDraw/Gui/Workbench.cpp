@@ -221,7 +221,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "TechDraw_Symbol";
     *views << "TechDraw_Image";
     *views << "Separator";
-    *views << "TechDraw_MoveView";
     *views << "TechDraw_ShareView";
     *views << "Separator";
     *views << "TechDraw_ToggleFrame";
@@ -308,7 +307,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
     *views << "TechDraw_SpreadsheetView";
-    *views << "TechDraw_MoveView";
     *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
 
@@ -422,7 +420,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";
-    *views << "TechDraw_MoveView";
     *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
 
