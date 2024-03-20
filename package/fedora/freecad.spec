@@ -44,7 +44,7 @@ Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.
 
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext dos2unix
+BuildRequires:  cmake gcc-c++ gettext
 BuildRequires:  doxygen swig graphviz
 BuildRequires:  gcc-gfortran
 BuildRequires:  desktop-file-utils
@@ -180,11 +180,7 @@ rm -rf src/zipios++
 #    src/Base/Reader.cpp src/Base/Writer.h
 %endif
 
-# Fix encodings
-dos2unix -k src/Mod/Test/unittestgui.py
-
 # Removed bundled libraries
-
 
 %build
 rm -rf build && mkdir build && cd build
