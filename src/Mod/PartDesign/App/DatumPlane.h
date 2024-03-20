@@ -49,7 +49,7 @@ public:
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
-    Base::Vector3d getNormal();
+    Base::Vector3d getNormal() const;
 
 protected:
     void Restore(Base::XMLReader& reader) override;

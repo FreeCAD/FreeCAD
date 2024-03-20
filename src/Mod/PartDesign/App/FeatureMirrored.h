@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Mirrored : public PartDesign::Transformed
+class PartDesignExport Mirrored: public PartDesign::Transformed
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Mirrored);
 
@@ -39,26 +39,30 @@ public:
 
     App::PropertyLinkSub MirrorPlane;
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderMirrored";
     }
     //@}
 
-    /** Create transformations
-      * Returns a list containing one transformation since the first, untransformed instance
-      * is not counted. The transformation will mirror the shape it is applied to on a plane
-      * If MirrorPlane contains a feature and a face name, then the mirror plane will be
-      * the given face, which must be planar
-      */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+    /** Apply mirror transformation
+     * Returns a list containing the original shapes and mirrors of each one.
+     * The transformation will mirror a shape it is applied to on a plane
+     * If MirrorPlane contains a feature and a face name, then the mirror plane will be
+     * the given face, which must be planar.
+     */
+    std::vector<TopoDS_Shape> applyTransformation(std::vector<TopoDS_Shape> shapes) const override;
+
+private:
+    gp_Trsf calculateTransformation() const;
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureMirrored_H
+#endif  // PARTDESIGN_FeatureMirrored_H

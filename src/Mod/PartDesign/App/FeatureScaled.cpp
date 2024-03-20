@@ -23,9 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <Precision.hxx>
+#include <BRepGProp.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #endif
 
 #include "FeatureScaled.h"
@@ -34,65 +35,62 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::Scaled, PartDesign::Transformed)
 
 Scaled::Scaled()
 {
-    ADD_PROPERTY(Factor,(2.0));
-    ADD_PROPERTY(Occurrences,(2));
+    ADD_PROPERTY(Factor, (2.0));
+    ADD_PROPERTY(Occurrences, (2));
 }
 
 short Scaled::mustExecute() const
 {
-    if (Factor.isTouched() ||
-        Occurrences.isTouched())
+    if (Factor.isTouched() || Occurrences.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
+std::vector<TopoDS_Shape> Scaled::applyTransformation(std::vector<TopoDS_Shape> shapes) const
 {
-    double factor = Factor.getValue();
-    if (factor < Precision::Confusion())
+    double const factor = Factor.getValue();
+    if (factor < Precision::Confusion()) {
         throw Base::ValueError("Scaling factor too small");
-    int occurrences = Occurrences.getValue();
-    if (occurrences < 2)
+    }
+    int const occurrences = Occurrences.getValue();
+    if (occurrences < 2) {
         throw Base::ValueError("At least two occurrences required");
-
-    double f = (factor - 1.0) / double(occurrences - 1);
-
-    // Find centre of gravity of first original
-    // FIXME: This method will NOT give the expected result for more than one original!
-    Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
-    TopoDS_Shape original;
-
-    if (originalFeature->isDerivedFrom<PartDesign::FeatureAddSub>()) {
-        PartDesign::FeatureAddSub* Feature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
-        //if(Feature->getAddSubType() == FeatureAddSub::Additive)
-        //    original = Feature->AddSubShape.getShape().getShape();
-        //else
-            original = Feature->AddSubShape.getShape().getShape();
     }
 
-    GProp_GProps props;
-    BRepGProp::VolumeProperties(original,props);
-    gp_Pnt cog = props.CentreOfMass();
+    double const f = (factor - 1.0) / double(occurrences - 1);
 
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
+    std::vector<TopoDS_Shape> result;
 
-    for (int i = 1; i < occurrences; i++) {
+    int i = 0;
+    for (auto const& shape : shapes) {
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(shape, props);
+        gp_Pnt cog = props.CentreOfMass();
+
+        gp_Trsf trans;
         trans.SetScale(cog, 1.0 + double(i) * f);
-        transformations.push_back(trans);
+
+        BRepBuilderAPI_Transform mkScale(shape, trans);
+        if (!mkScale.IsDone()) {
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
+        }
+        result.push_back(mkScale);
+
+        if (++i == occurrences) {
+            i = 0;
+        }
     }
 
-    return transformations;
+    return result;
 }
 
-}
+}  // namespace PartDesign
