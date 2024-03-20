@@ -26,6 +26,7 @@ import os
 import FreeCAD as App
 
 from pivy import coin
+from Part import LineSegment, Compound
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -63,7 +64,10 @@ class CommandCreateView:
         }
 
     def IsActive(self):
-        return UtilsAssembly.isAssemblyCommandActive()
+        return (
+            UtilsAssembly.isAssemblyCommandActive()
+            and UtilsAssembly.assembly_has_at_least_n_parts(2)
+        )
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -78,7 +82,7 @@ class CommandCreateView:
 class ExplodedView:
     def __init__(self, expView):
         expView.addProperty(
-            "App::PropertyLinkList", "Steps", "Exploded View", "Step objects of the exploded view."
+            "App::PropertyLinkList", "Moves", "Exploded View", "Move objects of the exploded view."
         )
         expView.Proxy = self
 
@@ -94,16 +98,50 @@ class ExplodedView:
         return viewObj.InList[0]
 
     def onChanged(self, viewObj, prop):
-        if prop == "Steps" and self.stepsChangedCallback is not None:
-            self.stepsChangedCallback()
+        if prop == "Moves" and hasattr(self, "stepsChangedCallback"):
+            if self.stepsChangedCallback is not None:
+                self.stepsChangedCallback()
 
-    def setStepsChangedCallback(self, callback):
+    def setMovesChangedCallback(self, callback):
         self.stepsChangedCallback = callback
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
         # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
+
+    def applyMoves(self, viewObj, com=None, size=None):
+        positions = []  # [[p1start, p1end], [p2start, p2end], ...]
+        if com is None:
+            com, size = UtilsAssembly.getComAndSize(self.getAssembly(viewObj))
+        for move in viewObj.Moves:
+            positions = positions + move.Proxy.applyStep(move, com, size)
+
+        return positions
+
+    def getAssembly(self, viewObj):
+        return viewObj.InList[0]
+
+    def saveAssemblyAndExplode(self, viewObj):
+        self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
+
+        self.positions = self.applyMoves(viewObj)
+
+        lines = []
+
+        for startPos, endPos in self.positions:
+            line = LineSegment(startPos, endPos).toShape()
+            lines.append(line)
+        if lines:
+            return Compound(lines)
+
+        return None
+
+    def restoreAssembly(self, viewObj):
+        if self.initialPlcs is None:
+            return
+
+        UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
 
 
 class ViewProviderExplodedView:
@@ -152,14 +190,21 @@ class ViewProviderExplodedView:
         return None
 
     def claimChildren(self):
-        return self.app_obj.Steps
+        return self.app_obj.Moves
 
     def doubleClicked(self, vobj):
         task = Gui.Control.activeTaskDialog()
         if task:
             task.reject()
 
-        assembly = vobj.Object.InList[0]
+        assembly = None
+        for obj in vobj.Object.InList:
+            if obj.isDerivedFrom("Assembly::AssemblyObject"):
+                assembly = obj
+                break
+        if assembly is None:
+            return False
+
         if UtilsAssembly.activeAssembly() != assembly:
             Gui.ActiveDocument.setEdit(assembly)
 
@@ -169,7 +214,7 @@ class ViewProviderExplodedView:
         return True
 
 
-######### Exploded View Step #########
+######### Exploded View Move #########
 ExplodedViewStepTypes = [
     "Normal",
     "Radial",
@@ -184,31 +229,31 @@ class ExplodedViewStep:
         evStep.addProperty(
             "App::PropertyStringList",
             "ObjNames",
-            "Exploded Step",
+            "Exploded Move",
             QT_TRANSLATE_NOOP("App::Property", "The object moved by the move"),
         )
 
         evStep.addProperty(
             "App::PropertyLinkList",
             "Parts",
-            "Exploded Step",
+            "Exploded Move",
             QT_TRANSLATE_NOOP("App::Property", "The containing parts of objects moved by the move"),
         )
 
         evStep.addProperty(
             "App::PropertyPlacement",
-            "Placement",
-            "Exploded Step",
+            "MovementTransform",
+            "Exploded Move",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This is the movement of the step. The end placement is the result of the start placement * this placement.",
+                "This is the movement of the move. The end placement is the result of the start placement * this placement.",
             ),
         )
 
         evStep.addProperty(
             "App::PropertyEnumeration",
             "MoveType",
-            "Exploded Step",
+            "Exploded Move",
             QT_TRANSLATE_NOOP("App::Property", "The type of the move"),
         )
         evStep.MoveType = ExplodedViewStepTypes  # sets the list
@@ -228,6 +273,48 @@ class ExplodedViewStep:
         """Do something when doing a recomputation, this method is mandatory"""
         # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
+
+    def applyStep(self, move, com=App.Vector(), size=100):
+        positions = []
+        if move.MoveType == "Radial":
+            distance = move.MovementTransform.Base.Length
+            factor = 1 + 4 * distance / size
+
+        for objName, part in zip(move.ObjNames, move.Parts):
+            if not objName:
+                continue
+            obj = UtilsAssembly.getObjectInPart(objName, part)
+            if not obj:
+                continue
+
+            if move.ViewObject:
+                startPos = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
+
+            if move.MoveType == "Radial":
+                init_vec = obj.Placement.Base - com
+                obj.Placement.Base = com + init_vec * factor
+            else:
+                obj.Placement = move.MovementTransform * obj.Placement
+
+            if move.ViewObject:
+                endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
+                positions.append([startPos, endPos])
+
+        if move.ViewObject:
+            move.ViewObject.Proxy.redrawLines(move, positions)
+
+        return positions
+
+    def getAssembly(self, move):
+        return move.InList[0].InList[0]
+
+    def getMovingobjects(self, move):
+        movingObjs = []
+        for objName, part in zip(move.ObjNames, move.Parts):
+            obj = UtilsAssembly.getObjectInPart(objName, part)
+            if obj is not None:
+                movingObjs.append(obj)
+        return movingObjs
 
 
 class ViewProviderExplodedViewStep:
@@ -259,61 +346,31 @@ class ViewProviderExplodedViewStep:
         self.display_mode.addChild(self.lineSetGroup)  # Add the group to the display mode
         vobj.addDisplayMode(self.display_mode, "Wireframe")
 
-        if self.app_obj.MoveType == "Radial":
-            assembly = UtilsAssembly.activeAssembly()
-            self.assemblyCOM = UtilsAssembly.getCenterOfBoundingBox([assembly], [None])
-            self.assemblyCOMSize = assembly.ViewObject.getBoundingBox().DiagonalLength
-
     def updateData(self, stepObj, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
         # stepObj is the handled feature, prop is the name of the property that has changed
-        if prop in ["Parts", "Placement"]:
-            self.redrawLines(stepObj)
+        pass
 
-    def redrawLines(self, stepObj):
+    def redrawLines(self, stepObj, positions):
         # Clear existing lines
         self.lineSetGroup.removeAllChildren()
 
-        if hasattr(stepObj, "Parts") and stepObj.Parts:
-            if stepObj.MoveType == "Radial":
-                distance = stepObj.Placement.Base.Length
-                factor = 1 + 4 * distance / self.assemblyCOMSize
+        for startPos, endPos in positions:
+            # Create the line
+            line = coin.SoLineSet()
+            line.numVertices.setValue(2)
+            coords = coin.SoCoordinate3()
+            coords.point.setValues(0, [startPos, endPos])
 
-            for objName, part in zip(stepObj.ObjNames, stepObj.Parts):
-                if not objName:
-                    return
+            # Create separator for this line to apply the style
+            line_sep = coin.SoSeparator()
+            line_sep.addChild(self.draw_style)
+            line_sep.addChild(self.so_color)
+            line_sep.addChild(coords)
+            line_sep.addChild(line)
 
-                obj = UtilsAssembly.getObjectInPart(objName, part)
-
-                if not obj:
-                    return
-
-                plc2 = UtilsAssembly.getGlobalPlacement(obj, part)
-                plc2.Base = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
-                endPoint = plc2.Base
-
-                if stepObj.MoveType == "Radial":
-                    startPoint = (endPoint - self.assemblyCOM) / factor + self.assemblyCOM
-
-                else:
-                    plc1 = stepObj.Placement.inverse() * plc2
-                    startPoint = plc1.Base
-
-                # Create the line
-                line = coin.SoLineSet()
-                line.numVertices.setValue(2)
-                coords = coin.SoCoordinate3()
-                coords.point.setValues(0, [startPoint, endPoint])
-
-                # Create separator for this line to apply the style
-                line_sep = coin.SoSeparator()
-                line_sep.addChild(self.draw_style)
-                line_sep.addChild(self.so_color)
-                line_sep.addChild(coords)
-                line_sep.addChild(line)
-
-                # Add to the group
-                self.lineSetGroup.addChild(line_sep)
+            # Add to the group
+            self.lineSetGroup.addChild(line_sep)
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
@@ -331,7 +388,7 @@ class ViewProviderExplodedViewStep:
         pass
 
     def getIcon(self):
-        return ":/icons/Assembly_ExplodedViewStep.svg"
+        return ":/icons/button_add_all.svg"
 
     def dumps(self):
         """When saving the document this object gets stored using Python's json module.\
@@ -355,7 +412,7 @@ class ExplodedViewSelGate:
             # Objects within the assembly.
             return True
 
-        if obj in self.viewObj.Steps:
+        if obj in self.viewObj.Moves:
             # Enable selection of steps object
             return True
 
@@ -367,10 +424,15 @@ class TaskAssemblyCreateView(QtCore.QObject):
     def __init__(self, viewObj=None):
         super().__init__()
 
+        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateView.ui")
+        self.form.stepList.installEventFilter(self)
+        self.form.stepList.itemClicked.connect(self.onItemClicked)
+
         view = Gui.activeDocument().activeView()
 
         self.assembly = UtilsAssembly.activeAssembly()
         self.assembly.ViewObject.EnableMovement = False
+        self.com, self.size = UtilsAssembly.getComAndSize(self.assembly)
         self.asmDragger = self.assembly.ViewObject.getDragger()
         self.cbFin = view.addDraggerCallback(
             self.asmDragger, "addFinishCallback", self.draggerFinished
@@ -379,16 +441,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
             self.asmDragger, "addMotionCallback", self.draggerMoved
         )
 
-        self.assemblyCOM = UtilsAssembly.getCenterOfBoundingBox([self.assembly], [None])
-        self.assemblyCOMSize = self.assembly.ViewObject.getBoundingBox().DiagonalLength
-
-        # self.doc = App.ActiveDocument
-
         Gui.Selection.clearSelection()
-
-        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateView.ui")
-        self.form.stepList.installEventFilter(self)
-        self.form.stepList.itemClicked.connect(self.onItemClicked)
 
         self.form.btnAlignDragger.setMenu(QMenu(self.form.btnAlignDragger))
         actionAlignTo = self.form.btnAlignDragger.menu().addAction("Align to...")
@@ -406,14 +459,14 @@ class TaskAssemblyCreateView(QtCore.QObject):
         pref = Preferences.preferences()
         self.form.CheckBox_PartsAsSingleSolid.setChecked(pref.GetBool("PartsAsSingleSolid", True))
 
-        self.saveAssemblyPartsPlacements(self.assembly)
+        self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.assembly)
 
         if viewObj:
             App.setActiveTransaction("Edit Exploded View")
             self.viewObj = viewObj
-            for step in self.viewObj.Steps:
-                step.Visibility = True
-            self.onStepsChanged()
+            for move in self.viewObj.Moves:
+                move.Visibility = True
+            self.onMovesChanged()
 
         else:
             App.setActiveTransaction("Create Exploded View")
@@ -424,7 +477,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         )
         Gui.Selection.addObserver(self, Gui.Selection.ResolveMode.NoResolve)
 
-        self.viewObj.Proxy.setStepsChangedCallback(self.onStepsChanged)
+        self.viewObj.Proxy.setMovesChangedCallback(self.onMovesChanged)
         self.callbackMove = view.addEventCallback("SoLocation2Event", self.moveMouse)
         self.callbackClick = view.addEventCallback("SoMouseButtonEvent", self.clickMouse)
         self.callbackKey = view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
@@ -439,9 +492,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
 
     def accept(self):
         self.deactivate()
-        self.restoreAssemblyPartsPlacements(self.assembly)
-        for step in self.viewObj.Steps:
-            step.Visibility = False
+        UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
+        for move in self.viewObj.Moves:
+            move.Visibility = False
         App.closeActiveTransaction()
         return True
 
@@ -465,25 +518,13 @@ class TaskAssemblyCreateView(QtCore.QObject):
         Gui.Selection.removeObserver(self)
         Gui.Selection.clearSelection()
 
-        self.viewObj.Proxy.setStepsChangedCallback(None)
+        self.viewObj.Proxy.setMovesChangedCallback(None)
         view.removeEventCallback("SoLocation2Event", self.callbackMove)
         view.removeEventCallback("SoMouseButtonEvent", self.callbackClick)
         view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
 
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-
-    def saveAssemblyPartsPlacements(self, assembly):
-        self.initialPlcDict = {}
-        assemblyParts = UtilsAssembly.getMovablePartsWithin(assembly)
-        for part in assemblyParts:
-            self.initialPlcDict[part.Name] = part.Placement
-
-    def restoreAssemblyPartsPlacements(self, assembly):
-        assemblyParts = UtilsAssembly.getMovablePartsWithin(assembly)
-        for part in assemblyParts:
-            if part.Name in self.initialPlcDict:
-                part.Placement = self.initialPlcDict[part.Name]
 
     def setDragger(self):
         if self.blockSetDragger:
@@ -552,31 +593,15 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.assembly.ViewObject.DraggerVisibility = val
         self.form.btnAlignDragger.setVisible(val)
 
-    def onStepsChanged(self):
+    def onMovesChanged(self):
         # First reset positions
-        self.restoreAssemblyPartsPlacements(self.assembly)
+        UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
+
+        self.viewObj.Proxy.applyMoves(self.viewObj, self.com, self.size)
 
         self.form.stepList.clear()
-
-        for step in self.viewObj.Steps:
-
-            if step.MoveType == "Radial":
-                distance = step.Placement.Base.Length
-                factor = 1 + 4 * distance / self.assemblyCOMSize
-
-            for objName, part in zip(step.ObjNames, step.Parts):
-                obj = UtilsAssembly.getObjectInPart(objName, part)
-                if not obj:
-                    continue
-
-                if step.MoveType == "Radial":
-                    init_vec = obj.Placement.Base - self.assemblyCOM
-                    obj.Placement.Base = self.assemblyCOM + init_vec * factor
-                else:
-                    obj.Placement = step.Placement * obj.Placement
-
-            self.form.stepList.addItem(step.Name)
-            step.ViewObject.Proxy.redrawLines(step)
+        for move in self.viewObj.Moves:
+            self.form.stepList.addItem(move.Name)
 
     def onItemClicked(self, item):
         Gui.Selection.clearSelection()
@@ -650,20 +675,20 @@ class TaskAssemblyCreateView(QtCore.QObject):
         ViewProviderExplodedView(self.viewObj.ViewObject)
 
     def createExplodedStepObject(self, moveType_index=0):
-        self.currentStep = App.ActiveDocument.addObject("App::FeaturePython", "Move")
+        self.currentStep = self.assembly.newObject("App::FeaturePython", "Move")
         ExplodedViewStep(self.currentStep, moveType_index)
         ViewProviderExplodedViewStep(self.currentStep.ViewObject)
 
-        # Note: self.viewObj.Steps.append(self.currentStep) does not work
-        listOfSteps = self.viewObj.Steps
-        listOfSteps.append(self.currentStep)
-        self.viewObj.Steps = listOfSteps
+        # Note: self.viewObj.Moves.append(self.currentStep) does not work
+        listOfMoves = self.viewObj.Moves
+        listOfMoves.append(self.currentStep)
+        self.viewObj.Moves = listOfMoves
 
         objNames = []
         for obj in self.selectedObjs:
             objNames.append(obj.Name)
 
-        self.currentStep.Placement = App.Placement()
+        self.currentStep.MovementTransform = App.Placement()
         self.currentStep.ObjNames = objNames
         self.currentStep.Parts = self.selectedParts
 
@@ -686,22 +711,16 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if self.currentStep is None:
             self.createExplodedStepObject()
 
+        # reset the objects position to their position before the current move.
+        for obj, init_plc in zip(self.selectedObjs, self.selectedObjsInitPlc):
+            obj.Placement = init_plc
+
+        # we update the move Placement.
         draggerPlc = self.assembly.ViewObject.DraggerPlacement
-        movePlc = draggerPlc * self.initialDraggerPlc.inverse()
+        self.currentStep.MovementTransform = draggerPlc * self.initialDraggerPlc.inverse()
 
-        if self.currentStep.MoveType == "Radial":
-            distance = movePlc.Base.Length
-            factor = 1 + 4 * distance / self.assemblyCOMSize
-            for obj, init_plc in zip(self.selectedObjs, self.selectedObjsInitPlc):
-                init_vec = init_plc.Base - self.assemblyCOM
-                obj.Placement.Base = self.assemblyCOM + init_vec * factor
-
-        else:
-            for obj, init_plc in zip(self.selectedObjs, self.selectedObjsInitPlc):
-                obj.Placement = movePlc * init_plc
-
-        # we update the step Placement after parts placement has updated.
-        self.currentStep.Placement = movePlc
+        # Apply the move
+        self.currentStep.Proxy.applyStep(self.currentStep, self.com, self.size)
 
     def draggerFinished(self, event):
         if self.currentStep.MoveType == "Radial":
@@ -785,12 +804,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     sorted_indexes = sorted(selected_indexes, key=lambda x: x.row(), reverse=True)
                     for index in sorted_indexes:
                         row = index.row()
-                        if row < len(self.viewObj.Steps):
-                            step = self.viewObj.Steps[row]
+                        if row < len(self.viewObj.Moves):
+                            move = self.viewObj.Moves[row]
                             # First remove the link from the viewObj
-                            self.viewObj.Steps.remove(step)
+                            self.viewObj.Moves.remove(move)
                             # Delete the object
-                            step.Document.removeObject(step.Name)
+                            move.Document.removeObject(move.Name)
 
                     return True  # Consume the event
 
