@@ -16,7 +16,7 @@
     </Documentation>
     <Methode Name="getElementTypes" Const="true">
       <Documentation>
-        <UserDocu>Return a list of element types present in the complex geometric data.</UserDocu>
+        <UserDocu>Return a list of element types present in the complex geometric data</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="countSubElements" Const="true">
