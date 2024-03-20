@@ -244,6 +244,20 @@ value by using the [ and ] keys while drawing</string>
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Grid color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::ColorButton" name="buttonColor"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
       <widget class="QPushButton" name="buttonPrevious">
@@ -290,6 +304,11 @@ value by using the [ and ] keys while drawing</string>
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
