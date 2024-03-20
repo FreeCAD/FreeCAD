@@ -2925,47 +2925,47 @@ getElements(const TopoShape& sh, TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid =
 //    }PY_CATCH_OCC;
 //}
 
-Py::List TopoShapePy::getSubShapes(void) const
+Py::List TopoShapePy::getSubShapes() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_SHAPE);
 }
 
-Py::List TopoShapePy::getFaces(void) const
+Py::List TopoShapePy::getFaces() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_FACE);
 }
 
-Py::List TopoShapePy::getVertexes(void) const
+Py::List TopoShapePy::getVertexes() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_VERTEX);
 }
 
-Py::List TopoShapePy::getShells(void) const
+Py::List TopoShapePy::getShells() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_SHELL);
 }
 
-Py::List TopoShapePy::getSolids(void) const
+Py::List TopoShapePy::getSolids() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_SOLID);
 }
 
-Py::List TopoShapePy::getCompSolids(void) const
+Py::List TopoShapePy::getCompSolids() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_COMPSOLID);
 }
 
-Py::List TopoShapePy::getEdges(void) const
+Py::List TopoShapePy::getEdges() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_EDGE);
 }
 
-Py::List TopoShapePy::getWires(void) const
+Py::List TopoShapePy::getWires() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_WIRE);
 }
 
-Py::List TopoShapePy::getCompounds(void) const
+Py::List TopoShapePy::getCompounds() const
 {
     return getElements(*getTopoShapePtr(), TopAbs_COMPOUND);
 }
