@@ -592,6 +592,8 @@ void initInterpreter(int argc, char* argv[])
     PyStatus status;
     PyConfig config;
     PyConfig_InitIsolatedConfig(&config);
+    config.isolated = 0;
+    config.user_site_directory = 1;
 
     status = PyConfig_SetBytesArgv(&config, argc, argv);
     if (PyStatus_Exception(status)) {
