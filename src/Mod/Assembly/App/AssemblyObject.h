@@ -55,6 +55,7 @@ namespace Assembly
 {
 
 class JointGroup;
+class ViewGroup;
 
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
@@ -167,6 +168,7 @@ public:
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup();
+    ViewGroup* getExplodedViewGroup();
     std::vector<App::DocumentObject*> getJoints(bool updateJCS = true, bool delBadJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);

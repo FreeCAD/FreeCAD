@@ -949,3 +949,43 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     # plc = activeAssembly().Placement.inverse() * plc
 
     return plc
+
+
+def saveAssemblyPartsPlacements(assembly):
+    initialPlcs = {}
+    assemblyParts = getMovablePartsWithin(assembly)
+    for part in assemblyParts:
+        initialPlcs[part.Name] = part.Placement
+
+    return initialPlcs
+
+
+def restoreAssemblyPartsPlacements(assembly, initialPlcs):
+    assemblyParts = getMovablePartsWithin(assembly)
+    for part in assemblyParts:
+        if part.Name in initialPlcs:
+            part.Placement = initialPlcs[part.Name]
+
+
+def getComAndSize(assembly):
+    if assembly.ViewObject is None:
+        # these vars use the bounding box which is only available in gui...
+        # We could use the real center of mass, but it's too slow to compute it
+        return App.Vector(), 100
+
+    bbox = assembly.ViewObject.getBoundingBox()
+    if not bbox.isValid():
+        return App.Vector(), 100
+
+    com = bbox.Center
+    size = bbox.DiagonalLength
+    return com, size
+
+
+def getAssemblyShapes(assembly):
+    shapes = []
+    assemblyParts = getMovablePartsWithin(assembly)
+    for part in assemblyParts:
+        shapes.append(part.Shape)
+
+    return shapes
