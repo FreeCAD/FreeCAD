@@ -883,7 +883,7 @@ class ViewProviderBuildingPart:
         return True
 
     def setEdit(self, vobj, mode):
-        # mode == 1 if Transform is selected in the Tree view contex menu.
+        # mode == 1 if Transform is selected in the Tree view context menu.
         # mode == 2 has been added for consistency.
         if mode == 1 or mode == 2:
             return None

@@ -1564,7 +1564,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     QTreeWidget::mousePressEvent(event);
 
-    // Handle the visibility icon after the normal event processing to not interfer with
+    // Handle the visibility icon after the normal event processing to not interfere with
     // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());

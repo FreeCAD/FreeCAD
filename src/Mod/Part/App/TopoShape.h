@@ -220,7 +220,7 @@ enum class CheckScale
     checkScale
 };
 
-enum class Copy
+enum class CopyType
 {
     noCopy,
     copy
@@ -247,6 +247,18 @@ enum class Spine
 {
     notOn,
     on
+};
+
+enum class FillType
+{
+    noFill,
+    fill
+};
+
+enum class OpenResult
+{
+    noOpenResult,
+    allowOpenResult
 };
 
 /** The representation for a CAD Shape
@@ -882,6 +894,171 @@ public:
         return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
                                                    offsetMode,join,op);
     }
+    /** Make a 3D offset of a given shape
+     *
+     * @param source: source shape
+     * @param offset: distance to offset
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel
+     *                      (OCCT document states the option is not fully implemented)
+     * @param selfInter: whether to eliminate self intersection
+     *                   (OCCT document states the option is not implemented)
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     *                    (OCCT document states the option is not implemented)
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param fill: whether to build a solid by fill the offset
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementOffset(const TopoShape& source,
+                                 double offset,
+                                 double tol,
+                                 bool intersection = false,
+                                 bool selfInter = false,
+                                 short offsetMode = 0,
+                                 JoinType join = JoinType::arc,
+                                 FillType fill = FillType::noFill,
+                                 const char* op = nullptr);
+
+    /** Make a 3D offset of this shape
+     *
+     * @param offset: distance to offset
+     * @param tol: tolerance criterion for coincidence in generated shapes
+     * @param intersection: whether to check intersection in all generated parallel
+     *                      (OCCT document states the option is not fully implemented)
+     * @param selfInter: whether to eliminate self intersection
+     *                   (OCCT document states the option is not implemented)
+     * @param offsetMode: defines the construction type of parallels applied to free edges
+     *                    (OCCT document states the option is not implemented)
+     * @param fill: whether to build a solid by fill the offset
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementOffset(double offset,
+                                double tol,
+                                bool intersection = false,
+                                bool selfInter = false,
+                                short offsetMode = 0,
+                                JoinType join = JoinType::arc,
+                                FillType fill = FillType::noFill,
+                                const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementOffset(*this,
+                                                      offset,
+                                                      tol,
+                                                      intersection,
+                                                      selfInter,
+                                                      offsetMode,
+                                                      join,
+                                                      fill,
+                                                      op);
+    }
+
+    /** Make a 2D offset of a given shape
+     *
+     * @param source: source shape of edge, wire, face, or compound
+     * @param offset: distance to offset
+     * @param allowOpenResult: whether to allow open edge/wire
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param intersection: if true, then offset all non-compound shape
+     *                      together to deal with possible intersection after
+     *                      expanding the shape.  If false, then offset each
+     *                      shape separately.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementOffset2D(const TopoShape& source,
+                                   double offset,
+                                   JoinType join = JoinType::arc,
+                                   FillType fill = FillType::noFill,
+                                   OpenResult allowOpenResult = OpenResult::allowOpenResult,
+                                   bool intersection = false,
+                                   const char* op = nullptr);
+    /** Make a 2D offset of a given shape
+     *
+     * @param source: source shape of edge, wire, face, or compound
+     * @param offset: distance to offset
+     * @param allowOpenResult: whether to allow open edge/wire
+     * @param join: join type. Only support JoinType::Arc and JoinType::Intersection.
+     * @param intersection: if true, then offset all non-compound shape
+     *                      together to deal with possible intersection after
+     *                      expanding the shape.  If false, then offset each
+     *                      shape separately.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementOffset2D(double offset,
+                                  JoinType join = JoinType::arc,
+                                  FillType fill = FillType::noFill,
+                                  OpenResult allowOpenResult = OpenResult::allowOpenResult,
+                                  bool intersection = false,
+                                  const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher)
+            .makeElementOffset2D(*this, offset, join, fill, allowOpenResult, intersection, op);
+    }
+
+    /** Make a 2D offset of face with separate control for outer and inner (hole) wires
+     *
+     * @param source: source shape of any type, but only faces inside will be used
+     * @param offset: distance to offset for outer wires of the faces
+     * @param innerOffset: distance to offset for inner wires of the faces
+     * @param join: join type of outer wire. Only support JoinType::Arc and JoinType::Intersection.
+     * @param innerJoin: join type of inner wire. Only support JoinType::Arc and
+     * JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementOffsetFace(const TopoShape& source,
+                                     double offset,
+                                     double innerOffset,
+                                     JoinType join = JoinType::arc,
+                                     JoinType innerJoin = JoinType::arc,
+                                     const char* op = nullptr);
+
+    /** Make a 2D offset of face with separate control for outer and inner (hole) wires
+     *
+     * @param source: source shape of any type, but only faces inside will be used
+     * @param offset: distance to offset for outer wires of the faces
+     * @param innerOffset: distance to offset for inner wires of the faces
+     * @param join: join type of outer wire. Only support JoinType::Arc and JoinType::Intersection.
+     * @param innerJoin: join type of inner wire. Only support JoinType::Arc and
+     * JoinType::Intersection.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementOffsetFace(double offset,
+                                    double innerOffset,
+                                    JoinType join = JoinType::arc,
+                                    JoinType innerJoin = JoinType::arc,
+                                    const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher)
+            .makeElementOffsetFace(*this, offset, innerOffset, join, innerJoin, op);
+    }
+
 
 
     /** Make revolved shell around a basis shape
@@ -1552,7 +1729,7 @@ public:
     TopoShape& makeElementGTransform(const TopoShape& source,
                                      const Base::Matrix4D& mat,
                                      const char* op = nullptr,
-                                     Copy copy = Copy::noCopy);
+                                     CopyType copy = CopyType::noCopy);
 
     /** Make a new shape with transformation that may contain non-uniform scaling
      *
@@ -1568,7 +1745,7 @@ public:
      */
     TopoShape makeElementGTransform(const Base::Matrix4D& mat,
                                     const char* op = nullptr,
-                                    Copy copy = Copy::noCopy) const
+                                    CopyType copy = CopyType::noCopy) const
     {
         return TopoShape(Tag, Hasher).makeElementGTransform(*this, mat, op, copy);
     }
@@ -1858,7 +2035,7 @@ public:
                                const Base::Matrix4D& mat,
                                const char* op = nullptr,
                                CheckScale checkScale = CheckScale::noScaleCheck,
-                               Copy copy = Copy::noCopy);
+                               CopyType copy = CopyType::noCopy);
 
     /** Make a new shape with transformation
      *
@@ -1881,7 +2058,7 @@ public:
                                     const Base::Matrix4D& mat,
                                     const char* op = nullptr,
                                     CheckScale checkScale = CheckScale::noScaleCheck,
-                                    Copy copy = Copy::noCopy)
+                                    CopyType copy = CopyType::noCopy)
     {
         _makeElementTransform(source, mat, op, checkScale, copy);
         return *this;
@@ -1905,7 +2082,7 @@ public:
     TopoShape makeElementTransform(const Base::Matrix4D& mat,
                                    const char* op = nullptr,
                                    CheckScale checkScale = CheckScale::noScaleCheck,
-                                   Copy copy = Copy::noCopy) const
+                                   CopyType copy = CopyType::noCopy)
     {
         return TopoShape(Tag, Hasher).makeElementTransform(*this, mat, op, checkScale, copy);
     }
@@ -1926,7 +2103,7 @@ public:
     TopoShape& makeElementTransform(const TopoShape& shape,
                                     const gp_Trsf& trsf,
                                     const char* op = nullptr,
-                                    Copy copy = Copy::noCopy);
+                                    CopyType copy = CopyType::noCopy);
 
     /** Make a new shape with transformation
      *
@@ -1940,7 +2117,7 @@ public:
      *         modified
      */
     TopoShape
-    makeElementTransform(const gp_Trsf& trsf, const char* op = nullptr, Copy copy = Copy::noCopy)
+    makeElementTransform(const gp_Trsf& trsf, const char* op = nullptr, CopyType copy = CopyType::noCopy)
     {
         return TopoShape(Tag, Hasher).makeElementTransform(*this, trsf, op, copy);
     }

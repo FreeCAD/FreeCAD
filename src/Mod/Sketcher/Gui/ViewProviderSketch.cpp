@@ -1961,7 +1961,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             if (reverse) {
                 obj->reverseAngleConstraintToSupplementary(constr, constNum);
 
-                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                ap3 = intersection + dir1 - dir2; //- dir2 instead of std::swap(dir1, dir2) and dir1 = -dir1
                 sign1 = isLeftOfLine(p11, p12, ap3);
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
@@ -4068,7 +4068,8 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainEqual";
             }
             else if (selectedConics == 1 && selectedLines == 1) {
-                menu << "Sketcher_ConstrainTangent";
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
             }
         }
         else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
@@ -4161,7 +4162,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_ToggleConstruction"
              << "Separator"
-             << "Sketcher_CreatePointFillet"
+             << "Sketcher_CreateFillet"
+             << "Sketcher_CreateChamfer"
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"

@@ -336,6 +336,7 @@ Data::Segment* TopoShape::getSubElement(const char* Type, unsigned long n) const
     return new ShapeSegment(getSubShape(temp.c_str()));
 }
 
+// Type can be (should be?) a subshape name, not a type, E.G. Edge3
 TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const {
     TopoShape s(*this);
     s.Tag = 0;
@@ -578,6 +579,14 @@ void TopoShape::setPyObject(PyObject* obj)
         throw Base::TypeError(error);
     }
 }
+
+//void TopoShape::operator = (const TopoShape& sh)
+//{
+//    if (this != &sh) {
+//        this->Tag = sh.Tag;
+//        this->_Shape = sh._Shape;
+//    }
+//}
 
 void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {

@@ -237,30 +237,8 @@ void StartupPostProcess::execute()
 
 void StartupPostProcess::setWindowTitle()
 {
-    // allow to disable version number
-    ParameterGrp::handle hGen =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
-
-    QString appName = QCoreApplication::applicationName();
-    if (appName.isEmpty()) {
-        appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
-    }
-    if (showVersion) {
-        // set main window title with FreeCAD Version
-        std::map<std::string, std::string>& config = App::Application::Config();
-        QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
-        QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-        QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
-        QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
-        QString title = QString::fromLatin1("%1 %2.%3.%4%5").arg(
-            appName, major, minor, point, suffix
-        );
-        mainWindow->setWindowTitle(title);
-    }
-    else {
-        mainWindow->setWindowTitle(appName);
-    }
+    // empty window title QString sets default title (app + version)
+    mainWindow->setWindowTitle(QString());
 }
 
 void StartupPostProcess::setProcessMessages()

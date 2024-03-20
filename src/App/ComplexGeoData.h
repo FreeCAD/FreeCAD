@@ -52,7 +52,7 @@ using BoundBox3d = BoundBox3<double>;
 namespace Data
 {
 
-struct MappedChildElements;
+//struct MappedChildElements;
 
 /** Segments
  *  Sub-element type of the ComplexGeoData type

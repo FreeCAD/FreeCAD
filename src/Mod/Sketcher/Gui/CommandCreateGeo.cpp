@@ -1431,8 +1431,9 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerFillet(ConstructionMethods::FilletConstructionMethod::Fillet));
 }
 
 bool CmdSketcherCreateFillet::isActive()
@@ -1442,149 +1443,62 @@ bool CmdSketcherCreateFillet::isActive()
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherCreatePointFillet)
+DEF_STD_CMD_A(CmdSketcherCreateChamfer)
 
-CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
-    : Command("Sketcher_CreatePointFillet")
+CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
+    : Command("Sketcher_CreateChamfer")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create corner-preserving fillet");
-    sToolTipText = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
-    sWhatsThis = "Sketcher_CreatePointFillet";
+    sMenuText = QT_TR_NOOP("Create chamfer");
+    sToolTipText = QT_TR_NOOP("Create a chamfer between two lines or at a coincident point");
+    sWhatsThis = "Sketcher_CreateChamfer";
     sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_CreatePointFillet";
-    sAccel = "G, F, P";
+    sPixmap = "Sketcher_CreateChamfer";
+    sAccel = "G, F, C";
     eType = ForEdit;
 }
 
-void CmdSketcherCreatePointFillet::activated(int iMsg)
+void CmdSketcherCreateChamfer::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(
         getActiveGuiDocument(),
-        new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+        new DrawSketchHandlerFillet(ConstructionMethods::FilletConstructionMethod::Chamfer));
 }
 
-bool CmdSketcherCreatePointFillet::isActive()
+bool CmdSketcherCreateChamfer::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
 
-/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateFillets'
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateFillets)
 
-/**
- * @brief ctor
- */
-CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
-    : Command("Sketcher_CompCreateFillets")
+class CmdSketcherCompCreateFillets: public Gui::GroupCommand
 {
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create fillet");
-    sToolTipText = QT_TR_NOOP("Create a fillet between two lines");
-    sWhatsThis = "Sketcher_CompCreateFillets";
-    sStatusTip = sToolTipText;
-    eType = ForEdit;
-}
+public:
+    CmdSketcherCompCreateFillets()
+        : GroupCommand("Sketcher_CompCreateFillets")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Create fillet or chamfer");
+        sToolTipText = QT_TR_NOOP("Create a fillet or chamfer between two lines");
+        sWhatsThis = "Sketcher_CompCreateFillets";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
 
-/**
- * @brief Instantiates the fillet handler when the fillet command activated
- * @param int iMsg
- */
-void CmdSketcherCompCreateFillets::activated(int iMsg)
-{
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
-    }
-    else if (iMsg == 1) {
-        ActivateHandler(
-            getActiveGuiDocument(),
-            new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
-    }
-    else {
-        return;
+        setCheckable(false);
+
+        addCommand("Sketcher_CreateFillet");
+        addCommand("Sketcher_CreateChamfer");
     }
 
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action* CmdSketcherCompCreateFillets::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* oldFillet = pcAction->addAction(QString());
-    oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-
-    QAction* pointFillet = pcAction->addAction(QString());
-    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
-    int defaultId = 1;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateFillets::updateAction(int mode)
-{
-    Q_UNUSED(mode);
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction) {
-        return;
+    const char* className() const override
+    {
+        return "CmdSketcherCompCreateFillets";
     }
+};
 
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
-    getAction()->setIcon(a[index]->icon());
-}
-
-void CmdSketcherCompCreateFillets::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction) {
-        return;
-    }
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* oldFillet = a[0];
-    oldFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets", "Sketch fillet"));
-    oldFillet->setToolTip(
-        QApplication::translate("Sketcher_CreateFillet", "Creates a radius between two lines"));
-    oldFillet->setStatusTip(
-        QApplication::translate("Sketcher_CreateFillet", "Creates a radius between two lines"));
-    QAction* pointFillet = a[1];
-    pointFillet->setText(
-        QApplication::translate("CmdSketcherCompCreateFillets", "Corner-preserving sketch fillet"));
-    pointFillet->setToolTip(
-        QApplication::translate("Sketcher_CreatePointFillet",
-                                "Fillet that preserves constraints and intersection point"));
-    pointFillet->setStatusTip(
-        QApplication::translate("Sketcher_CreatePointFillet",
-                                "Fillet that preserves constraints and intersection point"));
-}
-
-bool CmdSketcherCompCreateFillets::isActive()
-{
-    return isCommandActive(getActiveGuiDocument());
-}
 
 // ======================================================================================
 
@@ -2323,9 +2237,9 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
     rcCmdMgr.addCommand(new CmdSketcherCompSlot());
-    rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
-    rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
+    rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     // rcCmdMgr.addCommand(new CmdSketcherCreateText());
     // rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
