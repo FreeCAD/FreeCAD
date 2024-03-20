@@ -42,6 +42,7 @@ import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
+import WorkingPlane
 from FreeCAD import Vector
 from draftutils import params
 from draftutils import utils
@@ -1009,7 +1010,7 @@ class gridTracker(Tracker):
 
         # small squares
         self.mat1 = coin.SoMaterial()
-        self.mat1.transparency.setValue(0.7*(1-gtrans))
+        self.mat1.transparency.setValue(0.8*(1-gtrans))
         self.mat1.diffuseColor.setValue(col)
         self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
@@ -1036,7 +1037,7 @@ class gridTracker(Tracker):
 
         # big squares
         self.mat2 = coin.SoMaterial()
-        self.mat2.transparency.setValue(0.3*(1-gtrans))
+        self.mat2.transparency.setValue(0.2*(1-gtrans))
         self.mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet() # big squares
@@ -1177,6 +1178,7 @@ class gridTracker(Tracker):
         self.mat1.diffuseColor.setValue(col)
         self.mat2.diffuseColor.setValue(col)
         self.mat3.diffuseColor.setValues([col,red,green,blue])
+        self.setAxesColor()
 
     def getGridColors(self):
         """Returns grid colors stored in the preferences"""
@@ -1220,8 +1222,12 @@ class gridTracker(Tracker):
         self.coords_human.point.setValues(pts)
         self.human.numVertices.setValues(pidx)
 
-    def setAxesColor(self, wp):
+    def setAxesColor(self, wp=None):
         """set axes color"""
+        if not wp:
+            wp = getattr(FreeCAD, "DraftWorkingPlane", None)
+            if not wp:
+                wp = WorkingPlane.plane()
         cols = [0,0]
         if params.get_param("coloredGridAxes"):
             if round(wp.u.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):
