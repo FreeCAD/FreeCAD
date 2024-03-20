@@ -49,7 +49,6 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "TechDraw Annotation");
     qApp->translate("Workbench", "TechDraw Attributes");
     qApp->translate("Workbench", "TechDraw Centerlines");
-    qApp->translate("Workbench", "TechDraw Clips");
     qApp->translate("Workbench", "TechDraw Decoration");
     qApp->translate("Workbench", "TechDraw Dimensions");
     qApp->translate("Workbench", "TechDraw Extend Dimensions");
@@ -217,6 +216,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_ProjectionGroup";
+    *views << "TechDraw_ClipGroup";
     *views << "Separator";
     *views << "TechDraw_Symbol";
     *views << "TechDraw_Image";
@@ -234,13 +234,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *other << "TechDraw_DraftView";
     *other << "TechDraw_ArchView";
     *other << "TechDraw_SpreadsheetView";
-
-    // clip groups
-    Gui::MenuItem* clips = new Gui::MenuItem;
-    clips->setCommand("Clipped Views");
-    *clips << "TechDraw_ClipGroup";
-    *clips << "TechDraw_ClipGroupAdd";
-    *clips << "TechDraw_ClipGroupRemove";
 
     // hatching
     Gui::MenuItem* hatch = new Gui::MenuItem;
@@ -262,8 +255,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << views;
     *draw << "Separator";
     *draw << other;
-    *draw << "Separator";
-    *draw << clips;
     *draw << "Separator";
     *draw << dimensions;
     *draw << "Separator";
@@ -307,14 +298,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
     *views << "TechDraw_SpreadsheetView";
+    *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
-
-    Gui::ToolBarItem* clips = new Gui::ToolBarItem(root);
-    clips->setCommand("TechDraw Clips");
-    *clips << "TechDraw_ClipGroup";
-    *clips << "TechDraw_ClipGroupAdd";
-    *clips << "TechDraw_ClipGroupRemove";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
     stacking->setCommand("TechDraw Stacking");
@@ -420,14 +406,9 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";
+    *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
-
-    Gui::ToolBarItem* clips = new Gui::ToolBarItem(root);
-    clips->setCommand("TechDraw Clips");
-    *clips << "TechDraw_ClipGroup";
-    *clips << "TechDraw_ClipGroupAdd";
-    *clips << "TechDraw_ClipGroupRemove";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
     stacking->setCommand("TechDraw Stacking");
