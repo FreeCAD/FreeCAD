@@ -423,7 +423,7 @@ public:
         add_varargs_method("getFacets",&Module::getFacets,
             "getFacets(shape): simplified mesh generation"
         );
-        add_varargs_method("makeCompound",&Module::makeCompound,
+        add_keyword_method("makeCompound",&Module::makeCompound,
             "makeCompound(list) -- Create a compound out of a list of shapes."
         );
         add_keyword_method("makeShell",&Module::makeShell,
@@ -887,17 +887,23 @@ private:
         }
         return list;
     }
-    Py::Object makeCompound(const Py::Tuple& args)
+    Py::Object makeCompound(const Py::Tuple& args, const Py::Dict &kwds)
     {
-#ifndef FC_USE_TNP_FIX
+#ifdef FC_USE_TNP_FIX
         PyObject *pcObj;
         PyObject *force = Py_True;
+        TopoShape::SingleShapeCompoundCreationPolicy policy;// = TopoShape::SingleShapeCompoundCreationPolicy::forceCompound;
+        PyObject* module = PyImport_ImportModule("PartEnums");
+        PyObject *policyEnum = PyObject_GetAttrString(module,(char *)"SingleShapeCompoundCreationPolicy");
         const char *op = nullptr;
-        static char* kwd_list[] = {"shapes", "force", "op", nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|O!s", kwd_list, &pcObj, &PyBool_Type, &force, &op))
+        const std::array<const char *, 4> kwd_list = {"shapes", "force", "op", nullptr};
+        if(!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|O!s", kwd_list, &pcObj, policyEnum, &force, &op))
             throw Py::Exception();
 
-        return shape2pyshape(Part::TopoShape().makECompound(getPyShapes(pcObj), op, PyObject_IsTrue(force)));
+        policy = static_cast<TopoShape::SingleShapeCompoundCreationPolicy>( PyLong_AsLong(force));
+        Py_DECREF(policyEnum);
+
+        return shape2pyshape(Part::TopoShape().makeElementCompound(getPyShapes(pcObj), op, policy));
 #else
         PyObject *pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
@@ -1218,7 +1224,7 @@ private:
     }
     Py::Object makeSolid(const Py::Tuple& args, const Py::Dict &kwds)
     {
-#ifndef FC_NO_ELEMENT_MAP
+#ifdef FC_USE_TNP_FIX
         PyObject *obj;
         const char *op = nullptr;
         const std::array<const char *, 3> kwd_list = {"shape", "op", nullptr};
@@ -1968,7 +1974,7 @@ private:
             throw Py::Exception();
 
         try {
-#ifndef FC_NO_ELEMENT_MAP
+#ifdef FC_USE_TNP_FIX
             TopoShape mShape = *static_cast<TopoShapePy*>(path)->getTopoShapePtr();
             // makeSweep uses GeomFill_Pipe which does not support shape
             // history. So use makEPipeShell() as a replacement
@@ -2000,7 +2006,7 @@ private:
         const char *op = nullptr;
         const std::array<const char *, 7> kwd_list = {"shapes", "solid", "ruled", "closed", "max_degree", "op", nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|O!O!O!is", kwd_list,
-                                         &pcObj,
+                                         &(PyList_Type), &pcObj,
                                          &(PyBool_Type), &psolid,
                                          &(PyBool_Type), &pruled,
                                          &(PyBool_Type), &pclosed,
@@ -2456,10 +2462,12 @@ private:
                                                           "needSubElement", "transform", "retType", "noElementMap",
                                                           "refine", nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
-                                                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type,
-                                                 &pyMat,
-                                                 &PyBool_Type, &needSubElement, &PyBool_Type, &transform, &retType,
-                                                 &PyBool_Type, &noElementMap, &PyBool_Type, &refine)) {
+                                                 &App::DocumentObjectPy::Type, &pObj, &subname,
+                                                 &Base::MatrixPy::Type, &pyMat,
+                                                 &PyBool_Type, &needSubElement,
+                                                 &PyBool_Type, &transform, &retType,
+                                                 &PyBool_Type, &noElementMap,
+                                                 &PyBool_Type, &refine)) {
             throw Py::Exception();
         }
 
@@ -2473,7 +2481,7 @@ private:
                 &mat,&subObj,retType==2,Base::asBoolean(transform),
                 Base::asBoolean(noElementMap));
         if (Base::asBoolean(refine)) {
-#ifndef FC_NO_ELEMENT_MAP
+#ifdef FC_USE_TNP_FIX
             shape = TopoShape(0,shape.Hasher).makeElementRefine(shape);
 #else
             BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
