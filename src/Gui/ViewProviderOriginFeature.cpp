@@ -23,50 +23,45 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoScale.h>
-#include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoAsciiText.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoScale.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
-#include <App/Origin.h>
 #include <App/OriginFeature.h>
+#include <App/Origin.h>
 
+#include "ViewProviderOriginFeature.h"
 #include "SoFCSelection.h"
 #include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
 
 
 using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderOriginFeature, Gui::ViewProviderGeometryObject)
 
-ViewProviderOriginFeature::ViewProviderOriginFeature()
-{
-    ADD_PROPERTY_TYPE(Size,
-                      (ViewProviderOrigin::defaultSize()),
-                      0,
-                      App::Prop_ReadOnly,
-                      QT_TRANSLATE_NOOP("App::Property", "Visual size of the feature"));
+ViewProviderOriginFeature::ViewProviderOriginFeature () {
+    ADD_PROPERTY_TYPE ( Size, (ViewProviderOrigin::defaultSize()), 0, App::Prop_ReadOnly,
+    QT_TRANSLATE_NOOP("App::Property", "Visual size of the feature"));
 
     ShapeAppearance.setDiffuseColor(
-        ViewProviderOrigin::defaultColor);  // Set default color for origin (light-blue)
+         ViewProviderOrigin::defaultColor);  // Set default color for origin (light-blue)
     Transparency.setValue(0);
-    BoundingBox.setStatus(App::Property::Hidden,
-                          true);  // Hide Boundingbox from the user due to it doesn't make sense
+    BoundingBox.setStatus(App::Property::Hidden, true); // Hide Boundingbox from the user due to it doesn't make sense
 
     // Create node for scaling the origin
-    pScale = new SoScale();
-    pScale->ref();
+    pScale = new SoScale ();
+    pScale->ref ();
 
     // Create the separator filled by inherited classes
     pOriginFeatureRoot = new SoSeparator();
-    pOriginFeatureRoot->ref();
+    pOriginFeatureRoot->ref ();
 
     // Create the Label node
     pLabel = new SoAsciiText();
@@ -75,11 +70,10 @@ ViewProviderOriginFeature::ViewProviderOriginFeature()
 }
 
 
-ViewProviderOriginFeature::~ViewProviderOriginFeature()
-{
-    pScale->unref();
-    pOriginFeatureRoot->unref();
-    pLabel->unref();
+ViewProviderOriginFeature::~ViewProviderOriginFeature () {
+    pScale->unref ();
+    pOriginFeatureRoot->unref ();
+    pLabel->unref ();
 }
 
 
@@ -88,7 +82,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     ViewProviderGeometryObject::attach(pcObject);
 
     float defaultSz = ViewProviderOrigin::defaultSize();
-    float sz = Size.getValue() / defaultSz;
+    float sz = Size.getValue () / defaultSz;
 
     // Create an external separator
     auto sep = new SoSeparator();
@@ -102,91 +96,87 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     sep->addChild(matBinding);
 
     // Scale feature to the given size
-    pScale->scaleFactor = SbVec3f(sz, sz, sz);
-    sep->addChild(pScale);
+    pScale->scaleFactor = SbVec3f (sz, sz, sz);
+    sep->addChild (pScale);
 
     // Setup font size
-    auto font = new SoFont();
+    auto font = new SoFont ();
     float fontRatio = 10.0f;
-    if (pcObject->is<App::Line>()) {
+    if ( pcObject->is<App::Line>() ) {
         // keep font size on axes equal to font size on planes
         fontRatio *= ViewProviderOrigin::axesScaling;
         const char* axisName = pcObject->getNameInDocument();
         auto axisRoles = App::Origin::AxisRoles;
-        if (strncmp(axisName, axisRoles[0], strlen(axisRoles[0])) == 0) {
+        if ( strncmp(axisName, axisRoles[0], strlen(axisRoles[0]) ) == 0 ) {
             // X-axis: red
             ShapeAppearance.setDiffuseColor(0xFF0000FF);
-        }
-        else if (strncmp(axisName, axisRoles[1], strlen(axisRoles[1])) == 0) {
+        } else if ( strncmp(axisName, axisRoles[1], strlen(axisRoles[1]) ) == 0 ) {
             // Y-axis: green
             ShapeAppearance.setDiffuseColor(0x00FF00FF);
-        }
-        else if (strncmp(axisName, axisRoles[2], strlen(axisRoles[2])) == 0) {
+        } else if ( strncmp(axisName, axisRoles[2], strlen(axisRoles[2]) ) == 0 ) {
             // Z-axis: blue
             ShapeAppearance.setDiffuseColor(0x0000FFFF);
         }
     }
-    font->size.setValue(defaultSz / fontRatio);
-    sep->addChild(font);
+    font->size.setValue ( defaultSz / fontRatio );
+    sep->addChild ( font );
 
     // Create the selection node
-    auto highlight = new SoFCSelection();
-    highlight->applySettings();
-    if (!Selectable.getValue()) {
+    auto highlight = new SoFCSelection ();
+    highlight->applySettings ();
+    if ( !Selectable.getValue() ) {
         highlight->selectionMode = Gui::SoFCSelection::SEL_OFF;
     }
-    highlight->objectName = getObject()->getNameInDocument();
-    highlight->documentName = getObject()->getDocument()->getName();
+    highlight->objectName    = getObject()->getNameInDocument();
+    highlight->documentName  = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 
     // Style for normal (visible) lines
-    auto style = new SoDrawStyle();
+    auto style = new SoDrawStyle ();
     style->lineWidth = 2.0f;
-    highlight->addChild(style);
+    highlight->addChild ( style );
 
     // Visible lines
-    highlight->addChild(pOriginFeatureRoot);
+    highlight->addChild ( pOriginFeatureRoot );
 
     // Hidden features
-    auto hidden = new SoAnnotation();
+    auto hidden = new SoAnnotation ();
 
     // Style for hidden lines
-    style = new SoDrawStyle();
+    style = new SoDrawStyle ();
     style->lineWidth = 2.0f;
-    style->linePattern.setValue(0xF000);  // (dash-skip-skip-skip)
-    hidden->addChild(style);
+    style->linePattern.setValue ( 0xF000 ); // (dash-skip-skip-skip)
+    hidden->addChild ( style );
 
     // Hidden lines
-    hidden->addChild(pOriginFeatureRoot);
+    hidden->addChild ( pOriginFeatureRoot );
 
-    highlight->addChild(hidden);
+    highlight->addChild ( hidden );
 
-    sep->addChild(highlight);
+    sep->addChild ( highlight );
 
     // Setup the object label as it's text
-    pLabel->string.setValue(SbString(pcObject->Label.getValue()));
+    pLabel->string.setValue ( SbString ( pcObject->Label.getValue () ) );
 
-    addDisplayMaskMode(sep, "Base");
+    addDisplayMaskMode ( sep, "Base" );
 }
 
-void ViewProviderOriginFeature::updateData(const App::Property* prop)
-{
+void ViewProviderOriginFeature::updateData ( const App::Property* prop ) {
     if (prop == &getObject()->Label) {
-        pLabel->string.setValue(SbString(getObject()->Label.getValue()));
+        pLabel->string.setValue ( SbString ( getObject()->Label.getValue () ) );
     }
     ViewProviderGeometryObject::updateData(prop);
 }
 
-void ViewProviderOriginFeature::onChanged(const App::Property* prop)
-{
+void ViewProviderOriginFeature::onChanged ( const App::Property* prop ) {
     if (prop == &Size) {
-        float sz = Size.getValue() / ViewProviderOrigin::defaultSize();
-        pScale->scaleFactor = SbVec3f(sz, sz, sz);
+        float sz = Size.getValue () / ViewProviderOrigin::defaultSize();
+        pScale->scaleFactor = SbVec3f (sz, sz, sz);
     }
     ViewProviderGeometryObject::onChanged(prop);
 }
 
-std::vector<std::string> ViewProviderOriginFeature::getDisplayModes() const
+std::vector<std::string> ViewProviderOriginFeature::getDisplayModes () const
 {
     // add modes
     std::vector<std::string> StrList;
@@ -194,23 +184,20 @@ std::vector<std::string> ViewProviderOriginFeature::getDisplayModes() const
     return StrList;
 }
 
-void ViewProviderOriginFeature::setDisplayMode(const char* ModeName)
+void ViewProviderOriginFeature::setDisplayMode (const char* ModeName)
 {
-    if (strcmp(ModeName, "Base") == 0) {
+    if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
-    }
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-bool ViewProviderOriginFeature::onDelete(const std::vector<std::string>&)
-{
-    auto feat = static_cast<App::OriginFeature*>(getObject());
+bool ViewProviderOriginFeature::onDelete(const std::vector<std::string> &) {
+    auto feat = static_cast <App::OriginFeature *> ( getObject() );
     // Forbid deletion if there is an origin this feature belongs to
 
-    if (feat->getOrigin()) {
+    if ( feat->getOrigin () ) {
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 }
