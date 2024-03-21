@@ -91,6 +91,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , partMoving(false)
     , enableMovement(true)
     , jointVisibilityBackup(false)
+    , ctrlPressed(false)
     , docsToMove({})
 {}
 
@@ -292,8 +293,6 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
 
 bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
-    Q_UNUSED(pressed);
-
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
 
@@ -302,6 +301,10 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 
             return !hPgr->GetBool("LeaveEditWithEscape", true);
         }
+    }
+
+    if (key == SoKeyboardEvent::LEFT_CONTROL || key == SoKeyboardEvent::RIGHT_CONTROL) {
+        ctrlPressed = pressed;
     }
 
     return false;  // handle all other key events
@@ -408,7 +411,6 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                 }
                 else {  // DragMode::Translation
                     Base::Vector3d delta = newPos - prevPosition;
-                    prevPosition = newPos;
 
                     Base::Vector3d pos = propPlacement->getValue().getPosition() + delta;
                     // Base::Vector3d pos = newPos + (plc.getPosition() - initialPosition);
@@ -417,6 +419,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                 propPlacement->setValue(plc);
             }
         }
+        prevPosition = newPos;
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Assembly");
@@ -548,6 +551,10 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     auto* propLink = dynamic_cast<App::PropertyLink*>(
                         preselectedObj->getPropertyByName("ObjectToGround"));
                     if (!propLink) {
+                        if (!ctrlPressed) {
+                            Gui::Selection().clearSelection();
+                            docsToMove.clear();
+                        }
                         docsToMove.emplace_back(preselectedObj, propPlacement->getValue());
                     }
                 }

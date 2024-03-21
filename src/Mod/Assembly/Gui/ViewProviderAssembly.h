@@ -149,6 +149,7 @@ public:
     bool partMoving;
     bool enableMovement;
     bool jointVisibilityBackup;
+    bool ctrlPressed;
     int numberOfSel;
     Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
