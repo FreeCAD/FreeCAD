@@ -22,17 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <Precision.hxx>
-#include <QKeyEvent>
-#include <QMessageBox>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
+# include <Precision.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <QKeyEvent>
+# include <QMessageBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <ShapeExtend_Explorer.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <TopoDS.hxx>
 #endif
 
 #include <App/Application.h>
@@ -49,17 +49,16 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
-#include "DlgScale.h"
 #include "ui_DlgScale.h"
+#include "DlgScale.h"
 
 
-FC_LOG_LEVEL_INIT("Part", true, true)
+FC_LOG_LEVEL_INIT("Part",true,true)
 
 using namespace PartGui;
 
 DlgScale::DlgScale(QWidget* parent, Qt::WindowFlags fl)
-    : QDialog(parent, fl)
-    , ui(new Ui_DlgScale)
+  : QDialog(parent, fl), ui(new Ui_DlgScale)
 {
     ui->setupUi(this);
     setupConnections();
@@ -79,10 +78,11 @@ DlgScale::DlgScale(QWidget* parent, Qt::WindowFlags fl)
 
 void DlgScale::setupConnections()
 {
-    connect(ui->rbUniform, &QRadioButton::toggled, this, &DlgScale::onUniformScaleToggled);
+    connect(ui->rbUniform, &QRadioButton::toggled,
+            this, &DlgScale::onUniformScaleToggled);
 }
 
-void DlgScale::changeEvent(QEvent* e)
+void DlgScale::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -92,15 +92,14 @@ void DlgScale::changeEvent(QEvent* e)
 
 void DlgScale::onUniformScaleToggled(bool state)
 {
-    //    Base::Console().Message("DS::onUniformScaleToggled()\n");
+//    Base::Console().Message("DS::onUniformScaleToggled()\n");
     if (state) {
         // this is uniform scaling, so hide the non-uniform input fields
         ui->dsbUniformScale->setEnabled(true);
         ui->dsbXScale->setEnabled(false);
         ui->dsbYScale->setEnabled(false);
         ui->dsbZScale->setEnabled(false);
-    }
-    else {
+    } else {
         // this is non-uniform scaling, so hide the uniform input fields
         ui->dsbUniformScale->setEnabled(false);
         ui->dsbXScale->setEnabled(true);
@@ -113,11 +112,10 @@ void DlgScale::onUniformScaleToggled(bool state)
 //! list widget
 void DlgScale::findShapes()
 {
-    //    Base::Console().Message("DS::findShapes()\n");
+//    Base::Console().Message("DS::findShapes()\n");
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) {
+    if (!activeDoc)
         return;
-    }
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     m_document = activeDoc->getName();
     m_label = activeDoc->Label.getValue();
@@ -130,17 +128,14 @@ void DlgScale::findShapes()
             continue;
         }
         TopoDS_Shape shape = topoShape.getShape();
-        if (shape.IsNull()) {
-            continue;
-        }
+        if (shape.IsNull()) continue;
         if (canScale(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
             item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
-            if (vp) {
+            if (vp)
                 item->setIcon(0, vp->getIcon());
-            }
         }
     }
 }
@@ -158,10 +153,11 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
         return false;
     }
 
-    if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
+    if (type == TopAbs_COMPOUND ||
+        type == TopAbs_COMPSOLID) {
         TopExp_Explorer xp;
         xp.Init(shape, TopAbs_EDGE);
-        for (; xp.More(); xp.Next()) {
+        for ( ; xp.More() ; xp.Next()) {
             // there is at least 1 edge inside the compound, so as long as it isn't null,
             // we can scale this shape.  We can stop looking as soon as we find a non-null
             // edge.
@@ -172,8 +168,7 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
         }
         // did not find a non-null shape
         return false;
-    }
-    else {
+    } else {
         // not a Vertex, Compound or CompSolid, must be one of Edge, Wire, Face, Shell or
         // Solid, all of which we can scale.
         return true;
@@ -184,12 +179,11 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
 
 void DlgScale::accept()
 {
-    //    Base::Console().Message("DS::accept()\n");
-    try {
+//    Base::Console().Message("DS::accept()\n");
+    try{
         apply();
         QDialog::accept();
-    }
-    catch (Base::AbortException&) {
+    } catch (Base::AbortException&){
         Base::Console().Message("DS::accept - apply failed!\n");
     };
 }
@@ -197,50 +191,46 @@ void DlgScale::accept()
 // create a FeatureScale for each scalable object
 void DlgScale::apply()
 {
-    //    Base::Console().Message("DS::apply()\n");
-    try {
+//    Base::Console().Message("DS::apply()\n");
+    try{
         if (!validate()) {
-            QMessageBox::critical(this, windowTitle(), tr("No scalable shapes selected"));
+            QMessageBox::critical(this, windowTitle(),
+                tr("No scalable shapes selected"));
             return;
         }
 
         Gui::WaitCursor wc;
         App::Document* activeDoc = App::GetApplication().getDocument(m_document.c_str());
         if (!activeDoc) {
-            QMessageBox::critical(
-                this,
-                windowTitle(),
+            QMessageBox::critical(this, windowTitle(),
                 tr("The document '%1' doesn't exist.").arg(QString::fromUtf8(m_label.c_str())));
             return;
         }
         activeDoc->openTransaction("Scale");
 
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/Part");
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
         bool addBaseName = hGrp->GetBool("AddBaseObjectName", false);
 
         std::vector<App::DocumentObject*> objects = this->getShapesToScale();
-        for (App::DocumentObject* sourceObj : objects) {
+        for (App::DocumentObject* sourceObj: objects) {
             assert(sourceObj);
 
-            if (Part::Feature::getTopoShape(sourceObj).isNull()) {
+            if (Part::Feature::getTopoShape(sourceObj).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                                 << " is not Part object (has no OCC shape). Can't scale it.");
+                        << " is not Part object (has no OCC shape). Can't scale it.");
                 continue;
             }
 
             std::string name;
             name = sourceObj->getDocument()->getUniqueObjectName("Scale").c_str();
             if (addBaseName) {
-                // FIXME: implement
-                // QString baseName = QString::fromLatin1("Scale_%1").arg(sourceObjectName);
-                // label = QString::fromLatin1("%1_Scale").arg((*it)->text(0));
+                //FIXME: implement
+                //QString baseName = QString::fromLatin1("Scale_%1").arg(sourceObjectName);
+                //label = QString::fromLatin1("%1_Scale").arg((*it)->text(0));
             }
 
-            FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Scale','" << name << "')");
+            FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Scale','" << name << "')");
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
             this->writeParametersToFeature(*newObj, sourceObj);
@@ -255,20 +245,18 @@ void DlgScale::apply()
         activeDoc->commitTransaction();
         Gui::Command::updateActive();
     }
-    catch (Base::AbortException&) {
+    catch (Base::AbortException&){
         throw;
     }
-    catch (Base::Exception& err) {
+    catch (Base::Exception &err){
         QMessageBox::critical(this,
                               windowTitle(),
                               tr("Creating Scale failed.\n%1")
                                   .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
-    catch (...) {
-        QMessageBox::critical(
-            this,
-            windowTitle(),
+    catch(...) {
+        QMessageBox::critical(this, windowTitle(),
             tr("Creating Scale failed.\n%1").arg(QString::fromUtf8("Unknown error")));
         return;
     }
@@ -283,20 +271,17 @@ void DlgScale::reject()
 //! widget
 std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
 {
-    //    Base::Console().Message("DS::getShapesToScale()\n");
-    QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
+//    Base::Console().Message("DS::getShapesToScale()\n");
+    QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(m_document.c_str());
-    if (!doc) {
+    if (!doc)
         throw Base::RuntimeError("Document lost");
-    }
 
     std::vector<App::DocumentObject*> objects;
     for (auto item : items) {
-        App::DocumentObject* obj =
-            doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
-        if (!obj) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
+        if (!obj)
             throw Base::RuntimeError("Object not found");
-        }
         objects.push_back(obj);
     }
     return objects;
@@ -306,52 +291,38 @@ std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
 //! available document object in the document
 bool DlgScale::validate()
 {
-    QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
+    QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(m_document.c_str());
-    if (!doc) {
+    if (!doc)
         throw Base::RuntimeError("Document lost");
-    }
 
     std::vector<App::DocumentObject*> objects;
     for (auto item : items) {
-        App::DocumentObject* obj =
-            doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
-        if (!obj) {
+        App::DocumentObject* obj = doc->getObject(item->data(0, Qt::UserRole).toString().toLatin1());
+        if (!obj)
             throw Base::RuntimeError("Object not found");
-        }
         objects.push_back(obj);
     }
     return !objects.empty();
 }
 
 //! update a FeatureScale with the parameters from the UI
-void DlgScale::writeParametersToFeature(App::DocumentObject& feature,
-                                        App::DocumentObject* base) const
+void DlgScale::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
-    //    Base::Console().Message("DS::writeParametersToFeature()\n");
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "f = App.getDocument('%s').getObject('%s')",
-                            feature.getDocument()->getName(),
-                            feature.getNameInDocument());
+//    Base::Console().Message("DS::writeParametersToFeature()\n");
+    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
 
     if (!base) {
         return;
     }
 
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "f.Base = App.getDocument('%s').getObject('%s')",
-                            base->getDocument()->getName(),
-                            base->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument());
 
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "f.Uniform = %s",
-                            ui->rbUniform->isChecked() ? "True" : "False");
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "f.UniformScale = %.7f",
-                            ui->dsbUniformScale->value());
-    Gui::Command::doCommand(Gui::Command::Doc, "f.XScale = %.7f", ui->dsbXScale->value());
-    Gui::Command::doCommand(Gui::Command::Doc, "f.YScale = %.7f", ui->dsbYScale->value());
-    Gui::Command::doCommand(Gui::Command::Doc, "f.ZScale = %.7f", ui->dsbZScale->value());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Uniform = %s", ui->rbUniform->isChecked() ? "True" : "False");
+    Gui::Command::doCommand(Gui::Command::Doc,"f.UniformScale = %.7f", ui->dsbUniformScale->value());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.XScale = %.7f", ui->dsbXScale->value());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.YScale = %.7f", ui->dsbYScale->value());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.ZScale = %.7f", ui->dsbZScale->value());
 }
 
 // ---------------------------------------
@@ -359,10 +330,9 @@ void DlgScale::writeParametersToFeature(App::DocumentObject& feature,
 TaskScale::TaskScale()
 {
     widget = new DlgScale();
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_Scale"),
-                                         widget->windowTitle(),
-                                         true,
-                                         nullptr);
+    taskbox = new Gui::TaskView::TaskBox(
+        Gui::BitmapFactory().pixmap("Part_Scale"),
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -382,10 +352,10 @@ bool TaskScale::reject()
 void TaskScale::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {
-        try {
+        try{
             widget->apply();
-        }
-        catch (Base::AbortException&) {
+        } catch (Base::AbortException&){
+
         };
     }
 }

@@ -23,24 +23,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <BRepGProp.hxx>
-#include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <QFontMetrics>
-#include <QPointer>
-#include <QSet>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <gp_Pnt.hxx>
-#include <sstream>
+# include <sstream>
+# include <QFontMetrics>
+# include <QPointer>
+# include <QSet>
+# include <BRep_Tool.hxx>
+# include <BRepGProp.hxx>
+# include <gp_Pnt.hxx>
+# include <GProp_GProps.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
@@ -54,39 +54,35 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
-#include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
-#include "ViewProviderExt.h"
 #include "ui_TaskFaceColors.h"
+#include "SoBrepFaceSet.h"
+#include "ViewProviderExt.h"
 
 
 using namespace PartGui;
 namespace sp = std::placeholders;
 
-namespace PartGui
-{
-class FaceSelection: public Gui::SelectionFilterGate
-{
-    const App::DocumentObject* object;
-
-public:
-    explicit FaceSelection(const App::DocumentObject* obj)
-        : Gui::SelectionFilterGate()
-        , object(obj)
-    {}
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
+namespace PartGui {
+    class FaceSelection : public Gui::SelectionFilterGate
     {
-        if (pObj != this->object) {
-            return false;
+        const App::DocumentObject* object;
+    public:
+        explicit FaceSelection(const App::DocumentObject* obj)
+            : Gui::SelectionFilterGate(), object(obj)
+        {
         }
-        if (!sSubName || sSubName[0] == '\0') {
-            return false;
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            return element.substr(0, 4) == "Face";
         }
-        std::string element(sSubName);
-        return element.substr(0, 4) == "Face";
-    }
-};
-}  // namespace PartGui
+    };
+}
 
 class FaceColors::Private
 {
@@ -104,10 +100,7 @@ public:
     Connection connectDelObj;
     Connection connectUndoDoc;
 
-    explicit Private(ViewProviderPartExt* vp)
-        : ui(new Ui_TaskFaceColors())
-        , view(nullptr)
-        , vp(vp)
+    explicit Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());
@@ -121,9 +114,8 @@ public:
         }
 
         std::vector<App::Color> current = vp->DiffuseColor.getValues();
-        if (current.empty()) {
+        if (current.empty())
             current.push_back(vp->ShapeAppearance.getDiffuseColor());
-        }
         perface = current;
         perface.resize(mapOfShape.Extent(), perface.front());
 
@@ -156,14 +148,12 @@ public:
             const SoDetail* detail = pick->getDetail();
             if (detail && detail->isOfType(SoFaceDetail::getClassTypeId())) {
                 int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
-                if (faceIndex != index) {
+                if (faceIndex != index)
                     return false;
-                }
                 SbVec3f dir = viewer->getViewDirection();
                 const SbVec3f& nor = pick->getNormal();
-                if (dir.dot(nor) > 0) {
-                    return false;  // bottom side points to user
-                }
+                if (dir.dot(nor) > 0)
+                    return false; // bottom side points to user
                 return true;
             }
         }
@@ -196,9 +186,7 @@ public:
                     if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
                         std::stringstream str;
                         str << "Face" << k;
-                        Gui::Selection().addSelection(appdoc->getName(),
-                                                      obj->getNameInDocument(),
-                                                      str.str().c_str());
+                        Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
                         break;
                     }
                     xp_vertex.Next();
@@ -210,8 +198,7 @@ public:
     }
     static void selectionCallback(void* ud, SoEventCallback* cb)
     {
-        Gui::View3DInventorViewer* view =
-            static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+        Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
         view->setSelectionEnabled(true);
 
@@ -229,9 +216,8 @@ public:
             polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
         }
         else {
-            for (const auto& it : picked) {
+            for (const auto& it : picked)
                 polygon.Add(Base::Vector2d(it[0], it[1]));
-            }
         }
 
         FaceColors* self = static_cast<FaceColors*>(ud);
@@ -265,14 +251,14 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
-    // NOLINTBEGIN
-    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(
-        std::bind(&FaceColors::slotDeleteDocument, this, sp::_1));
-    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(
-        std::bind(&FaceColors::slotDeleteObject, this, sp::_1));
-    d->connectUndoDoc =
-        d->doc->signalUndoDocument.connect(std::bind(&FaceColors::slotUndoDocument, this, sp::_1));
-    // NOLINTEND
+    //NOLINTBEGIN
+    d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
+        (&FaceColors::slotDeleteDocument, this, sp::_1));
+    d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(std::bind
+        (&FaceColors::slotDeleteObject, this, sp::_1));
+    d->connectUndoDoc = d->doc->signalUndoDocument.connect(std::bind
+        (&FaceColors::slotUndoDocument, this, sp::_1));
+    //NOLINTEND
 }
 
 FaceColors::~FaceColors()
@@ -280,8 +266,7 @@ FaceColors::~FaceColors()
     if (d->view) {
         d->view->stopSelection();
         d->view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                     Private::selectionCallback,
-                                     this);
+            Private::selectionCallback, this);
         d->view->setSelectionEnabled(true);
     }
     Gui::Selection().rmvSelectionGate();
@@ -293,12 +278,12 @@ FaceColors::~FaceColors()
 
 void FaceColors::setupConnections()
 {
-    connect(d->ui->colorButton,
-            &Gui::ColorButton::changed,
-            this,
-            &FaceColors::onColorButtonChanged);
-    connect(d->ui->defaultButton, &QPushButton::clicked, this, &FaceColors::onDefaultButtonClicked);
-    connect(d->ui->boxSelection, &QPushButton::toggled, this, &FaceColors::onBoxSelectionToggled);
+    connect(d->ui->colorButton, &Gui::ColorButton::changed,
+            this, &FaceColors::onColorButtonChanged);
+    connect(d->ui->defaultButton, &QPushButton::clicked,
+            this, &FaceColors::onDefaultButtonClicked);
+    connect(d->ui->boxSelection, &QPushButton::toggled,
+            this, &FaceColors::onBoxSelectionToggled);
 }
 
 void FaceColors::slotUndoDocument(const Gui::Document& Doc)
@@ -311,40 +296,34 @@ void FaceColors::slotUndoDocument(const Gui::Document& Doc)
 
 void FaceColors::slotDeleteDocument(const Gui::Document& Doc)
 {
-    if (d->doc == &Doc) {
+    if (d->doc == &Doc)
         Gui::Control().closeDialog();
-    }
 }
 
 void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
 {
-    if (d->vp == &obj) {
+    if (d->vp == &obj)
         Gui::Control().closeDialog();
-    }
 }
 
 void FaceColors::onBoxSelectionToggled(bool checked)
 {
-    Gui::View3DInventor* view =
-        qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     // toggle the button state and feature
     d->boxSelection = checked;
     if (!checked) {
         // end box selection mode
-        if (view) {
+        if (view)
             view->getViewer()->stopSelection();
-        }
     }
 
     if (view && checked) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                     Private::selectionCallback,
-                                     this);
-            // avoid that the selection node handles the event otherwise the callback function won't
-            // be called immediately
+            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), Private::selectionCallback, this);
+            // avoid that the selection node handles the event otherwise the callback function won't be
+            // called immediately
             viewer->setSelectionEnabled(false);
             d->view = viewer;
         }
@@ -375,9 +354,8 @@ void FaceColors::onColorButtonChanged()
 void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // no object selected in the combobox or no sub-element was selected
-    if (!msg.pSubName) {
+    if (!msg.pSubName)
         return;
-    }
     bool selection_changed = false;
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         // when adding a sub-element to the selection check
@@ -422,9 +400,8 @@ void FaceColors::updatePanel()
     int size = d->index.size();
     for (int it : d->index) {
         faces += QString::number(it + 1);
-        if (--size > 0) {
+        if (--size > 0)
             faces += QString::fromLatin1(",");
-        }
     }
     faces += QString::fromLatin1("]");
 
@@ -474,7 +451,8 @@ void FaceColors::changeEvent(QEvent* e)
 TaskFaceColors::TaskFaceColors(ViewProviderPartExt* vp)
 {
     widget = new FaceColors(vp);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
+    taskbox = new Gui::TaskView::TaskBox(
+        QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -487,7 +465,8 @@ void TaskFaceColors::open()
 }
 
 void TaskFaceColors::clicked(int)
-{}
+{
+}
 
 bool TaskFaceColors::accept()
 {
