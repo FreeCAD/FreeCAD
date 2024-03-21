@@ -266,6 +266,9 @@ public Q_SLOTS:
 
     void showMessage (const QString & message, int timeout = 0);
 
+    // Set main window title
+    void setWindowTitle(const QString& string);
+
 protected:
     /**
      * This method checks if the main window can be closed by checking all open documents and views.

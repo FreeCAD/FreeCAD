@@ -54,7 +54,15 @@ def write_mesh(ccxwriter):
         # Use reduced integration beam elements if this option is enabled in ccx solver settings
         if ccxwriter.solver_obj.BeamReducedIntegration:
             meshtools.beam_reduced_integration(ccxwriter.femmesh_file)
-        
+
+        # Use 2D elements if model space is not set to 3D
+        if ccxwriter.solver_obj.ModelSpace == "plane stress":
+            meshtools.plane_stress(ccxwriter.femmesh_file)
+        if ccxwriter.solver_obj.ModelSpace == "plane strain":
+            meshtools.plane_strain(ccxwriter.femmesh_file)
+        if ccxwriter.solver_obj.ModelSpace == "axisymmetric":
+            meshtools.axisymmetric(ccxwriter.femmesh_file)
+
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
         inpfile.write("{}\n".format(59 * "*"))
         inpfile.write("** {}\n".format(write_name))
@@ -76,6 +84,14 @@ def write_mesh(ccxwriter):
         # Use reduced integration beam elements if this option is enabled in ccx solver settings
         if ccxwriter.solver_obj.BeamReducedIntegration:
             meshtools.beam_reduced_integration(ccxwriter.femmesh_file)
+
+        # Use 2D elements if model space is not set to 3D
+        if ccxwriter.solver_obj.ModelSpace == "plane stress":
+            meshtools.plane_stress(ccxwriter.femmesh_file)
+        if ccxwriter.solver_obj.ModelSpace == "plane strain":
+            meshtools.plane_strain(ccxwriter.femmesh_file)
+        if ccxwriter.solver_obj.ModelSpace == "axisymmetric":
+            meshtools.axisymmetric(ccxwriter.femmesh_file)
 
         # reopen file with "append" to add all the rest
         inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")

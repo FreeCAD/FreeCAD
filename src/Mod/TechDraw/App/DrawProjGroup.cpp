@@ -452,6 +452,7 @@ bool DrawProjGroup::canDelete(const char* viewProjType) const
 
 App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 {
+    // Base::Console().Message("DPG::addProjection(%s)\n", viewProjType ? viewProjType : "null");
     DrawProjGroupItem* view(nullptr);
     std::pair<Base::Vector3d, Base::Vector3d> vecs;
 
@@ -499,10 +500,6 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
                                              true);//Front should stay locked.
                 view->LockPosition.purgeTouched();
             }
-            //        addView(view);                            //from DrawViewCollection
-            //        if (view != getAnchor()) {                //anchor is done elsewhere
-            //            view->recomputeFeature();
-            //        }
         }
     }
     return view;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>645</height>
+    <height>719</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -162,6 +162,12 @@ These lines are thicker than normal grid lines.</string>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item row="6" column="0">
@@ -176,23 +182,23 @@ These lines are thicker than normal grid lines.</string>
         <property name="toolTip">
          <string>The distance between grid lines</string>
         </property>
-        <property name="decimals">
-         <number>4</number>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
         </property>
         <property name="maximum">
          <double>9999.989999999999782</double>
         </property>
-        <property name="rawValue">
+        <property name="rawValue" stdset="0">
          <double>1.000000000000000</double>
-        </property>
-        <property name="unit">
-         <string notr="true">mm</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>gridSpacing</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
+        </property>
+        <property name="decimals" stdset="0">
+         <number>4</number>
         </property>
        </widget>
       </item>
@@ -263,7 +269,7 @@ These lines are thicker than normal grid lines.</string>
         <property name="toolTip">
          <string>The color of the grid</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>50</red>
           <green>50</green>
@@ -287,71 +293,7 @@ These lines are thicker than normal grid lines.</string>
       <string>Snapping and modifier keys</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_snapStyle">
-        <property name="text">
-         <string>Snap symbol style</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_snapStyle">
-        <property name="toolTip">
-         <string>The style for snap symbols</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>snapStyle</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-        <item>
-         <property name="text">
-          <string>Draft classic style</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bitsnpieces style</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_snapcolor">
-        <property name="text">
-         <string>Snap symbol color</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefColorButton" name="colorButton_snapcolor">
-        <property name="toolTip">
-         <string>The color for snap symbols</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>255</red>
-          <green>170</green>
-          <blue>255</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>snapcolor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="3">
+      <item row="3" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_alwaysSnap">
         <property name="toolTip">
          <string>If checked, snapping is activated without the need to press the Snap modifier key</string>
@@ -370,99 +312,7 @@ These lines are thicker than normal grid lines.</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_modsnap">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Snap modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_modsnap">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>The Snap modifier key</string>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>modsnap</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-        <item>
-         <property name="text">
-          <string>Shift</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Ctrl</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Alt</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_modconstrain">
-        <property name="text">
-         <string>Constrain modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_modconstrain">
-        <property name="toolTip">
-         <string>The Constrain modifier key</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>modconstrain</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-        <item>
-         <property name="text">
-          <string>Shift</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Ctrl</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Alt</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_modalt">
-        <property name="text">
-         <string>Alt modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <widget class="Gui::PrefComboBox" name="comboBox_modalt">
         <property name="toolTip">
          <string>The Alt modifier key. The function of this key depends on the command.</string>
@@ -493,6 +343,200 @@ These lines are thicker than normal grid lines.</string>
         </item>
        </widget>
       </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefColorButton" name="colorButton_snapcolor">
+        <property name="toolTip">
+         <string>The color for snap symbols</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>255</red>
+          <green>170</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>snapcolor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_modsnap">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Snap modifier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_modconstrain">
+        <property name="text">
+         <string>Constrain modifier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_modalt">
+        <property name="text">
+         <string>Alt modifier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_snapcolor">
+        <property name="text">
+         <string>Snap symbol color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_snapStyle">
+        <property name="toolTip">
+         <string>The style for snap symbols</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>snapStyle</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Draft classic style</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bitsnpieces style</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_snapStyle">
+        <property name="text">
+         <string>Snap symbol style</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_modsnap">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The Snap modifier key</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>modsnap</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Shift</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ctrl</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alt</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_modconstrain">
+        <property name="toolTip">
+         <string>The Constrain modifier key</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>modconstrain</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Shift</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ctrl</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alt</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Mouse delay</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox">
+        <property name="toolTip">
+         <string>This is a delay during which the mouse is inactive, after entering
+numbers manually in any of the coordinate fields. Setting this
+to 0 disables the delay. If a delay of 1 is set, after entering a numeric
+value, the mouse will not update the field anymore during one
+second, to avoid moving the mouse accidentally and modifying the
+entered value. If you use a very large value, e.g. 3600, the mouse
+movement will be disabled until the command finishes.</string>
+        </property>
+        <property name="suffix">
+         <string> seconds</string>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MouseDelay</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -501,6 +545,12 @@ These lines are thicker than normal grid lines.</string>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
@@ -508,6 +558,26 @@ These lines are thicker than normal grid lines.</string>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
@@ -519,23 +589,8 @@ These lines are thicker than normal grid lines.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
@@ -546,24 +601,64 @@ These lines are thicker than normal grid lines.</string>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_grid</receiver>
    <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_gridBorder</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_gridShowHuman</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_alwaysSnap</sender>
    <signal>toggled(bool)</signal>
    <receiver>label_modsnap</receiver>
    <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_alwaysSnap</sender>
    <signal>toggled(bool)</signal>
    <receiver>comboBox_modsnap</receiver>
    <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
 </ui>

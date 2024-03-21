@@ -38,7 +38,7 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(AttacherType, ("Attacher::AttachEngine3D"), "Attachment",(App::PropertyType)(App::Prop_None),"Class name of attach engine object driving the attachment.");
     this->AttacherType.setStatus(App::Property::Status::Hidden, true);
 
-    EXTENSION_ADD_PROPERTY_TYPE(Support, (nullptr,nullptr), "Attachment",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
+    EXTENSION_ADD_PROPERTY_TYPE(AttachmentSupport, (nullptr,nullptr), "Attachment",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapMode, (mmDeactivated), "Attachment", App::Prop_None, "Mode of attachment to other object");
     MapMode.setEditorName("PartGui::PropertyEnumAttacherItem");
@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *AttachExtension::extensionExecute()
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if(! getExtendedObject()->isRestoring()){
-        if ((prop == &Support
+        if ((prop == &AttachmentSupport
              || prop == &MapMode
              || prop == &MapPathParameter
              || prop == &MapReversed
@@ -212,13 +212,32 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
-void AttachExtension::extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+bool AttachExtension::extensionHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char *PropName)
 {
-    // Was superPlacement
+    // superPlacement -> AttachmentOffset
     Base::Type type = Base::Type::fromName(TypeName);
-    if (AttachmentOffset.getClassTypeId() == type && strcmp(PropName, "superPlacement") == 0) {
+    if (strcmp(PropName, "superPlacement") == 0 && AttachmentOffset.getClassTypeId() == type) {
         AttachmentOffset.Restore(reader);
+        return true;
     }
+    // Support -> AttachmentSupport
+    else if (strcmp(PropName, "Support") == 0) {
+        // At one point, the type of Support changed from PropertyLinkSub to its present type of PropertyLinkSubList.
+        // Later, the property name changed to AttachmentSupport
+        App::PropertyLinkSub tmp;
+        if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
+            tmp.setContainer(this->getExtendedContainer());
+            tmp.Restore(reader);
+            AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
+            this->MapMode.setValue(Attacher::mmFlatFace);
+            return true;
+        }
+        else if (AttachmentSupport.getClassTypeId() == type) {
+            AttachmentSupport.Restore(reader);
+            return true;
+        }
+    }
+    return App::DocumentObjectExtension::extensionHandleChangedPropertyName(reader, TypeName, PropName);
 }
 
 void AttachExtension::onExtendedDocumentRestored()
@@ -257,7 +276,7 @@ void AttachExtension::updateAttacherVals()
 {
     if (!_attacher)
         return;
-    _attacher->setUp(this->Support,
+    _attacher->setUp(this->AttachmentSupport,
                      eMapMode(this->MapMode.getValue()),
                      this->MapReversed.getValue(),
                      this->MapPathParameter.getValue(),

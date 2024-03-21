@@ -323,8 +323,12 @@ public:
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure
      */
-    int
-    fillet(int geoId, PointPos pos, double radius, bool trim = true, bool preserveCorner = false);
+    int fillet(int geoId,
+               PointPos pos,
+               double radius,
+               bool trim = true,
+               bool preserveCorner = false,
+               bool chamfer = false);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
@@ -340,7 +344,8 @@ public:
                const Base::Vector3d& refPnt2,
                double radius,
                bool trim = true,
-               bool createCorner = false);
+               bool createCorner = false,
+               bool chamfer = false);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -354,7 +359,11 @@ public:
       \param geoId1, posId1, geoId2, posId2: the end points to join
       \retval - 0 on success, -1 on failure
     */
-    int join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2);
+    int join(int geoId1,
+             Sketcher::PointPos posId1,
+             int geoId2,
+             Sketcher::PointPos posId2,
+             int continuity = 0);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int>& geoIdList,

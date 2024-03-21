@@ -518,7 +518,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
         }
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        attacher.setUp(feat->Support,
+        attacher.setUp(feat->AttachmentSupport,
                        eMapMode(feat->MapMode.getValue()),
                        feat->MapReversed.getValue(),
                        feat->MapPathParameter.getValue(),
@@ -543,7 +543,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         const AttachEngine &attacher = *(this->getAttachEnginePtr());
         AttachEngine::verifyReferencesAreSafe(attacher.references);
-        feat->Support.Paste(attacher.references);
+        feat->AttachmentSupport.Paste(attacher.references);
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);
         feat->MapPathParameter.setValue(attacher.attachParameter);

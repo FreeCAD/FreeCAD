@@ -1082,11 +1082,6 @@ void NavigationStyle::moveCursorPosition()
     }
 }
 
-void NavigationStyle::redraw()
-{
-    if (mouseSelection)
-        mouseSelection->redraw();
-}
 
 SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
 {

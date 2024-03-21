@@ -71,7 +71,8 @@ TEST_F(TopoShapeMakeShapeTests, shapeVertex)
     // Act
     TopoShape& result = topoShape.makeElementShape(vertexMaker, topoShape);
     // Assert
-    EXPECT_EQ(result.getElementMap().size(), 0);
+    EXPECT_EQ(result.getElementMap().size(), 1);  // Changed with PR#12471. Probably will change
+                                                  // again after importing other TopoNaming logics
     EXPECT_EQ(result.countSubElements("Vertex"), 1);
     EXPECT_EQ(result.countSubShapes("Vertex"), 1);
 }

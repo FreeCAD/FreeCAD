@@ -88,6 +88,15 @@ def importFrd(
         Console.PrintLog(
             "Increments: " + str(number_of_increments) + "\n"
         )
+
+        def make_result_mesh(result_name):
+            res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
+            # create result mesh
+            result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
+            result_mesh_object.FemMesh = mesh
+            res_obj.Mesh = result_mesh_object
+            return res_obj
+
         if len(m["Results"]) > 0:
             for result_set in m["Results"]:
                 if "number" in result_set:
@@ -118,11 +127,7 @@ def importFrd(
                         .format(result_name_prefix)
                     )
 
-                res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
-                # create result mesh
-                result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
-                result_mesh_object.FemMesh = mesh
-                res_obj.Mesh = result_mesh_object
+                res_obj = make_result_mesh(results_name)
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
                     # need to be here, becasause later on, the analysis objs are needed
@@ -213,12 +218,17 @@ def importFrd(
                     # restore pipeline visibility
                     pipeline_obj.ViewObject.Visibility = pipeline_visibility
 
+        elif result_analysis_type == "check":
+            results_name = "{}Check".format(result_name_prefix)
+            res_obj = make_result_mesh(results_name)
+            if analysis:
+                analysis.addObject(res_obj)
+
         else:
             error_message = (
                 "Nodes, but no results found in frd file. "
                 "It means there only is a mesh but no results in frd file. "
                 "Usually this happens for: \n"
-                "- analysis type 'NOANALYSIS'\n"
                 "- if CalculiX returned no results "
                 "(happens on nonpositive jacobian determinant in at least one element)\n"
                 "- just no frd results where requestet in input file "

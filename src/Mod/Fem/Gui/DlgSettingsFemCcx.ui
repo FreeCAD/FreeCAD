@@ -513,7 +513,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="l_BeamShellOutput">
           <property name="text">
-           <string>Beam, shell element 3D output format </string>
+           <string>Beam, shell element 3D output format</string>
           </property>
          </widget>
         </item>
@@ -523,7 +523,7 @@
            <string>3D Output, unchecked for 2D</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BeamShellOutput</cstring>

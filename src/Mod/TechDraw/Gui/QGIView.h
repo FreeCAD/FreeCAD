@@ -122,9 +122,7 @@ public:
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
 
-
     void alignTo(QGraphicsItem*, const QString &alignment);
-    void setLocked(bool isLocked) { m_locked = isLocked; }
 
     QColor prefNormalColor(); //preference
     QColor getNormalColor() { return m_colNormal; }  //current setting
@@ -163,9 +161,6 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-public Q_SLOTS:
-    virtual void onSourceChange(TechDraw::DrawView* newParent);
-
 protected:
     QGIView* getQGIVByName(std::string name);
 
@@ -183,7 +178,6 @@ private:
     std::string viewName;
 
     QHash<QString, QGraphicsItem*> alignHash;
-    bool m_locked;
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
 

@@ -43,6 +43,7 @@ from addonmanager_workers_startup import (
     CheckWorkbenchesForUpdatesWorker,
     CacheMacroCodeWorker,
     GetBasicAddonStatsWorker,
+    GetAddonScoreWorker,
 )
 from addonmanager_workers_installation import (
     UpdateMetadataCacheWorker,
@@ -53,10 +54,9 @@ from addonmanager_update_all_gui import UpdateAllGUI
 import addonmanager_utilities as utils
 import addonmanager_freecad_interface as fci
 import AddonManager_rc  # This is required by Qt, it's not unused
-from package_list import PackageList, PackageListItemModel
-from addonmanager_package_details_controller import PackageDetailsController
-from Widgets.addonmanager_widget_package_details_view import PackageDetailsView
+from composite_view import CompositeView
 from Widgets.addonmanager_widget_global_buttons import WidgetGlobalButtonBar
+from package_list import PackageListItemModel
 from Addon import Addon
 from AddonStats import AddonStats
 from manage_python_dependencies import (
@@ -119,6 +119,7 @@ class CommandAddonManager:
         "update_all_worker",
         "check_for_python_package_updates_worker",
         "get_basic_addon_stats_worker",
+        "get_addon_score_worker",
     ]
 
     lock = threading.Lock()
@@ -136,11 +137,13 @@ class CommandAddonManager:
         self.update_all_worker = None
         self.developer_mode = None
         self.installer_gui = None
+        self.composite_view = None
         self.button_bar = None
 
         self.update_cache = False
         self.dialog = None
         self.startup_sequence = []
+        self.packages_with_updates = set()
 
         # Set up the connection checker
         self.connection_checker = ConnectionCheckerGUI()
@@ -191,7 +194,7 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         w = pref.GetInt("WindowWidth", 800)
         h = pref.GetInt("WindowHeight", 600)
-        self.dialog.resize(w, h)
+        self.composite_view = CompositeView(self.dialog)
         self.button_bar = WidgetGlobalButtonBar(self.dialog)
 
         # If we are checking for updates automatically, hide the Check for updates button:
@@ -202,18 +205,10 @@ class CommandAddonManager:
             self.button_bar.update_all_addons.hide()
 
         # Set up the listing of packages using the model-view-controller architecture
-        self.packageList = PackageList(self.dialog)
         self.item_model = PackageListItemModel()
-        self.packageList.setModel(self.item_model)
-        self.dialog.layout().addWidget(self.packageList)
+        self.composite_view.setModel(self.item_model)
+        self.dialog.layout().addWidget(self.composite_view)
         self.dialog.layout().addWidget(self.button_bar)
-
-        # Package details start out hidden
-        self.packageDetails = PackageDetailsView(self.dialog)
-        self.package_details_controller = PackageDetailsController(self.packageDetails)
-        self.packageDetails.hide()
-        index = self.dialog.layout().indexOf(self.packageList)
-        self.dialog.layout().insertWidget(index, self.packageDetails)
 
         # set nice icons to everything, by theme with fallback to FreeCAD icons
         self.dialog.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
@@ -241,17 +236,16 @@ class CommandAddonManager:
         )
         self.button_bar.python_dependencies.clicked.connect(self.show_python_updates_dialog)
         self.button_bar.developer_tools.clicked.connect(self.show_developer_tools)
-        self.packageList.ui.progressBar.stop_clicked.connect(self.stop_update)
-        self.packageList.itemSelected.connect(self.table_row_activated)
-        self.packageList.setEnabled(False)
-        self.package_details_controller.execute.connect(self.executemacro)
-        self.package_details_controller.install.connect(self.launch_installer_gui)
-        self.package_details_controller.uninstall.connect(self.remove)
-        self.package_details_controller.update.connect(self.update)
-        self.package_details_controller.back.connect(self.on_buttonBack_clicked)
-        self.package_details_controller.update_status.connect(self.status_updated)
+        self.composite_view.package_list.ui.progressBar.stop_clicked.connect(self.stop_update)
+        self.composite_view.package_list.setEnabled(False)
+        self.composite_view.execute.connect(self.executemacro)
+        self.composite_view.install.connect(self.launch_installer_gui)
+        self.composite_view.uninstall.connect(self.remove)
+        self.composite_view.update.connect(self.update)
+        self.composite_view.update_status.connect(self.status_updated)
 
         # center the dialog over the FreeCAD window
+        self.dialog.resize(w, h)
         mw = FreeCADGui.getMainWindow()
         self.dialog.move(
             mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
@@ -397,14 +391,12 @@ class CommandAddonManager:
             self.check_updates,
             self.check_python_updates,
             self.fetch_addon_stats,
+            self.fetch_addon_score,
+            self.select_addon,
         ]
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
             self.startup_sequence.append(self.load_macro_metadata)
-        selection = pref.GetString("SelectedAddon", "")
-        if selection:
-            self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
-            pref.SetString("SelectedAddon", "")
         self.number_of_progress_regions = len(self.startup_sequence)
         self.current_progress_region = 0
         self.do_next_startup_phase()
@@ -425,7 +417,7 @@ class CommandAddonManager:
             )
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
             pref.SetString("LastCacheUpdate", date.today().isoformat())
-            self.packageList.item_filter.invalidateFilter()
+            self.composite_view.package_list.item_filter.invalidateFilter()
 
     def populate_packages_table(self) -> None:
         self.item_model.clear()
@@ -478,8 +470,8 @@ class CommandAddonManager:
                 f.write(json.dumps(self.package_cache, indent="  "))
 
     def activate_table_widgets(self) -> None:
-        self.packageList.setEnabled(True)
-        self.packageList.ui.view_bar.search.setFocus()
+        self.composite_view.package_list.setEnabled(True)
+        self.composite_view.package_list.ui.view_bar.search.setFocus()
         self.do_next_startup_phase()
 
     def populate_macros(self) -> None:
@@ -578,17 +570,12 @@ class CommandAddonManager:
         else:
             self.do_next_startup_phase()
 
-    def select_addon(self, name: str) -> None:
-        found = False
-        for addon in self.item_model.repos:
-            if addon.name == name:
-                self.table_row_activated(addon)
-                found = True
-                break
-        if not found:
-            FreeCAD.Console.PrintWarning(
-                translate("AddonsInstaller", "Could not find addon '{}' to select\n").format(name)
-            )
+    def select_addon(self) -> None:
+        prefs = fci.Preferences()
+        selection = prefs.get("SelectedAddon")
+        if selection:
+            self.composite_view.package_list.select_addon(selection)
+            prefs.set("SelectedAddon", "")
         self.do_next_startup_phase()
 
     def check_updates(self) -> None:
@@ -645,7 +632,11 @@ class CommandAddonManager:
 
         if number_of_updates:
             self.button_bar.set_number_of_available_updates(number_of_updates)
-        elif hasattr(self, "check_worker") and self.check_worker.isRunning():
+        elif (
+            hasattr(self, "check_worker")
+            and self.check_worker is not None
+            and self.check_worker.isRunning()
+        ):
             self.button_bar.update_all_addons.setText(
                 translate("AddonsInstaller", "Checking for updates...")
             )
@@ -681,6 +672,28 @@ class CommandAddonManager:
 
     def update_addon_stats(self, addon: Addon):
         self.item_model.reload_item(addon)
+
+    def fetch_addon_score(self) -> None:
+        """Fetch the Addon score JSON data from a URL"""
+        prefs = fci.Preferences()
+        url = prefs.get("AddonsScoreURL")
+        if url and url != "NONE":
+            self.get_addon_score_worker = GetAddonScoreWorker(
+                url, self.item_model.repos, self.dialog
+            )
+            self.get_addon_score_worker.finished.connect(self.score_fetched_successfully)
+            self.get_addon_score_worker.finished.connect(self.do_next_startup_phase)
+            self.get_addon_score_worker.update_addon_score.connect(self.update_addon_score)
+            self.get_addon_score_worker.start()
+        else:
+            self.composite_view.package_list.ui.view_bar.set_rankings_available(False)
+            self.do_next_startup_phase()
+
+    def update_addon_score(self, addon: Addon):
+        self.item_model.reload_item(addon)
+
+    def score_fetched_successfully(self):
+        self.composite_view.package_list.ui.view_bar.set_rankings_available(True)
 
     def show_developer_tools(self) -> None:
         """Display the developer tools dialog"""
@@ -755,27 +768,11 @@ class CommandAddonManager:
 
         return addonicon
 
-    def table_row_activated(self, selected_repo: Addon) -> None:
-        """a row was activated, show the relevant data"""
-
-        self.packageList.hide()
-        self.packageDetails.show()
-        self.package_details_controller.show_repo(selected_repo)
-
     def show_information(self, message: str) -> None:
         """shows generic text in the information pane"""
 
-        self.packageList.ui.progressBar.set_status(message)
-        self.packageList.ui.progressBar.repaint()
-
-    def show_workbench(self, repo: Addon) -> None:
-        self.packageList.hide()
-        self.packageDetails.show()
-        self.package_details_controller.show_repo(repo)
-
-    def on_buttonBack_clicked(self) -> None:
-        self.packageDetails.hide()
-        self.packageList.show()
+        self.composite_view.package_list.ui.progressBar.set_status(message)
+        self.composite_view.package_list.ui.progressBar.repaint()
 
     def append_to_repos_list(self, repo: Addon) -> None:
         """this function allows threads to update the main list of workbenches"""
@@ -790,7 +787,7 @@ class CommandAddonManager:
         else:
             repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
-        self.package_details_controller.show_repo(repo)
+        self.composite_view.package_details_controller.show_repo(repo)
 
     def launch_installer_gui(self, addon: Addon) -> None:
         if self.installer_gui is not None:
@@ -836,12 +833,12 @@ class CommandAddonManager:
     def hide_progress_widgets(self) -> None:
         """hides the progress bar and related widgets"""
 
-        self.packageList.ui.progressBar.hide()
-        self.packageList.ui.view_bar.search.setFocus()
+        self.composite_view.package_list.ui.progressBar.hide()
+        self.composite_view.package_list.ui.view_bar.search.setFocus()
 
     def show_progress_widgets(self) -> None:
-        if self.packageList.ui.progressBar.isHidden():
-            self.packageList.ui.progressBar.show()
+        if self.composite_view.package_list.ui.progressBar.isHidden():
+            self.composite_view.package_list.ui.progressBar.show()
 
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""
@@ -858,10 +855,10 @@ class CommandAddonManager:
         completed_region_portion = (self.current_progress_region - 1) * region_size
         current_region_portion = (float(current_value) / float(max_value)) * region_size
         value = completed_region_portion + current_region_portion
-        self.packageList.ui.progressBar.set_value(
+        self.composite_view.package_list.ui.progressBar.set_value(
             value * 10
         )  # Out of 1000 segments, so it moves sort of smoothly
-        self.packageList.ui.progressBar.repaint()
+        self.composite_view.package_list.ui.progressBar.repaint()
 
     def stop_update(self) -> None:
         self.cleanup_workers()
@@ -885,7 +882,7 @@ class CommandAddonManager:
         if repo.status() == Addon.Status.PENDING_RESTART:
             self.restart_required = True
         self.item_model.reload_item(repo)
-        self.package_details_controller.show_repo(repo)
+        self.composite_view.package_details_controller.show_repo(repo)
         if repo in self.packages_with_updates:
             self.packages_with_updates.remove(repo)
             self.enable_updates(len(self.packages_with_updates))

@@ -21,7 +21,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation>Le chemin de l'exécutable de OpenSCAD</translation>
+      <translation>Le chemin d'accès de l'exécutable de OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation>Le chemin d'accès au répertoire pour le transfert des fichiers vers et depuis OpenSCAD</translation>
+      <translation>Le chemin du répertoire pour le transfert des fichiers vers et depuis OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
@@ -107,7 +107,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
-      <translation>Taille maximale de fragment</translation>
+      <translation>Taille maximale des fragments</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="292"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
       <source>Unable to explode %s</source>
-      <translation>Impossible d'exploser %s</translation>
+      <translation>Impossible de dégrouper %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
@@ -286,12 +286,12 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="654"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation>Le fichier OpenSCAD contient à la fois des formes 2D et 3D. Cela n'est pas pris en charge par cet importateur, toutes les formes doivent avoir la même dimensionnalité.</translation>
+      <translation>Le fichier OpenSCAD contient à la fois des formes 2D et 3D. Cela n'est pas pris en charge par cet importateur. Toutes les formes doivent avoir la même dimensionnalité.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="665"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation>Erreur: toutes les formes doivent être exclusivement en 2D ou en 3D</translation>
+      <translation>Erreur : soit toutes les formes sont en 2D, soit toutes les formes sont en 3D.</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="550"/>
@@ -303,7 +303,7 @@
       <location filename="../../importCSG.py" line="550"/>
       <location filename="../../importCSG.py" line="1432"/>
       <source>Press OK</source>
-      <translation>Appuyez sur OK</translation>
+      <translation>Appuyer sur OK</translation>
     </message>
   </context>
   <context>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Supprimer la fusion, appliquer le placement aux enfants et colorier au hasard</translation>
+      <translation>Supprimer l'union, appliquer le placement aux enfants et colorier au hasard</translation>
     </message>
   </context>
   <context>
@@ -324,7 +324,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="116"/>
       <source>Color Shapes</source>
-      <translation>Colorer les formes</translation>
+      <translation>Colorier des formes</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Remplacer un objet dans la vue en arborescence. Veuillez sélectionner l'ancien objet, le nouvel objet et l'objet parent</translation>
+      <translation>Remplacer un objet dans la vue en arborescence. Sélectionner l'ancien objet, le nouvel objet et l'objet parent</translation>
     </message>
   </context>
   <context>
@@ -475,12 +475,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="566"/>
       <source>Hull</source>
-      <translation>Enveloppe</translation>
+      <translation>Coque</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation>Utilisez OpenSCAD pour créer une coque</translation>
+      <translation>Utiliser OpenSCAD pour créer une coque</translation>
     </message>
   </context>
   <context>
@@ -488,12 +488,12 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation>Outils OpenSCAD</translation>
+      <translation>Outils d'OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation>Outils de pièce WB fréquemment utilisés</translation>
+      <translation>Outils fréquemment utilisés de l'atelier Part</translation>
     </message>
   </context>
   <context>

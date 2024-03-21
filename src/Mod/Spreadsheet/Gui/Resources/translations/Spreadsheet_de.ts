@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Inhalt der gewählten Zellen zentrieren</translation>
+      <translation>Zentriert den Inhalt der gewählten Zellen</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Inhalt der gewählten Zellen vertikal zentrieren</translation>
+      <translation>Zentriert den Inhalt der gewählten Zellen vertikal</translation>
     </message>
   </context>
   <context>
@@ -605,7 +605,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Linksbündig</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -616,7 +616,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Rechts</translation>
+      <translation>Rechtsbündig</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>

@@ -41,6 +41,7 @@ set(PartDesignGui_UIC_SRCS
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskTransformedMessages.ui
+    TaskTransformedParameters.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
     TaskPolarPatternParameters.ui

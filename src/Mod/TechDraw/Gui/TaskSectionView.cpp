@@ -432,10 +432,7 @@ bool TaskSectionView::apply(bool forceUpdate)
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
         m_applyDeferred++;
-        QString msgLiteral =
-            QString::fromUtf8(QT_TRANSLATE_NOOP("TaskPojGroup", " updates pending"));
-        QString msgNumber = QString::number(m_applyDeferred);
-        ui->lPendingUpdates->setText(msgNumber + msgLiteral);
+        ui->lPendingUpdates->setText(tr("%n update(s) pending", "", m_applyDeferred));
         return false;
     }
 

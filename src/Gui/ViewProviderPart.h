@@ -50,6 +50,9 @@ public:
     /// override from ViewProvider.h
     QIcon getIcon() const override;
 
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
+
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;

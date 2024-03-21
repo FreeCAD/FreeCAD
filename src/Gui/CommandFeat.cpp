@@ -26,6 +26,7 @@
 #endif
 
 #include <App/DocumentObject.h>
+#include <App/GroupExtension.h>
 #include "Application.h"
 #include "CommandT.h"
 #include "DockWindowManager.h"
@@ -86,29 +87,44 @@ void StdCmdRandomColor::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
+    auto setRandomColor = [](ViewProvider* view) {
+        // NOLINTBEGIN
+        auto fMax = (float)RAND_MAX;
+        auto fRed = (float)rand()/fMax;
+        auto fGrn = (float)rand()/fMax;
+        auto fBlu = (float)rand()/fMax;
+        // NOLINTEND
+        auto objColor = App::Color(fRed, fGrn, fBlu);
+
+        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        if (vpLink) {
+            if (!vpLink->OverrideMaterial.getValue()) {
+                vpLink->OverrideMaterial.setValue(true);
+            }
+            vpLink->ShapeMaterial.setDiffuseColor(objColor);
+        }
+        else if (view) {
+            if (auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"))) {
+                // get the view provider of the selected object and set the shape color
+                color->setValue(objColor);
+            }
+        }
+    };
+
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set Random Color"));
     for (const auto & it : sel) {
-        auto fMax = (float)RAND_MAX;
-        auto fRed = (float)rand()/fMax;
-        auto fGrn = (float)rand()/fMax;
-        auto fBlu = (float)rand()/fMax;
-        auto objColor = App::Color(fRed, fGrn, fBlu);
+        ViewProvider* view = Application::Instance->getViewProvider(it.pObject);
+        setRandomColor(view);
 
-        ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
-        if(vpLink) {
-            if(!vpLink->OverrideMaterial.getValue())
-                vpLink->OverrideMaterial.setValue(true);
-            vpLink->ShapeMaterial.setDiffuseColor(objColor);
-            continue;
-        }
-        auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
-        if (color) {
-            // get the view provider of the selected object and set the shape color
-            color->setValue(objColor);
+        if (auto grp = it.pObject->getExtension<App::GroupExtension>()) {
+            std::vector<App::DocumentObject*> objs = grp->getObjects();
+            for (auto obj : objs) {
+                ViewProvider* view = Application::Instance->getViewProvider(obj);
+                setRandomColor(view);
+            }
         }
     }
 
@@ -119,6 +135,55 @@ bool StdCmdRandomColor::isActive()
 {
     return (Gui::Selection().size() != 0);
 }
+
+//===========================================================================
+// Std_ToggleFreeze
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleFreeze)
+
+StdCmdToggleFreeze::StdCmdToggleFreeze()
+    : Command("Std_ToggleFreeze")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("Toggle freeze");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleFreeze";
+    sPixmap = "Std_ToggleFreeze";
+    sAccel = "";
+    eType = AlterDoc;
+}
+
+void StdCmdToggleFreeze::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle freeze"));
+
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        App::DocumentObject* obj = sel.pObject;
+        if (!obj)
+            continue;
+
+        if (obj->isFreezed())
+            obj->unfreeze();
+        else
+            obj->freeze();
+    }
+
+    getActiveGuiDocument()->commitCommand();
+}
+
+bool StdCmdToggleFreeze::isActive()
+{
+    return (Gui::Selection().size() != 0);
+}
+
+
 
 
 //===========================================================================
@@ -221,6 +286,7 @@ void CreateFeatCommands()
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new StdCmdFeatRecompute());
+    rcCmdMgr.addCommand(new StdCmdToggleFreeze());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
 }

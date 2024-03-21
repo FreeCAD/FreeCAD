@@ -217,7 +217,7 @@ class TestAddon(unittest.TestCase):
         addonA.requires.add("AddonB")
         addonB.requires.add("AddonC")
         addonB.requires.add("AddonD")
-        addonD.requires.add("Path")
+        addonD.requires.add("CAM")
 
         all_addons = {
             addonA.name: addonA,
@@ -244,8 +244,8 @@ class TestAddon(unittest.TestCase):
             "AddonD not in required dependencies, and it should be.",
         )
         self.assertTrue(
-            "Path" in deps.internal_workbenches,
-            "Path not in workbench dependencies, and it should be.",
+            "CAM" in deps.internal_workbenches,
+            "CAM not in workbench dependencies, and it should be.",
         )
 
     def test_internal_workbench_list(self):

@@ -38,7 +38,7 @@ class TestHelix(unittest.TestCase):
     def testHelicalTubeCase(self):
         body = self.Doc.addObject('PartDesign::Body','Body')
         sketch = body.newObject('Sketcher::SketchObject','Sketch')
-        sketch.Support = (self.Doc.getObject('XY_Plane'),[''])
+        sketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
         sketch.MapMode = 'FlatFace'
 
         geoList = []
@@ -107,7 +107,7 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
 
         # xz_plane = body.Origin.OriginFeatures[4]
-        # coneSketch.Support = xz_plane
+        # coneSketch.AttachmentSupport = xz_plane
         # coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)
@@ -123,7 +123,11 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
-        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648,places=5)
+        # Computed exact value
+        # with r = radius, l = length of square, t = turns
+        # pi * r**2 * l * t
+        expected = pi * 25 * 5 * 3
+        self.assertAlmostEqual(helix.Shape.Volume, expected, places=2)
 
 
     def testCone(self):
@@ -155,7 +159,7 @@ class TestHelix(unittest.TestCase):
         coneSketch.addConstraint(conList)
 
         xz_plane = body.Origin.OriginFeatures[4]
-        coneSketch.Support = xz_plane
+        coneSketch.AttachmentSupport = xz_plane
         coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)

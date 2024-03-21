@@ -2271,7 +2271,6 @@ void View3DInventorViewer::renderFramebuffer()
     glEnd();
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2305,7 +2304,6 @@ void View3DInventorViewer::renderGLImage()
     glDrawPixels(glImage.width(), glImage.height(), GL_BGRA,GL_UNSIGNED_BYTE, glImage.bits());
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2403,7 +2401,6 @@ void View3DInventorViewer::renderScene()
     }
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -3409,11 +3406,15 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
     if (duration < 0) {
         duration = App::GetApplication()
                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                       ->GetInt("AnimationDuration", 250);
+                       ->GetInt("AnimationDuration", 500);
     }
 
+    QEasingCurve::Type easingCurve = static_cast<QEasingCurve::Type>(App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                         ->GetInt("NavigationAnimationEasingCurve", QEasingCurve::Type::InOutCubic));
+
     auto animation = std::make_shared<FixedTimeAnimation>(
-        navigation, orientation, rotationCenter, translation, duration);
+        navigation, orientation, rotationCenter, translation, duration, easingCurve);
 
     navigation->startAnimating(animation, wait);
 }

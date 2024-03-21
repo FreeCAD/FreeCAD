@@ -85,8 +85,9 @@ jobs:
           mkdir ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
       - name: Restore compiler cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-Windows-Conda-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |

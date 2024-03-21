@@ -181,7 +181,7 @@ void TaskProjGroup::viewToggled(bool toggle)
     // Obtain name of checkbox
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
-    const char *viewNameCStr = viewChkIndexToCStr(index).c_str();
+    const char *viewNameCStr = viewChkIndexToCStr(index);
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.activeDocument().%s.addProjection('%s')",
@@ -198,6 +198,7 @@ void TaskProjGroup::viewToggled(bool toggle)
             double scale = multiView->getScale();
             setFractionalScale(scale);
         }
+        multiView->recomputeFeature();
     }
     wc.restoreCursor();
 }
@@ -247,6 +248,8 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
     ui->chkView7->setToolTip(getToolTipForBox(7));
     ui->chkView8->setToolTip(getToolTipForBox(8));
     ui->chkView9->setToolTip(getToolTipForBox(9));
+
+    multiView->recomputeFeature();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
@@ -428,7 +431,7 @@ void TaskProjGroup::changeEvent(QEvent *event)
     }
 }
 
-std::string TaskProjGroup::viewChkIndexToCStr(int index)
+const char * TaskProjGroup::viewChkIndexToCStr(int index)
 {
     //   Third Angle:  FTL  T  FTRight
     //                  L   F   Right   Rear
@@ -439,20 +442,20 @@ std::string TaskProjGroup::viewChkIndexToCStr(int index)
     //                 FTRight  T  FTL
     assert (multiView);
 
-    std::string boxName;
+    bool thirdAngle = multiView->usedProjectionType().isValue("Third Angle");
     switch(index) {
-        case 0: {boxName =  Base::Tools::toStdString(getToolTipForBox(0)); break;}
-        case 1: {boxName =  Base::Tools::toStdString(getToolTipForBox(1)); break;}
-        case 2: {boxName =  Base::Tools::toStdString(getToolTipForBox(2)); break;}
-        case 4: {boxName =  Base::Tools::toStdString(getToolTipForBox(3)); break;}
-        case 5: {boxName =  Base::Tools::toStdString(getToolTipForBox(4)); break;}
-        case 6: {boxName =  Base::Tools::toStdString(getToolTipForBox(5)); break;}
-        case 7: {boxName =  Base::Tools::toStdString(getToolTipForBox(6)); break;}
-        case 8: {boxName =  Base::Tools::toStdString(getToolTipForBox(7)); break;}
-        case 9: {boxName =  Base::Tools::toStdString(getToolTipForBox(8)); break;}
-        default: boxName =  "";
+        case 0: return (thirdAngle ? "FrontTopLeft" : "FrontBottomRight");
+        case 1: return (thirdAngle ? "Top" : "Bottom");
+        case 2: return (thirdAngle ? "FrontTopRight" : "FrontBottomLeft");
+        case 3: return (thirdAngle ? "Left" : "Right");
+        case 4: return (thirdAngle ? "Front" : "Front");
+        case 5: return (thirdAngle ? "Right" : "Left");
+        case 6: return (thirdAngle ? "Rear" : "Rear");
+        case 7: return (thirdAngle ? "FrontBottomLeft" : "FrontTopRight");
+        case 8: return (thirdAngle ? "Bottom" : "Top");
+        case 9: return (thirdAngle ? "FrontBottomRight" : "FrontTopLeft");
+        default: return nullptr;
     }
-    return boxName;
 }
 
 QString TaskProjGroup::getToolTipForBox(int boxNumber)
@@ -477,6 +480,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
     if (!multiView)
         return;
+
     // There must be a better way to construct this list...
     QCheckBox * viewCheckboxes[] = { ui->chkView0,
                                      ui->chkView1,
@@ -496,7 +500,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
             connect(box, &QCheckBox::toggled, this, &TaskProjGroup::viewToggled);
         }
 
-        const char *viewStr = viewChkIndexToCStr(i).c_str();
+        const char *viewStr = viewChkIndexToCStr(i);
         if (viewStr && multiView->hasProjection(viewStr)) {
             box->setCheckState(Qt::Checked);
             if (!multiView->canDelete(viewStr)) {

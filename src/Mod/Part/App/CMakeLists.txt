@@ -500,6 +500,8 @@ SET(Part_SRCS
     Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BRepMesh.cpp
+    BRepMesh.h
     BRepOffsetAPI_MakeOffsetFix.cpp
     BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp

@@ -48,6 +48,7 @@ ParamGroup = (
         'ItemBackground',
         'ItemBackgroundPadding',
         'ResizableColumn',
+        'VisibilityIcon',
         'HideColumn',
         'HideScrollBar',
         'HideHeaderView',

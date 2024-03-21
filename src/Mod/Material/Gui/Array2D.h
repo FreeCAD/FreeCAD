@@ -68,7 +68,6 @@ private:
 
     QAction _deleteAction;
 
-    void setHeaders(QStandardItemModel* model);
     void setColumnWidths(QTableView* table);
     void setColumnDelegates(QTableView* table);
     void setupArray();

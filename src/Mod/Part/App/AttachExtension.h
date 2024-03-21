@@ -85,7 +85,7 @@ public:
 
 
     App::PropertyString         AttacherType;
-    App::PropertyLinkSubList    Support;
+    App::PropertyLinkSubList    AttachmentSupport;
     App::PropertyEnumeration    MapMode; //see AttachEngine::eMapMode
     App::PropertyBool           MapReversed; //inverts Z and X internal axes
     App::PropertyPlacement      AttachmentOffset;
@@ -97,7 +97,7 @@ public:
       */
     App::PropertyFloat MapPathParameter;
 
-    /** calculate and update the Placement property based on the Support, and
+    /** calculate and update the Placement property based on the AttachmentSupport, and
       * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
       * false if not, throws if attachment failed.
       */
@@ -108,7 +108,7 @@ public:
     bool isAttacherActive() const;
 
     virtual bool isTouched_Mapping()
-    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
+    {return true; /*AttachmentSupport.isTouched isn't true when linked objects are changed... why?..*/}
 
     short int extensionMustExecute() override;
     App::DocumentObjectExecReturn *extensionExecute() override;
@@ -117,7 +117,7 @@ public:
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
-    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
+    virtual bool extensionHandleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 
     App::PropertyPlacement& getPlacement() const;
 

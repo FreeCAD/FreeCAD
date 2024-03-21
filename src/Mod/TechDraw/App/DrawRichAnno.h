@@ -57,6 +57,7 @@ public:
     DrawView* getBaseView() const;
 
     DrawPage* findParentPage() const override;
+    App::PropertyLink *getOwnerProperty() override { return &AnnoParent; }
 
 protected:
     void onChanged(const App::Property* prop) override;

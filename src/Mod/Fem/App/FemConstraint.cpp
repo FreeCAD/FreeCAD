@@ -55,16 +55,19 @@
 #endif
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/OriginFeature.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FemConstraint.h"
 #include "FemTools.h"
 
 
 using namespace Fem;
+namespace sp = std::placeholders;
 
 #if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HSurface = Adaptor3d_Surface;
@@ -140,6 +143,18 @@ int Constraint::calcDrawScaleFactor() const
     return 1;
 }
 
+void setSubShapeLocation(const Part::Feature* feat, TopoDS_Shape& sh)
+{
+    // subshape placement is not necessarily the same as the
+    // feature placement.
+    Base::Matrix4D matrix = Part::TopoShape::convert(sh.Location().Transformation());
+    Base::Placement shPla {matrix};
+    Base::Placement featlPlaInv = feat->Placement.getValue().inverse();
+    Base::Placement shGlobalPla = feat->globalPlacement() * featlPlaInv * shPla;
+
+    sh.Location(Part::Tools::fromPlacement(shGlobalPla));
+}
+
 constexpr int CONSTRAINTSTEPLIMIT = 50;
 
 void Constraint::onChanged(const App::Property* prop)
@@ -163,6 +178,8 @@ void Constraint::onChanged(const App::Property* prop)
                 sh = toposhape.getSubShape(SubElements[i].c_str(), !execute);
 
                 if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
+                    setSubShapeLocation(feat, sh);
+
                     // Get face normal in center point
                     TopoDS_Face face = TopoDS::Face(sh);
                     BRepGProp_Face props(face);
@@ -191,6 +208,37 @@ void Constraint::onChanged(const App::Property* prop)
     }
 
     App::DocumentObject::onChanged(prop);
+}
+
+void Constraint::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (obj.isDerivedFrom<App::GeoFeature>()
+        && (prop.isDerivedFrom<App::PropertyPlacement>() || obj.isRemoving())) {
+        auto values = References.getValues();
+        for (const auto ref : values) {
+            auto v = ref->getInListEx(true);
+            if ((&obj == ref) || (std::find(v.begin(), v.end(), &obj) != v.end())) {
+                this->touch();
+                return;
+            }
+        }
+    }
+}
+
+void Constraint::onSettingDocument()
+{
+    App::Document* doc = getDocument();
+    if (doc) {
+        connDocChangedObject = doc->signalChangedObject.connect(
+            std::bind(&Constraint::slotChangedObject, this, sp::_1, sp::_2));
+    }
+
+    App::DocumentObject::onSettingDocument();
+}
+
+void Constraint::unsetupObject()
+{
+    connDocChangedObject.disconnect();
 }
 
 void Constraint::onDocumentRestored()
@@ -222,6 +270,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
         if (sh.IsNull()) {
             return false;
         }
+
+        setSubShapeLocation(feat, sh);
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);

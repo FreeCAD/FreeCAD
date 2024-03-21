@@ -60,7 +60,7 @@ class GuiExport FixedTimeAnimation : public NavigationAnimation
 public:
     explicit FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
                                 const SbVec3f& rotationCenter, const SbVec3f& translation,
-                                int duration);
+                                int duration, const QEasingCurve::Type easingCurve);
 
 private:
     float angularVelocity; // [rad/ms]

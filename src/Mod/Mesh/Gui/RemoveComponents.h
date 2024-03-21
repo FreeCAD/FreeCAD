@@ -73,6 +73,8 @@ private:
 private:
     Ui_RemoveComponents* ui;
     MeshSelection meshSel;
+
+    Q_DISABLE_COPY_MOVE(RemoveComponents)
 };
 
 /**
@@ -93,6 +95,8 @@ private Q_SLOTS:
 
 private:
     RemoveComponents* widget;
+
+    Q_DISABLE_COPY_MOVE(RemoveComponentsDialog)
 };
 
 /**

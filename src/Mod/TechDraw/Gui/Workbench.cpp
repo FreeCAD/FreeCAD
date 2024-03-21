@@ -43,6 +43,7 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
     qApp->translate("Workbench", "Add Vertices");
+    qApp->translate("Workbench", "Page");
     qApp->translate("Workbench", "TechDraw");
     // Translations for View > Toolbars
     qApp->translate("Workbench", "TechDraw Annotation");
@@ -57,8 +58,11 @@ using namespace TechDrawGui;
     qApp->translate("Workbench", "TechDraw Stacking");
     qApp->translate("Workbench", "TechDraw Tool Attributes");
     qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "Views From Other Workbenches");
+    qApp->translate("Workbench", "Clipped Views");
+    qApp->translate("Workbench", "Hatching");
+    qApp->translate("Workbench", "Symbols");
     qApp->translate("Workbench", "Views");
-    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
 #endif
 
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
@@ -88,6 +92,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_3PtAngleDimension";
     *dimensions << "TechDraw_HorizontalExtentDimension";
     *dimensions << "TechDraw_VerticalExtentDimension";
+    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
     *dimensions << "TechDraw_LinkDimension";
     *dimensions << "TechDraw_LandmarkDimension";
     *dimensions << "TechDraw_DimensionRepair";
@@ -150,6 +155,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionInsertDiameter";
     *tooldimensions << "TechDraw_ExtensionInsertSquare";
+    *tooldimensions << "TechDraw_ExtensionInsertRepetition";
     *tooldimensions << "TechDraw_ExtensionRemovePrefixChar";
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionIncreaseDecimal";
@@ -326,7 +332,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_AngleDimension";
     *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
-    *dims << "TechDraw_LinkDimension";
+    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
+    // *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";
     *dims << "TechDraw_LandmarkDimension";
@@ -439,6 +446,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_AngleDimension";
     *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
+    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";

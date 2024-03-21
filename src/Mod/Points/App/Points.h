@@ -58,9 +58,11 @@ public:
         resize(size);
     }
     PointKernel(const PointKernel&);
+    PointKernel(PointKernel&&) noexcept;
     ~PointKernel() override = default;
 
-    void operator=(const PointKernel&);
+    PointKernel& operator=(const PointKernel&);
+    PointKernel& operator=(PointKernel&&) noexcept;
 
     /** @name Subelement management */
     //@{
@@ -180,13 +182,15 @@ public:
 
         const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
+        const_point_iterator(const_point_iterator&& pi);
         ~const_point_iterator();
 
-        const_point_iterator& operator=(const const_point_iterator& fi);
+        const_point_iterator& operator=(const const_point_iterator& pi);
+        const_point_iterator& operator=(const_point_iterator&& pi);
         const value_type& operator*();
         const value_type* operator->();
-        bool operator==(const const_point_iterator& fi) const;
-        bool operator!=(const const_point_iterator& fi) const;
+        bool operator==(const const_point_iterator& pi) const;
+        bool operator!=(const const_point_iterator& pi) const;
         const_point_iterator& operator++();
         const_point_iterator operator++(int);
         const_point_iterator& operator--();

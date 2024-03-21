@@ -90,6 +90,8 @@ private:
     Mesh::Feature* myMesh;
     MeshSelection meshSel;
     std::vector<QDoubleSpinBox*> spinBoxes;
+
+    Q_DISABLE_COPY_MOVE(ParametersDialog)
 };
 
 class MeshGuiExport SegmentationBestFit: public QWidget
@@ -119,6 +121,8 @@ private:
     Ui_SegmentationBestFit* ui;
     Mesh::Feature* myMesh;
     MeshSelection meshSel;
+
+    Q_DISABLE_COPY_MOVE(SegmentationBestFit)
 };
 
 /**

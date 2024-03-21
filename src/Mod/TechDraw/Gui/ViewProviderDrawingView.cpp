@@ -220,12 +220,45 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
+    TechDraw::DrawView *obj = getViewObject();
+    App::PropertyLink *ownerProp = obj->getOwnerProperty();
+
     //only move the view on X, Y change
-    if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ){
+    if (prop == &obj->X
+        || prop == &obj->Y) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->QGIView::updateView(true);
+
+            // Update also the owner/parent view, if there is any
+            if (ownerProp) {
+                auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+                if (owner) {
+                    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                    if (page) {
+                        QGIView *ownerView = page->getQGIVByName(owner->getNameInDocument());
+                        if (ownerView) {
+                            ownerView->updateView();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (ownerProp && prop == ownerProp) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            QGIView *ownerView = nullptr;
+            auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+            if (owner) {
+                auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+                if (page) {
+                    ownerView = page->getQGIVByName(owner->getNameInDocument());
+                }
+            }
+
+            qgiv->switchParentItem(ownerView);
+            qgiv->updateView();
         }
     }
 
@@ -441,24 +474,4 @@ const char*  ViewProviderDrawingView::whoAmI() const
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
-}
-
-void ViewProviderDrawingView::switchOwnerProperty(App::PropertyLink &prop)
-{
-    QGIView *qv = getQView();
-    if (!qv) {
-        return;
-    }
-
-    QGIView *targetParent = nullptr;
-    auto owner = dynamic_cast<TechDraw::DrawView *>(prop.getValue());
-    if (owner) {
-        auto vp = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(owner));
-        if (vp) {
-            targetParent = vp->getQView();
-        }
-    }
-
-    qv->switchParentItem(targetParent);
-    qv->updateView();
 }

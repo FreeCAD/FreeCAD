@@ -451,9 +451,26 @@ bool FileInfo::isDir() const
 
 unsigned int FileInfo::size() const
 {
-    // not implemented
-    assert(0);
-    return 0;
+    unsigned int bytes {};
+    if (exists()) {
+
+#if defined(FC_OS_WIN32)
+        std::wstring wstr = toStdWString();
+        struct _stat st;
+        if (_wstat(wstr.c_str(), &st) == 0) {
+            bytes = st.st_size;
+        }
+
+#elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+        struct stat st
+        {
+        };
+        if (stat(FileName.c_str(), &st) == 0) {
+            bytes = st.st_size;
+        }
+#endif
+    }
+    return bytes;
 }
 
 TimeInfo FileInfo::lastModified() const

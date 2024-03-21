@@ -319,6 +319,12 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute() {
             syncCopyOnChange();
         }
 
+        // the previous linked object could be deleted by syncCopyOnChange - #12281
+        linked = getTrueLinkedObject(true);
+        if(!linked) {
+            return new App::DocumentObjectExecReturn("Error in processing variable link");
+        }
+
         PropertyPythonObject *proxy = nullptr;
         if(getLinkExecuteProperty()
                 && !boost::iequals(getLinkExecuteValue(), "none")

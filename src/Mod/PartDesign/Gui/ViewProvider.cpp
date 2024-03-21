@@ -51,6 +51,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProvid
 
 ViewProvider::ViewProvider()
 {
+    ViewProviderSuppressibleExtension::initExtension(this);
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 

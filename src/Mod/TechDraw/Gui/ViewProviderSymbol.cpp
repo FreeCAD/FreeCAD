@@ -51,9 +51,6 @@ void ViewProviderSymbol::updateData(const App::Property* prop)
         || prop == &obj->EditableTexts) {
         onGuiRepaint(obj);
     }
-    else if (prop == &obj->Owner) {
-        switchOwnerProperty(obj->Owner);
-    }
 
     ViewProviderDrawingView::updateData(prop);
 }

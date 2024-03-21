@@ -51,6 +51,11 @@ void DlgTemplateField::setFieldName(std::string name)
     ui->lblName->setText(qs);
 }
 
+void DlgTemplateField::setFieldLength(int length)
+{
+    ui->leInput->setMaxLength(length);
+}
+
 void DlgTemplateField::setFieldContent(std::string content)
 {
     QString qs = QString::fromUtf8(content.data(), content.size());

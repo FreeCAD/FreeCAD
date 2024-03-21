@@ -844,7 +844,7 @@ int SketchSelection::setUp()
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[1].getObject() != SketchObj->Support.getValue()) {
+            if (selection[1].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
@@ -856,7 +856,7 @@ int SketchSelection::setUp()
         else if (selection[1].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[0].getObject() != SketchObj->Support.getValue()) {
+            if (selection[0].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
@@ -1893,8 +1893,6 @@ protected:
     void makeCts_1Point1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
@@ -1986,8 +1984,6 @@ protected:
     void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
@@ -2739,7 +2735,7 @@ public:
         addCommand("Sketcher_ConstrainVertical");
     }
 
-    const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+    const char* className() const override { return "CmdSketcherCompHorizontalVertical"; }
 };
 
 // ============================================================================
@@ -6431,8 +6427,8 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain tangent");
-    sToolTipText = QT_TR_NOOP("Create a tangent constraint between two entities");
+    sMenuText = QT_TR_NOOP("Constrain tangent or colinear");
+    sToolTipText = QT_TR_NOOP("Create a tangent or colinear constraint between two entities");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";

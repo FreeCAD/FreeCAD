@@ -80,6 +80,7 @@
 #include "QGIWeldSymbol.h"
 #include "QGSPage.h"
 #include "Rez.h"
+#include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
 
@@ -94,6 +95,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     : QGraphicsScene(parent), pageTemplate(nullptr), m_vpPage(nullptr)
@@ -128,8 +130,6 @@ void QGSPage::addChildrenToPage()
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
     setBalloonGroups();
-    setLeaderGroups();
-    setRichAnnoGroups();
 
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
@@ -251,23 +251,21 @@ int QGSPage::addQView(QGIView* view)
     if (!existing) {
         addItem(view);
 
+        TechDraw::DrawView *viewObj = view->getViewObject();
+        // Preserve the desired position, as addToGroup() adjusts the child view's position
+        QPointF viewPos(Rez::guiX(viewObj->X.getValue()), -Rez::guiX(viewObj->Y.getValue()));
         // Find if it belongs to a parent
-        QGIView* parent = nullptr;
-        parent = findParent(view);
-
-        QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
-                        Rez::guiX(view->getViewObject()->Y.getValue() * -1));
-
+        QGIView *parent = findParent(view);
         if (parent) {
-            // move child view to center of parent
-            QPointF posRef(0., 0.);
-            QPointF mapPos = view->mapToItem(parent, posRef);
-            view->moveBy(-mapPos.x(), -mapPos.y());
-
             parent->addToGroup(view);
         }
-
         view->setPos(viewPos);
+
+        auto viewProvider = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(view->getViewObject()));
+        if (viewProvider) {
+            view->setZValue(viewProvider->StackOrder.getValue());
+        }
+
         view->updateView(true);
     }
     return 0;
@@ -389,7 +387,7 @@ bool QGSPage::attachView(App::DocumentObject* obj)
 
 QGIView* QGSPage::addViewPart(TechDraw::DrawViewPart* partFeat)
 {
-    //    Base::Console().Message("QGSP::addViewPart(%s)\n", part->getNameInDocument());
+    // Base::Console().Message("QGSP::addViewPart(%s)\n", partFeat->Label.getValue());
     auto viewPart(new QGIViewPart);
 
     viewPart->setViewPartFeature(partFeat);
@@ -410,6 +408,7 @@ QGIView* QGSPage::addViewSection(DrawViewSection* sectionFeat)
 
 QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 {
+    // Base::Console().Message("QGSP::addprojectionGroup(%s)\n", projGroupFeat->Label.getValue());
     auto qview(new QGIProjGroup);
 
     qview->setViewFeature(projGroupFeat);
@@ -447,19 +446,11 @@ QGIView* QGSPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation* annoFeat)
 
 QGIView* QGSPage::addDrawViewSymbol(TechDraw::DrawViewSymbol* symbolFeat)
 {
-    auto qview(new QGIViewSymbol);
-    qview->setViewFeature(symbolFeat);
+    QGIViewSymbol *symbolView = new QGIViewSymbol;
+    symbolView->setViewFeature(symbolFeat);
 
-    auto owner = dynamic_cast<TechDraw::DrawView *>(symbolFeat->Owner.getValue());
-    if (owner) {
-        auto parent = dynamic_cast<QGIView *>(findQViewForDocObj(owner));
-        if (parent) {
-            qview->switchParentItem(parent);
-        }
-    }
-
-    addQView(qview);
-    return qview;
+    addQView(symbolView);
+    return symbolView;
 }
 
 QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
@@ -604,78 +595,29 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 
 QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 {
-    //    Base::Console().Message("QGSP::addViewLeader(%s)\n", leader->getNameInDocument());
-    QGILeaderLine* leaderGroup = new QGILeaderLine();
-    addItem(leaderGroup);
+    QGILeaderLine *leaderView = new QGILeaderLine;
+    leaderView->setViewFeature(leaderFeat);
 
-    leaderGroup->setLeaderFeature(leaderFeat);
-
-    QGIView* parent = nullptr;
-    parent = findParent(leaderGroup);
-
-    if (parent) {
-        addLeaderToParent(leaderGroup, parent);
-    }
-
-    leaderGroup->updateView(true);
-
-    return leaderGroup;
-}
-
-void QGSPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
-{
-    //    Base::Console().Message("QGSP::addLeaderToParent()\n");
-    parent->addToGroup(lead);
-    lead->setZValue(ZVALUE::DIMENSION);
+    addQView(leaderView);
+    return leaderView;
 }
 
 QGIView* QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
 {
-    QGIRichAnno* annoGroup = new QGIRichAnno();
-    addItem(annoGroup);
-    annoGroup->setViewFeature(richFeat);
+    QGIRichAnno *richView = new QGIRichAnno;
+    richView->setViewFeature(richFeat);
 
-    QGIView* parent = findParent(annoGroup);
-    if (parent)
-        addAnnoToParent(annoGroup, parent);
-
-    annoGroup->updateView(true);
-
-    return annoGroup;
+    addQView(richView);
+    return richView;
 }
-
-void QGSPage::addAnnoToParent(QGIRichAnno* anno, QGIView* parent)
-{
-    //    Base::Console().Message("QGSP::addAnnoToParent()\n");
-    parent->addToGroup(anno);
-    anno->setZValue(ZVALUE::DIMENSION);
-}
-
 
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
-    //    Base::Console().Message("QGSP::addWeldSymbol()\n");
-    QGIWeldSymbol* weldGroup = nullptr;
-    TechDraw::DrawView* parentDV = nullptr;
+    QGIWeldSymbol *weldView = new QGIWeldSymbol;
+    weldView->setViewFeature(weldFeat);
 
-    App::DocumentObject* parentObj = weldFeat->Leader.getValue();
-    if (parentObj) {
-        parentDV = dynamic_cast<TechDraw::DrawView*>(parentObj);
-    }
-    else {
-        //        Base::Console().Message("QGSP::addWeldSymbol - no parent doc obj\n");
-    }
-    if (parentDV) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
-        if (leadParent) {
-            weldGroup = new QGIWeldSymbol(leadParent);
-            weldGroup->setFeature(weldFeat);    //for QGIWS
-            weldGroup->setViewFeature(weldFeat);//for QGIV
-            weldGroup->updateView(true);
-        }
-    }
-    return weldGroup;
+    addQView(weldView);
+    return weldView;
 }
 
 void QGSPage::setDimensionGroups(void)
@@ -710,43 +652,6 @@ void QGSPage::setBalloonGroups(void)
     }
 }
 
-void QGSPage::setLeaderGroups(void)
-{
-    //    Base::Console().Message("QGSP::setLeaderGroups()\n");
-    const std::vector<QGIView*>& allItems = getViews();
-    int leadItemType = QGraphicsItem::UserType + 232;
-
-    //make sure that qgileader belongs to correct parent.
-    //quite possibly redundant
-    for (auto& item : allItems) {
-        if (item->type() == leadItemType && !item->group()) {
-            QGIView* parent = findParent(item);
-            if (parent) {
-                QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>(item);
-                addLeaderToParent(lead, parent);
-            }
-        }
-    }
-}
-
-void QGSPage::setRichAnnoGroups(void)
-{
-    //    Base::Console().Message("QGSP::setRichAnnoGroups()\n");
-    const std::vector<QGIView*>& allItems = getViews();
-    int annoItemType = QGraphicsItem::UserType + 233;
-
-    //make sure that qgirichanno belongs to correct parent.
-    for (auto& item : allItems) {
-        if (item->type() == annoItemType && !item->group()) {
-            QGIView* parent = findParent(item);
-            if (parent) {
-                QGIRichAnno* anno = dynamic_cast<QGIRichAnno*>(item);
-                addAnnoToParent(anno, parent);
-            }
-        }
-    }
-}
-
 //! find the graphic for a DocumentObject
 QGIView* QGSPage::findQViewForDocObj(App::DocumentObject* obj) const
 {
@@ -762,7 +667,7 @@ QGIView* QGSPage::findQViewForDocObj(App::DocumentObject* obj) const
 }
 
 //! find the graphic for DocumentObject with name
-QGIView* QGSPage::getQGIVByName(std::string name)
+QGIView* QGSPage::getQGIVByName(std::string name) const
 {
     QList<QGraphicsItem*> qgItems = items();
     QList<QGraphicsItem*>::iterator it = qgItems.begin();
@@ -784,6 +689,14 @@ QGIView* QGSPage::findParent(QGIView* view) const
     //    Base::Console().Message("QGSP::findParent(%s)\n", view->getViewName());
     const std::vector<QGIView*> qviews = getViews();
     TechDraw::DrawView* myFeat = view->getViewObject();
+
+    TechDraw::DrawView *ownerFeat = myFeat->claimParent();
+    if (ownerFeat) {
+        QGIView *ownerView = getQGIVByName(ownerFeat->getNameInDocument());
+        if (ownerView) {
+            return ownerView;
+        }
+    }
 
     //If type is dimension we check references first
     TechDraw::DrawViewDimension* dim = nullptr;
@@ -821,56 +734,6 @@ QGIView* QGSPage::findParent(QGIView* view) const
         }
     }
 
-    //If type is LeaderLine we check LeaderParent
-    TechDraw::DrawLeaderLine* lead = nullptr;
-    lead = dynamic_cast<TechDraw::DrawLeaderLine*>(myFeat);
-
-    if (lead) {
-        App::DocumentObject* obj = lead->LeaderParent.getValue();
-        if (obj) {
-            std::string parentName = obj->getNameInDocument();
-            for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end();
-                 ++it) {
-                if (strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
-                    return *it;
-                }
-            }
-        }
-    }
-
-    //if type is a RichTextAnno we check AnnoParent
-    TechDraw::DrawRichAnno* anno = dynamic_cast<TechDraw::DrawRichAnno*>(myFeat);
-    if (anno) {
-        App::DocumentObject* obj = anno->AnnoParent.getValue();
-        if (obj) {
-            std::string parentName = obj->getNameInDocument();
-            for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end();
-                 ++it) {
-                if (strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
-                    return *it;
-                }
-            }
-        }
-    }
-
-    // Check if part of view collection
-    for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        QGIViewCollection* grp = nullptr;
-        grp = dynamic_cast<QGIViewCollection*>(*it);
-        if (grp) {
-            TechDraw::DrawViewCollection* collection = nullptr;
-            collection = dynamic_cast<TechDraw::DrawViewCollection*>(grp->getViewObject());
-            if (collection) {
-                std::vector<App::DocumentObject*> objs = collection->Views.getValues();
-                for (std::vector<App::DocumentObject*>::iterator it = objs.begin();
-                     it != objs.end(); ++it) {
-                    if (strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
-
-                        return grp;
-                }
-            }
-        }
-    }
     // Not found a parent
     return nullptr;
 }
@@ -1014,8 +877,6 @@ void QGSPage::fixOrphans(bool force)
             }
         }
     }
-
-    setRichAnnoGroups();//hack to fix QGIRA parentage;
 }
 
 bool QGSPage::orphanExists(const char* viewName, const std::vector<App::DocumentObject*>& list)

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 edi <edi271@a1.net>               *
+# *   Copyright (c) 2023 edi <edi271@a1.net>                                *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -71,6 +71,7 @@ class CommandAxoLengthDimension:
             vertexes.append(edges[0].Vertexes[1])
             
         view = Utils.getSelView()
+        scale = view.getScale()
 
         StartPt, EndPt = edges[1].Vertexes[0].Point, edges[1].Vertexes[1].Point
         extLineVec = EndPt.sub(StartPt)
@@ -85,7 +86,7 @@ class CommandAxoLengthDimension:
         if dimLineVec.y < 0.0:
             lineAngle = 180-lineAngle
         if abs(extAngle-lineAngle)>0.1:
-            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point,vertexes[1].Point)
+            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
@@ -97,11 +98,11 @@ class CommandAxoLengthDimension:
             arrowTips = distanceDim.getArrowPositions()
             value2D = (arrowTips[1].sub(arrowTips[0])).Length
             value3D = 1.0 
-            if self._checkParallel(px,dimLineVec):
+            if px.isParallel(dimLineVec,0.1):
                 value3D = value2D/px.Length
-            elif self._checkParallel(py,dimLineVec):
+            elif py.isParallel(dimLineVec,0.1):
                 value3D = value2D/py.Length
-            elif self._checkParallel(pz,dimLineVec):
+            elif pz.isParallel(dimLineVec,0.1):
                 value3D = value2D/pz.Length
             if value3D != 1.0:
                 fomatted3DValue = self._formatValueToSpec(value3D,distanceDim.FormatSpec)
@@ -119,12 +120,6 @@ class CommandAxoLengthDimension:
             return Utils.havePage() and Utils.haveView()
         else:
             return False
-
-    def _checkParallel(self,v1,v2):
-        '''Check if two vectors are parallel'''
-        dot = abs(v1.dot(v2))
-        mag = v1.Length*v2.Length
-        return (abs(dot-mag)<0.1)
 
     def _formatValueToSpec(self, value, formatSpec):
         '''Calculate value using "%.nf" or "%.nw" formatSpec'''

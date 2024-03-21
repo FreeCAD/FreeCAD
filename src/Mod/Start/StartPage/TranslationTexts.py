@@ -55,6 +55,8 @@ def get(handle):
     T_TEMPLATE_PARAMETRICPART_DESC = translate(
         "StartPage", "Create a part with the Part Design workbench"
     )
+    T_TEMPLATE_ASSEMBLY_NAME = translate("StartPage", "Assembly")
+    T_TEMPLATE_ASSEMBLY_DESC = translate("StartPage", "Create an assembly project")
     # T_TEMPLATE_CSGPART_NAME = translate("StartPage", "CSG Part")
     # T_TEMPLATE_CSGPART_DESC = translate("StartPage", "Create a part with the Part workbench")
     T_TEMPLATE_2DDRAFT_NAME = translate("StartPage", "2D Draft")

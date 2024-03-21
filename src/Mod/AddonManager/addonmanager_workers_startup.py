@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 """ Worker thread classes for Addon Manager startup """
-
+import datetime
 import hashlib
 import json
 import os
@@ -945,3 +945,53 @@ class GetBasicAddonStatsWorker(QtCore.QThread):
             if addon.url in json_result:
                 addon.stats = AddonStats.from_json(json_result[addon.url])
                 self.update_addon_stats.emit(addon)
+
+
+class GetAddonScoreWorker(QtCore.QThread):
+    """Fetch data from an addon score file."""
+
+    update_addon_score = QtCore.Signal(Addon)
+
+    def __init__(self, url: str, addons: List[Addon], parent: QtCore.QObject = None):
+        super().__init__(parent)
+        self.url = url
+        self.addons = addons
+
+    def run(self):
+        """Fetch the remote data and load it into the addons"""
+
+        if self.url != "TEST":
+            fetch_result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.url, 5000)
+            if fetch_result is None:
+                FreeCAD.Console.PrintError(
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to get Addon score from '{}' -- sorting by score will fail\n",
+                    ).format(self.url)
+                )
+                return
+            text_result = fetch_result.data().decode("utf8")
+            json_result = json.loads(text_result)
+        else:
+            FreeCAD.Console.PrintWarning("Running score generation in TEST mode...\n")
+            json_result = {}
+            for addon in self.addons:
+                if addon.macro:
+                    json_result[addon.name] = len(addon.macro.comment) if addon.macro.comment else 0
+                else:
+                    json_result[addon.url] = len(addon.description) if addon.description else 0
+
+        for addon in self.addons:
+            score = None
+            if addon.url in json_result:
+                score = json_result[addon.url]
+            elif addon.name in json_result:
+                score = json_result[addon.name]
+            if score is not None:
+                try:
+                    addon.score = int(score)
+                    self.update_addon_score.emit(addon)
+                except (ValueError, OverflowError):
+                    FreeCAD.Console.PrintLog(
+                        f"Failed to convert score value '{score}' to an integer for addon {addon.name}"
+                    )

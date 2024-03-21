@@ -73,8 +73,6 @@ public:
         return m_selectedRole;
     }
 
-    void redraw();
-
     /** @name Mouse events*/
     //@{
     int handleEvent(const SoEvent* const ev, const SbViewportRegion& vp);
