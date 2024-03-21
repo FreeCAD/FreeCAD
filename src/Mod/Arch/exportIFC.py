@@ -265,7 +265,12 @@ def export(exportList, filename, colors=None, preferences=None):
         ifcfile = ifcopenshell.open(templatefile)
         ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
 
-    history = ifcfile.by_type("IfcOwnerHistory")[0]
+    history = ifcfile.by_type("IfcOwnerHistory")
+    if history:
+        history = history[0]
+    else:
+        # IFC4 allows to not write any history
+        history = None
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
 
