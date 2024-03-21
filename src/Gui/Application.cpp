@@ -140,201 +140,201 @@ Application* Application::Instance = nullptr;
 
 namespace Gui {
 
-    class ViewProviderMap {
-        std::unordered_map<const App::DocumentObject *, ViewProvider *> map;
+class ViewProviderMap {
+    std::unordered_map<const App::DocumentObject *, ViewProvider *> map;
 
-    public:
-        void newObject(const ViewProvider& vp)
-        {
-            auto vpd =
-                    Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
-            if (vpd && vpd->getObject())
-                map[vpd->getObject()] = vpd;
-        }
-        void deleteObject(const ViewProvider& vp)
-        {
-            auto vpd =
-                    Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
-            if (vpd && vpd->getObject())
-                map.erase(vpd->getObject());
-        }
-        void deleteDocument(const App::Document& doc) {
-            for (auto obj : doc.getObjects())
-                map.erase(obj);
-        }
-        Gui::ViewProvider* getViewProvider(const App::DocumentObject* obj) const
-        {
-            auto it = map.find(obj);
-            if (it == map.end())
-                return nullptr;
-            return it->second;
-        }
-    };
+public:
+    void newObject(const ViewProvider& vp)
+    {
+        auto vpd =
+            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+        if (vpd && vpd->getObject())
+            map[vpd->getObject()] = vpd;
+    }
+    void deleteObject(const ViewProvider& vp)
+    {
+        auto vpd =
+            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+        if (vpd && vpd->getObject())
+            map.erase(vpd->getObject());
+    }
+    void deleteDocument(const App::Document& doc) {
+        for (auto obj : doc.getObjects())
+            map.erase(obj);
+    }
+    Gui::ViewProvider* getViewProvider(const App::DocumentObject* obj) const
+    {
+        auto it = map.find(obj);
+        if (it == map.end())
+            return nullptr;
+        return it->second;
+    }
+};
 
 // Pimpl class
-    struct ApplicationP
+struct ApplicationP
+{
+    explicit ApplicationP(bool GUIenabled)
     {
-        explicit ApplicationP(bool GUIenabled)
-        {
-            // create the macro manager
-            if (GUIenabled)
-                macroMngr = new MacroManager();
-            else
-                macroMngr = nullptr;
+        // create the macro manager
+        if (GUIenabled)
+            macroMngr = new MacroManager();
+        else
+            macroMngr = nullptr;
 
-            // Create the Theme Manager
-            prefPackManager = new PreferencePackManager();
-        }
+        // Create the Theme Manager
+        prefPackManager = new PreferencePackManager();
+    }
 
-        ~ApplicationP()
-        {
-            delete macroMngr;
-            delete prefPackManager;
-        }
-
-        /// list of all handled documents
-        std::map<const App::Document*, Gui::Document*> documents;
-        /// Active document
-        Gui::Document*   activeDocument{nullptr};
-        Gui::Document*  editDocument{nullptr};
-        MacroManager*  macroMngr;
-        PreferencePackManager* prefPackManager;
-        /// List of all registered views
-        std::list<Gui::BaseView*> passive;
-        bool isClosing{false};
-        bool startingUp{true};
-        /// Handles all commands
-        CommandManager commandManager;
-        ViewProviderMap viewproviderMap;
-        std::bitset<32> StatusBits;
-    };
-
-    static PyObject *
-    FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
+    ~ApplicationP()
     {
-        PyObject *o;
-        if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type), &o))
-            return nullptr;
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(o)->getDocumentObjectPtr();
-        std::string vp = obj->getViewProviderName();
-        SoNode* node = nullptr;
-        try {
-            auto base =
-                    static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
-            if (base
-                && base->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
-                std::unique_ptr<Gui::ViewProviderDocumentObject> vp(
-                        static_cast<Gui::ViewProviderDocumentObject*>(base));
-                std::map<std::string, App::Property*> Map;
-                obj->getPropertyMap(Map);
-                vp->attach(obj);
+        delete macroMngr;
+        delete prefPackManager;
+    }
 
-                // this is needed to initialize Python-based view providers
-                App::Property* pyproxy = vp->getPropertyByName("Proxy");
-                if (pyproxy && pyproxy->is<App::PropertyPythonObject>()) {
-                    static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
-                }
+    /// list of all handled documents
+    std::map<const App::Document*, Gui::Document*> documents;
+    /// Active document
+    Gui::Document*   activeDocument{nullptr};
+    Gui::Document*  editDocument{nullptr};
+    MacroManager*  macroMngr;
+    PreferencePackManager* prefPackManager;
+    /// List of all registered views
+    std::list<Gui::BaseView*> passive;
+    bool isClosing{false};
+    bool startingUp{true};
+    /// Handles all commands
+    CommandManager commandManager;
+    ViewProviderMap viewproviderMap;
+    std::bitset<32> StatusBits;
+};
 
-                for (const auto& it : Map) {
-                    vp->updateData(it.second);
-                }
+static PyObject *
+FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *o;
+    if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type), &o))
+        return nullptr;
+    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(o)->getDocumentObjectPtr();
+    std::string vp = obj->getViewProviderName();
+    SoNode* node = nullptr;
+    try {
+        auto base =
+            static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
+        if (base
+            && base->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
+            std::unique_ptr<Gui::ViewProviderDocumentObject> vp(
+                static_cast<Gui::ViewProviderDocumentObject*>(base));
+            std::map<std::string, App::Property*> Map;
+            obj->getPropertyMap(Map);
+            vp->attach(obj);
 
-                std::vector<std::string> modes = vp->getDisplayModes();
-                if (!modes.empty())
-                    vp->setDisplayMode(modes.front().c_str());
-                node = vp->getRoot()->copy();
-                node->ref();
-                std::string prefix = "So";
-                std::string type = node->getTypeId().getName().getString();
-                // doesn't start with the prefix 'So'
-                if (type.rfind("So", 0) != 0) {
-                    type = prefix + type;
-                }
-                else if (type == "SoFCSelectionRoot") {
-                    type = "SoSeparator";
-                }
-
-                type += " *";
-                PyObject* proxy = nullptr;
-                proxy = Base::Interpreter().createSWIGPointerObj(
-                        "pivy.coin", type.c_str(), static_cast<void*>(node), 1);
-                return Py::new_reference_to(Py::Object(proxy, true));
+            // this is needed to initialize Python-based view providers
+            App::Property* pyproxy = vp->getPropertyByName("Proxy");
+            if (pyproxy && pyproxy->is<App::PropertyPythonObject>()) {
+                static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
             }
+
+            for (const auto& it : Map) {
+                vp->updateData(it.second);
+            }
+
+            std::vector<std::string> modes = vp->getDisplayModes();
+            if (!modes.empty())
+                vp->setDisplayMode(modes.front().c_str());
+            node = vp->getRoot()->copy();
+            node->ref();
+            std::string prefix = "So";
+            std::string type = node->getTypeId().getName().getString();
+            // doesn't start with the prefix 'So'
+            if (type.rfind("So", 0) != 0) {
+                type = prefix + type;
+            }
+            else if (type == "SoFCSelectionRoot") {
+                type = "SoSeparator";
+            }
+
+            type += " *";
+            PyObject* proxy = nullptr;
+            proxy = Base::Interpreter().createSWIGPointerObj(
+                "pivy.coin", type.c_str(), static_cast<void*>(node), 1);
+            return Py::new_reference_to(Py::Object(proxy, true));
         }
-        catch (const Base::Exception& e) {
-            if (node) node->unref();
-            PyErr_SetString(PyExc_RuntimeError, e.what());
-            return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        if (node) node->unref();
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return nullptr;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
+{
+    const char* format = "VRML";
+    PyObject* proxy;
+    PyObject* output;
+    if (!PyArg_ParseTuple(args, "OO|s", &proxy, &output, &format))
+        return nullptr;
+
+    void* ptr = nullptr;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        auto node = static_cast<SoNode*>(ptr);
+        if (node) {
+            std::string formatStr(format);
+            std::string buffer;
+
+            if (formatStr == "VRML") {
+                SoFCDB::writeToVRML(node, buffer);
+            }
+            else if (formatStr == "IV") {
+                buffer = SoFCDB::writeNodesToString(node);
+            }
+            else {
+                throw Base::ValueError("Unsupported format");
+            }
+
+            Base::PyStreambuf buf(output);
+            std::ostream str(nullptr);
+            str.rdbuf(&buf);
+            str << buffer;
         }
 
         Py_INCREF(Py_None);
         return Py_None;
     }
-
-    static PyObject *
-    FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
-    {
-        const char* format = "VRML";
-        PyObject* proxy;
-        PyObject* output;
-        if (!PyArg_ParseTuple(args, "OO|s", &proxy, &output, &format))
-            return nullptr;
-
-        void* ptr = nullptr;
-        try {
-            Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-            auto node = static_cast<SoNode*>(ptr);
-            if (node) {
-                std::string formatStr(format);
-                std::string buffer;
-
-                if (formatStr == "VRML") {
-                    SoFCDB::writeToVRML(node, buffer);
-                }
-                else if (formatStr == "IV") {
-                    buffer = SoFCDB::writeNodesToString(node);
-                }
-                else {
-                    throw Base::ValueError("Unsupported format");
-                }
-
-                Base::PyStreambuf buf(output);
-                std::ostream str(nullptr);
-                str.rdbuf(&buf);
-                str << buffer;
-            }
-
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
-        catch (const Base::Exception& e) {
-            PyErr_SetString(PyExc_RuntimeError, e.what());
-            return nullptr;
-        }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return nullptr;
     }
+}
 
-    static PyObject *
-    FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
-    {
-        if (!PyArg_ParseTuple(args, ""))
-            return nullptr;
-        return PyUnicode_FromString(SoDB::getVersion());
-    }
+static PyObject *
+FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    return PyUnicode_FromString(SoDB::getVersion());
+}
 
-    struct PyMethodDef FreeCADGui_methods[] = {
-            {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
-                                  "subgraphFromObject(object) -> Node\n\n"
-                                  "Return the Inventor subgraph to an object"},
-            {"exportSubgraph",FreeCADGui_exportSubgraph,METH_VARARGS,
-                                  "exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None\n\n"
-                                  "Exports the sub-graph in the requested format"
-                                  "The format string can be VRML or IV"},
-            {"getSoDBVersion",FreeCADGui_getSoDBVersion,METH_VARARGS,
-                                  "getSoDBVersion() -> String\n\n"
-                                  "Return a text string containing the name\n"
-                                  "of the Coin library and version information"},
-            {nullptr, nullptr, 0, nullptr}  /* sentinel */
-    };
+struct PyMethodDef FreeCADGui_methods[] = {
+    {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
+     "subgraphFromObject(object) -> Node\n\n"
+     "Return the Inventor subgraph to an object"},
+    {"exportSubgraph",FreeCADGui_exportSubgraph,METH_VARARGS,
+     "exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None\n\n"
+     "Exports the sub-graph in the requested format"
+     "The format string can be VRML or IV"},
+    {"getSoDBVersion",FreeCADGui_getSoDBVersion,METH_VARARGS,
+     "getSoDBVersion() -> String\n\n"
+     "Return a text string containing the name\n"
+     "of the Coin library and version information"},
+    {nullptr, nullptr, 0, nullptr}  /* sentinel */
+};
 
 } // namespace Gui
 
@@ -344,32 +344,32 @@ Application::Application(bool GUIenabled)
     if (GUIenabled) {
         //NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(
-                std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
+            std::bind(&Gui::Application::slotNewDocument, this, sp::_1, sp::_2));
         App::GetApplication().signalDeleteDocument.connect(
-                std::bind(&Gui::Application::slotDeleteDocument, this, sp::_1));
+            std::bind(&Gui::Application::slotDeleteDocument, this, sp::_1));
         App::GetApplication().signalRenameDocument.connect(
-                std::bind(&Gui::Application::slotRenameDocument, this, sp::_1));
+            std::bind(&Gui::Application::slotRenameDocument, this, sp::_1));
         App::GetApplication().signalActiveDocument.connect(
-                std::bind(&Gui::Application::slotActiveDocument, this, sp::_1));
+            std::bind(&Gui::Application::slotActiveDocument, this, sp::_1));
         App::GetApplication().signalRelabelDocument.connect(
-                std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
+            std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
-                std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+            std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
         //NOLINTEND
 
         // install the last active language
         ParameterGrp::handle hPGrp =
-                App::GetApplication().GetUserParameter().GetGroup("BaseApp");
+            App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
         QString lang = QLocale::languageToString(QLocale().language());
         Translator::instance()->activateLanguage(
-                hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
+            hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
         // Coin3d disabled VBO support for all Intel drivers but in the meantime they have improved
         // so we can try to override the workaround by setting COIN_VBO
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+            "User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO", false)) {
             (void)coin_setenv("COIN_VBO", "0", true);
         }
@@ -379,13 +379,13 @@ Application::Application(bool GUIenabled)
 #if defined(Q_OS_WIN32)
         if (QLocale().groupSeparator() == QLocale().decimalPoint()) {
             QMessageBox::critical(
-                    0,
-                    QLatin1String("Invalid system settings"),
-                    QLatin1String(
-                            "Your system uses the same symbol for decimal point and group separator.\n\n"
-                            "This causes serious problems and makes the application fail to work "
-                            "properly.\n"
-                            "Go to the system configuration panel of the OS and fix this issue, please."));
+                0,
+                QLatin1String("Invalid system settings"),
+                QLatin1String(
+                    "Your system uses the same symbol for decimal point and group separator.\n\n"
+                    "This causes serious problems and makes the application fail to work "
+                    "properly.\n"
+                    "Go to the system configuration panel of the OS and fix this issue, please."));
             throw Base::RuntimeError("Invalid system settings");
         }
 #endif
@@ -394,15 +394,15 @@ Application::Application(bool GUIenabled)
         Base::PyGILStateLocker lock;
 
         PyDoc_STRVAR(
-                FreeCADGui_doc,
-                "The functions in the FreeCADGui module allow working with GUI documents,\n"
-                "view providers, views, workbenches and much more.\n\n"
-                "The FreeCADGui instance provides a list of references of GUI documents which\n"
-                "can be addressed by a string. These documents contain the view providers for\n"
-                "objects in the associated App document. An App and GUI document can be\n"
-                "accessed with the same name.\n\n"
-                "The FreeCADGui module also provides a set of functions to work with so called\n"
-                "workbenches.");
+            FreeCADGui_doc,
+            "The functions in the FreeCADGui module allow working with GUI documents,\n"
+            "view providers, views, workbenches and much more.\n\n"
+            "The FreeCADGui instance provides a list of references of GUI documents which\n"
+            "can be addressed by a string. These documents contain the view providers for\n"
+            "objects in the associated App document. An App and GUI document can be\n"
+            "accessed with the same name.\n\n"
+            "The FreeCADGui module also provides a set of functions to work with so called\n"
+            "workbenches.");
 
         // if this returns a valid pointer then the 'FreeCADGui' Python module was loaded,
         // otherwise the executable was launched
@@ -410,10 +410,10 @@ Application::Application(bool GUIenabled)
         PyObject* module = PyDict_GetItemString(modules, "FreeCADGui");
         if (!module) {
             static struct PyModuleDef FreeCADGuiModuleDef = {
-                    PyModuleDef_HEAD_INIT,
-                    "FreeCADGui", FreeCADGui_doc, -1,
-                    Application::Methods,
-                    nullptr, nullptr, nullptr, nullptr
+                PyModuleDef_HEAD_INIT,
+                "FreeCADGui", FreeCADGui_doc, -1,
+                Application::Methods,
+                nullptr, nullptr, nullptr, nullptr
             };
             module = PyModule_Create(&FreeCADGuiModuleDef);
 
@@ -427,7 +427,7 @@ Application::Application(bool GUIenabled)
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(),
-                                    module,"UiLoader");
+            module,"UiLoader");
         PyResource::init_type();
 
         // PySide additions
@@ -435,14 +435,14 @@ Application::Application(bool GUIenabled)
 
         ExpressionBindingPy::init_type();
         Base::Interpreter().addType(ExpressionBindingPy::type_object(),
-                                    module,"ExpressionBinding");
+            module,"ExpressionBinding");
 
         //insert Selection module
         static struct PyModuleDef SelectionModuleDef = {
-                PyModuleDef_HEAD_INIT,
-                "Selection", "Selection module", -1,
-                SelectionSingleton::Methods,
-                nullptr, nullptr, nullptr, nullptr
+            PyModuleDef_HEAD_INIT,
+            "Selection", "Selection module", -1,
+            SelectionSingleton::Methods,
+            nullptr, nullptr, nullptr, nullptr
         };
         PyObject* pSelectionModule = PyModule_Create(&SelectionModuleDef);
         Py_INCREF(pSelectionModule);
@@ -450,16 +450,16 @@ Application::Application(bool GUIenabled)
 
         SelectionFilterPy::init_type();
         Base::Interpreter().addType(SelectionFilterPy::type_object(),
-                                    pSelectionModule,"Filter");
+            pSelectionModule,"Filter");
 
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
-                                   Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
+            Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
         Gui::TaskView::TaskDialogPy::init_type();
 
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(),
-                                    module, "CommandAction");
+            module, "CommandAction");
 
         Base::Interpreter().addType(&LinkViewPy::Type, module, "LinkView");
         Base::Interpreter().addType(&AxisOriginPy::Type, module, "AxisOrigin");
@@ -467,7 +467,7 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(&DocumentPy::Type, module, "Document");
         Base::Interpreter().addType(&ViewProviderPy::Type, module, "ViewProvider");
         Base::Interpreter().addType(
-                &ViewProviderDocumentObjectPy::Type, module, "ViewProviderDocumentObject");
+            &ViewProviderDocumentObjectPy::Type, module, "ViewProviderDocumentObject");
         Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
     }
 
@@ -487,7 +487,7 @@ Application::Application(bool GUIenabled)
 
     SoQtOffscreenRendererPy::init_type();
     Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),
-                                module,"SoQtOffscreenRenderer");
+        module,"SoQtOffscreenRenderer");
 
     App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
 
@@ -583,7 +583,7 @@ void Application::open(const char* FileName, const char* Module)
 
                 if (!handled)
                     Command::doCommand(
-                            Command::App, "FreeCAD.openDocument('%s')", unicodepath.c_str());
+                        Command::App, "FreeCAD.openDocument('%s')", unicodepath.c_str());
             }
             else {
                 // issue module loading
@@ -595,7 +595,7 @@ void Application::open(const char* FileName, const char* Module)
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                            ("User parameter:BaseApp/Preferences/View");
+                        ("User parameter:BaseApp/Preferences/View");
                     if (hGrp->GetBool("AutoFitToView", true))
                         Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
                 }
@@ -614,7 +614,7 @@ void Application::open(const char* FileName, const char* Module)
     else {
         wc.restoreCursor();
         QMessageBox::warning(getMainWindow(), QObject::tr("Unknown filetype"),
-                             QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
         wc.setWaitCursor();
         return;
     }
@@ -637,7 +637,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")"
-                , Module, unicodepath.c_str());
+                                               , Module, unicodepath.c_str());
                 if (activeDocument())
                     activeDocument()->setModified(false);
             }
@@ -653,11 +653,11 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
 
                 if (DocName) {
                     Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                    , Module, unicodepath.c_str(), DocName);
+                                                   , Module, unicodepath.c_str(), DocName);
                 }
                 else {
                     Command::doCommand(Command::App, "%s.insert(u\"%s\")"
-                    , Module, unicodepath.c_str());
+                                                   , Module, unicodepath.c_str());
                 }
 
                 // Commit the transaction
@@ -676,7 +676,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     doc->setModified(true);
 
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                            ("User parameter:BaseApp/Preferences/View");
+                        ("User parameter:BaseApp/Preferences/View");
                     if (hGrp->GetBool("AutoFitToView", true)) {
                         MDIView* view = doc->getActiveView();
                         if (view) {
@@ -691,7 +691,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // the original file name is required
             QString filename = QString::fromUtf8(File.filePath().c_str());
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/General");
+                "User parameter:BaseApp/Preferences/General");
             bool addToRecent = parameterGroup->GetBool("RecentIncludesImported", true);
             parameterGroup->SetBool("RecentIncludesImported",
                                     addToRecent);// Make sure it gets added to the parameter list
@@ -708,7 +708,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     else {
         wc.restoreCursor();
         QMessageBox::warning(getMainWindow(), QObject::tr("Unknown filetype"),
-                             QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot open unknown filetype: %1").arg(QLatin1String(te.c_str())));
         wc.setWaitCursor();
     }
 }
@@ -725,7 +725,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     if (Module) {
         try {
             std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
-                    (App::DocumentObject::getClassTypeId(),DocName);
+                (App::DocumentObject::getClassTypeId(),DocName);
             if (sel.empty()) {
                 App::Document* doc = App::GetApplication().getDocument(DocName);
                 sel = doc->getObjectsOfType(App::DocumentObject::getClassTypeId());
@@ -754,7 +754,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/General");
+                "User parameter:BaseApp/Preferences/General");
             bool addToRecent = parameterGroup->GetBool("RecentIncludesExported", false);
             parameterGroup->SetBool("RecentIncludesExported",
                                     addToRecent);// Make sure it gets added to the parameter list
@@ -762,7 +762,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
                 // search for a module that is able to open the exported file because otherwise
                 // it doesn't need to be added to the recent files list (#0002047)
                 std::map<std::string, std::string> importMap =
-                        App::GetApplication().getImportFilters(te.c_str());
+                    App::GetApplication().getImportFilters(te.c_str());
                 if (!importMap.empty())
                     getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
             }
@@ -774,14 +774,14 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             e.ReportException();
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Export failed"),
-                                  QString::fromUtf8(e.what()));
+                QString::fromUtf8(e.what()));
             wc.setWaitCursor();
         }
     }
     else {
         wc.restoreCursor();
         QMessageBox::warning(getMainWindow(), QObject::tr("Unknown filetype"),
-                             QObject::tr("Cannot save to unknown filetype: %1").arg(QLatin1String(te.c_str())));
+            QObject::tr("Cannot save to unknown filetype: %1").arg(QLatin1String(te.c_str())));
         wc.setWaitCursor();
     }
 }
@@ -813,13 +813,13 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     // connect the signals to the application for the new document
     pDoc->signalNewObject.connect(std::bind(&Gui::Application::slotNewObject, this, sp::_1));
     pDoc->signalDeletedObject.connect(std::bind(&Gui::Application::slotDeletedObject,
-                                                this, sp::_1));
+        this, sp::_1));
     pDoc->signalChangedObject.connect(std::bind(&Gui::Application::slotChangedObject,
-                                                this, sp::_1, sp::_2));
+        this, sp::_1, sp::_2));
     pDoc->signalRelabelObject.connect(std::bind(&Gui::Application::slotRelabelObject,
-                                                this, sp::_1));
+        this, sp::_1));
     pDoc->signalActivatedObject.connect(std::bind(&Gui::Application::slotActivatedObject,
-                                                  this, sp::_1));
+        this, sp::_1));
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     //NOLINTEND
@@ -920,15 +920,15 @@ void Application::slotActiveDocument(const App::Document& Doc)
 
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Units");
+            ("User parameter:BaseApp/Preferences/Units");
         if( Doc.FileName.getValue()[0] != '\0' &&  ! hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
             Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
             getMainWindow()->setUserSchema(userSchema);
             Application::Instance->onUpdate();
         }else{// set up Unit system default
-            Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
-            Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
         signalActiveDocument(*doc->second);
         updateActions();
@@ -981,7 +981,7 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last
             // open document.
             Command::doCommand(
-                    Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
+                Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
             if (!d->activeDocument && !d->documents.empty()) {
                 Document *gdoc = nullptr;
                 for(auto &v : d->documents) {
@@ -1014,13 +1014,13 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
     }
     catch (const std::exception& e) {
         Base::Console().Error(
-                "Unhandled std::exception caught in Application::onLastWindowClosed.\n"
-                "The error message is: %s\n",
-                e.what());
+            "Unhandled std::exception caught in Application::onLastWindowClosed.\n"
+            "The error message is: %s\n",
+            e.what());
     }
     catch (...) {
         Base::Console().Error(
-                "Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
+            "Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
     }
 }
 
@@ -1422,7 +1422,7 @@ bool Application::activateWorkbench(const char* name)
         Workbench* curWb = WorkbenchManager::instance()->active();
         if (curWb && curWb->name() == name)
             ok = true; // already active
-            // now try to create and activate the matching workbench object
+        // now try to create and activate the matching workbench object
         else if (WorkbenchManager::instance()->activate(name, type)) {
             getMainWindow()->activateWorkbench(QString::fromLatin1(name));
             this->signalActivateWorkbench(name);
@@ -1469,8 +1469,8 @@ bool Application::activateWorkbench(const char* name)
             if (!Instance->d->startingUp) {
                 std::string nameWb = newWb->name();
                 App::GetApplication()
-                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                        ->SetASCII("LastModule", nameWb.c_str());
+                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                    ->SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
         }
@@ -1496,7 +1496,7 @@ bool Application::activateWorkbench(const char* name)
         if (!d->startingUp) {
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"),
-                                  QObject::tr("%1").arg(msg));
+                QObject::tr("%1").arg(msg));
             wc.setWaitCursor();
         }
     }
@@ -1676,7 +1676,7 @@ QStringList Application::workbenches() const
         // okay the item is visible
         if (ok)
             wb.push_back(QString::fromLatin1(wbName));
-            // also allow start workbench in case it is hidden
+        // also allow start workbench in case it is hidden
         else if (strcmp(wbName, start) == 0)
             wb.push_back(QString::fromLatin1(wbName));
     }
@@ -1743,17 +1743,17 @@ Gui::PreferencePackManager* Application::prefPackManager()
 // Init, Destruct and singleton
 
 namespace {
-    void setCategoryFilterRules()
-    {
-        QString filter;
-        QTextStream stream(&filter);
-        stream << "qt.qpa.xcb.warning=false\n";
-        stream << "qt.qpa.mime.warning=false\n";
-        stream << "qt.svg.warning=false\n";
-        stream << "qt.xkb.compose.warning=false\n";
-        stream.flush();
-        QLoggingCategory::setFilterRules(filter);
-    }
+void setCategoryFilterRules()
+{
+    QString filter;
+    QTextStream stream(&filter);
+    stream << "qt.qpa.xcb.warning=false\n";
+    stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.svg.warning=false\n";
+    stream << "qt.xkb.compose.warning=false\n";
+    stream.flush();
+    QLoggingCategory::setFilterRules(filter);
+}
 }
 
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext &, const QString &);
@@ -1773,24 +1773,24 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
     switch (type)
     {
-        case QtInfoMsg:
-        case QtDebugMsg:
+    case QtInfoMsg:
+    case QtDebugMsg:
 #ifdef FC_DEBUG
-            Base::Console().Message("%s\n", output.constData());
+        Base::Console().Message("%s\n", output.constData());
 #else
-            // do not stress user with Qt internals but write to log file if enabled
-            Base::Console().Log("%s\n", output.constData());
+        // do not stress user with Qt internals but write to log file if enabled
+        Base::Console().Log("%s\n", output.constData());
 #endif
-            break;
-        case QtWarningMsg:
-            Base::Console().Warning("%s\n", output.constData());
-            break;
-        case QtCriticalMsg:
-            Base::Console().Error("%s\n", output.constData());
-            break;
-        case QtFatalMsg:
-            Base::Console().Error("%s\n", output.constData());
-            abort();                    // deliberately core dump
+        break;
+    case QtWarningMsg:
+        Base::Console().Warning("%s\n", output.constData());
+        break;
+    case QtCriticalMsg:
+        Base::Console().Error("%s\n", output.constData());
+        break;
+    case QtFatalMsg:
+        Base::Console().Error("%s\n", output.constData());
+        abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler) {
@@ -1950,123 +1950,123 @@ void Application::runInitGuiScript()
 }
 
 namespace {
-    bool onlySingleInstance(GUISingleApplication& mainApp)
-    {
-        const std::map<std::string,std::string>& cfg = App::Application::Config();
-        auto it = cfg.find("SingleInstance");
-        if (it != cfg.end() && mainApp.isRunning()) {
-            // send the file names to be opened to the server application so that this
-            // opens them
-            QDir cwd = QDir::current();
-            std::list<std::string> files = App::Application::getCmdLineFiles();
-            for (const auto & file : files) {
-                QString fn = QString::fromUtf8(file.c_str(), static_cast<int>(file.size()));
-                QFileInfo fi(fn);
-                // if path name is relative make it absolute because the running instance
-                // cannot determine the full path when trying to load the file
-                if (fi.isRelative()) {
-                    fn = cwd.absoluteFilePath(fn);
-                    fn = QDir::cleanPath(fn);
-                }
-
-                QByteArray msg = fn.toUtf8();
-                msg.prepend("OpenFile:");
-                if (!mainApp.sendMessage(msg)) {
-                    qWarning("Failed to send message to server");
-                    break;
-                }
+bool onlySingleInstance(GUISingleApplication& mainApp)
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    auto it = cfg.find("SingleInstance");
+    if (it != cfg.end() && mainApp.isRunning()) {
+        // send the file names to be opened to the server application so that this
+        // opens them
+        QDir cwd = QDir::current();
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        for (const auto & file : files) {
+            QString fn = QString::fromUtf8(file.c_str(), static_cast<int>(file.size()));
+            QFileInfo fi(fn);
+            // if path name is relative make it absolute because the running instance
+            // cannot determine the full path when trying to load the file
+            if (fi.isRelative()) {
+                fn = cwd.absoluteFilePath(fn);
+                fn = QDir::cleanPath(fn);
             }
 
-            return true;
+            QByteArray msg = fn.toUtf8();
+            msg.prepend("OpenFile:");
+            if (!mainApp.sendMessage(msg)) {
+                qWarning("Failed to send message to server");
+                break;
+            }
         }
 
-        return false;
+        return true;
     }
 
-    void setAppNameAndIcon()
-    {
-        const std::map<std::string,std::string>& cfg = App::Application::Config();
+    return false;
+}
 
-        // set application icon and window title
-        auto it = cfg.find("Application");
-        if (it != cfg.end()) {
-            QApplication::setApplicationName(QString::fromUtf8(it->second.c_str()));
-        }
-        else {
-            QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
-        }
+void setAppNameAndIcon()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+
+    // set application icon and window title
+    auto it = cfg.find("Application");
+    if (it != cfg.end()) {
+        QApplication::setApplicationName(QString::fromUtf8(it->second.c_str()));
+    }
+    else {
+        QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
+    }
 #ifndef Q_OS_MACX
-        QApplication::setWindowIcon(
-                Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
+    QApplication::setWindowIcon(
+        Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
 #endif
-    }
+}
 
-    void tryRunEventLoop(GUISingleApplication& mainApp)
-    {
-        std::stringstream s;
-        s << App::Application::getUserCachePath() << App::Application::getExecutableName()
-          << "_" << QCoreApplication::applicationPid() << ".lock";
-        // open a lock file with the PID
-        Base::FileInfo fi(s.str());
-        Base::ofstream lock(fi);
+void tryRunEventLoop(GUISingleApplication& mainApp)
+{
+    std::stringstream s;
+    s << App::Application::getUserCachePath() << App::Application::getExecutableName()
+      << "_" << QCoreApplication::applicationPid() << ".lock";
+    // open a lock file with the PID
+    Base::FileInfo fi(s.str());
+    Base::ofstream lock(fi);
 
-        // In case the file_lock cannot be created start FreeCAD without IPC support.
+    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
-        std::string filename = s.str();
+    std::string filename = s.str();
 #else
-        std::wstring filename = fi.toStdWString();
+    std::wstring filename = fi.toStdWString();
 #endif
-        std::unique_ptr<boost::interprocess::file_lock> flock;
-        try {
-            flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
-            flock->lock();
-        }
-        catch (const boost::interprocess::interprocess_exception& e) {
-            QString msg = QString::fromLocal8Bit(e.what());
-            Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
-                                    msg.toUtf8().constData());
-        }
-
-        Base::Console().Log("Init: Executing event loop...\n");
-        QApplication::exec();
-
-        // Qt can't handle exceptions thrown from event handlers, so we need
-        // to manually rethrow SystemExitExceptions.
-        if (mainApp.caughtException) {
-            throw Base::SystemExitException(*mainApp.caughtException.get());
-        }
-
-        // close the lock file, in case of a crash we can see the existing lock file
-        // on the next restart and try to repair the documents, if needed.
-        if (flock) {
-            flock->unlock();
-        }
-        lock.close();
-        fi.deleteFile();
+    std::unique_ptr<boost::interprocess::file_lock> flock;
+    try {
+        flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
+        flock->lock();
+    }
+    catch (const boost::interprocess::interprocess_exception& e) {
+        QString msg = QString::fromLocal8Bit(e.what());
+        Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
+                                msg.toUtf8().constData());
     }
 
-    void runEventLoop(GUISingleApplication& mainApp)
-    {
-        try {
-            tryRunEventLoop(mainApp);
-        }
-        catch (const Base::SystemExitException&) {
-            Base::Console().Message("System exit\n");
-            throw;
-        }
-        catch (const std::exception& e) {
-            // catching nasty stuff coming out of the event loop
-            Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
-            App::Application::destructObserver();
-            throw;
-        }
-        catch (...) {
-            // catching nasty stuff coming out of the event loop
-            Base::Console().Error("Event loop left through unknown unhandled exception\n");
-            App::Application::destructObserver();
-            throw;
-        }
+    Base::Console().Log("Init: Executing event loop...\n");
+    QApplication::exec();
+
+    // Qt can't handle exceptions thrown from event handlers, so we need
+    // to manually rethrow SystemExitExceptions.
+    if (mainApp.caughtException) {
+        throw Base::SystemExitException(*mainApp.caughtException.get());
     }
+
+    // close the lock file, in case of a crash we can see the existing lock file
+    // on the next restart and try to repair the documents, if needed.
+    if (flock) {
+        flock->unlock();
+    }
+    lock.close();
+    fi.deleteFile();
+}
+
+void runEventLoop(GUISingleApplication& mainApp)
+{
+    try {
+        tryRunEventLoop(mainApp);
+    }
+    catch (const Base::SystemExitException&) {
+        Base::Console().Message("System exit\n");
+        throw;
+    }
+    catch (const std::exception& e) {
+        // catching nasty stuff coming out of the event loop
+        Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
+        App::Application::destructObserver();
+        throw;
+    }
+    catch (...) {
+        // catching nasty stuff coming out of the event loop
+        Base::Console().Error("Event loop left through unknown unhandled exception\n");
+        App::Application::destructObserver();
+        throw;
+    }
+}
 }
 
 void Application::runApplication()
@@ -2270,13 +2270,13 @@ void Application::checkForDeprecatedSettings()
 {
     // From 0.21, `FCBak` will be the intended default backup format
     bool makeBackups = App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-            ->GetBool("CreateBackupFiles", true);
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                           ->GetBool("CreateBackupFiles", true);
     if (makeBackups) {
         bool useFCBakExtension =
-                App::GetApplication()
-                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                        ->GetBool("UseFCBakExtension", true);
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("UseFCBakExtension", true);
         if (!useFCBakExtension) {
             // TODO: This should be translated
             Base::Console().Warning("The `.FCStd#` backup format is deprecated as of v0.21 and may "
@@ -2323,14 +2323,14 @@ App::Document *Application::reopen(App::Document *doc) {
     wc.setIgnoreEvents(WaitCursor::NoEvents);
 
     if(doc->testStatus(App::Document::PartialDoc)
-       || doc->testStatus(App::Document::PartialRestore))
+            || doc->testStatus(App::Document::PartialRestore))
     {
         App::GetApplication().openDocument(name.c_str());
     } else {
         std::vector<std::string> docs;
         for(auto d : doc->getDependentDocuments(true)) {
             if(d->testStatus(App::Document::PartialDoc)
-               || d->testStatus(App::Document::PartialRestore) )
+                    || d->testStatus(App::Document::PartialRestore) )
                 docs.emplace_back(d->FileName.getValue());
         }
 
