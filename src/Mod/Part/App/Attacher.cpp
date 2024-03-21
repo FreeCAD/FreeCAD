@@ -245,13 +245,16 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
 
 void AttachEngine::setUp(const AttachEngine &another)
 {
-    setUp(another.references,
-          another.mapMode,
-          another.mapReverse,
-          another.attachParameter,
-          another.surfU,
-          another.surfV,
-          another.attachmentOffset);
+    this->docName = another.docName;
+    this->objNames = another.objNames;
+    this->subnames = another.subnames;
+    this->shadowSubs = another.shadowSubs;
+    this->mapMode = another.mapMode;
+    this->mapReverse = another.mapReverse;
+    this->attachParameter = another.attachParameter;
+    this->surfU = another.surfU;
+    this->surfV = another.surfV;
+    this->attachmentOffset = another.attachmentOffset;
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
