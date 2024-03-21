@@ -212,6 +212,10 @@ def add_attributes(obj, ccx_prefs):
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
         obj.IterationsMaximum = niter
 
+    if hasattr(obj, "IterationsThermoMechMaximum"):
+        obj.IterationsMaximum = obj.IterationsThermoMechMaximum
+        obj.removeProperty("IterationsThermoMechMaximum")
+
     if not hasattr(obj, "BucklingFactors"):
         obj.addProperty(
             "App::PropertyIntegerConstraint",
