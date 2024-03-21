@@ -306,6 +306,13 @@ void SketchObject::buildShape()
     // }
 }
 
+static const char *hasSketchMarker(const char *name) {
+    static std::string marker(Part::TopoShape::elementMapPrefix()+Part::OpCodes::Sketch);
+    if (!name)
+        return nullptr;
+    return strstr(name,marker.c_str());
+}
+
 int SketchObject::hasConflicts() const
 {
     if (lastDoF < 0)// over-constrained sketch
@@ -9512,6 +9519,43 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
         }
         solve();
     }
+}
+
+std::pair<std::string,std::string> SketchObject::getElementName(
+        const char *name, ElementNameType type) const
+{
+    std::pair<std::string, std::string> ret;
+    if(!name) return ret;
+
+    if(hasSketchMarker(name))
+        return Part2DObject::getElementName(name,type);
+
+    const char *mapped = Data::isMappedElement(name);
+    if(!mapped) {
+        auto occindex = Part::TopoShape::shapeTypeAndIndex(name);
+        if (occindex.second)
+            return Part2DObject::getElementName(name,type);
+
+        Data::IndexedName index = checkSubName(name);
+        ret.first = convertSubName(index, true);
+        if(!Data::isMappedElement(ret.first.c_str()))
+            ret.first.clear();
+        index.appendToStringBuffer(ret.second);
+        return ret;
+    }
+
+    Data::IndexedName index = checkSubName(name);
+    if(index) {
+        index.appendToStringBuffer(ret.second);
+        ret.first = convertSubName(index, true);
+        if(type==ElementNameType::Export) {
+            if(boost::starts_with(ret.second,"Vertex"))
+                ret.second[0] = 'v';
+            else if(boost::starts_with(ret.second,"Edge"))
+                ret.second[0] = 'e';
+        }
+    }
+    return ret;
 }
 
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
