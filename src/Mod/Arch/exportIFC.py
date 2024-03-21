@@ -301,7 +301,9 @@ def export(exportList, filename, colors=None, preferences=None):
 
     if existing_file:
         project = ifcfile.by_type("IfcProject")[0]
-        context = ifcfile.by_type("IFcGeometricRepresentationContext")[-1]
+        body_contexts = [c for c in ifcfile.by_type("IfcGeometricRepresentationSubContext") if c.ContextIdentifier in ["Body", "Facetation"]]
+        body_contexts.extend([c for c in ifcfile.by_type("IfcGeometricRepresentationContext", include_subtypes=False) if c.ContextType == "Model"])
+        context = body_contexts[0] # we take the first one (subcontext if existing, or context if not)
     else:
         contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
         context = contextCreator.model_view_subcontext
