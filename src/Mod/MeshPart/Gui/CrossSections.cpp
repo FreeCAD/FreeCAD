@@ -341,8 +341,10 @@ void CrossSections::apply()
         str << "[";
         for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
             double d = *jt;
-            str << "(" << "App.Vector(" << a * d << ", " << b * d << ", " << c * d << "), "
-                << "App.Vector(" << a << ", " << b << ", " << c << ")" << "), ";
+            str << "("
+                << "App.Vector(" << a * d << ", " << b * d << ", " << c * d << "), "
+                << "App.Vector(" << a << ", " << b << ", " << c << ")"
+                << "), ";
         }
         str << "]";
 

@@ -44,7 +44,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* insp = new Gui::MenuItem;
     root->insertItem(item, insp);
     insp->setCommand("Inspection");
-    *insp << "Inspection_VisualInspection" << "Inspection_InspectElement";
+    *insp << "Inspection_VisualInspection"
+          << "Inspection_InspectElement";
     return root;
 }
 

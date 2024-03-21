@@ -158,8 +158,9 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
     hg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.g);
     hb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.b);
     result << "<g id=\"" << ViewName << "\" transform=\"translate(" << X.getValue() << ","
-           << Y.getValue() << ")" << " rotate(" << Rotation.getValue() << ")" << " scale("
-           << Scale.getValue() << ")\">" << std::endl;
+           << Y.getValue() << ")"
+           << " rotate(" << Rotation.getValue() << ")"
+           << " scale(" << Scale.getValue() << ")\">" << std::endl;
 
     // fill the cells
     float rowoffset = 0.0;
@@ -275,7 +276,8 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
                            << coloffset + (cellwidth - FontSize.getValue() / 2) << "\" y=\""
                            << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                 }
-                result << Font.getValue() << "\"" << " font-size=\"" << FontSize.getValue() << "\""
+                result << Font.getValue() << "\""
+                       << " font-size=\"" << FontSize.getValue() << "\""
                        << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
             }
             rowoffset = rowoffset + cellheight;
