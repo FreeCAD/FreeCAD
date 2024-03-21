@@ -385,6 +385,21 @@ def getElementName(full_name):
     if parts[-1] in {"X", "Y", "Z", "Point", "Line", "Plane"}:
         return ""
 
+    # Case of origin objects
+    if parts[-1] == "":
+        if "X_Axis" in parts[-2]:
+            return "X_Axis"
+        if "Y_Axis" in parts[-2]:
+            return "Y_Axis"
+        if "Z_Axis" in parts[-2]:
+            return "Z_Axis"
+        if "XY_Plane" in parts[-2]:
+            return "XY_Plane"
+        if "XZ_Plane" in parts[-2]:
+            return "XZ_Plane"
+        if "YZ_Plane" in parts[-2]:
+            return "YZ_Plane"
+
     return parts[-1]
 
 
@@ -842,6 +857,14 @@ So here we want to find a placement that corresponds to a local coordinate syste
 
 def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     if not obj or not part:
+        return App.Placement()
+
+    # case of origin objects.
+    if elt == "X_Axis" or elt == "YZ_Plane":
+        return App.Placement(App.Vector(), App.Rotation(App.Vector(0, 1, 0), -90))
+    if elt == "Y_Axis" or elt == "XZ_Plane":
+        return App.Placement(App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90))
+    if elt == "Z_Axis" or elt == "XY_Plane":
         return App.Placement()
 
     if not elt or not vtx:
