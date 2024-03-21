@@ -437,7 +437,7 @@ def makeElementGeometry1D(
 
 def makeElementGeometry2D(
     doc,
-    thickness=20.0,
+    thickness=1.0,
     name="ElementGeometry2D"
 ):
     """makeElementGeometry2D(document, [thickness], [name]):
