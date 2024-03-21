@@ -1230,8 +1230,8 @@ PyObject* SketchObjectPy::fillet(PyObject* args)
                                                Base::asBoolean(chamfer))) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2
-                << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
-                << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
+                << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & " << "(" << v2.x
+                << ", " << v2.y << ", " << v2.z << ")";
             THROWM(Base::ValueError, str.str().c_str())
             return nullptr;
         }

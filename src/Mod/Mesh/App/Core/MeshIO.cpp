@@ -2605,18 +2605,14 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
         Base::Vector3f pt;
         for (const auto& it : rPoints) {
             pt = this->_transform * it;
-            writer.Stream() << writer.ind() << "<P "
-                            << "x=\"" << pt.x << "\" "
-                            << "y=\"" << pt.y << "\" "
-                            << "z=\"" << pt.z << "\"/>" << '\n';
+            writer.Stream() << writer.ind() << "<P " << "x=\"" << pt.x << "\" " << "y=\"" << pt.y
+                            << "\" " << "z=\"" << pt.z << "\"/>" << '\n';
         }
     }
     else {
         for (const auto& it : rPoints) {
-            writer.Stream() << writer.ind() << "<P "
-                            << "x=\"" << it.x << "\" "
-                            << "y=\"" << it.y << "\" "
-                            << "z=\"" << it.z << "\"/>" << '\n';
+            writer.Stream() << writer.ind() << "<P " << "x=\"" << it.x << "\" " << "y=\"" << it.y
+                            << "\" " << "z=\"" << it.z << "\"/>" << '\n';
         }
     }
     writer.decInd();
@@ -2627,13 +2623,11 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
 
     writer.incInd();
     for (const auto& it : rFacets) {
-        writer.Stream() << writer.ind() << "<F "
-                        << "p0=\"" << it._aulPoints[0] << "\" "
-                        << "p1=\"" << it._aulPoints[1] << "\" "
-                        << "p2=\"" << it._aulPoints[2] << "\" "
-                        << "n0=\"" << it._aulNeighbours[0] << "\" "
-                        << "n1=\"" << it._aulNeighbours[1] << "\" "
-                        << "n2=\"" << it._aulNeighbours[2] << "\"/>" << '\n';
+        writer.Stream() << writer.ind() << "<F " << "p0=\"" << it._aulPoints[0] << "\" " << "p1=\""
+                        << it._aulPoints[1] << "\" " << "p2=\"" << it._aulPoints[2] << "\" "
+                        << "n0=\"" << it._aulNeighbours[0] << "\" " << "n1=\""
+                        << it._aulNeighbours[1] << "\" " << "n2=\"" << it._aulNeighbours[2]
+                        << "\"/>" << '\n';
     }
     writer.decInd();
     writer.Stream() << writer.ind() << "</Faces>" << '\n';
@@ -2873,8 +2867,7 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
             out << "    <Viewpoint id=\"" << text << "\" centerOfRotation=\"" << cnt.x << " "
                 << cnt.y << " " << cnt.z << "\" position=\"" << pos.x << " " << pos.y << " "
                 << pos.z << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " "
-                << angle << R"(" description="camera" fieldOfView="0.9">)"
-                << "</Viewpoint>\n";
+                << angle << R"(" description="camera" fieldOfView="0.9">)" << "</Viewpoint>\n";
         };
 
         Base::Vector3f cnt = bbox.GetCenter();
@@ -2925,8 +2918,7 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
         Base::Vector3d axis;
         double angle {};
         r.getValue(axis, angle);
-        out << "    <Transform "
-            << "translation='" << v.x << " " << v.y << " " << v.z << "' "
+        out << "    <Transform " << "translation='" << v.x << " " << v.y << " " << v.z << "' "
             << "rotation='" << axis.x << " " << axis.y << " " << axis.z << " " << angle << "'>\n";
     }
     else {

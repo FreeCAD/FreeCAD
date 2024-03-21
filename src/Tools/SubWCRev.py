@@ -19,6 +19,7 @@ try:
 except ImportError:
     from io import StringIO
 
+
 # SAX handler to parse the subversion output
 class SvnHandler(xml.sax.handler.ContentHandler):
     def __init__(self):

@@ -906,8 +906,7 @@ Text2Item::Text2Item(std::string string)
 
 void Text2Item::write(InventorOutput& out) const
 {
-    out.write() << "Text2 { string \"" << string << "\" "
-                << "}\n";
+    out.write() << "Text2 { string \"" << string << "\" " << "}\n";
 }
 
 // -----------------------------------------------------------------------------

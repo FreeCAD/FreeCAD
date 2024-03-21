@@ -51,30 +51,20 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* reconstruct = new Gui::MenuItem();
     reconstruct->setCommand("Surface reconstruction");
-    *reconstruct << "Reen_PoissonReconstruction"
-                 << "Reen_ViewTriangulation";
+    *reconstruct << "Reen_PoissonReconstruction" << "Reen_ViewTriangulation";
     *reen << reconstruct;
 
     Gui::MenuItem* segm = new Gui::MenuItem();
     segm->setCommand("Segmentation");
-    *segm << "Mesh_RemeshGmsh"
-          << "Mesh_VertexCurvature"
-          << "Mesh_CurvatureInfo"
-          << "Separator"
-          << "Reen_Segmentation"
-          << "Reen_SegmentationManual"
-          << "Reen_SegmentationFromComponents"
+    *segm << "Mesh_RemeshGmsh" << "Mesh_VertexCurvature" << "Mesh_CurvatureInfo" << "Separator"
+          << "Reen_Segmentation" << "Reen_SegmentationManual" << "Reen_SegmentationFromComponents"
           << "Reen_MeshBoundary";
     *reen << segm;
 
     Gui::MenuItem* approx = new Gui::MenuItem();
     approx->setCommand("Approximation");
-    *approx << "Reen_ApproxPlane"
-            << "Reen_ApproxCylinder"
-            << "Reen_ApproxSphere"
-            << "Reen_ApproxPolynomial"
-            << "Separator"
-            << "Reen_ApproxSurface";
+    *approx << "Reen_ApproxPlane" << "Reen_ApproxCylinder" << "Reen_ApproxSphere"
+            << "Reen_ApproxPolynomial" << "Separator" << "Reen_ApproxSurface";
     *reen << approx;
 
     return root;

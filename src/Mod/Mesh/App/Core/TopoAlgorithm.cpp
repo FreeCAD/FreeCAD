@@ -292,8 +292,8 @@ float MeshTopoAlgorithm::SwapEdgeBenefit(FacetIndex f, int e) const
     PointIndex v3 = faces[f]._aulPoints[(e + 2) % 3];
     unsigned short s = faces[n].Side(faces[f]);
     if (s == USHRT_MAX) {
-        std::cerr << "MeshTopoAlgorithm::SwapEdgeBenefit: error in neighbourhood "
-                  << "of faces " << f << " and " << n << std::endl;
+        std::cerr << "MeshTopoAlgorithm::SwapEdgeBenefit: error in neighbourhood " << "of faces "
+                  << f << " and " << n << std::endl;
         return 0.0f;  // topological error
     }
     PointIndex v4 = faces[n]._aulPoints[(s + 2) % 3];

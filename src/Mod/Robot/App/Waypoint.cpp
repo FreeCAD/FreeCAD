@@ -84,20 +84,14 @@ unsigned int Waypoint::getMemSize() const
 
 void Waypoint::Save(Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Waypoint "
-                    << "name=\"" << Name << "\" "
-                    << "Px=\"" << EndPos.getPosition().x << "\" "
-                    << "Py=\"" << EndPos.getPosition().y << "\" "
-                    << "Pz=\"" << EndPos.getPosition().z << "\" "
-                    << "Q0=\"" << EndPos.getRotation()[0] << "\" "
-                    << "Q1=\"" << EndPos.getRotation()[1] << "\" "
-                    << "Q2=\"" << EndPos.getRotation()[2] << "\" "
-                    << "Q3=\"" << EndPos.getRotation()[3] << "\" "
-                    << "vel=\"" << Velocity << "\" "
-                    << "acc=\"" << Acceleration << "\" "
-                    << "cont=\"" << int((Cont) ? 1 : 0) << "\" "
-                    << "tool=\"" << Tool << "\" "
-                    << "base=\"" << Base << "\" ";
+    writer.Stream() << writer.ind() << "<Waypoint " << "name=\"" << Name << "\" " << "Px=\""
+                    << EndPos.getPosition().x << "\" " << "Py=\"" << EndPos.getPosition().y << "\" "
+                    << "Pz=\"" << EndPos.getPosition().z << "\" " << "Q0=\""
+                    << EndPos.getRotation()[0] << "\" " << "Q1=\"" << EndPos.getRotation()[1]
+                    << "\" " << "Q2=\"" << EndPos.getRotation()[2] << "\" " << "Q3=\""
+                    << EndPos.getRotation()[3] << "\" " << "vel=\"" << Velocity << "\" " << "acc=\""
+                    << Acceleration << "\" " << "cont=\"" << int((Cont) ? 1 : 0) << "\" "
+                    << "tool=\"" << Tool << "\" " << "base=\"" << Base << "\" ";
     if (Type == Waypoint::PTP) {
         writer.Stream() << " type=\"PTP\"/> ";
     }

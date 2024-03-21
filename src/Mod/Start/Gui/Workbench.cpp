@@ -149,18 +149,9 @@ Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
     // web navigation toolbar
     Gui::ToolBarItem* navigation = new Gui::ToolBarItem(root);
     navigation->setCommand("Navigation");
-    *navigation << "Web_BrowserSetURL"
-                << "Separator"
-                << "Web_OpenWebsite"
-                << "Start_StartPage"
-                << "Separator"
-                << "Web_BrowserBack"
-                << "Web_BrowserNext"
-                << "Web_BrowserRefresh"
-                << "Web_BrowserStop"
-                << "Separator"
-                << "Web_BrowserZoomIn"
-                << "Web_BrowserZoomOut";
+    *navigation << "Web_BrowserSetURL" << "Separator" << "Web_OpenWebsite" << "Start_StartPage"
+                << "Separator" << "Web_BrowserBack" << "Web_BrowserNext" << "Web_BrowserRefresh"
+                << "Web_BrowserStop" << "Separator" << "Web_BrowserZoomIn" << "Web_BrowserZoomOut";
 
     return root;
 }

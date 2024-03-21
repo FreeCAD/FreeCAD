@@ -120,8 +120,8 @@ App::DocumentObjectExecReturn* FeatureViewSymbol::execute(void)
 
     std::stringstream result;
     result << "<g transform=\"translate(" << X.getValue() << "," << Y.getValue() << ")"
-           << " rotate(" << Rotation.getValue() << ")"
-           << " scale(" << Scale.getValue() << ")\">" << endl
+           << " rotate(" << Rotation.getValue() << ")" << " scale(" << Scale.getValue() << ")\">"
+           << endl
            << svg << endl
            << "</g>" << endl;
 

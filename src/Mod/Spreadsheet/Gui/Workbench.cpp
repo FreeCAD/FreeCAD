@@ -202,28 +202,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // utilities
     Gui::MenuItem* alignments = new Gui::MenuItem;
     alignments->setCommand("&Alignment");
-    *alignments << "Spreadsheet_AlignLeft"
-                << "Spreadsheet_AlignCenter"
-                << "Spreadsheet_AlignRight"
-                << "Spreadsheet_AlignTop"
-                << "Spreadsheet_AlignVCenter"
+    *alignments << "Spreadsheet_AlignLeft" << "Spreadsheet_AlignCenter" << "Spreadsheet_AlignRight"
+                << "Spreadsheet_AlignTop" << "Spreadsheet_AlignVCenter"
                 << "Spreadsheet_AlignBottom";
 
     Gui::MenuItem* styles = new Gui::MenuItem;
     styles->setCommand("&Styles");
-    *styles << "Spreadsheet_StyleBold"
-            << "Spreadsheet_StyleItalic"
-            << "Spreadsheet_StyleUnderline";
+    *styles << "Spreadsheet_StyleBold" << "Spreadsheet_StyleItalic" << "Spreadsheet_StyleUnderline";
 
     spreadsheet->setCommand("&Spreadsheet");
-    *spreadsheet << "Spreadsheet_CreateSheet"
-                 << "Separator"
-                 << "Spreadsheet_Import"
-                 << "Spreadsheet_Export"
-                 << "Separator"
-                 << "Spreadsheet_MergeCells"
-                 << "Spreadsheet_SplitCell"
-                 << "Separator" << alignments << styles;
+    *spreadsheet << "Spreadsheet_CreateSheet" << "Separator" << "Spreadsheet_Import"
+                 << "Spreadsheet_Export" << "Separator" << "Spreadsheet_MergeCells"
+                 << "Spreadsheet_SplitCell" << "Separator" << alignments << styles;
 
     return root;
 }
@@ -233,27 +223,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Spreadsheet");
-    *part << "Spreadsheet_CreateSheet"
-          << "Separator"
-          << "Spreadsheet_Import"
-          << "Spreadsheet_Export"
-          << "Separator"
-          << "Spreadsheet_MergeCells"
-          << "Spreadsheet_SplitCell"
-          << "Separator"
-          << "Spreadsheet_AlignLeft"
-          << "Spreadsheet_AlignCenter"
-          << "Spreadsheet_AlignRight"
-          << "Spreadsheet_AlignTop"
-          << "Spreadsheet_AlignVCenter"
-          << "Spreadsheet_AlignBottom"
-          << "Separator"
-          << "Spreadsheet_StyleBold"
-          << "Spreadsheet_StyleItalic"
-          << "Spreadsheet_StyleUnderline"
-          << "Separator"
-          << "Spreadsheet_SetAlias"
-          << "Separator";
+    *part << "Spreadsheet_CreateSheet" << "Separator" << "Spreadsheet_Import"
+          << "Spreadsheet_Export" << "Separator" << "Spreadsheet_MergeCells"
+          << "Spreadsheet_SplitCell" << "Separator" << "Spreadsheet_AlignLeft"
+          << "Spreadsheet_AlignCenter" << "Spreadsheet_AlignRight" << "Spreadsheet_AlignTop"
+          << "Spreadsheet_AlignVCenter" << "Spreadsheet_AlignBottom" << "Separator"
+          << "Spreadsheet_StyleBold" << "Spreadsheet_StyleItalic" << "Spreadsheet_StyleUnderline"
+          << "Separator" << "Spreadsheet_SetAlias" << "Separator";
 
     return root;
 }

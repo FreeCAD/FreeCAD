@@ -542,7 +542,7 @@ void ViewProviderFemConstraint::createRotation(SoSeparator* sep,
 {
     createCylinder(sep, width / 2, height / 2);
     createPlacement(sep,
-                    SbVec3f(0, -(height)*2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
+                    SbVec3f(0, -(height) * 2 - width / 8 - (gap ? 1.0 : 0.1) * width / 8, 0),
                     SbRotation());
 }
 
@@ -564,7 +564,7 @@ void ViewProviderFemConstraint::updateRotation(const SoNode* node,
     updateCylinder(sep, idx, height / 2, width / 2);
     updatePlacement(sep,
                     idx + CYLINDER_CHILDREN,
-                    SbVec3f(0, -(height)*2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
+                    SbVec3f(0, -(height) * 2 - width / 8 - (gap ? 1.0 : 0.0) * width / 8, 0),
                     SbRotation());
 }
 
