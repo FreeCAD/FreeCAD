@@ -70,6 +70,7 @@ set(Part_tests
     parttests/TopoShapeListTest.py
     parttests/ColorPerFaceTest.py
     parttests/ColorTransparencyTest.py
+    parttests/TopoShapeTest.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

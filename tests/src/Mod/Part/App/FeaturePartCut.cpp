@@ -173,4 +173,21 @@ TEST_F(FeaturePartCutTest, testGetProviderName)
     EXPECT_STREQ(name, "PartGui::ViewProviderBoolean");
 }
 
+TEST_F(FeaturePartCutTest, testMapping)
+{
+
+    // Arrange
+    _cut->Base.setValue(_boxes[0]);
+    _cut->Tool.setValue(_boxes[1]);
+    // Act
+    _cut->execute();
+    const Part::TopoShape& ts1 = _cut->Shape.getShape();
+    // Assert
+#ifndef FC_USE_TNP_FIX
+    EXPECT_EQ(ts1.getElementMap().size(), 0);
+#else
+    EXPECT_EQ(ts1.getElementMap().size(), 26);
+#endif
+}
+
 // See FeaturePartCommon.cpp for a history test.  It would be exactly the same and redundant here.

@@ -30,6 +30,7 @@ App = FreeCAD
 from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
+from parttests.TopoShapeTest import TopoShapeTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
