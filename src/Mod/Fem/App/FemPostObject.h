@@ -48,7 +48,7 @@ public:
     PyObject* getPyObject() override;
 
     vtkBoundingBox getBoundingBox();
-    void writeVTK(const char* filename);
+    void writeVTK(const char* filename) const;
 };
 
 }  // namespace Fem

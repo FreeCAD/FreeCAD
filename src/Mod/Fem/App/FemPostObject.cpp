@@ -116,7 +116,7 @@ std::string vtkWriterExtension(const vtkSmartPointer<vtkDataObject>& dataObject)
 
 }  // namespace
 
-void FemPostObject::writeVTK(const char* filename)
+void FemPostObject::writeVTK(const char* filename) const
 {
     const vtkSmartPointer<vtkDataObject>& data = Data.getValue();
 
@@ -127,7 +127,7 @@ void FemPostObject::writeVTK(const char* filename)
         throw Base::TypeError("Unsupported data type");
     }
 
-    std::string::size_type pos = name.find_last_of(".");
+    std::string::size_type pos = name.find_last_of('.');
     if (pos != std::string::npos) {
         name = name.substr(0, pos + 1).append(extension);
     }
