@@ -124,10 +124,12 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                                       bool issketchinvalid)
 {
     // Lambdas for convenience retrieval of geometry information
-    auto isDefinedGeomPoint = [&geolistfacade](int GeoId) {
+    auto isDefinedGeomPoint = [&geolistfacade](int GeoId, Sketcher::PointPos PosId) {
         auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         if (geom) {
-            return geom->isGeoType(Part::GeomPoint::getClassTypeId()) && !geom->getConstruction();
+            bool isStartOrEnd =
+                PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end;
+            return isStartOrEnd && !geom->getConstruction();
         }
         return false;
     };
@@ -185,6 +187,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                 }
                 else {
                     int GeoId = coinMapping.getPointGeoId(i, l);
+                    Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
 
                     bool constrainedElement = isFullyConstraintElement(GeoId);
 
@@ -197,12 +200,13 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                         }
                     }
                     else {
-                        if (!isDefinedGeomPoint(GeoId)) {
+                        if (!isDefinedGeomPoint(GeoId, PosId)) {
                             if (constrainedElement) {
-                                pcolor[i] = drawingParameters.FullyConstraintConstructionPointColor;
+                                pcolor[i] =
+                                    drawingParameters.FullyConstraintConstructionElementColor;
                             }
                             else {
-                                pcolor[i] = drawingParameters.VertexColor;
+                                pcolor[i] = drawingParameters.CurveDraftColor;
                             }
                         }
                         else {  // this is a defined GeomPoint

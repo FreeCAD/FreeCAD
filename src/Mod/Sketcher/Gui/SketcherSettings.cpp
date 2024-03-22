@@ -505,7 +505,6 @@ void SketcherSettingsAppearance::saveSettings()
     ui->SketchEdgeColor->onSave();
     ui->SketchVertexColor->onSave();
     ui->EditedEdgeColor->onSave();
-    ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
     ui->InvalidSketchColor->onSave();
@@ -514,7 +513,6 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
-    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -556,7 +554,6 @@ void SketcherSettingsAppearance::loadSettings()
     ui->SketchEdgeColor->onRestore();
     ui->SketchVertexColor->onRestore();
     ui->EditedEdgeColor->onRestore();
-    ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
     ui->InvalidSketchColor->onRestore();
@@ -565,7 +562,6 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
-    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
