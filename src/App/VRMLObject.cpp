@@ -29,6 +29,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 
@@ -55,6 +56,10 @@ short VRMLObject::mustExecute() const
 
 void VRMLObject::onChanged(const App::Property* prop)
 {
+    if (restoreData) {
+        return;
+    }
+
     if (prop == &VrmlFile) {
         std::string orig = VrmlFile.getOriginalFileName();
         if (!orig.empty()) {
@@ -67,10 +72,11 @@ void VRMLObject::onChanged(const App::Property* prop)
         // save the relative paths to the resource files in the project file
         Resources.setSize(Urls.getSize());
         const std::vector<std::string>& urls = Urls.getValues();
-        int index=0;
-        for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it, ++index) {
-            std::string output = getRelativePath(this->vrmlPath, *it);
+        int index = 0;
+        for (const auto& it : urls) {
+            std::string output = getRelativePath(this->vrmlPath, it);
             Resources.set1Value(index, output);
+            ++index;
         }
     }
     GeoFeature::onChanged(prop);
@@ -104,7 +110,7 @@ std::string VRMLObject::getRelativePath(const std::string& prefix, const std::st
     return str;
 }
 
-std::string VRMLObject::fixRelativePath(const std::string& name, const std::string& resource) const
+std::string VRMLObject::fixRelativePath(const std::string& name, const std::string& resource)
 {
     // the part before the first '/' must match with object's internal name
     std::string::size_type pos = resource.find('/');
@@ -123,10 +129,13 @@ void VRMLObject::makeDirectories(const std::string& path, const std::string& sub
     std::string::size_type pos = subdir.find('/');
     while (pos != std::string::npos) {
         std::string sub = subdir.substr(0, pos);
-        std::string dir = path + "/" + sub;
+        std::string dir = path;
+        dir += '/';
+        dir += sub;
         Base::FileInfo fi(dir);
-        if (!fi.createDirectory())
+        if (!fi.createDirectory()) {
             break;
+        }
         pos = subdir.find('/', pos+1);
     }
 }
@@ -141,7 +150,7 @@ void VRMLObject::Save (Base::Writer &writer) const
         writer.addFile(url.c_str(), this);
     }
 
-    this->index = 0;
+    this->indexSave = 0;
 }
 
 void VRMLObject::Restore(Base::XMLReader &reader)
@@ -155,14 +164,14 @@ void VRMLObject::Restore(Base::XMLReader &reader)
         reader.addFile(url.c_str(), this);
     }
 
-    this->index = 0;
+    this->indexRestore = 0;
 }
 
 void VRMLObject::SaveDocFile (Base::Writer &writer) const
 {
     // store the inline files of the VRML file
-    if (this->index < Urls.getSize()) {
-        std::string url = Urls[this->index];
+    if (this->indexSave < Urls.getSize()) {
+        std::string url = Urls[this->indexSave];
 
         Base::FileInfo fi(url);
         // it can happen that the transient directory has changed after
@@ -170,12 +179,12 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
         // try again with the new transient directory.
         if (!fi.exists()) {
             std::string path = getDocument()->TransientDir.getValue();
-            url = Resources[this->index];
+            url = Resources[this->indexSave];
             url = path + "/" + url;
             fi.setFile(url);
         }
 
-        this->index++;
+        this->indexSave++;
         Base::ifstream file(fi, std::ios::in | std::ios::binary);
         if (file) {
             writer.Stream() << file.rdbuf();
@@ -183,20 +192,21 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void VRMLObject::RestoreDocFile(Base::Reader &reader)
+bool VRMLObject::restoreTextureFinished(Base::Reader &reader)
 {
-    if (this->index < Resources.getSize()) {
+    Base::StateLocker locker(restoreData, true);
+    if (this->indexRestore < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
-        std::string url = Resources[this->index];
+        std::string url = Resources[this->indexRestore];
         std::string intname = this->getNameInDocument();
         url = fixRelativePath(intname, url);
-        Resources.set1Value(this->index, url);
+        Resources.set1Value(this->indexRestore, url);
         makeDirectories(path, url);
 
         url = path + "/" + url;
         Base::FileInfo fi(url);
-        Urls.set1Value(this->index, url);
-        this->index++;
+        Urls.set1Value(this->indexRestore, url);
+        this->indexRestore++;
 
         Base::ofstream file(fi, std::ios::out | std::ios::binary);
         if (file) {
@@ -204,11 +214,23 @@ void VRMLObject::RestoreDocFile(Base::Reader &reader)
             file.close();
         }
 
-        // after restoring all inline files reload the VRML file
-        if (this->index == Urls.getSize()) {
-            VrmlFile.touch();
-            Base::FileInfo fi(VrmlFile.getValue());
-            this->vrmlPath = fi.dirPath();
-        }
+        return (this->indexRestore == Urls.getSize());
+    }
+
+    return false;
+}
+
+void VRMLObject::reloadFile()
+{
+    // after restoring all inline files reload the VRML file
+    VrmlFile.touch();
+    Base::FileInfo fi(VrmlFile.getValue());
+    this->vrmlPath = fi.dirPath();
+}
+
+void VRMLObject::RestoreDocFile(Base::Reader &reader)
+{
+    if (restoreTextureFinished(reader)) {
+        reloadFile();
     }
 }

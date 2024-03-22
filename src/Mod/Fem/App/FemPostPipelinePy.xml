@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
-        Father="GeoFeaturePy"
+        Father="FemPostObjectPy"
         Name="FemPostPipelinePy"
         Twin="FemPostPipeline"
         TwinPointer="FemPostPipeline"
         Include="Mod/Fem/App/FemPostPipeline.h"
         Namespace="Fem"
-        FatherInclude="App/GeoFeaturePy.h"
-        FatherNamespace="App">
+        FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
+        FatherNamespace="Fem">
         <Documentation>
             <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
             <UserDocu>The FemPostPipeline class.</UserDocu>
