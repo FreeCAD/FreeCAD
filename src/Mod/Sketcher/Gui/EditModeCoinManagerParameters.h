@@ -106,11 +106,7 @@ struct DrawingParameters
     static SbColor FullyConstrainedColor;                  // Color for a fully constrained sketch
     static SbColor FullyConstraintInternalAlignmentColor;  // Color for fully constrained internal
                                                            // alignment geometry
-    static SbColor
-        InternalAlignedGeoColor;  // Color for non-fully constrained internal alignment geometry
-    static SbColor
-        FullyConstraintConstructionPointColor;   // Color for fully constrained construction points
-    static SbColor VertexColor;                  // Color for vertices
+    static SbColor InternalAlignedGeoColor;  // Color for non-fully constrained internal geometry
     static SbColor FullyConstraintElementColor;  // Color for a fully constrained element
     static SbColor CurveColor;                   // Color for curves
     static SbColor PreselectColor;               // Color used for pre-selection
@@ -473,6 +469,7 @@ struct CoinMapping
         }
         CurvIdToGeoId.clear();
         PointIdToGeoId.clear();
+        PointIdToPosId.clear();
         GeoElementId2SetId.clear();
         PointIdToVertexId.clear();
     };
@@ -488,6 +485,12 @@ struct CoinMapping
     int getPointGeoId(int pointindex, int layerindex)
     {
         return PointIdToGeoId[layerindex][pointindex];
+    }
+    /// given the MF index of a point and the coin layer in which it is drawn returns the PosId of
+    /// the point
+    Sketcher::PointPos getPointPosId(int pointindex, int layerindex)
+    {
+        return PointIdToPosId[layerindex][pointindex];
     }
     /// given the MF index of a point and the coin layer in which it is drawn returns the VertexId
     /// of the point
@@ -531,6 +534,7 @@ struct CoinMapping
     std::vector<std::vector<std::vector<int>>>
         CurvIdToGeoId;                             // conversion of SoLineSet index to GeoId
     std::vector<std::vector<int>> PointIdToGeoId;  // conversion of SoCoordinate3 index to GeoId
+    std::vector<std::vector<Sketcher::PointPos>> PointIdToPosId;  // SoCoordinate3 index to PosId
 
     //* This maps an MF index (second index) of a point within a coin layer (first index) to a
     // global VertexId */

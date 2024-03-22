@@ -193,69 +193,10 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Vertex</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionPointColor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Color of fully constrained vertex color in edit mode</string>
-        </property>
-        <property name="color" stdset="0">
-         <color>
-          <red>255</red>
-          <green>149</green>
-          <blue>128</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>FullyConstraintConstructionPointColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="Gui::PrefColorButton" name="EditedVertexColor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Color of vertices being edited</string>
-        </property>
-        <property name="color" stdset="0">
-         <color>
-          <red>255</red>
-          <green>38</green>
-          <blue>0</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>EditedVertexColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Edge</string>
+         <string>Geometry</string>
         </property>
        </widget>
       </item>
