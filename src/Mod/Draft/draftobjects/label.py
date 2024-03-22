@@ -300,9 +300,6 @@ class Label(DraftAnnotation):
             # will be overwritten
             pass
 
-        # Reset the text, only change it depending on the options
-        obj.Text = ""
-
         if obj.LabelType == "Custom":
             if obj.CustomText:
                 obj.Text = obj.CustomText
@@ -314,9 +311,10 @@ class Label(DraftAnnotation):
 
             # The sublist may be empty so we test it first
             subelement = sub_list[0] if sub_list else None
+            obj.Text = return_info(target, typ, subelement)
 
-            text_list = return_info(target, typ, subelement)
-            obj.Text = text_list
+        else:
+            obj.Text = [translate("draft", "No Target")]
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -362,54 +360,43 @@ def return_info(target, typ, subelement=None):
     if typ == "Name":
         return _get_name(target)
 
-    elif typ == "Label":
+    if typ == "Label":
         return _get_label(target)
 
-    elif typ == "Tag" and hasattr(target, "Tag"):
+    if typ == "Tag":
         return _get_tag(target)
 
-    elif (typ == "Material"
-          and hasattr(target, "Material")
-          and hasattr(target.Material, "Label")):
+    if typ == "Material":
         return _get_material(target)
 
-    elif (typ == "Label + Material"
-          and hasattr(target, "Material")
-          and hasattr(target.Material, "Label")):
+    if typ == "Label + Material":
         return _get_label(target) + _get_material(target)
 
-    elif typ == "Position":
+    if typ == "Position":
         return _get_position(target, subelement)
 
-    elif typ == "Label + Position":
+    if typ == "Label + Position":
         return _get_label(target) + _get_position(target, subelement)
 
-    elif typ == "Length" and hasattr(target, 'Shape'):
+    if typ == "Length":
         return _get_length(target, subelement)
 
-    elif typ == "Label + Length" and hasattr(target, 'Shape'):
+    if typ == "Label + Length":
         return _get_label(target) + _get_length(target, subelement)
 
-    elif typ == "Area" and hasattr(target, 'Shape'):
+    if typ == "Area":
         return _get_area(target, subelement)
 
-    elif typ == "Label + Area" and hasattr(target, 'Shape'):
+    if typ == "Label + Area":
         return _get_label(target) + _get_area(target, subelement)
 
-    elif (typ == "Volume"
-          and hasattr(target, 'Shape')
-          and hasattr(target.Shape, "Volume")):
-        return _get_volume(target)
+    if typ == "Volume":
+        return _get_volume(target, subelement)
 
-    elif (typ == "Label + Volume"
-          and hasattr(target, 'Shape')
-          and hasattr(target.Shape, "Volume")):
-        return _get_label(target) + _get_volume(target)
+    if typ == "Label + Volume":
+        return _get_label(target) + _get_volume(target, subelement)
 
-    # If the type is not the correct one, or the subelement doesn't have
-    # the required `Shape` and information underneath, it will return
-    # an empty list
-    return [""]
+    return [translate("draft", "Invalid label type")]
 
 
 def _get_name(target):
@@ -421,54 +408,72 @@ def _get_label(target):
 
 
 def _get_tag(target):
-    return [target.Tag]
+    if hasattr(target, "Tag"):
+        return [target.Tag]
+    else:
+        return [translate("draft", "Tag not available for object")]
 
 
 def _get_material(target):
-    return [target.Material.Label]
+    if (hasattr(target, "Material") and hasattr(target.Material, "Label")):
+        return [target.Material.Label]
+    else:
+        return [translate("draft", "Material not available for object")]
 
 
 def _get_position(target, subelement):
-    p = target.Placement.Base
-
-    # Position of the vertex if it is given as subelement
-    if subelement and "Vertex" in subelement:
-        p = target.Shape.Vertexes[int(subelement[6:]) - 1].Point
-
-    text_list = [U.Quantity(x, U.Length).UserString for x in tuple(p)]
-    return text_list
+    point = None
+    if subelement is not None:
+        if "Vertex" in subelement:
+            point = target.Shape.Vertexes[int(subelement[6:]) - 1].Point
+    else:
+        point = target.Placement.Base
+    if point is None:
+        return [translate("draft", "Position not available for (sub)object")]
+    return [U.Quantity(x, U.Length).UserString for x in tuple(point)]
 
 
 def _get_length(target, subelement):
-    text_list = ["No length"]
-    if hasattr(target.Shape, "Length"):
-        text_list = [U.Quantity(target.Shape.Length, U.Length).UserString]
-
-    # Length of the edge if it is given as subelement
-    if subelement and "Edge" in subelement:
-        edge = target.Shape.Edges[int(subelement[4:]) - 1]
-        text_list = [U.Quantity(edge.Length, U.Length).UserString]
-
-    return text_list
+    length = None
+    if subelement is not None:
+        if "Edge" in subelement:
+            length = target.Shape.Edges[int(subelement[4:]) - 1].Length
+        elif "Face" in subelement:
+            length = target.Shape.Faces[int(subelement[4:]) - 1].Length
+    elif hasattr(target, "Length"):
+        length = target.Length
+    elif hasattr(target, "Shape") and hasattr(target.Shape, "Length"):
+        length = target.Shape.Length
+    if length is None:
+        return [translate("draft", "Length not available for (sub)object")]
+    return [U.Quantity(length, U.Length).UserString]
 
 
 def _get_area(target, subelement):
-    text_list = ["No area"]
-    if hasattr(target.Shape, "Area"):
-        area = U.Quantity(target.Shape.Area, U.Area).UserString
-        text_list = [area.replace("^2", "²")]
+    area = None
+    if subelement is not None:
+        if "Face" in subelement:
+            area = target.Shape.Faces[int(subelement[4:]) - 1].Area
+    elif hasattr(target, "Area"):
+        area = target.Area
+    elif hasattr(target, "Shape") and hasattr(target.Shape, "Area"):
+        area = target.Shape.Area
+    if area is None:
+        return [translate("draft", "Area not available for (sub)object")]
+    return [U.Quantity(area, U.Area).UserString.replace("^2", "²")]
 
-    # Area of the face if it is given as subelement
-    if subelement and "Face" in subelement:
-        face = target.Shape.Faces[int(subelement[4:]) - 1]
-        text_list = [U.Quantity(face.Area, U.Area).UserString]
 
-    return text_list
-
-
-def _get_volume(target):
-    volume = U.Quantity(target.Shape.Volume, U.Volume).UserString
-    return [volume.replace("^3", "³")]
+def _get_volume(target, subelement):
+    volume = None
+    if subelement is not None:
+        pass
+    elif hasattr(target, "Volume"):
+        volume = target.Volume
+    elif hasattr(target, "Shape") and hasattr(target.Shape, "Volume"):
+        volume = target.Shape.Volume
+    if volume is None:
+        return [translate("draft", "Volume not available for (sub)object")]
+    return [U.Quantity(volume, U.Volume).UserString.replace("^3", "³")]
 
 
 ## @}
