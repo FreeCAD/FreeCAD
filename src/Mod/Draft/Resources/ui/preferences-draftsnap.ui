@@ -130,7 +130,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
       <item row="5" column="0">
        <widget class="QLabel" name="label_gridEvery">
         <property name="text">
-         <string>Main lines every</string>
+         <string>Major lines every</string>
         </property>
        </widget>
       </item>
@@ -143,8 +143,8 @@ if they match the X, Y or Z axis of the global coordinate system</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>The number of squares between main grid lines.
-These lines are thicker than normal grid lines.</string>
+         <string>Display major lines after the given count of minor grid lines.
+Major lines are thicker than minor grid lines.</string>
         </property>
         <property name="value">
          <number>10</number>
@@ -173,7 +173,7 @@ These lines are thicker than normal grid lines.</string>
       <item row="6" column="0">
        <widget class="QLabel" name="label_gridSpacing">
         <property name="text">
-         <string>Grid spacing</string>
+         <string>Line spacing</string>
         </property>
        </widget>
       </item>
@@ -212,10 +212,10 @@ These lines are thicker than normal grid lines.</string>
       <item row="7" column="1">
        <widget class="Gui::PrefSpinBox" name="spinBox_gridSize">
         <property name="toolTip">
-         <string>The number of horizontal and vertical lines in the grid</string>
+         <string>The number of horizontal and vertical minor lines in the grid</string>
         </property>
         <property name="suffix">
-         <string> lines</string>
+         <string> minor lines</string>
         </property>
         <property name="maximum">
          <number>9999</number>
