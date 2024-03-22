@@ -143,8 +143,11 @@ if they match the X, Y or Z axis of the global coordinate system</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Display major lines after the given count of minor grid lines.
+         <string>Display major lines after the given count of minor lines.
 Major lines are thicker than minor grid lines.</string>
+        </property>
+        <property name="suffix">
+         <string> minor lines</string>
         </property>
         <property name="value">
          <number>10</number>
