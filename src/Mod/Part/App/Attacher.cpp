@@ -1478,7 +1478,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
             if (shapes.size() >= 2) {
                 TopoDS_Vertex vertex;
                 try {
-                    TopoDS::Vertex(*(shapes[1]));
+                    vertex = TopoDS::Vertex(*(shapes[1]));
                 }
                 catch (...) {
                 }
