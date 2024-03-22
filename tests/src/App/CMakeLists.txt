@@ -20,4 +20,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/PropertyExpressionEngine.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/StringHasher.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/VarSet.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/VRMLObject.cpp
 )

@@ -51,7 +51,6 @@ endif()
 
 
 generate_from_xml(FemMeshPy)
-generate_from_xml(FemPostPipelinePy)
 
 
 SET(Python_SRCS
@@ -65,9 +64,13 @@ SET(Python_SRCS
 if(BUILD_FEM_VTK)
     SET(Python_SRCS
         ${Python_SRCS}
+        FemPostObjectPy.xml
+        FemPostObjectPyImp.cpp
         FemPostPipelinePy.xml
         FemPostPipelinePyImp.cpp
     )
+    generate_from_xml(FemPostObjectPy)
+    generate_from_xml(FemPostPipelinePy)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 

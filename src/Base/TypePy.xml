@@ -17,12 +17,9 @@ namespace Base {
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the Type class</DeveloperDocu>
-      <UserDocu>Base.BaseType class.
+      <UserDocu>BaseTypePy class.
 
-This class is not intended to create instances of itself, but to get information
-from the different types and create instances of them.
-Regarding instantiation, this is possible in cases that inherit from the
-Base::BaseClass class and are not abstract classes.</UserDocu>
+        This class provides functionality related to type management in the Base module. It's not intended for direct instantiation but for accessing type information and creating instances of various types. Instantiation is possible for classes that inherit from the Base::BaseClass class and are not abstract.</UserDocu>
     </Documentation>
     <Methode Name="fromName" Static="true">
       <Documentation>

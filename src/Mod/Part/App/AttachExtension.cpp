@@ -119,7 +119,10 @@ bool AttachExtension::positionBySupport()
     try {
         if (_attacher->mapMode == mmDeactivated)
             return false;
-        getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
+        bool subChanged = false;
+        getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue(), &subChanged));
+        if(subChanged)
+            AttachmentSupport.setValues(AttachmentSupport.getValues(),_attacher->getSubValues());
         _active = 1;
         return true;
     } catch (ExceptionCancel&) {
@@ -193,7 +196,7 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
 
             // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
             bool hasOneRef = false;
-            if (_attacher && _attacher->references.getSubValues().size() == 1) {
+            if (_attacher && _attacher->subnames.size() == 1) {
                 hasOneRef = true;
             }
 
@@ -257,7 +260,7 @@ void AttachExtension::onExtendedDocumentRestored()
 
         // MapPathParameter is only used if there is a reference to one edge and not edge + vertex
         bool hasOneRef = false;
-        if (_attacher && _attacher->references.getSubValues().size() == 1) {
+        if (_attacher && _attacher->subnames.size() == 1) {
             hasOneRef = true;
         }
 
