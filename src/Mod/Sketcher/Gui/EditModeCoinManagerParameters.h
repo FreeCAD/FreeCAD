@@ -76,9 +76,10 @@ struct DrawingParameters
     const float zConstr = 0.009f;      // Height for rendering constraints
     const float zRootPoint = 0.010f;   // Height used for rendering the root point
     const float zLowPoints = 0.011f;   // Height used for bottom rendered points
-    const float zHighPoints = 0.012f;  // Height used for in-the-middle rendered points
-    const float zHighlight = 0.013f;   // Height for highlighted points (selected/preselected)
-    const float zText = 0.013f;        // Height for rendered text
+    const float zMidPoints = 0.012f;   // Height used for mid rendered points
+    const float zHighPoints = 0.013f;  // Height used for top rendered points
+    const float zHighlight = 0.014f;   // Height for highlighted points (selected/preselected)
+    const float zText = 0.014f;        // Height for rendered text
     //@}
 
     /// Different categories of geometries that can be selected by the user to be rendered on top,
