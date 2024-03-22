@@ -101,6 +101,17 @@ PyObject* AssemblyObject::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+App::DocumentObjectExecReturn* AssemblyObject::execute()
+{
+    App::DocumentObjectExecReturn* ret = App::Part::execute();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+    if (hGrp->GetBool("SolveOnRecompute", true)) {
+        solve();
+    }
+    return ret;
+}
 
 int AssemblyObject::solve(bool enableRedo)
 {
@@ -299,6 +310,7 @@ void AssemblyObject::setNewPlacements()
         Base::Placement newPlacement = Base::Placement(pos, rot);
 
         propPlacement->setValue(newPlacement);
+        obj->purgeTouched();
     }
 }
 
@@ -316,6 +328,7 @@ void AssemblyObject::redrawJointPlacements(std::vector<App::DocumentObject*> joi
         if (propPlacement) {
             propPlacement->setValue(propPlacement->getValue());
         }
+        joint->purgeTouched();
     }
 }
 
