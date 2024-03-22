@@ -116,10 +116,20 @@ class TaskHoleShaftFit:
         mainFormat = dim.FormatSpec
         dim.FormatSpec = mainFormat+' '+selectedField
         dim.EqualTolerance = False
-        dim.FormatSpecOverTolerance = '(%-0.6w)'
-        dim.FormatSpecUnderTolerance = '(%-0.6w)'
         dim.OverTolerance = rangeValues[0]
         dim.UnderTolerance = rangeValues[1]
+        if dim.OverTolerance < 0:
+            dim.FormatSpecOverTolerance = '(%-0.6w)'
+        elif dim.OverTolerance > 0:
+            dim.FormatSpecOverTolerance = '(+%-0.6w)'
+        else:
+            dim.FormatSpecOverTolerance = '( %-0.6w)'
+        if dim.UnderTolerance < 0:
+            dim.FormatSpecUnderTolerance = '(%-0.6w)'
+        elif dim.UnderTolerance > 0:
+            dim.FormatSpecUnderTolerance = '(+%-0.6w)'
+        else:
+            dim.FormatSpecUnderTolerance = '( %-0.6w)'
         Gui.Control.closeDialog()
 
     def reject(self):
