@@ -5214,21 +5214,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             static QPixmap pxError;
             if (pxError.isNull()) {
                 // object is in error state
-                const char* const feature_error_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #ff0000",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "###aaa###",
-                    "###aaa###",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..." };
-                pxError = QPixmap(feature_error_xpm);
+                pxError = Gui::BitmapFactory().pixmapFromSvg("overlay_error", QSize(10, 10));
             }
             px = pxError;
         }
@@ -5236,21 +5222,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             static QPixmap pxRecompute;
             if (pxRecompute.isNull()) {
                 // object must be recomputed
-                const char* const feature_recompute_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #0000ff",
-                    "a c #ffffff",
-                    "...###...",
-                    ".######aa",
-                    ".#####aa.",
-                    "#####aa##",
-                    "#aa#aa###",
-                    "#aaaa####",
-                    ".#aa####.",
-                    ".#######.",
-                    "...###..." };
-                pxRecompute = QPixmap(feature_recompute_xpm);
+                pxRecompute = Gui::BitmapFactory().pixmapFromSvg("overlay_recompute", QSize(10, 10));
             }
             px = pxRecompute;
         }
@@ -5283,19 +5255,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         if (currentStatus & 8) {// hidden item
             static QPixmap pxHidden;
             if (pxHidden.isNull()) {
-                const char* const feature_hidden_xpm[] = {
-                    "9 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "...###...",
-                    "..#aaa#..",
-                    ".#a###a#.",
-                    "#aa###aa#",
-                    ".#a###a#.",
-                    "..#aaa#..",
-                    "...###..." };
-                pxHidden = QPixmap(feature_hidden_xpm);
+                pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10, 10));
             }
             pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
@@ -5304,19 +5264,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         if (external) {// external item
             static QPixmap pxExternal;
             if (pxExternal.isNull()) {
-                const char* const feature_external_xpm[] = {
-                    "7 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "..###..",
-                    ".#aa##.",
-                    "..#aa##",
-                    "..##aa#",
-                    "..#aa##",
-                    ".#aa##.",
-                    "..###.." };
-                pxExternal = QPixmap(feature_external_xpm);
+                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
+                                                              QSize(24, 24));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
@@ -5326,27 +5275,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             static QPixmap pxFreeze;
             if (pxFreeze.isNull()) {
                 // object is in freezed state
-                const char* const feature_freezed_xpm[] = {
-                                                           "16 16 2 1",
-                                                           " 	c None",
-                                                           ".	c #00EEFF",
-                                                           "      . . .     ",
-                                                           "    .  ...  .   ",
-                                                           "   ..   .   ..  ",
-                                                           "  ....  .  .... ",
-                                                           "     .. . ..    ",
-                                                           " .    . . .    .",
-                                                           "  .    ...    . ",
-                                                           " ...............",
-                                                           "  .    ...    . ",
-                                                           " .    . . .    .",
-                                                           "     .. . ..    ",
-                                                           "  ....  .  .... ",
-                                                           "   ..   .   ..  ",
-                                                           "    .  ...  .   ",
-                                                           "      . . .     ",
-                                                           "                "};
-                pxFreeze = QPixmap(feature_freezed_xpm);
+                pxFreeze = Gui::BitmapFactory().pixmapFromSvg("Std_ToggleFreeze", QSize(16, 16));
             }
             pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
