@@ -821,7 +821,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Structure
     auto structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions";
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet" << "Std_PropertyManager";
 
     // Help
     auto help = new ToolBarItem( root );

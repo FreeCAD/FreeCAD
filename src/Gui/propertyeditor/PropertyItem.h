@@ -80,6 +80,7 @@ namespace PropertyEditor {
 
 class PropertyItem;
 class PropertyModel;
+class PropertyModel2;
 class PropertyEditorWidget;
 
 /**
@@ -278,6 +279,7 @@ class GuiExport PropertySeparatorItem : public PropertyItem
 
 private:
     friend PropertyModel;
+    friend PropertyModel2;
     int _row = -1;
 };
 

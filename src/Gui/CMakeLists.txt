@@ -37,6 +37,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/Language
     ${CMAKE_CURRENT_BINARY_DIR}/propertyeditor
+    ${CMAKE_CURRENT_BINARY_DIR}/propertymanager
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
@@ -729,6 +730,29 @@ SET(Propertyeditor_SRCS
 )
 SOURCE_GROUP("Propertyeditor" FILES ${Propertyeditor_SRCS})
 
+# The property manager
+SET(Propertymanager_SRCS
+    propertymanager/Filter.cpp
+    propertymanager/Filter.h
+    propertymanager/PropertyManager.cpp
+    propertymanager/PropertyManager.h
+    propertymanager/PropertyManager.ui
+    propertymanager/PropertyEditor2.cpp
+    propertymanager/PropertyEditor2.h
+    propertymanager/PropertyItemDelegate2.cpp
+    propertymanager/PropertyItemDelegate2.h
+    propertymanager/PropertyManagerItem.cpp
+    propertymanager/PropertyManagerItem.h
+    propertymanager/PropertyManagerItemDelegate.cpp
+    propertymanager/PropertyManagerItemDelegate.h
+    propertymanager/PropertyManagerModel.cpp
+    propertymanager/PropertyManagerModel.h
+    propertymanager/PropertyModel2.cpp
+    propertymanager/PropertyModel2.h
+)
+SOURCE_GROUP("Propertymanager" FILES ${Propertymanager_SRCS})
+
+
 # The task view
 SET(Task_View_SRCS
     TaskView/TaskAppearance.cpp
@@ -1252,6 +1276,7 @@ SET(FreeCADGui_SRCS
     ${Inventor_SRCS}
     ${Language_SRCS}
     ${Propertyeditor_SRCS}
+    ${Propertymanager_SRCS}
     ${Task_View_SRCS}
     ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
