@@ -425,6 +425,9 @@
         </item>
         <item row="4" column="2">
          <widget class="Gui::PrefSpinBox" name="sb_ccx_max_iterations">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
