@@ -152,6 +152,7 @@ public:
     static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
 
     static double getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
+    static gp_Vec maskDirection(gp_Vec inVec, gp_Dir directionToMask);
 
     static double getDefaultLineWeight(std::string s);
     //! is pt between end1 and end2?
