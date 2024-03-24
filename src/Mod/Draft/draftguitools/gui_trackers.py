@@ -42,7 +42,6 @@ import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
-import WorkingPlane
 from FreeCAD import Vector
 from draftutils import params
 from draftutils import utils
@@ -1173,12 +1172,12 @@ class gridTracker(Tracker):
             self.coords3.point.setValues(apts)
             #self.lines3.numVertices.setValues(aidx)
             self.pts = pts
+
         # update the grid colors
         col, red, green, blue, gtrans = self.getGridColors()
         self.mat1.diffuseColor.setValue(col)
         self.mat2.diffuseColor.setValue(col)
         self.mat3.diffuseColor.setValues([col,red,green,blue])
-        self.setAxesColor()
 
     def getGridColors(self):
         """Returns grid colors stored in the preferences"""
@@ -1222,12 +1221,8 @@ class gridTracker(Tracker):
         self.coords_human.point.setValues(pts)
         self.human.numVertices.setValues(pidx)
 
-    def setAxesColor(self, wp=None):
+    def setAxesColor(self, wp):
         """set axes color"""
-        if not wp:
-            wp = getattr(FreeCAD, "DraftWorkingPlane", None)
-            if not wp:
-                wp = WorkingPlane.plane()
         cols = [0,0]
         if params.get_param("coloredGridAxes"):
             if round(wp.u.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):

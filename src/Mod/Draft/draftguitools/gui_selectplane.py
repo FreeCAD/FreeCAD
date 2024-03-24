@@ -37,6 +37,7 @@ import WorkingPlane
 from FreeCAD import Units
 from drafttaskpanels import task_selectplane
 from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.todo import todo
 from draftutils.translate import translate
@@ -112,12 +113,9 @@ class Draft_SelectPlane:
         form.buttonPrevious.setIcon(QtGui.QIcon(":/icons/sel-back.svg"))
         form.buttonNext.setIcon(QtGui.QIcon(":/icons/sel-forward.svg"))
 
-        # color and transparency
+        # Grid color
         color = params.get_param("gridColor")
-        r = ((color >> 24) & 0xFF) / 255.0
-        g = ((color >> 16) & 0xFF) / 255.0
-        b = ((color >> 8) & 0xFF) / 255.0
-        form.buttonColor.setProperty("color", QtGui.QColor.fromRgbF(r, g, b))
+        form.buttonColor.setProperty("color", QtGui.QColor(utils.rgba_to_argb(color)))
 
         # Connect slots
         form.buttonTop.clicked.connect(self.on_click_top)
@@ -285,10 +283,8 @@ class Draft_SelectPlane:
             Gui.Snapper.showradius()
 
     def on_color_changed(self):
-        color = self.taskd.form.buttonColor.property("color").rgb() << 8
+        color = utils.argb_to_rgba(self.taskd.form.buttonColor.property("color").rgba())
         params.set_param("gridColor", color)
-        if self.grid is not None:
-            self.grid.update()
 
 Gui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
 
