@@ -760,6 +760,7 @@ Base::Vector3d DrawUtil::closestBasis(gp_Dir gDir, gp_Ax2 coordSys)
     return Base::Vector3d(xCS.X(), xCS.Y(), xCS.Z());
 }
 
+//! find the size of a shape measured in a given (cardinal) direction
 double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
 {
     Base::Vector3d stdX(1.0, 0.0, 0.0);
@@ -795,6 +796,30 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     }
 
     return 0.0;
+}
+
+//! mask off one component of the input vector. input vector (a, b, c) with
+//! direction to mask (0, 1, 0) would return (a, 0.0, c).  The mask is a
+//! cardinal direction or the reverse of a cardinal direction.
+gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
+{
+    if (directionToMask.XYZ().IsEqual(gp::OX().Direction().XYZ(), EWTOLERANCE) ||
+        directionToMask.XYZ().IsEqual(gp::OX().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+            return {0.0, inVec.Y(), inVec.Z()};
+    }
+
+    if (directionToMask.XYZ().IsEqual(gp::OY().Direction().XYZ(), EWTOLERANCE) ||
+        directionToMask.XYZ().IsEqual(gp::OY().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+            return {inVec.X(), 0.0, inVec.Z()};
+    }
+
+    if (directionToMask.XYZ().IsEqual(gp::OZ().Direction().XYZ(), EWTOLERANCE) ||
+        directionToMask.XYZ().IsEqual(gp::OZ().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+            return {inVec.X(), inVec.Y(), 0.0};
+    }
+
+    Base::Console().Message("DU:maskDirection - directionToMask is not cardinal\n");
+    return {};
 }
 
 //based on Function provided by Joe Dowsett, 2014
