@@ -497,7 +497,7 @@
          </widget>
         </item>
         <item row="5" column="3">
-         <widget class="QLabel" name="l_hz_3">
+         <widget class="QLabel" name="l_hz_1">
           <property name="text">
            <string>s</string>
           </property>
@@ -536,7 +536,7 @@
          </widget>
         </item>
         <item row="6" column="3">
-         <widget class="QLabel" name="l_hz_3">
+         <widget class="QLabel" name="l_hz_2">
           <property name="text">
            <string>s</string>
           </property>
@@ -646,7 +646,7 @@
          </widget>
         </item>
         <item row="8" column="3">
-         <widget class="QLabel" name="l_hz_3">
+         <widget class="QLabel" name="l_hz_4">
           <property name="text">
            <string>s</string>
           </property>
@@ -808,7 +808,7 @@
          </widget>
         </item>
         <item row="2" column="3">
-         <widget class="QLabel" name="l_hz_2">
+         <widget class="QLabel" name="l_hz_5">
           <property name="text">
            <string>Hz</string>
           </property>
