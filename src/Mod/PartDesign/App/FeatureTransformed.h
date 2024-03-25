@@ -106,9 +106,6 @@ protected:
     bool isMultiTransformChild() const;
     virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
-    void divideTools(const std::vector<TopoDS_Shape>& toolsIn,
-                     std::vector<TopoDS_Shape>& individualsOut,
-                     TopoDS_Compound& compoundOut) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:

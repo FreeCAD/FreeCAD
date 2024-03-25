@@ -439,60 +439,6 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
     return oldShape;
 }
 
-void divideTools(const std::vector<TopoDS_Shape>& toolsIn,
-                              std::vector<TopoDS_Shape>& individualsOut,
-                              TopoDS_Compound& compoundOut)
-{
-    using ShapeBoundPair = std::pair<TopoDS_Shape, Bnd_Box>;
-    using PairList = std::list<ShapeBoundPair>;
-    using PairVector = std::vector<ShapeBoundPair>;
-
-    PairList pairList;
-
-    for (auto it = toolsIn.begin(); it != toolsIn.end(); ++it) {
-        Bnd_Box bound;
-        BRepBndLib::Add(*it, bound);
-        bound.SetGap(0.0);
-        ShapeBoundPair temp = std::make_pair(*it, bound);
-        pairList.push_back(temp);
-    }
-
-    BRep_Builder builder;
-    builder.MakeCompound(compoundOut);
-
-    while (!pairList.empty()) {
-        PairVector currentGroup;
-        currentGroup.push_back(pairList.front());
-        pairList.pop_front();
-        auto it = pairList.begin();
-        while (it != pairList.end()) {
-            bool found(false);
-            for (auto groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
-                if (!(*it).second.IsOut((*groupIt).second)) {  // touching means is out.
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
-                currentGroup.push_back(*it);
-                pairList.erase(it);
-                it = pairList.begin();
-                continue;
-            }
-            ++it;
-        }
-
-        if (currentGroup.size() == 1) {
-            builder.Add(compoundOut, currentGroup.front().first);
-        }
-        else {
-            for (auto groupIt = currentGroup.cbegin(); groupIt != currentGroup.end(); ++groupIt) {
-                individualsOut.push_back((*groupIt).first);
-            }
-        }
-    }
-}
-
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
 {
     BRep_Builder builder;
