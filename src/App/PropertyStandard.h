@@ -467,7 +467,7 @@ public:
     void Paste(const Property &from) override;
 
     unsigned int getMemSize () const override;
-    
+
     bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
@@ -531,8 +531,15 @@ public:
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
+    void setIgnoreDecimals(bool ignoreDecimals) { m_ignoreDecimals = ignoreDecimals; }
+    inline bool isIgnoreDecimals() const {
+        return m_ignoreDecimals;
+    }
+
+
 protected:
     double _dValue;
+    bool m_ignoreDecimals{false};
 };
 
 /** Constraint float properties
@@ -954,7 +961,7 @@ public:
     void Paste(const Property &from) override;
 
     unsigned int getMemSize () const override{return sizeof(Color);}
-    
+
     bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
@@ -1047,7 +1054,7 @@ public:
     void Paste(const Property &from) override;
 
     unsigned int getMemSize () const override{return sizeof(_cMat);}
-    
+
     bool isSame(const Property &other) const override {
         if (&other == this)
             return true;

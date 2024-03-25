@@ -461,7 +461,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             hasSetValue();
         }
         else {
-            FC_THROWM(Base::ValueError, "'" << str 
+            FC_THROWM(Base::ValueError, "'" << str
                     << "' is not part of the enumeration in "
                     << getFullName());
         }
@@ -585,7 +585,7 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Objec
     } else if (p == ".String") {
         auto v = getValueAsString();
         r = Py::String(v?v:"");
-    } else 
+    } else
         r = Py::Int(getValue());
     return true;
 }
@@ -979,6 +979,7 @@ void PropertyFloat::setPyObject(PyObject *value)
 void PropertyFloat::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Float value=\"" <<  _dValue <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<IgnoreDecimals value=\"" <<  m_ignoreDecimals <<"\"/>" << std::endl;
 }
 
 void PropertyFloat::Restore(Base::XMLReader &reader)
@@ -987,12 +988,23 @@ void PropertyFloat::Restore(Base::XMLReader &reader)
     reader.readElement("Float");
     // get the value of my Attribute
     setValue(reader.getAttributeAsFloat("value"));
+    if (reader.readNextElement()) {
+        if(strcmp(reader.localName(),"IgnoreDecimals") == 0) {
+            // this PropertyFloat has an IgnoreDecimals attribute
+            int temp = reader.getAttributeAsInteger("value");
+            setIgnoreDecimals(temp == 1 ? true : false);
+        } else {
+            // IgnoreDecimals not found.
+            setIgnoreDecimals(false);
+        }
+    }
 }
 
 Property *PropertyFloat::Copy() const
 {
     PropertyFloat *p= new PropertyFloat();
     p->_dValue = _dValue;
+    p->setIgnoreDecimals(isIgnoreDecimals());
     return p;
 }
 
@@ -1000,6 +1012,7 @@ void PropertyFloat::Paste(const Property &from)
 {
     aboutToSetValue();
     _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
+    m_ignoreDecimals = dynamic_cast<const PropertyFloat&>(from).isIgnoreDecimals();
     hasSetValue();
 }
 
