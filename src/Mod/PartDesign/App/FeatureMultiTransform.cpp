@@ -52,10 +52,11 @@ void MultiTransform::positionBySupport()
     PartDesign::Transformed::positionBySupport();
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
     for (auto f : transFeatures) {
-        if (!(f->isDerivedFrom<PartDesign::Transformed>())) {
+        auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(f);
+        if (!transFeature) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
-        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(f);
+
         transFeature->Placement.setValue(this->Placement.getValue());
 
         // To avoid that a linked transform feature stays touched after a recompute
@@ -95,22 +96,19 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
 
     std::list<gp_Trsf> result;
     std::list<gp_Pnt> cogs;
-    std::vector<App::DocumentObject*>::const_iterator f;
 
-    for (f = transFeatures.begin(); f != transFeatures.end(); ++f) {
-        if (!((*f)->isDerivedFrom<PartDesign::Transformed>())) {
+    for (auto const& f : transFeatures) {
+        auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(f);
+        if (!transFeature) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
-        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
-        std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
 
+        std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
         if (result.empty()) {
             // First transformation Feature
             result = newTransformations;
-            for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin();
-                 nt != newTransformations.end();
-                 ++nt) {
-                cogs.push_back(cog.Transformed(*nt));
+            for (auto nt : newTransformations) {
+                cogs.push_back(cog.Transformed(nt));
             }
         }
         else {
@@ -121,7 +119,7 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
             std::list<gp_Pnt> oldCogs;
             cogs.swap(oldCogs);  // empty cogs to receive new cogs
 
-            if ((*f)->is<PartDesign::Scaled>()) {
+            if (transFeature->is<PartDesign::Scaled>()) {
                 // Diagonal method
                 // Multiply every element in the old transformations' slices with the corresponding
                 // element in the newTransformations. Example:
@@ -141,15 +139,13 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
                 }
 
                 unsigned sliceLength = oldTransformations.size() / newTransformations.size();
-                std::list<gp_Trsf>::const_iterator ot = oldTransformations.begin();
-                std::list<gp_Pnt>::const_iterator oc = oldCogs.begin();
+                auto ot = oldTransformations.begin();
+                auto oc = oldCogs.begin();
 
-                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin();
-                     nt != newTransformations.end();
-                     ++nt) {
+                for (auto const& nt : newTransformations) {
                     for (unsigned s = 0; s < sliceLength; s++) {
                         gp_Trsf trans;
-                        double factor = nt->ScaleFactor();  // extract scale factor
+                        double factor = nt.ScaleFactor();  // extract scale factor
 
                         if (factor > Precision::Confusion()) {
                             trans.SetScale(*oc, factor);  // recreate the scaled transformation to
@@ -158,8 +154,8 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
                             cogs.push_back(*oc);  // Scaling does not affect the COG
                         }
                         else {
-                            trans = (*nt) * (*ot);
-                            cogs.push_back(oc->Transformed(*nt));
+                            trans = nt * (*ot);
+                            cogs.push_back(oc->Transformed(nt));
                         }
                         result.push_back(trans);
                         ++ot;
@@ -174,16 +170,12 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
                 // a11 a12         b1    a11*b1 a12*b1 a11*b2 a12*b2 a11*b3 a12*b3
                 // a21 a22   mul   b2  = a21*b1 a22*b1 a21*b2 a22*b2 a21*b3 a22*b3
                 //                 b3
-                for (std::list<gp_Trsf>::const_iterator nt = newTransformations.begin();
-                     nt != newTransformations.end();
-                     ++nt) {
-                    std::list<gp_Pnt>::const_iterator oc = oldCogs.begin();
+                for (auto const& nt : newTransformations) {
+                    auto oc = oldCogs.begin();
 
-                    for (std::list<gp_Trsf>::const_iterator ot = oldTransformations.begin();
-                         ot != oldTransformations.end();
-                         ++ot) {
-                        result.push_back((*nt) * (*ot));
-                        cogs.push_back(oc->Transformed(*nt));
+                    for (auto const& ot : oldTransformations) {
+                        result.push_back(nt * ot);
+                        cogs.push_back(oc->Transformed(nt));
                         ++oc;
                     }
                 }

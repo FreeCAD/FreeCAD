@@ -109,10 +109,8 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     // first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
     if (firstOriginal) {
-        if (firstOriginal->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            rv = static_cast<Part::Feature*>(firstOriginal);
-        }
-        else {
+        rv = Base::freecad_dynamic_cast<Part::Feature>(firstOriginal);
+        if (!rv) {
             err = QT_TRANSLATE_NOOP("Exception",
                                     "Transformation feature Linked object is not a Part object");
         }
@@ -131,30 +129,25 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
 App::DocumentObject* Transformed::getSketchObject() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
-    if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
-        return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
+    DocumentObject const* firstOriginal = !originals.empty() ? originals.front() : nullptr;
+
+    if (auto feature = Base::freecad_dynamic_cast<PartDesign::ProfileBased>(firstOriginal)) {
+        return feature->getVerifiedSketch(true);
     }
-    else if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::FeatureAddSub>()) {
+    if (Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(firstOriginal)) {
         return nullptr;
     }
-    else if (this->isDerivedFrom<LinearPattern>()) {
-        // if Originals is empty then try the linear pattern's Direction property
-        const LinearPattern* pattern = static_cast<const LinearPattern*>(this);
+    if (auto pattern = Base::freecad_dynamic_cast<LinearPattern>(this)) {
         return pattern->Direction.getValue();
     }
-    else if (this->isDerivedFrom<PolarPattern>()) {
-        // if Originals is empty then try the polar pattern's Axis property
-        const PolarPattern* pattern = static_cast<const PolarPattern*>(this);
+    if (auto pattern = Base::freecad_dynamic_cast<PolarPattern>(this)) {
         return pattern->Axis.getValue();
     }
-    else if (this->isDerivedFrom<Mirrored>()) {
-        // if Originals is empty then try the mirror pattern's MirrorPlane property
-        const Mirrored* pattern = static_cast<const Mirrored*>(this);
+    if (auto pattern = Base::freecad_dynamic_cast<Mirrored>(this)) {
         return pattern->MirrorPlane.getValue();
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 void Transformed::Restore(Base::XMLReader& reader)
@@ -185,13 +178,13 @@ void Transformed::handleChangedPropertyType(Base::XMLReader& reader,
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->isDerivedFrom<App::PropertyFloat>()
-        && inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    if (auto property = Base::freecad_dynamic_cast<App::PropertyFloat>(prop);
+        property != nullptr && inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
         App::PropertyFloat floatProp;
         floatProp.Restore(reader);
-        static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+        property->setValue(floatProp.getValue());
     }
     else {
         PartDesign::Feature::handleChangedPropertyType(reader, TypeName, prop);
@@ -227,6 +220,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
     this->positionBySupport();
 
     std::vector<App::DocumentObject*> originals = Originals.getValues();
+    if (mode == Mode::TransformToolShapes && originals.empty()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
@@ -243,7 +239,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     // Get the support
-    Part::Feature* supportFeature;
+    Part::Feature* supportFeature = nullptr;
 
     try {
         supportFeature = getBaseObject();
@@ -270,7 +266,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         TopTools_ListOfShape shapeTools;
         std::vector<TopoDS_Shape> shapes;
 
-        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
+        auto transformIter = transformations.cbegin();
 
         // First transformation is skipped since it should not be part of the toolShape.
         ++transformIter;
@@ -311,27 +307,25 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 Part::TopoShape fuseShape;
                 Part::TopoShape cutShape;
 
-                if (original->isDerivedFrom<PartDesign::FeatureAddSub>()) {
-                    PartDesign::FeatureAddSub* feature =
-                        static_cast<PartDesign::FeatureAddSub*>(original);
-                    feature->getAddSubShape(fuseShape, cutShape);
-                    if (fuseShape.isNull() && cutShape.isNull()) {
-                        return new App::DocumentObjectExecReturn(
-                            QT_TRANSLATE_NOOP("Exception",
-                                              "Shape of additive/subtractive feature is empty"));
-                    }
-                    gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-                    if (!fuseShape.isNull()) {
-                        fuseShape = fuseShape.makeTransform(trsf);
-                    }
-                    if (!cutShape.isNull()) {
-                        cutShape = cutShape.makeTransform(trsf);
-                    }
-                }
-                else {
+                auto feature = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(original);
+                if (!feature) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
                         "Only additive and subtractive features can be transformed"));
+                }
+
+                feature->getAddSubShape(fuseShape, cutShape);
+                if (fuseShape.isNull() && cutShape.isNull()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception",
+                                          "Shape of additive/subtractive feature is empty"));
+                }
+                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+                if (!fuseShape.isNull()) {
+                    fuseShape = fuseShape.makeTransform(trsf);
+                }
+                if (!cutShape.isNull()) {
+                    cutShape = cutShape.makeTransform(trsf);
                 }
 
                 TopoDS_Shape current = support;
@@ -340,16 +334,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     shapeArguments.Append(current);
                     TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
                     if (!shapeTools.IsEmpty()) {
-                        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(
-                            new BRepAlgoAPI_Fuse());
-                        mkBool->SetArguments(shapeArguments);
-                        mkBool->SetTools(shapeTools);
-                        mkBool->Build();
-                        if (!mkBool->IsDone()) {
+                        BRepAlgoAPI_Fuse mkBool;
+                        mkBool.SetArguments(shapeArguments);
+                        mkBool.SetTools(shapeTools);
+                        mkBool.Build();
+                        if (!mkBool.IsDone()) {
                             return new App::DocumentObjectExecReturn(
                                 QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
                         }
-                        current = mkBool->Shape();
+                        current = mkBool.Shape();
                     }
                 }
                 if (!cutShape.isNull()) {
@@ -357,15 +350,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     shapeArguments.Append(current);
                     TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
                     if (!shapeTools.IsEmpty()) {
-                        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
-                        mkBool->SetArguments(shapeArguments);
-                        mkBool->SetTools(shapeTools);
-                        mkBool->Build();
-                        if (!mkBool->IsDone()) {
+                        BRepAlgoAPI_Cut mkBool;
+                        mkBool.SetArguments(shapeArguments);
+                        mkBool.SetTools(shapeTools);
+                        mkBool.Build();
+                        if (!mkBool.IsDone()) {
                             return new App::DocumentObjectExecReturn(
                                 QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
                         }
-                        current = mkBool->Shape();
+                        current = mkBool.Shape();
                     }
                 }
 
@@ -377,15 +370,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
             shapeArguments.Append(support);
             TopTools_ListOfShape shapeTools = getTransformedCompShape(support);
             if (!shapeTools.IsEmpty()) {
-                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
-                mkBool->SetArguments(shapeArguments);
-                mkBool->SetTools(shapeTools);
-                mkBool->Build();
-                if (!mkBool->IsDone()) {
+                BRepAlgoAPI_Fuse mkBool;
+                mkBool.SetArguments(shapeArguments);
+                mkBool.SetTools(shapeTools);
+                mkBool.Build();
+                if (!mkBool.IsDone()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
                 }
-                support = mkBool->Shape();
+                support = mkBool.Shape();
             }
             break;
         }
@@ -424,9 +417,9 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
     return oldShape;
 }
 
-void Transformed::divideTools(const std::vector<TopoDS_Shape>& toolsIn,
+void divideTools(const std::vector<TopoDS_Shape>& toolsIn,
                               std::vector<TopoDS_Shape>& individualsOut,
-                              TopoDS_Compound& compoundOut) const
+                              TopoDS_Compound& compoundOut)
 {
     using ShapeBoundPair = std::pair<TopoDS_Shape, Bnd_Box>;
     using PairList = std::list<ShapeBoundPair>;
@@ -434,8 +427,7 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape>& toolsIn,
 
     PairList pairList;
 
-    std::vector<TopoDS_Shape>::const_iterator it;
-    for (it = toolsIn.begin(); it != toolsIn.end(); ++it) {
+    for (auto it = toolsIn.begin(); it != toolsIn.end(); ++it) {
         Bnd_Box bound;
         BRepBndLib::Add(*it, bound);
         bound.SetGap(0.0);
@@ -450,11 +442,10 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape>& toolsIn,
         PairVector currentGroup;
         currentGroup.push_back(pairList.front());
         pairList.pop_front();
-        PairList::iterator it = pairList.begin();
+        auto it = pairList.begin();
         while (it != pairList.end()) {
-            PairVector::const_iterator groupIt;
             bool found(false);
-            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
+            for (auto groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
                 if (!(*it).second.IsOut((*groupIt).second)) {  // touching means is out.
                     found = true;
                     break;
@@ -473,8 +464,7 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape>& toolsIn,
             builder.Add(compoundOut, currentGroup.front().first);
         }
         else {
-            PairVector::const_iterator groupIt;
-            for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt) {
+            for (auto groupIt = currentGroup.cbegin(); groupIt != currentGroup.end(); ++groupIt) {
                 individualsOut.push_back((*groupIt).first);
             }
         }
@@ -498,7 +488,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
         builder.Add(compShape, xp.Current());
     }
 
-    return TopoDS_Shape(std::move(compShape));
+    return {std::move(compShape)};
 }
 
 }  // namespace PartDesign

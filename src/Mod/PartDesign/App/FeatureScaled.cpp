@@ -57,11 +57,11 @@ short Scaled::mustExecute() const
 const std::list<gp_Trsf>
 Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
 {
-    double factor = Factor.getValue();
+    double const factor = Factor.getValue();
     if (factor < Precision::Confusion()) {
         throw Base::ValueError("Scaling factor too small");
     }
-    int occurrences = Occurrences.getValue();
+    int const occurrences = Occurrences.getValue();
     if (occurrences < 2) {
         throw Base::ValueError("At least two occurrences required");
     }
