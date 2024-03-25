@@ -86,11 +86,11 @@ CONVERTTXT = translate(
 )
 INTERNETTXT = translate(
     "Help",
-    "Internet access has not been granted, the Help module cannot fetch online documentation. <a href=\"allowInternet\">Click here</a> to allow FreeCAD to access the internet, or install the documentation for offline use through the Addon Manager.",
+    'Internet access has not been granted, the Help module cannot fetch online documentation. <a href="allowInternet">Click here</a> to allow FreeCAD to access the internet, or install the documentation for offline use through the Addon Manager.',
 )
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
-WEBWB = False # this allows to work around a crash in certain versions of Qt5
+WEBWB = False  # this allows to work around a crash in certain versions of Qt5
 
 
 def show(page, view=None, conv=None, mode=0):
@@ -273,7 +273,7 @@ def show_tab(html, baseurl, title, view=None):
             if PREFS.GetBool("UseWebModule", False) or WEBWB:
                 show_web_tab(html, baseurl, title)
             else:
-                openBrowserHTML(html,baseurl,title,ICON)
+                openBrowserHTML(html, baseurl, title, ICON)
 
 
 def get_qtwebwidgets(html, baseurl, title):
@@ -297,6 +297,7 @@ def show_web_tab(html, baseurl, title):
     # crashes with certain versions of Qt5
 
     import WebGui
+
     try:
         WebGui.openBrowserHTML(html, baseurl, title, ICON)
     except TypeError:
@@ -438,6 +439,7 @@ def convert_html(content):
     if "<html" in content:
         try:
             import pypandoc
+
             content = pypandoc.convert_text(content, "plain", format="html")
         except:
             pass
