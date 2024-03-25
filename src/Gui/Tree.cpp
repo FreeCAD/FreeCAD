@@ -5327,25 +5327,21 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             if (pxFreeze.isNull()) {
                 // object is in freezed state
                 const char* const feature_freezed_xpm[] = {
-                                                           "16 16 2 1",
+                                                           "12 12 2 1",
                                                            " 	c None",
-                                                           ".	c #00EEFF",
-                                                           "      . . .     ",
-                                                           "    .  ...  .   ",
-                                                           "   ..   .   ..  ",
-                                                           "  ....  .  .... ",
-                                                           "     .. . ..    ",
-                                                           " .    . . .    .",
-                                                           "  .    ...    . ",
-                                                           " ...............",
-                                                           "  .    ...    . ",
-                                                           " .    . . .    .",
-                                                           "     .. . ..    ",
-                                                           "  ....  .  .... ",
-                                                           "   ..   .   ..  ",
-                                                           "    .  ...  .   ",
-                                                           "      . . .     ",
-                                                           "                "};
+                                                           ".	c #00E5FF",
+                                                           ".     .    .",
+                                                           " .    .   . ",
+                                                           "  .   .  .  ",
+                                                           "   .  . .   ",
+                                                           "    ....    ",
+                                                           "........    ",
+                                                           "    ........",
+                                                           "    ....    ",
+                                                           "   . .  .   ",
+                                                           "  .  .   .  ",
+                                                           " .   .    . ",
+                                                           ".    .     ."};
                 pxFreeze = QPixmap(feature_freezed_xpm);
             }
             pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
