@@ -217,7 +217,7 @@ Any values of the SetupSheet that are changed from their default are preselected
     </message>
     <message>
         <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
-        <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+        <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
 
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
@@ -267,7 +267,7 @@ Note that only operations which currently have configuration values set are list
 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
+For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -372,7 +372,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/PropertyCreate.ui" line="27"/>
-        <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
+        <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -571,12 +571,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="107"/>
-        <source>Extension of bounding box&apos;s MinX</source>
+        <source>Extension of bounding box's MinX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="120"/>
-        <source>Extension of bounding box&apos;s MaxX</source>
+        <source>Extension of bounding box's MaxX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -586,12 +586,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="134"/>
-        <source>Extension of bounding box&apos;s MinY</source>
+        <source>Extension of bounding box's MinY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="141"/>
-        <source>Extension of bounding box&apos;s MaxY</source>
+        <source>Extension of bounding box's MaxY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -601,12 +601,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="155"/>
-        <source>Extension of bounding box&apos;s MinZ</source>
+        <source>Extension of bounding box's MinZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="162"/>
-        <source>Extension of bounding box&apos;s MaxZ</source>
+        <source>Extension of bounding box's MaxZ</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -636,12 +636,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="257"/>
-        <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
+        <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/DressupPathBoundary.ui" line="55"/>
-        <source>Extend Model&apos;s Bounding Box</source>
+        <source>Extend Model's Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -682,7 +682,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     </message>
     <message>
         <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
-        <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
+        <source>Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -753,7 +753,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
         <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
-        <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
+        <source>Remove all list items and fill list with all eligible features from the job's base object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1172,7 +1172,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
         <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
-        <source>Don&apos;t retract after every hole</source>
+        <source>Don't retract after every hole</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1371,7 +1371,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
         <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
-        <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
+        <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1564,7 +1564,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
         <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
-        <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
+        <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1806,7 +1806,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
         <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
-        <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
+        <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1963,21 +1963,21 @@ Default: OpToolDiameter</source>
         <location filename="../panels/SetupGlobal.ui" line="120"/>
         <source>Expression set as ClearanceHeight for new operations.
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
+Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/SetupGlobal.ui" line="145"/>
         <source>Expression set as SafeHeight for new operations.
 
-Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
+Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/SetupGlobal.ui" line="154"/>
         <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Default: &quot;5mm&quot;</source>
+Default: "5mm"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2231,7 +2231,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     </message>
     <message>
         <location filename="../preferences/PathDressupHoldingTags.ui" line="91"/>
-        <source>Radius of the fillet on the tag&apos;s top edge.
+        <source>Radius of the fillet on the tag's top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
         <translation type="unfinished"></translation>
@@ -2422,7 +2422,7 @@ If left empty no template will be preselected.</source>
     </message>
     <message>
         <location filename="../preferences/PathJob.ui" line="298"/>
-        <source>It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
+        <source>It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2432,7 +2432,7 @@ If left empty no template will be preselected.</source>
     </message>
     <message>
         <location filename="../preferences/PathJob.ui" line="332"/>
-        <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor&apos;s documentation for supported arguments.</source>
+        <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2457,7 +2457,7 @@ If left empty no template will be preselected.</source>
     </message>
     <message>
         <location filename="../preferences/PathJob.ui" line="405"/>
-        <source>Extend Model&apos;s Bounding Box</source>
+        <source>Extend Model's Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2844,7 +2844,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../panels/DogboneEdit.ui" line="48"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2899,7 +2899,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../panels/DogboneEdit.ui" line="114"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2919,12 +2919,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../panels/DogboneEdit.ui" line="142"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/DogboneEdit.ui" line="155"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2994,7 +2994,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
-        <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
+        <source>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3009,7 +3009,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
         <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
-        <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
+        <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3496,13 +3496,13 @@ This is useful if the operator can safely load work into one coordinate system w
 
 Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
-Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the &apos;split output&apos; even with only a single work coordinate system since it will put each operation into a separate file.</source>
+Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="254"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3537,7 +3537,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="488"/>
-        <source>Extend Model&apos;s Bounding Box</source>
+        <source>Extend Model's Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3686,21 +3686,21 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
         <location filename="../panels/PathEdit.ui" line="1114"/>
         <source>Expression set as ClearanceHeight for new operations.
 
-Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
+Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="1139"/>
         <source>Expression set as SafeHeight for new operations.
 
-Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
+Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="1148"/>
         <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Default: &quot;5mm&quot;</source>
+Default: "5mm"</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3758,24 +3758,24 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 %S ... Sequence Number
 
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
+"/home/cnc/%d.g-code"
 See the file save policy below on how to deal with name conflicts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="397"/>
-        <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+        <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../panels/PathEdit.ui" line="400"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
 
 
-For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
 
 
-If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3980,16 +3980,16 @@ Default: 3 mm</source>
     <message>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
         <source>The currently selected unit schema: 
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
+     '{}' for this document
+ Does not use 'minutes' for velocity values. 
  
 CNC machines require feed rate to be expressed in 
 unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</source>
+    'Metric, Small Parts &amp; CNC'
+    'US Customary'
+    'Imperial Decimal'</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4004,7 +4004,7 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
-        <source>Don&apos;t Show This Anymore</source>
+        <source>Don't Show This Anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4238,13 +4238,13 @@ For example:
     <message>
         <location filename="../../../Path/Dressup/DogboneII.py" line="250"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="463"/>
-        <source>Dressup length if incision is set to &apos;custom&apos;</source>
+        <source>Dressup length if incision is set to 'custom'</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Dressup/DogboneII.py" line="258"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
-        <source>Bones that aren&apos;t dressed up</source>
+        <source>Bones that aren't dressed up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5220,7 +5220,7 @@ For example:
     <message>
         <location filename="../../../Path/Op/Surface.py" line="212"/>
         <location filename="../../../Path/Op/Waterline.py" line="232"/>
-        <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
+        <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5309,7 +5309,7 @@ For example:
     <message>
         <location filename="../../../Path/Op/Surface.py" line="369"/>
         <location filename="../../../Path/Op/Waterline.py" line="407"/>
-        <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
+        <source>Set the stepover percentage, based on the tool's diameter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5358,22 +5358,22 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Op/ThreadMilling.py" line="349"/>
-        <source>Set thread&apos;s major diameter</source>
+        <source>Set thread's major diameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Op/ThreadMilling.py" line="355"/>
-        <source>Set thread&apos;s minor diameter</source>
+        <source>Set thread's minor diameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Op/ThreadMilling.py" line="363"/>
-        <source>Set thread&apos;s pitch - used for metric threads</source>
+        <source>Set thread's pitch - used for metric threads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
-        <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
+        <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7209,17 +7209,17 @@ Aborting op creation</source>
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/Sanity.py" line="1376"/>
-        <source>Tool Controller &apos;{}&apos; has no feedrate</source>
+        <source>Tool Controller '{}' has no feedrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
-        <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
+        <source>Tool Controller '{}' has no spindlespeed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/Sanity.py" line="1415"/>
-        <source>Tool Controller &apos;{}&apos; is not used</source>
+        <source>Tool Controller '{}' is not used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7306,7 +7306,7 @@ Aborting op creation</source>
     </message>
     <message>
         <location filename="../../../Path/Op/Base.py" line="641"/>
-        <source>Parent job %s doesn&apos;t have a base object</source>
+        <source>Parent job %s doesn't have a base object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
