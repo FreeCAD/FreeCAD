@@ -228,6 +228,7 @@ private Q_SLOTS:
     void onButtonRemoveFeature(bool checked);
     void onFeatureDeleted();
     void indexesMoved();
+    void onModeChanged(int mode);
 
 private:
     /** Setup the parameter UI.
