@@ -27,6 +27,7 @@
 #include <QDomDocument>
 #endif
 
+#include "DrawUtil.h"
 #include "XMLQuery.h"
 
 
@@ -51,7 +52,7 @@ static bool processElements(const QDomElement& element, const QString& queryStr,
         for(int i = 0; i < editable.count(); i++) {
             QDomNode node = editable.item(i);
             QDomElement element = node.toElement();
-            if (element.hasAttribute(QString(QLatin1String("freecad:editable")))) {
+            if (element.hasAttribute(QString(QLatin1String(FREECAD_ATTR_EDITABLE)))) {
                 if (find_tspan) {
                     element = element.firstChildElement();
                 }

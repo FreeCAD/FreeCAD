@@ -1304,11 +1304,15 @@ void MainWindow::setActiveWindow(MDIView* view)
     Application::Instance->viewActivated(view);
 }
 
-void MainWindow::onWindowActivated(QMdiSubWindow* w)
+void MainWindow::onWindowActivated(QMdiSubWindow* mdi)
 {
-    if (!w)
+    if (!mdi) {
+        setWindowTitle(QString());
+        setWindowModified(false);
         return;
-    auto view = dynamic_cast<MDIView*>(w->widget());
+    }
+
+    auto view = dynamic_cast<MDIView*>(mdi->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     if (view)
@@ -1320,12 +1324,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
-        QString currWb = w->property("ownWB").toString();
+        QString currWb = mdi->property("ownWB").toString();
         if (! currWb.isEmpty()) {
             this->activateWorkbench(currWb);
         }
         else {
-            w->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
+            mdi->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
         }
     }
 

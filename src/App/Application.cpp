@@ -1140,7 +1140,7 @@ std::string Application::getResourceDir()
 #ifdef RESOURCEDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(RESOURCEDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1169,7 +1169,7 @@ std::string Application::getHelpDir()
 #ifdef DOCDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(DOCDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -2635,7 +2635,7 @@ void Application::initConfig(int argc, char ** argv)
     std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
-        mConfig["AppTempPath"] = tmpPath + "/";
+        mConfig["AppTempPath"] = tmpPath + PATHSEP;
     }
 
 
@@ -3396,12 +3396,6 @@ std::string Application::FindHomePath(const char* sCall)
     homePath.assign(Call,0,pos);
     pos = homePath.find_last_of(PATHSEP);
     homePath.assign(homePath,0,pos+1);
-
-    // switch to posix style
-    for (std::wstring::iterator it = homePath.begin(); it != homePath.end(); ++it) {
-        if (*it == '\\')
-            *it = '/';
-    }
 
     // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
     std::wstring binPath = homePath;
