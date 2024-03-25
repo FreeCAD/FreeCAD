@@ -33,6 +33,7 @@ import FreeCAD, FreeCADGui
 import TestApp  # Test as Module name not possible
 import sys
 
+
 # ---------------------------------------------------------------------------
 # define the Commands of the Test Application module
 # ---------------------------------------------------------------------------

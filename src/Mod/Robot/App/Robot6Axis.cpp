@@ -170,19 +170,14 @@ void Robot6Axis::Save(Writer& writer) const
 {
     for (unsigned int i = 0; i < 6; i++) {
         Base::Placement Tip = toPlacement(Kinematic.getSegment(i).getFrameToTip());
-        writer.Stream() << writer.ind() << "<Axis "
-                        << "Px=\"" << Tip.getPosition().x << "\" "
-                        << "Py=\"" << Tip.getPosition().y << "\" "
-                        << "Pz=\"" << Tip.getPosition().z << "\" "
-                        << "Q0=\"" << Tip.getRotation()[0] << "\" "
-                        << "Q1=\"" << Tip.getRotation()[1] << "\" "
-                        << "Q2=\"" << Tip.getRotation()[2] << "\" "
-                        << "Q3=\"" << Tip.getRotation()[3] << "\" "
-                        << "rotDir=\"" << RotDir[i] << "\" "
-                        << "maxAngle=\"" << Max(i) * (180.0 / M_PI) << "\" "
-                        << "minAngle=\"" << Min(i) * (180.0 / M_PI) << "\" "
-                        << "AxisVelocity=\"" << Velocity[i] << "\" "
-                        << "Pos=\"" << Actual(i) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<Axis " << "Px=\"" << Tip.getPosition().x << "\" "
+                        << "Py=\"" << Tip.getPosition().y << "\" " << "Pz=\"" << Tip.getPosition().z
+                        << "\" " << "Q0=\"" << Tip.getRotation()[0] << "\" " << "Q1=\""
+                        << Tip.getRotation()[1] << "\" " << "Q2=\"" << Tip.getRotation()[2] << "\" "
+                        << "Q3=\"" << Tip.getRotation()[3] << "\" " << "rotDir=\"" << RotDir[i]
+                        << "\" " << "maxAngle=\"" << Max(i) * (180.0 / M_PI) << "\" "
+                        << "minAngle=\"" << Min(i) * (180.0 / M_PI) << "\" " << "AxisVelocity=\""
+                        << Velocity[i] << "\" " << "Pos=\"" << Actual(i) << "\"/>" << std::endl;
     }
 }
 

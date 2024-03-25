@@ -135,7 +135,6 @@ AutocadPatterns = {
 
 
 def buildPattern(name, scale=5, thickness=1, color="#000000"):
-
     """buildPattern(name,scale=5,thickness=1,color="#000000")
     builds an SVG <pattern> fragment from a name and path data"""
 
@@ -158,7 +157,6 @@ def buildPattern(name, scale=5, thickness=1, color="#000000"):
 
 
 def buildTextureImage(name, scale=5, thickness=1, color="#000000", size=64):
-
     """buildTextureImage(name,scale,thickness,color="#000000",size=64)
     builds a 64x64 SVG image filled with the given texture"""
 
@@ -190,7 +188,6 @@ def buildTextureImage(name, scale=5, thickness=1, color="#000000", size=64):
 
 
 def buildSwatch(name, scale=5, thickness=1, color="#000000", size=64):
-
     """buildSwatch(name,scale,thickness,color="#000000",size=64)
     builds a 64x64 SVG image filled with the given texture, a
     white background and a border, to serve as a sample"""
@@ -229,7 +226,6 @@ def buildSwatch(name, scale=5, thickness=1, color="#000000", size=64):
 
 
 def buildFileSwatch(name, scale=5, thickness=1, color="#000000", size=64, png=False):
-
     """buildFileSwatch(name,scale,thickness,color="#000000",size=64,png=False)
     builds a 64x64 SVG image filled with the given texture, a
     white background and a border, to serve as a sample. The image
@@ -256,7 +252,6 @@ def buildFileSwatch(name, scale=5, thickness=1, color="#000000", size=64, png=Fa
 
 
 def saveTestImage(filename, scales=[2.5, 5], thicknesses=[0.1, 0.2, 1]):
-
     """saveTestImage(filename,scales=[2.5,5],thicknesses=[0.1,0.2,1])
     builds a test SVG file showing all available patterns at given scales and thicknesses"""
 
@@ -296,7 +291,6 @@ def saveTestImage(filename, scales=[2.5, 5], thicknesses=[0.1, 0.2, 1]):
 
 
 def decodeName(name, scale, thickness):
-
     """decodeName(name,scale,thickness) : decodes names written in the form 'name_5_1'"""
 
     name = name.split("_")
@@ -314,7 +308,6 @@ def decodeName(name, scale, thickness):
 
 
 def getPatternNames():
-
     """getPatternNames : returns available pattern names"""
 
     return Patterns.keys()

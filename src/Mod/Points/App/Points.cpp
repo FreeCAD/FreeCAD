@@ -182,8 +182,8 @@ void PointKernel::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<Points file=\""
-                        << writer.addFile(writer.ObjectName.c_str(), this) << "\" "
-                        << "mtrx=\"" << _Mtrx.toString() << "\"/>" << std::endl;
+                        << writer.addFile(writer.ObjectName.c_str(), this) << "\" " << "mtrx=\""
+                        << _Mtrx.toString() << "\"/>" << std::endl;
     }
 }
 

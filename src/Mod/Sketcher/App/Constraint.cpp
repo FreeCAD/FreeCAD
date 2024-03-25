@@ -144,25 +144,19 @@ unsigned int Constraint::getMemSize() const
 void Constraint::Save(Writer& writer) const
 {
     std::string encodeName = encodeAttribute(Name);
-    writer.Stream() << writer.ind() << "<Constrain "
-                    << "Name=\"" << encodeName << "\" "
+    writer.Stream() << writer.ind() << "<Constrain " << "Name=\"" << encodeName << "\" "
                     << "Type=\"" << (int)Type << "\" ";
     if (this->Type == InternalAlignment) {
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
-    writer.Stream() << "Value=\"" << Value << "\" "
-                    << "First=\"" << First << "\" "
-                    << "FirstPos=\"" << (int)FirstPos << "\" "
-                    << "Second=\"" << Second << "\" "
-                    << "SecondPos=\"" << (int)SecondPos << "\" "
-                    << "Third=\"" << Third << "\" "
-                    << "ThirdPos=\"" << (int)ThirdPos << "\" "
-                    << "LabelDistance=\"" << LabelDistance << "\" "
-                    << "LabelPosition=\"" << LabelPosition << "\" "
-                    << "IsDriving=\"" << (int)isDriving << "\" "
-                    << "IsInVirtualSpace=\"" << (int)isInVirtualSpace << "\" "
-                    << "IsActive=\"" << (int)isActive << "\" />"
+    writer.Stream() << "Value=\"" << Value << "\" " << "First=\"" << First << "\" " << "FirstPos=\""
+                    << (int)FirstPos << "\" " << "Second=\"" << Second << "\" " << "SecondPos=\""
+                    << (int)SecondPos << "\" " << "Third=\"" << Third << "\" " << "ThirdPos=\""
+                    << (int)ThirdPos << "\" " << "LabelDistance=\"" << LabelDistance << "\" "
+                    << "LabelPosition=\"" << LabelPosition << "\" " << "IsDriving=\""
+                    << (int)isDriving << "\" " << "IsInVirtualSpace=\"" << (int)isInVirtualSpace
+                    << "\" " << "IsActive=\"" << (int)isActive << "\" />"
 
                     << std::endl;
 }

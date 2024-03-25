@@ -48,8 +48,7 @@ std::ostream& MeshInfo::GeneralInformation(std::ostream& rclStream) const
 
     rclStream << "Mesh: [" << ulCtFc << " Faces, ";
     rclStream << ulCtEd << " Edges, ";
-    rclStream << ulCtPt << " Points"
-              << "]" << std::endl;
+    rclStream << ulCtPt << " Points" << "]" << std::endl;
 
     return rclStream;
 }
@@ -112,9 +111,8 @@ std::ostream& MeshInfo::DetailedEdgeInfo(std::ostream& rclStream) const
         const Base::Vector3f& rP0 = rPoints[pEIter->first.first];
         const Base::Vector3f& rP1 = rPoints[pEIter->first.second];
 
-        rclStream << "E " << std::setw(4) << (i++) << ": "
-                  << "  P (" << std::setw(8) << rP0.x << ", " << std::setw(8) << rP0.y << ", "
-                  << std::setw(8) << rP0.z << "); "
+        rclStream << "E " << std::setw(4) << (i++) << ": " << "  P (" << std::setw(8) << rP0.x
+                  << ", " << std::setw(8) << rP0.y << ", " << std::setw(8) << rP0.z << "); "
                   << "  P (" << std::setw(8) << rP1.x << ", " << std::setw(8) << rP1.y << ", "
                   << std::setw(8) << rP1.z << "),  B: " << (ct == 2 ? "n" : "y") << std::endl;
         ++pEIter;
@@ -200,10 +198,9 @@ std::ostream& MeshInfo::InternalFacetInfo(std::ostream& rclStream) const
     while (pFIter < rFacets.end()) {
         rclStream << "F " << std::setw(4) << (i++) << ": P (" << std::setw(4)
                   << pFIter->_aulPoints[0] << ", " << std::setw(4) << pFIter->_aulPoints[1] << ", "
-                  << std::setw(4) << pFIter->_aulPoints[2] << ")  "
-                  << "N (" << std::setw(4) << pFIter->_aulNeighbours[0] << ", " << std::setw(4)
-                  << pFIter->_aulNeighbours[1] << ", " << std::setw(4) << pFIter->_aulNeighbours[2]
-                  << ") ";
+                  << std::setw(4) << pFIter->_aulPoints[2] << ")  " << "N (" << std::setw(4)
+                  << pFIter->_aulNeighbours[0] << ", " << std::setw(4) << pFIter->_aulNeighbours[1]
+                  << ", " << std::setw(4) << pFIter->_aulNeighbours[2] << ") ";
 
         if (pFIter->IsValid()) {
             rclStream << std::endl;
