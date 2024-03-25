@@ -720,6 +720,17 @@ protected:
                             AutoConstraints.push_back(std::move(c));
                         }
                     } break;
+                    case Sketcher::Symmetric: {
+                        auto c = std::make_unique<Sketcher::Constraint>();
+                        c->Type = Sketcher::Symmetric;
+                        c->First = geoId2;
+                        c->FirstPos = Sketcher::PointPos::start;
+                        c->Second = geoId2;
+                        c->SecondPos = Sketcher::PointPos::end;
+                        c->Third = geoId1;
+                        c->ThirdPos = posId1;
+                        AutoConstraints.push_back(std::move(c));
+                    } break;
                     // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
                     // and should be 'Constraint::GeoUndef' However it can be used as a way to
                     // require the function to apply these constraints on another geometry In this
