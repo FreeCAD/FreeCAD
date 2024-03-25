@@ -392,7 +392,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticCircle";
-    *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
@@ -506,7 +505,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticCircle";
-    *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
