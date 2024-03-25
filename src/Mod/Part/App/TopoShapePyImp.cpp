@@ -2605,8 +2605,9 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
     BRepExtrema_SupportType supportType1, supportType2;
     TopoDS_Shape suppS1, suppS2;
     Standard_Real minDist = -1, t1, t2, u1, v1, u2, v2;
+    Standard_Real tol = Precision::Confusion();
 
-    if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &ps2))
+    if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
         return nullptr;
 
     const TopoDS_Shape& s1 = getTopoShapePtr()->getShape();
@@ -2619,6 +2620,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         return nullptr;
     }
     BRepExtrema_DistShapeShape extss;
+    extss.SetDeflection(tol);
     extss.LoadS1(s1);
     extss.LoadS2(s2);
     try {
