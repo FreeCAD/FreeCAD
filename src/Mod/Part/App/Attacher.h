@@ -376,7 +376,6 @@ public: //enums
 
 
 public: //members
-    App::PropertyLinkSubList references;
     std::string docName;
     std::vector<std::string> objNames;
     std::vector<std::string> subnames;

@@ -57,6 +57,8 @@ public:
 
     virtual DrawPage* getParentPage() const;
 
+    virtual QString getAutofillValue(const QString &id) const;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const override{
         return "TechDrawGui::ViewProviderTemplate";
@@ -64,6 +66,17 @@ public:
 
     // from base class
     PyObject *getPyObject(void) override;
+
+    class Autofill
+    {
+        public:
+            static constexpr const char *Author       = "author";
+            static constexpr const char *Date         = "date";
+            static constexpr const char *Organization = "organization";
+            static constexpr const char *Scale        = "scale";
+            static constexpr const char *Sheet        = "sheet";
+            static constexpr const char *Title        = "title";
+    };
 
 private:
     static const char* OrientationEnums[];

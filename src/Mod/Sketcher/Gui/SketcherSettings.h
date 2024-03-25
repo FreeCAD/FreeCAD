@@ -52,6 +52,7 @@ public:
 protected:
     void changeEvent(QEvent* e) override;
     void dimensioningModeChanged(int index);
+    void checkForRestart();
 
 private:
     std::unique_ptr<Ui_SketcherSettings> ui;
