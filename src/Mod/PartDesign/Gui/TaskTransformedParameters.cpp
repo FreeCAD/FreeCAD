@@ -91,6 +91,10 @@ void TaskTransformedParameters::setupUI()
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    connect(ui->comboMode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskTransformedParameters::onModeChanged);
     connect(ui->buttonAddFeature,
             &QToolButton::toggled,
             this,
@@ -120,8 +124,13 @@ void TaskTransformedParameters::setupUI()
 
     // Get the feature data
     auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
 
+    using Mode = PartDesign::Transformed::Mode;
+    auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    ui->comboMode->setCurrentIndex(static_cast<int>(mode));
+
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -270,6 +279,22 @@ void TaskTransformedParameters::setEnabledTransaction(bool on)
 bool TaskTransformedParameters::isEnabledTransaction() const
 {
     return enableTransaction;
+}
+
+void TaskTransformedParameters::onModeChanged(int mode)
+{
+    using Mode = PartDesign::Transformed::Mode;
+
+    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    pcTransformed->TransformMode.setValue(mode);
+
+    auto const tmode = static_cast<Mode>(mode);
+    ui->groupFeatureList->setEnabled(tmode == Mode::TransformToolShapes);
+    if (tmode == Mode::TransformBody) {
+        ui->listWidgetFeatures->clear();
+    }
+    setupTransaction();
+    recomputeFeature();
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)

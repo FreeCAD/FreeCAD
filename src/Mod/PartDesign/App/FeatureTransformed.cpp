@@ -58,7 +58,9 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
-std::array<char const*, 3> transformModeEnums = {"Transform tool shapes", "Transform body", nullptr};
+std::array<char const*, 3> transformModeEnums = {"Transform tool shapes",
+                                                 "Transform body",
+                                                 nullptr};
 
 Transformed::Transformed()
 {
