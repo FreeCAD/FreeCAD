@@ -69,7 +69,7 @@ Transformed::Transformed()
     Originals.setSize(0);
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY(TransformMode, (static_cast<int>(Mode::TransformToolShapes)));
+    ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::TransformToolShapes)));
     TransformMode.setEnums(transformModeEnums.data());
 
     ADD_PROPERTY_TYPE(Refine,
