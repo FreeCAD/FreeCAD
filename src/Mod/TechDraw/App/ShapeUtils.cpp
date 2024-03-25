@@ -225,30 +225,6 @@ Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const gp_A
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
-//! Returns the XY plane center of shape with respect to coordSys
-gp_Pnt ShapeUtils::findCentroidXY(const TopoDS_Shape& shape, const gp_Ax2& coordSys)
-{
-    //    Base::Console().Message("GO::findCentroid() - 2\n");
-
-    gp_Trsf tempTransform;
-    tempTransform.SetTransformation(coordSys);
-    BRepBuilderAPI_Transform builder(shape, tempTransform);
-
-    Bnd_Box tBounds;
-    tBounds.SetGap(0.0);
-    BRepBndLib::AddOptimal(builder.Shape(), tBounds, true, false);
-
-    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-
-    Standard_Real x = (xMin + xMax) / 2.0, y = (yMin + yMax) / 2.0, z = 0.0;
-
-    // Get "centroid" back into object space
-    tempTransform.Inverted().Transforms(x, y, z);
-
-    return gp_Pnt(x, y, z);
-}
-
 //!scales & mirrors a shape about a center
 TopoDS_Shape ShapeUtils::mirrorShapeVec(const TopoDS_Shape& input, const Base::Vector3d& inputCenter,
                                       double scale)
@@ -345,13 +321,6 @@ TopoDS_Shape ShapeUtils::moveShape(const TopoDS_Shape& input, const Base::Vector
         return transShape;
     }
     return transShape;
-}
-
-TopoDS_Shape ShapeUtils::centerShapeXY(const TopoDS_Shape& inShape, const gp_Ax2& coordSys)
-{
-    gp_Pnt inputCenter = findCentroidXY(inShape, coordSys);
-    Base::Vector3d centroid = DrawUtil::toVector3d(inputCenter);
-    return ShapeUtils::moveShape(inShape, centroid * -1.0);
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge edge)
