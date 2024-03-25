@@ -95,7 +95,7 @@
     <message>
       <location filename="../../Command.cpp" line="450"/>
       <source>Insert Active View (3D View)</source>
-      <translation>Vista 3D attiva</translation>
+      <translation>Inserisci Vista Attiva (Vista 3D)</translation>
     </message>
   </context>
   <context>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <source>Insert Arch Workbench Object</source>
-      <translation>Vista di Arch</translation>
+      <translation>Inserisci Oggetto Ambiente Arch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1419"/>
@@ -302,7 +302,7 @@
     <message>
       <location filename="../../Command.cpp" line="761"/>
       <source>Insert Detail View</source>
-      <translation>Dettaglio</translation>
+      <translation>Inserisci Vista Dettaglio</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Vista di Draft</translation>
+      <translation>Inserisci Oggetto Ambiente Draft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
@@ -1374,22 +1374,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="924"/>
+      <location filename="../../CommandCreateDims.cpp" line="926"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="925"/>
+      <location filename="../../CommandCreateDims.cpp" line="927"/>
       <source>Insert Extent Dimension</source>
       <translation>Dimensione di estensione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="993"/>
+      <location filename="../../CommandCreateDims.cpp" line="995"/>
       <source>Horizontal Extent</source>
       <translation>Estensione orizzontale</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="998"/>
+      <location filename="../../CommandCreateDims.cpp" line="1000"/>
       <source>Vertical Extent</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -1449,12 +1449,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1021"/>
+      <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1022"/>
+      <location filename="../../CommandCreateDims.cpp" line="1024"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Estensione orizzontale</translation>
     </message>
@@ -1469,7 +1469,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>Insert Bitmap Image</source>
-      <translation>Immagine bitmap</translation>
+      <translation>Inserisci Immagine Bitmap</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
@@ -1491,12 +1491,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1229"/>
+      <location filename="../../CommandCreateDims.cpp" line="1231"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1230"/>
+      <location filename="../../CommandCreateDims.cpp" line="1232"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Quota da punti di riferimento - SPERIMENTALE</translation>
     </message>
@@ -1530,12 +1530,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="844"/>
+      <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="845"/>
+      <location filename="../../CommandCreateDims.cpp" line="847"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Link alla geometria 3D</translation>
     </message>
@@ -1718,7 +1718,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Insert Section View</source>
-      <translation>Vista di sezione</translation>
+      <translation>Inserisci Vista di sezione</translation>
     </message>
   </context>
   <context>
@@ -1744,12 +1744,12 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Insert Spreadsheet View</source>
-      <translation>Vista foglio di calcolo</translation>
+      <translation>Inserisci Vista Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Insert View to a spreadsheet</source>
-      <translation>Inserisce una vista di un foglio di calcolo</translation>
+      <translation>Inserisce una Vista di un foglio di calcolo</translation>
     </message>
   </context>
   <context>
@@ -1865,7 +1865,7 @@
     <message>
       <location filename="../../Command.cpp" line="1301"/>
       <source>Insert SVG Symbol</source>
-      <translation>Simbolo SVG</translation>
+      <translation>Inserisci Simbolo SVG</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1302"/>
@@ -1903,12 +1903,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1134"/>
+      <location filename="../../CommandCreateDims.cpp" line="1136"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1135"/>
+      <location filename="../../CommandCreateDims.cpp" line="1137"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -1923,12 +1923,12 @@
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>Insert View</source>
-      <translation>Vista di un oggetto</translation>
+      <translation>Inserisci Vista</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Insert a View</source>
-      <translation>Inserisce una vista</translation>
+      <translation>Inserisce una Vista</translation>
     </message>
   </context>
   <context>
@@ -1998,8 +1998,8 @@
       <translation>Crea vista foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="388"/>
       <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../PagePrinter.cpp" line="388"/>
       <source>Save page to dxf</source>
       <translation>Salva pagina su dxf</translation>
     </message>
@@ -2019,8 +2019,8 @@
       <translation>Crea annotazione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1360"/>
+      <location filename="../../CommandCreateDims.cpp" line="1279"/>
+      <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
       <translation>Crea quota</translation>
     </message>
@@ -2060,7 +2060,7 @@
       <translation>Trascina quota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="536"/>
+      <location filename="../../QGSPage.cpp" line="535"/>
       <source>Create Balloon</source>
       <translation>Crea pallinatura</translation>
     </message>
@@ -2075,8 +2075,8 @@
       <translation>Crea linea di mezzeria</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>Crea linea cosmetica</translation>
     </message>
@@ -2121,7 +2121,7 @@
       <translation>Modifica annotazione</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="508"/>
+      <location filename="../../TaskSectionView.cpp" line="505"/>
       <source>Create SectionView</source>
       <translation>Crea vista di sezione</translation>
     </message>
@@ -2132,17 +2132,17 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
-      <location filename="../../TaskSectionView.cpp" line="589"/>
+      <location filename="../../TaskSectionView.cpp" line="586"/>
       <source>Edit SectionView</source>
       <translation>Modifica Vista Sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="607"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="561"/>
       <source>Create WeldSymbol</source>
       <translation>Crea simbolo di saldatura</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="615"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="569"/>
       <source>Edit WeldSymbol</source>
       <translation>Modifica simbolo di saldatura</translation>
     </message>
@@ -2688,16 +2688,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2715,6 +2705,16 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandCreateDims.cpp" line="1251"/>
+      <location filename="../../CommandCreateDims.cpp" line="1260"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
@@ -2746,9 +2746,10 @@
       <translation>Nessun oggetto di profilo trovato nella selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2756,38 +2757,38 @@
       <location filename="../../CommandCreateDims.cpp" line="600"/>
       <location filename="../../CommandCreateDims.cpp" line="692"/>
       <location filename="../../CommandCreateDims.cpp" line="784"/>
-      <location filename="../../CommandCreateDims.cpp" line="1056"/>
-      <location filename="../../CommandCreateDims.cpp" line="1423"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
-      <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandCreateDims.cpp" line="1058"/>
+      <location filename="../../CommandCreateDims.cpp" line="1425"/>
+      <location filename="../../CommandCreateDims.cpp" line="1433"/>
+      <location filename="../../CommandCreateDims.cpp" line="1442"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>Selezione non corretta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1426"/>
       <source>Select an object first</source>
       <translation>Prima selezionare un oggetto</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Too many objects selected</source>
       <translation>Troppi oggetti selezionati</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1443"/>
       <source>Create a page first.</source>
       <translation>Prima creare una pagina.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2795,8 +2796,7 @@
       <location filename="../../CommandCreateDims.cpp" line="601"/>
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1057"/>
-      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../CommandCreateDims.cpp" line="1059"/>
       <source>No View of a Part in selection.</source>
       <translation>Nessuna vista di una Parte nella selezione.</translation>
     </message>
@@ -2908,8 +2908,6 @@
       <translation>Il bordo selezionato è una BSpline. Il raggio sarà approssimativo. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2924,15 +2922,17 @@
       <location filename="../../CommandCreateDims.cpp" line="727"/>
       <location filename="../../CommandCreateDims.cpp" line="804"/>
       <location filename="../../CommandCreateDims.cpp" line="819"/>
-      <location filename="../../CommandCreateDims.cpp" line="884"/>
-      <location filename="../../CommandCreateDims.cpp" line="891"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
-      <location filename="../../CommandCreateDims.cpp" line="1098"/>
-      <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <location filename="../../CommandCreateDims.cpp" line="886"/>
+      <location filename="../../CommandCreateDims.cpp" line="893"/>
+      <location filename="../../CommandCreateDims.cpp" line="1086"/>
+      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="1192"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Selezione non corretta</translation>
     </message>
@@ -3025,41 +3025,44 @@
       <translation>Non è possibile creare la quota 3D angolare dalla selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <location filename="../../CommandCreateDims.cpp" line="1087"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>Non è possibile creare l'estensione della quota 2D dalla selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <location filename="../../CommandCreateDims.cpp" line="1101"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>Non è possibile creare l'estensione della quota 3D dalla selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1191"/>
+      <location filename="../../CommandCreateDims.cpp" line="1193"/>
       <source>There is no Dimension in your selection</source>
       <translation>Non ci sono Quote nella tua selezione</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="885"/>
+      <location filename="../../CommandCreateDims.cpp" line="887"/>
       <source>There is no 3D object in your selection</source>
       <translation>Nella selezione non esiste alcun oggetto 3D</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="892"/>
+      <location filename="../../CommandCreateDims.cpp" line="894"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Nella selezione non esistono spigoli o vertici 3D</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1250"/>
+      <location filename="../../CommandCreateDims.cpp" line="1252"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Selezionare 2 oggetti punti e 1 vista. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1259"/>
+      <location filename="../../CommandCreateDims.cpp" line="1261"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Selezionare 2 oggetti punti e 1 vista. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3083,14 +3086,9 @@
       <location filename="../../CommandCreateDims.cpp" line="580"/>
       <location filename="../../CommandCreateDims.cpp" line="672"/>
       <location filename="../../CommandCreateDims.cpp" line="764"/>
-      <location filename="../../CommandCreateDims.cpp" line="938"/>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
-      <location filename="../../CommandCreateDims.cpp" line="1149"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
+      <location filename="../../CommandCreateDims.cpp" line="940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1038"/>
+      <location filename="../../CommandCreateDims.cpp" line="1151"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <location filename="../../CommandExtensionDims.cpp" line="546"/>
       <location filename="../../CommandExtensionDims.cpp" line="838"/>
@@ -3098,18 +3096,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1513"/>
       <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <location filename="../../CommandExtensionDims.cpp" line="2137"/>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandExtensionPack.cpp" line="300"/>
       <location filename="../../CommandExtensionPack.cpp" line="614"/>
       <location filename="../../CommandExtensionPack.cpp" line="1102"/>
       <location filename="../../CommandExtensionPack.cpp" line="1346"/>
       <location filename="../../CommandExtensionPack.cpp" line="1647"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Attività in corso</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3133,14 +3136,9 @@
       <location filename="../../CommandCreateDims.cpp" line="581"/>
       <location filename="../../CommandCreateDims.cpp" line="673"/>
       <location filename="../../CommandCreateDims.cpp" line="765"/>
-      <location filename="../../CommandCreateDims.cpp" line="939"/>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
-      <location filename="../../CommandCreateDims.cpp" line="1150"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandCreateDims.cpp" line="941"/>
+      <location filename="../../CommandCreateDims.cpp" line="1039"/>
+      <location filename="../../CommandCreateDims.cpp" line="1152"/>
       <location filename="../../CommandExtensionDims.cpp" line="324"/>
       <location filename="../../CommandExtensionDims.cpp" line="547"/>
       <location filename="../../CommandExtensionDims.cpp" line="839"/>
@@ -3148,14 +3146,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1514"/>
       <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <location filename="../../CommandExtensionDims.cpp" line="2138"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandExtensionPack.cpp" line="301"/>
       <location filename="../../CommandExtensionPack.cpp" line="615"/>
       <location filename="../../CommandExtensionPack.cpp" line="1103"/>
       <location filename="../../CommandExtensionPack.cpp" line="1347"/>
       <location filename="../../CommandExtensionPack.cpp" line="1648"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Chiudere la finestra di dialogo attiva e riprovare.</translation>
     </message>
@@ -3413,11 +3413,6 @@
       <translation>Esporta Pagina in PDF</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="325"/>
-      <source>Document Name: </source>
-      <translation>Nome del documento: </translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="496"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
@@ -3428,19 +3423,19 @@
       <translation>Esporta pagina in SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="211"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Sei sicuro di voler continuare?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="232"/>
       <source>Show drawing</source>
       <translation>Mostra disegno</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="234"/>
       <source>Toggle KeepUpdated</source>
       <translation>Attiva o disattiva aggiornamento automatico</translation>
     </message>
@@ -3465,9 +3460,9 @@
       <translation>Creatore di testi avanzato RTF</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Editor di testi avanzato</translation>
     </message>
@@ -3550,7 +3545,7 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="716"/>
-      <location filename="../../TaskSectionView.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="648"/>
       <source>Operation Failed</source>
       <translation>Operazione non riuscita</translation>
     </message>
@@ -3585,8 +3580,8 @@
       <translation>Modifica la vista di dettaglio</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -3853,11 +3848,16 @@ thick: %4</source>
       <source>Edit Cosmetic Circle</source>
       <translation>Modifica cerchio cosmetico</translation>
     </message>
+    <message>
+      <location filename="../../PagePrinter.cpp" line="325"/>
+      <source>Document Name:</source>
+      <translation type="unfinished">Document Name:</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderLeader.cpp" line="209"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>Non è possibile eliminare questa linea guida perché
@@ -3869,17 +3869,17 @@ it has a weld symbol that would become broken.</source>
       <translation>Non puoi eliminare questa vista perché ha una o più viste dipendenti che diventerebbero orfani.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="229"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Dipendenze dell'oggetto</translation>
     </message>
@@ -3904,7 +3904,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Non è possibile eliminare questa vista perché ha una linea guida che si romperebbe.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="205"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>La pagina non è vuota, quindi i seguenti 
@@ -4022,7 +4022,6 @@ it has a tile weld that would become broken.</source>
     <name>TaskPojGroup</name>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
-      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source> updates pending</source>
       <translation> aggiornamenti in sospeso</translation>
     </message>
@@ -7277,8 +7276,8 @@ Si possono scegliere ulteriori punti per ottenere dei segmenti di linea.</transl
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
-      <source>Geometry2: </source>
-      <translation>Geometry2: </translation>
+      <source>Geometry2:</source>
+      <translation type="unfinished">Geometry2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -7871,13 +7870,21 @@ usando la spaziatura X/Y specificata</translation>
       <source>Z</source>
       <translation>Z</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../TaskSectionView.cpp" line="435"/>
+      <source>%n update(s) pending</source>
+      <translation type="unfinished">
+        <numerusform>%n update(s) pending</numerusform>
+        <numerusform>%n update(s) pending</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="448"/>
+      <location filename="../../TaskSectionView.cpp" line="445"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>Nulla da applicare. Nessuna direzione di sezione selezionata</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="650"/>
+      <location filename="../../TaskSectionView.cpp" line="647"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Impossibile continuare. Oggetto * %1 o %2 non trovato.</translation>
     </message>
@@ -8101,11 +8108,6 @@ usando la spaziatura X/Y specificata</translation>
       <source>other</source>
       <translation>altro</translation>
     </message>
-    <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="460"/>
-      <source>SectionView</source>
-      <translation>Vista sezione</translation>
-    </message>
   </context>
   <context>
     <name>TechDrawGui::dlgTemplateField</name>
@@ -8186,7 +8188,7 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="995"/>
+      <location filename="../../CommandCreateDims.cpp" line="997"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Estensione orizzontale</translation>
     </message>
@@ -8250,7 +8252,7 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="999"/>
+      <location filename="../../CommandCreateDims.cpp" line="1001"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Estensione verticale</translation>
     </message>
@@ -8269,7 +8271,6 @@ usando la spaziatura X/Y specificata</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="61"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Estensioni: Linee d'asse/Filettature</translation>
     </message>
@@ -8300,71 +8301,96 @@ usando la spaziatura X/Y specificata</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
+      <source>Page</source>
+      <translation>Pagina</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Attributes</source>
       <translation>TechDraw Attributi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Centerlines</source>
       <translation>TechDraw linee centrali</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>TechDraw Estensione quote</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
       <translation>Pagine TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Stacking</source>
       <translation>Accatastamento TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
       <translation>Viste TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Clips</source>
       <translation>Ritagli TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
       <translation>Quotature TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Tool Attributes</source>
       <translation>Attributi Strumento TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
       <translation>Accesso File TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
       <translation>Decorazione TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Annotation</source>
       <translation>Annotazione TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Views From Other Workbenches</source>
+      <translation>Viste Da Altri Ambienti</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Clipped Views</source>
+      <translation type="unfinished">Clipped Views</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="63"/>
+      <source>Hatching</source>
+      <translation type="unfinished">Hatching</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="64"/>
+      <source>Symbols</source>
+      <translation type="unfinished">Symbols</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Views</source>
       <translation>Viste</translation>
     </message>
@@ -8536,12 +8562,12 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1174"/>
+      <location filename="../../CommandCreateDims.cpp" line="1176"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1175"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <source>Repair Dimension References</source>
       <translation>Ripara riferimenti quote</translation>
     </message>
@@ -8588,30 +8614,30 @@ usando la spaziatura X/Y specificata</translation>
   <context>
     <name>TechDraw_HoleShaftFit</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="51"/>
       <source>Add hole or shaft fit</source>
       <translation>Aggiungi accoppiamento foro/albero</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="56"/>
-      <source>Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Aggiungi un foro o un albero adattato a una quota&lt;br&gt;
-                - seleziona una quota di lunghezza o una quota di diametro&lt;br&gt;
-                - fai clic sul pulsante strumento, si apre un pannello&lt;br&gt;
-                - seleziona adatta albero / adatta foro&lt;br&gt;
-                - seleziona il grado di tolleranza ISO 286 desiderato utilizzando la casella combinata</translation>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="59"/>
+      <source>Add a hole or shaft fit to a dimension
+- select one length dimension or diameter dimension
+- click the tool button, a panel opens
+- select shaft fit / hole fit
+- select the desired ISO 286 fit field using the combo box</source>
+      <translation type="unfinished">Add a hole or shaft fit to a dimension
+- select one length dimension or diameter dimension
+- click the tool button, a panel opens
+- select shaft fit / hole fit
+- select the desired ISO 286 fit field using the combo box</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="71"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="74"/>
       <source>Add a hole or shaft fit to a dimension</source>
       <translation>Aggiungi un accoppiamento foro/albero a una quota</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="75"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="78"/>
       <source>Please select one length dimension or diameter dimension and retry</source>
       <translation>Seleziona una quota di lunghezza o una quota diametro e riprova</translation>
     </message>
@@ -8973,8 +8999,8 @@ c'è una finestra di dialogo per le attività aperte.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="207"/>
-      <source>Start angle (conventional) of arc in degrees. </source>
-      <translation>Angolo iniziale (convenzionale) di arco in gradi. </translation>
+      <source>Start angle (conventional) of arc in degrees.</source>
+      <translation type="unfinished">Start angle (conventional) of arc in degrees.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="220"/>
@@ -9083,17 +9109,17 @@ c'è una finestra di dialogo per le attività aperte.</translation>
       <translation>Usa le informazioni del documento per popolare i campi del modello</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="135"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="136"/>
       <source>Fill Template Fields in </source>
       <translation>Compila i campi del modello </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="142"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="143"/>
       <source>Update</source>
       <translation>Aggiorna</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="351"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
       <translation>Aggiorna tutto</translation>
     </message>
@@ -9116,7 +9142,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
       <translation>Vista o gruppo di proiezione mancante</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="381"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="382"/>
       <source>Corresponding template fields missing</source>
       <translation>Campi di modello corrispondenti mancanti</translation>
     </message>
@@ -9165,7 +9191,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="36"/>
       <source>Dashed</source>
-      <translation>Tratteggiato</translation>
+      <translation>A tratti</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="37"/>
@@ -9190,7 +9216,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="41"/>
       <source>Dotted</source>
-      <translation>Puntinato</translation>
+      <translation>A punti</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="42"/>
@@ -9248,7 +9274,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="57"/>
       <source>Dashed</source>
-      <translation>Tratteggiato</translation>
+      <translation>A tratti</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="58"/>

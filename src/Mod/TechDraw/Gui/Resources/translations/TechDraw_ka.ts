@@ -400,7 +400,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1634"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური ხაზის ან ღერძის ხაზის დაგრძელება ორივე ბოლოში &lt;br&gt; მიუთითეთ დელტა მანძილი (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1152"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>ჰორიზონტალური განზომილებების თანაბრად განაწილება&lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი ან მეტი ჰორიზონტალური განზომილება&lt;br&gt; პირველი განზომილება აღწერს მდებარეობას&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -456,7 +456,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="974"/>
       <location filename="../../CommandExtensionDims.cpp" line="1228"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>ჰორიზონტალური განზომილებების თანაბრად განაწილება&lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი ან მეტი ჰორიზონტალური განზომილება&lt;br&gt; პირველი განზომილება აღწერს მდებარეობას&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -476,7 +476,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1116"/>
       <location filename="../../CommandExtensionDims.cpp" line="1246"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>ირიბი განზომილებების თანაბრად განაწილება&lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი ან მეტი ირიბი განზომილება&lt;br&gt; პირველი განზომილება აღწერს მდებარეობას&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -496,7 +496,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1041"/>
       <location filename="../../CommandExtensionDims.cpp" line="1237"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>ვერტიკალური განზომილებების თანაბრად განაწილება&lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი ან მეტი ვერტიკალური განზომილება&lt;br&gt; პირველი განზომილება აღწერს მდებარეობას&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -532,7 +532,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="776"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური ხაზებისა და ღერძის ხაზების ატრიბუტების შეცვლა&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ან მეტი ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -552,7 +552,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="254"/>
       <location filename="../../CommandExtensionPack.cpp" line="356"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>ღერძის ხაზების დამატება წრეწირებისა და რკალებისათვის&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ან მეტი წრეწირი ან რკალი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -570,7 +570,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="288"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>ღერძის ხაზების დამატება წრეწირებისა და რკალებისათვის&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ან მეტი წრეწირი ან რკალი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -606,7 +606,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>შექმენით ერთზე მეტი თანაბრად განაწილებული ჰორიზონტალური განზომილებები, იგივე საბაზისო ხაზიდან დაწყებული: &lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო) &lt;br&gt;- მონიშნეთ სამი ან მეტი წვერო&lt;br&gt;- პირველი ორი წვეროს მონიშვნის მიმდევრობა აღწერს საბაზისო ხაზის მდებარეობას&lt;br&gt;- დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -666,7 +666,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <location filename="../../CommandExtensionDims.cpp" line="1940"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>შექმენით ერთზე მეტი თანაბრად განაწილებული ჰორიზონტალური განზომილებები, იგივე საბაზისო ხაზიდან დაწყებული: &lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო) &lt;br&gt;- მონიშნეთ სამი ან მეტი წვერო&lt;br&gt;- პირველი ორი წვეროს მონიშვნის მიმდევრობა აღწერს საბაზისო ხაზის მდებარეობას&lt;br&gt;- დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1467"/>
       <location filename="../../CommandExtensionDims.cpp" line="1589"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>გასწორებული ირიბი განზომილებების მიმდევრობის შექმნა&lt;br&gt; მონიშნეთ სამი ან მეტი წვერო&lt;br&gt; პირველი ორი წვერო მიმართულებას განსაზღვრავს&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -724,7 +724,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1828"/>
       <location filename="../../CommandExtensionDims.cpp" line="1958"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</translation>
+      <translation>შექმენით ერთზე მეტი თანაბრად განაწილებული ირიბი განზომილებები, რომლებიც იგივე საბაზისო ხაზიდან იწყება:&lt;br&gt; - მიუთითეთ კასკადის დაშორება (არასავალდებულო)&lt;br&gt;- აირჩიეთ სამი ან მეტი წვერო&lt;br&gt;- პირველი ორი წვეროს მონიშვნის მიმდევრობა განსაზღვრავს საბაზისო ხაზის მდებარეობას&lt;br&gt;- პირველი ორი წვერო, ასევე, მიმართულებასაც განსაზღვრავს&lt;br&gt;- დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -784,7 +784,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1727"/>
       <location filename="../../CommandExtensionDims.cpp" line="1949"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>შექმენით ერთზე მეტი თანაბრად განაწილებული ვერტიკალური განზომილებები, იგივე საბაზისო ხაზიდან დაწყებული: &lt;br&gt; მიუთითეთ კასკადის დაშორება (არასავალდებულო) &lt;br&gt;- მონიშნეთ სამი ან მეტი წვერო&lt;br&gt;- პირველი ორი წვეროს მონიშვნის მიმდევრობა აღწერს საბაზისო ხაზის მდებარეობას&lt;br&gt;- დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -802,7 +802,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2305"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
-      <translation type="unfinished">Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</translation>
+      <translation>მონიშნეთ განზომილება ან ბუშტი &lt;br&gt;  - დააწკაპუნეთ ამ ხელსაწყოზე&lt;br&gt;   - ჩაასწორეთ ფორმატის ველი კლავიატურის ან/და სპეციალური ღილაკების გამოყენებით</translation>
     </message>
   </context>
   <context>
@@ -822,7 +822,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="501"/>
       <location filename="../../CommandExtensionDims.cpp" line="608"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>განზომილების ტექსტში ათობითობის ნიშნების რიცხვის შემცირება: &lt;br&gt; მონიშნეთ ერთი ან მეტი განზომილება&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -840,7 +840,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1088"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</translation>
+      <translation>დაამატეთ ორ წვეროზე დაფუძნებული დამხმარე წრეწირი:&lt;br&gt;- მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt;- მონიშნეთ წვერო 1 (ცენტრის წერტილი)&lt;br&gt;- მონიშნეთ წვერო 2 (რადიუსი)&lt;br&gt;- დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1564"/>
       <location filename="../../CommandExtensionPack.cpp" line="1702"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური ხაზის ან ღერძის ხაზის დაგრძელება ორივე ბოლოში &lt;br&gt; მიუთითეთ დელტა მანძილი (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -964,7 +964,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="468"/>
       <location filename="../../CommandExtensionDims.cpp" line="601"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>განზომილების ტექსტში ათობითობის ნიშნების რიცხვის გაზრდა: &lt;br&gt; მონიშნეთ ერთი ან მეტი განზომილება &lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -982,7 +982,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="534"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>განზომილების ტექსტში ათობითობის ნიშნების რიცხვის გაზრდა: &lt;br&gt; მონიშნეთ ერთი ან მეტი განზომილება &lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1058,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1333"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>სხვა ხაზის პარალელური, წვეროს გამჭოლი ხაზის დამატება &lt;br&gt; მონიშნეთ ხაზი&lt;br&gt; მონიშნეთ წვერო&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1264"/>
       <location filename="../../CommandExtensionPack.cpp" line="1403"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>სხვა ხაზის პარალელური, წვეროს გამჭოლი ხაზის დამატება &lt;br&gt; მონიშნეთ ხაზი&lt;br&gt; მონიშნეთ წვერო&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1098,7 +1098,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1299"/>
       <location filename="../../CommandExtensionPack.cpp" line="1412"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</translation>
+      <translation>სხვა ხაზის პერპერნდიკულარული, წვეროს გამჭოლი ხაზის დამატება &lt;br&gt; მონიშნეთ ხაზი&lt;br&gt; მონიშნეთ წვერო&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1212,7 +1212,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="278"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>განზომილების ტექსტის დასაწყისში პრეფიქსის სიმბოლოების წაშლა: &lt;br&gt; მონიშნეთ ერთი ან მეტი განზომილება&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1230,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="741"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
-      <translation type="unfinished">Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</translation>
+      <translation>აირჩიეთ ატრიბუტები ახალი კოსმეტიკური ხაზებისა და ღერძის ხაზებისთვის და მიუთითეთ კასკადის დაშორება და დელტა მანძილი:&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე &lt;br&gt; მიუთითეთ ატრიბუტები, დაშორება და მანძილი დიალოგურ ფაჯარაში&lt;br&gt; დააწკაპუნეთ ღილაკზე დიახ</translation>
     </message>
   </context>
   <context>
@@ -1250,7 +1250,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1599"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური ხაზის ან ღერძის ხაზის შემოკლება ორივე ბოლოში &lt;br&gt; მიუთითეთ დელტა მანძილი (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1270,7 +1270,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="567"/>
       <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური კუთხვილის დამატება ჭანჭიკის/ხრახნის/ღეროს ზედა ან ქვედა ხედზე&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ან მეტი წრეწირი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1290,7 +1290,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="462"/>
       <location filename="../../CommandExtensionPack.cpp" line="704"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური კუთხვილის დამატება ჭანჭიკის/ხრახნის/ღეროს გვერდით ხედზე&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი პარალელური ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1310,7 +1310,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="514"/>
       <location filename="../../CommandExtensionPack.cpp" line="694"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური კუთხვილის დამატება ნახვრეტის ზედა ან ქვედა ხედზე&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ერთი ან მეტი წრეწირი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1330,7 +1330,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="410"/>
       <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური კუთხვილის დამატება ნახვრეტის გვერდით ხედზე&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი პარალელური ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="601"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური კუთხვილის დამატება ნახვრეტის გვერდით ხედზე&lt;br&gt; მიუთითეთ ხაზის ატრიბუტები (არასავალდებულო)&lt;br&gt; მონიშნეთ ორი პარალელური ხაზი&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -1366,28 +1366,28 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="837"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</translation>
+      <translation>კოსმეტიკური წვეროების დამატება მონიშნული წიბოების კვეთასთან:&lt;br&gt;&lt;br&gt;&lt;br&gt; აირჩიეთ ორი წიბო &lt;br&gt;&lt;br&gt;&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="924"/>
+      <location filename="../../CommandCreateDims.cpp" line="926"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="925"/>
+      <location filename="../../CommandCreateDims.cpp" line="927"/>
       <source>Insert Extent Dimension</source>
       <translation>გაბარიტული ზომის მითითება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="993"/>
+      <location filename="../../CommandCreateDims.cpp" line="995"/>
       <source>Horizontal Extent</source>
       <translation>ჰორიზონტალური გაბარიტული ზომა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="998"/>
+      <location filename="../../CommandCreateDims.cpp" line="1000"/>
       <source>Vertical Extent</source>
       <translation>ვერტიკალური მასშტაბი</translation>
     </message>
@@ -1447,12 +1447,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1021"/>
+      <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1022"/>
+      <location filename="../../CommandCreateDims.cpp" line="1024"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>ჰორიზონტალური გაბარიტული ზომის ჩასმა</translation>
     </message>
@@ -1489,12 +1489,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1229"/>
+      <location filename="../../CommandCreateDims.cpp" line="1231"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1230"/>
+      <location filename="../../CommandCreateDims.cpp" line="1232"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>მაჩვენებლის ზომის ჩასმა - ექსპერიმენტალური</translation>
     </message>
@@ -1528,12 +1528,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="844"/>
+      <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="845"/>
+      <location filename="../../CommandCreateDims.cpp" line="847"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>ზომის 3D გეომეტრიაზე მიბმა</translation>
     </message>
@@ -1901,12 +1901,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1134"/>
+      <location filename="../../CommandCreateDims.cpp" line="1136"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1135"/>
+      <location filename="../../CommandCreateDims.cpp" line="1137"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>ვერტიკალური სიდიდის ზომის ჩასმა</translation>
     </message>
@@ -1996,8 +1996,8 @@
       <translation>ელცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="388"/>
       <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../PagePrinter.cpp" line="388"/>
       <source>Save page to dxf</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
@@ -2017,8 +2017,8 @@
       <translation>ანოტაციის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1360"/>
+      <location filename="../../CommandCreateDims.cpp" line="1279"/>
+      <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
       <translation>ზომის მითითება</translation>
     </message>
@@ -2058,7 +2058,7 @@
       <translation>ზომის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="536"/>
+      <location filename="../../QGSPage.cpp" line="535"/>
       <source>Create Balloon</source>
       <translation>სქოლიოს შექმნა</translation>
     </message>
@@ -2073,8 +2073,8 @@
       <translation>ცენტრალურ ხაზის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>დამხმარე ხაზის შექმნა</translation>
     </message>
@@ -2119,7 +2119,7 @@
       <translation>ანოტაციის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="508"/>
+      <location filename="../../TaskSectionView.cpp" line="505"/>
       <source>Create SectionView</source>
       <translation>კვეთის ხედის შექმნა</translation>
     </message>
@@ -2130,17 +2130,17 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
-      <location filename="../../TaskSectionView.cpp" line="589"/>
+      <location filename="../../TaskSectionView.cpp" line="586"/>
       <source>Edit SectionView</source>
       <translation>სექციის ხედის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="607"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="561"/>
       <source>Create WeldSymbol</source>
       <translation>შედუღების ნიშნის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="615"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="569"/>
       <source>Edit WeldSymbol</source>
       <translation>შედუღების ნიშნის შეცვლა</translation>
     </message>
@@ -2686,16 +2686,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2713,6 +2703,16 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandCreateDims.cpp" line="1251"/>
+      <location filename="../../CommandCreateDims.cpp" line="1260"/>
       <source>Wrong selection</source>
       <translation>არასწორი მონიშნული</translation>
     </message>
@@ -2744,9 +2744,10 @@
       <translation>მონიშნულში პროფილის ობექტი ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2754,38 +2755,38 @@
       <location filename="../../CommandCreateDims.cpp" line="600"/>
       <location filename="../../CommandCreateDims.cpp" line="692"/>
       <location filename="../../CommandCreateDims.cpp" line="784"/>
-      <location filename="../../CommandCreateDims.cpp" line="1056"/>
-      <location filename="../../CommandCreateDims.cpp" line="1423"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
-      <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandCreateDims.cpp" line="1058"/>
+      <location filename="../../CommandCreateDims.cpp" line="1425"/>
+      <location filename="../../CommandCreateDims.cpp" line="1433"/>
+      <location filename="../../CommandCreateDims.cpp" line="1442"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1426"/>
       <source>Select an object first</source>
       <translation>ჯერ აირჩიეთ ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Too many objects selected</source>
       <translation>მონიშნულია მეტისმეტად ბევრი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1443"/>
       <source>Create a page first.</source>
       <translation>ჯერ შექმენით გვერდი.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2793,8 +2794,7 @@
       <location filename="../../CommandCreateDims.cpp" line="601"/>
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1057"/>
-      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../CommandCreateDims.cpp" line="1059"/>
       <source>No View of a Part in selection.</source>
       <translation>მონიშნულში არ არსებობს ნაწილის ხედი.</translation>
     </message>
@@ -2906,8 +2906,6 @@
       <translation>მონიშნული წიბო B-სპლაინს წარმოადგენს. რადიუსი მხოლოდ დაახლოებითი იქნება. გავაგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2922,15 +2920,17 @@
       <location filename="../../CommandCreateDims.cpp" line="727"/>
       <location filename="../../CommandCreateDims.cpp" line="804"/>
       <location filename="../../CommandCreateDims.cpp" line="819"/>
-      <location filename="../../CommandCreateDims.cpp" line="884"/>
-      <location filename="../../CommandCreateDims.cpp" line="891"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
-      <location filename="../../CommandCreateDims.cpp" line="1098"/>
-      <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <location filename="../../CommandCreateDims.cpp" line="886"/>
+      <location filename="../../CommandCreateDims.cpp" line="893"/>
+      <location filename="../../CommandCreateDims.cpp" line="1086"/>
+      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="1192"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -3023,41 +3023,44 @@
       <translation>მონიშნულიდან 3D კუთხის ზომას ვერ შექმნით</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <location filename="../../CommandCreateDims.cpp" line="1087"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>მონიშნულიდან 2D ზომას ვერ შექმნით</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <location filename="../../CommandCreateDims.cpp" line="1101"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>მონიშნულიდან 3D განზომილებას ვერ შექმნით</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1191"/>
+      <location filename="../../CommandCreateDims.cpp" line="1193"/>
       <source>There is no Dimension in your selection</source>
       <translation>თქვენს მონიშნულში ზომა არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="885"/>
+      <location filename="../../CommandCreateDims.cpp" line="887"/>
       <source>There is no 3D object in your selection</source>
       <translation>თქვენს მონიშნულში 3D ობიექტი არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="892"/>
+      <location filename="../../CommandCreateDims.cpp" line="894"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>მონიშნულში 3D წიბოები და წვეროები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1250"/>
+      <location filename="../../CommandCreateDims.cpp" line="1252"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>არჩიეთ 2 წერტილოვანი ობიექტი და 1 ხედი. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1259"/>
+      <location filename="../../CommandCreateDims.cpp" line="1261"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>არჩიეთ 2 წერტილოვანი ობიექტი და 1 ხედი. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3081,14 +3084,9 @@
       <location filename="../../CommandCreateDims.cpp" line="580"/>
       <location filename="../../CommandCreateDims.cpp" line="672"/>
       <location filename="../../CommandCreateDims.cpp" line="764"/>
-      <location filename="../../CommandCreateDims.cpp" line="938"/>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
-      <location filename="../../CommandCreateDims.cpp" line="1149"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
+      <location filename="../../CommandCreateDims.cpp" line="940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1038"/>
+      <location filename="../../CommandCreateDims.cpp" line="1151"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <location filename="../../CommandExtensionDims.cpp" line="546"/>
       <location filename="../../CommandExtensionDims.cpp" line="838"/>
@@ -3096,18 +3094,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1513"/>
       <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <location filename="../../CommandExtensionDims.cpp" line="2137"/>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandExtensionPack.cpp" line="300"/>
       <location filename="../../CommandExtensionPack.cpp" line="614"/>
       <location filename="../../CommandExtensionPack.cpp" line="1102"/>
       <location filename="../../CommandExtensionPack.cpp" line="1346"/>
       <location filename="../../CommandExtensionPack.cpp" line="1647"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>მიმდინარეობს ამოცანის შესრულება</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3131,14 +3134,9 @@
       <location filename="../../CommandCreateDims.cpp" line="581"/>
       <location filename="../../CommandCreateDims.cpp" line="673"/>
       <location filename="../../CommandCreateDims.cpp" line="765"/>
-      <location filename="../../CommandCreateDims.cpp" line="939"/>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
-      <location filename="../../CommandCreateDims.cpp" line="1150"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandCreateDims.cpp" line="941"/>
+      <location filename="../../CommandCreateDims.cpp" line="1039"/>
+      <location filename="../../CommandCreateDims.cpp" line="1152"/>
       <location filename="../../CommandExtensionDims.cpp" line="324"/>
       <location filename="../../CommandExtensionDims.cpp" line="547"/>
       <location filename="../../CommandExtensionDims.cpp" line="839"/>
@@ -3146,14 +3144,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1514"/>
       <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <location filename="../../CommandExtensionDims.cpp" line="2138"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandExtensionPack.cpp" line="301"/>
       <location filename="../../CommandExtensionPack.cpp" line="615"/>
       <location filename="../../CommandExtensionPack.cpp" line="1103"/>
       <location filename="../../CommandExtensionPack.cpp" line="1347"/>
       <location filename="../../CommandExtensionPack.cpp" line="1648"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>დახურეთ აქტიური ამოცანის ფანჯარა და თავიდან სცადეთ.</translation>
     </message>
@@ -3411,11 +3411,6 @@
       <translation>გვერდის PDF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="325"/>
-      <source>Document Name: </source>
-      <translation>დოკუმენტის სახელი: </translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="496"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
@@ -3426,19 +3421,19 @@
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="211"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="232"/>
       <source>Show drawing</source>
       <translation>ნახაზის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="234"/>
       <source>Toggle KeepUpdated</source>
       <translation>განახლების ჩართ/გამორთ</translation>
     </message>
@@ -3463,9 +3458,9 @@
       <translation>ფორმატირებული ტექსტის შემქმნელი</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>ტექსტის ფორმატირების რედაქტორი</translation>
     </message>
@@ -3548,7 +3543,7 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="716"/>
-      <location filename="../../TaskSectionView.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="648"/>
       <source>Operation Failed</source>
       <translation>ოპერაცია წარუმატებლად დასრულდა</translation>
     </message>
@@ -3583,8 +3578,8 @@
       <translation>ნაწილის ხედის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>%1-ის ჩასწორება</translation>
     </message>
@@ -3851,11 +3846,16 @@ thick: %4</source>
       <source>Edit Cosmetic Circle</source>
       <translation>დამხმარე წრეწირის ჩასწორება</translation>
     </message>
+    <message>
+      <location filename="../../PagePrinter.cpp" line="325"/>
+      <source>Document Name:</source>
+      <translation>დოკუმენტის სახელი:</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderLeader.cpp" line="209"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ გატანადი ხაზის წაშლა იმიტომ,
@@ -3867,17 +3867,17 @@ it has a weld symbol that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია ერთი ან მეტი დამოკიდებული ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="229"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>ობიექტის დამოკიდებულებები</translation>
     </message>
@@ -3902,7 +3902,7 @@ it has a weld symbol that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია გატანადი ხაზი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="205"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>გვერდი ცარიელი არ არის, ამიტომ
@@ -4019,7 +4019,6 @@ it has a tile weld that would become broken.</source>
     <name>TaskPojGroup</name>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
-      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source> updates pending</source>
       <translation> დარჩენილი განახლება</translation>
     </message>
@@ -4628,9 +4627,9 @@ PAT შაბლონით წიბოს დაშტრიხვისა�
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps.  The default (round) should almost
-always be the right choice.   Flat or square caps are useful 
-if you are planning to use a drawing as a 1:1 cutting guide.
+      <translation>ხაზის დამაბოლოებელი საცობების ფორმა. ნაგულისხმევი (მრგვალი)
+თითქმის ყოველთვის სწორი არჩევანია. ბრტყელი ან ოთხკუთხედი ბოლოები  
+ფრთხილად გამოიყენეთ, თუ ნახაზის 1:1 საჭრელად გამოყენებას აპირებთ.
 </translation>
     </message>
     <message>
@@ -5074,8 +5073,8 @@ Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
-can override the global &apos;Update With 3D&apos; parameter</translation>
+      <translation>შეუძლია თუ არა გვერდის &apos;განახლებულად შენარჩუნების&apos; თვისებას
+გადაფაროს გლობალური &apos;3D-სთან ერთად განახლების&apos; პარამეტრი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -7275,8 +7274,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
-      <source>Geometry2: </source>
-      <translation>გეომეტრია2: </translation>
+      <source>Geometry2:</source>
+      <translation>გეომეტრია2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -7869,13 +7868,21 @@ using the given X/Y Spacing</source>
       <source>Z</source>
       <translation>Z</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../TaskSectionView.cpp" line="435"/>
+      <source>%n update(s) pending</source>
+      <translation>
+        <numerusform>დარჩენილია %n განახლება</numerusform>
+        <numerusform>დარჩენილია %n განახლება</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="448"/>
+      <location filename="../../TaskSectionView.cpp" line="445"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>გადასატარებელი არაფერია. კვეთის მიმართულება არჩეული არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="650"/>
+      <location filename="../../TaskSectionView.cpp" line="647"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>გაგრძელება შეუძლებელია. ობიექტები * %1 ან %2 ვერ ვიპოვე.</translation>
     </message>
@@ -8099,11 +8106,6 @@ using the given X/Y Spacing</source>
       <source>other</source>
       <translation>სხვა</translation>
     </message>
-    <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="460"/>
-      <source>SectionView</source>
-      <translation>ჭრილისხედი</translation>
-    </message>
   </context>
   <context>
     <name>TechDrawGui::dlgTemplateField</name>
@@ -8170,7 +8172,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="413"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <translation>განზომილების ტექსტის დასაწყისში პრეფიქსის სიმბოლოების წაშლა: &lt;br&gt; მონიშნეთ ერთი ან მეტი განზომილება&lt;br&gt; დააწკაპუნეთ ამ ხელსაწყოზე</translation>
     </message>
   </context>
   <context>
@@ -8184,7 +8186,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="995"/>
+      <location filename="../../CommandCreateDims.cpp" line="997"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>ჰორიზონტალური გაბარიტული ზომის ჩასმა</translation>
     </message>
@@ -8248,7 +8250,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="999"/>
+      <location filename="../../CommandCreateDims.cpp" line="1001"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>ვერტიკალური სიდიდის ზომის ჩასმა</translation>
     </message>
@@ -8267,7 +8269,6 @@ using the given X/Y Spacing</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="61"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>გაფართოებები: ცენტრის ხაზები/კუთხვილები</translation>
     </message>
@@ -8298,71 +8299,96 @@ using the given X/Y Spacing</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
+      <source>Page</source>
+      <translation>გვერდი</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Attributes</source>
       <translation>Techdraw-ის ატრიბუტები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Centerlines</source>
       <translation>ტექნიკური ნახაზი-ის ცენტრალური ხაზები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>ტექნიკური ნახაზი-ის ზომების გაფართოება</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
       <translation>ტექნიკური ნახაზი ფურცლები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Stacking</source>
       <translation>ტექნიკური ნახაზი-ის ნაკრები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
       <translation>ტექნიკური ნახაზი ხედები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Clips</source>
       <translation>ტექნიკური ნახაზი კვეთები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
       <translation>ტექნიკური ნახაზი-ის ზომები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Tool Attributes</source>
       <translation>Techdraw-ის ხელსაწყოს ატრიბუტები</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
       <translation>ტექნიკური ნახაზი-ის წვდომა ფაილებთან</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
       <translation>ტექნიკური ნახაზი-ის დეკორაცია</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Annotation</source>
       <translation>ტექნიკური ნახაზი-ის ანოტაცია</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Views From Other Workbenches</source>
+      <translation>ხედები სხვა სამუშაო მაგიდებიდან</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Clipped Views</source>
+      <translation>მოკვეთილი ხედები</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="63"/>
+      <source>Hatching</source>
+      <translation>დაშტრიხვები</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="64"/>
+      <source>Symbols</source>
+      <translation>სიმბოლოები</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Views</source>
       <translation>ხედები</translation>
     </message>
@@ -8534,12 +8560,12 @@ using the given X/Y Spacing</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1174"/>
+      <location filename="../../CommandCreateDims.cpp" line="1176"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1175"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <source>Repair Dimension References</source>
       <translation>ზომის ორიენტირების გასწორება</translation>
     </message>
@@ -8586,30 +8612,30 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_HoleShaftFit</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="51"/>
       <source>Add hole or shaft fit</source>
       <translation>ნახვრეტის ან ლილვის დამატება</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="56"/>
-      <source>Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</translation>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="59"/>
+      <source>Add a hole or shaft fit to a dimension
+- select one length dimension or diameter dimension
+- click the tool button, a panel opens
+- select shaft fit / hole fit
+- select the desired ISO 286 fit field using the combo box</source>
+      <translation>დაამატეთ ნახვრეტი ან ლილვის ჩატევა განზომილებას
+- აირჩიეთ ერთი სიგრძის განზომილება ან დიამეტრის განზომილება
+- დააწკაპუნეთ ხელსაწყოს ღილაკზე და პანელი გაიხსნება
+- არჩიეთ ლილვის ჩატევა / ნახვრეტის ჩატევა
+- აირჩიეთ სასურველი ISO 286 ჩატევის ველი ჩამოსაშლელი სიიდან</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="71"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="74"/>
       <source>Add a hole or shaft fit to a dimension</source>
       <translation>გამზომილებაში ნახვრეტის ან ლილვის ჩატევის დამატება</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="75"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="78"/>
       <source>Please select one length dimension or diameter dimension and retry</source>
       <translation>აირჩიეთ ერთი სიგრძის განზომილება ან დიამეტრის განზომილება და თავიდან სცადეთ</translation>
     </message>
@@ -8971,8 +8997,8 @@ there is an open task dialog.</source>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="207"/>
-      <source>Start angle (conventional) of arc in degrees. </source>
-      <translation>რკალის საწყისი კუთხე (მიღებული) გრადუსებში. </translation>
+      <source>Start angle (conventional) of arc in degrees.</source>
+      <translation>რკალის საწყისი კუთხე (მიღებული) გრადუსებში.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="220"/>
@@ -9081,17 +9107,17 @@ there is an open task dialog.</source>
       <translation>დოკუმენტის ინფორმაციის გამოყენება შაბლონის ველების შესავსებად</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="135"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="136"/>
       <source>Fill Template Fields in </source>
       <translation>შაბლონის შევსება ელემენტში </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="142"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="143"/>
       <source>Update</source>
       <translation>განახლება</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="351"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
       <translation>ყველას განახლება</translation>
     </message>
@@ -9114,7 +9140,7 @@ there is an open task dialog.</source>
       <translation>ხედი ან პროექციის ჯგუფი ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="381"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="382"/>
       <source>Corresponding template fields missing</source>
       <translation>შესაბამისი შაბლონის ველები ვერ ვიპოვე</translation>
     </message>
