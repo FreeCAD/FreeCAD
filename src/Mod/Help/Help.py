@@ -48,8 +48,13 @@ Preferences keys (in "User parameter:BaseApp/Preferences/Mod/Help"):
     URL (string): online location
     Location (string): offline location
     Suffix (string): a suffix to add to the URL, ex: /fr
-    StyleSheet (string): optional CSS stylesheet to style the output
+    StyleSheet (string): optional CSS stylesheet to style the output (markdown only)
+    UseWebModule (bool): If set to True, use the Web module instead of own QtWebWidget
 """
+
+# TODO the Help module should not be able to access the internet without explicit permission,
+# same as Start and Addon Manager. Need to set up a central way to query this permission and
+# ask for user permission if needed
 
 import os
 import FreeCAD
@@ -79,14 +84,21 @@ CONVERTTXT = translate(
     "Help",
     "There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.",
 )
+INTERNETTXT = translate(
+    "Help",
+    'Internet access has not been granted, the Help module cannot fetch online documentation. <a href="allowInternet">Click here</a> to allow FreeCAD to access the internet, or install the documentation for offline use through the Addon Manager.',
+)
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
+WEBWB = False  # this allows to work around a crash in certain versions of Qt5
 
 
-def show(page, view=None, conv=None):
+def show(page, view=None, conv=None, mode=0):
     """
-    show(page,view=None, conv=None):
+    show(page,view=None, conv=None, mode=0):
+
     Opens a help viewer and shows the given help page.
+
     The given help page can be a URL pointing to a markdown or HTML file,
     a name page / command name, or a file path pointing to a markdown
     or HTML file. If view is given (an instance of openBrowserHTML.HelpPage or
@@ -94,31 +106,49 @@ def show(page, view=None, conv=None):
     rendered there, otherwise a new tab/widget will be created according to
     preferences settings. If conv is given (markdown, pandoc, github, builtin or
     none), the corresponding markdown conversion method is used. Otherwise, the
-    module will use the best available.
-    In non-GUI mode, this function simply outputs the markdown or HTML text.
+    module will use the best available. Mode can be 0 (auto, default),
+    1 (external browser), 2 (dialog) or 3 (tab).
+
+    In non-GUI mode, this function simply prints the markdown contents (HTML
+    is converted to markdown if possible).
     """
 
     page = underscore_page(page)
     location = get_location(page)
-    FreeCAD.Console.PrintLog("Help: opening " + location + "\n")
+    if mode == 0:
+        if PREFS.GetBool("optionBrowser", False):
+            mode = 1
+        elif PREFS.GetBool("optionDialog", False):
+            mode = 2
+        else:
+            mode = 3
+    FreeCAD.Console.PrintLog("Help: opening " + location + " mode:" + str(mode) + "\n")
     if not location:
         FreeCAD.Console.PrintError(LOCTXT + "\n")
         return
-    md = get_contents(location)
-    html = convert(md, conv)
+    # check if we have allowed internet access
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+    if location.startswith("http") and not p.GetBool("AllowDownload", False):
+        html = INTERNETTXT
+    else:
+        md = get_contents(location)
+        html = convert(md, conv)
     baseurl = get_uri(location)
     pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
     if FreeCAD.GuiUp:
-        if PREFS.GetBool("optionBrowser", False):  # desktop web browser
+        if mode == 1:
+            # desktop web browser
             show_browser(location)
-        elif PREFS.GetBool("optionDialog", False):  # floating dock window
+        elif mode == 2:
+            # floating dock window
             show_dialog(html, baseurl, title, view)
-        else:  # MDI tab - default
+        else:
+            # MDI tab - default
             show_tab(html, baseurl, title, view)
     else:
         # console mode, we just print the output
-        print(md)
+        print(convert_html(md))
 
 
 def underscore_page(page):
@@ -149,6 +179,10 @@ def get_location(page):
     """retrieves the location (online or offline) of a given page"""
 
     location = ""
+    if "allowInternet" in page:
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
+        p.SetBool("AllowDownload", True)
+        page = page.replace("allowInternet", "")
     if page.startswith("http"):
         return page
     if page.startswith("file://"):
@@ -221,6 +255,8 @@ def show_dialog(html, baseurl, title, view=None):
             view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
             view.parent().parent().setWindowTitle(title)
         else:
+            if WEBWB:
+                show_web_tab(html, baseurl, title)
             openBrowserHTML(html, baseurl, title, ICON, dialog=True)
 
 
@@ -234,12 +270,10 @@ def show_tab(html, baseurl, title, view=None):
             view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
             view.parent().parent().setWindowTitle(title)
         else:
-            # the line below causes a crash with current Qt5 version
-            # openBrowserHTML(html,baseurl,title,ICON)
-            # so ATM we use the WebGui browser instead
-            import WebGui
-
-            WebGui.openBrowserHTML(html, baseurl, title, ICON)
+            if PREFS.GetBool("UseWebModule", False) or WEBWB:
+                show_web_tab(html, baseurl, title)
+            else:
+                openBrowserHTML(html, baseurl, title, ICON)
 
 
 def get_qtwebwidgets(html, baseurl, title):
@@ -249,12 +283,26 @@ def get_qtwebwidgets(html, baseurl, title):
         from PySide import QtGui, QtWebEngineWidgets
     except:
         FreeCAD.Console.PrintLog(LOGTXT + "\n")
-        import WebGui
-
-        WebGui.openBrowserHTML(html, baseurl, title, ICON)
+        show_web_tab(html, baseurl, title)
         return False
     else:
         return True
+
+
+def show_web_tab(html, baseurl, title):
+    """opens a web module browser"""
+
+    # This should be obsoleted at some point
+    # But is still useful for now as some users have had
+    # crashes with certain versions of Qt5
+
+    import WebGui
+
+    try:
+        WebGui.openBrowserHTML(html, baseurl, title, ICON)
+    except TypeError:
+        # FreeCAD < 0.21
+        WebGui.openBrowserHTML(html, baseurl, title)
 
 
 def get_contents(location):
@@ -383,6 +431,19 @@ def convert(content, force=None):
     if css:
         html = html.replace("</head>", css + "\n</head>")
     return html
+
+
+def convert_html(content):
+    """try to convert HTML contents to plain text if possible"""
+
+    if "<html" in content:
+        try:
+            import pypandoc
+
+            content = pypandoc.convert_text(content, "plain", format="html")
+        except:
+            pass
+    return content
 
 
 def add_preferences_page():
