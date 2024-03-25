@@ -176,6 +176,8 @@ SET(Features_SRCS
     FeaturePartSection.h
     FeaturePartSpline.cpp
     FeaturePartSpline.h
+    FeatureProjectOnSurface.cpp
+    FeatureProjectOnSurface.h
     FeatureChamfer.cpp
     FeatureChamfer.h
     FeatureCompound.cpp
