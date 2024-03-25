@@ -2375,7 +2375,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         switch (constraint->Type) {
 
-            case Tangent: {  // second icon is available only for colinear line segments
+            case Tangent: {  // second icon is available only for collinear line segments
                 const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(constraint->First);
                 const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(constraint->Second);
                 if (geo1 && geo1->is<Part::GeomLineSegment>() && geo2
