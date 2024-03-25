@@ -29,7 +29,7 @@ import Help
 class HelpTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.BUGGY_QT = False
 
     def test_awebwidgets(self):
         import PySide
@@ -38,21 +38,26 @@ class HelpTest(unittest.TestCase):
         if PySide.__version_info__[0] == 5:
             if PySide.__version_info__[1] <= 15:
                 Help.WEBWB = True
+                self.BUGGY_QT = True
 
     def test_browser1(self):
-        print("Help: Opening an external browser")
-        Help.show("https://raw.githubusercontent.com/FreeCAD/FreeCAD-documentation/main/wiki/Draft_Line.md", mode=1)
+        if not self.BUGGY_QT:
+            print("Help: Opening an external browser")
+            Help.show("https://raw.githubusercontent.com/FreeCAD/FreeCAD-documentation/main/wiki/Draft_Line.md", mode=1)
 
     def test_browser2(self):
-        print("Help: Opening an external browser")
-        Help.show("https://wiki.freecadweb.org/Draft_Line", mode=1)
+        if not self.BUGGY_QT:
+            print("Help: Opening an external browser")
+            Help.show("https://wiki.freecadweb.org/Draft_Line", mode=1)
 
     def test_dialog(self):
-        print("Help: Opening a standaline dialog")
-        Help.show("Draft_Line", mode=2)
+        if not self.BUGGY_QT:
+            print("Help: Opening a standaline dialog")
+            Help.show("Draft_Line", mode=2)
     def test_tab(self):
-        print("Help: Opening an MDI tab")
-        Help.show("Draft_Line", mode=3)
+        if not self.BUGGY_QT:
+            print("Help: Opening an MDI tab")
+            Help.show("Draft_Line", mode=3)
 
     def tearDown(self):
         pass
