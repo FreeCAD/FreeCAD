@@ -111,6 +111,8 @@ CreateFaceWithRoundHole(float len, float wid, float radius)
     auto edge5 = BRepBuilderAPI_MakeEdge(circ1).Edge();
     auto wire2 = BRepBuilderAPI_MakeWire(edge5).Wire();
     auto face2 = BRepBuilderAPI_MakeFace(face1, wire2).Face();
+    // Beware:  somewhat counterintuitively, face2 is the sum of face1 and the area inside wire2,
+    // not the difference.
     return {face2, wire1, wire2};
 }
 

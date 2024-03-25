@@ -100,7 +100,7 @@ private:
 
     using Connection = boost::signals2::connection;
 
-    Connection connectionParameterFocusOut;
+    Connection connectionParameterTabOrEnterPressed;
     Connection connectionParameterValueChanged;
     Connection connectionCheckboxCheckedChanged;
     Connection connectionComboboxSelectionChanged;
@@ -128,7 +128,7 @@ public:
 
     ~DrawSketchDefaultWidgetController() override
     {
-        connectionParameterFocusOut.disconnect();
+        connectionParameterTabOrEnterPressed.disconnect();
         connectionParameterValueChanged.disconnect();
         connectionCheckboxCheckedChanged.disconnect();
         connectionComboboxSelectionChanged.disconnect();
@@ -147,10 +147,16 @@ public:
     {
         adaptDrawingToParameterChange(parameterindex, value);  // specialisation interface
 
+        // we block the auto passing of focus back to OVP that would occur in mouseMove
+        // triggered in finishControlsChanged
+        ControllerBase::focusAutoPassing = false;
+
         ControllerBase::finishControlsChanged();
+
+        ControllerBase::focusAutoPassing = true;
     }
 
-    void parameterFocusOut(int parameterindex)
+    void parameterTabOrEnterPressed(int parameterindex)
     {
         Q_UNUSED(parameterindex);
         passFocusToNextParameter();
@@ -355,8 +361,10 @@ private:
     {
         toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);  // NOLINT
 
-        connectionParameterFocusOut = toolWidget->registerParameterFocusOut(
-            std::bind(&DrawSketchDefaultWidgetController::parameterFocusOut, this, sp::_1));
+        connectionParameterTabOrEnterPressed = toolWidget->registerParameterTabOrEnterPressed(
+            std::bind(&DrawSketchDefaultWidgetController::parameterTabOrEnterPressed,
+                      this,
+                      sp::_1));
 
         connectionParameterValueChanged = toolWidget->registerParameterValueChanged(
             std::bind(&DrawSketchDefaultWidgetController::parameterValueChanged,
@@ -380,7 +388,8 @@ private:
     /// Resets the widget
     void resetDefaultWidget()
     {
-        boost::signals2::shared_connection_block parameter_focus_block(connectionParameterFocusOut);
+        boost::signals2::shared_connection_block parameter_focus_block(
+            connectionParameterTabOrEnterPressed);
         boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
         boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
         boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);

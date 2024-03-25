@@ -385,7 +385,7 @@ TopoDS_Shape DrawViewSection::getShapeForDetail() const
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
 {
-    //    Base::Console().Message("DVS::execute() - %s\n", getNameInDocument());
+    // Base::Console().Message("DVS::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -445,9 +445,7 @@ bool DrawViewSection::isBaseValid() const
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n", Label.getValue(), baseShape.IsNull());
 
     if (waitingForHlr() || waitingForCut()) {
         return;
@@ -486,9 +484,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:%d\n", Label.getValue(), baseShape.IsNull());
 
     showProgressMessage(getNameInDocument(), "is making section cut");
 
@@ -638,8 +634,7 @@ void DrawViewSection::onSectionCutFinished()
 // activities that depend on updated geometry object
 void DrawViewSection::postHlrTasks(void)
 {
-    //    Base::Console().Message("DVS::postHlrTasks() - %s\n",
-    //    getNameInDocument());
+    // Base::Console().Message("DVS::postHlrTasks() - %s\n", Label.getValue());
 
     DrawViewPart::postHlrTasks();
 
@@ -1172,8 +1167,10 @@ gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
-    //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i,
-    //    m_lineSets.size());
+    // Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
     std::vector<LineSet> result;
     return DrawGeomHatch::getTrimmedLinesSection(this,
                                                  m_lineSets,
@@ -1236,7 +1233,7 @@ void DrawViewSection::setupObject()
 // create geometric hatch lines
 void DrawViewSection::makeLineSets(void)
 {
-    //    Base::Console().Message("DVS::makeLineSets()\n");
+    // Base::Console().Message("DVS::makeLineSets()\n");
     if (PatIncluded.isEmpty()) {
         return;
     }
@@ -1277,8 +1274,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-    //    Base::Console().Message("DVS::replacePatIncluded(%s)\n",
-    //    newPatFile.c_str());
+    // Base::Console().Message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
     if (newPatFile.empty()) {
         return;
     }
