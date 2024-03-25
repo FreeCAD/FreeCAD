@@ -1749,9 +1749,11 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
         SoMaterial* m = nullptr;
         if (!hasDatumLabel && type != Sketcher::Coincident && type != Sketcher::InternalAlignment) {
-            hasMaterial = true;
-            m = static_cast<SoMaterial*>(
-                s->getChild(static_cast<int>(ConstraintNodePosition::MaterialIndex)));
+            int matIndex = static_cast<int>(ConstraintNodePosition::MaterialIndex);
+            if (matIndex < s->getNumChildren()) {
+                hasMaterial = true;
+                m = static_cast<SoMaterial*>(s->getChild(matIndex));
+            }
         }
 
         auto selectpoint = [this, pcolor, PtNum](int geoid, Sketcher::PointPos pos) {

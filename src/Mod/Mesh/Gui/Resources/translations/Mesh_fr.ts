@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1438"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1439"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1491"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -669,17 +669,17 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Mesh union</source>
-      <translation>Union de maillage</translation>
+      <translation>Unir des maillages</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Mesh difference</source>
-      <translation>Différence de maillage</translation>
+      <translation>Générer la différence de maillages</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="259"/>
       <source>Mesh intersection</source>
-      <translation>Intersection de maillage</translation>
+      <translation>Générer la l'intersection de maillages</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="355"/>
@@ -694,7 +694,7 @@
     <message>
       <location filename="../../DlgSmoothing.cpp" line="180"/>
       <source>Mesh Smoothing</source>
-      <translation>Lissage du maillage</translation>
+      <translation>Lisser un maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -709,22 +709,22 @@
     <message>
       <location filename="../../Command.cpp" line="1548"/>
       <source>Fill up holes</source>
-      <translation>Remplir les trous</translation>
+      <translation>Remplir des trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1704"/>
       <source>Mesh merge</source>
-      <translation>Fusion de maillage</translation>
+      <translation>Fusionner des maillages</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1750"/>
       <source>Mesh split</source>
-      <translation>Scinder le maillage</translation>
+      <translation>Scinder un maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1813"/>
       <source>Mesh scale</source>
-      <translation>Redimensionner le maillage</translation>
+      <translation>Mettre à l'échelle le maillage</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="160"/>
@@ -749,17 +749,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="836"/>
       <source>Remove degenerated faces</source>
-      <translation>Enlever les faces dégénérées</translation>
+      <translation>Supprimer les faces dégénérées</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="908"/>
       <source>Remove duplicated faces</source>
-      <translation>Enlever les faces dupliquées</translation>
+      <translation>Supprimer les faces dupliquées</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="978"/>
       <source>Remove duplicated points</source>
-      <translation>Enlever les points dupliqués</translation>
+      <translation>Supprimer les points dupliqués</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1064"/>
@@ -1308,7 +1308,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation>Formats du maillage</translation>
+      <translation>Formats des maillages</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Pavage du plan&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Définit la déviation maximale de la maille en mosaïque par rapport à la surface. Plus la valeur est petite, plus la vitesse de rendu est lente, ce qui se traduit par une augmentation des détails/de la résolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Définit la déviation maximale du maillage tesselé par rapport à la surface. Plus la valeur est petite, plus la vitesse de rendu est lente, ce qui se traduit par une augmentation des détails/de la résolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
@@ -1369,8 +1369,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Ce paramètre indique si la compression ZIP
-est utilisée lors de l'écriture d'un fichier au format AMF</translation>
+      <translation>Ce paramètre indique si la compression ZIP est utilisée lors de l'écriture d'un fichier au format AMF.</translation>
     </message>
   </context>
   <context>
@@ -1584,7 +1583,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="241"/>
       <source>Running gmsh...</source>
-      <translation>Exécution de gmsh...</translation>
+      <translation>Lancer Gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="265"/>
@@ -2047,7 +2046,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
       <location filename="../../Workbench.cpp" line="123"/>
       <location filename="../../Workbench.cpp" line="124"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation>X: %1	Y: %2	Z: %3</translation>
+      <translation>X : %1	Y : %2	Z : %3</translation>
     </message>
   </context>
   <context>
@@ -2141,7 +2140,7 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
       <location filename="../../Command.cpp" line="341"/>
       <location filename="../../Command.cpp" line="403"/>
       <source>Object File Format</source>
-      <translation>Format de fichier Objet</translation>
+      <translation>Format du fichier de l'objet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -2173,7 +2172,7 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Simple Model Format</source>
-      <translation>Modèle simple Format</translation>
+      <translation>Format du modèle simple</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="404"/>
@@ -2213,7 +2212,7 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Python module def</source>
-      <translation>Définition de module Python</translation>
+      <translation>Définition du module Python</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
@@ -2298,7 +2297,7 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     <message>
       <location filename="../../ViewProvider.cpp" line="820"/>
       <source>Display colors</source>
-      <translation>Couleurs d'affichage</translation>
+      <translation>Afficher les couleurs</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1679"/>

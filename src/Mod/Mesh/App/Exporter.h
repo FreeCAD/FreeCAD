@@ -43,7 +43,7 @@ namespace Mesh
  * If objects are meant to be combined into a single file, then the file should
  * be saved from the derived class' destructor.
  */
-class Exporter
+class MeshExport Exporter
 {
 public:
     Exporter();
@@ -76,7 +76,7 @@ protected:
 };
 
 /// Creates a single mesh, in a file, from one or more objects
-class MergeExporter: public Exporter
+class MeshExport MergeExporter: public Exporter
 {
 public:
     MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
@@ -202,7 +202,7 @@ private:
  * The constructor and destructor write the beginning and end of the 3MF,
  * addObject() is used to add geometry
  */
-class Exporter3MF: public Exporter
+class MeshExport Exporter3MF: public Exporter
 {
 public:
     Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
@@ -235,7 +235,7 @@ private:
  * The constructor and destructor write the beginning and end of the AMF,
  * addObject() is used to add geometry
  */
-class ExporterAMF: public Exporter
+class MeshExport ExporterAMF: public Exporter
 {
 public:
     /// Writes AMF header

@@ -28,6 +28,7 @@
 # include <unordered_set>
 #endif
 
+#include "DocumentObject.h"
 #include "MappedElement.h"
 
 using namespace Data;
@@ -161,4 +162,11 @@ bool ElementNameComparator::operator()(const MappedName& leftName,
         }
     }
     return leftName.size() < rightName.size();
+}
+
+HistoryItem::HistoryItem(App::DocumentObject *obj, const Data::MappedName &name)
+    :obj(obj),tag(0),element(name)
+{
+    if(obj)
+        tag = obj->getID();
 }

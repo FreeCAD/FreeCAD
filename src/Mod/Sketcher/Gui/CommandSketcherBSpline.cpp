@@ -1052,16 +1052,30 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         }
     }
 
+    // TODO: Check for tangent constraints between these the two points.
+    // These need to be explicit: indirect tangency because poles are collinear will not work.
+    bool tangentConstraintExists = false;
+    for (const auto& constr : Obj->Constraints.getValues()) {
+        if (constr->Type == Sketcher::ConstraintType::Tangent
+            && ((constr->First == GeoIds[0] && constr->FirstPos == PosIds[0]
+                 && constr->Second == GeoIds[1] && constr->SecondPos == PosIds[1])
+                || (constr->First == GeoIds[1] && constr->FirstPos == PosIds[1]
+                    && constr->Second == GeoIds[0] && constr->SecondPos == PosIds[0]))) {
+            tangentConstraintExists = true;
+        }
+    }
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
 
     try {
         Gui::cmdAppObjectArgs(selection[0].getObject(),
-                              "join(%d, %d, %d, %d) ",
+                              "join(%d, %d, %d, %d, %d) ",
                               GeoIds[0],
                               static_cast<int>(PosIds[0]),
                               GeoIds[1],
-                              static_cast<int>(PosIds[1]));
+                              static_cast<int>(PosIds[1]),
+                              tangentConstraintExists ? 1 : 0);
         applied = true;
 
         // Warning: GeoId list will have changed

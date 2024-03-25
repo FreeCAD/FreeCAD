@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -61,9 +61,8 @@ int DlgDecimating::targetNumberOfTriangles() const
     if (ui->checkAbsoluteNumber->isChecked()) {
         return ui->spinBoxReduction->value();
     }
-    else {
-        return numberOfTriangles * (1.0 - reduction());
-    }
+
+    return int(numberOfTriangles * (1.0 - reduction()));
 }
 
 void DlgDecimating::setNumberOfTriangles(int num)
@@ -90,7 +89,7 @@ void DlgDecimating::onCheckAbsoluteNumberToggled(bool on)
                    ui->sliderReduction,
                    &QSlider::setValue);
         ui->spinBoxReduction->setRange(1, numberOfTriangles);
-        ui->spinBoxReduction->setValue(numberOfTriangles * (1.0 - reduction()));
+        ui->spinBoxReduction->setValue(int(numberOfTriangles * (1.0 - reduction())));
         ui->spinBoxReduction->setSuffix(QString());
         ui->checkAbsoluteNumber->setText(
             tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
@@ -159,22 +158,20 @@ bool TaskDecimating::accept()
     Gui::WaitCursor wc;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"));
 
-    float tolerance = widget->tolerance();
-    float reduction = widget->reduction();
+    float tolerance = float(widget->tolerance());
+    float reduction = float(widget->reduction());
     bool absolute = widget->isAbsoluteNumber();
     int targetSize = 0;
     if (absolute) {
         targetSize = widget->targetNumberOfTriangles();
     }
     for (auto mesh : meshes) {
-        Mesh::MeshObject* mm = mesh->Mesh.startEditing();
         if (absolute) {
-            mm->decimate(targetSize);
+            Gui::cmdAppObjectArgs(mesh, "decimate(%i)", targetSize);
         }
         else {
-            mm->decimate(tolerance, reduction);
+            Gui::cmdAppObjectArgs(mesh, "decimate(%f, %f)", tolerance, reduction);
         }
-        mesh->Mesh.finishEditing();
     }
 
     Gui::Command::commitCommand();

@@ -81,6 +81,7 @@ def setup(doc=None, solvertype="elmer"):
     p7 = Vector(25.0, 20.0, 0.0)
     p8 = Vector(0.0, 20.0, 0.0)
     Insulation = Draft.make_wire([p1, p2, p3, p4, p5, p6, p7, p8], closed=True)
+    Insulation.MakeFace = True
     Insulation.Label = "Insulation"
     Insulation.ViewObject.Visibility = False
 
@@ -90,6 +91,7 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(55.0, 110.0, 0.0)
     p4 = Vector(50.0, 110.0, 0.0)
     Coil = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Coil.MakeFace = True
     Coil.Label = "Coil"
     Coil.ViewObject.Visibility = False
 
@@ -103,6 +105,7 @@ def setup(doc=None, solvertype="elmer"):
     p7 = Vector(20.0, 30.0, 0.0)
     p8 = Vector(0.0, 30.0, 0.0)
     Crucible = Draft.make_wire([p1, p2, p3, p4, p5, p6, p7, p8], closed=True)
+    Crucible.MakeFace = True
     Crucible.Label = "Crucible"
     Crucible.ViewObject.Visibility = False
 
@@ -112,6 +115,7 @@ def setup(doc=None, solvertype="elmer"):
     p3 = Vector(20.0, 40.0, 0.0)
     p4 = Vector(0.0, 40.0, 0.0)
     Powder = Draft.make_wire([p1, p2, p3, p4], closed=True)
+    Powder.MakeFace = True
     Powder.Label = "Powder"
     Powder.ViewObject.Visibility = False
 

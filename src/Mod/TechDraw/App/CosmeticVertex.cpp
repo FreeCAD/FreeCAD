@@ -195,7 +195,7 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
 
 //! converts a point into its unscaled, unrotated form.  If point is Gui space coordinates,
 //! it should be inverted (DU::invertY) before calling this method, and the result should be
-//! inverted on return.
+//! inverted back on return.
 Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale)
 {
     // Base::Console().Message("CV::makeCanonicalPoint(%s)\n", DU::formatVector(point).c_str());

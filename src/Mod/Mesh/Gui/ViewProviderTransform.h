@@ -72,6 +72,8 @@ public:
 
 private:
     SoTransformerManip* pcTransformerDragger;
+
+    FC_DISABLE_COPY_MOVE(ViewProviderMeshTransform)
 };
 
 }  // namespace MeshGui

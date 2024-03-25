@@ -68,7 +68,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_rec_width">
               <property name="text">
-               <string>Width:   </string>
+               <string>Width:</string>
               </property>
              </widget>
             </item>
@@ -112,7 +112,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="l_rec_height">
               <property name="text">
-               <string>Height:     </string>
+               <string>Height:</string>
               </property>
              </widget>
             </item>
@@ -222,7 +222,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_circ_diameter">
               <property name="text">
-               <string>Diameter:   </string>
+               <string>Diameter:</string>
               </property>
              </widget>
             </item>
@@ -240,7 +240,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_pipe_diameter">
               <property name="text">
-               <string>Outer diameter:   </string>
+               <string>Outer diameter:</string>
               </property>
              </widget>
             </item>

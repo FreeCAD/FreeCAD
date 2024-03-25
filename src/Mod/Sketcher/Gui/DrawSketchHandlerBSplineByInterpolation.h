@@ -417,10 +417,24 @@ private:
 
     void drawBSplineToPosition(Base::Vector2d position)
     {
+        try {
+            tryInterpolateSpline(position);
+        }
+        catch (const Standard_Failure&) {
+            // Since it happens very frequently that the interpolation fails
+            // it's sufficient to report this as log message to avoid to pollute
+            // the output window
+            Base::Console().Log(std::string("drawBSplineToPosition"), "interpolation failed\n");
+        }
+    }
+
+    void tryInterpolateSpline(Base::Vector2d position)
+    {
         std::vector<Base::Vector2d> editcurve(BSplineKnots);
         editcurve.push_back(position);
 
         std::vector<gp_Pnt> editCurveForOCCT;
+        editCurveForOCCT.reserve(editcurve.size());
         for (auto& p : editcurve) {
             editCurveForOCCT.emplace_back(p.x, p.y, 0.0);
         }

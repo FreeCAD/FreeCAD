@@ -862,7 +862,7 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index\n", idx);
+        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index - size: %d\n", idx);
         return nullptr;
     }
     return geoms.at(idx);

@@ -103,7 +103,6 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
                 if (type == QString::fromLatin1("Front")) {
-                    gView->setLocked(true);                  //this locks in GUI only
                     gView->alignTo(m_origin, QString::fromLatin1("None"));
                     installSceneEventFilter(gView);
                 } else if ( type == QString::fromLatin1("Top") ||

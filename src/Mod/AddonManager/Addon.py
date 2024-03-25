@@ -56,7 +56,7 @@ INTERNAL_WORKBENCHES = {
     "openscad": "OpenSCAD",
     "part": "Part",
     "partdesign": "PartDesign",
-    "path": "Path",
+    "cam": "CAM",
     "plot": "Plot",
     "points": "Points",
     "robot": "Robot",

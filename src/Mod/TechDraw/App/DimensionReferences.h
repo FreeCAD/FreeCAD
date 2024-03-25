@@ -37,6 +37,7 @@
 namespace App
 {
 class DocumentObject;
+class Document;
 }
 
 namespace Part
@@ -51,34 +52,39 @@ namespace TechDraw
 class TechDrawExport ReferenceEntry
 {
 public:
-    ReferenceEntry( App::DocumentObject* docObject, std::string subName ) {
-        setObject(docObject);
-        setSubName(subName);
-    }
-    ReferenceEntry(const ReferenceEntry& other) {
-        setObject(other.getObject());
-        setSubName(other.getSubName());
-    }
+    ReferenceEntry() {};
+    ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document = nullptr);
+    ReferenceEntry(const ReferenceEntry& other);
     ~ReferenceEntry() = default;
+
+    ReferenceEntry& operator= (const ReferenceEntry& otherRef);
 
     App::DocumentObject* getObject() const;
     void setObject(App::DocumentObject* docObj) { m_object = docObj; }
     std::string getSubName(bool longForm = false) const;
     void setSubName(std::string subName) { m_subName = subName; }
+    std::string getObjectName() const { return m_objectName; }
+    void setObjectName(std::string name) { m_objectName = name; }
+    App::Document* getDocument() const { return m_document; }
+    void setDocument(App::Document* document) { m_document = document; }
+
     TopoDS_Shape getGeometry() const;
     std::string geomType() const;
     bool isWholeObject() const;
 
     Part::TopoShape asTopoShape() const;
+
+    bool is3d() const;
+    bool hasGeometry() const;
+
+private:
     Part::TopoShape asTopoShapeVertex(TopoDS_Vertex &vert) const;
     Part::TopoShape asTopoShapeEdge(TopoDS_Edge& edge) const;
 
-    bool is3d() const;
-    bool isValid() const;
-
-private:
-    App::DocumentObject* m_object;
-    std::string m_subName;
+    App::DocumentObject* m_object{nullptr};
+    std::string m_subName{""};
+    std::string m_objectName{""};
+    App::Document* m_document{nullptr};
 };
 
 using ReferenceVector = std::vector<ReferenceEntry>;

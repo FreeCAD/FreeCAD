@@ -65,7 +65,6 @@ class PackageList(QtWidgets.QWidget):
         self.ui.listPackages.setItemDelegate(self.item_delegate)
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
-        self.ui.view_bar.view_changed.connect(self.set_view_style)
         self.ui.view_bar.filter_changed.connect(self.update_status_filter)
         self.ui.view_bar.search_changed.connect(self.item_filter.setFilterRegularExpression)
         self.ui.view_bar.sort_changed.connect(self.item_filter.setSortRole)
@@ -105,6 +104,20 @@ class PackageList(QtWidgets.QWidget):
         )
         self.item_filter.setHideUnlicensed(pref.GetBool("HideUnlicensed", False))
 
+    def select_addon(self, addon_name: str):
+        for index, addon in enumerate(self.item_model.repos):
+            if addon.name == addon_name:
+                row_index = self.item_model.createIndex(index, 0)
+                if self.item_filter.filterAcceptsRow(index):
+                    self.ui.listPackages.setCurrentIndex(row_index)
+                else:
+                    FreeCAD.Console.PrintLog(
+                        f"Addon {addon_name} is not visible given current "
+                        "filter: not selecting it."
+                    )
+                return
+        FreeCAD.Console.PrintLog(f"Could not find addon '{addon_name}' to select it")
+
     def on_listPackages_clicked(self, index: QtCore.QModelIndex):
         """Determine what addon was selected and emit the itemSelected signal with it as
         an argument."""
@@ -124,10 +137,10 @@ class PackageList(QtWidgets.QWidget):
 
     def set_view_style(self, style: AddonManagerDisplayStyle) -> None:
         """Set the style (compact or expanded) of the list"""
-        self.item_model.layoutAboutToBeChanged.emit()
+        if self.item_model:
+            self.item_model.layoutAboutToBeChanged.emit()
         self.item_delegate.set_view(style)
-        # TODO: Update to support composite
-        if style == AddonManagerDisplayStyle.COMPACT:
+        if style == AddonManagerDisplayStyle.COMPACT or style == AddonManagerDisplayStyle.COMPOSITE:
             self.ui.listPackages.setSpacing(2)
             self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerItem)
             self.ui.listPackages.verticalScrollBar().setSingleStep(-1)
@@ -135,7 +148,8 @@ class PackageList(QtWidgets.QWidget):
             self.ui.listPackages.setSpacing(5)
             self.ui.listPackages.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
             self.ui.listPackages.verticalScrollBar().setSingleStep(24)
-        self.item_model.layoutChanged.emit()
+        if self.item_model:
+            self.item_model.layoutChanged.emit()
 
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("ViewStyle", style)
@@ -288,6 +302,9 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         elif self.displayStyle == AddonManagerDisplayStyle.COMPACT:
             self.widget = self.compact
             self._setup_compact_view(repo)
+        elif self.displayStyle == AddonManagerDisplayStyle.COMPOSITE:
+            self.widget = self.compact  # For now re-use the compact list
+            self._setup_composite_view(repo)
         self.widget.adjustSize()
 
     def _setup_expanded_view(self, addon: Addon) -> None:
@@ -333,6 +350,22 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
             self.widget.ui.labelDescription.setText(description)
         else:
             self.widget.ui.labelDescription.setText(self._get_sort_label_text(addon))
+
+    def _setup_composite_view(self, addon: Addon) -> None:
+        self.widget.ui.labelPackageName.setText(f"<b>{addon.display_name}</b>")
+        self.widget.ui.labelIcon.setPixmap(addon.icon.pixmap(QtCore.QSize(16, 16)))
+        self.widget.ui.labelStatus.setText(self.get_compact_update_string(addon))
+        self.widget.ui.labelIcon.setText("")
+        if addon.metadata:
+            self.widget.ui.labelVersion.setText(f"<i>v{addon.metadata.version}</i>")
+        elif addon.macro:
+            self._set_macro_version_label(addon)
+        else:
+            self.widget.ui.labelVersion.setText("")
+        if self.sort_order != SortOptions.Alphabetical:
+            self.widget.ui.labelDescription.setText(self._get_sort_label_text(addon))
+        else:
+            self.widget.ui.labelDescription.setText("")
 
     def _set_package_maintainer_label(self, addon: Addon):
         maintainers = addon.metadata.maintainer
@@ -395,14 +428,13 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         return ""
 
     def _get_compact_description(self, addon: Addon) -> str:
+        description = ""
         if addon.metadata:
-            trimmed_text = addon.metadata.description
-            # TODO: Un-hardcode the 25 character limiter
-            return trimmed_text.replace("\r\n", " ")[:25] + "..."
-        if addon.macro and addon.macro.comment:
-            trimmed_text = addon.macro.comment
-            return trimmed_text.replace("\r\n", " ")[:25] + "..."
-        return ""
+            description = addon.metadata.description
+        elif addon.macro and addon.macro.comment:
+            description = addon.macro.comment
+        trimmed_text, _, _ = description.partition(".")
+        return trimmed_text.replace("\n", " ")
 
     @staticmethod
     def get_compact_update_string(repo: Addon) -> str:

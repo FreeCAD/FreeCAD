@@ -60,7 +60,7 @@
 
 void PrintInitHelp();
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n"\
 "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
 "FreeCAD wouldn't be possible without FreeCAD community.\n"\
 "  #####                 ####  ###   ####  \n" \
@@ -171,7 +171,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["SplashInfoColor" ] = "#8aadf4"; // light blue 
     App::Application::Config()["SplashInfoPosition" ] = "6,75";
 
-    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD.desktop"));
+    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD"));
 
     try {
         // Init phase ===========================================================

@@ -13,6 +13,9 @@ Core:
 Addon Manager:
 - 'src/Mod/AddonManager/**/*'
 
+Materials:
+- 'src/Mod/Material/**/*'
+
 WB Arch:
 - 'src/Mod/Arch/**/*'
 
@@ -37,11 +40,11 @@ WB OpenSCAD:
 WB Part:
 - 'src/Mod/Part/**/*'
 
-WB PartDesign:
+WB Part Design:
 - 'src/Mod/PartDesign/**/*'
 
-WB Path:
-- 'src/Mod/Path/**/*'
+WB CAM:
+- 'src/Mod/CAM/**/*'
 
 WB Points:
 - 'src/Mod/Points/**/*'

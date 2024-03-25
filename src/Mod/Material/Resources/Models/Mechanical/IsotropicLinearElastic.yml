@@ -30,21 +30,25 @@ Model:
     and strain relationship is linear
   DOI: "10.1016/j.ijplas.2004.06.004"
   BulkModulus:
+    DisplayName: "Bulk Modulus"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Bulk_modulus'
     Description: "Bulk modulus in [FreeCAD Pressure unit]"
   PoissonRatio:
+    DisplayName: "Poisson Ratio"
     Type: 'Float'
     Units: ''
     URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'
     Description: "Poisson's ratio [unitless]"
   ShearModulus:
+    DisplayName: "Shear Modulus"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Shear_modulus'
     Description: "Shear modulus in [FreeCAD Pressure unit]"
   YoungsModulus:
+    DisplayName: "Young's Modulus"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Young%27s_modulus'

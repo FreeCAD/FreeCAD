@@ -70,9 +70,7 @@ void SheetObserver::slotDeletedObject(const DocumentObject& Obj)
 
 void SheetObserver::slotChangedObject(const DocumentObject& Obj, const Property& Prop)
 {
-    if (&Prop == &Obj.Label) {
-        sheet->renamedDocumentObject(&Obj);
-    }
+    if (&Prop == &Obj.Label) {}
     else {
         const char* name = Obj.getPropertyName(&Prop);
 

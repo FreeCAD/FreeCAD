@@ -180,13 +180,8 @@ void DlgSettingsGeneral::setDecimalPointConversion(bool on)
     }
 }
 
-void DlgSettingsGeneral::saveSettings()
+void DlgSettingsGeneral::saveUnitSystemSettings()
 {
-    // must be done as very first because we create a new instance of NavigatorStyle
-    // where we set some attributes afterwards
-    int FracInch;  // minimum fractional inch to display
-    int viewSystemIndex; // currently selected View System (unit system)
-
     ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
@@ -202,25 +197,37 @@ void DlgSettingsGeneral::saveSettings()
     //
     // The inverse conversion is done when loaded. That way only one thing (the
     // numerical fractional inch value) needs to be stored.
-    FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+
+    // minimum fractional inch to display
+    int FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
     Base::QuantityFormat::setDefaultDenominator(FracInch);
 
     // Set and save the Unit System
-    if ( ui->checkBox_projectUnitSystemIgnore->isChecked() ) {
-        viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+    if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
+        // currently selected View System (unit system)
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
         UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    } else {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if ( doc != nullptr ) {
-            UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
-        }
+    }
+    else if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
+    }
+    else {
+        // if there is no existing document then the unit must still be set
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+        UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
     }
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
+}
+
+void DlgSettingsGeneral::saveSettings()
+{
+    saveUnitSystemSettings();
+
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();

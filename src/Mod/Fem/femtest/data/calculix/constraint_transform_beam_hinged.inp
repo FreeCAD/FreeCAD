@@ -3785,7 +3785,7 @@ S, E
 *NODE PRINT, NSET=FemConstraintDisplacment, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

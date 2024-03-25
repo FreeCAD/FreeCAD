@@ -658,15 +658,15 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainPointOnObject",
                  doPointOnObjectConstraint,
                  true)
-    CONTEXT_ITEM("Constraint_Vertical",
-                 "Vertical Constraint",
-                 "Sketcher_ConstrainVertical",
-                 doVerticalConstraint,
-                 true)
     CONTEXT_ITEM("Constraint_Horizontal",
                  "Horizontal Constraint",
                  "Sketcher_ConstrainHorizontal",
                  doHorizontalConstraint,
+                 true)
+    CONTEXT_ITEM("Constraint_Vertical",
+                 "Vertical Constraint",
+                 "Sketcher_ConstrainVertical",
+                 doVerticalConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Parallel",
                  "Parallel Constraint",
@@ -696,8 +696,6 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     CONTEXT_ITEM(
         "Constraint_Block", "Block Constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
 
-    CONTEXT_ITEM(
-        "Constraint_Lock", "Lock Constraint", "Sketcher_ConstrainLock", doLockConstraint, true)
     CONTEXT_ITEM("Constraint_HorizontalDistance",
                  "Horizontal Distance",
                  "Sketcher_ConstrainDistanceX",
@@ -713,6 +711,11 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainDistance",
                  doLengthConstraint,
                  true)
+    CONTEXT_ITEM("Constraint_Radiam",
+                 "Radiam Constraint",
+                 "Sketcher_ConstrainRadiam",
+                 doRadiamConstraint,
+                 true)
     CONTEXT_ITEM("Constraint_Radius",
                  "Radius Constraint",
                  "Sketcher_ConstrainRadius",
@@ -723,16 +726,13 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  "Sketcher_ConstrainDiameter",
                  doDiameterConstraint,
                  true)
-    CONTEXT_ITEM("Constraint_Radiam",
-                 "Radiam Constraint",
-                 "Sketcher_ConstrainRadiam",
-                 doRadiamConstraint,
-                 true)
     CONTEXT_ITEM("Constraint_InternalAngle",
                  "Angle Constraint",
                  "Sketcher_ConstrainAngle",
                  doAngleConstraint,
                  true)
+    CONTEXT_ITEM(
+        "Constraint_Lock", "Lock Constraint", "Sketcher_ConstrainLock", doLockConstraint, true)
 
     menu.addSeparator();
 
@@ -792,8 +792,8 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident", doPointCoincidence)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject", doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal", doHorizontalConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical", doVerticalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel", doParallelConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular", doPerpendicularConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent", doTangentConstraint)
@@ -801,14 +801,14 @@ CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual", doEqualConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric", doSymmetricConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock", doBlockConstraint)
 
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock", doLockConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX", doHorizontalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY", doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance", doLengthConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam", doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius", doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter", doDiameterConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam", doRadiamConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle", doAngleConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock", doLockConstraint)
 
 CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction", doToggleConstruction)
 

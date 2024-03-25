@@ -563,7 +563,7 @@ Note: has no effect if a solid was selected</string>
      <item row="0" column="0">
       <widget class="QLabel" name="capacityBody_label">
        <property name="text">
-        <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body: </string>
+        <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body:</string>
        </property>
       </widget>
      </item>

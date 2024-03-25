@@ -116,11 +116,6 @@ void Primitive::Restore(Base::XMLReader &reader)
     Part::Feature::Restore(reader);
 }
 
-void Primitive::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-}
-
 void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     // For #0001652 the property types of many primitive features have changed

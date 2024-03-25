@@ -66,13 +66,13 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=N
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
     if baseobj and sketch:
-        if hasattr(sketch,"Support"):
-            if sketch.Support:
-                if isinstance(sketch.Support,tuple):
-                    if sketch.Support[0] == baseobj:
-                        sketch.Support = None
-                elif sketch.Support == baseobj:
-                    sketch.Support = None
+        if hasattr(sketch,"AttachmentSupport"):
+            if sketch.AttachmentSupport:
+                if isinstance(sketch.AttachmentSupport,tuple):
+                    if sketch.AttachmentSupport[0] == baseobj:
+                        sketch.AttachmentSupport = None
+                elif sketch.AttachmentSupport == baseobj:
+                    sketch.AttachmentSupport = None
         obj.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
@@ -145,10 +145,10 @@ class _CommandRebar:
                 if len(obj.Shape.Wires) == 1:
                     # we have only a wire: extract its support object, if available, and make the rebar
                     support = "None"
-                    if hasattr(obj,"Support"):
-                        if obj.Support:
-                            if len(obj.Support) != 0:
-                                support = "FreeCAD.ActiveDocument."+obj.Support[0][0].Name
+                    if hasattr(obj,"AttachmentSupport"):
+                        if obj.AttachmentSupport:
+                            if len(obj.AttachmentSupport) != 0:
+                                support = "FreeCAD.ActiveDocument."+obj.AttachmentSupport[0][0].Name
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.makeRebar("+support+",FreeCAD.ActiveDocument."+obj.Name+")")

@@ -134,7 +134,7 @@
             <string/>
            </property>
            <property name="text">
-            <string>Multi-key sequence delay: </string>
+            <string>Multi-key sequence delay:</string>
            </property>
           </widget>
          </item>
@@ -153,9 +153,9 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Time in milliseconds to wait for the next key stroke of the current key sequence.
+            <string>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</string>
+treated as shortcut key sequence 'F, F'.</string>
            </property>
            <property name="maximum">
             <number>10000</number>

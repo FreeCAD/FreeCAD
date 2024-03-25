@@ -37,6 +37,7 @@ namespace TechDraw
 {
 
 class DrawPage;
+class DrawViewCollection;
 class DrawViewClip;
 class DrawLeaderLine;
 /*class CosmeticVertex;*/
@@ -74,6 +75,7 @@ public:
 
     bool isInClip();
     DrawViewClip* getClipGroup();
+    DrawViewCollection *getCollection() const;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {

@@ -2651,6 +2651,108 @@ double ConstraintAngleViaPoint::grad(double* param)
 }
 
 // --------------------------------------------------------
+// ConstraintAngleViaTwoPoints
+ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
+                                                         Curve& acrv2,
+                                                         Point p1,
+                                                         Point p2,
+                                                         double* angle)
+{
+    pvec.push_back(angle);
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    acrv1.PushOwnParams(pvec);
+    acrv2.PushOwnParams(pvec);
+    crv1 = acrv1.Copy();
+    crv2 = acrv2.Copy();
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+ConstraintAngleViaTwoPoints::~ConstraintAngleViaTwoPoints()
+{
+    delete crv1;
+    crv1 = nullptr;
+    delete crv2;
+    crv2 = nullptr;
+}
+
+void ConstraintAngleViaTwoPoints::ReconstructGeomPointers()
+{
+    int cnt = 0;
+    cnt++;  // skip angle - we have an inline function for that
+    poa1.x = pvec[cnt];
+    cnt++;
+    poa1.y = pvec[cnt];
+    cnt++;
+    poa2.x = pvec[cnt];
+    cnt++;
+    poa2.y = pvec[cnt];
+    cnt++;
+    crv1->ReconstructOnNewPvec(pvec, cnt);
+    crv2->ReconstructOnNewPvec(pvec, cnt);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintAngleViaTwoPoints::getTypeId()
+{
+    return AngleViaTwoPoints;
+}
+
+void ConstraintAngleViaTwoPoints::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintAngleViaTwoPoints::error()
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+    double ang = *angle();
+    DeriVector2 n1 = crv1->CalculateNormal(poa1);
+    DeriVector2 n2 = crv2->CalculateNormal(poa2);
+
+    // rotate n1 by angle
+    DeriVector2 n1r(n1.x * cos(ang) - n1.y * sin(ang), n1.x * sin(ang) + n1.y * cos(ang));
+
+    // calculate angle between n1r and n2. Since we have rotated the n1, the angle is the error
+    // function. for our atan2, y is a dot product (n2) * (n1r rotated ccw by 90 degrees).
+    //                x is a dot product (n2) * (n1r)
+    double err = atan2(-n2.x * n1r.y + n2.y * n1r.x, n2.x * n1r.x + n2.y * n1r.y);
+    // essentially, the function is equivalent to atan2(n2)-(atan2(n1)+angle). The only difference
+    // is behavior when normals are zero (the intended result is also zero in this case).
+    return scale * err;
+}
+
+double ConstraintAngleViaTwoPoints::grad(double* param)
+{
+    // first of all, check that we need to compute anything.
+    if (findParamInPvec(param) == -1) {
+        return 0.0;
+    }
+
+    double deriv = 0.;
+
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    if (param == angle()) {
+        deriv += -1.0;
+    }
+    DeriVector2 n1 = crv1->CalculateNormal(poa1, param);
+    DeriVector2 n2 = crv2->CalculateNormal(poa2, param);
+    deriv -= ((-n1.dx) * n1.y / pow(n1.length(), 2) + n1.dy * n1.x / pow(n1.length(), 2));
+    deriv += ((-n2.dx) * n2.y / pow(n2.length(), 2) + n2.dy * n2.x / pow(n2.length(), 2));
+
+    return scale * deriv;
+}
+
+// --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
 ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
                                                                  Curve& acrv2,

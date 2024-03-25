@@ -42,7 +42,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
@@ -389,13 +388,10 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     }
 
     // Collect any child views
-    // for Page, valid children are any View except: DrawProjGroupItem
-    //                                               DrawViewDimension
+    // for Page, valid children are any View except: DrawViewDimension
     //                                               DrawViewBalloon
-    //                                               DrawLeaderLine
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
-    //                                               DrawWeldSymbol
 
     const std::vector<App::DocumentObject*>& views = getDrawPage()->Views.getValues();
 
@@ -410,13 +406,10 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
             }
 
             App::DocumentObject* docObj = *it;
-            // Don't collect if dimension, projection group item, hatch or member of ClipGroup as these should be grouped elsewhere
-            if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())
-                || docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())
+            // Don't collect if dimension, balloon, hatch or member of ClipGroup as these should be grouped elsewhere
+            if (docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())
                 || docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())
                 || docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())
-                || docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())
-                || docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())
                 || (featView && featView->isInClip()))
                 continue;
             else

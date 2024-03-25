@@ -163,7 +163,7 @@ def add_attributes(obj, ccx_prefs):
             "App::PropertyEnumeration",
             "MaterialNonlinearity",
             "Fem",
-            "Set material nonlinearity (needs geometrical nonlinearity)"
+            "Set material nonlinearity"
         )
         obj.MaterialNonlinearity = choices_material_nonlinear
         obj.MaterialNonlinearity = choices_material_nonlinear[0]
@@ -404,6 +404,30 @@ def add_attributes(obj, ccx_prefs):
             "Set to True to use beam elements with reduced integration"
         )
         obj.BeamReducedIntegration = True
+
+    if not hasattr(obj, "OutputFrequency"):
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "OutputFrequency",
+            "Fem",
+            "Set the output frequency in increments"
+        )
+        obj.OutputFrequency = 1
+
+    if not hasattr(obj, "ModelSpace"):
+        model_space_types = [
+            "3D",
+            "plane stress",
+            "plane strain",
+            "axisymmetric"
+        ]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ModelSpace",
+            "Fem",
+            "Type of model space"
+        )
+        obj.ModelSpace = model_space_types
 
 """
 Should there be some equation object for Calculix too?

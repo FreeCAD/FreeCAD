@@ -38394,7 +38394,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Load_place_point:Vertex1
-5,2,-5000.0
+5,2,-5000
 
 
 
@@ -38409,7 +38409,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

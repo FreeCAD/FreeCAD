@@ -200,7 +200,7 @@ Eedges
 ** Sections
 *BEAM SECTION, ELSET=M0B0RstdD0, MATERIAL=MechanicalMaterial, SECTION=RECT
 1000,1000
--0, 1, 0
+0, 1, -0
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
@@ -225,7 +225,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: CantileverLine:Vertex2
-2,3,-9000000.0
+2,3,-9000000
 
 
 
@@ -240,7 +240,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

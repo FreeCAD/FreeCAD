@@ -444,7 +444,7 @@ class ArchTest(unittest.TestCase):
         App.Console.PrintLog ('Checking Arch Rebar...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
-        sk.Support = (s,["Face6"])
+        sk.AttachmentSupport = (s,["Face6"])
         sk.addGeometry(Part.LineSegment(App.Vector(-0.85,1.25,0),App.Vector(0.75,1.25,0)))
         sk.addGeometry(Part.LineSegment(App.Vector(0.75,1.25,0),App.Vector(0.75,-1.20,0)))
         sk.addGeometry(Part.LineSegment(App.Vector(0.75,-1.20,0),App.Vector(-0.85,-1.20,0)))

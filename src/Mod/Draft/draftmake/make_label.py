@@ -261,7 +261,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
 
     types = label.get_label_types()
     if label_type not in types:
-        _err(translate("draft", "Wrong input: label_type must be one of the following: ") + str(types).strip("[]"))
+        _err(translate("draft", "Wrong input: label_type must be one of the following:") + " " + str(types).strip("[]"))
         return None
 
     if not custom_text:

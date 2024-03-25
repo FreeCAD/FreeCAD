@@ -95,7 +95,7 @@ void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
         auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
 
         if(attach) {
-            if( prop == &(attach->Support) ||
+            if( prop == &(attach->AttachmentSupport) ||
                 prop == &(attach->MapMode) ||
                 prop == &(attach->MapPathParameter) ||
                 prop == &(attach->MapReversed) ||

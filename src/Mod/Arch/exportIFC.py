@@ -108,9 +108,11 @@ END-ISO-10303-21;
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
+
+    import ifcopenshell
+
     if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
         FreeCADGui.showPreferences("Import-Export", 1)
-
     ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
@@ -203,7 +205,7 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecad.org/IfcOpenShell "
              "to learn about installing it.")
         return
-    if filename.lower().endswith("json"):
+    if str(filename).lower().endswith("json"):
         import json
         try:
             from ifcjson import ifc2json5a
@@ -216,47 +218,53 @@ def export(exportList, filename, colors=None, preferences=None):
 
     starttime = time.time()
 
+    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids, template
+
     if preferences is None:
         preferences = getPreferences()
 
-    # process template
+    existing_file = False
+    if isinstance(filename, ifcopenshell.file):
+        ifcfile = filename
+        existing_file = True
+    else:
+        # process template
 
-    version = FreeCAD.Version()
-    owner = FreeCAD.ActiveDocument.CreatedBy
-    email = ''
-    if ("@" in owner) and ("<" in owner):
-        s = owner.split("<")
-        owner = s[0].strip()
-        email = s[1].strip(">")
+        version = FreeCAD.Version()
+        owner = FreeCAD.ActiveDocument.CreatedBy
+        email = ''
+        if ("@" in owner) and ("<" in owner):
+            s = owner.split("<")
+            owner = s[0].strip()
+            email = s[1].strip(">")
 
-    global template
-    template = ifctemplate.replace("$version",
-                                   version[0] + "."
-                                   + version[1] + " build " + version[2])
-    if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
-    template = template.replace("$ifcschema", preferences['SCHEMA'])
-    template = template.replace("$owner", owner)
-    template = template.replace("$company", FreeCAD.ActiveDocument.Company)
-    template = template.replace("$email", email)
-    template = template.replace("$now", str(int(time.time())))
-    template = template.replace("$filename", os.path.basename(filename))
-    template = template.replace("$timestamp",
-                                str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    if hasattr(ifcopenshell, "version"):
-        template = template.replace("IfcOpenShell",
-                                    "IfcOpenShell " + ifcopenshell.version)
-    templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
-    of = pyopen(templatefile, "w")
+        template = ifctemplate.replace("$version",
+                                       version[0] + "."
+                                       + version[1] + " build " + version[2])
+        if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
+        template = template.replace("$ifcschema", preferences['SCHEMA'])
+        template = template.replace("$owner", owner)
+        template = template.replace("$company", FreeCAD.ActiveDocument.Company)
+        template = template.replace("$email", email)
+        template = template.replace("$now", str(int(time.time())))
+        template = template.replace("$filename", os.path.basename(filename))
+        template = template.replace("$timestamp",
+                                    str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
+        if hasattr(ifcopenshell, "version"):
+            template = template.replace("IfcOpenShell",
+                                        "IfcOpenShell " + ifcopenshell.version)
+        templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
+        of = pyopen(templatefile, "w")
 
-    of.write(template)
-    of.close()
-    os.close(templatefilehandle)
+        of.write(template)
+        of.close()
+        os.close(templatefilehandle)
 
-    # create IFC file
+        # create IFC file
 
-    global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs, uids
-    ifcfile = ifcopenshell.open(templatefile)
-    ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
+        ifcfile = ifcopenshell.open(templatefile)
+        ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
+
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
@@ -286,10 +294,14 @@ def export(exportList, filename, colors=None, preferences=None):
 
     # create project, context and geodata settings
 
-    contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
-    context = contextCreator.model_view_subcontext
-    project = contextCreator.project
-    objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
+    if existing_file:
+        project = ifcfile.by_type("IfcProject")[0]
+        context = ifcfile.by_type("IFcGeometricRepresentationContext")[-1]
+    else:
+        contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
+        context = contextCreator.model_view_subcontext
+        project = contextCreator.project
+        objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
 
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
@@ -298,7 +310,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # reusable entity system
 
     global ifcbin
-    ifcbin = exportIFCHelper.recycler(ifcfile)
+    ifcbin = exportIFCHelper.recycler(ifcfile, template=not existing_file)
 
     # setup analytic model
 
@@ -369,11 +381,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         assemblyElements = []
 
-        # if ifctype == "IfcArray":
-        # FIXME: the first array element is not placed correct if the array is not on coordinate origin
-        # https://forum.freecad.org/viewtopic.php?f=39&t=50085&p=431476#p431476
-        # workaround: do not use the assembly in ifc but a normal compound instead
-        if False:
+        if ifctype == "IfcArray":
             clonedeltas = []
             if obj.ArrayType == "ortho":
                 for i in range(obj.NumberX):
@@ -384,8 +392,6 @@ def export(exportList, filename, colors=None, preferences=None):
                         for k in range(obj.NumberZ):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
-
-            #print("clonedeltas:",clonedeltas)
             if clonedeltas:
                 ifctype = "IfcElementAssembly"
                 for delta in clonedeltas:
@@ -412,12 +418,14 @@ def export(exportList, filename, colors=None, preferences=None):
                         preferences
                     )
                     assemblyElements.append(subproduct)
-            # if an array was handled assemblyElements is not empty
-            # if assemblyElements is not empty later on
-            # the own Shape is ignored if representation is retrieved
-            # this because we will build an assembly for the assemblyElements
-            # from here and the assembly itself should not have a representation
-        if ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
+                    exportIFCHelper.writeQuantities(ifcfile,
+                                                    obj.Base,
+                                                    subproduct,
+                                                    history,
+                                                    preferences['SCALE_FACTOR']
+                    )
+
+        elif ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
             if hasattr(obj,"Group"):
                 group = obj.Group
             elif hasattr(obj,"Links"):
@@ -751,7 +759,9 @@ def export(exportList, filename, colors=None, preferences=None):
                 #if preferences['DEBUG'] : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcData:
-                    if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep"]):
+                    if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep",
+                    "ExportHeight", "ExportWidth", "ExportLength", "ExportHorizontalArea",
+                    "ExportVerticalArea", "ExportVolume"]):
 
                         # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
@@ -800,35 +810,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # Quantities
 
-        if hasattr(obj,"IfcData"):
-            quantities = []
-            if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
-                quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value*preferences['SCALE_FACTOR']))
-            if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
-                quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value*preferences['SCALE_FACTOR']))
-            if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
-                quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value*preferences['SCALE_FACTOR']))
-            if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
-                quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value*(preferences['SCALE_FACTOR']**2)))
-            if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
-                quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value*(preferences['SCALE_FACTOR']**2)))
-            if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
-                quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume*(preferences['SCALE_FACTOR']**3)))
-            if quantities:
-                eltq = ifcfile.createIfcElementQuantity(
-                    ifcopenshell.guid.new(),
-                    history,
-                    "ElementQuantities",
-                    None,
-                    "FreeCAD",quantities
-                )
-                ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.new(),
-                    history,
-                    None,
-                    None,
-                    [product],eltq
-                )
+        exportIFCHelper.writeQuantities(ifcfile, obj, product, history, preferences['SCALE_FACTOR'])
 
         if preferences['FULL_PARAMETRIC']:
 
@@ -1065,7 +1047,7 @@ def export(exportList, filename, colors=None, preferences=None):
     # add default site, building and storey as required
 
     if not sites:
-        if preferences['ADD_DEFAULT_SITE']:
+        if preferences['ADD_DEFAULT_SITE'] and not existing_file:
             if preferences['DEBUG']: print("No site found. Adding default site")
             sites = [ifcfile.createIfcSite(
                 ifcopenshell.guid.new(),
@@ -1091,7 +1073,7 @@ def export(exportList, filename, colors=None, preferences=None):
             project,sites
         )
     if not buildings:
-        if preferences['ADD_DEFAULT_BUILDING']:
+        if preferences['ADD_DEFAULT_BUILDING'] and not existing_file:
             if preferences['DEBUG']: print("No building found. Adding default building")
             buildings = [ifcfile.createIfcBuilding(
                 ifcopenshell.guid.new(),
@@ -1115,7 +1097,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 '',
                 project,buildings
             )
-        if floors:
+        if floors and buildings:
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
                 history,
@@ -1147,7 +1129,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
-            if preferences['ADD_DEFAULT_STOREY']:
+            if preferences['ADD_DEFAULT_STOREY'] and not existing_file:
                 if preferences['DEBUG']: print("No floor found. Adding default floor")
                 defaulthost = ifcfile.createIfcBuildingStorey(
                     ifcopenshell.guid.new(),
@@ -1595,25 +1577,30 @@ def export(exportList, filename, colors=None, preferences=None):
                     remaining
                 )
 
-    if preferences['DEBUG']: print("writing ",filename,"...")
+    if not existing_file:
+        if preferences['DEBUG']:
+            print("writing ",filename,"...")
 
-    if filename.lower().endswith("json"):
-        writeJson(filename,ifcfile)
-    else:
-        ifcfile.write(filename)
+        if filename.lower().endswith("json"):
+            writeJson(filename,ifcfile)
+        else:
+            ifcfile.write(filename)
 
-    if preferences['STORE_UID']:
-        # some properties might have been changed
-        FreeCAD.ActiveDocument.recompute()
+        if preferences['STORE_UID']:
+            # some properties might have been changed
+            FreeCAD.ActiveDocument.recompute()
 
-    os.remove(templatefile)
+        os.remove(templatefile)
 
-    if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
-        f = pyopen(filename,"r")
-        s = len(f.read().split("\n"))
-        f.close()
-        print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
+        if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
+            f = pyopen(filename,"r")
+            s = len(f.read().split("\n"))
+            f.close()
+            print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
+
+    if existing_file:
+        return products | spatialelements
 
     endtime = time.time() - starttime
 
@@ -2302,6 +2289,8 @@ def getRepresentation(
             gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.getGlobalPlacement()
+            if isinstance(forceclone,FreeCAD.Vector):
+                pla.Base += forceclone
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             axis2 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(0,1,0))))
             origin = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(pla.Base).multiply(preferences['SCALE_FACTOR'])))
@@ -2371,7 +2360,7 @@ def getRepresentation(
         representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
         # additional representations?
         if Draft.getType(obj) in ["Wall","Structure"]:
-            addrepr = createAxis(ifcfile,obj,preferences)
+            addrepr = createAxis(ifcfile,obj,preferences, forceclone)
             if addrepr:
                 representation = representation + [addrepr]
         productdef = ifcfile.createIfcProductDefinitionShape(None,None,representation)
@@ -2476,12 +2465,15 @@ def getAxisContext(ifcfile):
     return nctx
 
 
-def createAxis(ifcfile,obj,preferences):
+def createAxis(ifcfile,obj,preferences, delta=None):
     """Creates an axis for a given wall, if applicable"""
 
     shape = None
+    pla = FreeCAD.Placement(obj.Placement)
+    if isinstance(delta,FreeCAD.Vector):
+        pla.Base += delta
     if getattr(obj,"Nodes",None):
-        shape = Part.makePolygon([obj.Placement.multVec(v) for v in obj.Nodes])
+        shape = Part.makePolygon([pla.multVec(v) for v in obj.Nodes])
     elif hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
         shape = obj.Base.Shape
     if shape:

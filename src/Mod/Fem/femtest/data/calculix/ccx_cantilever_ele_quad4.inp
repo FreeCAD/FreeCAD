@@ -107,9 +107,9 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: CanileverPlate:Edge3
-3,3,-2250000.0
-4,3,-2250000.0
-13,3,-4500000.0
+3,3,-2250000
+4,3,-2250000
+13,3,-4500000
 
 
 
@@ -124,7 +124,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

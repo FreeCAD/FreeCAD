@@ -46,6 +46,8 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgRegularSolid> ui;
+
+    Q_DISABLE_COPY_MOVE(DlgRegularSolidImp)
 };
 
 }  // namespace MeshGui

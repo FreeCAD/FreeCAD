@@ -75,7 +75,7 @@ private:
     }
     Py::Object open(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -196,8 +196,8 @@ private:
 
     Py::Object importer(const Py::Tuple& args)
     {
-        char* Name;
-        const char* DocName;
+        char* Name {};
+        const char* DocName {};
         if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
         }
@@ -311,8 +311,8 @@ private:
 
     Py::Object exporter(const Py::Tuple& args)
     {
-        PyObject* object;
-        char* Name;
+        PyObject* object {};
+        char* Name {};
 
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &object, "utf-8", &Name)) {
             throw Py::Exception();
@@ -403,7 +403,7 @@ private:
 
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject* pcObj;
+        PyObject* pcObj {};
         const char* name = "Points";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name)) {
             throw Py::Exception();

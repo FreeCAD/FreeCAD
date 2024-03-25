@@ -38,7 +38,7 @@ class TestHelix(unittest.TestCase):
     def testHelicalTubeCase(self):
         body = self.Doc.addObject('PartDesign::Body','Body')
         sketch = body.newObject('Sketcher::SketchObject','Sketch')
-        sketch.Support = (self.Doc.getObject('XY_Plane'),[''])
+        sketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
         sketch.MapMode = 'FlatFace'
 
         geoList = []
@@ -107,7 +107,7 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
 
         # xz_plane = body.Origin.OriginFeatures[4]
-        # coneSketch.Support = xz_plane
+        # coneSketch.AttachmentSupport = xz_plane
         # coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)
@@ -159,7 +159,7 @@ class TestHelix(unittest.TestCase):
         coneSketch.addConstraint(conList)
 
         xz_plane = body.Origin.OriginFeatures[4]
-        coneSketch.Support = xz_plane
+        coneSketch.AttachmentSupport = xz_plane
         coneSketch.MapMode = 'FlatFace'
         helix = self.Doc.addObject("PartDesign::AdditiveHelix","AdditiveHelix")
         body.addObject(helix)

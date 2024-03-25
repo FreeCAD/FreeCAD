@@ -57,13 +57,13 @@ Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObje
 
     ViewProviderMeshBuilder().createMesh(mesh.getKernel(), coord, faces);
 
-    SbRotation rot(-0.35355f, -0.14644f, -0.35355f, -0.85355f);
+    SbRotation rot(-0.35355F, -0.14644F, -0.35355F, -0.85355F);
     cam->orientation.setValue(rot);
     SbViewportRegion vpr(256, 256);
     cam->viewAll(root, vpr);
 
     Gui::SoQtOffscreenRenderer renderer(vpr);
-    renderer.setBackgroundColor(SbColor4f(1.0f, 1.0f, 1.0f, 0.0f));
+    renderer.setBackgroundColor(SbColor4f(1.0F, 1.0F, 1.0F, 0.0F));
     QImage img;
     renderer.render(root);
     renderer.writeToImage(img);

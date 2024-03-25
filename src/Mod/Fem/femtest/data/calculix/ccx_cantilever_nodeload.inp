@@ -377,16 +377,16 @@ ConstraintFixed,3
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Box:Vertex5
-4,3,-2250000.0
+4,3,-2250000
 
 ** node load on shape: Box:Vertex6
-3,3,-2250000.0
+3,3,-2250000
 
 ** node load on shape: Box:Vertex7
-2,3,-2250000.0
+2,3,-2250000
 
 ** node load on shape: Box:Vertex8
-1,3,-2250000.0
+1,3,-2250000
 
 
 
@@ -401,7 +401,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

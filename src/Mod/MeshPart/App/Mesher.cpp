@@ -33,6 +33,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Part/App/BRepMesh.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "Mesher.h"
@@ -123,47 +124,6 @@ int MeshingOutput::sync()
 namespace MeshPart
 {
 
-struct Vertex
-{
-    static const double deflection;
-    Standard_Real x, y, z;
-    Standard_Integer i = 0;
-    mutable MeshCore::MeshPoint p;
-
-    Vertex(Standard_Real X, Standard_Real Y, Standard_Real Z)
-        : x(X)
-        , y(Y)
-        , z(Z)
-    {
-        p.x = static_cast<float>(x);
-        p.y = static_cast<float>(y);
-        p.z = static_cast<float>(z);
-    }
-
-    const MeshCore::MeshPoint& toPoint() const
-    {
-        return p;
-    }
-
-    bool operator<(const Vertex& v) const
-    {
-        if (fabs(this->x - v.x) >= deflection) {
-            return this->x < v.x;
-        }
-        if (fabs(this->y - v.y) >= deflection) {
-            return this->y < v.y;
-        }
-        if (fabs(this->z - v.z) >= deflection) {
-            return this->z < v.z;
-        }
-        return false;  // points are considered to be equal
-    }
-};
-
-const double Vertex::deflection = 10 * std::numeric_limits<double>::epsilon();
-
-// ----------------------------------------------------------------------------
-
 class BrepMesh
 {
     bool segments;
@@ -177,6 +137,32 @@ public:
 
     Mesh::MeshObject* create(const std::vector<Part::TopoShape::Domain>& domains) const
     {
+        std::vector<Base::Vector3d> points;
+        std::vector<Part::TopoShape::Facet> facets;
+        Part::BRepMesh mesh;
+        mesh.getFacesFromDomains(domains, points, facets);
+
+        MeshCore::MeshFacetArray faces;
+        faces.reserve(facets.size());
+        std::transform(facets.cbegin(),
+                       facets.cend(),
+                       std::back_inserter(faces),
+                       [](const Part::TopoShape::Facet& face) {
+                           return MeshCore::MeshFacet(face.I1, face.I2, face.I3);
+                       });
+
+        MeshCore::MeshPointArray verts;
+        verts.reserve(points.size());
+        for (const auto& it : points) {
+            verts.emplace_back(float(it.x), float(it.y), float(it.z));
+        }
+
+        MeshCore::MeshKernel kernel;
+        kernel.Adopt(verts, faces, true);
+
+        // mesh segments
+        std::vector<std::vector<MeshCore::FacetIndex>> meshSegments;
+
         std::map<uint32_t, std::vector<std::size_t>> colorMap;
         for (std::size_t i = 0; i < colors.size(); i++) {
             colorMap[colors[i]].push_back(i);
@@ -184,104 +170,19 @@ public:
 
         bool createSegm = (colors.size() == domains.size());
 
-        MeshCore::MeshFacetArray faces;
-        std::size_t numTriangles = 0;
-        for (const auto& it : domains) {
-            numTriangles += it.facets.size();
+        // add a segment for the face
+        if (createSegm || this->segments) {
+            auto segments = mesh.createSegments();
+            meshSegments.reserve(segments.size());
+            std::transform(segments.cbegin(),
+                           segments.cend(),
+                           std::back_inserter(meshSegments),
+                           [](const Part::BRepMesh::Segment& segm) {
+                               std::vector<MeshCore::FacetIndex> faces;
+                               faces.insert(faces.end(), segm.cbegin(), segm.cend());
+                               return faces;
+                           });
         }
-        faces.reserve(numTriangles);
-
-        std::set<Vertex> vertices;
-        Standard_Real x1, y1, z1;
-        Standard_Real x2, y2, z2;
-        Standard_Real x3, y3, z3;
-
-        std::vector<std::vector<MeshCore::FacetIndex>> meshSegments;
-        std::size_t numMeshFaces = 0;
-
-        for (const auto& domain : domains) {
-            std::size_t numDomainFaces = 0;
-            for (std::size_t j = 0; j < domain.facets.size(); ++j) {
-                const Part::TopoShape::Facet& tria = domain.facets[j];
-                x1 = domain.points[tria.I1].x;
-                y1 = domain.points[tria.I1].y;
-                z1 = domain.points[tria.I1].z;
-
-                x2 = domain.points[tria.I2].x;
-                y2 = domain.points[tria.I2].y;
-                z2 = domain.points[tria.I2].z;
-
-                x3 = domain.points[tria.I3].x;
-                y3 = domain.points[tria.I3].y;
-                z3 = domain.points[tria.I3].z;
-
-                std::set<Vertex>::iterator it;
-                MeshCore::MeshFacet face;
-
-                // 1st vertex
-                Vertex v1(x1, y1, z1);
-                it = vertices.find(v1);
-                if (it == vertices.end()) {
-                    v1.i = vertices.size();
-                    face._aulPoints[0] = v1.i;
-                    vertices.insert(v1);
-                }
-                else {
-                    face._aulPoints[0] = it->i;
-                }
-
-                // 2nd vertex
-                Vertex v2(x2, y2, z2);
-                it = vertices.find(v2);
-                if (it == vertices.end()) {
-                    v2.i = vertices.size();
-                    face._aulPoints[1] = v2.i;
-                    vertices.insert(v2);
-                }
-                else {
-                    face._aulPoints[1] = it->i;
-                }
-
-                // 3rd vertex
-                Vertex v3(x3, y3, z3);
-                it = vertices.find(v3);
-                if (it == vertices.end()) {
-                    v3.i = vertices.size();
-                    face._aulPoints[2] = v3.i;
-                    vertices.insert(v3);
-                }
-                else {
-                    face._aulPoints[2] = it->i;
-                }
-
-                // make sure that we don't insert invalid facets
-                if (face._aulPoints[0] != face._aulPoints[1]
-                    && face._aulPoints[1] != face._aulPoints[2]
-                    && face._aulPoints[2] != face._aulPoints[0]) {
-                    faces.push_back(face);
-                    numDomainFaces++;
-                }
-            }
-
-            // add a segment for the face
-            if (createSegm || this->segments) {
-                std::vector<MeshCore::FacetIndex> segment(numDomainFaces);
-                std::generate(segment.begin(),
-                              segment.end(),
-                              Base::iotaGen<MeshCore::FacetIndex>(numMeshFaces));
-                numMeshFaces += numDomainFaces;
-                meshSegments.push_back(segment);
-            }
-        }
-
-        MeshCore::MeshPointArray verts;
-        verts.resize(vertices.size());
-        for (const auto& it : vertices) {
-            verts[it.i] = it.toPoint();
-        }
-
-        MeshCore::MeshKernel kernel;
-        kernel.Adopt(verts, faces, true);
 
         Mesh::MeshObject* meshdata = new Mesh::MeshObject();
         meshdata->swap(kernel);
