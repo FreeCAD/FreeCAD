@@ -75,22 +75,19 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
 {
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
 
-    // Find centre of gravity of first original
-    // FIXME: This method will NOT give the expected result for more than one original!
-    Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
-    TopoDS_Shape original;
+    gp_Pnt cog;
+    if (!originals.empty()) {
+            // Find centre of gravity of first original
+            // FIXME: This method will NOT give the expected result for more than one original!
+            if (auto addFeature =
+                    Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(originals.front())) {
+                TopoDS_Shape original = addFeature->AddSubShape.getShape().getShape();
 
-    if (originalFeature->isDerivedFrom<PartDesign::FeatureAddSub>()) {
-        PartDesign::FeatureAddSub* addFeature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
-        //if (addFeature->getAddSubType() == FeatureAddSub::Additive)
-        //    original = addFeature->AddSubShape.getShape().getShape();
-        //else
-            original = addFeature->AddSubShape.getShape().getShape();
+                GProp_GProps props;
+                BRepGProp::VolumeProperties(original, props);
+                cog = props.CentreOfMass();
+            }
     }
-
-    GProp_GProps props;
-    BRepGProp::VolumeProperties(original,props);
-    gp_Pnt cog = props.CentreOfMass();
 
     std::list<gp_Trsf> result;
     std::list<gp_Pnt> cogs;

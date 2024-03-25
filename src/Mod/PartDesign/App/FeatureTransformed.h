@@ -42,11 +42,18 @@ class PartDesignExport Transformed : public PartDesign::Feature
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Transformed);
 
 public:
+    enum class Mode {
+        TransformToolShapes,
+        TransformBody
+    };
+
     Transformed();
 
-    /** The shapes to be transformed
+    /** The features to be transformed
      */
     App::PropertyLinkList Originals;
+
+    App::PropertyEnumeration TransformMode;
 
     App::PropertyBool Refine;
 
