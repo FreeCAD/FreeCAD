@@ -184,10 +184,9 @@ void CmdApproxPlane::activated(int)
             str << "App.ActiveDocument.addObject('Part::Plane','Plane_fit')" << std::endl;
             str << "App.ActiveDocument.ActiveObject.Length = " << length << std::endl;
             str << "App.ActiveDocument.ActiveObject.Width = " << width << std::endl;
-            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
-                << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
-                << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))"
-                << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement(" << "Base.Vector("
+                << base.x << "," << base.y << "," << base.z << ")," << "Base.Rotation(" << q0 << ","
+                << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Fit plane"));
             runCommand(Gui::Command::Doc, str.str().c_str());
@@ -253,10 +252,9 @@ void CmdApproxCylinder::activated(int)
             str << "App.ActiveDocument.addObject('Part::Cylinder','Cylinder_fit')" << std::endl;
             str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
             str << "App.ActiveDocument.ActiveObject.Height = " << height << std::endl;
-            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
-                << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
-                << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))"
-                << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement(" << "Base.Vector("
+                << base.x << "," << base.y << "," << base.z << ")," << "Base.Rotation(" << q0 << ","
+                << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
             runCommand(Gui::Command::Doc, str.str().c_str());
         }
@@ -302,9 +300,9 @@ void CmdApproxSphere::activated(int)
             str << "from FreeCAD import Base" << std::endl;
             str << "App.ActiveDocument.addObject('Part::Sphere','Sphere_fit')" << std::endl;
             str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
-            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
-                << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
-                << "Base.Rotation(" << 1 << "," << 0 << "," << 0 << "," << 0 << "))" << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement(" << "Base.Vector("
+                << base.x << "," << base.y << "," << base.z << ")," << "Base.Rotation(" << 1 << ","
+                << 0 << "," << 0 << "," << 0 << "))" << std::endl;
 
             runCommand(Gui::Command::Doc, str.str().c_str());
         }

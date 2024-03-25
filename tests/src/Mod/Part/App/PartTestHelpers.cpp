@@ -125,9 +125,9 @@ boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
         return testing::AssertionSuccess();
     }
     return testing::AssertionFailure()
-        << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
-        << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
-        << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ << ")";
+        << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; " << "(" << b1.MaxX << ","
+        << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << "," << b2.MinY << "," << b2.MinZ
+        << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ << ")";
 }
 
 std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)

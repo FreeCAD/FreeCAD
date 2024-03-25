@@ -174,33 +174,19 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // analyze
     Gui::MenuItem* insertRobots = new Gui::MenuItem;
     insertRobots->setCommand("Insert Robots");
-    *insertRobots << "Robot_InsertKukaIR500"
-                  << "Robot_InsertKukaIR210"
-                  << "Robot_InsertKukaIR125"
-                  << "Robot_InsertKukaIR16"
-                  << "Separator"
-                  << "Robot_AddToolShape";
+    *insertRobots << "Robot_InsertKukaIR500" << "Robot_InsertKukaIR210" << "Robot_InsertKukaIR125"
+                  << "Robot_InsertKukaIR16" << "Separator" << "Robot_AddToolShape";
 
     // boolean
     Gui::MenuItem* exportM = new Gui::MenuItem;
     exportM->setCommand("Export trajectory");
-    *exportM << "Robot_ExportKukaCompact"
-             << "Robot_ExportKukaFull";
+    *exportM << "Robot_ExportKukaCompact" << "Robot_ExportKukaFull";
 
     robot->setCommand("&Robot");
-    *robot << insertRobots << "Robot_CreateTrajectory"
-           << "Separator"
-           << "Robot_CreateTrajectory"
-           << "Robot_InsertWaypoint"
-           << "Robot_InsertWaypointPreselect"
-           << "Robot_Edge2Trac"
-           << "Separator"
-           << "Robot_SetHomePos"
-           << "Robot_RestoreHomePos"
-           << "Separator"
-           << "Robot_SetDefaultOrientation"
-           << "Robot_SetDefaultValues"
-           << "Separator"
+    *robot << insertRobots << "Robot_CreateTrajectory" << "Separator" << "Robot_CreateTrajectory"
+           << "Robot_InsertWaypoint" << "Robot_InsertWaypointPreselect" << "Robot_Edge2Trac"
+           << "Separator" << "Robot_SetHomePos" << "Robot_RestoreHomePos" << "Separator"
+           << "Robot_SetDefaultOrientation" << "Robot_SetDefaultValues" << "Separator"
            << "Robot_Simulate" << exportM;
     return root;
 }

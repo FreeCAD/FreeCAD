@@ -100,8 +100,7 @@ App::DocumentObjectExecReturn* FeatureViewPart::execute(void)
 
     try {
         ProjectionAlgos Alg(shape, Dir);
-        result << "<g"
-               << " id=\"" << ViewName << "\"" << endl
+        result << "<g" << " id=\"" << ViewName << "\"" << endl
                << "   transform=\"rotate(" << Rotation.getValue() << "," << X.getValue() << ","
                << Y.getValue() << ") translate(" << X.getValue() << "," << Y.getValue()
                << ") scale(" << Scale.getValue() << "," << Scale.getValue() << ")\"" << endl

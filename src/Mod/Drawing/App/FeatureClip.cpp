@@ -95,20 +95,16 @@ App::DocumentObjectExecReturn* FeatureClip::execute(void)
     ostringstream svg;
 
     // creating clip path
-    svg << "<clipPath id=\"" << Label.getValue() << "\">"
-        << "<rect x=\"" << X.getValue() << "\""
-        << " y=\"" << Y.getValue() << "\""
-        << " width=\"" << Width.getValue() << "\""
+    svg << "<clipPath id=\"" << Label.getValue() << "\">" << "<rect x=\"" << X.getValue() << "\""
+        << " y=\"" << Y.getValue() << "\"" << " width=\"" << Width.getValue() << "\""
         << " height=\"" << Height.getValue() << "\"/></clipPath>" << endl;
 
     // show clip frame on the page if needed
 
     if (ShowFrame.getValue()) {
-        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\""
-            << " x=\"" << X.getValue() << "\""
-            << " y=\"" << Y.getValue() << "\""
-            << " width=\"" << Width.getValue() << "\""
-            << " height=\"" << Height.getValue() << "\"/>" << endl;
+        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\"" << " x=\""
+            << X.getValue() << "\"" << " y=\"" << Y.getValue() << "\"" << " width=\""
+            << Width.getValue() << "\"" << " height=\"" << Height.getValue() << "\"/>" << endl;
     }
 
     // create clipped group

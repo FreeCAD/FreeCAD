@@ -2082,8 +2082,8 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
         if (h_norm <= (isRedundantsolving ? convergenceRedundant : convergence) || err <= smallF) {
             if (debugMode == IterationLevel) {
                 std::stringstream stream;
-                stream << "BFGS Converged!!: "
-                       << ", err: " << err << ", h_norm: " << h_norm << "\n";
+                stream << "BFGS Converged!!: " << ", err: " << err << ", h_norm: " << h_norm
+                       << "\n";
 
                 const std::string tmp = stream.str();
                 Base::Console().Log(tmp.c_str());
@@ -2093,8 +2093,8 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
         if (err > divergingLim || err != err) {  // check for diverging and NaN
             if (debugMode == IterationLevel) {
                 std::stringstream stream;
-                stream << "BFGS Failed: Diverging!!: "
-                       << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
+                stream << "BFGS Failed: Diverging!!: " << ", err: " << err
+                       << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
                 Base::Console().Log(tmp.c_str());

@@ -43,17 +43,13 @@ std::string Robot6AxisPy::representation() const
     std::stringstream str;
 
     str.precision(5);
-    str << "<Robot6Axis "
-        << "Tcp:(" << getRobot6AxisPtr()->getTcp().getPosition().x << ","
+    str << "<Robot6Axis " << "Tcp:(" << getRobot6AxisPtr()->getTcp().getPosition().x << ","
         << getRobot6AxisPtr()->getTcp().getPosition().y << ","
-        << getRobot6AxisPtr()->getTcp().getPosition().z << ") "
-        << "Axis:("
-        << "1:" << getRobot6AxisPtr()->getAxis(0) << " "
-        << "2:" << getRobot6AxisPtr()->getAxis(1) << " "
-        << "3:" << getRobot6AxisPtr()->getAxis(2) << " "
-        << "4:" << getRobot6AxisPtr()->getAxis(3) << " "
-        << "5:" << getRobot6AxisPtr()->getAxis(4) << " "
-        << "6:" << getRobot6AxisPtr()->getAxis(5) << ")";
+        << getRobot6AxisPtr()->getTcp().getPosition().z << ") " << "Axis:("
+        << "1:" << getRobot6AxisPtr()->getAxis(0) << " " << "2:" << getRobot6AxisPtr()->getAxis(1)
+        << " " << "3:" << getRobot6AxisPtr()->getAxis(2) << " "
+        << "4:" << getRobot6AxisPtr()->getAxis(3) << " " << "5:" << getRobot6AxisPtr()->getAxis(4)
+        << " " << "6:" << getRobot6AxisPtr()->getAxis(5) << ")";
 
     return str.str();
 }

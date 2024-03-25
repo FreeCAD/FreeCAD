@@ -161,10 +161,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 {
     StdWorkbench::setupContextMenu(recipient, item);
     if (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
-        *item << "Separator"
-              << "Mesh_Import"
-              << "Mesh_Export"
-              << "Mesh_VertexCurvature";
+        *item << "Separator" << "Mesh_Import" << "Mesh_Export" << "Mesh_VertexCurvature";
     }
 }
 
@@ -178,19 +175,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // analyze
     Gui::MenuItem* analyze = new Gui::MenuItem;
     analyze->setCommand("Analyze");
-    *analyze << "Mesh_Evaluation"
-             << "Mesh_EvaluateFacet"
-             << "Mesh_CurvatureInfo"
-             << "Separator"
-             << "Mesh_EvaluateSolid"
-             << "Mesh_BoundingBox";
+    *analyze << "Mesh_Evaluation" << "Mesh_EvaluateFacet" << "Mesh_CurvatureInfo" << "Separator"
+             << "Mesh_EvaluateSolid" << "Mesh_BoundingBox";
 
     // boolean
     Gui::MenuItem* boolean = new Gui::MenuItem;
     boolean->setCommand("Boolean");
-    *boolean << "Mesh_Union"
-             << "Mesh_Intersection"
-             << "Mesh_Difference";
+    *boolean << "Mesh_Union" << "Mesh_Intersection" << "Mesh_Difference";
 
     // cutting
     Gui::MenuItem* cutting = new Gui::MenuItem;
@@ -198,35 +189,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *cutting << "Mesh_PolyCut"
              << "Mesh_PolyTrim"
              //<< "Mesh_PolySegm"
-             << "Mesh_TrimByPlane"
-             << "Mesh_SectionByPlane"
-             << "Mesh_CrossSections";
+             << "Mesh_TrimByPlane" << "Mesh_SectionByPlane" << "Mesh_CrossSections";
 
     mesh->setCommand("&Meshes");
-    *mesh << "Mesh_Import"
-          << "Mesh_Export"
-          << "Mesh_FromPartShape"
-          << "Mesh_RemeshGmsh"
-          << "Separator" << analyze << "Mesh_VertexCurvature"
-          << "Mesh_HarmonizeNormals"
-          << "Mesh_FlipNormals"
-          << "Separator"
-          << "Mesh_FillupHoles"
-          << "Mesh_FillInteractiveHole"
-          << "Mesh_AddFacet"
-          << "Mesh_RemoveComponents"
-          << "Mesh_RemoveCompByHand"
-          << "Mesh_Segmentation"
-          << "Mesh_SegmentationBestFit"
-          << "Separator"
-          << "Mesh_Smoothing"
-          << "Mesh_Decimating"
-          << "Mesh_Scale"
-          << "Separator"
-          << "Mesh_BuildRegularSolid" << boolean << cutting << "Separator"
-          << "Mesh_Merge"
-          << "Mesh_SplitComponents"
-          << "Separator";
+    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Mesh_RemeshGmsh"
+          << "Separator" << analyze << "Mesh_VertexCurvature" << "Mesh_HarmonizeNormals"
+          << "Mesh_FlipNormals" << "Separator" << "Mesh_FillupHoles" << "Mesh_FillInteractiveHole"
+          << "Mesh_AddFacet" << "Mesh_RemoveComponents" << "Mesh_RemoveCompByHand"
+          << "Mesh_Segmentation" << "Mesh_SegmentationBestFit" << "Separator" << "Mesh_Smoothing"
+          << "Mesh_Decimating" << "Mesh_Scale" << "Separator" << "Mesh_BuildRegularSolid" << boolean
+          << cutting << "Separator" << "Mesh_Merge" << "Mesh_SplitComponents" << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     if (mgr.getCommandByName("MeshPart_CreateFlatMesh")) {
         *mesh << "MeshPart_CreateFlatMesh";
@@ -243,53 +215,32 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import"
-          << "Mesh_Export"
-          << "Mesh_FromPartShape"
-          << "Mesh_BuildRegularSolid";
+    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Mesh_BuildRegularSolid";
 
     Gui::ToolBarItem* modifying = new Gui::ToolBarItem(root);
     modifying->setCommand("Mesh modify");
-    *modifying << "Mesh_HarmonizeNormals"
-               << "Mesh_FlipNormals"
-               << "Mesh_FillupHoles"
-               << "Mesh_FillInteractiveHole"
-               << "Mesh_AddFacet"
-               << "Mesh_RemoveComponents"
-               << "Mesh_Smoothing"
-               << "Mesh_RemeshGmsh"
-               << "Mesh_Decimating"
-               << "Mesh_Scale";
+    *modifying << "Mesh_HarmonizeNormals" << "Mesh_FlipNormals" << "Mesh_FillupHoles"
+               << "Mesh_FillInteractiveHole" << "Mesh_AddFacet" << "Mesh_RemoveComponents"
+               << "Mesh_Smoothing" << "Mesh_RemeshGmsh" << "Mesh_Decimating" << "Mesh_Scale";
 
     Gui::ToolBarItem* boolean = new Gui::ToolBarItem(root);
     boolean->setCommand("Mesh boolean");
-    *boolean << "Mesh_Union"
-             << "Mesh_Intersection"
-             << "Mesh_Difference";
+    *boolean << "Mesh_Union" << "Mesh_Intersection" << "Mesh_Difference";
 
     Gui::ToolBarItem* cutting = new Gui::ToolBarItem(root);
     cutting->setCommand("Mesh cutting");
-    *cutting << "Mesh_PolyCut"
-             << "Mesh_PolyTrim"
-             << "Mesh_TrimByPlane"
-             << "Mesh_SectionByPlane"
+    *cutting << "Mesh_PolyCut" << "Mesh_PolyTrim" << "Mesh_TrimByPlane" << "Mesh_SectionByPlane"
              << "Mesh_CrossSections";
 
     Gui::ToolBarItem* compseg = new Gui::ToolBarItem(root);
     compseg->setCommand("Mesh segmentation");
-    *compseg << "Mesh_Merge"
-             << "Mesh_SplitComponents"
-             << "Mesh_Segmentation"
+    *compseg << "Mesh_Merge" << "Mesh_SplitComponents" << "Mesh_Segmentation"
              << "Mesh_SegmentationBestFit";
 
     Gui::ToolBarItem* analyze = new Gui::ToolBarItem(root);
     analyze->setCommand("Mesh analyze");
-    *analyze << "Mesh_Evaluation"
-             << "Mesh_EvaluateFacet"
-             << "Mesh_VertexCurvature"
-             << "Mesh_CurvatureInfo"
-             << "Mesh_EvaluateSolid"
-             << "Mesh_BoundingBox";
+    *analyze << "Mesh_Evaluation" << "Mesh_EvaluateFacet" << "Mesh_VertexCurvature"
+             << "Mesh_CurvatureInfo" << "Mesh_EvaluateSolid" << "Mesh_BoundingBox";
 
 
     return root;
@@ -303,15 +254,11 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import"
-          << "Mesh_Export"
-          << "Mesh_PolyCut";
+    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_PolyCut";
 
     mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh test suite");
-    *mesh << "Mesh_Demolding"
-          << "Mesh_Transform"
-          << "Separator";
+    *mesh << "Mesh_Demolding" << "Mesh_Transform" << "Separator";
 
     return root;
 }

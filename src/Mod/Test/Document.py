@@ -560,6 +560,7 @@ class DocumentBasicCases(unittest.TestCase):
     def testNotification_Issue2996(self):
         if not FreeCAD.GuiUp:
             return
+
         # works only if Gui is shown
         class ViewProvider:
             def __init__(self, vobj):
