@@ -71,6 +71,22 @@ bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj)
     return false;
 }
 
+bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* obj, App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements) const
+{
+    //only DrawView objects can live on pages (except special case Template)
+    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        return true;
+    }
+    if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        //don't let another extension try to drop templates
+        return true;
+    }
+
+    return false;
+}
+
 void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
 {
     if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {

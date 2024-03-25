@@ -31,6 +31,9 @@
 #endif
 
 #include <App/DocumentObject.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+
 #include "ViewProviderViewClip.h"
 
 using namespace TechDrawGui;
@@ -103,4 +106,41 @@ TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const
 TechDraw::DrawViewClip* ViewProviderViewClip::getObject() const
 {
     return getViewObject();
+}
+
+
+void ViewProviderViewClip::dragObject(App::DocumentObject* docObj)
+{
+    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        return;
+    }
+
+    auto dv = static_cast<TechDraw::DrawView*>(docObj);
+
+    getObject()->removeView(dv);
+}
+
+void ViewProviderViewClip::dropObject(App::DocumentObject* docObj)
+{
+    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
+        return;
+    }
+    if (!docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        return;
+    }
+
+    auto dv = static_cast<TechDraw::DrawView*>(docObj);
+    TechDraw::DrawPage* pageClip = getObject()->findParentPage();
+    TechDraw::DrawPage* pageView = dv->findParentPage();
+    if (!pageClip || !pageView) {
+        return;
+    }
+
+    if (pageClip != pageView) {
+        pageView->removeView(dv);
+        pageClip->addView(dv);
+    }
+
+    getObject()->addView(dv);
 }

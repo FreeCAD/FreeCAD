@@ -46,6 +46,9 @@ public:
     void extensionDragObject(App::DocumentObject*) override;
     bool extensionCanDropObjects() const override;
     bool extensionCanDropObject(App::DocumentObject*) const override;
+    bool extensionCanDropObjectEx(App::DocumentObject* obj, App::DocumentObject* owner,
+        const char* subname,
+        const std::vector<std::string>& elements) const override;
     void extensionDropObject(App::DocumentObject*) override;
 
     void dropObject(App::DocumentObject* docObj);

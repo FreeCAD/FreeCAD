@@ -38,6 +38,7 @@
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -262,6 +263,16 @@ void ViewProviderPage::unsetEdit(int ModNum)
 
 bool ViewProviderPage::doubleClicked(void)
 {
+    // assure the TechDraw workbench
+    if (App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp")
+        ->GetGroup("Preferences")
+        ->GetGroup("Mod/TechDraw")
+        ->GetBool("SwitchToWB", true)) {
+        Gui::Command::assureWorkbench("TechDrawWorkbench");
+    }
+
     show();
     if (m_mdiView) {
         Gui::getMainWindow()->setActiveWindow(m_mdiView);
