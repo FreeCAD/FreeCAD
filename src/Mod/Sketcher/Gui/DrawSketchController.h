@@ -520,7 +520,7 @@ protected:
     virtual void afterEnforceControlParameters()
     {
         // Give focus to current on-view parameter. In case user interacted outside of 3dview.
-        if (parameterWithFocus >= 0) {
+        if (focusAutoPassing && parameterWithFocus >= 0) {
             setFocusToOnViewParameter(parameterWithFocus);
         }
     }
@@ -735,6 +735,8 @@ protected:
     {
         return keymanager.get();
     }
+
+    bool focusAutoPassing = true;
 
 private:
     /** @name helper functions */

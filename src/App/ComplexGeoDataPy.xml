@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="PersistencePy" 
-      Name="ComplexGeoDataPy" 
-      Twin="ComplexGeoData" 
-      Include="App/ComplexGeoData.h" 
+  <PythonExport
+      Father="PersistencePy"
+      Name="ComplexGeoDataPy"
+      Twin="ComplexGeoData"
+      Include="App/ComplexGeoData.h"
       TwinPointer="ComplexGeoData"
-      Namespace="Data" 
-      FatherInclude="Base/PersistencePy.h" 
+      Namespace="Data"
+      FatherInclude="Base/PersistencePy.h"
       FatherNamespace="Base"
       Reference="true">
     <Documentation>
@@ -16,7 +16,7 @@
     </Documentation>
     <Methode Name="getElementTypes" Const="true">
       <Documentation>
-        <UserDocu>Return a list of element types</UserDocu>
+        <UserDocu>Return a list of element types present in the complex geometric data</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="countSubElements" Const="true">
@@ -66,7 +66,7 @@
     </Methode>
     <Attribute Name="BoundBox" ReadOnly="true">
       <Documentation>
-        <UserDocu>Get the BoundBox of the object</UserDocu>
+        <UserDocu>Get the bounding box (BoundBox) of the complex geometric data.</UserDocu>
       </Documentation>
       <Parameter Name="BoundBox" Type="Object" />
     </Attribute>
