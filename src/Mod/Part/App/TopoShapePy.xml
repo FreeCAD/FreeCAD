@@ -784,7 +784,7 @@ proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
     <Methode Name="distToShape" Const="true">
       <Documentation>
         <UserDocu>Find the minimum distance to another shape.
-distToShape(shape) -> (dist, vectors, infos)
+distToShape(shape, tol=1e-7) -> (dist, vectors, infos)
 --
 dist is the minimum distance, in mm (float value).
 
