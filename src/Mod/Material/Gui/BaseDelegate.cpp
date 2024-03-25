@@ -106,8 +106,13 @@ void BaseDelegate::paintQuantity(QPainter* painter,
     else {
         QVariant item = getValue(index);
         auto quantity = item.value<Base::Quantity>();
-        QString text = quantity.getUserString();
-        painter->drawText(option.rect, 0, text);
+        if (quantity.isValid()) {
+            QString text = quantity.getUserString();
+            painter->drawText(option.rect, 0, text);
+        }
+        else {
+            painter->drawText(option.rect, 0, QString());
+        }
     }
 
     painter->restore();
@@ -350,8 +355,10 @@ void BaseDelegate::setModelData(QWidget* editor,
     }
     else if (type == Materials::MaterialValue::Quantity) {
         auto input = dynamic_cast<Gui::InputField*>(editor);
-        value = input->text();
-        return;
+        // value = input->text();
+        // return;
+        auto quantity = Base::Quantity::parse(input->text());
+        value = QVariant::fromValue(quantity);
     }
     else if (type == Materials::MaterialValue::Integer) {
         auto spinner = dynamic_cast<Gui::IntSpinBox*>(editor);
