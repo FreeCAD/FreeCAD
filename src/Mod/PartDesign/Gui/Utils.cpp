@@ -454,46 +454,59 @@ void relinkToBody (PartDesign::Feature *feature) {
 
 bool isFeatureMovable(App::DocumentObject* const feat)
 {
-    if (!feat)
+    if (!feat) {
         return false;
-
-    if (feat->isDerivedFrom<PartDesign::Feature>()) {
-        auto prim = static_cast<PartDesign::Feature*>(feat);
-        App::DocumentObject* bf = prim->BaseFeature.getValue();
-        if (bf)
-            return false;
     }
 
-    if (feat->isDerivedFrom<PartDesign::ProfileBased>()) {
-        auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+    if (auto prim = dynamic_cast<PartDesign::Feature*>(feat)) {
+        App::DocumentObject* bf = prim->BaseFeature.getValue();
+        if (bf) {
+            return false;
+        }
+    }
+
+    if (auto prim = dynamic_cast<PartDesign::ProfileBased*>(feat)) {
         auto sk = prim->getVerifiedSketch(true);
 
-        if (!isFeatureMovable(sk))
+        if (!isFeatureMovable(sk)) {
             return false;
+        }
 
-        if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
-            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){
+        if (auto prop = dynamic_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
+            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj) {
                 return !isFeatureMovable(obj);
-            }))
+            })) {
                 return false;
+            }
         }
 
-        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+        if (auto prop = dynamic_cast<App::PropertyLinkSubList*>(prim->getPropertyByName("Sections"))) {
+            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj) {
+                return !isFeatureMovable(obj);
+            })) {
+                return false;
+            }
+        }
+
+        if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (axis && !isFeatureMovable(axis))
+            if (axis && !isFeatureMovable(axis)) {
                 return false;
+            }
         }
 
-        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
+        if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
             App::DocumentObject* spine = prop->getValue();
-            if (spine && !isFeatureMovable(spine))
+            if (spine && !isFeatureMovable(spine)) {
                 return false;
+            }
         }
 
-        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+        if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
             App::DocumentObject* auxSpine = prop->getValue();
-            if (auxSpine && !isFeatureMovable(auxSpine))
+            if (auxSpine && !isFeatureMovable(auxSpine)) {
                 return false;
+            }
         }
 
     }
@@ -501,8 +514,9 @@ bool isFeatureMovable(App::DocumentObject* const feat)
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->AttachmentSupport.getValue();
-        if (support && !support->isDerivedFrom<App::OriginFeature>())
+        if (support && !support->isDerivedFrom<App::OriginFeature>()) {
             return false;
+        }
     }
 
     return true;
@@ -512,34 +526,36 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
 {
     std::set<App::DocumentObject*> unique_objs;
 
-    for (auto const &feat : features)
-    {
-
+    for (auto const &feat : features) {
         // Get sketches and datums from profile based features
-        if (feat->isDerivedFrom<PartDesign::ProfileBased>()) {
-            auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+        if (auto prim = dynamic_cast<PartDesign::ProfileBased*>(feat)) {
             Part::Part2DObject* sk = prim->getVerifiedSketch(true);
             if (sk) {
-                unique_objs.insert(static_cast<App::DocumentObject*>(sk));
+                unique_objs.insert(sk);
             }
-            if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
+            if (auto prop = dynamic_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
                 for (App::DocumentObject* obj : prop->getValues()) {
                     unique_objs.insert(obj);
                 }
             }
-            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+            if (auto prop = dynamic_cast<App::PropertyLinkSubList*>(prim->getPropertyByName("Sections"))) {
+                for (App::DocumentObject* obj : prop->getValues()) {
+                    unique_objs.insert(obj);
+                }
+            }
+            if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
                 App::DocumentObject* axis = prop->getValue();
                 if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);
                 }
             }
-            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
+            if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
                 App::DocumentObject* axis = prop->getValue();
                 if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);
                 }
             }
-            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+            if (auto prop = dynamic_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
                 App::DocumentObject* axis = prop->getValue();
                 if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);

@@ -132,10 +132,10 @@ QString DrawSVGTemplate::processTemplate()
     query.processItems(QString::fromUtf8(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//text[@freecad:editable]/tspan"),
+        "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
         [&substitutions, &templateDocument](QDomElement& tspan) -> bool {
         // Replace the editable text spans with new nodes holding actual values
-        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
+        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
         std::map<std::string, std::string>::iterator item =
             substitutions.find(editableName.toStdString());
         if (item != substitutions.end()) {
@@ -296,15 +296,28 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
     query.processItems(QString::fromUtf8(
         "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//text[@freecad:editable]/tspan"),
-        [&editables](QDomElement& tspan) -> bool {
-        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
-        QString editableValue = tspan.firstChild().nodeValue();
+        "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
+        [this, &editables](QDomElement& tspan) -> bool {
+            QDomElement parent = tspan.parentNode().toElement();
+            QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
 
-        editables[std::string(editableName.toUtf8().constData())] =
-            std::string(editableValue.toUtf8().constData());
-        return true;
-    });
+            QString editableValue;
+            if (parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
+                QString autofillValue = getAutofillValue(parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL)));
+                if (!autofillValue.isNull()) {
+                    editableValue = autofillValue;
+                }
+            }
+
+            // If the autofill value is not specified or unsupported, use the default text value
+            if (editableValue.isNull()) {
+                editableValue = tspan.firstChild().nodeValue();        
+            }
+
+            editables[std::string(editableName.toUtf8().constData())] =
+                std::string(editableValue.toUtf8().constData());
+            return true;
+        });
 
     return editables;
 }

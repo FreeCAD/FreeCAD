@@ -44,7 +44,7 @@ Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.
 
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext dos2unix
+BuildRequires:  cmake gcc-c++ gettext
 BuildRequires:  doxygen swig graphviz
 BuildRequires:  gcc-gfortran
 BuildRequires:  desktop-file-utils
@@ -65,9 +65,6 @@ BuildRequires:  python3-pivy
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
-%if 0%{?fedora} < 35
-BuildRequires:  Inventor-devel
-%endif
 # Qt5 dependencies
 BuildRequires:  qt5-qtwebengine-devel
 #BuildRequires:  qt5-qtwebkit-devel
@@ -180,11 +177,7 @@ rm -rf src/zipios++
 #    src/Base/Reader.cpp src/Base/Writer.h
 %endif
 
-# Fix encodings
-dos2unix -k src/Mod/Test/unittestgui.py
-
 # Removed bundled libraries
-
 
 %build
 rm -rf build && mkdir build && cd build

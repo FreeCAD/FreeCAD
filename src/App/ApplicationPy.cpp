@@ -697,7 +697,8 @@ PyObject* Application::sGetUserMacroPath(PyObject * /*self*/, PyObject *args)
     if (Base::asBoolean(actual)) {
         macroDir = App::GetApplication().
             GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath",macroDir.c_str());
+            ->GetASCII("MacroPath", macroDir.c_str());
+        std::replace(macroDir.begin(), macroDir.end(), '/', PATHSEP);
     }
 
     Py::String user_macro_dir(macroDir,"utf-8");

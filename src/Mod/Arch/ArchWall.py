@@ -349,6 +349,7 @@ class _CommandWall:
             import WorkingPlane
             self.wp = WorkingPlane.get_working_plane()
             self.tracker = DraftTrackers.boxTracker()
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,
                                         extradlg=self.taskbox(),
                                         title=translate("Arch","First point of wall")+":")
@@ -373,6 +374,8 @@ class _CommandWall:
                     self.existing.append(obj)
         if point is None:
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -390,6 +393,8 @@ class _CommandWall:
             l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
                                  self.wp.get_local_coords(self.points[1]))
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')

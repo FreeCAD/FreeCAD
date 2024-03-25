@@ -1268,9 +1268,8 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 
 void MainWindow::tabChanged(MDIView* view)
 {
-    Q_UNUSED(view);
+    Q_UNUSED(view)
     updateActions();
-    getMainWindow()->setWindowTitle(view->buildWindowTitle());
 }
 
 void MainWindow::tabCloseRequested(int index)
@@ -1305,11 +1304,15 @@ void MainWindow::setActiveWindow(MDIView* view)
     Application::Instance->viewActivated(view);
 }
 
-void MainWindow::onWindowActivated(QMdiSubWindow* w)
+void MainWindow::onWindowActivated(QMdiSubWindow* mdi)
 {
-    if (!w)
+    if (!mdi) {
+        setWindowTitle(QString());
+        setWindowModified(false);
         return;
-    auto view = dynamic_cast<MDIView*>(w->widget());
+    }
+
+    auto view = dynamic_cast<MDIView*>(mdi->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     if (view)
@@ -1321,12 +1324,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
-        QString currWb = w->property("ownWB").toString();
+        QString currWb = mdi->property("ownWB").toString();
         if (! currWb.isEmpty()) {
             this->activateWorkbench(currWb);
         }
         else {
-            w->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
+            mdi->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
         }
     }
 
@@ -1665,8 +1668,15 @@ void MainWindow::_updateActions()
         d->activityTimer->stop();
         Application::Instance->commandManager().testActive();
     }
+
     d->actionUpdateDelay = 0;
-    getMainWindow()->setWindowTitle(activeWindow()->buildWindowTitle());
+
+    if (auto view = activeWindow()) {
+        setWindowTitle(view->buildWindowTitle());
+        if (auto document = view->getGuiDocument()) {
+            setWindowModified(document->isModified());
+        }
+    }
 }
 
 void MainWindow::updateEditorActions()
@@ -2370,7 +2380,6 @@ void MainWindow::changeEvent(QEvent *e)
                     d->activeView = view;
                     Application::Instance->viewActivated(view);
                 }
-                getMainWindow()->setWindowTitle(view->buildWindowTitle());
             }
         }
     }
@@ -2515,8 +2524,10 @@ QMdiArea *MainWindow::getMdiArea() const
 void MainWindow::setWindowTitle(const QString& string)
 {
     QString title;
-    QString appname =
-        QString(static_cast<QApplication*>(QCoreApplication::instance())->applicationName());
+    QString appname = QCoreApplication::applicationName();
+    if (appname.isEmpty()) {
+        appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+    }
 
     // allow to disable version number
     ParameterGrp::handle hGen = +App::GetApplication().GetParameterGroupByPath(

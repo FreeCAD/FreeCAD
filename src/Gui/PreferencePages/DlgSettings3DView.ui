@@ -281,31 +281,6 @@ but slower response to any scene changes.</string>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Line Smoothing</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 2x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 4x</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>MSAA 8x</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item row="2" column="0">
