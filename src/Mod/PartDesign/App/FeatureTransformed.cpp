@@ -43,6 +43,7 @@
 #include "FeatureTransformed.h"
 #include "Body.h"
 #include "FeatureAddSub.h"
+#include "FeatureMultiTransform.h"
 #include "FeatureMirrored.h"
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
@@ -138,6 +139,22 @@ void Transformed::Restore(Base::XMLReader &reader)
     PartDesign::Feature::Restore(reader);
 }
 
+bool Transformed::isMultiTransformChild() const
+{
+    for (auto const* obj : getInList()) {
+        auto mt = Base::freecad_dynamic_cast<PartDesign::MultiTransform>(obj);
+        if (!mt) {
+            continue;
+        }
+
+        auto const transfmt = mt->Transformations.getValues();
+        if (std::find(transfmt.begin(), transfmt.end(), this) != transfmt.end()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Transformed::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
@@ -165,9 +182,9 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute()
 {
-    std::vector<App::DocumentObject*> originals = Originals.getValues();
-    if (originals.empty()) // typically InsideMultiTransform
+    if (isMultiTransformChild()) {
         return App::DocumentObject::StdReturn;
+    }
 
     if(!this->BaseFeature.getValue()) {
         auto body = getFeatureBody();
@@ -178,6 +195,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     this->positionBySupport();
 
+    std::vector<App::DocumentObject*> originals = Originals.getValues();
     // Remove suppressed features from the list so the transformations behave as if they are not there
     {
         auto eraseIter = std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {

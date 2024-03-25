@@ -45,8 +45,7 @@ public:
     Transformed();
 
     /** The shapes to be transformed
-      * if Originals is empty the instance is just a container for storing transformation data
-      */
+     */
     App::PropertyLinkList Originals;
 
     App::PropertyBool Refine;
@@ -90,6 +89,9 @@ public:
 protected:
     void Restore(Base::XMLReader &reader) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+
+    /// Return true if this feature is a child of a MultiTransform
+    bool isMultiTransformChild() const;
     virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
