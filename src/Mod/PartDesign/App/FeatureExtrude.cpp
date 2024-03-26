@@ -199,7 +199,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                                    PrismMode Mode,
                                    Standard_Boolean Modify)
 {
-    if (method == "UpToFirst" || method == "UpToFace") {
+    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToShape") {
         BRepFeat_MakePrism PrismMaker;
         TopoDS_Shape base = baseshape;
         for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
@@ -213,7 +213,9 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                 Mode = PrismMode::FuseWithBase;
         }
 
-        prism = base;
+        prism = getSolid(base);
+        if (prism.IsNull())
+            throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
     }
     else if (method == "UpToLast") {
         BRepFeat_MakePrism PrismMaker;
@@ -303,6 +305,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     bool isMidplaneEnabled = false;
     bool isReversedEnabled = false;
     bool isUpToFaceEnabled = false;
+    bool isUpToShapeEnabled = false;
     bool isTaperVisible = false;
     bool isTaper2Visible = false;
     if (method == "Length") {
@@ -337,6 +340,7 @@ void FeatureExtrude::updateProperties(const std::string &method)
     }
     else if (method == "UpToShape") {
         isReversedEnabled = true;
+        isUpToShapeEnabled = true;
     }
 
     Length.setReadOnly(!isLengthEnabled);
@@ -348,4 +352,5 @@ void FeatureExtrude::updateProperties(const std::string &method)
     Midplane.setReadOnly(!isMidplaneEnabled);
     Reversed.setReadOnly(!isReversedEnabled);
     UpToFace.setReadOnly(!isUpToFaceEnabled);
+    UpToShape.setReadOnly(!isUpToShapeEnabled);
 }

@@ -27,6 +27,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepAlgoAPI_BuilderAlgo.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -50,6 +51,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
 #endif
 
 #include <App/Document.h>
@@ -72,6 +74,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace, (false), "SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -447,31 +450,84 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
         throw Base::ValueError("SketchBased: Failed to extract face");
 }
 
-void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
-                              const TopoDS_Shape& support,
+
+int ProfileBased::getShapeFromLinkSubList(TopoDS_Shape& upToShape, const App::PropertyLinkSubList& refFaces)
+{
+    int ret = 0;
+    bool hasShape = false;
+
+    auto subSets = refFaces.getSubListValues();
+    TopTools_ListOfShape shapeList;
+
+    for (auto &subSet : subSets){
+        auto ref = subSet.first;
+        if (ref->isDerivedFrom<App::Plane>()) {
+            shapeList.Append(makeShapeFromPlane(ref));
+            ret ++;
+        }
+        else if (ref->isDerivedFrom<PartDesign::Plane>()) {
+            Part::Datum* datum = static_cast<Part::Datum*>(ref);
+            shapeList.Append(datum->getShape());
+            ret ++;
+            hasShape = true;
+        }
+        else {
+            if (!ref->isDerivedFrom<Part::Feature>())
+                throw Base::TypeError("SketchBased: Must be face of a feature");
+
+            Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
+
+            auto subStrings = subSet.second;
+            if (subStrings.empty() || subStrings[0].empty()) {
+                shapeList.Append(baseShape.getShape());
+                ret ++;
+                hasShape = true;
+            }
+            else {
+                for (auto &subString : subStrings){
+                    auto face = baseShape.getSubShape(subString.c_str());
+                    if (face.IsNull())
+                        throw Base::ValueError("SketchBased: Failed to extract face");
+                    shapeList.Append(face);
+                    ret ++;
+                }
+            }
+        }
+    }
+    if (ret == 0)
+        throw Base::ValueError("SketchBased: No face selected");
+    if (ret == 1){
+        upToShape = shapeList.First();
+    }
+    else {
+        // create a unique shape with all selected ones
+        BRepAlgoAPI_BuilderAlgo builder;
+        builder.SetArguments(shapeList);
+        builder.SetNonDestructive(true);
+        builder.Build();
+        if (builder.HasErrors()){
+            throw Base::ValueError("SketchBased: Failed to combine selected faces and shapes");
+        }
+        //TODO uncomment the line below when OCC minimal version >= 7.4
+        // builder.SimplifyResult(true, true);
+        upToShape = builder.Shape();
+    }
+    if (hasShape)
+        return 0;
+    return ret;
+}
+
+void ProfileBased::UnlimitFace(TopoDS_Shape& upToShape,
                               const TopoDS_Shape& sketchshape,
-                              const std::string& method,
                               const gp_Dir& dir)
 {
 
-    if ((method == "UpToLast") || (method == "UpToFirst")) {
-        // Check for valid support object
-        if (support.IsNull())
-            throw Base::ValueError("SketchBased: Up to face: No support in Sketch and no base feature!");
-
-        std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
-        if (cfaces.empty())
-            throw Base::ValueError("SketchBased: No faces found in this direction");
-
-        // Find nearest/furthest face
-        std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
-        it_near = it_far = cfaces.begin();
-        for (it = cfaces.begin(); it != cfaces.end(); it++)
-            if (it->distsq > it_far->distsq)
-                it_far = it;
-            else if (it->distsq < it_near->distsq)
-                it_near = it;
-        upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
+    TopoDS_Face upToFace;
+    try {
+        upToFace = TopoDS::Face(upToShape);
+    }
+    catch (Standard_TypeMismatch& e){
+        throw Base::ValueError("SketchBased: Up To Face: Not a face !?");;
     }
 
     // Check whether the face has limits or not. Unlimited faces have no wire
@@ -516,15 +572,21 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
             if (!mkFace.IsDone())
                 throw Base::ValueError("SketchBased: Up To Face: Failed to create unlimited face");
-            upToFace = TopoDS::Face(mkFace.Shape());
-            upToFace.Location(loc);
+            upToShape = mkFace.Shape();
+            upToShape.Location(loc);
         }
     }
+}
 
+void ProfileBased::ValidateFace(TopoDS_Shape& upToFace,
+                                const TopoDS_Shape& sketchshape,
+                                const gp_Dir& dir)
+{
     // Check that the upToFace is either not parallel to the extrusion direction
     // and that upToFace is not too near
     if (upToFace.IsNull())
         throw Base::ValueError("SketchBased: The UpTo-Face is null!");
+
     BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (upToFaceSurface.GetType() == GeomAbs_Plane) {
@@ -540,11 +602,45 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 }
 
-void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
+void ProfileBased::getUpToFace(TopoDS_Shape& upToFace,
+                              const TopoDS_Shape& support,
+                              const TopoDS_Shape& sketchshape,
+                              const std::string& method,
+                              const gp_Dir& dir)
+{
+
+    if ((method == "UpToLast") || (method == "UpToFirst")) {
+        // Check for valid support object
+        if (support.IsNull())
+            throw Base::ValueError("SketchBased: Up to face: No support in Sketch and no base feature!");
+
+        std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
+        if (cfaces.empty())
+            throw Base::ValueError("SketchBased: No faces found in this direction");
+
+        // Find nearest/furthest face
+        std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
+        it_near = it_far = cfaces.begin();
+        for (it = cfaces.begin(); it != cfaces.end(); it++)
+            if (it->distsq > it_far->distsq)
+                it_far = it;
+            else if (it->distsq < it_near->distsq)
+                it_near = it;
+        upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
+    }
+
+    UnlimitFace(upToFace, sketchshape, dir);
+
+    ValidateFace(upToFace, sketchshape, dir);
+}
+
+void ProfileBased::addOffsetToFace(TopoDS_Shape& upToShape, const gp_Dir& dir, double offset)
 {
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
+
     if (fabs(offset) > Precision::Confusion()) {
+        auto upToFace = TopoDS::Face(upToShape);
         BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
         if (upToFaceSurface.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
@@ -557,6 +653,7 @@ void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, dou
             // to work as expected (see generatePrism())
             BRep_Builder builder;
             builder.NaturalRestriction(upToFace, Standard_True);
+            upToShape = upToFace;
         }
         else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");

@@ -39,7 +39,7 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -56,6 +56,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
@@ -144,7 +145,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
         profileshape.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
-        if (method == "UpToFirst" || method == "UpToFace") {
+        if (method == "UpToFirst" || method == "UpToFace" || method == "UpToShape") {
             if (base.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Extruding up to a face is only possible if the sketch is located on a face"));
 
@@ -155,14 +156,27 @@ App::DocumentObjectExecReturn *Pocket::execute()
             if (Reversed.getValue())
                 dir.Reverse();
 
+            TopoDS_Shape upToShape;
+            int faceCount = 1;
             // Find a valid face or datum plane to extrude up to
-            TopoDS_Face upToFace;
             if (method == "UpToFace") {
+                TopoDS_Face upToFace;
                 getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                upToShape = TopoDS_Shape(upToFace);
+                upToShape.Move(invObjLoc);
+                faceCount = 1;
             }
-            getUpToFace(upToFace, base, profileshape, method, dir);
-            addOffsetToFace(upToFace, dir, Offset.getValue());
+            else if (method == "UpToShape") {
+                faceCount = getShapeFromLinkSubList(upToShape, UpToShape);
+                upToShape.Move(invObjLoc);
+            }
+            if (faceCount == 1) {
+                getUpToFace(upToShape, base, profileshape, method, dir);
+                addOffsetToFace(upToShape, dir, Offset.getValue());
+            }
+            else if (fabs(Offset.getValue()) > Precision::Confusion()){
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Can only offset one face"));
+            }
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -176,7 +190,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            generatePrism(prism, method, base, profileshape, supportface, upToShape, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
