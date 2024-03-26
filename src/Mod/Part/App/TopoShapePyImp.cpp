@@ -2897,77 +2897,77 @@ void TopoShapePy::setOrientation(Py::String arg)
     getTopoShapePtr()->setShape(sh);
 }
 
-Py::List TopoShapePy::getSubShapes() const
+static Py::List
+getElements(const TopoShape& sh, TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid = TopAbs_SHAPE)
 {
     Py::List ret;
-    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
-
-    if (!shape.IsNull()) {
-        for (TopoDS_Iterator it(shape); it.More(); it.Next())
-            ret.append(shape2pyshape(it.Value()));
+    for (auto& shape : sh.getSubTopoShapes(type, avoid)) {
+        ret.append(shape2pyshape(shape));
     }
-
     return ret;
 }
 
-template<typename T> Py::List getShapes(const TopoShape* shapePtr)
+//  Todo:  Toponaming Project March, 2024:  This code is defined, appears to be correct, but
+//          is not clearly in use, thus commented out:
+//
+//PyObject *TopoShapePy::getChildShapes(PyObject *args)
+//{
+//    const char *type;
+//    const char *avoid = nullptr;
+//    if (!PyArg_ParseTuple(args, "s|s", &type, &avoid))
+//        return nullptr;
+//
+//    PY_TRY {
+//        return Py::new_reference_to(
+//            getElements(*getTopoShapePtr(),
+//                        TopoShape::shapeType(type),
+//                        avoid && avoid[0] ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
+//    }PY_CATCH_OCC;
+//}
+
+Py::List TopoShapePy::getSubShapes(void) const
 {
-    Py::List ret;
-    TopTools_IndexedMapOfShape M;
-    TopExp_Explorer Ex(shapePtr->getShape(), mapTypeShape.at(&T::Type));
-    while (Ex.More()) {
-        M.Add(Ex.Current());
-        Ex.Next();
-    }
-
-    for (Standard_Integer k = 1; k <= M.Extent(); k++) {
-        const TopoDS_Shape& shape = M(k);
-        Base::PyObjectBase* baseObj = new T(new TopoShape(shape));
-        baseObj->setNotTracking();
-        ret.append(Py::asObject(baseObj));
-    }
-
-    return ret;
+    return getElements(*getTopoShapePtr(), TopAbs_SHAPE);
 }
 
-Py::List TopoShapePy::getFaces() const
+Py::List TopoShapePy::getFaces(void) const
 {
-    return getShapes<TopoShapeFacePy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_FACE);
 }
 
-Py::List TopoShapePy::getVertexes() const
+Py::List TopoShapePy::getVertexes(void) const
 {
-    return getShapes<TopoShapeVertexPy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_VERTEX);
 }
 
-Py::List TopoShapePy::getShells() const
+Py::List TopoShapePy::getShells(void) const
 {
-    return getShapes<TopoShapeShellPy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_SHELL);
 }
 
-Py::List TopoShapePy::getSolids() const
+Py::List TopoShapePy::getSolids(void) const
 {
-    return getShapes<TopoShapeSolidPy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_SOLID);
 }
 
-Py::List TopoShapePy::getCompSolids() const
+Py::List TopoShapePy::getCompSolids(void) const
 {
-    return getShapes<TopoShapeCompSolidPy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_COMPSOLID);
 }
 
-Py::List TopoShapePy::getEdges() const
+Py::List TopoShapePy::getEdges(void) const
 {
-    return getShapes<TopoShapeEdgePy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_EDGE);
 }
 
-Py::List TopoShapePy::getWires() const
+Py::List TopoShapePy::getWires(void) const
 {
-    return getShapes<TopoShapeWirePy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_WIRE);
 }
 
-Py::List TopoShapePy::getCompounds() const
+Py::List TopoShapePy::getCompounds(void) const
 {
-    return getShapes<TopoShapeCompoundPy>(getTopoShapePtr());
+    return getElements(*getTopoShapePtr(), TopAbs_COMPOUND);
 }
 
 Py::Float TopoShapePy::getLength() const
