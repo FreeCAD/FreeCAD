@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Gui::Dialog::DlgDisplayProperties</class>
- <widget class="QDialog" name="Gui::Dialog::DlgDisplayProperties">
+ <class>MatGui::DlgDisplayProperties</class>
+ <widget class="QDialog" name="MatGui::DlgDisplayProperties">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -94,108 +94,6 @@
            <bool>false</bool>
           </property>
          </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox3">
-     <property name="title">
-      <string>Material</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QComboBox" name="changeMaterial"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonUserDefinedMaterial">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>32767</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Color plot:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="buttonColorPlot">
-          <property name="text">
-           <string notr="true">...</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Shape color:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::ColorButton" name="buttonColor">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Line color:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::ColorButton" name="buttonLineColor"/>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Point color:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::ColorButton" name="buttonPointColor"/>
         </item>
        </layout>
       </item>
@@ -434,6 +332,101 @@
      </layout>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox3">
+     <property name="title">
+      <string>Material</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Color plot:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Shape Appearance:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::ColorButton" name="buttonPointColor"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Point color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Line color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="buttonColorPlot">
+          <property name="text">
+           <string notr="true">...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::ColorButton" name="buttonLineColor"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="buttonUserDefinedMaterial">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>32767</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true">...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <widget class="MatGui::MaterialTreeWidget" name="widgetMaterial" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -443,13 +436,16 @@
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>MatGui::MaterialTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>Mod/Material/Gui/MaterialTreeWidget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>changeMode</tabstop>
   <tabstop>changePlot</tabstop>
-  <tabstop>changeMaterial</tabstop>
-  <tabstop>buttonUserDefinedMaterial</tabstop>
-  <tabstop>buttonColor</tabstop>
   <tabstop>buttonLineColor</tabstop>
   <tabstop>spinPointSize</tabstop>
   <tabstop>spinLineWidth</tabstop>

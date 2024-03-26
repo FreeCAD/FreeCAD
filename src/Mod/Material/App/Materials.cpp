@@ -34,6 +34,7 @@
 #include "MaterialLibrary.h"
 #include "MaterialManager.h"
 #include "ModelManager.h"
+#include "ModelUuids.h"
 
 
 using namespace Materials;
@@ -141,6 +142,32 @@ QString MaterialProperty::getYAMLString() const
 {
     return _valuePtr->getYAMLString();
 }
+
+App::Color MaterialProperty::getColor() const
+{
+    auto colorString = getValue().toString();
+    std::stringstream stream(colorString.toStdString());
+
+    char c;
+    stream >> c;  // read "("
+    float red;
+    stream >> red;
+    stream >> c;  // ","
+    float green;
+    stream >> green;
+    stream >> c;  // ","
+    float blue;
+    stream >> blue;
+    stream >> c;  // ","
+    float alpha = 1.0;
+    if (c == ',') {
+        stream >> alpha;
+    }
+
+    App::Color color(red, green, blue, alpha);
+    return color;
+}
+
 
 QString MaterialProperty::getDictionaryString() const
 {
@@ -375,6 +402,13 @@ void MaterialProperty::setList(const QList<QVariant>& value)
 void MaterialProperty::setURL(const QString& value)
 {
     _valuePtr->setValue(QVariant(value));
+}
+
+void MaterialProperty::setColor(const App::Color& value)
+{
+    std::stringstream ss;
+    ss << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";
+    _valuePtr->setValue(QVariant(QString::fromStdString(ss.str())));
 }
 
 MaterialProperty& MaterialProperty::operator=(const MaterialProperty& other)
@@ -1434,6 +1468,23 @@ Material& Material::operator=(const Material& other)
     return *this;
 }
 
+Material& Material::operator=(const App::Material& other)
+{
+    if (!hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
+        addAppearance(ModelUUIDs::ModelUUID_Rendering_Basic);
+    }
+
+    getAppearanceProperty(QString::fromLatin1("AmbientColor"))->setColor(other.ambientColor);
+    getAppearanceProperty(QString::fromLatin1("DiffuseColor"))->setColor(other.diffuseColor);
+    getAppearanceProperty(QString::fromLatin1("SpecularColor"))->setColor(other.specularColor);
+    getAppearanceProperty(QString::fromLatin1("EmissiveColor"))->setColor(other.emissiveColor);
+    getAppearanceProperty(QString::fromLatin1("Shininess"))->setFloat(other.shininess);
+    getAppearanceProperty(QString::fromLatin1("Transparency"))->setFloat(other.transparency);
+    // std::string uuid;
+
+    return *this;
+}
+
 /*
  * Normalize models by removing any inherited models
  */
@@ -1509,3 +1560,50 @@ QStringList Material::inheritedAddedModels(const Material& parent) const
  */
 void Material::inheritedPropertyDiff([[maybe_unused]] const QString& parent)
 {}
+
+/*
+ * Return an App::Material object describing the materials appearance, or DEFAULT if
+ * undefined.
+ */
+App::Material Material::getMaterialAppearance() const
+{
+    App::Material material(App::Material::DEFAULT);
+
+    bool custom = false;
+    if (hasAppearanceProperty(QString::fromLatin1("AmbientColor"))) {
+        material.ambientColor =
+            getAppearanceProperty(QString::fromLatin1("AmbientColor"))->getColor();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QString::fromLatin1("DiffuseColor"))) {
+        material.diffuseColor =
+            getAppearanceProperty(QString::fromLatin1("DiffuseColor"))->getColor();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QString::fromLatin1("SpecularColor"))) {
+        material.specularColor =
+            getAppearanceProperty(QString::fromLatin1("SpecularColor"))->getColor();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QString::fromLatin1("EmissiveColor"))) {
+        material.emissiveColor =
+            getAppearanceProperty(QString::fromLatin1("EmissiveColor"))->getColor();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QString::fromLatin1("Shininess"))) {
+        material.shininess = getAppearanceProperty(QString::fromLatin1("Shininess"))->getFloat();
+        custom = true;
+    }
+    if (hasAppearanceProperty(QString::fromLatin1("Transparency"))) {
+        material.transparency =
+            getAppearanceProperty(QString::fromLatin1("Transparency"))->getFloat();
+        custom = true;
+    }
+
+    if (custom) {
+        material.setType(App::Material::USER_DEFINED);
+        material.uuid = getUUID().toStdString();
+    }
+
+    return material;
+}

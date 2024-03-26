@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2023-2024 David Carter <dcarter@david.carter.ca>        *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -56,9 +56,9 @@ public:
     {
         return _includeFolders;
     }
-    void setIncludeEmptyFolders(bool include)
+    void setIncludeEmptyFolders(bool value)
     {
-        _includeFolders = include;
+        _includeFolders = value;
     }
 
     /* Indicates if we should include materials in the older format
@@ -80,9 +80,25 @@ public:
      * Models only need to be included in one set.
      */
     bool modelIncluded(const std::shared_ptr<Material>& material) const;
+    bool modelIncluded(const QString& uuid) const;
 
+    /* Add model UUIDs for required models, or models that are both required
+     * and complete.
+     */
     void addRequired(const QString& uuid);
     void addRequiredComplete(const QString& uuid);
+
+    /* These functions shouldn't normally be called directly. They are
+     * for use by conversion methods, such as MaterialFilterPy
+     */
+    const QSet<QString>* getRequired() const
+    {
+        return &_required;
+    }
+    const QSet<QString>* getRequiredComplete() const
+    {
+        return &_requiredComplete;
+    }
 
 private:
     bool _includeFolders;

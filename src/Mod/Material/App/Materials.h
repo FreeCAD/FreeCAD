@@ -31,6 +31,8 @@
 #include <QTextStream>
 
 #include <App/Application.h>
+#include <App/Color.h>
+#include <App/Material.h>
 #include <Base/BaseClass.h>
 
 #include <Mod/Material/MaterialGlobal.h>
@@ -79,11 +81,24 @@ public:
     QString getString() const;
     QString getYAMLString() const;
     QString getDictionaryString() const;  // Non-localized string
-    bool getBoolean() const;
-    int getInt() const;
-    double getFloat() const;
+    bool getBoolean() const
+    {
+        return getValue().toBool();
+    }
+    int getInt() const
+    {
+        return getValue().toInt();
+    }
+    double getFloat() const
+    {
+        return getValue().toFloat();
+    }
     const Base::Quantity& getQuantity() const;
-    const QString getURL() const;
+    QString getURL() const
+    {
+        return getValue().toString();
+    }
+    App::Color getColor() const;
 
     MaterialProperty& getColumn(int column);
     const MaterialProperty& getColumn(int column) const;
@@ -109,6 +124,7 @@ public:
     void setQuantity(const QString& value);
     void setList(const QList<QVariant>& value);
     void setURL(const QString& value);
+    void setColor(const App::Color& value);
 
     MaterialProperty& operator=(const MaterialProperty& other);
     friend QTextStream& operator<<(QTextStream& output, const MaterialProperty& property);
@@ -217,6 +233,8 @@ public:
     {
         return &_appearanceUuids;
     }
+
+    App::Material getMaterialAppearance() const;
 
     void setLibrary(const std::shared_ptr<MaterialLibrary>& library)
     {
@@ -365,7 +383,23 @@ public:
 
     void save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool saveInherited);
 
+    /*
+     * Assignment operator
+     */
     Material& operator=(const Material& other);
+
+    /*
+     * Set the appearance properties
+     */
+    Material& operator=(const App::Material& other);
+
+    bool operator==(const Material& other) const
+    {
+        if (&other == this) {
+            return true;
+        }
+        return getTypeId() == other.getTypeId() && _uuid == other._uuid;
+    }
 
 protected:
     void addModel(const QString& uuid);

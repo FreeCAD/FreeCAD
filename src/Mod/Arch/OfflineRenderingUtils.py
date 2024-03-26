@@ -200,7 +200,7 @@ def getGuiData(filename):
 
     """getGuiData(filename): Extract visual data from a saved FreeCAD file.
     Returns a dictionary ["objectName:dict] where dict contains properties
-    keys  like ShapeColor, Transparency, DiffuseColor or Visibility. If found,
+    keys  like ShapeAppearaance, Transparency, DiffuseColor or Visibility. If found,
     also contains a GuiCameraSettings key with an iv repr of a coin camera"""
 
     guidata = {}
@@ -310,7 +310,7 @@ def getStepData(objects,colors):
         if obj.Name in colors:
             color = colors[obj.Name]
             if isinstance(color,tuple):
-                # this is a ShapeColor. We reformat as a list so it works as a DiffuseColor,
+                # this is a ShapeAppeaaraance. We reformat as a list so it works as a DiffuseColor,
                 # which is what the exporter expects. DiffuseColor can have either one color,
                 # or the same number of colors as the number of faces
                 color = [color]

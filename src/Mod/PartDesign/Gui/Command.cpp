@@ -475,7 +475,7 @@ void CmdPartDesignClone::activated(int iMsg)
                           << "setEditorMode('Placement', 0)");
 
         updateActive();
-        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "ShapeAppearance", obj);
         copyVisual(cloneObj, "LineColor", obj);
         copyVisual(cloneObj, "PointColor", obj);
         copyVisual(cloneObj, "Transparency", obj);
@@ -556,7 +556,7 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeColor", obj);
+        cmd->copyVisual(Feat, "ShapeAppearance", obj);
         cmd->copyVisual(Feat, "LineColor", obj);
         cmd->copyVisual(Feat, "PointColor", obj);
         cmd->copyVisual(Feat, "Transparency", obj);

@@ -265,13 +265,13 @@ void ViewProviderFillet::updateData(const App::Property* prop)
             if (vpBase) {
                 std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
                 std::vector<App::Color> colFill;
-                colFill.resize(fillMap.Extent(), vpBase->ShapeColor.getValue());
+                colFill.resize(fillMap.Extent(), vpBase->ShapeAppearance.getDiffuseColor());
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                     applyColor(hist[0], colBase, colFill);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
                     applyColor(hist[0], colBase, colFill);
                 }
@@ -375,13 +375,13 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             if (vpBase) {
                 std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
                 std::vector<App::Color> colCham;
-                colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+                colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeAppearance.getDiffuseColor());
                 applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                     applyColor(hist[0], colBase, colCham);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
                     applyColor(hist[0], colBase, colCham);
                 }

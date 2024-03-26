@@ -26,7 +26,7 @@ Test module for FreeCAD material models
 
 import unittest
 import FreeCAD
-import Material
+import Materials
 
 parseQuantity = FreeCAD.Units.parseQuantity
 
@@ -36,8 +36,8 @@ class ModelTestCases(unittest.TestCase):
     """
     def setUp(self):
         """ Setup function to initialize test data """
-        self.ModelManager = Material.ModelManager()
-        self.uuids = Material.UUIDs()
+        self.ModelManager = Materials.ModelManager()
+        self.uuids = Materials.UUIDs()
 
     def testModelManager(self):
         """ Ensure we can access ModelManager member functions """

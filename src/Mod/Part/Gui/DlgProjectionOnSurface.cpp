@@ -653,7 +653,7 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(
     if (vp) {
         const unsigned int color = 0x8ae23400;
         vp->LineColor.setValue(color);
-        vp->ShapeColor.setValue(color);
+        vp->ShapeAppearance.setDiffuseColor(App::Color(0x8ae23400));
         vp->PointColor.setValue(color);
         vp->Transparency.setValue(0);
     }
@@ -722,7 +722,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
         App::Color defaultColor;
         if (currentShapeType == TopAbs_FACE) {
             colors = vp->DiffuseColor.getValues();
-            defaultColor = vp->ShapeColor.getValue();
+            defaultColor = vp->ShapeAppearance.getDiffuseColor();
         }
         else if (currentShapeType == TopAbs_EDGE) {
             colors = vp->LineColorArray.getValues();

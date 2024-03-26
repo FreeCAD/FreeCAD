@@ -104,9 +104,11 @@ void StdCmdRandomColor::activated(int iMsg)
             vpLink->ShapeMaterial.setDiffuseColor(objColor);
         }
         else if (view) {
-            if (auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"))) {
+            auto appearance =
+                dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeAppearance"));
+            if (appearance) {
                 // get the view provider of the selected object and set the shape color
-                color->setValue(objColor);
+                appearance->setDiffuseColor(objColor);
             }
         }
     };

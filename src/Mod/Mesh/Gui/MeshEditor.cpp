@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <algorithm>
-#include <functional>
 #include <QMenu>
 #include <QTimer>
+#include <algorithm>
+#include <functional>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -51,8 +51,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
 #include "MeshEditor.h"
 #include "SoFCMeshObject.h"
@@ -117,7 +117,7 @@ void ViewProviderFace::attach(App::DocumentObject* obj)
 
     SoBaseColor* basecol = new SoBaseColor;
     if (mesh) {
-        App::Color col = mesh->ShapeColor.getValue();
+        App::Color col = mesh->ShapeAppearance.getDiffuseColor();
         basecol->rgb.setValue(col.r, col.g, col.b);
     }
     else {

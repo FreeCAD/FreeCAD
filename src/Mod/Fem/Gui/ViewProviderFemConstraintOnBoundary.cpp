@@ -69,10 +69,10 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 std::vector<App::Color> colors = originalPointColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? ShapeColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getVertexColors(subSet.second, colors);
                 vp->PointColorArray.setValues(colors);
             }
@@ -84,10 +84,10 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 std::vector<App::Color> colors = originalLineColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `ShapeColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? ShapeColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace `ShapeAppearance` with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getEdgeColors(subSet.second, colors);
                 vp->LineColorArray.setValues(colors);
             }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2023-2024 David Carter <dcarter@david.carter.ca>        *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -25,7 +25,9 @@
 
 #include <App/Application.h>
 
+#include "Exceptions.h"
 #include "MaterialFilter.h"
+#include "MaterialManager.h"
 #include "Materials.h"
 
 
@@ -54,6 +56,18 @@ bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) co
     }
 
     return true;
+}
+
+bool MaterialFilter::modelIncluded(const QString& uuid) const
+{
+    MaterialManager manager;
+    try {
+        auto material = manager.getMaterial(uuid);
+        return modelIncluded(material);
+    }
+    catch (const MaterialNotFound&) {
+    }
+    return false;
 }
 
 void MaterialFilter::addRequired(const QString& uuid)

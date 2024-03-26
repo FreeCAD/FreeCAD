@@ -162,7 +162,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
     ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
-    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeColor.getValue()), osgroup, App::Prop_None, "Object diffuse color.");
+    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeAppearance.getDiffuseColors()), osgroup, App::Prop_None, "Object diffuse color.");
     ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth), osgroup, App::Prop_None, "Set object line width.");
     LineWidth.setConstraints(&sizeRange);
@@ -318,28 +318,28 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
     }
-    else if (prop == &ShapeMaterial || prop == &ShapeColor) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
-        ViewProviderGeometryObject::onChanged(prop);
-        App::Color c = ShapeColor.getValue();
-        c.a = Transparency.getValue()/100.0f;
-        DiffuseColor.setValue(c);
-    }
+//    else if (prop == &ShapeMaterial) {
+//        pcFaceBind->value = SoMaterialBinding::OVERALL;
+//        ViewProviderGeometryObject::onChanged(prop);
+//        App::Color c = ShapeAppearance.getDiffuseColor();
+//        c.a = Transparency.getValue()/100.0f;
+//        DiffuseColor.setValue(c);
+//    }
     else if (prop == &Transparency) {
-        const App::Material& Mat = ShapeMaterial.getValue();
-        long value = (long)(100*Mat.transparency);
-        if (value != Transparency.getValue()) {
-            float trans = Transparency.getValue()/100.0f;
-            auto colors = DiffuseColor.getValues();
-            for (auto &c : colors)
-                c.a = trans;
-            DiffuseColor.setValues(colors);
-
-            App::PropertyContainer* parent = ShapeMaterial.getContainer();
-            ShapeMaterial.setContainer(nullptr);
-            ShapeMaterial.setTransparency(trans);
-            ShapeMaterial.setContainer(parent);
-        }
+//        const App::Material& Mat = ShapeMaterial.getValue();
+//        long value = (long)(100*Mat.transparency);
+//        if (value != Transparency.getValue()) {
+//            float trans = Transparency.getValue()/100.0f;
+//            auto colors = DiffuseColor.getValues();
+//            for (auto &c : colors)
+//                c.a = trans;
+//            DiffuseColor.setValues(colors);
+//
+//            App::PropertyContainer* parent = ShapeMaterial.getContainer();
+//            ShapeMaterial.setContainer(nullptr);
+//            ShapeMaterial.setTransparency(trans);
+//            ShapeMaterial.setContainer(parent);
+//        }
     }
     else if (prop == &Lighting) {
         if (Lighting.getValue() == 0)
@@ -652,7 +652,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
     std::map<std::string,App::Color> ret;
 
     if(!element || !element[0]) {
-        auto color = ShapeColor.getValue();
+        auto color = ShapeAppearance.getDiffuseColor();
         color.a = Transparency.getValue()/100.0f;
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
@@ -663,7 +663,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
     if(boost::starts_with(element,"Face")) {
         auto size = DiffuseColor.getSize();
         if(element[4]=='*') {
-            auto color = ShapeColor.getValue();
+            auto color = ShapeAppearance.getDiffuseColor();
             color.a = Transparency.getValue()/100.0f;
             bool singleColor = true;
             for(int i=0;i<size;++i) {
@@ -682,7 +682,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             if(idx>0 && idx<=size)
                 ret[element] = DiffuseColor[idx-1];
             else
-                ret[element] = ShapeColor.getValue();
+                ret[element] = ShapeAppearance.getDiffuseColor();
             if(size==1)
                 ret[element].a = Transparency.getValue()/100.0f;
         }

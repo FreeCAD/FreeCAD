@@ -173,3 +173,12 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return sobj;
 }
 
+App::Material GeoFeature::getMaterialAppearance() const
+{
+    return App::Material(App::Material::DEFAULT);
+}
+
+void GeoFeature::setMaterialAppearance(const App::Material& material)
+{
+    Q_UNUSED(material)
+}

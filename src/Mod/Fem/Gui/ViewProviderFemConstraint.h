@@ -56,7 +56,6 @@ public:
     // Display properties
     App::PropertyColor TextColor;
     App::PropertyColor FaceColor;
-    App::PropertyColor ShapeColor;
     App::PropertyInteger FontSize;
     App::PropertyFloat DistFactor;
     App::PropertyBool Mirror;

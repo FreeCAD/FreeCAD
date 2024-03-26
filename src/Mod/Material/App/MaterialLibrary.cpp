@@ -21,9 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QVector>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QVector>
 #endif
 
 
@@ -266,7 +266,7 @@ QString MaterialLibrary::getUUIDFromPath(const QString& path) const
 }
 
 bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
-                                     const MaterialFilter* filter) const
+                                     const std::shared_ptr<Materials::MaterialFilter>& filter) const
 {
     if (!filter) {
         // If there's no filter we always include
@@ -283,7 +283,7 @@ bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const MaterialFilter* filter) const
+MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();

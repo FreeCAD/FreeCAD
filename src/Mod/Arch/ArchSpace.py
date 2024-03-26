@@ -727,7 +727,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         elif prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
-                self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))
+                self.fmat = vobj.ShapeColor.getValue()
 
         elif prop == "Transparency":
             if hasattr(vobj,"Transparency"):

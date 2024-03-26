@@ -19,8 +19,9 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(MatGui_LIBS
-    Material
+    Materials
     FreeCADGui
+    Part
 )
 
 include_directories(
@@ -39,6 +40,8 @@ qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
+    DlgDisplayProperties.ui
+    DlgMaterial.ui
     DlgSettingsMaterial.ui
     ImageEdit.ui
     ListEdit.ui
@@ -67,6 +70,15 @@ SET(MatGui_SRCS
     BaseDelegate.cpp
     BaseDelegate.h
     Command.cpp
+    DlgDisplayPropertiesImp.cpp
+    DlgDisplayPropertiesImp.h
+    DlgDisplayProperties.ui
+    DlgMaterialImp.cpp
+    DlgMaterialImp.h
+    DlgDisplayProperties.ui
+    DlgMaterialImp.cpp
+    DlgMaterialImp.h
+    DlgMaterial.ui
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui
@@ -88,6 +100,8 @@ SET(MatGui_SRCS
     MaterialsEditor.cpp
     MaterialsEditor.h
     MaterialsEditor.ui
+    MaterialTreeWidget.cpp
+    MaterialTreeWidget.h
     ModelSelect.cpp
     ModelSelect.h
     ModelSelect.ui

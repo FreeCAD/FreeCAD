@@ -235,7 +235,7 @@ void DlgScale::apply()
 
             this->writeParametersToFeature(*newObj, sourceObj);
 
-            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
             Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
             Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 

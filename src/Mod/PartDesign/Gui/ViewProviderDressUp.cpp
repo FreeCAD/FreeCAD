@@ -104,7 +104,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             originalFaceColors = vp->DiffuseColor.getValues();
             std::vector<App::Color> colors = originalFaceColors;
 
-            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeColor.getValue());
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeAppearance.getDiffuseColor());
             highlighter.getFaceColors(faces, colors);
             vp->DiffuseColor.setValues(colors);
         }

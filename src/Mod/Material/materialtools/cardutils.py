@@ -28,7 +28,7 @@ from os.path import join
 from pathlib import Path
 
 import FreeCAD
-import Material
+import Materials
 
 
 unicode = str
@@ -260,7 +260,7 @@ def output_resources(resources):
 # used in material editor and FEM material task panels
 
 def import_materials(category='Solid', template=False):
-    materialManager = Material.MaterialManager()
+    materialManager = Materials.MaterialManager()
     mats = materialManager.Materials
     materials = {}
     cards = {}

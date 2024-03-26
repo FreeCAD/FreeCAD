@@ -785,7 +785,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
     if(!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument())
         return;
     static std::map<std::string,std::string> attrMap = {
-        {"ShapeColor","ShapeMaterial.DiffuseColor"},
+        // {"ShapeColor","ShapeMaterial.DiffuseColor"},
+        {"ShapeAppearance", "ShapeMaterial"},
         // {"LineColor","ShapeMaterial.DiffuseColor"},
         // {"PointColor","ShapeMaterial.DiffuseColor"},
         {"Transparency","Transparency"},

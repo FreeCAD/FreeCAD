@@ -59,7 +59,7 @@ def debugMarker(vector, label, color=None, radius=0.5):
             vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
         )
         if color:
-            obj.ViewObject.ShapeColor = color
+            obj.ViewObject.ShapeAppearance.DiffuseColor = color
 
 
 def debugCircle(vector, r, label, color=None):
@@ -73,7 +73,7 @@ def debugCircle(vector, r, label, color=None):
         )
         obj.ViewObject.Transparency = 90
         if color:
-            obj.ViewObject.ShapeColor = color
+            obj.ViewObject.ShapeAppearance.DiffuseColor = color
 
 
 def addAngle(a1, a2):

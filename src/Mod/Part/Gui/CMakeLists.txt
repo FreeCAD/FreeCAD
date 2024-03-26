@@ -15,6 +15,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(PartGui_LIBS
     Part
     FreeCADGui
+    MatGui
 )
 
 if(MSVC)
