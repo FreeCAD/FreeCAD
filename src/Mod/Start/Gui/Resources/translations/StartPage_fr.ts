@@ -193,7 +193,7 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="132"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
       <translation>Voici les derniers changements ajoutés au &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;code source de FreeCAD&lt;/a&gt;.
-Il se peut que ces changements ne soient pas encore présents dans la version de FreeCAD que vous utilisez actuellement. 
+Il se peut que ces changements ne soient pas encore présents dans la version de FreeCAD que vous utilisez actuellement.
 Vérifiez les &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;versions disponibles&lt;/a&gt; si vous souhaitez obtenir une version de développement.</translation>
     </message>
     <message>

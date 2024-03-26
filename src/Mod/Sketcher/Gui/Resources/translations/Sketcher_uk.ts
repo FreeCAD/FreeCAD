@@ -556,7 +556,7 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="9564"/>
       <source>Create a refraction law (Snell's law)constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation>Створює обмеження за законом заломлення (закон Снеліуса) між 
+      <translation>Створює обмеження за законом заломлення (закон Снеліуса) між
 двома кінцевими точками променя та ребром як границею розділу середовищ.</translation>
     </message>
   </context>
@@ -571,7 +571,7 @@ and an edge as an interface.</source>
       <location filename="../../CommandConstraints.cpp" line="9207"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Створює обмеження симетричності між двома 
+      <translation>Створює обмеження симетричності між двома
 точками відносно лінії або третьої точки</translation>
     </message>
   </context>
@@ -1165,7 +1165,7 @@ then call this command, then choose the desired sketch.</translation>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation>Створює новий ескіз дзеркальним зображенням кожного з 
+      <translation>Створює новий ескіз дзеркальним зображенням кожного з
 вибраних ескізів відносно осі X, Y або початку координат.</translation>
     </message>
     <message>
@@ -3990,7 +3990,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>Якщо виділено, кожен елемент в масиві буде обмежений 
+      <translation>Якщо виділено, кожен елемент в масиві буде обмежений
 відносно інших за допомогою допоміжних ліній</translation>
     </message>
     <message>
@@ -4003,8 +4003,8 @@ with respect to the others using construction lines</source>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Якщо виділено, розмірні обмеження будуть замінені 
-геометричними обмеженнями в копіях, тому зміна базового елемента 
+      <translation>Якщо виділено, розмірні обмеження будуть замінені
+геометричними обмеженнями в копіях, тому зміна базового елемента
 безпосередньо позначиться на копіях</translation>
     </message>
     <message>
@@ -4048,7 +4048,7 @@ reflected on copies</source>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>Діалогове вікно Редактора Ескізів матиме додатковий розділ 
+      <translation>Діалогове вікно Редактора Ескізів матиме додатковий розділ
 «Розширене керування вирішувачем», щоб налаштувати параметри вирішувача</translation>
     </message>
     <message>
@@ -4991,7 +4991,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation>Виправляє знайдену перевернуту зовнішню 
+      <translation>Виправляє знайдену перевернуту зовнішню
 геометрію шляхом зміни кінцевих точок</translation>
     </message>
     <message>

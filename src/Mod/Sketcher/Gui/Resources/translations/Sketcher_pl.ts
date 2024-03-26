@@ -50,7 +50,7 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="188"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem 
+      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem
 punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
@@ -1123,7 +1123,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
       <translation>Ustawia "Wsparcie Dołączenia" dla szkicu.
-Najpierw wybierz geometrię wspomagającą, na przykład powierzchnię 
+Najpierw wybierz geometrię wspomagającą, na przykład powierzchnię
 lub krawędź obiektu bryły, następnie wywołaj tę komendę, a następnie wybierz żądany szkic.</translation>
     </message>
     <message>
@@ -2848,7 +2848,7 @@ lub kilka stożków dla wiązania typu "współśrodkowość".</translation>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane. 
+      <translation>Istnieje wiele sposobów, gdzie to wiązanie to może być stosowane.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -2886,7 +2886,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywej; dwa punkty końco
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania. 
+      <translation>Istnieje wiele sposobów na zastosowanie tego wiązania.
 
 Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcowe; dwie krzywe i punkt.</translation>
     </message>
@@ -5206,7 +5206,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="339"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="342"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem 
+      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem
 punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
@@ -6379,7 +6379,7 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation>Nowe punkty będą przyciągane do aktualnie wybranego obiektu. 
+      <translation>Nowe punkty będą przyciągane do aktualnie wybranego obiektu.
 Przyciągają się również do środka linii i łuków.</translation>
     </message>
     <message>
@@ -6392,7 +6392,7 @@ Przyciągają się również do środka linii i łuków.</translation>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nowe punkty będą przyciągane do najbliższej linii siatki.
-Punkty muszą być ustawione bliżej niż jedna piąta 
+Punkty muszą być ustawione bliżej niż jedna piąta
 odstępu między liniami siatki, aby zostały przyciągnięte.</translation>
     </message>
     <message>
