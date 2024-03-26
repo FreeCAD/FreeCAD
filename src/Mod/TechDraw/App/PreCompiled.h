@@ -53,6 +53,9 @@
 #include <boost/uuid/uuid_io.hpp>
 
 // Qt
+#include <QApplication>
+#include <QCollator>
+#include <QDateTime>
 #include <QDomDocument>
 #include <QFile>
 #include <QLocale>
