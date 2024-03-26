@@ -55,6 +55,7 @@ class SoIndexedLineSet;
 class SoIndexedTriangleStripSet;
 class SoTransparencyType;
 class SoDepthBuffer;
+class SoSwitch;
 
 namespace Gui
 {
@@ -82,6 +83,10 @@ public:
     App::PropertyEnumeration Field;
     App::PropertyEnumeration VectorMode;
     App::PropertyPercent Transparency;
+    App::PropertyBool PlainColorEdgeOnSurface;
+    App::PropertyColor EdgeColor;
+    App::PropertyFloatConstraint LineWidth;
+    App::PropertyFloatConstraint PointSize;
 
     void attach(App::DocumentObject* pcObject) override;
     void setDisplayMode(const char* ModeName) override;
@@ -135,7 +140,9 @@ protected:
     SoIndexedLineSet* m_lines;
     SoIndexedFaceSet* m_faces;
     SoIndexedTriangleStripSet* m_triangleStrips;
+    SoSwitch* m_switchMatEdges;
     SoMaterial* m_material;
+    SoMaterial* m_matPlainEdges;
     SoMaterialBinding* m_materialBinding;
     SoShapeHints* m_shapeHints;
     SoNormalBinding* m_normalBinding;
@@ -167,6 +174,8 @@ private:
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges {false};
+
+    static App::PropertyFloatConstraint::Constraints sizeRange;
 };
 
 }  // namespace FemGui
