@@ -1001,11 +1001,26 @@ so that self intersection is avoided.</source>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="55"/>
-        <source>Sketch tools</source>
+        <source>Edge tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="56"/>
+        <source>Start boolean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="57"/>
+        <source>Start part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="58"/>
+        <source>Sketch tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Workbench.cpp" line="59"/>
         <source>Create Geometry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2076,7 +2091,7 @@ click again to end selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2687,7 +2702,7 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4395,27 +4410,27 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="58"/>
+        <location filename="../../Workbench.cpp" line="61"/>
         <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="59"/>
+        <location filename="../../Workbench.cpp" line="62"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="60"/>
+        <location filename="../../Workbench.cpp" line="63"/>
         <source>Toggle 3D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="61"/>
+        <location filename="../../Workbench.cpp" line="64"/>
         <source>Part Design Helper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Workbench.cpp" line="62"/>
+        <location filename="../../Workbench.cpp" line="65"/>
         <source>Part Design Modeling</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4511,6 +4526,47 @@ over 90: larger hole radius at the bottom</source>
     <message>
         <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
         <source>Section %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+        <source>Force</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+        <source>Bearing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+        <source>Gear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+        <source>Pulley</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+        <source>Chamfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+        <source>Fillet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4807,47 +4863,41 @@ Intersecting sketch entities in a sketch are not allowed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="266"/>
-        <source>Error: Could not build</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../App/FeatureHole.cpp" line="2160"/>
-        <location filename="../../../App/FeatureHelix.cpp" line="303"/>
-        <location filename="../../../App/FeatureHelix.cpp" line="339"/>
-        <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="302"/>
         <source>Error: Result is not a solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="319"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="252"/>
         <source>Error: There is nothing to subtract</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="323"/>
-        <location filename="../../../App/FeatureHelix.cpp" line="343"/>
-        <location filename="../../../App/FeatureHelix.cpp" line="373"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="276"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="306"/>
         <source>Error: Result has multiple solids</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="333"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="266"/>
         <source>Error: Adding the helix failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="356"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="289"/>
         <source>Error: Intersecting the helix failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="363"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="296"/>
         <source>Error: Subtracting the helix failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureHelix.cpp" line="385"/>
+        <location filename="../../../App/FeatureHelix.cpp" line="318"/>
         <source>Error: Could not create face from sketch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5202,100 +5252,100 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="198"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="193"/>
         <source>Length of box too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="200"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="195"/>
         <source>Width of box too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="202"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
         <source>Height of box too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="248"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="243"/>
         <source>Radius of cylinder too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="250"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="245"/>
         <source>Height of cylinder too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="252"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
         <source>Rotation angle of cylinder too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="305"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="300"/>
         <source>Radius of sphere too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="354"/>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="356"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="349"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="351"/>
         <source>Radius of cone cannot be negative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="358"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
         <source>Height of cone too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="421"/>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="423"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="416"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
         <source>Radius of ellipsoid too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="505"/>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="507"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="500"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
         <source>Radius of torus too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="565"/>
         <source>Polygon of prism is invalid, must have 3 or more sides</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="572"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
         <source>Circumradius of the polygon, of the prism, is too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
         <source>Height of prism is too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="650"/>
         <source>delta x of wedge too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="653"/>
         <source>delta y of wedge too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="656"/>
         <source>delta z of wedge too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="659"/>
         <source>delta z2 of wedge is negative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePrimitive.cpp" line="667"/>
+        <location filename="../../../App/FeaturePrimitive.cpp" line="662"/>
         <source>delta x2 of wedge is negative</source>
         <translation type="unfinished"></translation>
     </message>
