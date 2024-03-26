@@ -340,6 +340,7 @@ void ViewProviderPage::createMDIViewPage()
     m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
     Gui::getMainWindow()->addWindow(m_mdiView);
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
+    m_graphicsView->setFocus();
 }
 
 //NOTE: removing MDIViewPage (parent) destroys QGVPage (eventually)
