@@ -33,7 +33,7 @@
 #include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureProjectOnSurface.h>
 
 
 namespace PartGui
@@ -147,11 +147,8 @@ private:
     App::Document* m_partDocument = nullptr;
     double m_lastDepthVal;
 
-    class EdgeSelection;
-    EdgeSelection* filterEdge;
-
-    class FaceSelection;
-    FaceSelection* filterFace;
+    Gui::SelectionFilterGate* filterEdge;
+    Gui::SelectionFilterGate* filterFace;
 };
 
 class TaskProjectionOnSurface: public Gui::TaskView::TaskDialog
@@ -173,6 +170,86 @@ public:
 
 private:
     DlgProjectionOnSurface* widget = nullptr;
+    Gui::TaskView::TaskBox* taskbox = nullptr;
+};
+
+// ------------------------------------------------------------------------------------------------
+
+class DlgProjectOnSurface : public QWidget,
+                            public Gui::SelectionObserver
+{
+    Q_OBJECT
+
+public:
+    explicit DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidget* parent = nullptr);
+    ~DlgProjectOnSurface() override;
+
+    void accept();
+    void reject();
+
+    // from Gui::SelectionObserver
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+private:
+    enum SelectionMode {
+        None,
+        SupportFace,
+        AddFace,
+        AddWire,
+        AddEdge
+    };
+    void setupConnections();
+    void onAddFaceClicked();
+    void onAddEdgeClicked();
+    void onGetCurrentCamDirClicked();
+    void onDirXClicked();
+    void onDirYClicked();
+    void onDirZClicked();
+    void onAddProjFaceClicked();
+    void onShowAllClicked();
+    void onFacesClicked();
+    void onEdgesClicked();
+    void onExtrudeHeightValueChanged(double arg1);
+    void onAddWireClicked();
+    void onSolidDepthValueChanged(double arg1);
+    void setDirection();
+    void addWire(const Gui::SelectionChanges& msg);
+    void addSelection(const Gui::SelectionChanges& msg);
+    void addSelection(const Gui::SelectionChanges& msg, const std::string& subName);
+    void setSupportFace(const Gui::SelectionChanges& msg);
+    void fetchDirection();
+    void fetchMode();
+
+private:
+    std::unique_ptr<Ui::DlgProjectionOnSurface> ui;
+    Gui::SelectionFilterGate* filterEdge;
+    Gui::SelectionFilterGate* filterFace;
+    App::WeakPtrT<Part::ProjectOnSurface> feature;
+    SelectionMode selectionMode = SelectionMode::None;
+};
+
+class TaskProjectOnSurface: public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    explicit TaskProjectOnSurface(App::Document*);
+    explicit TaskProjectOnSurface(Part::ProjectOnSurface*);
+
+public:
+    bool accept() override;
+    bool reject() override;
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+
+private:
+    void resetEdit();
+
+private:
+    DlgProjectOnSurface* widget = nullptr;
     Gui::TaskView::TaskBox* taskbox = nullptr;
 };
 

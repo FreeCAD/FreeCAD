@@ -48,3 +48,39 @@ ViewProviderProjectOnSurface::ViewProviderProjectOnSurface()
 }
 
 ViewProviderProjectOnSurface::~ViewProviderProjectOnSurface() = default;
+
+void ViewProviderProjectOnSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Edit projection"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+
+    ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderProjectOnSurface::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog()) {
+            return false;
+        }
+
+        if (auto feature = dynamic_cast<Part::ProjectOnSurface*>(getObject())) {
+            Gui::Control().showDialog(new TaskProjectOnSurface(feature));
+            return true;
+        }
+
+        return false;
+    }
+
+    return ViewProviderPart::setEdit(ModNum);
+}
+
+void ViewProviderProjectOnSurface::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderPart::unsetEdit(ModNum);
+    }
+}
