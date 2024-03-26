@@ -78,7 +78,6 @@ public:
 
 private:
     TextureMapping* dialog;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace Dialog
