@@ -61,8 +61,8 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = hGrp->GetInt("FileCardSpacing", 20);      // NOLINT
-    const auto newFileIconSize = hGrp->GetInt("NewFileIconSize", 48);  // NOLINT
+    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));      // NOLINT
+    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
 
     auto button = gsl::owner<QPushButton*>(new QPushButton());
     auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(button));
