@@ -102,7 +102,6 @@ public:
 
 private:
     SegmentationManual* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace ReverseEngineeringGui
