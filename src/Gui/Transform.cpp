@@ -428,9 +428,7 @@ TaskTransform::TaskTransform()
     this->setButtonPosition(TaskTransform::South);
     dialog = new Transform();
     dialog->showStandardButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(dialog);
-    Content.push_back(taskbox);
+    addTaskBox(dialog);
 }
 
 TaskTransform::~TaskTransform() = default;

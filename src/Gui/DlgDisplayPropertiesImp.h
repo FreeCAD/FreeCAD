@@ -123,7 +123,6 @@ public:
 
 private:
     DlgDisplayPropertiesImp* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace Dialog

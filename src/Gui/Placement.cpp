@@ -1017,10 +1017,7 @@ TaskPlacement::TaskPlacement()
     this->setButtonPosition(TaskPlacement::South);
     widget = new Placement();
     widget->showDefaultButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-
-    Content.push_back(taskbox);
+    addTaskBox(widget);
     connect(widget, &Placement::placementChanged, this, &TaskPlacement::slotPlacementChanged);
 }
 
