@@ -49,52 +49,52 @@ same algorithm</UserDocu>
     </Methode>
     <Methode Name="makeOffset" Keyword='true'>
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Make an offset of the shape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makePocket" Keyword='true'>
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Generate pocket toolpath of the shape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeSections" Keyword="true">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Make a list of area holding the sectioned children shapes on given heights.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getClearedArea">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getRestArea">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Rest machining: Gets the area left to be machined, assuming some of this area has already been cleared by previous tool paths.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="toTopoShape">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Convert the Area object to a TopoShape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setParams" Keyword="true">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Set algorithm parameters.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setDefaultParams" Keyword="true">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Static method to set the default parameters of all following Path.Area, plus the following additional parameters.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getDefaultParams">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Static method to return the current default parameters.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getParamsDesc" Keyword="true">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Returns a list of supported parameters and their descriptions.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getParams">
@@ -104,7 +104,7 @@ same algorithm</UserDocu>
     </Methode>
     <Methode Name="abort" Keyword="true">
       <Documentation>
-          <UserDocu></UserDocu>
+          <UserDocu>Abort the current operation.</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Sections" ReadOnly="true">

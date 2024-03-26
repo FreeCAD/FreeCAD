@@ -125,7 +125,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
             QString editableValue = tspan.firstChild().nodeValue();
             editables.emplace_back(editableValue.toStdString());
@@ -154,7 +154,7 @@ void DrawViewSymbol::updateFieldsInSymbol()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&symbolDocument, &editText, &count](QDomElement& tspanElement) -> bool {
 
             if (count >= editText.size()) {
