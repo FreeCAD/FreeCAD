@@ -2396,7 +2396,7 @@ CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+    auto dlg = new PartGui::TaskProjectOnSurface(getDocument(nullptr));
     Gui::Control().showDialog(dlg);
 }
 
