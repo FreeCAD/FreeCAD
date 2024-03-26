@@ -36,10 +36,20 @@
 class TopoDS_Shape;
 namespace Measure
 {
- enum MeasureType {
+ enum class MeasureType {
         Volumes, // Measure the Volume(s)
         Edges, // Measure the Edge(s)
+        Line, // One Line
+        TwoLines, // Two lines
+        TwoParallelLines, // Two parallel lines
+        Circle, // One circle
         Surfaces, // Measure the surface(s)
+        Cylinder, // One Cylinder
+        Cone, // One Cone
+        Sphere, // One Sphere
+        Torus, // One Torus
+        Plane, // One Plane
+        TwoPlanes, // One Plane
         Points,
         PointToPoint, // Measure between TWO points
         PointToEdge, // Measure between ONE point and ONE edge
@@ -66,6 +76,7 @@ public:
     int addReference3D(App::DocumentObject* obj, const char *subName);
 
     MeasureType getType();
+    MeasureType findType();
 
      // from base class
     PyObject *getPyObject() override;
@@ -74,6 +85,8 @@ public:
   // Methods for distances (edge length, two points, edge and a point
   double length() const;
   Base::Vector3d delta() const;                                                 //when would client use delta??
+  double lineLineDistance() const;
+  double planePlaneDistance() const;
 
   // Calculates the radius for an arc or circular edge
   double radius() const;
@@ -81,10 +94,19 @@ public:
   // Calculates the angle between two edges
   double angle(const Base::Vector3d &param = Base::Vector3d(0,0,0)) const;      //param is never used???
 
-  // Calculate volumetric/mass properties
+  // Calculate the center of mass
   Base::Vector3d massCenter() const;
 
+  // Calculate the volume of selected volumes
+  double volume() const;
+
+  // Calculate the area of selection
+  double area() const;
+
   static Base::Vector3d toVector3d(const gp_Pnt gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
+
+  bool planesAreParallel() const;
+  bool linesAreParallel() const;
 
 protected:
   TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;

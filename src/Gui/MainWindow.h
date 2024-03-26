@@ -265,6 +265,7 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
+    void setRightSideMessage(const QString & message);
 
     // Set main window title
     void setWindowTitle(const QString& string);
