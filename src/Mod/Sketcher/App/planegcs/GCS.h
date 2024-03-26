@@ -462,6 +462,7 @@ public:
                                  double* distance,
                                  int tagId = 0,
                                  bool driving = true);
+    int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,

@@ -1731,6 +1731,18 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
     // with memory allocation
     const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
 
+    // lambda to finalize the move
+    auto cleanAndDraw = [this, geomlist](){
+        // delete the cloned objects
+        for (Part::Geometry* geomPtr : geomlist) {
+            if (geomPtr) {
+                delete geomPtr;
+            }
+        }
+
+        draw(true, false);
+    };
+
 #ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
@@ -1806,23 +1818,33 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
-                p1 = center;
+                double startangle, endangle;
+                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
-                double angle = Constr->LabelPosition;
-                if (angle == 10) {
-                    double startangle, endangle;
-                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-                    angle = (startangle + endangle) / 2;
+                if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
+                    //arc length
+                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
+                    Constr->LabelDistance = dir.Length();
+
+                    cleanAndDraw();
+                    return;
                 }
                 else {
-                    Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                    angle = atan2(tmpDir.y, tmpDir.x);
+                    // radius and diameter
+                    p1 = center;
+                    double angle = Constr->LabelPosition;
+                    if (angle == 10) {
+                        angle = (startangle + endangle) / 2;
+                    }
+                    else {
+                        Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
+                        angle = atan2(tmpDir.y, tmpDir.x);
+                    }
+                    if (Constr->Type == Sketcher::Diameter)
+                        p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+
+                    p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
-
-                if (Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
-
-                p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
             }
             else if (geo->is<Part::GeomCircle>()) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
@@ -1863,7 +1885,6 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         }
         else
             return;
-
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
@@ -1893,14 +1914,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    // delete the cloned objects
-    for (Part::Geometry* geomPtr : geomlist) {
-        if (geomPtr) {
-            delete geomPtr;
-        }
-    }
-
-    draw(true, false);
+    cleanAndDraw();
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)

@@ -54,7 +54,8 @@ public:
         DISTANCEY,
         RADIUS,
         DIAMETER,
-        SYMMETRIC
+        SYMMETRIC,
+        ARCLENGTH
     };
 
     static void initClass();
@@ -99,9 +100,11 @@ private:
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateAnglePrimitives(SoAction * action, const SbVec3f&);
     void generateSymmetricPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
+    void generateArcLengthPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterDistance(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterDiameter(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterAngle(const SbVec3f&);
+    SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&);
 
 private:
     void drawImage();
