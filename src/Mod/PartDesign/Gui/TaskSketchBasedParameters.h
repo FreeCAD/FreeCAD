@@ -28,7 +28,7 @@
 #include <Gui/Selection.h>
 #include "ViewProvider.h"
 
-#include "TaskFeatureParameters.h"
+#include "TaskAddSubParameters.h"
 #include "EnumFlags.h"
 
 namespace App {
@@ -39,8 +39,7 @@ namespace PartDesignGui {
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters,
-                                  public Gui::SelectionObserver
+class TaskSketchBasedParameters : public PartDesignGui::TaskAddSubParameters
 {
     Q_OBJECT
 
@@ -74,7 +73,7 @@ protected:
                         const std::vector<std::string>& subValues);
 };
 
-class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters
+class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgAddSubParameters
 {
     Q_OBJECT
 

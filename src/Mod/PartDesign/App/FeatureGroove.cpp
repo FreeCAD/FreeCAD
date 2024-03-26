@@ -205,14 +205,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             result = refineShapeIfActive(result);
             this->AddSubShape.setValue(result);
 
-            // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(base, result);
-            // Let's check if the fusion has been successful
-            if (!mkCut.IsDone())
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Cut out of base feature failed"));
-
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
+            TopoDS_Shape solRes = FeatureAddSub::subtractiveOp(base, result);
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 

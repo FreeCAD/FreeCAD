@@ -64,6 +64,7 @@ public:
 
 protected:
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
+    void extendFace(TopoDS_Face& face, const TopoDS_Shape bounds);
     bool hasTaperedAngle() const;
 
     /**
