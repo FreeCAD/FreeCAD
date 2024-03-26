@@ -33,7 +33,7 @@
 namespace Part
 {
 
-class ProjectOnSurface : public Part::Feature
+class PartExport ProjectOnSurface : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(ProjectOnSurface);
 
