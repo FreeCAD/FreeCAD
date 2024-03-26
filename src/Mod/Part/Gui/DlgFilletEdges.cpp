@@ -1069,11 +1069,7 @@ void FilletEdgesDialog::accept()
 TaskFilletEdges::TaskFilletEdges(Part::Fillet* fillet)
 {
     widget = new DlgFilletEdges(DlgFilletEdges::FILLET, fillet);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Fillet"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Fillet"), widget);
 }
 
 TaskFilletEdges::~TaskFilletEdges()
@@ -1126,11 +1122,7 @@ const char* DlgChamferEdges::getFilletType() const
 TaskChamferEdges::TaskChamferEdges(Part::Chamfer* chamfer)
 {
     widget = new DlgChamferEdges(chamfer);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Chamfer"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Chamfer"), widget);
 }
 
 TaskChamferEdges::~TaskChamferEdges()
