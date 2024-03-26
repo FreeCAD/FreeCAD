@@ -2000,7 +2000,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
       <location filename="../../RemoveComponents.cpp" line="208"/>
       <location filename="../../RemoveComponents.cpp" line="255"/>
       <source>Delete</source>
-      <translation>Töröl</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="209"/>

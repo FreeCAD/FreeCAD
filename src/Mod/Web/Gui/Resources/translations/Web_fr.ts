@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="131"/>
       <location filename="../../Command.cpp" line="132"/>
       <source>Refresh web page</source>
-      <translation>Actualiser la page web</translation>
+      <translation>Rafraîchir la page web</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="247"/>
       <location filename="../../Command.cpp" line="248"/>
       <source>Set URL</source>
-      <translation>Définir l’URL</translation>
+      <translation>Définir un URL</translation>
     </message>
   </context>
   <context>
@@ -117,12 +117,12 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Open website...</source>
-      <translation>Ouvrir le site Web...</translation>
+      <translation>Ouvrir un site web...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Ouvre un site Web dans FreeCAD</translation>
+      <translation>Ouvre un site web dans FreeCAD</translation>
     </message>
   </context>
   <context>

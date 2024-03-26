@@ -536,7 +536,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>Opcije regija</translation>
+      <translation>Opcije Područja</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>

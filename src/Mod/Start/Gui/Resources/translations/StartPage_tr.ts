@@ -64,11 +64,6 @@
       <translation>Mevcut bir CAD dosyası veya 3D model aç</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
-      <source>Standard Part</source>
-      <translation>Standart Parça</translation>
-    </message>
-    <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Parça Tasarımı tezgahı ile parça oluştur</translation>
@@ -79,237 +74,242 @@
       <translation>Montaj</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>2D Draft</source>
       <translation>2D Taslak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Create a 2D draft with the Draft workbench</source>
       <translation>Taslak tezgahı ile 2D taslak oluştur</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Mimari</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Create an architecture project</source>
       <translation>Mimari yapı projesi oluştur</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Recent files</source>
       <translation>Son dosyalar</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Tip</source>
       <translation>İpucu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
       <translation>Menüde gösterilecek son dosyaların sayısını, Düzenle -&gt; Tercihler -&gt; Genel -&gt; son dosya listesi boyutu buradan ayarlayın</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Examples</source>
       <translation>Örnekler</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>General documentation</source>
       <translation>Genel belgeler</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>User hub</source>
       <translation>Kullanıcı merkezi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
       <translation>Bu bölüm, genel olarak FreeCAD kullanıcıları için yararlı belgeleri içerir: tüm çalışma tezgahlarının bir listesi, FreeCAD uygulamasını nasıl kuracağınıza ve kullanacağınıza ilişkin ayrıntılı talimatlar, öğretici belgeler ve başlamak için ihtiyacınız olan her şeyi.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Power users hub</source>
       <translation>Yönetici Merkezi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
       <translation>Bu bölüm, ileri düzey kullanıcılar ve python komut dosyalarını yazmakla ilgilenen kişiler için belgeleri barındırır. Ayrıca orada bir makro deposu, makroları nasıl kuracağınıza ve kullanacağınıza ilişkin talimatları ve FreeCAD'i özel ihtiyaçlarınıza göre nasıl özelleştirebileceğiniz hakkında daha fazla bilgi bulacaksınız.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>Developers hub</source>
       <translation>Geliştirici Merkezi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
       <translation>Bu bölüm geliştiriciler için malzeme içerir: FreeCAD'i nasıl derleyeceğinizi, FreeCAD kaynak kodunun nasıl yapılandırıldığını + içinde nasıl gezinileceğini, yeni çalışma tezgahlarının nasıl geliştirileceğini ve / veya FreeCAD'in kendi uygulamasına nasıl yerleştirileceğini.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
       <source>Manual</source>
       <translation>Kullanım kılavuzu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
       <translation>FreeCAD kılavuzu, wiki sayfasında bulunan bilgileri sunmanın başka, daha doğrusal bir yoludur. Kılavuz, bir kitap gibi okunacak şekilde ve sizi yukarı bölümden diğer birçok sayfaya yönlendirecektir. &lt;a href = "https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; e-kitap sürümleri &lt;/a&gt; de mevcuttur.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
       <source>Workbenches documentation</source>
       <translation>Çalışma Tezgahları Belgeleri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
       <translation>Bunlar şu anda bu bilgisayarda yüklü olan tüm tezgahların yardım sayfalarıdır.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>Getting help from the community</source>
       <translation>Topluluktan yardım al</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
       <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
       <translation>Eğer bu, forumda yayınlayacağınız ilk gönderi ise, öncelikle &lt; A href="http://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264" &gt; yönergeleri okuyun! &lt; / a &gt;!</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
       <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="130"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="132"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
       <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
       <translation>&lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; Sayfasındaki son gönderiler:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Available addons</source>
       <translation>Mevcut eklentiler</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>Parametric Part</source>
+      <translation type="unfinished">Parametric Part</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <source>Create an assembly with the Assembly workbench</source>
+      <translation type="unfinished">Create an assembly with the Assembly workbench</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
       <translation>Aşağıda, FreeCAD kurulumunuza eklenebilecek mevcut ekstra çalışma tezgahlarının bir listesi bulunmaktadır. Araçlar -&gt; Eklenti yöneticisi menüsünden göz atın ve yükleyin. Aşağıdaki bağlantıları tıklayarak bunlardan herhangi biri hakkında daha fazla bilgi edinebilirsiniz.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
       <translation>FreeCAD sürümünüzle birlikte yüklü gelmediyse, dokümantasyon merkezi, çalışma tezgahı yardımı ve kişisel komut belgelerine sahip olmak ve internet bağlantısı olmadan kullanmak için FreeCAD dokümantasyon paketini kurun.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
       <translation>GitHub'tan bilgi alınamıyor. &lt;a href="EnableDownload.py"&gt; İnternete erişmek için FreeCAD'i yetkilendirin &lt;/a&gt; ve Başlangıç sayfasını yeniden yükleyin.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
       <source>Recent commits</source>
       <translation>Son işlemler</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="131"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
       <source>See all commits on github</source>
       <translation>Github'daki tüm işlemleri görün</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="135"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
       <translation>Özel bir klasörü burada görüntülemek için menüden Düzenle -&gt; Seçenekler -&gt; Başlat -&gt; ek klasörleri göster'e gitmelisiniz</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="136"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="138"/>
       <source>version</source>
       <translation>sürüm</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="139"/>
       <source>build</source>
       <translation>yapı</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="138"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="140"/>
       <source>Create new...</source>
       <translation>Yeni oluştur...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="139"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="141"/>
       <source>Unknown</source>
       <translation>Bilinmeyen</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="140"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
       <source>Forum</source>
       <translation>Forum</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="150"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
       <translation>Masaüstü tarayıcınızda yukarıdaki bağlantılardan herhangi birini açmak için, Sağ tıklayın -&gt; Harici tarayıcıda aç seçeneğini seçin</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="151"/>
       <source>Creation date</source>
       <translation>Oluşturma tarihi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="150"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>Last modification</source>
       <translation>Son düzenleme</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="151"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
       <source>Size</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="154"/>
       <source>Author</source>
       <translation>Yazar</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
       <source>License</source>
       <translation>Lisans</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="154"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="156"/>
       <source>File path</source>
       <translation type="unfinished">File path</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="157"/>
       <source>Notes</source>
       <translation>Notlar</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="157"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="159"/>
       <source>Open start page preferences</source>
       <translation>Başlangıç sayfası tercihlerini aç</translation>
     </message>

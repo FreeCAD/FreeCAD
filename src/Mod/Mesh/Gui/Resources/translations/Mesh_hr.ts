@@ -1427,7 +1427,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Donja strana površine bit će prikazana na isti način kao gornja strana.
 Ako nije potvrđeno, ovisi o opciji "Omogući boju pozadinskog osvjetljenja"
-(odjeljak postavki prikaza -&gt; 3D prikaz). Koristit će se boja pozadinskog
+(odjeljak postavki prikaza -&gt; 3D prikaz). Koristit će se boja pozadinskog 
 osvjetljenja ili crno.
 </translation>
     </message>
@@ -1649,7 +1649,7 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="192"/>
       <source>Region</source>
-      <translation>Regija</translation>
+      <translation>Područje</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="198"/>
@@ -1751,7 +1751,7 @@ vodi do uglađenijeg izgleda.
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Regija</translation>
+      <translation>Područje</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
@@ -1799,7 +1799,7 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region options</source>
-      <translation>Opcije regija</translation>
+      <translation>Opcije Područja</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
@@ -2084,7 +2084,7 @@ vodi do uglađenijeg izgleda.
       <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD nije moguće pronaći na vašem sustavu.
+      <translation>OpenSCAD nije moguće pronaći na vašem sustavu. 
 Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translation>
     </message>
   </context>

@@ -1712,7 +1712,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Pfad</translation>
+      <translation>Gmsh-Pfad</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>

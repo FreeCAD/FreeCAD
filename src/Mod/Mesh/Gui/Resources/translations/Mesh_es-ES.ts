@@ -1999,7 +1999,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
       <location filename="../../RemoveComponents.cpp" line="208"/>
       <location filename="../../RemoveComponents.cpp" line="255"/>
       <source>Delete</source>
-      <translation>Eliminar</translation>
+      <translation>Borrar</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="209"/>

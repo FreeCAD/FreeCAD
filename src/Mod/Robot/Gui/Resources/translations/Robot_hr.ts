@@ -327,7 +327,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
       <source>Dress-up trajectory...</source>
-      <translation>Odijevanje putanje...</translation>
+      <translation>Prilagodbe putanje...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="429"/>

@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="1044"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -1464,7 +1464,7 @@ to a smoother appearance.
       <translation>Als deze optie is ingesteld, wordt de Phong-beschaduwing gebruikt, anders vlakke schaduwen.
 De beschaduwing bepaalt het uiterlijk van de oppervlakken.
 
-Bij vlakke beschaduwingen worden de oppervlaktenormen niet per eindpunt gedefinieerd, wat leidt
+Bij vlakke beschaduwingen worden de loodlijnen niet per hoekpunt gedefinieerd, wat leidt 
 tot een onrealistisch uiterlijk voor gebogen oppervlakken, terwijl het gebruik van Phong-beschaduwing
 tot een gladder uiterlijk leidt.
 </translation>

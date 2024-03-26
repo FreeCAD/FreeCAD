@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -158,7 +158,7 @@
     <message>
       <location filename="../../Command.cpp" line="1046"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Évaluer et réparer le maillage...</translation>
+      <translation>Évaluer et réparer un maillage...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1047"/>
@@ -272,7 +272,7 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create mesh from shape...</source>
-      <translation>Créer un maillage à partir de la forme...</translation>
+      <translation>Créer un maillage à partir d'une forme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -834,13 +834,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation>Complet</translation>
+      <translation>Totale</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="102"/>
       <source>Absolute number</source>
-      <translation>Valeur absolue d'un nombre</translation>
+      <translation>Nombre absolu</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -850,7 +850,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="96"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation>Valeur absolue d'un nombre (Maximum: %1)</translation>
+      <translation>Nombre absolu (maximum : %1)</translation>
     </message>
   </context>
   <context>
@@ -1695,12 +1695,12 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation>Taille maximale de l'élément (0.0 = Auto) :</translation>
+      <translation>Taille maximale des éléments (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation>Taille minimale de l'élément (0.0 = Auto) :</translation>
+      <translation>Taille minimale des éléments (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>

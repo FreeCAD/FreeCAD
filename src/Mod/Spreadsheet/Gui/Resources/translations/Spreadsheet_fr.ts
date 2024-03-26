@@ -456,7 +456,7 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la
+      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la 
 vérification des dépendances.
 Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
@@ -542,7 +542,7 @@ par cette propriété.</translation>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela
+      <translation>Saisir une expression pour spécifier le nom de l'objet et de la propriété. Cela 
 changera dynamiquement la configuration de la conception. La propriété sera
 créée si elle n'existe pas.</translation>
     </message>
@@ -950,8 +950,18 @@ Par défaut : %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Caractère de séparation : </translation>
+      <source>Delimiter Character:</source>
+      <translation>Caractère de délimitation :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Caractère de guillemet :</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Caractère d'échappement :</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -964,19 +974,9 @@ Par défaut : %V = %A
       <translation>onglet</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Caractère guillemet : </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Caractère utilisé pour séparer les chaînes de caractères, en général c'est un simple guillemet (') ou un double guillemet ("). Ce doit être un seul caractère.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Caractère d’échappement : </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1011,8 +1011,8 @@ Par défaut : %V = %A
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
       <translation>
-        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
-        <numerusform>Insérer %n ligne(s) en-dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en dessous</numerusform>
+        <numerusform>Insérer %n ligne(s) en dessous</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1028,7 +1028,7 @@ Par défaut : %V = %A
       <source>Remove row(s)</source>
       <translation>
         <numerusform>Supprimer une ou plusieurs ligne(s)</numerusform>
-        <numerusform>Supprimer le(s) ligne(s)</numerusform>
+        <numerusform>Supprimer une ou plusieurs ligne(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
