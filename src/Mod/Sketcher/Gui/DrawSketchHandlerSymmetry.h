@@ -92,6 +92,7 @@ private:
                 int VtId = getPreselectPoint();
                 int CrvId = getPreselectCurve();
                 int CrsId = getPreselectCross();
+                Sketcher::SketchObject* obj = sketchgui->getSketchObject();
 
                 if (VtId >= 0) {  // Vertex
                     SketchObject* Obj = sketchgui->getSketchObject();
@@ -109,7 +110,8 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {  // Curves
+                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }
