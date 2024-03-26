@@ -146,7 +146,7 @@ private:
                     }
                 }
                 else {
-                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
+                    if (areCollinear(firstPoint, secondPoint, onSketchPos)) {
                         // If points are collinear then we can't calculate the center.
                         return;
                     }
