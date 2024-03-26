@@ -243,7 +243,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an
     // update of the objects that depend on this sketch (like pads)
-    Shape.setValue(solvedSketch.toShape());
+    buildShape();
 
     return App::DocumentObject::StdReturn;
 }
@@ -280,30 +280,37 @@ void SketchObject::buildShape()
     //     shapes.push_back(getEdge(geo, convertSubName(
     //                     Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
     // }
-    // if(shapes.empty() && vertices.empty())
-    //     Shape.setValue(Part::TopoShape());
-    // else if (vertices.empty()) {
-    //     // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
-    //     Shape.setValue(Part::TopoShape().makEWires(shapes,Part::OpCodes::Sketch));
-    // } else {
-    //     std::vector<Part::TopoShape> results;
-    //     if (!shapes.empty()) {
-    //         // This call of makEWires() does not have the op code, in order to
-    //         // avoid duplication. Because we'll going to make a compound (to
-    //         // include the vertices) below with the same op code.
-    //         //
-    //         // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
-    //         // geometry exposed through the Shape property, because
-    //         // SketchObject::getElementName() relies on this op code to
-    //         // differentiate geometries that are exposed with those in edit
-    //         // mode.
-    //         auto wires = Part::TopoShape().makEWires(shapes);
-    //         for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
-    //             results.push_back(wire);
-    //     }
-    //     results.insert(results.end(), vertices.begin(), vertices.end());
-    //     Shape.setValue(Part::TopoShape().makECompound(results, Part::OpCodes::Sketch));
-    // }
+     if(shapes.empty() && vertices.empty())
+         Shape.setValue(Part::TopoShape());
+     else if (vertices.empty()) {
+         // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
+         Shape.setValue(Part::TopoShape().makeElementWires(shapes,Part::OpCodes::Sketch));
+     } else {
+         std::vector<Part::TopoShape> results;
+         if (!shapes.empty()) {
+             // This call of makeElementWires() does not have the op code, in order to
+             // avoid duplication. Because we'll going to make a compound (to
+             // include the vertices) below with the same op code.
+             //
+             // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
+             // geometry exposed through the Shape property, because
+             // SketchObject::getElementName() relies on this op code to
+             // differentiate geometries that are exposed with those in edit
+             // mode.
+             auto wires = Part::TopoShape().makeElementWires(shapes);
+             for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
+                 results.push_back(wire);
+         }
+         results.insert(results.end(), vertices.begin(), vertices.end());
+         Shape.setValue(Part::TopoShape().makeElementCompound(results, Part::OpCodes::Sketch));
+     }
+}
+
+static const char *hasSketchMarker(const char *name) {
+    static std::string marker(Part::TopoShape::elementMapPrefix()+Part::OpCodes::Sketch);
+    if (!name)
+        return nullptr;
+    return strstr(name,marker.c_str());
 }
 
 int SketchObject::hasConflicts() const
@@ -9514,11 +9521,54 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
     }
 }
 
+std::pair<std::string,std::string> SketchObject::getElementName(
+        const char *name, ElementNameType type) const
+{
+    std::pair<std::string, std::string> ret;
+    if(!name) return ret;
+
+    if(hasSketchMarker(name))
+        return Part2DObject::getElementName(name,type);
+
+    const char *mapped = Data::isMappedElement(name);
+    if(!mapped) {
+        auto occindex = Part::TopoShape::shapeTypeAndIndex(name);
+        if (occindex.second)
+            return Part2DObject::getElementName(name,type);
+
+        Data::IndexedName index = checkSubName(name);
+        ret.first = convertSubName(index, true);
+        if(!Data::isMappedElement(ret.first.c_str()))
+            ret.first.clear();
+        index.appendToStringBuffer(ret.second);
+        return ret;
+    }
+
+    Data::IndexedName index = checkSubName(name);
+    if(index) {
+        index.appendToStringBuffer(ret.second);
+        ret.first = convertSubName(index, true);
+        if(type==ElementNameType::Export) {
+            if(boost::starts_with(ret.second,"Vertex"))
+                ret.second[0] = 'v';
+            else if(boost::starts_with(ret.second,"Edge"))
+                ret.second[0] = 'e';
+        }
+    }
+    return ret;
+}
+
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
     Part::TopoShape shape(geo->toShape());
-    // shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
-    //                      Data::MappedName::fromRawData(name));
+    // Originally in ComplexGeoData::setElementName
+    // LinkStable/src/App/ComplexGeoData.cpp#L1631
+    // No longer possible after map separated in ElementMap.cpp
+    if ( !shape.hasElementMap() ) {
+        shape.resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
+                          Data::MappedName::fromRawData(name),0L);
     TopTools_IndexedMapOfShape vmap;
     TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
     std::ostringstream ss;
@@ -9530,8 +9580,8 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
             if(getPoint(geo,pos[j]) == pt) {
                 ss.str("");
                 ss << name << 'v' << static_cast<int>(pos[j]);
-                // shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
-                //                      Data::MappedName::fromRawData(ss.str().c_str()));
+                shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
+                                      Data::MappedName::fromRawData(ss.str().c_str()),0L);
                 break;
             }
         }
