@@ -559,7 +559,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (onViewParameters[OnViewParameter::Fifth]->isSet
                     && onViewParameters[OnViewParameter::Sixth]->isSet
-                    && areColinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
+                    && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                 }
