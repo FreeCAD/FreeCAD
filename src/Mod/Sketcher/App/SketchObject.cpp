@@ -4486,7 +4486,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     if (refIsLine) {
         const Part::Geometry* georef = getGeometry(refGeoId);
         if (!georef->is<Part::GeomLineSegment>()) {
-            Base::Console().Error("Reference for symmetric is neither a point nor a line.\n");
             return {};
         }
 
