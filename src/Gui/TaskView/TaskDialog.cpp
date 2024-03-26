@@ -56,12 +56,20 @@ TaskDialog::~TaskDialog()
 
 //==== Slots ===============================================================
 
-void TaskDialog::addTaskBox(QWidget* widget)
+QWidget* TaskDialog::addTaskBox(QWidget* widget, bool expandable, QWidget* parent)
 {
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
+    return addTaskBox(QPixmap(), widget, expandable, parent);
+}
+
+QWidget* TaskDialog::addTaskBox(const QPixmap& icon,
+                                QWidget* widget,
+                                bool expandable,
+                                QWidget* parent)
+{
+    auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    return taskbox;
 }
 
 const std::vector<QWidget*> &TaskDialog::getDialogContent() const
