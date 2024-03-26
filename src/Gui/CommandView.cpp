@@ -2699,6 +2699,24 @@ public:
         Application::Instance->commandManager().testActive();
         currentSelectionHandler = nullptr;
     }
+
+    static QCursor makeCursor(QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
+    {
+        qreal pRatio = widget->devicePixelRatioF();
+        qreal hotXF = hotX;
+        qreal hotYF = hotY;
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+        if (qApp->platformName() == QLatin1String("xcb")) {
+            hotXF *= pRatio;
+            hotYF *= pRatio;
+        }
+#endif
+        qreal cursorWidth = size.width() * pRatio;
+        qreal cursorHeight = size.height() * pRatio;
+        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, QSizeF(cursorWidth, cursorHeight)));
+        px.setDevicePixelRatio(pRatio);
+        return QCursor(px, hotXF, hotYF);
+    }
 };
 }
 
@@ -2706,44 +2724,6 @@ std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelec
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================
-/* XPM */
-static const char * cursor_box_zoom[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"@	c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .      @@@@@@@            ",
-"      .    @@@@@@@@@@@          ",
-"      .   @@         @@         ",
-"      .  @@. . . . . .@@        ",
-"      .  @             @        ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"        @@             @@       ",
-"        @@ .         . @@       ",
-"         @             @        ",
-"         @@. . . . . .@@@       ",
-"          @@          @@@@      ",
-"           @@@@@@@@@@@@  @@     ",
-"             @@@@@@@ @@   @@    ",
-"                      @@   @@   ",
-"                       @@   @@  ",
-"                        @@   @@ ",
-"                         @@  @@ ",
-"                          @@@@  ",
-"                           @@   ",
-"                                " };
 
 DEF_3DV_CMD(StdViewBoxZoom)
 
@@ -2767,7 +2747,11 @@ void StdViewBoxZoom::activated(int iMsg)
     if ( view ) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "zoom-border-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, cursor);
+            // NOLINTEND
         }
     }
 }
@@ -2776,46 +2760,6 @@ void StdViewBoxZoom::activated(int iMsg)
 // Std_BoxSelection
 //===========================================================================
 DEF_3DV_CMD(StdBoxSelection)
-
-/* XPM */
-static const char * cursor_box_select[] = {
-"32 32 4 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"@	c #000000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .   +    +++   +++    +++ ",
-"      .   +@@                   ",
-"      .   +@.@@@                ",
-"            @...@@@             ",
-"            @......@@           ",
-"            @........@@@      + ",
-"             @..........@@    + ",
-"          +  @............@   + ",
-"          +   @........@@@      ",
-"          +   @.......@         ",
-"              @........@        ",
-"               @........@     + ",
-"               @...@.....@    + ",
-"          +    @..@ @.....@   + ",
-"          +     @.@  @.....@    ",
-"          +     @.@   @.....@   ",
-"                 @     @.....@  ",
-"                        @...@   ",
-"                         @.@  + ",
-"                          @   + ",
-"          +++    +++   +++    + ",
-"                                " };
 
 StdBoxSelection::StdBoxSelection()
   : Command("Std_BoxSelection")
@@ -3026,8 +2970,12 @@ void StdBoxSelection::activated(int iMsg)
                 viewer->navigationStyle()->processEvent(&ev);
             }
 
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, nullptr);
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "edit-select-box-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, cursor, doSelect, nullptr);
             viewer->setSelectionEnabled(false);
+            // NOLINTEND
         }
     }
 }
@@ -3035,47 +2983,6 @@ void StdBoxSelection::activated(int iMsg)
 //===========================================================================
 // Std_BoxElementSelection
 //===========================================================================
-/* XPM */
-static const char * cursor_box_element_select[] = {
-"32 32 6 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #00FF1B",
-"@	c #19A428",
-"#	c #FF0000",
-"$	c #000000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"       ++++++++++++             ",
-"      .+@@@@@@@@@@+             ",
-"      .+@@@@@@@@@@+             ",
-"      .+@@#@@@@###+  ###    ### ",
-"      .+@@#$$@@@@@+             ",
-"      .+@@#$.$$$@@+             ",
-"       +@@@@$...$$$             ",
-"       +@@@@$......$$           ",
-"       +@@@@$........$$$      # ",
-"       +@@@@@$..........$$    # ",
-"       +@@#@@$............$   # ",
-"       +++#+++$........$$$      ",
-"          #   $.......$         ",
-"              $........$        ",
-"               $........$     # ",
-"               $...$.....$    # ",
-"          #    $..$ $.....$   # ",
-"          #     $.$  $.....$    ",
-"          #     $.$   $.....$   ",
-"                 $     $.....$  ",
-"                        $...$   ",
-"                         $.$  # ",
-"                          $   # ",
-"          ###    ###   ###    # ",
-"                                " };
 
 DEF_3DV_CMD(StdBoxElementSelection)
 
@@ -3107,8 +3014,12 @@ void StdBoxElementSelection::activated(int iMsg)
                 viewer->navigationStyle()->processEvent(&ev);
             }
 
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_element_select), 7, 7), doSelect, this);
+            // NOLINTBEGIN
+            QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                                  "edit-element-select-box-cross", 6, 6);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, cursor, doSelect, this);
             viewer->setSelectionEnabled(false);
+            // NOLINTEND
         }
     }
 }
@@ -3258,45 +3169,6 @@ StdCmdMeasureDistance::StdCmdMeasureDistance()
     eType         = Alter3DView;
 }
 
-// Yay for cheezy drawings!
-/* XPM */
-static const char * cursor_ruler[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .        ++               ",
-"      .       +  +              ",
-"      .      +   ++             ",
-"            +   +  +            ",
-"           +   +    +           ",
-"          +   +     ++          ",
-"          +        +  +         ",
-"           +           +        ",
-"            +         + +       ",
-"             +       +   +      ",
-"              +           +     ",
-"               +         + +    ",
-"                +       +   +   ",
-"                 +           +  ",
-"                  +         + + ",
-"                   +       +  ++",
-"                    +     +   + ",
-"                     +       +  ",
-"                      +     +   ",
-"                       +   +    ",
-"                        + +     ",
-"                         +      "};
 void StdCmdMeasureDistance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -3305,7 +3177,12 @@ void StdCmdMeasureDistance::activated(int iMsg)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
+
+        // NOLINTBEGIN
+        QCursor cursor = SelectionCallbackHandler::makeCursor(viewer, QSize(32, 32),
+                                                              "view-measurement-cross", 6, 25);
+        viewer->setEditingCursor(cursor);
+        // NOLINTEND
 
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
