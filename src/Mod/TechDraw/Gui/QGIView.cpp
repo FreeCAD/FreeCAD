@@ -250,6 +250,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
+        setFocus();
     } else {
         m_colCurrent = getPreColor();
     }

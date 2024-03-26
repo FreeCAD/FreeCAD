@@ -393,6 +393,8 @@ QGIView* QGSPage::addViewPart(TechDraw::DrawViewPart* partFeat)
     viewPart->setViewPartFeature(partFeat);
 
     addQView(viewPart);
+    // we need to install an event filter for any views derived from DrawViewPart
+    viewPart->installSceneEventFilter(viewPart);
     return viewPart;
 }
 
@@ -403,6 +405,7 @@ QGIView* QGSPage::addViewSection(DrawViewSection* sectionFeat)
     viewSection->setViewPartFeature(sectionFeat);
 
     addQView(viewSection);
+    viewSection->installSceneEventFilter(viewSection);
     return viewSection;
 }
 
@@ -413,6 +416,8 @@ QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 
     qview->setViewFeature(projGroupFeat);
     addQView(qview);
+    qview->installSceneEventFilter(qview);
+
     return qview;
 }
 

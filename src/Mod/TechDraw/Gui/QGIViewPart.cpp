@@ -25,6 +25,7 @@
 #include <cmath>
 
 #include <QPainterPath>
+#include <QKeyEvent>
 #include <qmath.h>
 #endif// #ifndef _PreComp_
 
@@ -33,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -83,6 +85,7 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
 
     showSection = false;
     m_pathBuilder = new PathBuilder(this);
@@ -106,6 +109,77 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
     }
     return QGIView::itemChange(change, value);
 }
+
+bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    // Base::Console().Message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
+    //                         event->type(), watched->type() - QGraphicsItem::UserType);
+    if (event->type() == QEvent::ShortcutOverride) {
+        // if we accept this event, we should get a regular keystroke event next
+        // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
+        // Std_Delete
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Delete)  {
+            bool success = removeSelectedCosmetic();
+            if (success) {
+                updateView(true);
+                event->accept();
+                return true;
+            }
+        }
+    }
+
+    return QGraphicsItem::sceneEventFilter(watched, event);
+}
+
+//! called when a DEL shortcut event is received.  If a cosmetic edge or vertex is
+//! selected, remove it from the view.
+bool QGIViewPart::removeSelectedCosmetic() const
+{
+    // Base::Console().Message("QGIVP::removeSelectedCosmetic()\n");
+    char* defaultDocument{nullptr};
+    std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx(
+        defaultDocument, TechDraw::DrawViewPart::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    if (selectionAll.empty()) {
+        return false;
+    }
+    Gui::SelectionObject firstSelection = selectionAll.front();
+    App::DocumentObject* firstObject = selectionAll.front().getObject();
+    std::vector<std::string> subElements = selectionAll.front().getSubNames();
+    if (subElements.empty()) {
+        return false;
+    }
+    auto dvp = static_cast<TechDraw::DrawViewPart*>(firstObject);
+    auto subelement = subElements.front();
+    std::string geomName = DU::getGeomTypeFromName(subelement);
+    int index = DU::getIndexFromName(subelement);
+    if (geomName == "Edge") {
+        TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(index);
+        if (!base || base->getCosmeticTag().empty()) {
+            return false;
+        }
+        if (base->source() == COSMETICEDGE) {
+            dvp->removeCosmeticEdge(base->getCosmeticTag());
+            dvp->refreshCEGeoms();
+        } else if (base->source() == CENTERLINE) {
+            dvp->removeCenterLine(base->getCosmeticTag());
+            dvp->refreshCLGeoms();
+        } else {
+            Base::Console().Message("QGIVP::removeSelectedCosmetic - not a CE or a CL\n");
+            return false;
+        }
+    } else if (geomName == "Vertex") {
+        VertexPtr vert = dvp->getProjVertexByIndex(index);
+        if (!vert || vert->getCosmeticTag().empty() )  {
+            return false;
+        }
+        dvp->removeCosmeticVertex(vert->getCosmeticTag());
+        dvp->refreshCVGeoms();
+    }
+
+    return true;
+}
+
 
 //obs?
 void QGIViewPart::tidy()
@@ -133,7 +207,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
 
 void QGIViewPart::updateView(bool update)
 {
-    //    Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
+    // Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
@@ -305,6 +379,7 @@ void QGIViewPart::drawAllEdges()
         item = new QGIEdge(iEdge);
         addToGroup(item);      //item is created at scene(0, 0), not group(0, 0)
         item->setPath(drawPainterPath(*itGeom));
+        item->setSource((*itGeom)->source());
 
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         if ((*itGeom)->getCosmetic()) {
@@ -1025,6 +1100,7 @@ QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geom
 }
 
 
+
 void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
@@ -1065,8 +1141,6 @@ void QGIViewPart::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 
     QGIView::paint(painter, &myOption, widget);
 }
-
-
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView() {}
