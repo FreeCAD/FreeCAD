@@ -125,7 +125,6 @@ public:
 
 private:
     RemoveComponents* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui

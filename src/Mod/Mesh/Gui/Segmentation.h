@@ -79,7 +79,6 @@ public:
 
 private:
     Segmentation* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui
