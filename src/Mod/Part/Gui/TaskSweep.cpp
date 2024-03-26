@@ -462,11 +462,7 @@ void SweepWidget::changeEvent(QEvent *e)
 TaskSweep::TaskSweep() : label(nullptr)
 {
     widget = new SweepWidget();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Sweep"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Sweep"), widget);
 }
 
 TaskSweep::~TaskSweep()

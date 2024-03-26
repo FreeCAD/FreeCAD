@@ -98,7 +98,6 @@ public:
 
 private:
     DlgRevolution* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui
