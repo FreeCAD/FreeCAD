@@ -134,10 +134,7 @@ double DlgDecimating::reduction() const
 TaskDecimating::TaskDecimating()
 {
     widget = new DlgDecimating();  // NOLINT
-    Gui::TaskView::TaskBox* taskbox =
-        new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false, nullptr);
 
     std::vector<Mesh::Feature*> meshes = Gui::Selection().getObjectsOfType<Mesh::Feature>();
     if (meshes.size() == 1) {

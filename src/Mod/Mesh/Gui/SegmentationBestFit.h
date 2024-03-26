@@ -143,7 +143,6 @@ public:
 
 private:
     SegmentationBestFit* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui
