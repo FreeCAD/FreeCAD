@@ -174,10 +174,19 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int roleAsInt) cons
     return {};
 }
 
+bool freecadCanOpen (const QString& extension)
+{
+    auto importTypes = App::GetApplication().getImportTypes();
+    return std::find(importTypes.begin(), importTypes.end(), extension.toStdString()) != importTypes.end();
+}
+
 void DisplayedFilesModel::addFile(const QString &filePath)
 {
     QFileInfo qfi (filePath);
     if (!qfi.isReadable()){
+        return;
+    }
+    if (!freecadCanOpen(qfi.suffix())) {
         return;
     }
     _fileInfoCache.emplace_back(getFileInfo(filePath.toStdString()));

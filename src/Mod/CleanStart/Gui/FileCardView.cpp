@@ -49,6 +49,9 @@ int FileCardView::heightForWidth(int width) const
 {
     auto model = this->model();
     auto delegate = this->itemDelegate();
+    if (!model || !delegate) {
+        return 0;
+    }
     int numCards = model->rowCount();
     auto cardSize = delegate->sizeHint(QStyleOptionViewItem(), model->index(0, 0));
     int cardsPerRow = static_cast<int>(width / cardSize.width());
@@ -68,6 +71,10 @@ QSize FileCardView::sizeHint() const
 
     auto model = this->model();
     auto delegate = this->itemDelegate();
+    if (!model || !delegate) {
+        // The model and/or delegate have not been set yet, this was an early startup call
+        return {cardSpacing, cardSpacing};
+    }
     int numCards = model->rowCount();
     auto cardSize = delegate->sizeHint(QStyleOptionViewItem(), model->index(0, 0));
     return {(cardSize.width()+cardSpacing) * numCards + cardSpacing, cardSize.height() + 2* cardSpacing};

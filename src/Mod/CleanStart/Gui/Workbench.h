@@ -57,9 +57,6 @@ protected:
     /** Returns a DockWindowItems structure of dock windows this workbench. */
     Gui::DockWindowItems* setupDockWindows() const override;
 
-private:
-    static Gui::MDIView *_mdiView;
-
 };  // class Workbench
 
 }  // namespace CleanStartGui

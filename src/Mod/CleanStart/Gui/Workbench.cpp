@@ -38,12 +38,11 @@
 #include "Workbench.h"
 #include "CleanStartView.h"
 
+#include <3rdParty/GSL/include/gsl/pointers>
 
 using namespace CleanStartGui;
 
 TYPESYSTEM_SOURCE(CleanStartGui::Workbench, Gui::StdWorkbench)  // NOLINT
-
-Gui::MDIView* CleanStartGui::Workbench::_mdiView;
 
 void CleanStartGui::Workbench::activated()
 {
@@ -52,14 +51,15 @@ void CleanStartGui::Workbench::activated()
 
 void CleanStartGui::Workbench::loadCleanStart()
 {
-    if (!_mdiView) {
-        auto mw = Gui::getMainWindow();
-        auto doc = Gui::Application::Instance->activeDocument();
-        _mdiView = new CleanStartView (doc, mw);
-        mw->addWindow(_mdiView);
+    auto mw = Gui::getMainWindow();
+    auto doc = Gui::Application::Instance->activeDocument();
+    auto existingView = mw->findChild<CleanStartView*>(QLatin1String("CleanStartView"));
+    if (!existingView) {
+        existingView = gsl::owner<CleanStartView*> (new CleanStartView (doc, mw));
+        mw->addWindow(existingView);  // Transfers ownership
     }
-    Gui::getMainWindow()->setActiveWindow(_mdiView);
-    _mdiView->show();
+    Gui::getMainWindow()->setActiveWindow(existingView);
+    existingView->show();
 }
 
 Gui::MenuItem* CleanStartGui::Workbench::setupMenuBar() const

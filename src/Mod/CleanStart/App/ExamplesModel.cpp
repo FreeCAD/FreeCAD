@@ -31,6 +31,8 @@
 
 using namespace CleanStart;
 
+FC_LOG_LEVEL_INIT(ExamplesModel)
+
 ExamplesModel::ExamplesModel(QObject* parent) : DisplayedFilesModel(parent)
 {
     auto examplesPath = QDir(QString::fromStdString(App::Application::getResourceDir()));
@@ -42,7 +44,7 @@ void ExamplesModel::loadExamples()
     beginResetModel();
     clear();
     if (!_examplesDirectory.isReadable()) {
-        Base::Console().Warning("Cannot read %s", _examplesDirectory.absolutePath().toStdString());
+        Base::Console().Warning("Cannot read %s", _examplesDirectory.absolutePath().toStdString().c_str());
     }
     auto entries = _examplesDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable, QDir::SortFlag::Name);
     for (const auto & entry : entries) {

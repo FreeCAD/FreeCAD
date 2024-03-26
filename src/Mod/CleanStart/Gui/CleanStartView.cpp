@@ -94,6 +94,7 @@ CleanStartView::CleanStartView(Gui::Document* pcDocument, QWidget* parent)
     : Gui::MDIView(pcDocument, parent)
     , _contents(new QScrollArea(parent))
 {
+    setObjectName(QLatin1String("CleanStartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
     auto cardSpacing = hGrp->GetInt("FileCardSpacing", 20);  // NOLINT
@@ -283,8 +284,15 @@ void CleanStartView::fileCardSelected(const QModelIndex& index)
     auto command = std::string("FreeCAD.loadFile('") + file.toStdString() + "')";
     try {
         Base::Interpreter().runString(command.c_str());
+        postStart(PostStartBehavior::doNotSwitchWorkbench);
     }
     catch (Base::PyException& e) {
         Base::Console().Error(e.getMessage().c_str());
+    }
+    catch (Base::Exception &e) {
+        Base::Console().Error(e.getMessage().c_str());
+    }
+    catch (...) {
+        Base::Console().Error("An unknown error occurred");
     }
 }
