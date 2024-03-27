@@ -153,6 +153,12 @@ class FemInputWriter():
         femobjs,
         con_module
     ):
+        # handle suppressed objects
+        for femobj in femobjs[:]:
+            the_obj = femobj["Object"]
+            if the_obj.hasExtension("App::SuppressibleExtension") and the_obj.Suppressed:
+               femobjs.remove(femobj)
+
         if not femobjs:
             return
 
@@ -195,6 +201,11 @@ class FemInputWriter():
         femobjs,
         con_module
     ):
+        # handle suppressed objects
+        for femobj in femobjs[:]:
+            the_obj = femobj["Object"]
+            if the_obj.hasExtension("App::SuppressibleExtension") and the_obj.Suppressed:
+                femobjs.remove(femobj)
 
         if not femobjs:
             return
@@ -209,6 +220,7 @@ class FemInputWriter():
         # write constraint to file
         f.write("\n{}\n".format(59 * "*"))
         f.write("** {}\n".format(con_module.get_constraint_title()))
+
         if write_before != "":
             f.write(write_before)
         for femobj in femobjs:
