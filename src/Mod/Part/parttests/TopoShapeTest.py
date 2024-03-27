@@ -594,7 +594,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
 
         if offset.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(offset.ElementMapSize, 0)  # Todo: Wrong, or deprecated?
+            self.assertEqual(offset.ElementMapSize, 17)
 
     def testTopoShapeOffset2D(self):
         offset = self.doc.Box1.Shape.Faces[0].makeOffset2D(1)
@@ -610,3 +610,48 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
 
         if removed.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(removed.ElementMapSize, 38)
+
+    def testTopoShapeCompSolid(self):
+        compSolid = Part.CompSolid() # list of subobjects
+        box1ts = self.doc.Box1.Shape
+        # print(dir(box1ts))
+        print(box1ts.Shells,box1ts.Solids,box1ts.Compounds)
+        compSolid.add(box1ts.Solids[0])
+
+    def testTopoShapeFace(self):
+        face = Part.Face()
+        face = self.doc.Box1.Shape.Faces[0]
+
+        offset = face.makeOffset(2.0)
+        evolved = face.makeEvolved()
+
+    def testTopoShapePart(self):
+        box1ts = self.doc.Box1.Shape
+        x1 = box1ts.Faces[0]
+        x1.mapSubElement()
+        box1ts.mapShapes()
+        box1ts.getElementHistory()
+        box1ts.clearCache()
+        box1ts.findSubShape()
+        box1ts.findSubShapesWithSharedVertex()
+        box1ts.getChildShapes()
+        box1ts.makeShape()
+
+# Added methods to test:
+
+# CompSolid()
+# CompSolid.add()
+# Face()
+# Face().makeOffset()
+# Face().makeEvolved()
+# Part.makeEvolved
+# Part.mapSubElement
+# Part.mapShapes
+# Part.getElementHistory
+# Part.clearCache
+# Part.findSubShape
+# Part.searchSubShape .... rename?
+# Part.getChildShapes
+# Part.makeShape
+
+

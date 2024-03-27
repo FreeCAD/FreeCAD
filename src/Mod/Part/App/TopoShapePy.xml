@@ -965,10 +965,10 @@ optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> boun
               </UserDocu>
           </Documentation>
       </Methode>
-      <Methode Name="searchSubShape" Const="true" Keyword="true">
+      <Methode Name="findSubShapesWithSharedVertex" Const="true" Keyword="true">
           <Documentation>
               <UserDocu>
-                  searchSubShape(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
+                  findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
 
                   shape: input elementary shape, currently only support Face, Edge, or Vertex
 

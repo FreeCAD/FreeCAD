@@ -88,8 +88,9 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 #ifdef FC_USE_TNP_FIX
     try {
-        getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Shell,getPyShapes(obj));
-    } _PY_CATCH_OCC(return(-1))
+        getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Shell, getPyShapes(obj));
+    }
+    _PY_CATCH_OCC(return (-1))
 #else
     BRep_Builder builder;
     TopoDS_Shape shape;
