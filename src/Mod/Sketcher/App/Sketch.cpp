@@ -4276,7 +4276,31 @@ int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int 
 
 int Sketch::addInternalAlignmentBezierControlPoint(int geoId1, int geoId2, int poleindex)
 {
-    // FIXME: Needs implementation
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != BezierCurve) {
+        return -1;
+    }
+    if (Geoms[geoId2].type != Circle) {
+        return -1;
+    }
+
+    int pointId1 = getPointId(geoId2, PointPos::mid);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Circle& c = Circles[Geoms[geoId2].index];
+
+        GCS::BezierCurve& b = Beziers[Geoms[geoId1].index];
+
+        assert(poleindex < static_cast<int>(b.poles.size()) && poleindex >= 0);
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentBezierControlPoint(b, c, poleindex, tag);
+        return ConstraintsCounter;
+    }
     return -1;
 }
 
