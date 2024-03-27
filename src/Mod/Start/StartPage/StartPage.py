@@ -304,7 +304,6 @@ def getDefaultIcon():
 
 
 def build_new_file_card(template):
-
     """builds an html <li> element representing a new file
     quick start button"""
 
@@ -358,7 +357,6 @@ def build_new_file_card(template):
 
 
 def buildCard(filename, method, arg=None):
-
     """builds an html <li> element representing a file.
     method is a script + a keyword, for ex. url.py?key="""
 

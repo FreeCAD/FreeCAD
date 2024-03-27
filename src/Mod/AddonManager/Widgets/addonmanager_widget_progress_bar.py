@@ -53,7 +53,6 @@ _TOTAL_INCREMENTS = 1000
 
 
 class WidgetProgressBar(QtWidgets.QWidget):
-
     """A multipart progress bar widget, including a stop button and a status label. Defaults to a
     single range with 100 increments, but can be configured with any number of major and minor
     ranges. Clicking the stop button will emit a signal, but does not otherwise affect the

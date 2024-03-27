@@ -9,6 +9,7 @@ import xml.sax.handler
 import xml.sax.xmlreader
 import zipfile
 
+
 # SAX handler to parse the Document.xml
 class DocumentHandler(xml.sax.handler.ContentHandler):
     def __init__(self, dirname):
