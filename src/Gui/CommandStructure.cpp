@@ -34,7 +34,6 @@
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
 
-
 using namespace Gui;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -126,6 +125,40 @@ bool StdCmdGroup::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Std_VarSet
+//===========================================================================
+DEF_STD_CMD_A(StdCmdVarSet)
+
+StdCmdVarSet::StdCmdVarSet()
+  : Command("Std_VarSet")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Create a variable set");
+    sToolTipText  = QT_TR_NOOP("A Variable Set is an object that maintains a set of properties to be used as "
+                               "variables.");
+    sWhatsThis    = "Std_VarSet";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "VarSet";
+}
+
+void StdCmdVarSet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a variable set"));
+
+    std::string VarSetName;
+    VarSetName = getUniqueObjectName("VarSet");
+    doCommand(Doc,"App.activeDocument().addObject('App::VarSet','%s')",VarSetName.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", VarSetName.c_str());
+}
+
+bool StdCmdVarSet::isActive()
+{
+    return hasActiveDocument();
+}
+
 namespace Gui {
 
 void CreateStructureCommands()
@@ -134,6 +167,7 @@ void CreateStructureCommands()
 
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
+    rcCmdMgr.addCommand(new StdCmdVarSet());
 }
 
 } // namespace Gui
