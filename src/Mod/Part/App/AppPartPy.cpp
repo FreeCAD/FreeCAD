@@ -122,26 +122,35 @@ extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 
 namespace Part {
 
-PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
-    if(!obj)
+PartExport void getPyShapes(PyObject* obj, std::vector<TopoShape>& shapes)
+{
+    if (!obj) {
         return;
-    if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
+    }
+    if (PyObject_TypeCheck(obj, &Part::TopoShapePy::Type)) {
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-    else if (PyObject_TypeCheck(obj, &GeometryPy::Type))
+    }
+    else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) {
         shapes.emplace_back(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape());
-    else if(PySequence_Check(obj)) {
+    }
+    else if (PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
+            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
-            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type))
-                shapes.emplace_back(static_cast<GeometryPy*>(
-                                (*it).ptr())->getGeometryPtr()->toShape());
-            else
+            }
+            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) {
+                shapes.emplace_back(
+                    static_cast<GeometryPy*>((*it).ptr())->getGeometryPtr()->toShape());
+            }
+            else {
                 throw Py::TypeError("expect shape in sequence");
+            }
         }
-    }else
+    }
+    else {
         throw Py::TypeError("expect shape or sequence of shapes");
+    }
 }
 
 PartExport std::vector<TopoShape> getPyShapes(PyObject *obj) {

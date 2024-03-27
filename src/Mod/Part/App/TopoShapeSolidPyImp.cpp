@@ -327,7 +327,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     try {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
-#ifndef FC_USE_TNP_FIX
+#ifdef FC_USE_TNP_FIX
         TopoShape res;
         res.setShape(offsetshape);
         return Py::new_reference_to(shape2pyshape(res));
