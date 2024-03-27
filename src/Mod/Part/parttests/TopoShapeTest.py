@@ -42,6 +42,18 @@ class TopoShapeAssertions:
                 if msg == None:
                     msg = f"Key {key} not found in map:  {map}"
                 raise AssertionError(msg)
+
+    def assertBounds(self, shape, bounds, msg=None, precision=App.Base.Precision.confusion()*100):
+        shape_bounds = shape.BoundBox
+        shape_bounds_max = App.BoundBox(shape_bounds)
+        shape_bounds_max.enlarge(precision)
+        bounds_max = App.BoundBox(bounds)
+        bounds_max.enlarge(precision);
+        if not (shape_bounds_max.isInside(bounds) and bounds_max.isInside(shape_bounds)):
+            if msg == None:
+                msg = f"Bounds {shape_bounds} doesn't match {bounds}"
+            raise AssertionError(msg)
+
 class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def setUp(self):
         """Create a document and some TopoShapes of various types"""
@@ -161,7 +173,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         ]
         self.doc.recompute()
         compound2 = self.doc.Compound.Shape
-        # Assert
+        # Assert elementMap
         # This is a flag value to indicate that ElementMaps are supported under the current C++ build:
         if compound1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             # 52 is 2 cubes of 26 each: 6 Faces, 12 Edges, 8 Vertexes
@@ -172,13 +184,19 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
                 52,
                 "ElementMap is Incorrect:  {0}".format(compound2.ElementMap),
             )
+        # Assert Shape
+        self.assertBounds(compound2,App.BoundBox(0, 0, 0, 2, 2, 2) )
 
     def testPartCommon(self):
+        # Arrange
         self.doc.addObject("Part::MultiCommon", "Common")
         self.doc.Common.Shapes = [self.doc.Box1, self.doc.Box2]
+        # Act
         self.doc.recompute()
-        if self.doc.Common.Shape.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(self.doc.Common.Shape.ElementReverseMap,
+        common1 = self.doc.Common.Shape
+        # Assert elementMap
+        if common1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertKeysInMap(common1.ElementReverseMap,
             [
                 "Edge1",
                 "Edge2",
@@ -208,14 +226,20 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
                 "Vertex8",
             ],
         )
+        # Assert Shape
+        self.assertBounds(common1,App.BoundBox(0, 0, 0, 1, 1, 2) )
 
     def testPartCut(self):
+        # Arrange
         self.doc.addObject("Part::Cut", "Cut")
         self.doc.Cut.Base = self.doc.Box1
         self.doc.Cut.Tool = self.doc.Box2
+        # Act
         self.doc.recompute()
-        if self.doc.Cut.Shape.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertKeysInMap(self.doc.Cut.Shape.ElementReverseMap,
+        cut1 = self.doc.Cut.Shape
+        # Assert elementMap
+        if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertKeysInMap(cut1.ElementReverseMap,
             [
                 "Edge1",
                 "Edge2",
@@ -245,206 +269,344 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
                 "Vertex8",
             ],
         )
+        # Assert Shape
+        self.assertBounds(cut1,App.BoundBox(0, 1, 0, 1, 2, 2) )
 
     def testPartFuse(self):
+        # Arrange
         self.doc.addObject("Part::Fuse", "Fuse")
         self.doc.Fuse.Base = self.doc.Box1
         self.doc.Fuse.Tool = self.doc.Box2
+        # Act
         self.doc.recompute()
-        if self.doc.Fuse.Shape.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(self.doc.Fuse.Shape.ElementMapSize, 58)
+        fuse1 = self.doc.Fuse.Shape
+        # Assert elementMap
+        if fuse1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fuse1.ElementMapSize, 58)
             self.doc.Fuse.Refine = True
             self.doc.recompute()
-            self.assertEqual(self.doc.Fuse.Shape.ElementMapSize, 38)
+            self.assertEqual(fuse1.ElementMapSize, 58)
         # Shape is an extruded L, with 8 Faces, 12 Vertexes, 18 Edges
+        # Assert Shape
+        self.assertBounds(fuse1,App.BoundBox(0, 0, 0, 2, 2, 2) )
 
-    def testAppPartmakeCompound(self):
+    def testAppPartMakeCompound(self):
         # This doesn't do element maps.
         # compound1 = Part.Compound([self.doc.Box1.Shape, self.doc.Box2.Shape])
+        # Act
         compound1 = Part.makeCompound([self.doc.Box1.Shape, self.doc.Box2.Shape])
+        # Assert elementMap
         if compound1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(compound1.ElementMapSize, 52)
+        # Assert Shape
+        self.assertBounds(compound1,App.BoundBox(0, 0, 0, 2, 2, 2) )
 
-    def testAppPartmakeShell(self):
+    def testAppPartMakeShell(self):
+        # Act
         shell1 = Part.makeShell(self.doc.Box1.Shape.Faces)
+        # Assert elementMap
         if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(shell1.ElementMapSize, 26)
+        # Assert Shape
+        self.assertBounds(shell1,App.BoundBox(0, 0, 0, 1, 2, 2) )
 
-    def testAppPartmakeFace(self):
+    def testAppPartMakeFace(self):
+        # Act
         face1 = Part.makeFace(self.doc.Box1.Shape.Faces[0],"Part::FaceMakerCheese")
+        # Assert elementMap
         if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(face1.ElementMapSize, 10)
+        # Assert Shape
+        self.assertBounds(face1,App.BoundBox(0, 0, 0, 0, 2, 2) )
 
     def testAppPartmakeFilledFace(self):
         face1 = Part.makeFilledFace(self.doc.Box1.Shape.Faces[3].Edges)
+        # Assert elementMap
         if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(face1.ElementMapSize, 9)
+        # Assert Shape
+        self.assertBounds(face1,App.BoundBox(-0.05, 2, -0.1, 1.05, 2, 2.1)  )
 
-    def testAppPartmakeSolid(self):
+    def testAppPartMakeSolid(self):
+        # Act
         solid1 = Part.makeSolid(self.doc.Box1.Shape.Shells[0])
+        # Assert elementMap
         if solid1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(solid1.ElementMapSize, 26)
+        # Assert Shape
+        self.assertBounds(solid1,App.BoundBox(0, 0, 0, 1, 2, 2) )
 
-    def testAppPartmakeRuled(self):
+    def testAppPartMakeRuled(self):
+        # Act
         surface1 = Part.makeRuledSurface(*self.doc.Box1.Shape.Edges[3:5])
+        # Assert elementMap
         if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(surface1.ElementMapSize, 9)
+        # Assert Shape
+        self.assertBounds(surface1,App.BoundBox(0, 0, 0, 1, 2, 2) )
 
-    def testAppPartmakeShellFromWires(self):
+    def testAppPartMakeShellFromWires(self):
+        # Arrange
         wire1 = self.doc.Box1.Shape.Wires[0] #.copy()   Todo: prints double generated/modified warning because
         wire2 = self.doc.Box1.Shape.Wires[1] #.copy()   Todo: copy() isn't TNP ready yet.  Fix when it is.
+        # Act
         shell1 = Part.makeShellFromWires([wire1,wire2])
+        # Assert elementMap
         if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(shell1.ElementMapSize, 24)
+        # Assert Shape
+        self.assertBounds(shell1,App.BoundBox(0, 0, 0, 1, 2, 2) )
 
-    def testAppPartmakeSweepSurface(self):
-        pass  # Todo:  This is already fixed in a future commit
-        # surface1 = Part.makeSweepSurface(*self.doc.Box1.Shape.Faces[3].Edges[0:2],1)
-        # if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-        #     self.assertEqual(surface1.ElementMapSize, 7)
+    def testAppPartMakeSweepSurface(self):
+        # Arrange
+        circle = Part.makeCircle(5,App.Vector(0,0,0))
+        path = Part.makeLine(App.Vector(),App.Vector(0,0,10))
+        Part.show(circle,"Circle")  # Trigger the elementMapping
+        Part.show(path,"Path")      # Trigger the elementMapping
+        # Act
+        surface1 = Part.makeSweepSurface(self.doc.Path.Shape,self.doc.Circle.Shape,0.001,0)
+        Part.show(surface1,"Sweep")
+        self.doc.recompute()
+        # Assert elementMap
+        if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(surface1.ElementMapSize, 6)
+            self.assertBounds(surface1,App.BoundBox(-5, -5, 0, 5, 5, 10) )
+        else:
+            # Todo: WHY is the actual sweep different?  That's BAD.  However, the "New" approach above, which uses
+            #       BRepOffsetAPI_MakePipe appears to be correct over the older code which uses Geom_Curve.
+            #       This is done ostensibly because Geom_Curve is so old that it doesn't even support history, which
+            #       toponaming needs, but also, the result is just wrong:  If you look at the resulting shape after
+            #       Sweeping a circle along a line, you do not get a circular pipe:  you get a circular pipe with
+            #       About a third of it removed.  More specifically, an angle of math.radians(math.degrees(360)%180) * 2
+            #       appears to have been applied, which looks suspiciously like a substantial bug in OCCT.
+            # Assert Shape
+            self.assertBounds(surface1,App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319) )
 
-    def testAppPartmakeLoft(self):
-        solid2 = Part.makeLoft(self.doc.Box1.Shape.Wires[0:2])
-        if solid2.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(solid2.ElementMapSize, 24)
+    def testAppPartMakeLoft(self):
+        # Act
+        solid1 = Part.makeLoft(self.doc.Box1.Shape.Wires[0:2])
+        # Assert elementMap
+        if solid1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(solid1.ElementMapSize, 24)
+        # Assert Shape
+        self.assertBounds(solid1,App.BoundBox(0, 0, 0, 1, 2, 2) )
 
-    def testAppPartmakeSplitShape(self):
-        # Todo: Refine this test after all TNP code in place to elimate warnings.
+    def testAppPartMakeSplitShape(self):
+        # Todo: Refine this test after all TNP code in place to eliminate warnings.
+        # Arrange
         edge1 = self.doc.Box1.Shape.Faces[0].Edges[0].translated(App.Vector(0,0.5,0))
         face1 = self.doc.Box1.Shape.Faces[0]
+        # Act
         solids1 = Part.makeSplitShape(face1,[(edge1,face1)])
+        # Assert elementMap
+        self.assertEqual(len(solids1), 2)
+        self.assertEqual(len(solids1[0]), 1)
         if solids1[0][0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(solids1[0][0].ElementMapSize, 9)
             self.assertEqual(solids1[1][0].ElementMapSize, 9)
+        # Assert Shape
+        self.assertBounds(solids1[0][0],App.BoundBox(0, 0.5, 0, 0, 2, 2)  )
+        self.assertBounds(solids1[1][0],App.BoundBox(0, 0.5, 0, 0, 2, 2)  )
 
+    def testTopoShapePyInit(self):
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        new_toposhape = Part.Shape(compound)
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(new_toposhape.ElementMapSize, 52)
 
-# TODO: Consider the following possible test objects:
-# Part::AttachExtension       ::init();
-# Part::AttachExtensionPython ::init();
-# Part::PrismExtension        ::init();
-# Part::Feature               ::init();
-# Part::FeatureExt            ::init();
-# Part::BodyBase              ::init();
-# Part::FeaturePython         ::init();
-# Part::FeatureGeometrySet    ::init();
-# Part::CustomFeature         ::init();
-# Part::CustomFeaturePython   ::init();
-# Part::Boolean               ::init();
-# Part::Common                ::init();
-# Part::MultiCommon           ::init();
-# Part::Cut                   ::init();
-# Part::Fuse                  ::init();
-# Part::MultiFuse             ::init();
-# Part::Section               ::init();
-# Part::FilletBase            ::init();
-# Part::Fillet                ::init();
-# Part::Chamfer               ::init();
-# Part::Compound              ::init();
-# Part::Compound2             ::init();
-# Part::Extrusion             ::init();
-# Part::Scale                 ::init();
-# Part::Revolution            ::init();
-# Part::Mirroring             ::init();
-#  TopoShape calls to be consider testing
-#  'add',
-#  'ancestorsOfType',
-#  'applyRotation',
-#  'applyTranslation',
-#  'check',
-#  'childShapes',
-#  'cleaned',
-#  'common',
-#  'complement',
-#  'connectEdgesToWires',
-#  'copy',
-#  'countElement',
-#  'countSubElements',
-#  'cut',
-#  'defeaturing',
-#  'distToShape',
-#  'dumpContent',
-#  'dumpToString',
-#  'dumps',
-#  'exportBinary',
-#  'exportBrep',
-#  'exportBrepToString',
-#  'exportIges',
-#  'exportStep',
-#  'exportStl',
-#  'extrude',
-#  'findPlane',
-#  'fix',
-#  'fixTolerance',
-#  'fuse',
-#  'generalFuse',
-#  'getAllDerivedFrom',
-#  'getElement',
-#  'getElementTypes',
-#  'getFaces',
-#  'getFacesFromSubElement',
-#  'getLines',
-#  'getLinesFromSubElement',
-#  'getPoints',
-#  'getTolerance',
-#  'globalTolerance',
-#  'hashCode',
-#  'importBinary',
-#  'importBrep',
-#  'importBrepFromString',
-#  'inTolerance',
-#  'isClosed',
-#  'isCoplanar',
-#  'isDerivedFrom',
-#  'isEqual',
-#  'isInfinite',
-#  'isInside',
-#  'isNull',
-#  'isPartner',
-#  'isSame',
-#  'isValid',
-#  'limitTolerance',
-#  'loads',
-#  'makeChamfer',
-#  'makeFillet',
-#  'makeOffset2D',
-#  'makeOffsetShape',
-#  'makeParallelProjection',
-#  'makePerspectiveProjection',
-#  'makeShapeFromMesh',
-#  'makeThickness',
-#  'makeWires',
-#  'mirror',
-#  'multiFuse',
-#  'nullify',
-#  'oldFuse',
-#  'optimalBoundingBox',
-#  'overTolerance',
-#  'project',
-#  'proximity',
-#  'read',
-#  'reflectLines',
-#  'removeInternalWires',
-#  'removeShape',
-#  'removeSplitter',
-#  'replaceShape',
-#  'restoreContent',
-#  'reverse',
-#  'reversed',
-#  'revolve',
-#  'rotate',
-#  'rotated',
-#  'scale',
-#  'scaled',
-#  'section',
-#  'setFaces',
-#  'sewShape',
-#  'slice',
-#  'slices',
-#  'tessellate',
-#  'toNurbs',
-#  'transformGeometry',
-#  'transformShape',
-#  'transformed',
-#  'translate',
-#  'translated',
-#  'writeInventor'
+    def testTopoShapeCopy(self):
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        compound_copy = compound.copy()
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(compound_copy.ElementMapSize, 52)
+
+    def testTopoShapeCleaned(self):
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        compound_cleaned = compound.cleaned()
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(compound_cleaned.ElementMapSize, 52)
+
+    def testTopoShapeReplaceShape(self):
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        compound_replaced = compound.replaceShape([(App.activeDocument().Box2.Shape,App.activeDocument().Box1.Shape)])
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(compound_replaced.ElementMapSize, 52)
+
+    def testTopoShapeRemoveShape(self):
+        self.doc.addObject("Part::Compound", "Compound")
+        self.doc.Compound.Links = [
+            App.activeDocument().Box1,
+            App.activeDocument().Box2,
+        ]
+        self.doc.recompute()
+        compound = self.doc.Compound.Shape
+        compound_removed = compound.removeShape([App.ActiveDocument.Box2.Shape])
+        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound.ElementMapSize, 52)
+            self.assertEqual(compound_removed.ElementMapSize, 52)
+
+    def testTopoShapeExtrude(self):
+        extrude = self.doc.Box1.Shape.Faces[0].extrude(App.Vector(2,0,0))
+        self.doc.recompute()
+
+        if extrude.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(extrude.ElementMapSize, 26)
+
+    def testTopoShapeRevolve(self):
+        face2 = self.doc.Box1.Shape.Faces[0]
+        face2.revolve(App.Vector(),App.Vector(1,0,0),45)
+        self.doc.recompute()
+
+        if face2.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(face2.ElementMapSize, 9)
+
+    def testTopoShapeFuse(self):
+        fused = self.doc.Box1.Shape.fuse(self.doc.Box2.Shape)
+        self.doc.recompute()
+
+        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fused.ElementMapSize, 58)
+
+    def testTopoShapeMultiFuse(self):
+        fused = self.doc.Box1.Shape.multiFuse([self.doc.Box2.Shape])
+        self.doc.recompute()
+
+        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fused.ElementMapSize, 58)
+
+    def testTopoShapeCommon(self):
+        common = self.doc.Box1.Shape.common(self.doc.Box2.Shape)
+        self.doc.recompute()
+
+        if common.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(common.ElementMapSize, 26)
+
+    def testTopoShapeSection(self):
+        section = self.doc.Box1.Shape.Faces[0].section(self.doc.Box2.Shape.Faces[3])
+        self.doc.recompute()
+
+        if section.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(section.ElementMapSize, 3)
+
+    def testTopoShapeSlice(self):
+        slice = self.doc.Box1.Shape.slice(App.Vector(10,10,0),1)
+        self.doc.recompute()
+
+        self.assertEqual(len(slice), 1)
+        if slice[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(slice[0].ElementMapSize, 8)
+
+    def testTopoShapeSlices(self):
+        slices = self.doc.Box1.Shape.Faces[0].slices(App.Vector(10,10,0),[1,2])
+        self.doc.recompute()
+
+        if slices.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(slices.ElementMapSize, 6)
+
+    def testTopoShapeCut(self):
+        cut = self.doc.Box1.Shape.cut(self.doc.Box2.Shape)
+        self.doc.recompute()
+
+        if cut.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(cut.ElementMapSize, 26)
+
+    def testTopoShapeGeneralFuse(self):
+        fuse = self.doc.Box1.Shape.generalFuse([self.doc.Box2.Shape])
+        self.doc.recompute()
+
+        self.assertEqual(len(fuse), 2)
+        if fuse[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fuse[0].ElementMapSize, 60)
+
+    def testTopoShapeChildShapes(self):
+        childShapes = self.doc.Box1.Shape.childShapes()
+        self.doc.recompute()
+
+        self.assertEqual(len(childShapes), 1)
+        if childShapes[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(childShapes[0].ElementMapSize, 26)
+
+    def testTopoShapeMirror(self):
+        mirror = self.doc.Box1.Shape.mirror(App.Vector(),App.Vector(1,0,0))
+        self.doc.recompute()
+
+        if mirror.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(mirror.ElementMapSize, 26)
+
+    def testTopoShapeScale(self):
+        scale = self.doc.Box1.Shape.scaled(2)
+        self.doc.recompute()
+
+        if scale.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(scale.ElementMapSize, 26)
+
+    def testTopoShapeMakeFillet(self):
+        fillet = self.doc.Box1.Shape.makeFillet(0.1, self.doc.Box1.Shape.Faces[0].Edges)
+        self.doc.recompute()
+
+        if fillet.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(fillet.ElementMapSize, 42)
+
+    def testTopoShapeMakeChamfer(self):
+        chamfer = self.doc.Box1.Shape.makeChamfer(0.1, self.doc.Box1.Shape.Faces[0].Edges)
+        self.doc.recompute()
+
+        if chamfer.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(chamfer.ElementMapSize, 42)
+
+    def testTopoShapeMakeThickness(self):
+        thickness = self.doc.Box1.Shape.makeThickness(self.doc.Box1.Shape.Faces[0:2],0.1,0.0001)
+        self.doc.recompute()
+
+        if thickness.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(thickness.ElementMapSize, 74)
+
+    def testTopoShapemakeOffsetShape(self):
+        offset = self.doc.Box1.Shape.Faces[0].makeOffset(1)
+        self.doc.recompute()
+
+        if offset.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(offset.ElementMapSize, 0)  # Todo: Wrong, or deprecated?
+
+    def testTopoShapeOffset2D(self):
+        offset = self.doc.Box1.Shape.Faces[0].makeOffset2D(1)
+        self.doc.recompute()
+
+        if offset.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(offset.ElementMapSize, 17)
+
+    def testTopoShapeRemoveSplitter(self):
+        fused = self.doc.Box1.Shape.fuse(self.doc.Box2.Shape)
+        removed = fused.removeSplitter()
+        self.doc.recompute()
+
+        if removed.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(removed.ElementMapSize, 38)
