@@ -1977,12 +1977,14 @@ private:
 #ifdef FC_USE_TNP_FIX
             TopoShape mShape = *static_cast<TopoShapePy*>(path)->getTopoShapePtr();
             // makeSweep uses GeomFill_Pipe which does not support shape
-            // history. So use makEPipeShell() as a replacement
+            // history. So use makeElementPipeShell() as a replacement
             return shape2pyshape(TopoShape(0, mShape.Hasher).makeElementPipeShell(
                 {mShape, *static_cast<TopoShapePy*>(profile)->getTopoShapePtr()},
                 Part::MakeSolid::noSolid, Standard_False, TransitionMode::Transformed,
                 nullptr, tolerance));
 #else
+            if (tolerance == 0.0)
+                tolerance=0.001;
             const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(path)->getTopoShapePtr()->getShape();
             const TopoDS_Shape& prof_shape = static_cast<TopoShapePy*>(profile)->getTopoShapePtr()->getShape();
 
