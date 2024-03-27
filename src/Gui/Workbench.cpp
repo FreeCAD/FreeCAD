@@ -703,6 +703,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleNavigation"
           << "Std_SetAppearance"
           << "Std_RandomColor"
+          << "Std_ToggleTransparency"
           << "Separator"
           << "Std_Workbench"
           << "Std_ToolBarMenu"
@@ -711,7 +712,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
         *view << "Std_DockOverlay";
     }
     *view << "Separator"
-          << "Std_ToggleTransparency"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";

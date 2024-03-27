@@ -46,6 +46,7 @@
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
@@ -925,33 +926,44 @@ void StdCmdToggleTransparency::activated(int iMsg)
         if (!obj)
             continue;
 
-        if (!dynamic_cast<App::Part*>(obj) && !dynamic_cast<App::LinkGroup*>(obj)) {
-            Gui::ViewProvider* view = Application::Instance->getDocument(sel.pDoc)->getViewProvider(obj);
+        bool isGroup = dynamic_cast<App::Part*>(obj) 
+                || dynamic_cast<App::LinkGroup*>(obj)
+                || dynamic_cast<App::DocumentObjectGroup*>(obj);
+
+        auto addObjects = [](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& views) {
+            App::Document* doc = obj->getDocument();
+            Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
             App::Property* prop = view->getPropertyByName("Transparency");
             if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-                viewsToToggle.push_back(view);
+                // To prevent toggling the tip of a PD body (see #11353), we check if the parent has a
+                // Tip prop.
+                const std::vector<App::DocumentObject*> parents = obj->getInList();
+                if (!parents.empty()) {
+                    App::Document* parentDoc = parents[0]->getDocument();
+                    Gui::ViewProvider* parentView = Application::Instance->getDocument(parentDoc)->getViewProvider(parents[0]);
+                    App::Property* parentProp = parents[0]->getPropertyByName("Tip");
+                    if (parentProp) {
+                        // Make sure it has a transparency prop too
+                        parentProp = parentView->getPropertyByName("Transparency");
+                        if (parentProp && parentProp->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                            view = parentView;
+                        }
+                    }
+                }
+
+                if (std::find(views.begin(), views.end(), view) == views.end()) {
+                    views.push_back(view);
+                }
+            }
+        };
+
+        if (isGroup) {
+            for (App::DocumentObject* subobj : obj->getOutListRecursive()) {
+                addObjects(subobj, viewsToToggle);
             }
         }
         else {
-            std::function<void(App::DocumentObject*, std::vector<Gui::ViewProvider*>&)> addSubObjects =
-                [&addSubObjects](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& viewsToToggle) {
-                if (!dynamic_cast<App::Part*>(obj) && !dynamic_cast<App::LinkGroup*>(obj)) {
-                    App::Document* doc = obj->getDocument();
-                    Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
-                    App::Property* prop = view->getPropertyByName("Transparency");
-                    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())
-                        && std::find(viewsToToggle.begin(), viewsToToggle.end(), view) == viewsToToggle.end()) {
-                        viewsToToggle.push_back(view);
-                    }
-                }
-                else {
-                    for (App::DocumentObject* subobj : obj->getOutList()) {
-                        addSubObjects(subobj, viewsToToggle);
-                    }
-                }
-            };
-
-            addSubObjects(obj, viewsToToggle);
+            addObjects(obj, viewsToToggle);
         }
     }
 
