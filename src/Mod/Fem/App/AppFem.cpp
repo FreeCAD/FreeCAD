@@ -41,6 +41,7 @@
 #include "FemConstraintPlaneRotation.h"
 #include "FemConstraintPressure.h"
 #include "FemConstraintPulley.h"
+#include "FemConstraintRigidBody.h"
 #include "FemConstraintSpring.h"
 #include "FemConstraintTemperature.h"
 #include "FemConstraintTransform.h"
@@ -142,6 +143,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::ConstraintContact                    ::init();
     Fem::ConstraintDisplacement               ::init();
     Fem::ConstraintFixed                      ::init();
+    Fem::ConstraintRigidBody                  ::init();
     Fem::ConstraintFluidBoundary              ::init();
     Fem::ConstraintForce                      ::init();
     Fem::ConstraintGear                       ::init();

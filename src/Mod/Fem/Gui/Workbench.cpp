@@ -132,6 +132,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
     mech->setCommand("Mechanical boundary conditions and loads");
     *mech << "FEM_ConstraintFixed"
+          << "FEM_ConstraintRigidBody"
           << "FEM_ConstraintDisplacement"
           << "FEM_ConstraintContact"
           << "FEM_ConstraintTie"
@@ -263,6 +264,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical boundary conditions and loads");
     *mech << "FEM_ConstraintFixed"
+          << "FEM_ConstraintRigidBody"
           << "FEM_ConstraintDisplacement"
           << "FEM_ConstraintContact"
           << "FEM_ConstraintTie"

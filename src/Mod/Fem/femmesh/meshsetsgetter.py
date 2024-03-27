@@ -139,6 +139,7 @@ class MeshSetsGetter():
         # constraints node sets getter
         self.get_constraints_fixed_nodes()
         self.get_constraints_displacement_nodes()
+        self.get_constraints_rigidbody_nodes()
         self.get_constraints_planerotation_nodes()
 
         # constraints surface sets getter
@@ -204,6 +205,21 @@ class MeshSetsGetter():
                         nds_faceedge.append(n)
                 femobj["NodesSolid"] = set(nds_solid)
                 femobj["NodesFaceEdge"] = set(nds_faceedge)
+
+    def get_constraints_rigidbody_nodes(self):
+        if not self.member.cons_rigidbody:
+            return
+        # get nodes
+        for femobj in self.member.cons_rigidbody:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            print_obj_info(femobj["Object"])
+            femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                self.femmesh,
+                femobj
+            )
+            # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
+            for node in femobj["Nodes"]:
+                self.constraint_conflict_nodes.append(node)
 
     def get_constraints_displacement_nodes(self):
         if not self.member.cons_displacement:
