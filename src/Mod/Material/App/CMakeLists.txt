@@ -30,8 +30,17 @@ include_directories(
 )
 list(APPEND Material_LIBS
     ${QtConcurrent_LIBRARIES}
-    ${YAML_CPP_LIBRARIES}
 )
+
+if(yaml-cpp_VERSION VERSION_LESS 0.7.0)
+    list(APPEND Material_LIBS
+        ${YAML_CPP_LIBRARIES}
+    )
+else()
+    list(APPEND Material_LIBS
+        yaml-cpp::yaml-cpp
+    )
+endif()
 
 generate_from_xml(Array2DPy)
 generate_from_xml(Array3DPy)
