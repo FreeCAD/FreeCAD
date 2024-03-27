@@ -75,7 +75,7 @@ namespace
 {
 
 template<typename T>
-void vtkWriter(const char* filename, const vtkSmartPointer<vtkDataObject>& dataObject)
+void femVTKWriter(const char* filename, const vtkSmartPointer<vtkDataObject>& dataObject)
 {
     if (vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
         throw Base::ValueError("Empty data object");
@@ -135,5 +135,5 @@ void FemPostObject::writeVTK(const char* filename) const
         name = name.append(".").append(extension);
     }
 
-    vtkWriter<vtkXMLDataSetWriter>(name.c_str(), data);
+    femVTKWriter<vtkXMLDataSetWriter>(name.c_str(), data);
 }
