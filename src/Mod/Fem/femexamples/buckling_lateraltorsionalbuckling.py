@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["displacement", "force"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["buckling"]
     }
@@ -106,9 +106,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
     else:
@@ -116,7 +114,7 @@ def setup(doc=None, solvertype="ccxtools"):
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "buckling"
         solver_obj.GeometricalNonlinearity = "linear"

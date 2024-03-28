@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": [],
-        "solvers": ["calculix", "ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
         "equations": ["elasticity"]  # "frequency", but list not allowed here
     }
@@ -81,9 +81,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
@@ -97,7 +95,7 @@ def setup(doc=None, solvertype="elmer"):
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "frequency"
         solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
