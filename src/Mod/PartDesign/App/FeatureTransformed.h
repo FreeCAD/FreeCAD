@@ -70,6 +70,9 @@ public:
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
 
+    /// Return true if this feature is a child of a MultiTransform
+    bool isMultiTransformChild() const;
+
     /// Get the list of transformations describing the members of the pattern
     // Note: Only the Scaled feature requires the originals
     virtual const std::list<gp_Trsf>
@@ -102,8 +105,6 @@ protected:
                                    const char* TypeName,
                                    App::Property* prop) override;
 
-    /// Return true if this feature is a child of a MultiTransform
-    bool isMultiTransformChild() const;
     virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
