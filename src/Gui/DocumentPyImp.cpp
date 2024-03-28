@@ -552,3 +552,12 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
 
     return 0;
 }
+
+PyObject* DocumentPy::resetModified(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    getDocumentPtr()->setModified(false);
+    Py_Return;
+}

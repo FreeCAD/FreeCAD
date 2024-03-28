@@ -195,6 +195,15 @@ on its canAddToSceneGraph().
 obj : Gui.ViewProvider</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="resetModified">
+      <Documentation>
+        <UserDocu>resetModified() -> None
+
+Resets the Modified status of this document. WARNING: This document
+will be considered saved and no warning will be issued when closing
+it.</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="ActiveObject" ReadOnly="false">
       <Documentation>
         <UserDocu>The active object of the document.</UserDocu>
