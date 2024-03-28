@@ -184,7 +184,7 @@
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punt op rand geplaatst volgens MapPathParameter. Eindpunt kan daarbij aangekoppeld worden om projectie te maken.</translation>
+      <translation>Punt is op de rand geplaatst volgens MapPathParameter. Een hoekpunt kan daarbij aangekoppeld worden om een projectie te maken.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="286"/>
@@ -196,7 +196,7 @@
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Midden van raakcirkel aan een rand. Optionele eindpuntsverbinding bepaalt plaats.</translation>
+      <translation>Midden van de krommingscirkel van een rand. Optionele hoekpuntsverbinding bepaalt de positie.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="289"/>
@@ -232,7 +232,7 @@
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Laat referentiepunt met ander eindpunt samenvallen.</translation>
+      <translation>Laat referentiepunt met ander hoekpunt samenvallen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="298"/>
@@ -314,7 +314,7 @@
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn die een as is van een raakcirkel aan een gebogen rand. Een optioneel eindpunt definieert waar.</translation>
+      <translation>Lijn die een as is van een raakcirkel aan een gebogen rand. Een optioneel hoekpunt definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="217"/>
@@ -374,7 +374,7 @@
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn raakt aan een rand. Optionele eindpuntsverbinding definieert de plaats.</translation>
+      <translation>Lijn raakt aan een rand. Optionele hoekpuntsverbinding definieert de plaats.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="232"/>
@@ -3870,7 +3870,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Hoekpunt</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1910"/>
@@ -4330,7 +4330,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="186"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>Hoekpuntkleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="193"/>
@@ -4340,7 +4340,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>Hoekpunt grootte</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="226"/>
@@ -5093,7 +5093,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="648"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Hoekpunt</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="713"/>
@@ -5376,6 +5376,11 @@ Individual boolean operation checks:</translation>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <source>Attachment</source>
+      <translation>Bijlage</translation>
+    </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
@@ -5674,15 +5679,15 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Bewerken %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Part en PartDesign werkbank</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="235"/>
@@ -5767,22 +5772,22 @@ Wilt u doorgaan?</translation>
       <translation>Geen referentie geselecteerd</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Rand</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Hoekpunt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6073,8 +6078,8 @@ Wilt u doorgaan?</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1419"/>
-      <source>Selection </source>
-      <translation>Selectie </translation>
+      <source>Selection</source>
+      <translation>Selectie</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1503"/>
@@ -6388,12 +6393,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Het berekenen van het resultaat is mislukt met een fout:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Klik op 'Doorgaan' om de functie toch te maken, of 'Afbreken' om te annuleren.</translation>
     </message>
   </context>
   <context>
@@ -6842,7 +6847,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Hoekpunt selectie</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
@@ -6947,6 +6952,14 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Ondersteunt het maken van vlakken met gaten, ondersteunt nestingen niet.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exception</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
+      <source>Wire is not closed.</source>
+      <translation type="unfinished">Wire is not closed.</translation>
     </message>
   </context>
 </TS>

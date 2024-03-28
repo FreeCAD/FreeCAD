@@ -134,27 +134,27 @@
     <message>
       <location filename="../CommandLink.cpp" line="142"/>
       <source>Make link group</source>
-      <translation>Hivatkozás csoport létrehozása</translation>
+      <translation>Összekötött csoport létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
-      <translation>Hivatkozás létrehozása</translation>
+      <translation>Összekötés létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
-      <translation>Alhivatkozás létrehozása</translation>
+      <translation>Al-összekötés létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
-      <translation>Hivatkozások importálása</translation>
+      <translation>Összekötések importálása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
-      <translation>Összes hivatkozás importálása</translation>
+      <translation>Összes összekötés importálása</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="784"/>
@@ -167,12 +167,12 @@
       <translation>Szöveges dokumentum beszúrása</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Alkatrész hozzáadása</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Csoport hozzáadása</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>Elhelyezés</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2986"/>
       <source>Link Transform</source>
-      <translation>Átalakítások hivatkozása</translation>
+      <translation>Összekötés átalakítás</translation>
     </message>
     <message>
       <location filename="../ViewProviderMeasureDistance.cpp" line="277"/>
@@ -235,6 +235,11 @@
       <source>Set Random Color</source>
       <translation>Véletlenszerű szín beállítása</translation>
     </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation>Fagyasztás kapcsolása</translation>
+    </message>
   </context>
   <context>
     <name>CommandGroup</name>
@@ -256,7 +261,7 @@
     <message>
       <location filename="../Workbench.cpp" line="521"/>
       <source>Link</source>
-      <translation>Hivatkozás</translation>
+      <translation>Összeköt</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="522"/>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Kifejezés: </translation>
+      <source>Expression:</source>
+      <translation>Kifejezés:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Kérem várjon míg a helyreállítási fájl mentésre került...</translation>
     </message>
@@ -1272,17 +1277,17 @@ Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úg
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Többbillentyűs sorozatkésleltetés: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation>Többkulcsos szekvencia késleltetés:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Az az idő ezredmásodpercben, ameddig várni kell az aktuális billentyűsorozat következő billentyűleütésére.
-Például, ha kétszer megnyomja az 'F' billentyűt kevesebb, mint az itt beállított késleltetési beállítás, akkor
-'F, F' kulcsszekvenciaként kell kezelni.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation>Az aktuális billentyűsorozat következő billentyűleütésére várakozás ideje milliszekundumban.
+Például az 'F' kétszeri lenyomása az itt beállított késleltetési időnél rövidebb idő alatt lesz
+az 'F, F' gyorsbillentyűsorozatként kezeli.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -2706,7 +2711,7 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <location filename="../DlgPropertyLink.ui" line="14"/>
       <source>Link</source>
-      <translation>Hivatkozás</translation>
+      <translation>Összeköt</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.ui" line="46"/>
@@ -2787,7 +2792,7 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Szövegfelirat</translation>
+      <translation>Szövegcimke</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -2843,11 +2848,6 @@ jobb alsó sarok a megnyitott fájlokban</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="35"/>
       <source>Show coordinate system in the corner</source>
       <translation>Koordináta rendszer mutatása a sarokban</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Relatív méret:   </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
@@ -2931,6 +2931,11 @@ közvetlenül a GPU-val renderelhetők.
 Megjegyzés: Előfordulhat, hogy ez a funkció számos különböző hibát,
 grafikus anomáliáktól a GPU összeomlási hibákig, generál. Ne feledje, hogy
 jelentse ezt a beállítást engedélyezve, amikor támogatást kér a FreeCAD fórumokon</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation>Viszonylagos méret:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -3589,16 +3594,16 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Külső kapcsolt dokumentumok részleges betöltését engedélyezi. 
+      <translation>Külső összekötött dokumentumok részleges betöltését engedélyezi. 
 Csak a hivatkozott dokumentum és annak függőségei lesznek betöltve, 
-ha a kapcsolt dokumentum automatikusan a fő dokumentummal együtt nyílik meg.
+ha az összekötött dokumentum automatikusan a fő dokumentummal együtt nyílik meg.
 Egy részlegesen betöltött dokumentum nem szerkeszthető. Teljes betöltéséhez 
 kattintson a fa nézetben a dokumentum ikonra.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="585"/>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Külső csatolt objektumok részleges betöltésének letiltása</translation>
+      <translation>Külső összekötött tárgy részleges betöltésének letiltása</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="601"/>
@@ -4453,8 +4458,8 @@ horizontal space in Python console</source>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation>Python profilozó intervallum (milliszekundum): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation>Python profilkészítő intervallum (milliszekundum):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -5950,7 +5955,7 @@ El akarja menteni a változásokat?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Pontos egyezés</translation>
     </message>
@@ -5958,7 +5963,7 @@ El akarja menteni a változásokat?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Pontos egyezés</translation>
     </message>
@@ -6124,15 +6129,15 @@ El akarja menteni a változásokat?</translation>
       <translation>PDF formátum</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz formátum</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Export grafikon</translation>
     </message>
@@ -6355,13 +6360,13 @@ El akarja menteni a változásokat?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="2143"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
+      <translation>Az exportált tárgy külső összekötést tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2235"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
+      <translation>Külső tárgyak összekötéséhez a dokumentumot legalább egyszer menteni kell.
 Menti most a dokumentumot?</translation>
     </message>
   </context>
@@ -6636,7 +6641,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4270"/>
       <source>Change the linked object</source>
-      <translation>Hivatkozott objektum megváltoztatása</translation>
+      <translation>Összekötött tárgy megváltoztatása</translation>
     </message>
   </context>
   <context>
@@ -7077,7 +7082,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>Szövegcimke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7581,7 +7586,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>Átnevezés</translation>
     </message>
@@ -7671,12 +7676,12 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>A kijelölt tárgy újraszámítása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (de végre kell hajtanom)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Belső név: %2</translation>
     </message>
@@ -7865,8 +7870,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -8061,15 +8066,15 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>PDF exportálása...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1232"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>Az exportált tárgy külső hivatkozást tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
+      <translation>Az exportált tárgy külső összekötést tartalmaz. Exportálás előtt legalább egyszer mentse a dokumentumot.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1433"/>
@@ -8355,8 +8360,8 @@ Folytatni kívánja?</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>Értesítő: </translation>
+      <source>Notifier:</source>
+      <translation>Értesítő:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8731,46 +8736,46 @@ Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
       <location filename="../CommandLink.cpp" line="101"/>
       <location filename="../CommandLink.cpp" line="117"/>
       <source>Group with links</source>
-      <translation>Csoport hivatkozásokkal</translation>
+      <translation>Csoport összekötésekkel</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="103"/>
       <location filename="../CommandLink.cpp" line="118"/>
       <source>Group with transform links</source>
-      <translation>Csoport átalakított hivatkozásokkal</translation>
+      <translation>Csoport átalakított összekötésekkel</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="195"/>
       <source>Create link group failed</source>
-      <translation>Hivatkozás csoport létrehozása nem sikerült</translation>
+      <translation>Összekötés csoport létrehozása nem sikerült</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
-      <translation>Hivatkozás létrehozása nem sikerült</translation>
+      <translation>Összekötés létrehozása nem sikerült</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
-      <translation>Nem sikerült relatív hivatkozást létrehozni</translation>
+      <translation>Nem sikerült relatív összekötést létrehozni</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
-      <translation>Hivatkozás leválasztása nem sikerült</translation>
+      <translation>Leválasztása nem sikerült</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
-      <translation>Hivatkozás cseréje nem sikerült</translation>
+      <translation>Összekötés cseréje nem sikerült</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Hivatkozások importálása sikertelen</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Összes hivatkozás importálása sikertelen</translation>
     </message>
@@ -8893,7 +8898,7 @@ az aktuális példány elveszik.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2584"/>
       <source>Change whether show each link array element as individual objects</source>
-      <translation>Annak módosítása, hogy a csatolási tömb egyes elemeit egyedi tárgyakként jelenítse-e meg</translation>
+      <translation>Annak módosítása, hogy az összekötés tömb egyes elemeit egyedi tárgyakként jelenítse-e meg</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2602"/>
@@ -8927,18 +8932,18 @@ az aktuális példány elveszik.
       <translation>Színskála</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation>Átfedés váltása</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Lebegő ablak váltása</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation>Dokkolóablak bezárása</translation>
     </message>
@@ -9719,12 +9724,12 @@ az aktuális példány elveszik.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Csoport létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>A csoport egy általános célú tároló a fa nézetben lévő tárgyak csoportosítására, függetlenül azok adattípusától. Ez egy egyszerű mappa a modellben lévő tárgyak rendszerezésére.</translation>
     </message>
@@ -9784,41 +9789,41 @@ az aktuális példány elveszik.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
-      <translation>Hivatkozás műveletek</translation>
+      <translation>Összekötés műveletek</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
-      <translation>Tárgyak hivatkozására vonatkozó műveletek</translation>
+      <translation>Tárgyak összekötésére vonatkozó műveletek</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
-      <translation>Hivatkozások importálása</translation>
+      <translation>Összekötések importálása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
-      <translation>Kiválasztott külső hivatkozás(ok) importálása</translation>
+      <translation>Kiválasztott külső összekötés(ek) importálása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
-      <translation>Összes hivatkozás importálása</translation>
+      <translation>Összes összekötés importálása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
-      <translation>Összes hivatkozás importálása az aktív dokumentumba</translation>
+      <translation>Összes összekötés importálása az aktív dokumentumba</translation>
     </message>
   </context>
   <context>
@@ -9826,12 +9831,12 @@ az aktuális példány elveszik.
     <message>
       <location filename="../CommandLink.cpp" line="210"/>
       <source>Make link</source>
-      <translation>Hivatkozás létrehozása</translation>
+      <translation>Összekötés létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation>A csoport egy általános célú tároló a fa nézetben lévő tárgyak csoportosítására, függetlenül azok adattípusától. Ez egy egyszerű mappa a modellben lévő tárgyak rendszerezésére.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation>Az összekötő egy olyan tárgy, amely hivatkozik vagy hozzáköt egy másik tárgyat ugyanabban a dokumentumban vagy egy másik dokumentumban. A Klónokkal ellentétben az összekötés közvetlenül az eredeti alakzatra hivatkoznak, így memóriahatékonyabbak, ami segít az összetett összeállítások létrehozásában.</translation>
     </message>
   </context>
   <context>
@@ -9839,104 +9844,104 @@ az aktuális példány elveszik.
     <message>
       <location filename="../CommandLink.cpp" line="79"/>
       <source>Make link group</source>
-      <translation>Hivatkozás csoport létrehozása</translation>
+      <translation>Összekötött csoport létrehozása</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="80"/>
       <source>Create a group of links</source>
-      <translation>Hivatkozások csoportjának létrehozása</translation>
+      <translation>Összekötések csoportjának létrehozása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
-      <translation>Alhivatkozás létrehozása</translation>
+      <translation>Al-összekötés létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
-      <translation>Alárendelt- tárgy vagy elem hivatkozás létrehozása</translation>
+      <translation>Alárendelt- tárgy vagy elem összekötés létrehozása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
-      <translation>Csere hivatkozással</translation>
+      <translation>Csere összekötéssel</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
-      <translation>Kiválasztott objektum(ok) cseréje hivatkozással</translation>
+      <translation>Kiválasztott tárgy(ak) cseréje összekötéssel</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
-      <translation>Hivatkozás navigálás</translation>
+      <translation>Összekötés navigálás</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
-      <translation>Hivatkozás navigálás műveletek</translation>
+      <translation>Összekötés navigálás műveletek</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
-      <translation>Összes hivatkozás kijelölése</translation>
+      <translation>Összes összekötés kijelölése</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
-      <translation>Kiválasztott objektum összes hivatkozásának a kiválasztása</translation>
+      <translation>Kiválasztott tárgy összes összekötésének a kiválasztása</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
-      <translation>Ugrás a hivatkozott tárgyra</translation>
+      <translation>Ugrás az összekötött tárgyra</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
-      <translation>A csatolt tárgy kijelölése és váltás a tulajdonosi dokumentumra</translation>
+      <translation>A összekötött tárgy kijelölése és váltás a tulajdonosi dokumentumra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
-      <translation>Ugrás a legmélyebben hivatkozott tárgyra</translation>
+      <translation>Ugrás a legmélyebben összekötött tárgyra</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
-      <translation>Jelölje ki a legalacsonyabban csatolt tárgyat, és váltson a tulajdonosi dokumentumra</translation>
+      <translation>Jelölje ki a legalacsonyabban összekötött tárgyat, és váltson a tulajdonosi dokumentumra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
-      <translation>Hivatkozás megszüntetése</translation>
+      <translation>Összekötés megszüntetése</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
-      <translation>Vágás a csatlakozás szintjén</translation>
+      <translation>Vágás az összekötés szintjén</translation>
     </message>
   </context>
   <context>
@@ -10077,8 +10082,8 @@ az aktuális példány elveszik.
       <translation>Új üres munkalap létrehozása</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>
@@ -10153,11 +10158,9 @@ az aktuális példány elveszik.
       <translation>Alkatrész létrehozása</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>A Rész egy általános célú tároló a tárgyak csoportjának összetartására, hogy azok egységként viselkedjenek a 3D nézetben.
-Olyan tárgyak elrendezésére szolgál, amelyek Rész Topologikai alakzattal rendelkezik, mint például a rész primitívek, alkatrész testek és más alkatrészek.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation>A Rész egy általános célú tároló a tárgyak csoportjának összetartására, hogy azok egységként viselkedjenek a 3D nézetben. Olyan tárgyak elrendezésére szolgál, amelyek Rész Topologikai alakzattal rendelkezik, mint például a rész primitívek, alkatrész testek és más alkatrészek.</translation>
     </message>
   </context>
   <context>
@@ -10475,13 +10478,13 @@ Olyan tárgyak elrendezésére szolgál, amelyek Rész Topologikai alakzattal re
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Küldés Python konzolra</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>A kijelölt tárgy elküldése a Python konzolra</translation>
     </message>
@@ -11683,14 +11686,14 @@ Biztosan folytatja?
       <location filename="../CommandDoc.cpp" line="1250"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation>Külső tárgyakra hivatkozáshoz a dokumentumot legalább egyszer menteni kell.
+      <translation>Külső tárgyak összekötéséhez a dokumentumot legalább egyszer menteni kell.
 Menti most a dokumentumot?</translation>
     </message>
   </context>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Csoport</translation>
     </message>
@@ -11880,7 +11883,7 @@ Még mindig fojtatni szeretné?</translation>
     <message>
       <location filename="../Workbench.cpp" line="557"/>
       <source>Link actions</source>
-      <translation>Hivatkozás műveletek</translation>
+      <translation>Összekötés műveletek</translation>
     </message>
   </context>
   <context>
@@ -13681,6 +13684,19 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation>A tulajdonságnézet megjelenítése, amely a kiválasztott tárgy tulajdonságait jeleníti meg.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation>Fagyasztás kapcsolása</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation>A kijelölt tárgyak fagyasztási állapotának váltása. A befagyasztott tárgy nem kerül újraszámításra, amikor a szülő tárgyak megváltoznak.</translation>
     </message>
   </context>
 </TS>

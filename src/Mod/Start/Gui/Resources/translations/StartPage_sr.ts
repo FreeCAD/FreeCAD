@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Недавно коришћене датотеке</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако имаш недоумице, објави у општем одељку &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="154"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Путања датотеке</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
@@ -403,7 +403,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation type="unfinished">Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</translation>
+      <translation>Радно окружење које ће се отворити након отварања недавно коришћене датотека. Важи само ако је Старт почетно радно окружење</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
@@ -418,12 +418,12 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>Умањена слика датотеке</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>Прикажи умањене слике</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -612,7 +612,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
       <source>Custom CSS</source>
-      <translation type="unfinished">Custom CSS</translation>
+      <translation>Сопствени CSS</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>

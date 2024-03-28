@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Blog</source>
-      <translation type="unfinished">Blog</translation>
+      <translation>블로그</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
