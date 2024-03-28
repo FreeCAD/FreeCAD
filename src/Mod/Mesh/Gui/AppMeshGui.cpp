@@ -54,7 +54,6 @@
 #include "ViewProviderTransform.h"
 #include "ViewProviderTransformDemolding.h"
 #include "Workbench.h"
-#include "images.h"
 
 
 // use a different name to CreateCommand()
@@ -137,9 +136,6 @@ PyMOD_INIT_FUNC(MeshGui)
     }
     PyObject* mod = MeshGui::initModule();
     Base::Console().Log("Loading GUI of Mesh module... done\n");
-
-    // Register icons
-    Gui::BitmapFactory().addXPM("mesh_fillhole", mesh_fillhole);
 
     // instantiating the commands
     CreateMeshCommands();

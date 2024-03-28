@@ -4,6 +4,7 @@
         <file>icons/Mesh_BoundingBox.svg</file>
         <file>icons/Mesh_BuildRegularSolid.svg</file>
         <file>icons/Mesh_CrossSections.svg</file>
+        <file>icons/Mesh_CursorFillInteractive.svg</file>
         <file>icons/Mesh_CurvatureInfo.svg</file>
         <file>icons/Mesh_Decimating.svg</file>
         <file>icons/Mesh_Difference.svg</file>

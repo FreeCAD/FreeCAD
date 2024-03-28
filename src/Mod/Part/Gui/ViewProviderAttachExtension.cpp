@@ -61,27 +61,13 @@ QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QI
         if (attach) {
 
             if(!attach->isAttacherActive()) {
-                QPixmap px;
+                static QPixmap px(
+                    Gui::BitmapFactory().pixmapFromSvg("Part_Detached", QSize(10, 10)));
 
-                static const char * const feature_detached_xpm[]={
-                    "9 10 3 1",
-                    ". c None",
-                    "# c #cc00cc",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    "##aaaaa##",
-                    "##aaaaa##",
-                    "#########",
-                    "#########",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..."};
-
-                    px = QPixmap(feature_detached_xpm);
-
-                    mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
+                mergedicon =
+                    Gui::BitmapFactoryInst::mergePixmap(mergedicon,
+                                                        px,
+                                                        Gui::BitmapFactoryInst::BottomLeft);
             }
         }
     }

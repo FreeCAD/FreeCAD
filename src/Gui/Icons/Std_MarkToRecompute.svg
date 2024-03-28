@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    width="64"
    height="64"
    id="svg11300"
-   version="1.1">
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
      id="title933">Std_MarkToRecompute</title>
   <defs
@@ -435,6 +435,14 @@
        x2="22.003767"
        y2="11.384317"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient951"
+       id="linearGradient2999"
+       gradientUnits="userSpaceOnUse"
+       x1="30"
+       y1="-2"
+       x2="26"
+       y2="-26" />
   </defs>
   <metadata
      id="metadata4">
@@ -449,7 +457,7 @@
             <dc:title>[bitacovir]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:source></dc:source>
+        <dc:source />
         <cc:license
            rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
         <dc:title>Std_MarkToRecompute</dc:title>
@@ -481,16 +489,20 @@
     </rdf:RDF>
   </metadata>
   <g
+     id="g2995"
+     transform="matrix(1.2252683,0,0,1.2252683,-6.3014151,50.433086)">
+    <path
+       id="path4088"
+       d="m 15.48076,-21.246576 10.519239,10.519232 21.038474,-21.038464 7.889428,7.889424 L 25.999999,5.0515065 7.5913312,-13.357152 Z"
+       style="fill:url(#linearGradient2999);fill-opacity:1;stroke:#172a04;stroke-width:1.6323;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+    <path
+       id="path3004"
+       d="M 9.9510978,-13.350403 15.477822,-18.889628 26,-8.4375583 47.031855,-29.448573 52.57108,-23.872581 26,2.7352662 Z"
+       style="fill:none;stroke:#8ae234;stroke-width:1.6323;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+  <g
      id="layer1"
      transform="translate(0,16)">
-    <path
-       style="fill:url(#linearGradient953);fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 9.8699279,14.272787 2.9831069,27.33239 25.917989,44.955793 60.955333,-0.043222 47.950681,-12.994796 25.102292,30.951982 Z"
-       id="path943" />
-    <path
-       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 5.4899272,26.881932 4.8118488,-9.174825 15.241498,16.641466 22.691101,-43.489198 10.09375,9.25 -32.739699,42.050158 z"
-       id="path945" />
     <g
        id="g941"
        transform="matrix(0.76079494,0,0,0.76079494,16.86351,-3.1260111)">

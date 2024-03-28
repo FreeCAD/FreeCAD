@@ -2,6 +2,7 @@
     <qresource>
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/SketcherWorkbench.svg</file>
+        <file>icons/Sketcher_NotFullyConstrained.svg</file>
         <file alias="icons/preferences-sketcher.svg">icons/SketcherWorkbench.svg</file>
     </qresource>
     <qresource>
