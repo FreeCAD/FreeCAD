@@ -374,6 +374,7 @@ private:
                                   || cstr->Type == Symmetric || cstr->Type == Perpendicular
                                   || cstr->Type == Parallel || cstr->Type == Equal
                                   || cstr->Type == Angle || cstr->Type == PointOnObject
+                                  || cstr->Type == Horizontal || cstr->Type == Vertical
                                   || cstr->Type == InternalAlignment)
                                  && firstIndex >= 0 && secondIndex >= 0
                                  && thirdIndex == GeoEnum::GeoUndef) {
@@ -408,7 +409,9 @@ private:
                                 newConstr->Second = secondIndexi;
                             }
                         }
-                        else if ((cstr->Type == Block) && firstIndex >= 0) {
+                        else if ((cstr->Type == Block || cstr->Type == Horizontal
+                                  || cstr->Type == Vertical)
+                                 && firstIndex >= 0) {
                             newConstr->First = firstIndexi;
                         }
                         else {
