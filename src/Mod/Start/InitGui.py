@@ -1,35 +1,29 @@
-# ***************************************************************************
-# *   Copyright (c) 2002,2003 Juergen Riegel <juergen.riegel@web.de>        *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************/
-
-# Start gui init module
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# /**************************************************************************
+#                                                                           *
+#    Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+#                                                                           *
+#    This file is part of FreeCAD.                                          *
+#                                                                           *
+#    FreeCAD is free software: you can redistribute it and/or modify it     *
+#    under the terms of the GNU Lesser General Public License as            *
+#    published by the Free Software Foundation, either version 2.1 of the   *
+#    License, or (at your option) any later version.                        *
+#                                                                           *
+#    FreeCAD is distributed in the hope that it will be useful, but         *
+#    WITHOUT ANY WARRANTY; without even the implied warranty of             *
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+#    Lesser General Public License for more details.                        *
+#                                                                           *
+#    You should have received a copy of the GNU Lesser General Public       *
+#    License along with FreeCAD. If not, see                                *
+#    <https://www.gnu.org/licenses/>.                                       *
+#                                                                           *
+# **************************************************************************/
 
 
 class StartWorkbench(Workbench):
-    "Start workbench object"
+    "StartWorkbench workbench"
 
     def __init__(self):
         self.__class__.Icon = (
@@ -39,14 +33,19 @@ class StartWorkbench(Workbench):
         self.__class__.ToolTip = "Start workbench"
 
     def Initialize(self):
-        # load the module
         import StartGui
-        import Start
+
+    def Activated(self):
+        pass
+
+    def Deactivated(self):
+        pass
+
+    def ContextMenu(self, recipient):
+        pass
 
     def GetClassName(self):
         return "StartGui::Workbench"
 
 
 Gui.addWorkbench(StartWorkbench())
-
-FreeCAD.__unit_test__ += ["TestStartGui"]

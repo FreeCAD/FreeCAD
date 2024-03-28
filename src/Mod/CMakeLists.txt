@@ -10,10 +10,6 @@ if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
 endif(BUILD_ASSEMBLY)
 
-if(BUILD_CLEANSTART)
-    add_subdirectory(CleanStart)
-endif(BUILD_CLEANSTART)
-
 if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
@@ -119,7 +115,7 @@ if(BUILD_SPREADSHEET)
 endif(BUILD_SPREADSHEET)
 
 if(BUILD_START)
-  add_subdirectory(Start)
+    add_subdirectory(Start)
 endif(BUILD_START)
 
 if(BUILD_SURFACE)
@@ -142,5 +138,5 @@ if(BUILD_TUX)
 endif(BUILD_TUX)
 
 if(BUILD_WEB)
-  add_subdirectory(Web)
+    add_subdirectory(Web)
 endif(BUILD_WEB)

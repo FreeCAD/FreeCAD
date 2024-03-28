@@ -21,42 +21,34 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_START_EXAMPLESMODEL_H
+#define FREECAD_START_EXAMPLESMODEL_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <QAbstractListModel>
+#include <QDir>
+#include <Base/Parameter.h>
+#include <QtQml/QQmlTypeInfo>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include "DisplayedFilesModel.h"
+#include "../StartGlobal.h"
 
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+namespace Start
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
-}
 
-void CmdStart::activated(int iMsg)
+/// A model for displaying a list of files including a thumbnail or icon, plus various file
+/// statistics.
+class StartExport ExamplesModel: public DisplayedFilesModel
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+    Q_OBJECT
+public:
+    explicit ExamplesModel(QObject* parent = nullptr);
 
+    void loadExamples();
 
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+private:
+    QDir _examplesDirectory;
+};
+
+}  // namespace Start
+
+#endif  // FREECAD_START_EXAMPLESMODEL_H

@@ -21,42 +21,65 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_START_DISPLAYEDFILESMODEL_H
+#define FREECAD_START_DISPLAYEDFILESMODEL_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <QAbstractListModel>
+#include <Base/Parameter.h>
+#include <QtQml/QQmlTypeInfo>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include "../StartGlobal.h"
 
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+namespace Start
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
-}
 
-void CmdStart::activated(int iMsg)
+enum class DisplayedFilesModelRoles
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+    baseName = Qt::UserRole + 1,
+    image,
+    size,
+    author,
+    creationTime,
+    modifiedTime,
+    description,
+    company,
+    license,
+    path
+};
 
+using FileStats = std::map<DisplayedFilesModelRoles, std::string>;
 
-void CreateStartCommands()
+/// A model for displaying a list of files including a thumbnail or icon, plus various file
+/// statistics.
+class StartExport DisplayedFilesModel: public QAbstractListModel
 {
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+    Q_OBJECT
+public:
+    explicit DisplayedFilesModel(QObject* parent = nullptr);
+
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
+    void addFile(const QString& filePath);
+
+    void clear();
+
+protected:
+    /// For communication with QML, define the text version of each role name defined in the
+    /// DisplayedFilesModelRoles enumeration
+    QHash<int, QByteArray> roleNames() const override;
+
+    /// Destroy and recreate the cache of info about the files. Should be connected to a signal
+    /// indicating when some piece of information about the files has changed. Does NOT generate
+    /// a new list of files, only re-caches the existing ones.
+    void reCacheFileInfo();
+
+private:
+    std::vector<FileStats> _fileInfoCache;
+    QMap<QString, QByteArray> _imageCache;
+};
+
+}  // namespace Start
+
+#endif  // FREECAD_START_DISPLAYEDFILESMODEL_H

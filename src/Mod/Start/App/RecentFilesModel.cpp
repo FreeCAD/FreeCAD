@@ -22,41 +22,31 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include "RecentFilesModel.h"
+#include <App/Application.h>
+#include <App/ProjectFile.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+using namespace Start;
 
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+RecentFilesModel::RecentFilesModel(QObject* parent)
+    : DisplayedFilesModel(parent)
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/RecentFiles");
 }
 
-void CmdStart::activated(int iMsg)
+void RecentFilesModel::loadRecentFiles()
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
-
-
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    beginResetModel();
+    clear();
+    auto numRows {_parameterGroup->GetInt("RecentFiles", 0)};
+    for (int i = 0; i < numRows; ++i) {
+        auto entry = fmt::format("MRU{}", i);
+        auto path = _parameterGroup->GetASCII(entry.c_str(), "");
+        addFile(QString::fromStdString(path));
+    }
+    endResetModel();
 }

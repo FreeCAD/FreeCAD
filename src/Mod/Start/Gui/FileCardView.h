@@ -21,42 +21,26 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_START_FILECARDVIEW_H
+#define FREECAD_START_FILECARDVIEW_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <QListView>
 
-#include <3rdParty/GSL/include/gsl/pointers>
-
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+namespace StartGui
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
-}
 
-void CmdStart::activated(int iMsg)
+class FileCardView: public QListView
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+    Q_OBJECT
 
+public:
+    explicit FileCardView(QWidget* parent = nullptr);
 
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+    int heightForWidth(int width) const override;
+
+    QSize sizeHint() const override;
+};
+
+}  // namespace StartGui
+
+#endif  // FREECAD_START_FILECARDVIEW_H

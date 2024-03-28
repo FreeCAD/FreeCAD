@@ -21,42 +21,32 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_START_FILECARDDELEGATE_H
+#define FREECAD_START_FILECARDDELEGATE_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Base/Parameter.h>
+#include <QImage>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <QAbstractItemDelegate>
 
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+class FileCardDelegate: public QAbstractItemDelegate
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
-}
 
-void CmdStart::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+public:
+    explicit FileCardDelegate(QObject* parent = nullptr);
+
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
+               const QModelIndex& index) const override;
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
+protected:
+    QPixmap generateThumbnail(const QString& path) const;
+
+private:
+    Base::Reference<ParameterGrp> _parameterGroup;
+};
 
 
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+#endif  // FREECAD_START_FILECARDDELEGATE_H

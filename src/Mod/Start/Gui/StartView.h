@@ -21,42 +21,76 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_STARTVIEW_H
+#define FREECAD_STARTVIEW_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Mod/Start/StartGlobal.h>
+#include <Base/Type.h>
+#include <Gui/MDIView.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include "../App/DisplayedFilesModel.h"
+#include "../App/RecentFilesModel.h"
+#include "../App/ExamplesModel.h"
 
-#include "Workbench.h"
 
+class QListView;
+class QGridLayout;
+class QScrollArea;
 
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+namespace Gui
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
+class Document;
 }
 
-void CmdStart::activated(int iMsg)
+namespace StartGui
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+
+class StartGuiExport StartView: public Gui::MDIView
+{
+    Q_OBJECT
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
+
+public:
+    StartView(Gui::Document* pcDocument, QWidget* parent);
+
+    const char* getName() const override
+    {
+        return "StartView";
+    }
+
+    void newEmptyFile() const;
+    void newPartDesignFile() const;
+    void openExistingFile() const;
+    void newAssemblyFile() const;
+    void newDraftFile() const;
+    void newArchFile() const;
+
+public:
+    enum class PostStartBehavior
+    {
+        switchWorkbench,
+        doNotSwitchWorkbench
+    };
+
+protected:
+    void configureNewFileButtons(QGridLayout* layout) const;
+    static void configureFileCardWidget(QListView* fileCardWidget);
+    void configureRecentFilesListWidget(QListView* recentFilesListWidget);
+    void configureExamplesListWidget(QListView* examplesListWidget);
+
+    void postStart(PostStartBehavior behavior) const;
+
+    void fileCardSelected(const QModelIndex& index);
+
+private:
+    QScrollArea* _contents = nullptr;
+    Start::RecentFilesModel _recentFilesModel;
+    Start::ExamplesModel _examplesModel;
 
 
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+};  // namespace StartGui
+
+}  // namespace StartGui
+
+#endif  // FREECAD_STARTVIEW_H

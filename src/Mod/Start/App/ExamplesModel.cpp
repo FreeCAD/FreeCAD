@@ -22,41 +22,36 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QDir>
+#endif
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include "ExamplesModel.h"
+#include <App/Application.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+using namespace Start;
 
-#include "Workbench.h"
+FC_LOG_LEVEL_INIT(ExamplesModel)
 
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+ExamplesModel::ExamplesModel(QObject* parent)
+    : DisplayedFilesModel(parent)
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
+    auto examplesPath = QDir(QString::fromStdString(App::Application::getResourceDir()));
+    _examplesDirectory.setPath(examplesPath.filePath(QLatin1String("examples")));
 }
 
-void CmdStart::activated(int iMsg)
+void ExamplesModel::loadExamples()
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
-
-
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    beginResetModel();
+    clear();
+    if (!_examplesDirectory.isReadable()) {
+        Base::Console().Warning("Cannot read %s",
+                                _examplesDirectory.absolutePath().toStdString().c_str());
+    }
+    auto entries = _examplesDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
+                                                QDir::SortFlag::Name);
+    for (const auto& entry : entries) {
+        addFile(_examplesDirectory.filePath(entry));
+    }
+    endResetModel();
 }
