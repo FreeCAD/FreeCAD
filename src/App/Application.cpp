@@ -117,6 +117,7 @@
 #include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
+#include "PropertyVarSet.h"
 #include "PropertyPythonObject.h"
 #include "StringHasherPy.h"
 #include "StringIDPy.h"
@@ -1968,6 +1969,7 @@ void Application::initTypes()
     App::PropertyXLinkSubList       ::init();
     App::PropertyXLinkList          ::init();
     App::PropertyXLinkContainer     ::init();
+    App::PropertyVarSet             ::init();
     App::PropertyMatrix             ::init();
     App::PropertyVector             ::init();
     App::PropertyVectorDistance     ::init();

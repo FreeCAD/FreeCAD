@@ -84,7 +84,9 @@ public:
         return "Gui::ViewProviderPart";
     }
 
-
+    std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> objs) override;
+    std::vector<DocumentObject*> removeObjects(std::vector<DocumentObject*> objs) override;
+    
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
 
     /**

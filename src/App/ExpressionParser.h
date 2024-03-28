@@ -53,6 +53,7 @@ struct AppExport Expression::Component {
     Component &operator=(const Component &)=delete;
 
     void visit(ExpressionVisitor &v);
+    void rewrite(ExpressionVisitor &v);
     bool isTouched() const;
     void toString(std::ostream &ss, bool persistent) const;
     Component *copy() const;
@@ -197,6 +198,8 @@ protected:
 
     void _visit(ExpressionVisitor & v) override;
 
+    void _rewrite(ExpressionVisitor & v) override;
+
     virtual bool isCommutative() const;
 
     virtual bool isLeftAssociative() const;
@@ -224,6 +227,7 @@ public:
 protected:
     Expression * _copy() const override;
     void _visit(ExpressionVisitor & v) override;
+    void _rewrite(ExpressionVisitor & v) override;
     void _toString(std::ostream &ss, bool persistent, int indent) const override;
     Py::Object _getPyValue() const override;
 
@@ -355,7 +359,11 @@ protected:
     Py::Object _getPyValue() const override;
     Expression * _copy() const override;
     void _visit(ExpressionVisitor & v) override;
+    void _rewrite(ExpressionVisitor & v) override;
     void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Expression * _rewriteVarSetExpression(const DocumentObject *parent, const char *nameProperty,
+                                          const DocumentObject *varSet, bool add,
+                                          ExpressionVisitor &visitor) override;
 
     Function f;        /**< Function to execute */
     std::string fname;
@@ -391,6 +399,8 @@ public:
 
     void addComponent(Component* component) override;
 
+    Expression* _restoreVarSetExpression(const DocumentObject *parent, const char* nameProperty);
+
 protected:
     Expression * _copy() const override;
     Py::Object _getPyValue() const override;
@@ -404,6 +414,9 @@ protected:
     bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) override;
     bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
+    Expression* _rewriteVarSetExpression(const DocumentObject* parent, const char* nameProperty,
+                                         const DocumentObject* varSet, bool add,
+                                         ExpressionVisitor& visitor) override;
     void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
                     const App::DocumentObject *parent, App::DocumentObject *oldObj,
                     App::DocumentObject *newObj) const override;

@@ -32,6 +32,8 @@
 #include <boost/any.hpp>
 #include <FCConfig.h>
 
+#include "VarSet.h"
+
 namespace Py {
 class Object;
 }
@@ -416,6 +418,8 @@ public:
     bool operator<(const ObjectIdentifier &other) const;
 
     // Getter
+
+    VarSet* findReferencedVarSet() const;
 
     App::any getValue(bool pathValue=false, bool *isPseudoProperty=nullptr) const;
 
