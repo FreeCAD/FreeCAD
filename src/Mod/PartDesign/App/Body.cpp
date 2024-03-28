@@ -173,35 +173,22 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     }
 }
 
-bool Body::isMemberOfMultiTransform(const App::DocumentObject* obj)
-{
-    if (!obj)
-        return false;
-
-    // ORIGINAL COMMENT:
-    // This can be recognized because the Originals property is empty (it is contained
-    // in the MultiTransform instead)
-    // COMMENT ON THE COMMENT:
-    // This is wrong because at the creation (addObject) and before assigning the originals, that
-    // is when this code is executed, the originals property is indeed empty.
-    //
-    // However, for the purpose of setting the base feature, the transform feature has been modified
-    // to auto set it when the originals are not null. See:
-    // App::DocumentObjectExecReturn *Transformed::execute(void)
-    //
-    return (obj->isDerivedFrom<PartDesign::Transformed>() &&
-            static_cast<const PartDesign::Transformed*>(obj)->Originals.getValues().empty());
-}
-
 bool Body::isSolidFeature(const App::DocumentObject *obj)
 {
-    if (!obj)
+    if (!obj) {
         return false;
+    }
 
-    if (obj->isDerivedFrom<PartDesign::Feature>() &&
-        !PartDesign::Feature::isDatum(obj)) {
-        // Transformed Features inside a MultiTransform are not solid features
-        return !isMemberOfMultiTransform(obj);
+    if (obj->isDerivedFrom<PartDesign::Feature>()) {
+        if (PartDesign::Feature::isDatum(obj)) {
+            // Datum objects are not solid
+            return false;
+        }
+        if (auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(obj)) {
+            // Transformed Features inside a MultiTransform are not solid features
+            return !transFeature->isMultiTransformChild();
+        }
+        return true;
     }
     return false;//DeepSOIC: work-in-progress?
 }

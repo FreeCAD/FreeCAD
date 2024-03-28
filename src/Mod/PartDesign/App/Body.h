@@ -90,9 +90,6 @@ public:
      */
     bool isAfterInsertPoint(App::DocumentObject* feature);
 
-    /// Return true if the given feature is member of a MultiTransform feature
-    static bool isMemberOfMultiTransform(const App::DocumentObject *obj);
-
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
       * for features derived from PartDesign::Feature
