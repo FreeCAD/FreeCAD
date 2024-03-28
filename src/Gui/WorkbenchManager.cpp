@@ -127,6 +127,15 @@ Workbench* WorkbenchManager::active() const
     return _activeWorkbench;
 }
 
+std::string WorkbenchManager::activeName() const
+{
+    std::string activeWbName = "";
+    if (_activeWorkbench) {
+        activeWbName = _activeWorkbench->name();
+    }
+    return activeWbName;
+}
+
 std::list<std::string> WorkbenchManager::workbenches() const
 {
     std::list<std::string> wb;

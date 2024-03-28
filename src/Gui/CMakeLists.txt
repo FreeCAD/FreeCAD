@@ -1041,6 +1041,7 @@ SET(Widget_CPP_SRCS
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
+    WorkbenchSelector.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1061,6 +1062,7 @@ SET(Widget_HPP_SRCS
     WidgetFactory.h
     Widgets.h
     Window.h
+    WorkbenchSelector.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}

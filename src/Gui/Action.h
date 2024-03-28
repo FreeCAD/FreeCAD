@@ -153,7 +153,6 @@ public:
     int checkedAction() const;
     void setCheckedAction(int);
 
-protected:
     QActionGroup* groupAction() const {
         return _group;
     }
@@ -180,22 +179,6 @@ private:
     Q_DISABLE_COPY(ActionGroup)
 };
 
-// --------------------------------------------------------------------
-class GuiExport WorkbenchComboBox : public QComboBox
-{
-    Q_OBJECT
-
-public:
-    explicit WorkbenchComboBox(QWidget* parent=nullptr);
-    void showPopup() override;
-
-public Q_SLOTS:
-    void refreshList(QList<QAction*>);
-
-private:
-    Q_DISABLE_COPY(WorkbenchComboBox)
-};
-
 /**
  * The WorkbenchGroup class represents a list of workbenches. When it is added
  * to a menu a submenu gets created, if added to a toolbar a combo box gets created.
@@ -216,6 +199,9 @@ public:
 
     void slotActivateWorkbench(const char*);
 
+    QList<QAction*> getEnabledWbActions() const;
+    QList<QAction*> getDisabledWbActions() const;
+
 Q_SIGNALS:
     void workbenchListRefreshed(QList<QAction*>);
 
@@ -223,6 +209,9 @@ protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
 
 private:
+    QList<QAction*> enabledWbsActions;
+    QList<QAction*> disabledWbsActions;
+
     Q_DISABLE_COPY(WorkbenchGroup)
 };
 

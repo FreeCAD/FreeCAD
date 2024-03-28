@@ -92,6 +92,39 @@ after FreeCAD launches</string>
       <number>0</number>
      </property>
      <item>
+      <widget class="QLabel" name="WorkbenchSelectorTypeLabel">
+       <property name="text">
+        <string>Workbench selector type:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="WorkbenchSelectorType">
+       <property name="toolTip">
+        <string>Choose the workbench selector widget type (restart required).</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
       <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
        <property name="text">
         <string>Workbench selector position:</string>
@@ -111,7 +144,40 @@ after FreeCAD launches</string>
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="WorkbenchSelectorItemLabel">
+       <property name="text">
+        <string>Workbench selector items style:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="WorkbenchSelectorItem">
+       <property name="toolTip">
+        <string>Customize how the items are displayed.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="6" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_WbByTab">
      <property name="toolTip">
       <string>If checked, application will remember which workbench is active for each tab of the viewport</string>
