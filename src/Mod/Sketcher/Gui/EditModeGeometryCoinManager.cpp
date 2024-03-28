@@ -124,10 +124,27 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                                       bool issketchinvalid)
 {
     // Lambdas for convenience retrieval of geometry information
-    auto isDefinedGeomPoint = [&geolistfacade](int GeoId) {
+    auto isDefinedGeomPoint = [&geolistfacade](int GeoId, Sketcher::PointPos PosId) {
         auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
         if (geom) {
-            return geom->isGeoType(Part::GeomPoint::getClassTypeId()) && !geom->getConstruction();
+            bool isStartOrEnd =
+                PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end;
+            return isStartOrEnd && !geom->getConstruction();
+        }
+        return false;
+    };
+
+    auto isCoincident = [&](int GeoId, Sketcher::PointPos PosId) {
+        const std::vector<Sketcher::Constraint*>& constraints =
+            ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+        for (auto& constr : constraints) {
+            if (constr->Type == Coincident
+                || (constr->Type == Tangent && constr->FirstPos != Sketcher::PointPos::none)) {
+                if ((constr->First == GeoId && constr->FirstPos == PosId)
+                    || (constr->Second == GeoId && constr->SecondPos == PosId)) {
+                    return true;
+                }
+            }
         }
         return false;
     };
@@ -172,42 +189,63 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         SbVec3f* pverts = editModeScenegraphNodes.PointsCoordinate[l]->point.startEditing();
 
         // colors of the point set
-        if (issketchinvalid) {
-            for (int i = 0; i < PtNum; i++) {
-                pcolor[i] = drawingParameters.InvalidSketchColor;
-            }
-        }
-        else {
+        for (int i = 0; i < PtNum; i++) {
+            int GeoId = coinMapping.getPointGeoId(i, l);
+            Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
+            bool isExternal = GeoId < -1;
 
-            for (int i = 0; i < PtNum; i++) {
-                if (!(i == 0 && l == 0) && sketchFullyConstrained) {  // root point is not coloured
-                    pcolor[i] = drawingParameters.FullyConstrainedColor;
+            if (isExternal) {
+                if (isCoincident(GeoId, PosId) && !issketchinvalid) {
+                    pcolor[i] = drawingParameters.ConstrIcoColor;
                 }
                 else {
-                    int GeoId = coinMapping.getPointGeoId(i, l);
+                    pcolor[i] = drawingParameters.CurveExternalColor;
+                }
+            }
+            else if (issketchinvalid) {
+                pcolor[i] = drawingParameters.InvalidSketchColor;
+            }
+            else if (!(i == 0 && l == 0) && sketchFullyConstrained) {
+                // root point is not coloured nor external
+                pcolor[i] = drawingParameters.FullyConstrainedColor;
+            }
+            else {
+                bool constrainedElement = isFullyConstraintElement(GeoId);
 
-                    bool constrainedElement = isFullyConstraintElement(GeoId);
-
-                    if (isInternalAlignedGeom(GeoId)) {
-                        if (constrainedElement) {
-                            pcolor[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
+                if (isInternalAlignedGeom(GeoId)) {
+                    if (constrainedElement) {
+                        pcolor[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
+                    }
+                    else {
+                        if (isCoincident(GeoId, PosId)) {
+                            pcolor[i] = drawingParameters.ConstrIcoColor;
                         }
                         else {
                             pcolor[i] = drawingParameters.InternalAlignedGeoColor;
                         }
                     }
-                    else {
-                        if (!isDefinedGeomPoint(GeoId)) {
-                            if (constrainedElement) {
-                                pcolor[i] = drawingParameters.FullyConstraintConstructionPointColor;
+                }
+                else {
+                    if (!isDefinedGeomPoint(GeoId, PosId)) {
+                        if (constrainedElement) {
+                            pcolor[i] = drawingParameters.FullyConstraintConstructionElementColor;
+                        }
+                        else {
+                            if (isCoincident(GeoId, PosId)) {
+                                pcolor[i] = drawingParameters.ConstrIcoColor;
                             }
                             else {
-                                pcolor[i] = drawingParameters.VertexColor;
+                                pcolor[i] = drawingParameters.CurveDraftColor;
                             }
                         }
-                        else {  // this is a defined GeomPoint
-                            if (constrainedElement) {
-                                pcolor[i] = drawingParameters.FullyConstraintElementColor;
+                    }
+                    else {  // this is a defined GeomPoint
+                        if (constrainedElement) {
+                            pcolor[i] = drawingParameters.FullyConstraintElementColor;
+                        }
+                        else {
+                            if (isCoincident(GeoId, PosId)) {
+                                pcolor[i] = drawingParameters.ConstrIcoColor;
                             }
                             else {
                                 pcolor[i] = drawingParameters.CurveColor;
@@ -237,30 +275,40 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
         float zNormPoint = getRenderHeight(DrawingParameters::GeometryRendering::NormalGeometry,
                                            drawingParameters.zHighPoints,
-                                           drawingParameters.zLowPoints,
-                                           drawingParameters.zLowPoints);
+                                           drawingParameters.zMidPoints,
+                                           drawingParameters.zMidPoints);
 
         float zConstrPoint = getRenderHeight(DrawingParameters::GeometryRendering::Construction,
                                              drawingParameters.zHighPoints,
-                                             drawingParameters.zLowPoints,
-                                             drawingParameters.zLowPoints);
+                                             drawingParameters.zMidPoints,
+                                             drawingParameters.zMidPoints);
 
         for (int i = 0; i < PtNum; i++) {  // 0 is the origin
             if (i == 0 && l == 0) {        // reset root point to lowest
                 pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
             }
             else {
+                int GeoId = coinMapping.getPointGeoId(i, l);
+                Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
                 pverts[i].getValue(x, y, z);
-                auto geom =
-                    geolistfacade.getGeometryFacadeFromGeoId(coinMapping.getPointGeoId(i, l));
+                auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+                bool isExternal = GeoId < -1;
 
                 if (geom) {
-                    if (geom->getConstruction()) {
-                        pverts[i].setValue(x, y, viewOrientationFactor * zConstrPoint);
+                    z = viewOrientationFactor * zNormPoint;
+
+                    if (isCoincident(GeoId, PosId)) {
+                        z = viewOrientationFactor * drawingParameters.zLowPoints;
                     }
                     else {
-                        pverts[i].setValue(x, y, viewOrientationFactor * zNormPoint);
+                        if (isExternal) {
+                            z = viewOrientationFactor * drawingParameters.zRootPoint;
+                        }
+                        else if (geom->getConstruction()) {
+                            z = viewOrientationFactor * zConstrPoint;
+                        }
                     }
+                    pverts[i].setValue(x, y, z);
                 }
             }
         }
