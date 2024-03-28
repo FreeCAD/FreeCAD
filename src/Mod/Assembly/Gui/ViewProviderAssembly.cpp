@@ -107,7 +107,7 @@ bool ViewProviderAssembly::doubleClicked()
     if (isInEditMode()) {
         // Part is already 'Active' so we exit edit mode.
         // Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Application::Instance->activeDocument()->resetEdit();
+        getDocument()->resetEdit();
     }
     else {
         // assure the Assembly workbench
@@ -121,7 +121,7 @@ bool ViewProviderAssembly::doubleClicked()
         }
 
         // Part is not 'Active' so we enter edit mode to make it so.
-        Gui::Application::Instance->activeDocument()->setEdit(this);
+        getDocument()->setEdit(this);
     }
 
     return true;
@@ -183,10 +183,11 @@ bool ViewProviderAssembly::setEdit(int ModNum)
 
     // Set the part as 'Activated' ie bold in the tree.
     Gui::Command::doCommand(Gui::Command::Gui,
-                            "Gui.ActiveDocument.ActiveView.setActiveObject('%s', "
-                            "App.getDocument('%s').getObject('%s'))",
-                            PARTKEY,
+                            "appDoc = App.getDocument('%s')\n"
+                            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
+                            "appDoc.getObject('%s'))",
                             this->getObject()->getDocument()->getName(),
+                            PARTKEY,
                             this->getObject()->getNameInDocument());
 
     // When we set edit, we update the grounded joints placements to support :
@@ -214,11 +215,7 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
     detachSelection();
 
     // Check if the view is still active before trying to deactivate the assembly.
-    auto doc = getDocument();
-    if (!doc) {
-        return;
-    }
-    auto activeView = doc->getActiveView();
+    auto activeView = getDocument()->getActiveView();
     if (!activeView) {
         return;
     }
@@ -279,11 +276,7 @@ bool ViewProviderAssembly::isInEditMode() const
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
-    auto activeDoc = Gui::Application::Instance->activeDocument();
-    if (!activeDoc) {
-        activeDoc = getDocument();
-    }
-    auto activeView = activeDoc->getActiveView();
+    auto activeView = getDocument()->getActiveView();
     if (!activeView) {
         return nullptr;
     }
@@ -467,13 +460,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     // App::Part
     //  If any, put them into the vector docsToMove and return true.
     //  Get the document
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-
     docsToMove.clear();
-
-    if (!doc) {
-        return false;
-    }
 
     // Get the assembly object for this ViewProvider
     AssemblyObject* assemblyPart = static_cast<AssemblyObject*>(getObject());
@@ -586,7 +573,7 @@ std::vector<std::string> ViewProviderAssembly::parseSubNames(std::string& subNam
 
 App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std::string>& subNames)
 {
-    App::Document* appDoc = App::GetApplication().getActiveDocument();
+    App::Document* appDoc = getObject()->getDocument();
 
     std::string objName;
     if (subNames.size() < 2) {
@@ -807,12 +794,9 @@ void ViewProviderAssembly::endMove()
     movingJoint = nullptr;
 
     // enable selection after the move
-    auto* view = dynamic_cast<Gui::View3DInventor*>(
-        Gui::Application::Instance->editDocument()->getActiveView());
+    auto* view = dynamic_cast<Gui::View3DInventor*>(getDocument()->getActiveView());
     if (view) {
-        Gui::View3DInventorViewer* viewerNotConst;
-        viewerNotConst = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        viewerNotConst->setSelectionEnabled(true);
+        view->getViewer()->setSelectionEnabled(true);
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
