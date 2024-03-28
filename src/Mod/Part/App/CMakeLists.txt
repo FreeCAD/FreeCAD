@@ -556,6 +556,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    WireJoiner.cpp
+    WireJoiner.h
 )
 
 if(FREECAD_USE_PCH)
