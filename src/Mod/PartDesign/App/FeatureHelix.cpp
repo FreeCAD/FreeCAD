@@ -382,7 +382,7 @@ TopoDS_Shape Helix::generateHelixPath()
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double startOffset = 10000.0 * std::fabs(baseVector * axisVector);
+    double startOffset = 10000.0 * std::fabs(profileCenter * axisVector - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
