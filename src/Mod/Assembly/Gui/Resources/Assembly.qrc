@@ -10,6 +10,10 @@
         <file>icons/Assembly_CreateJointRevolute.svg</file>
         <file>icons/Assembly_CreateJointSlider.svg</file>
         <file>icons/Assembly_CreateJointTangent.svg</file>
+        <file>icons/Assembly_CreateJointGears.svg</file>
+        <file>icons/Assembly_CreateJointPulley.svg</file>
+        <file>icons/Assembly_CreateJointRackPinion.svg</file>
+        <file>icons/Assembly_CreateJointScrew.svg</file>
         <file>icons/Assembly_ExportASMT.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
         <file>icons/Assembly_JointGroup.svg</file>
