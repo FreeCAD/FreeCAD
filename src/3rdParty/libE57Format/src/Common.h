@@ -27,10 +27,7 @@
 
 #pragma once
 
-#include <iomanip>
-#include <iostream>
 #include <set>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -45,130 +42,32 @@
 #pragma warning( disable : 4224 )
 #endif
 
+// Used to mark unused parameters to indicate intent and suppress warnings.
+#define UNUSED( expr ) (void)( expr )
+
+// For readability of preprocessor using E57_VALIDATION_LEVEL
+#define VALIDATION_OFF 0
+#define VALIDATION_BASIC 1
+#define VALIDATION_DEEP 2
+
+#define VALIDATE_BASIC ( E57_VALIDATION_LEVEL > VALIDATION_OFF )
+#define VALIDATE_DEEP ( E57_VALIDATION_LEVEL > VALIDATION_BASIC )
+
+// Determine if we are building 32 or 64 bit
+#if SIZE_MAX == UINT32_MAX
+#define E57_32_BIT
+#elif SIZE_MAX == UINT64_MAX
+#define E57_64_BIT
+#endif
+
 namespace e57
 {
-//!!! inline these rather than macros?
-#define E57_EXCEPTION1( ecode )                                                                                        \
-   ( E57Exception( ( ecode ), ustring(), __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) ) )
-#define E57_EXCEPTION2( ecode, context )                                                                               \
-   ( E57Exception( ( ecode ), ( context ), __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) ) )
-
-   /// Create whitespace of given length, for indenting printouts in dump()
-   /// functions
-   inline std::string space( size_t n )
-   {
-      return ( std::string( n, ' ' ) );
-   }
-
-   /// Convert number to decimal, hexadecimal, and binary strings  (Note hex
-   /// strings don't have leading zeros).
-   template <class T> std::string toString( T x )
-   {
-      std::ostringstream ss;
-      ss << x;
-      return ( ss.str() );
-   }
-
-   inline std::string hexString( uint64_t x )
-   {
-      std::ostringstream ss;
-      ss << "0x" << std::hex << std::setw( 16 ) << std::setfill( '0' ) << x;
-      return ( ss.str() );
-   }
-   inline std::string hexString( uint32_t x )
-   {
-      std::ostringstream ss;
-      ss << "0x" << std::hex << std::setw( 8 ) << std::setfill( '0' ) << x;
-      return ( ss.str() );
-   }
-   inline std::string hexString( uint16_t x )
-   {
-      std::ostringstream ss;
-      ss << "0x" << std::hex << std::setw( 4 ) << std::setfill( '0' ) << x;
-      return ( ss.str() );
-   }
-   inline std::string hexString( uint8_t x )
-   {
-      std::ostringstream ss;
-      ss << "0x" << std::hex << std::setw( 2 ) << std::setfill( '0' ) << static_cast<unsigned>( x );
-      return ( ss.str() );
-   }
-   inline std::string binaryString( uint64_t x )
-   {
-      std::ostringstream ss;
-      for ( int i = 63; i >= 0; i-- )
-      {
-         ss << ( ( x & ( 1LL << i ) ) ? 1 : 0 );
-         if ( i > 0 && i % 8 == 0 )
-            ss << " ";
-      }
-      return ( ss.str() );
-   }
-   inline std::string binaryString( uint32_t x )
-   {
-      std::ostringstream ss;
-      for ( int i = 31; i >= 0; i-- )
-      {
-         ss << ( ( x & ( 1LL << i ) ) ? 1 : 0 );
-         if ( i > 0 && i % 8 == 0 )
-            ss << " ";
-      }
-      return ( ss.str() );
-   }
-   inline std::string binaryString( uint16_t x )
-   {
-      std::ostringstream ss;
-      for ( int i = 15; i >= 0; i-- )
-      {
-         ss << ( ( x & ( 1LL << i ) ) ? 1 : 0 );
-         if ( i > 0 && i % 8 == 0 )
-            ss << " ";
-      }
-      return ( ss.str() );
-   }
-   inline std::string binaryString( uint8_t x )
-   {
-      std::ostringstream ss;
-      for ( int i = 7; i >= 0; i-- )
-      {
-         ss << ( ( x & ( 1LL << i ) ) ? 1 : 0 );
-         if ( i > 0 && i % 8 == 0 )
-            ss << " ";
-      }
-      return ( ss.str() );
-   }
-   inline std::string hexString( int64_t x )
-   {
-      return ( hexString( static_cast<uint64_t>( x ) ) );
-   }
-   inline std::string hexString( int32_t x )
-   {
-      return ( hexString( static_cast<uint32_t>( x ) ) );
-   }
-   inline std::string hexString( int16_t x )
-   {
-      return ( hexString( static_cast<uint16_t>( x ) ) );
-   }
-   inline std::string hexString( int8_t x )
-   {
-      return ( hexString( static_cast<uint8_t>( x ) ) );
-   }
-   inline std::string binaryString( int64_t x )
-   {
-      return ( binaryString( static_cast<uint64_t>( x ) ) );
-   }
-   inline std::string binaryString( int32_t x )
-   {
-      return ( binaryString( static_cast<uint32_t>( x ) ) );
-   }
-   inline std::string binaryString( int16_t x )
-   {
-      return ( binaryString( static_cast<uint16_t>( x ) ) );
-   }
-   inline std::string binaryString( int8_t x )
-   {
-      return ( binaryString( static_cast<uint8_t>( x ) ) );
-   }
+#define E57_EXCEPTION1( ecode )                                                                    \
+   ( E57Exception( ( ecode ), ustring(), __FILE__, __LINE__,                                       \
+                   static_cast<const char *>( __FUNCTION__ ) ) )
+#define E57_EXCEPTION2( ecode, context )                                                           \
+   ( E57Exception( ( ecode ), ( context ), __FILE__, __LINE__,                                     \
+                   static_cast<const char *>( __FUNCTION__ ) ) )
 
    using ImageFileImplSharedPtr = std::shared_ptr<class ImageFileImpl>;
    using ImageFileImplWeakPtr = std::weak_ptr<class ImageFileImpl>;
@@ -178,6 +77,6 @@ namespace e57
    using StringList = std::vector<std::string>;
    using StringSet = std::set<std::string>;
 
-   //! generates a new random GUID
+   /// generates a new random GUID
    std::string generateRandomGUID();
 }

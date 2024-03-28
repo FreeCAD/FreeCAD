@@ -29,13 +29,12 @@
 
 #include "CheckedFile.h"
 #include "Packet.h"
+#include "StringFunctions.h"
 
 using namespace e57;
 
-struct IndexPacket
+struct IndexPacketHeader
 {
-   static constexpr unsigned MAX_ENTRIES = 2048;
-
    const uint8_t packetType = INDEX_PACKET;
 
    uint8_t packetFlags = 0; // flag bitfields
@@ -43,6 +42,13 @@ struct IndexPacket
    uint16_t entryCount = 0;
    uint8_t indexLevel = 0;
    uint8_t reserved1[9] = {}; // must be zero
+};
+
+struct IndexPacket
+{
+   IndexPacketHeader header;
+
+   static constexpr unsigned MAX_ENTRIES = 2048;
 
    struct IndexPacketEntry
    {
@@ -50,9 +56,10 @@ struct IndexPacket
       uint64_t chunkPhysicalOffset = 0;
    } entries[MAX_ENTRIES];
 
-   void verify( unsigned bufferLength = 0, uint64_t totalRecordCount = 0, uint64_t fileSize = 0 ) const;
+   void verify( unsigned bufferLength = 0, uint64_t totalRecordCount = 0,
+                uint64_t fileSize = 0 ) const;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void dump( int indent = 0, std::ostream &os = std::cout ) const;
 #endif
 };
@@ -66,7 +73,7 @@ struct EmptyPacketHeader
 
    void verify( unsigned bufferLength = 0 ) const; //???use
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void dump( int indent = 0, std::ostream &os = std::cout ) const;
 #endif
 };
@@ -74,62 +81,64 @@ struct EmptyPacketHeader
 //=============================================================================
 // PacketReadCache
 
-PacketReadCache::PacketReadCache( CheckedFile *cFile, unsigned packetCount ) : cFile_( cFile ), entries_( packetCount )
+PacketReadCache::PacketReadCache( CheckedFile *cFile, unsigned packetCount ) :
+   cFile_( cFile ), entries_( packetCount )
 {
    if ( packetCount == 0 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "packetCount=" + toString( packetCount ) );
+      throw E57_EXCEPTION2( ErrorInternal, "packetCount=" + toString( packetCount ) );
    }
 }
 
 std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset, char *&pkt )
 {
-#ifdef E57_MAX_VERBOSE
-   std::cout << "PacketReadCache::lock() called, packetLogicalOffset=" << packetLogicalOffset << std::endl;
+#ifdef E57_VERBOSE
+   std::cout << "PacketReadCache::lock() called, packetLogicalOffset=" << packetLogicalOffset
+             << std::endl;
 #endif
 
-   /// Only allow one locked packet at a time.
+   // Only allow one locked packet at a time.
    if ( lockCount_ > 0 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "lockCount=" + toString( lockCount_ ) );
+      throw E57_EXCEPTION2( ErrorInternal, "lockCount=" + toString( lockCount_ ) );
    }
 
-   /// Offset can't be 0
+   // Offset can't be 0
    if ( packetLogicalOffset == 0 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "packetLogicalOffset=" + toString( packetLogicalOffset ) );
+      throw E57_EXCEPTION2( ErrorInternal,
+                            "packetLogicalOffset=" + toString( packetLogicalOffset ) );
    }
 
-   /// Linear scan for matching packet offset in cache
+   // Linear scan for matching packet offset in cache
    for ( unsigned i = 0; i < entries_.size(); ++i )
    {
       auto &entry = entries_[i];
 
       if ( packetLogicalOffset == entry.logicalOffset_ )
       {
-         /// Found a match, so don't have to read anything
-#ifdef E57_MAX_VERBOSE
+         // Found a match, so don't have to read anything
+#ifdef E57_VERBOSE
          std::cout << "  Found matching cache entry, index=" << i << std::endl;
 #endif
-         /// Mark entry with current useCount (keeps track of age of entry).
+         // Mark entry with current useCount (keeps track of age of entry).
          entry.lastUsed_ = ++useCount_;
 
-         /// Publish buffer address to caller
+         // Publish buffer address to caller
          pkt = entry.buffer_;
 
-         /// Create lock so we are sure that we will be unlocked when use is
-         /// finished.
+         // Create lock so we are sure that we will be unlocked when use is finished.
          std::unique_ptr<PacketLock> plock( new PacketLock( this, i ) );
 
-         /// Increment cache lock just before return
+         // Increment cache lock just before return
          ++lockCount_;
 
          return plock;
       }
    }
-   /// Get here if didn't find a match already in cache.
+   // Get here if didn't find a match already in cache.
 
-   /// Find least recently used (LRU) packet buffer
+   // Find least recently used (LRU) packet buffer
    unsigned oldestEntry = 0;
    unsigned oldestUsed = entries_.at( 0 ).lastUsed_;
 
@@ -143,19 +152,19 @@ std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset,
          oldestUsed = entry.lastUsed_;
       }
    }
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "  Oldest entry=" << oldestEntry << " lastUsed=" << oldestUsed << std::endl;
 #endif
 
    readPacket( oldestEntry, packetLogicalOffset );
 
-   /// Publish buffer address to caller
+   // Publish buffer address to caller
    pkt = entries_[oldestEntry].buffer_;
 
-   /// Create lock so we are sure we will be unlocked when use is finished.
+   // Create lock so we are sure we will be unlocked when use is finished.
    std::unique_ptr<PacketLock> plock( new PacketLock( this, oldestEntry ) );
 
-   /// Increment cache lock just before return
+   // Increment cache lock just before return
    ++lockCount_;
 
    return plock;
@@ -163,15 +172,16 @@ std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset,
 
 void PacketReadCache::unlock( unsigned cacheIndex )
 {
-   (void)cacheIndex;
    //??? why lockedEntry not used?
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "PacketReadCache::unlock() called, cacheIndex=" << cacheIndex << std::endl;
+#else
+   UNUSED( cacheIndex );
 #endif
 
    if ( lockCount_ != 1 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "lockCount=" + toString( lockCount_ ) );
+      throw E57_EXCEPTION2( ErrorInternal, "lockCount=" + toString( lockCount_ ) );
    }
 
    --lockCount_;
@@ -179,35 +189,34 @@ void PacketReadCache::unlock( unsigned cacheIndex )
 
 void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOffset )
 {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "PacketReadCache::readPacket() called, oldestEntry=" << oldestEntry
              << " packetLogicalOffset=" << packetLogicalOffset << std::endl;
 #endif
 
-   /// Read header of packet first to get length.  Use EmptyPacketHeader since
-   /// it has the fields common to all packets.
+   // Read header of packet first to get length.  Use EmptyPacketHeader since  it has the fields
+   // common to all packets.
    EmptyPacketHeader header;
 
    cFile_->seek( packetLogicalOffset, CheckedFile::Logical );
    cFile_->read( reinterpret_cast<char *>( &header ), sizeof( header ) );
 
-   /// Can't verify packet header here, because it is not really an
-   /// EmptyPacketHeader.
+   // Can't verify packet header here, because it is not really an EmptyPacketHeader.
    unsigned packetLength = header.packetLogicalLengthMinus1 + 1;
 
-   /// Be paranoid about packetLength before read
+   // Be paranoid about packetLength before read
    if ( packetLength > DATA_PACKET_MAX )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetLength=" + toString( packetLength ) );
    }
 
    auto &entry = entries_.at( oldestEntry );
 
-   /// Now read in whole packet into preallocated buffer_.  Note buffer is
+   // Now read in whole packet into preallocated buffer_.  Note buffer is
    cFile_->seek( packetLogicalOffset, CheckedFile::Logical );
    cFile_->read( entry.buffer_, packetLength );
 
-   /// Verify that packet is good.
+   // Verify that packet is good.
    switch ( header.packetType )
    {
       case DATA_PACKET:
@@ -215,7 +224,7 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto dpkt = reinterpret_cast<DataPacket *>( entry.buffer_ );
 
          dpkt->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
          std::cout << "  data packet:" << std::endl;
          dpkt->dump( 4 ); //???
 #endif
@@ -226,7 +235,7 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto ipkt = reinterpret_cast<IndexPacket *>( entry.buffer_ );
 
          ipkt->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
          std::cout << "  index packet:" << std::endl;
          ipkt->dump( 4 ); //???
 #endif
@@ -237,24 +246,24 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto hp = reinterpret_cast<EmptyPacketHeader *>( entry.buffer_ );
 
          hp->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
          std::cout << "  empty packet:" << std::endl;
          hp->dump( 4 ); //???
 #endif
       }
       break;
       default:
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "packetType=" + toString( header.packetType ) );
+         throw E57_EXCEPTION2( ErrorInternal, "packetType=" + toString( header.packetType ) );
    }
 
    entry.logicalOffset_ = packetLogicalOffset;
 
-   /// Mark entry with current useCount (keeps track of age of entry).
-   /// This is a cache, so a small hiccup when useCount_ overflows won't hurt.
+   // Mark entry with current useCount (keeps track of age of entry).
+   // This is a cache, so a small hiccup when useCount_ overflows won't hurt.
    entry.lastUsed_ = ++useCount_;
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void PacketReadCache::dump( int indent, std::ostream &os )
 {
    os << space( indent ) << "lockCount: " << lockCount_ << std::endl;
@@ -290,9 +299,9 @@ void PacketReadCache::dump( int indent, std::ostream &os )
             break;
             default:
                throw E57_EXCEPTION2(
-                  E57_ERROR_INTERNAL,
-                  "packetType=" +
-                     toString( reinterpret_cast<EmptyPacketHeader *>( entries_.at( i ).buffer_ )->packetType ) );
+                  ErrorInternal, "packetType=" + toString( reinterpret_cast<EmptyPacketHeader *>(
+                                                              entries_.at( i ).buffer_ )
+                                                              ->packetType ) );
          }
       }
    }
@@ -302,21 +311,22 @@ void PacketReadCache::dump( int indent, std::ostream &os )
 //=============================================================================
 // PacketLock
 
-PacketLock::PacketLock( PacketReadCache *cache, unsigned cacheIndex ) : cache_( cache ), cacheIndex_( cacheIndex )
+PacketLock::PacketLock( PacketReadCache *cache, unsigned cacheIndex ) :
+   cache_( cache ), cacheIndex_( cacheIndex )
 {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "PacketLock() called" << std::endl;
 #endif
 }
 
 PacketLock::~PacketLock()
 {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "~PacketLock() called" << std::endl;
 #endif
    try
    {
-      /// Note cache must live longer than lock, this is reasonable assumption.
+      // Note cache must live longer than lock, this is reasonable assumption.
       cache_->unlock( cacheIndex_ );
    }
    catch ( ... )
@@ -330,8 +340,7 @@ PacketLock::~PacketLock()
 
 DataPacketHeader::DataPacketHeader()
 {
-   /// Double check that packet struct is correct length.  Watch out for RTTI
-   /// increasing the size.
+   // Double check that packet struct is correct length.  Watch out for RTTI increasing the size.
    static_assert( sizeof( DataPacketHeader ) == 6, "Unexpected size of DataPacketHeader" );
 }
 
@@ -344,54 +353,60 @@ void DataPacketHeader::reset()
 
 void DataPacketHeader::verify( unsigned bufferLength ) const
 {
-   /// Verify that packet is correct type
+   // Verify that packet is correct type
+   // cppcheck-suppress knownConditionTrueFalse; (data is read as a blob, so the const might not
+   // be valid)
    if ( packetType != DATA_PACKET )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetType=" + toString( packetType ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "expected Data; packetType=" + toString( packetType ) );
    }
 
-   /// ??? check reserved flags zero?
+   // ??? check reserved flags zero?
 
-   /// Check packetLength is at least large enough to hold header
+   // Check packetLength is at least large enough to hold header
    unsigned packetLength = packetLogicalLengthMinus1 + 1;
    if ( packetLength < sizeof( *this ) )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "DATA; packetLength=" + toString( packetLength ) );
    }
 
-   /// Check packet length is multiple of 4
+   // Check packet length is multiple of 4
    if ( packetLength % 4 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "DATA; packetLength=" + toString( packetLength ) );
    }
 
-   /// Check actual packet length is large enough.
+   // Check actual packet length is large enough.
    if ( bufferLength > 0 && packetLength > bufferLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "packetLength=" + toString( packetLength ) + " bufferLength=" + toString( bufferLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "DATA; packetLength=" + toString( packetLength ) +
+                                                 " bufferLength=" + toString( bufferLength ) );
    }
 
-   /// Make sure there is at least one entry in packet  ??? 0 record cvect
-   /// allowed?
-   if ( bytestreamCount == 0 )
+   // Make sure there is at least one entry in packet
+   if ( hasRecords() && ( bytestreamCount == 0 ) )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "bytestreamCount=" + toString( bytestreamCount ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "DATA; bytestreamCount=" + toString( bytestreamCount ) );
    }
 
-   /// Check packet is at least long enough to hold bytestreamBufferLength array
-   if ( sizeof( DataPacketHeader ) + 2 * bytestreamCount > packetLength )
+   // Check packet is at least long enough to hold bytestreamBufferLength array
+   if ( ( sizeof( DataPacketHeader ) + 2 * bytestreamCount ) > packetLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) +
-                                                        " bytestreamCount=" + toString( bytestreamCount ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "DATA; packetLength=" + toString( packetLength ) +
+                               " bytestreamCount=" + toString( bytestreamCount ) );
    }
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void DataPacketHeader::dump( int indent, std::ostream &os ) const
 {
-   os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
-   os << space( indent ) << "packetFlags:               " << static_cast<unsigned>( packetFlags ) << std::endl;
+   os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType )
+      << std::endl;
+   os << space( indent ) << "packetFlags:               " << static_cast<unsigned>( packetFlags )
+      << std::endl;
    os << space( indent ) << "packetLogicalLengthMinus1: " << packetLogicalLengthMinus1 << std::endl;
    os << space( indent ) << "bytestreamCount:           " << bytestreamCount << std::endl;
 }
@@ -402,9 +417,8 @@ void DataPacketHeader::dump( int indent, std::ostream &os ) const
 
 DataPacket::DataPacket()
 {
-   /// Double check that packet struct is correct length.  Watch out for RTTI
-   /// increasing the size.
-   static_assert( sizeof( DataPacket ) == 64 * 1024, "Unexpected size of DataPacket" );
+   // Double check that packet struct is correct length.  Watch out for RTTI increasing the size.
+   static_assert( sizeof( DataPacket ) == ( 64 * 1024 ), "Unexpected size of DataPacket" );
 }
 
 void DataPacket::verify( unsigned bufferLength ) const
@@ -413,12 +427,12 @@ void DataPacket::verify( unsigned bufferLength ) const
    // checking?  need to check
    // file version#?
 
-   /// Verify header is good
+   // Verify header is good
    auto hp = reinterpret_cast<const DataPacketHeader *>( this );
 
    hp->verify( bufferLength );
 
-   /// Calc sum of lengths of each bytestream buffer in this packet
+   // Calc sum of lengths of each bytestream buffer in this packet
    auto bsbLength = reinterpret_cast<const uint16_t *>( &payload[0] );
    unsigned totalStreamByteCount = 0;
 
@@ -427,90 +441,93 @@ void DataPacket::verify( unsigned bufferLength ) const
       totalStreamByteCount += bsbLength[i];
    }
 
-   /// Calc size of packet needed
+   // Calc size of packet needed
    const unsigned packetLength = header.packetLogicalLengthMinus1 + 1;
-   const unsigned needed = sizeof( DataPacketHeader ) + 2 * header.bytestreamCount + totalStreamByteCount;
-#ifdef E57_MAX_VERBOSE
+   const unsigned needed =
+      sizeof( DataPacketHeader ) + 2 * header.bytestreamCount + totalStreamByteCount;
+#ifdef E57_VERBOSE
    std::cout << "needed=" << needed << " actual=" << packetLength << std::endl; //???
 #endif
 
-   /// If needed is not with 3 bytes of actual packet size, have an error
+   // If needed is not with 3 bytes of actual packet size, have an error
    if ( needed > packetLength || needed + 3 < packetLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "needed=" + toString( needed ) + "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "DATA; needed=" + toString( needed ) +
+                                                 " packetLength=" + toString( packetLength ) );
    }
 
-   /// Verify that padding at end of packet is zero
+   // Verify that padding at end of packet is zero
    for ( unsigned i = needed; i < packetLength; i++ )
    {
       if ( reinterpret_cast<const char *>( this )[i] != 0 )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "i=" + toString( i ) );
+         throw E57_EXCEPTION2( ErrorBadCVPacket, "DATA; i=" + toString( i ) );
       }
    }
 }
 
 char *DataPacket::getBytestream( unsigned bytestreamNumber, unsigned &byteCount )
 {
-#ifdef E57_MAX_VERBOSE
+#ifdef E57_VERBOSE
    std::cout << "getBytestream called, bytestreamNumber=" << bytestreamNumber << std::endl;
 #endif
 
-   /// Verify that packet is correct type
+   // Verify that packet is correct type
    if ( header.packetType != DATA_PACKET )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetType=" + toString( header.packetType ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetType=" + toString( header.packetType ) );
    }
 
-   /// Check bytestreamNumber in bounds
+   // Check bytestreamNumber in bounds
    if ( bytestreamNumber >= header.bytestreamCount )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "bytestreamNumber=" + toString( bytestreamNumber ) +
-                                                   "bytestreamCount=" + toString( header.bytestreamCount ) );
+      throw E57_EXCEPTION2( ErrorInternal,
+                            "bytestreamNumber=" + toString( bytestreamNumber ) +
+                               " bytestreamCount=" + toString( header.bytestreamCount ) );
    }
 
-   /// Calc positions in packet
+   // Calc positions in packet
    auto bsbLength = reinterpret_cast<uint16_t *>( &payload[0] );
    auto streamBase = reinterpret_cast<char *>( &bsbLength[header.bytestreamCount] );
 
-   /// Sum size of preceding stream buffers to get position
-   unsigned totalPreceeding = 0;
+   // Sum size of preceding stream buffers to get position
+   unsigned totalPreceding = 0;
    for ( unsigned i = 0; i < bytestreamNumber; i++ )
    {
-      totalPreceeding += bsbLength[i];
+      totalPreceding += bsbLength[i];
    }
 
    byteCount = bsbLength[bytestreamNumber];
 
-   /// Double check buffer is completely within packet
-   if ( sizeof( DataPacketHeader ) + 2 * header.bytestreamCount + totalPreceeding + byteCount >
+   // Double check buffer is completely within packet
+   if ( ( sizeof( DataPacketHeader ) + 2 * header.bytestreamCount + totalPreceding + byteCount ) >
         header.packetLogicalLengthMinus1 + 1U )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL,
-                            "bytestreamCount=" + toString( header.bytestreamCount ) + " totalPreceeding=" +
-                               toString( totalPreceeding ) + " byteCount=" + toString( byteCount ) +
-                               " packetLogicalLengthMinus1=" + toString( header.packetLogicalLengthMinus1 ) );
+      throw E57_EXCEPTION2( ErrorInternal, "bytestreamCount=" + toString( header.bytestreamCount ) +
+                                              " totalPreceding=" + toString( totalPreceding ) +
+                                              " byteCount=" + toString( byteCount ) +
+                                              " packetLogicalLengthMinus1=" +
+                                              toString( header.packetLogicalLengthMinus1 ) );
    }
 
-   /// Return start of buffer
-   return ( &streamBase[totalPreceeding] );
+   // Return start of buffer
+   return ( &streamBase[totalPreceding] );
 }
 
 unsigned DataPacket::getBytestreamBufferLength( unsigned bytestreamNumber )
 {
    //??? for now:
    unsigned byteCount;
-   (void)getBytestream( bytestreamNumber, byteCount );
+   getBytestream( bytestreamNumber, byteCount );
    return ( byteCount );
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void DataPacket::dump( int indent, std::ostream &os ) const
 {
    if ( header.packetType != DATA_PACKET )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "packetType=" + toString( header.packetType ) );
+      throw E57_EXCEPTION2( ErrorInternal, "packetType=" + toString( header.packetType ) );
    }
 
    reinterpret_cast<const DataPacketHeader *>( this )->dump( indent, os );
@@ -532,8 +549,8 @@ void DataPacket::dump( int indent, std::ostream &os ) const
       p += bsbLength[i];
       if ( p - reinterpret_cast<const uint8_t *>( this ) > DATA_PACKET_MAX )
       {
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL,
-                               "size=" + toString( p - reinterpret_cast<const uint8_t *>( this ) ) );
+         throw E57_EXCEPTION2(
+            ErrorInternal, "size=" + toString( p - reinterpret_cast<const uint8_t *>( this ) ) );
       }
    }
 }
@@ -542,153 +559,176 @@ void DataPacket::dump( int indent, std::ostream &os ) const
 //=============================================================================
 // IndexPacket
 
-void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount, uint64_t fileSize ) const
+void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount,
+                          uint64_t fileSize ) const
 {
-   (void)totalRecordCount; (void)fileSize;
+#if ( E57_VALIDATION_LEVEL < VALIDATION_DEEP )
+   UNUSED( totalRecordCount );
+   UNUSED( fileSize );
+#endif
+
    //??? do all packets need versions?  how extend without breaking older
    // checking?  need to check
    // file version#?
 
-   /// Verify that packet is correct type
-   if ( packetType != INDEX_PACKET )
+   // Verify that packet is correct type
+   if ( header.packetType != INDEX_PACKET )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetType=" + toString( packetType ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "expected Index; packetType=" + toString( header.packetType ) );
    }
 
-   /// Check packetLength is at least large enough to hold header
-   unsigned packetLength = packetLogicalLengthMinus1 + 1;
-   if ( packetLength < sizeof( *this ) )
+   // Check packetLength is at least large enough to hold header
+   unsigned packetLength = header.packetLogicalLengthMinus1 + 1;
+   if ( packetLength < sizeof( IndexPacketHeader ) )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "INDEX; less than size of IndexPacketHeader; packetLength=" +
+                               toString( packetLength ) );
    }
 
-   /// Check packet length is multiple of 4
+   // Check packet length is multiple of 4
    if ( packetLength % 4 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "INDEX; length not multiple of 4; packetLength=" +
+                                                 toString( packetLength ) );
    }
 
-   /// Make sure there is at least one entry in packet  ??? 0 record cvect
-   /// allowed?
-   if ( entryCount == 0 )
+   // Make sure there is at least one entry in packet  ??? 0 record cvect
+   // allowed?
+   if ( header.entryCount == 0 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "entryCount=" + toString( entryCount ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "INDEX; entryCount=" + toString( header.entryCount ) );
    }
 
-   /// Have to have <= 2048 entries
-   if ( entryCount > MAX_ENTRIES )
+   // Have to have <= 2048 entries
+   if ( header.entryCount > MAX_ENTRIES )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "entryCount=" + toString( entryCount ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "INDEX; entryCount=" + toString( header.entryCount ) );
    }
 
-   /// Index level should be <= 5.  Because (5+1)* 11 bits = 66 bits, which will
-   /// cover largest number of chunks possible.
-   if ( indexLevel > 5 )
+   // Index level should be <= 5.  Because (5+1)* 11 bits = 66 bits, which will cover largest number
+   // of chunks possible.
+   if ( header.indexLevel > 5 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "indexLevel=" + toString( indexLevel ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket,
+                            "INDEX; indexLevel=" + toString( header.indexLevel ) );
    }
 
-   /// Index packets above level 0 must have at least two entries (otherwise no
-   /// point to existing).
-   ///??? check that this is in spec
-   if ( indexLevel > 0 && entryCount < 2 )
+   // Index packets above level 0 must have at least two entries (otherwise no point to existing).
+   //??? check that this is in spec
+   if ( header.indexLevel > 0 && header.entryCount < 2 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "indexLevel=" + toString( indexLevel ) + " entryCount=" + toString( entryCount ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "INDEX; indexLevel=" + toString( header.indexLevel ) +
+                                                 " entryCount=" + toString( header.entryCount ) );
    }
 
-   /// If not later version, verify reserved fields are zero. ??? test file
-   /// version if (version <= E57_FORMAT_MAJOR) { //???
-   for ( unsigned i = 0; i < sizeof( reserved1 ); i++ )
+   // If not later version, verify reserved fields are zero. ??? test file
+   // version if (version <= E57_FORMAT_MAJOR) { //???
+   for ( unsigned i = 0; i < sizeof( header.reserved1 ); i++ )
    {
-      if ( reserved1[i] != 0 )
+      if ( header.reserved1[i] != 0 )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "i=" + toString( i ) );
+         throw E57_EXCEPTION2( ErrorBadCVPacket, "i=" + toString( i ) );
       }
    }
 
-   /// Check actual packet length is large enough.
+   // Check actual packet length is large enough.
    if ( bufferLength > 0 && packetLength > bufferLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "packetLength=" + toString( packetLength ) + " bufferLength=" + toString( bufferLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "INDEX; packetLength=" + toString( packetLength ) +
+                                                 " bufferLength=" + toString( bufferLength ) );
    }
 
-   /// Check if entries will fit in space provided
-   unsigned neededLength = 16 + 8 * entryCount;
-   if ( packetLength < neededLength )
+   // Check if entries will fit in space provided
+   const unsigned cNeededLength =
+      sizeof( IndexPacketHeader ) + sizeof( IndexPacketEntry ) * header.entryCount;
+   if ( packetLength < cNeededLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "packetLength=" + toString( packetLength ) + " neededLength=" + toString( neededLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "INDEX; packetLength=" + toString( packetLength ) +
+                                                 " neededLength=" + toString( cNeededLength ) );
    }
 
-#ifdef E57_MAX_DEBUG
-   /// Verify padding at end is zero.
+#if VALIDATE_DEEP
+   // Verify padding at end is zero.
    const char *p = reinterpret_cast<const char *>( this );
-   for ( unsigned i = neededLength; i < packetLength; i++ )
+   for ( unsigned i = cNeededLength; i < packetLength; i++ )
    {
       if ( p[i] != 0 )
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "i=" + toString( i ) );
+      {
+         throw E57_EXCEPTION2( ErrorBadCVPacket, "INDEX; padding; i=" + toString( i ) );
+      }
    }
 
-   /// Verify records and offsets are in sorted order
-   for ( unsigned i = 0; i < entryCount; i++ )
+   // Verify records and offsets are in sorted order
+   for ( unsigned i = 0; i < header.entryCount; i++ )
    {
-      /// Check chunkRecordNumber is in bounds
+      // Check chunkRecordNumber is in bounds
       if ( totalRecordCount > 0 && entries[i].chunkRecordNumber >= totalRecordCount )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                               "i=" + toString( i ) + " chunkRecordNumber=" + toString( entries[i].chunkRecordNumber ) +
+         throw E57_EXCEPTION2( ErrorBadCVPacket,
+                               "INDEX; record# in bounds; i=" + toString( i ) +
+                                  " chunkRecordNumber=" + toString( entries[i].chunkRecordNumber ) +
                                   " totalRecordCount=" + toString( totalRecordCount ) );
       }
 
-      /// Check record numbers are strictly increasing
+      // Check record numbers are strictly increasing
       if ( i > 0 && entries[i - 1].chunkRecordNumber >= entries[i].chunkRecordNumber )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                               "i=" + toString( i ) +
-                                  " prevChunkRecordNumber=" + toString( entries[i - 1].chunkRecordNumber ) +
-                                  " currentChunkRecordNumber=" + toString( entries[i].chunkRecordNumber ) );
+         throw E57_EXCEPTION2(
+            ErrorBadCVPacket,
+            "INDEX; record numbers increasing; i=" + toString( i ) +
+               " prevChunkRecordNumber=" + toString( entries[i - 1].chunkRecordNumber ) +
+               " currentChunkRecordNumber=" + toString( entries[i].chunkRecordNumber ) );
       }
 
-      /// Check chunkPhysicalOffset is in bounds
+      // Check chunkPhysicalOffset is in bounds
       if ( fileSize > 0 && entries[i].chunkPhysicalOffset >= fileSize )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "i=" + toString( i ) + " chunkPhysicalOffset=" +
-                                                           toString( entries[i].chunkPhysicalOffset ) +
-                                                           " fileSize=" + toString( fileSize ) );
+         throw E57_EXCEPTION2(
+            ErrorBadCVPacket,
+            "INDEX; physical offset in bounds; i=" + toString( i ) + " chunkPhysicalOffset=" +
+               toString( entries[i].chunkPhysicalOffset ) + " fileSize=" + toString( fileSize ) );
       }
 
-      /// Check chunk offsets are strictly increasing
+      // Check chunk offsets are strictly increasing
       if ( i > 0 && entries[i - 1].chunkPhysicalOffset >= entries[i].chunkPhysicalOffset )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                               "i=" + toString( i ) +
-                                  " prevChunkPhysicalOffset=" + toString( entries[i - 1].chunkPhysicalOffset ) +
-                                  " currentChunkPhysicalOffset=" + toString( entries[i].chunkPhysicalOffset ) );
+         throw E57_EXCEPTION2(
+            ErrorBadCVPacket,
+            "INDEX; chunk offsets increasing; i=" + toString( i ) +
+               " prevChunkPhysicalOffset=" + toString( entries[i - 1].chunkPhysicalOffset ) +
+               " currentChunkPhysicalOffset=" + toString( entries[i].chunkPhysicalOffset ) );
       }
    }
 #endif
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void IndexPacket::dump( int indent, std::ostream &os ) const
 {
-   os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
-   os << space( indent ) << "packetFlags:               " << static_cast<unsigned>( packetFlags ) << std::endl;
-   os << space( indent ) << "packetLogicalLengthMinus1: " << packetLogicalLengthMinus1 << std::endl;
-   os << space( indent ) << "entryCount:                " << entryCount << std::endl;
-   os << space( indent ) << "indexLevel:                " << indexLevel << std::endl;
+   os << space( indent )
+      << "packetType:                " << static_cast<unsigned>( header.packetType ) << std::endl;
+   os << space( indent )
+      << "packetFlags:               " << static_cast<unsigned>( header.packetFlags ) << std::endl;
+   os << space( indent ) << "packetLogicalLengthMinus1: " << header.packetLogicalLengthMinus1
+      << std::endl;
+   os << space( indent ) << "entryCount:                " << header.entryCount << std::endl;
+   os << space( indent ) << "indexLevel:                " << header.indexLevel << std::endl;
    unsigned i;
-   for ( i = 0; i < entryCount && i < 10; i++ )
+   for ( i = 0; i < header.entryCount && i < 10; i++ )
    {
       os << space( indent ) << "entry[" << i << "]:" << std::endl;
-      os << space( indent + 4 ) << "chunkRecordNumber:    " << entries[i].chunkRecordNumber << std::endl;
-      os << space( indent + 4 ) << "chunkPhysicalOffset:  " << entries[i].chunkPhysicalOffset << std::endl;
+      os << space( indent + 4 ) << "chunkRecordNumber:    " << entries[i].chunkRecordNumber
+         << std::endl;
+      os << space( indent + 4 ) << "chunkPhysicalOffset:  " << entries[i].chunkPhysicalOffset
+         << std::endl;
    }
-   if ( i < entryCount )
+   if ( i < header.entryCount )
    {
-      os << space( indent ) << entryCount - i << "more entries unprinted..." << std::endl;
+      os << space( indent ) << header.entryCount - i << "more entries unprinted..." << std::endl;
    }
 }
 #endif
@@ -698,37 +738,38 @@ void IndexPacket::dump( int indent, std::ostream &os ) const
 
 void EmptyPacketHeader::verify( unsigned bufferLength ) const
 {
-   /// Verify that packet is correct type
+   // Verify that packet is correct type
    if ( packetType != EMPTY_PACKET )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetType=" + toString( packetType ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetType=" + toString( packetType ) );
    }
 
-   /// Check packetLength is at least large enough to hold header
+   // Check packetLength is at least large enough to hold header
    unsigned packetLength = packetLogicalLengthMinus1 + 1;
    if ( packetLength < sizeof( *this ) )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetLength=" + toString( packetLength ) );
    }
 
-   /// Check packet length is multiple of 4
+   // Check packet length is multiple of 4
    if ( packetLength % 4 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET, "packetLength=" + toString( packetLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetLength=" + toString( packetLength ) );
    }
 
-   /// Check actual packet length is large enough.
+   // Check actual packet length is large enough.
    if ( bufferLength > 0 && packetLength > bufferLength )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_CV_PACKET,
-                            "packetLength=" + toString( packetLength ) + " bufferLength=" + toString( bufferLength ) );
+      throw E57_EXCEPTION2( ErrorBadCVPacket, "packetLength=" + toString( packetLength ) +
+                                                 " bufferLength=" + toString( bufferLength ) );
    }
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void EmptyPacketHeader::dump( int indent, std::ostream &os ) const
 {
-   os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
+   os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType )
+      << std::endl;
    os << space( indent ) << "packetLogicalLengthMinus1: " << packetLogicalLengthMinus1 << std::endl;
 }
 #endif

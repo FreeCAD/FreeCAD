@@ -27,22 +27,24 @@
 
 #include "IntegerNodeImpl.h"
 #include "CheckedFile.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
-   IntegerNodeImpl::IntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value, int64_t minimum,
-                                     int64_t maximum ) :
+   IntegerNodeImpl::IntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value,
+                                     int64_t minimum, int64_t maximum ) :
       NodeImpl( destImageFile ),
       value_( value ), minimum_( minimum ), maximum_( maximum )
    {
       // don't checkImageFileOpen, NodeImpl() will do it
 
-      /// Enforce the given bounds
+      // Enforce the given bounds
       if ( value < minimum || maximum < value )
       {
-         throw E57_EXCEPTION2( E57_ERROR_VALUE_OUT_OF_BOUNDS,
-                               "this->pathName=" + this->pathName() + " value=" + toString( value ) +
-                                  " minimum=" + toString( minimum ) + " maximum=" + toString( maximum ) );
+         throw E57_EXCEPTION2( ErrorValueOutOfBounds, "this->pathName=" + this->pathName() +
+                                                         " value=" + toString( value ) +
+                                                         " minimum=" + toString( minimum ) +
+                                                         " maximum=" + toString( maximum ) );
       }
    }
 
@@ -50,30 +52,30 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// Same node type?
-      if ( ni->type() != E57_INTEGER )
+      // Same node type?
+      if ( ni->type() != TypeInteger )
       {
          return ( false );
       }
 
-      /// Downcast to shared_ptr<IntegerNodeImpl>
+      // Downcast to shared_ptr<IntegerNodeImpl>
       std::shared_ptr<IntegerNodeImpl> ii( std::static_pointer_cast<IntegerNodeImpl>( ni ) );
 
-      /// minimum must match
+      // minimum must match
       if ( minimum_ != ii->minimum_ )
       {
          return ( false );
       }
 
-      /// maximum must match
+      // maximum must match
       if ( maximum_ != ii->maximum_ )
       {
          return ( false );
       }
 
-      /// ignore value_, doesn't have to match
+      // ignore value_, doesn't have to match
 
-      /// Types match
+      // Types match
       return ( true );
    }
 
@@ -81,7 +83,7 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We have no sub-structure, so if path not empty return false
+      // We have no sub-structure, so if path not empty return false
       return pathName.empty();
    }
 
@@ -107,10 +109,10 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We are a leaf node, so verify that we are listed in set.
+      // We are a leaf node, so verify that we are listed in set.
       if ( pathNames.find( relativePathName( origin ) ) == pathNames.end() )
       {
-         throw E57_EXCEPTION2( E57_ERROR_NO_BUFFER_FOR_ELEMENT, "this->pathName=" + this->pathName() );
+         throw E57_EXCEPTION2( ErrorNoBufferForElement, "this->pathName=" + this->pathName() );
       }
    }
 
@@ -120,7 +122,7 @@ namespace e57
       // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName )
+      if ( forcedFieldName != nullptr )
       {
          fieldName = forcedFieldName;
       }
@@ -131,17 +133,17 @@ namespace e57
 
       cf << space( indent ) << "<" << fieldName << " type=\"Integer\"";
 
-      /// Don't need to write if are default values
-      if ( minimum_ != E57_INT64_MIN )
+      // Don't need to write if are default values
+      if ( minimum_ != INT64_MIN )
       {
          cf << " minimum=\"" << minimum_ << "\"";
       }
-      if ( maximum_ != E57_INT64_MAX )
+      if ( maximum_ != INT64_MAX )
       {
          cf << " maximum=\"" << maximum_ << "\"";
       }
 
-      /// Write value as child text, unless it is the default value
+      // Write value as child text, unless it is the default value
       if ( value_ != 0 )
       {
          cf << ">" << value_ << "</" << fieldName << ">\n";
@@ -152,7 +154,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void IntegerNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen

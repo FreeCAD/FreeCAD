@@ -27,6 +27,7 @@
 
 #include "StringNodeImpl.h"
 #include "CheckedFile.h"
+#include "StringFunctions.h"
 
 namespace e57
 {
@@ -40,15 +41,15 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// Same node type?
-      if ( ni->type() != E57_STRING )
+      // Same node type?
+      if ( ni->type() != TypeString )
       {
          return ( false );
       }
 
-      /// ignore value_, doesn't have to match
+      // ignore value_, doesn't have to match
 
-      /// Types match
+      // Types match
       return ( true );
    }
 
@@ -56,7 +57,7 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We have no sub-structure, so if path not empty return false
+      // We have no sub-structure, so if path not empty return false
       return pathName.empty();
    }
 
@@ -70,10 +71,10 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// We are a leaf node, so verify that we are listed in set.
+      // We are a leaf node, so verify that we are listed in set.
       if ( pathNames.find( relativePathName( origin ) ) == pathNames.end() )
       {
-         throw E57_EXCEPTION2( E57_ERROR_NO_BUFFER_FOR_ELEMENT, "this->pathName=" + this->pathName() );
+         throw E57_EXCEPTION2( ErrorNoBufferForElement, "this->pathName=" + this->pathName() );
       }
    }
 
@@ -83,7 +84,7 @@ namespace e57
       // don't checkImageFileOpen
 
       ustring fieldName;
-      if ( forcedFieldName )
+      if ( forcedFieldName != nullptr )
       {
          fieldName = forcedFieldName;
       }
@@ -94,7 +95,7 @@ namespace e57
 
       cf << space( indent ) << "<" << fieldName << " type=\"String\"";
 
-      /// Write value as child text, unless it is the default value
+      // Write value as child text, unless it is the default value
       if ( value_.empty() )
       {
          cf << "/>\n";
@@ -106,34 +107,34 @@ namespace e57
          size_t currentPosition = 0;
          size_t len = value_.length();
 
-         /// Loop, searching for occurrences of "]]>", which will be split across
-         /// two CDATA directives
+         // Loop, searching for occurrences of "]]>", which will be split across two CDATA
+         // directives
          while ( currentPosition < len )
          {
             size_t found = value_.find( "]]>", currentPosition );
 
             if ( found == std::string::npos )
             {
-               /// Didn't find any more "]]>", so can send the rest.
+               // Didn't find any more "]]>", so can send the rest.
                cf << value_.substr( currentPosition );
                break;
             }
 
-            /// Must output in two pieces, first send up to end of "]]"  (don't send
-            /// the following ">").
+            // Must output in two pieces, first send up to end of "]]"  (don't send the following
+            // ">").
             cf << value_.substr( currentPosition, found - currentPosition + 2 );
 
-            /// Then start a new CDATA
+            // Then start a new CDATA
             cf << "]]><![CDATA[";
 
-            /// Keep looping to send the ">" plus the remaining part of the string
+            // Keep looping to send the ">" plus the remaining part of the string
             currentPosition = found + 2;
          }
          cf << "]]></" << fieldName << ">\n";
       }
    }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
    void StringNodeImpl::dump( int indent, std::ostream &os ) const
    {
       os << space( indent ) << "type:        String"

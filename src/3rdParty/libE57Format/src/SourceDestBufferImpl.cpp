@@ -29,13 +29,16 @@
 
 #include "ImageFileImpl.h"
 #include "SourceDestBufferImpl.h"
+#include "StringFunctions.h"
 
 using namespace e57;
 
-SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile, const ustring &pathName,
-                                            const size_t capacity, bool doConversion, bool doScaling ) :
+SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile,
+                                            const ustring &pathName, const size_t capacity,
+                                            bool doConversion, bool doScaling ) :
    destImageFile_( destImageFile ),
-   pathName_( pathName ), capacity_( capacity ), doConversion_( doConversion ), doScaling_( doScaling )
+   pathName_( pathName ), memoryRepresentation_( Int32 ), capacity_( capacity ),
+   doConversion_( doConversion ), doScaling_( doScaling )
 {
 }
 
@@ -51,43 +54,43 @@ template <typename T> void SourceDestBufferImpl::setTypeInfo( T *base, size_t st
    // representation
    if ( std::is_same<T, int8_t>::value )
    {
-      memoryRepresentation_ = E57_INT8;
+      memoryRepresentation_ = Int8;
    }
    else if ( std::is_same<T, uint8_t>::value )
    {
-      memoryRepresentation_ = E57_UINT8;
+      memoryRepresentation_ = UInt8;
    }
    else if ( std::is_same<T, int16_t>::value )
    {
-      memoryRepresentation_ = E57_INT16;
+      memoryRepresentation_ = Int16;
    }
    else if ( std::is_same<T, uint16_t>::value )
    {
-      memoryRepresentation_ = E57_UINT16;
+      memoryRepresentation_ = UInt16;
    }
    else if ( std::is_same<T, int32_t>::value )
    {
-      memoryRepresentation_ = E57_INT32;
+      memoryRepresentation_ = Int32;
    }
    else if ( std::is_same<T, uint32_t>::value )
    {
-      memoryRepresentation_ = E57_UINT32;
+      memoryRepresentation_ = UInt32;
    }
    else if ( std::is_same<T, int64_t>::value )
    {
-      memoryRepresentation_ = E57_INT64;
+      memoryRepresentation_ = Int64;
    }
    else if ( std::is_same<T, bool>::value )
    {
-      memoryRepresentation_ = E57_BOOL;
+      memoryRepresentation_ = Bool;
    }
    else if ( std::is_same<T, float>::value )
    {
-      memoryRepresentation_ = E57_REAL32;
+      memoryRepresentation_ = Real32;
    }
    else if ( std::is_same<T, double>::value )
    {
-      memoryRepresentation_ = E57_REAL64;
+      memoryRepresentation_ = Real64;
    }
 
    checkState_();
@@ -104,17 +107,17 @@ template void SourceDestBufferImpl::setTypeInfo<bool>( bool *base, size_t stride
 template void SourceDestBufferImpl::setTypeInfo<float>( float *base, size_t stride );
 template void SourceDestBufferImpl::setTypeInfo<double>( double *base, size_t stride );
 
-SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile, const ustring &pathName,
-                                            std::vector<ustring> *b ) :
+SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile,
+                                            const ustring &pathName, std::vector<ustring> *b ) :
    destImageFile_( destImageFile ),
-   pathName_( pathName ), memoryRepresentation_( E57_USTRING ), ustrings_( b )
+   pathName_( pathName ), memoryRepresentation_( UString ), ustrings_( b )
 {
    /// don't checkImageFileOpen, checkState_ will do it
 
    /// Set capacity_ after testing that b is OK
-   if ( !b )
+   if ( b == nullptr )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "sdbuf.pathName=" + pathName );
+      throw E57_EXCEPTION2( ErrorBadBuffer, "sdbuf.pathName=" + pathName );
    }
 
    capacity_ = b->size();
@@ -136,7 +139,7 @@ template <typename T> void SourceDestBufferImpl::_setNextReal( T inValue )
    /// Verify have room
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Calc start of memory location, index into buffer using stride_ (the
@@ -145,108 +148,108 @@ template <typename T> void SourceDestBufferImpl::_setNextReal( T inValue )
 
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? fault if get special value: NaN, NegInf...  (all other ints below
          // too)
-         if ( inValue < E57_INT8_MIN || E57_INT8_MAX < inValue )
+         if ( inValue < INT8_MIN || INT8_MAX < inValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<int8_t *>( p ) = static_cast<int8_t>( inValue );
          break;
-      case E57_UINT8:
+      case UInt8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_UINT8_MIN || E57_UINT8_MAX < inValue )
+         if ( inValue < UINT8_MIN || UINT8_MAX < inValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<uint8_t *>( p ) = static_cast<uint8_t>( inValue );
          break;
-      case E57_INT16:
+      case Int16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_INT16_MIN || E57_INT16_MAX < inValue )
+         if ( inValue < INT16_MIN || INT16_MAX < inValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<int16_t *>( p ) = static_cast<int16_t>( inValue );
          break;
-      case E57_UINT16:
+      case UInt16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_UINT16_MIN || E57_UINT16_MAX < inValue )
+         if ( inValue < UINT16_MIN || UINT16_MAX < inValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<uint16_t *>( p ) = static_cast<uint16_t>( inValue );
          break;
-      case E57_INT32:
+      case Int32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_INT32_MIN || E57_INT32_MAX < inValue )
+         if ( inValue < INT32_MIN || ( inValue > static_cast<T>( INT32_MAX ) ) )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<int32_t *>( p ) = static_cast<int32_t>( inValue );
          break;
-      case E57_UINT32:
+      case UInt32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_UINT32_MIN || E57_UINT32_MAX < inValue )
+         if ( inValue < UINT32_MIN || ( inValue > ( static_cast<T>( UINT32_MAX ) ) ) )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<uint32_t *>( p ) = static_cast<uint32_t>( inValue );
          break;
-      case E57_INT64:
+      case Int64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
-         if ( inValue < E57_INT64_MIN || E57_INT64_MAX < inValue )
+         if ( inValue < INT64_MIN || ( inValue > ( static_cast<T>( INT64_MAX ) ) ) )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( inValue ) );
          }
          *reinterpret_cast<int64_t *>( p ) = static_cast<int64_t>( inValue );
          break;
-      case E57_BOOL:
+      case Bool:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          *reinterpret_cast<bool *>( p ) = ( inValue ? false : true );
          break;
-      case E57_REAL32:
+      case Real32:
          if ( std::is_same<T, double>::value )
          {
             /// Does this count as conversion?  It loses information.
             /// Check for really large exponents that can't fit in a single
             /// precision
-            if ( inValue < E57_DOUBLE_MIN || E57_DOUBLE_MAX < inValue )
+            if ( inValue < DOUBLE_MIN || DOUBLE_MAX < inValue )
             {
-               throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+               throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                      "pathName=" + pathName_ + " value=" + toString( inValue ) );
             }
             *reinterpret_cast<float *>( p ) = static_cast<float>( inValue );
@@ -254,7 +257,8 @@ template <typename T> void SourceDestBufferImpl::_setNextReal( T inValue )
          else
          {
 #ifdef _MSC_VER
-            // MSVC is not smart enough to realize 'inValue' cannot be a double here, so disable warning
+            // MSVC is not smart enough to realize 'inValue' cannot be a double here, so disable
+            // warning
 #pragma warning( disable : 4244 )
             *reinterpret_cast<float *>( p ) = inValue;
 #pragma warning( default : 4244 )
@@ -263,12 +267,12 @@ template <typename T> void SourceDestBufferImpl::_setNextReal( T inValue )
 #endif
          }
          break;
-      case E57_REAL64:
+      case Real64:
          //??? does this count as a conversion?
          *reinterpret_cast<double *>( p ) = static_cast<double>( inValue );
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
    }
 
    nextIndex_++;
@@ -281,7 +285,7 @@ void SourceDestBufferImpl::checkState_() const
    ImageFileImplSharedPtr destImageFile( destImageFile_ );
    if ( !destImageFile->isOpen() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_IMAGEFILE_NOT_OPEN, "fileName=" + destImageFile->fileName() );
+      throw E57_EXCEPTION2( ErrorImageFileNotOpen, "fileName=" + destImageFile->fileName() );
    }
 
    /// Check pathName is well formed (can't verify path is defined until
@@ -289,24 +293,24 @@ void SourceDestBufferImpl::checkState_() const
    ImageFileImplSharedPtr imf( destImageFile_ );
    imf->pathNameCheckWellFormed( pathName_ );
 
-   if ( memoryRepresentation_ != E57_USTRING )
+   if ( memoryRepresentation_ != UString )
    {
-      if ( !base_ )
+      if ( base_ == nullptr )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorBadBuffer, "pathName=" + pathName_ );
       }
       if ( stride_ == 0 )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorBadBuffer, "pathName=" + pathName_ );
       }
       //??? check base alignment, depending on CPU type
       //??? check if stride too small, positive or negative
    }
    else
    {
-      if ( !ustrings_ )
+      if ( ustrings_ == nullptr )
       {
-         throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorBadBuffer, "pathName=" + pathName_ );
       }
    }
 }
@@ -318,7 +322,7 @@ int64_t SourceDestBufferImpl::getNextInt64()
    /// Verify index is within bounds
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Fetch value from source buffer.
@@ -327,55 +331,55 @@ int64_t SourceDestBufferImpl::getNextInt64()
    int64_t value;
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          value = static_cast<int64_t>( *reinterpret_cast<int8_t *>( p ) );
          break;
-      case E57_UINT8:
+      case UInt8:
          value = static_cast<int64_t>( *reinterpret_cast<uint8_t *>( p ) );
          break;
-      case E57_INT16:
+      case Int16:
          value = static_cast<int64_t>( *reinterpret_cast<int16_t *>( p ) );
          break;
-      case E57_UINT16:
+      case UInt16:
          value = static_cast<int64_t>( *reinterpret_cast<uint16_t *>( p ) );
          break;
-      case E57_INT32:
+      case Int32:
          value = static_cast<int64_t>( *reinterpret_cast<int32_t *>( p ) );
          break;
-      case E57_UINT32:
+      case UInt32:
          value = static_cast<int64_t>( *reinterpret_cast<uint32_t *>( p ) );
          break;
-      case E57_INT64:
+      case Int64:
          value = *reinterpret_cast<int64_t *>( p );
          break;
-      case E57_BOOL:
+      case Bool:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          /// Convert bool to 0/1, all non-zero values map to 1.0
          value = ( *reinterpret_cast<bool *>( p ) ) ? 1 : 0;
          break;
-      case E57_REAL32:
+      case Real32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? fault if get special value: NaN, NegInf...
          value = static_cast<int64_t>( *reinterpret_cast<float *>( p ) );
          break;
-      case E57_REAL64:
+      case Real64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? fault if get special value: NaN, NegInf...
          value = static_cast<int64_t>( *reinterpret_cast<double *>( p ) );
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
       default:
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
    nextIndex_++;
    return ( value );
@@ -400,13 +404,13 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
    /// Double check non-zero scale.  Going to divide by it below.
    if ( scale == 0 )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Verify index is within bounds
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Fetch value from source buffer.
@@ -415,42 +419,42 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
    double doubleRawValue;
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<int8_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_UINT8:
+      case UInt8:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<uint8_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_INT16:
+      case Int16:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<int16_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_UINT16:
+      case UInt16:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<uint16_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_INT32:
+      case Int32:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<int32_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_UINT32:
+      case UInt32:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<uint32_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_INT64:
+      case Int64:
          /// Calc (x-offset)/scale rounded to nearest integer, but keep in
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<int64_t *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_BOOL:
+      case Bool:
          if ( *reinterpret_cast<bool *>( p ) )
          {
             doubleRawValue = floor( ( 1 - offset ) / scale + 0.5 );
@@ -460,10 +464,10 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
             doubleRawValue = floor( ( 0 - offset ) / scale + 0.5 );
          }
          break;
-      case E57_REAL32:
+      case Real32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? fault if get special value: NaN, NegInf...
 
@@ -471,10 +475,10 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<float *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_REAL64:
+      case Real64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? fault if get special value: NaN, NegInf...
 
@@ -482,15 +486,16 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
          /// floating point until sure is in bounds
          doubleRawValue = floor( ( *reinterpret_cast<double *>( p ) - offset ) / scale + 0.5 );
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
       default:
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
+
    /// Make sure that value is representable in an int64_t
-   if ( doubleRawValue < E57_INT64_MIN || E57_INT64_MAX < doubleRawValue )
+   if ( doubleRawValue < INT64_MIN || ( doubleRawValue > ( static_cast<double>( INT64_MAX ) ) ) )
    {
-      throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
+      throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
                             "pathName=" + pathName_ + " value=" + toString( doubleRawValue ) );
    }
 
@@ -507,7 +512,7 @@ float SourceDestBufferImpl::getNextFloat()
    /// Verify index is within bounds
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Fetch value from source buffer.
@@ -516,85 +521,86 @@ float SourceDestBufferImpl::getNextFloat()
    float value;
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<int8_t *>( p ) );
          break;
-      case E57_UINT8:
+      case UInt8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<uint8_t *>( p ) );
          break;
-      case E57_INT16:
+      case Int16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<int16_t *>( p ) );
          break;
-      case E57_UINT16:
+      case UInt16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<uint16_t *>( p ) );
          break;
-      case E57_INT32:
+      case Int32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<int32_t *>( p ) );
          break;
-      case E57_UINT32:
+      case UInt32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<uint32_t *>( p ) );
          break;
-      case E57_INT64:
+      case Int64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<float>( *reinterpret_cast<int64_t *>( p ) );
          break;
-      case E57_BOOL:
+      case Bool:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
 
          /// Convert bool to 0/1, all non-zero values map to 1.0
          value = ( *reinterpret_cast<bool *>( p ) ) ? 1.0F : 0.0F;
          break;
-      case E57_REAL32:
+      case Real32:
          value = *reinterpret_cast<float *>( p );
          break;
-      case E57_REAL64:
+      case Real64:
       {
          /// Check that exponent of user's value is not too large for single
          /// precision number in file.
          double d = *reinterpret_cast<double *>( p );
 
          ///??? silently limit here?
-         if ( d < E57_DOUBLE_MIN || E57_DOUBLE_MAX < d )
+         if ( d < DOUBLE_MIN || DOUBLE_MAX < d )
          {
-            throw E57_EXCEPTION2( E57_ERROR_REAL64_TOO_LARGE, "pathName=" + pathName_ + " value=" + toString( d ) );
+            throw E57_EXCEPTION2( ErrorReal64TooLarge,
+                                  "pathName=" + pathName_ + " value=" + toString( d ) );
          }
          value = static_cast<float>( d );
          break;
       }
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
       default:
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
    nextIndex_++;
    return ( value );
@@ -607,7 +613,7 @@ double SourceDestBufferImpl::getNextDouble()
    /// Verify index is within bounds
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Fetch value from source buffer.
@@ -616,73 +622,73 @@ double SourceDestBufferImpl::getNextDouble()
    double value;
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<int8_t *>( p ) );
          break;
-      case E57_UINT8:
+      case UInt8:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<uint8_t *>( p ) );
          break;
-      case E57_INT16:
+      case Int16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<int16_t *>( p ) );
          break;
-      case E57_UINT16:
+      case UInt16:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<uint16_t *>( p ) );
          break;
-      case E57_INT32:
+      case Int32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<int32_t *>( p ) );
          break;
-      case E57_UINT32:
+      case UInt32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<uint32_t *>( p ) );
          break;
-      case E57_INT64:
+      case Int64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          value = static_cast<double>( *reinterpret_cast<int64_t *>( p ) );
          break;
-      case E57_BOOL:
+      case Bool:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          /// Convert bool to 0/1, all non-zero values map to 1.0
          value = ( *reinterpret_cast<bool *>( p ) ) ? 1.0 : 0.0;
          break;
-      case E57_REAL32:
+      case Real32:
          value = static_cast<double>( *reinterpret_cast<float *>( p ) );
          break;
-      case E57_REAL64:
+      case Real64:
          value = *reinterpret_cast<double *>( p );
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
       default:
-         throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+         throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
    nextIndex_++;
    return ( value );
@@ -693,15 +699,15 @@ ustring SourceDestBufferImpl::getNextString()
    /// don't checkImageFileOpen
 
    /// Check have correct type buffer
-   if ( memoryRepresentation_ != E57_USTRING )
+   if ( memoryRepresentation_ != UString )
    {
-      throw E57_EXCEPTION2( E57_ERROR_EXPECTING_USTRING, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorExpectingUString, "pathName=" + pathName_ );
    }
 
    /// Verify index is within bounds
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Get ustring from vector
@@ -715,7 +721,7 @@ void SourceDestBufferImpl::setNextInt64( int64_t value )
    /// Verify have room
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Calc start of memory location, index into buffer using stride_ (the
@@ -724,77 +730,77 @@ void SourceDestBufferImpl::setNextInt64( int64_t value )
 
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
-         if ( value < E57_INT8_MIN || E57_INT8_MAX < value )
+      case Int8:
+         if ( value < INT8_MIN || INT8_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<int8_t *>( p ) = static_cast<int8_t>( value );
          break;
-      case E57_UINT8:
-         if ( value < E57_UINT8_MIN || E57_UINT8_MAX < value )
+      case UInt8:
+         if ( value < UINT8_MIN || UINT8_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<uint8_t *>( p ) = static_cast<uint8_t>( value );
          break;
-      case E57_INT16:
-         if ( value < E57_INT16_MIN || E57_INT16_MAX < value )
+      case Int16:
+         if ( value < INT16_MIN || INT16_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<int16_t *>( p ) = static_cast<int16_t>( value );
          break;
-      case E57_UINT16:
-         if ( value < E57_UINT16_MIN || E57_UINT16_MAX < value )
+      case UInt16:
+         if ( value < UINT16_MIN || UINT16_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<uint16_t *>( p ) = static_cast<uint16_t>( value );
          break;
-      case E57_INT32:
-         if ( value < E57_INT32_MIN || E57_INT32_MAX < value )
+      case Int32:
+         if ( value < INT32_MIN || INT32_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<int32_t *>( p ) = static_cast<int32_t>( value );
          break;
-      case E57_UINT32:
-         if ( value < E57_UINT32_MIN || E57_UINT32_MAX < value )
+      case UInt32:
+         if ( value < UINT32_MIN || UINT32_MAX < value )
          {
-            throw E57_EXCEPTION2( E57_ERROR_VALUE_NOT_REPRESENTABLE,
+            throw E57_EXCEPTION2( ErrorValueNotRepresentable,
                                   "pathName=" + pathName_ + " value=" + toString( value ) );
          }
          *reinterpret_cast<uint32_t *>( p ) = static_cast<uint32_t>( value );
          break;
-      case E57_INT64:
+      case Int64:
          *reinterpret_cast<int64_t *>( p ) = static_cast<int64_t>( value );
          break;
-      case E57_BOOL:
+      case Bool:
          *reinterpret_cast<bool *>( p ) = ( value ? false : true );
          break;
-      case E57_REAL32:
+      case Real32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          //??? very large integers may lose some lowest bits here. error?
          *reinterpret_cast<float *>( p ) = static_cast<float>( value );
          break;
-      case E57_REAL64:
+      case Real64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          *reinterpret_cast<double *>( p ) = static_cast<double>( value );
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
    }
 
    nextIndex_++;
@@ -820,7 +826,7 @@ void SourceDestBufferImpl::setNextInt64( int64_t value, double scale, double off
    /// Verify have room
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Calc start of memory location, index into buffer using stride_ (the
@@ -829,7 +835,7 @@ void SourceDestBufferImpl::setNextInt64( int64_t value, double scale, double off
 
    /// Calc x*scale+offset
    double scaledValue;
-   if ( memoryRepresentation_ == E57_REAL32 || memoryRepresentation_ == E57_REAL64 )
+   if ( memoryRepresentation_ == Real32 || memoryRepresentation_ == Real64 )
    {
       /// Value will be stored in some floating point rep in user's buffer, so
       /// keep full resolution here.
@@ -845,83 +851,90 @@ void SourceDestBufferImpl::setNextInt64( int64_t value, double scale, double off
 
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
-         if ( scaledValue < E57_INT8_MIN || E57_INT8_MAX < scaledValue )
+      case Int8:
+         if ( scaledValue < INT8_MIN || INT8_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<int8_t *>( p ) = static_cast<int8_t>( scaledValue );
          break;
-      case E57_UINT8:
-         if ( scaledValue < E57_UINT8_MIN || E57_UINT8_MAX < scaledValue )
+      case UInt8:
+         if ( scaledValue < UINT8_MIN || UINT8_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<uint8_t *>( p ) = static_cast<uint8_t>( scaledValue );
          break;
-      case E57_INT16:
-         if ( scaledValue < E57_INT16_MIN || E57_INT16_MAX < scaledValue )
+      case Int16:
+         if ( scaledValue < INT16_MIN || INT16_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<int16_t *>( p ) = static_cast<int16_t>( scaledValue );
          break;
-      case E57_UINT16:
-         if ( scaledValue < E57_UINT16_MIN || E57_UINT16_MAX < scaledValue )
+      case UInt16:
+         if ( scaledValue < UINT16_MIN || UINT16_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<uint16_t *>( p ) = static_cast<uint16_t>( scaledValue );
          break;
-      case E57_INT32:
-         if ( scaledValue < E57_INT32_MIN || E57_INT32_MAX < scaledValue )
+      case Int32:
+         if ( scaledValue < INT32_MIN || INT32_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<int32_t *>( p ) = static_cast<int32_t>( scaledValue );
          break;
-      case E57_UINT32:
-         if ( scaledValue < E57_UINT32_MIN || E57_UINT32_MAX < scaledValue )
+      case UInt32:
+         if ( scaledValue < UINT32_MIN || UINT32_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<uint32_t *>( p ) = static_cast<uint32_t>( scaledValue );
          break;
-      case E57_INT64:
+      case Int64:
          *reinterpret_cast<int64_t *>( p ) = static_cast<int64_t>( scaledValue );
          break;
-      case E57_BOOL:
+      case Bool:
          *reinterpret_cast<bool *>( p ) = ( scaledValue ? false : true );
          break;
-      case E57_REAL32:
+      case Real32:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          /// Check that exponent of result is not too big for single precision
          /// float
-         if ( scaledValue < E57_DOUBLE_MIN || E57_DOUBLE_MAX < scaledValue )
+         if ( scaledValue < DOUBLE_MIN || DOUBLE_MAX < scaledValue )
          {
-            throw E57_EXCEPTION2( E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE,
-                                  "pathName=" + pathName_ + " scaledValue=" + toString( scaledValue ) );
+            throw E57_EXCEPTION2( ErrorScaledValueNotRepresentable,
+                                  "pathName=" + pathName_ +
+                                     " scaledValue=" + toString( scaledValue ) );
          }
          *reinterpret_cast<float *>( p ) = static_cast<float>( scaledValue );
          break;
-      case E57_REAL64:
+      case Real64:
          if ( !doConversion_ )
          {
-            throw E57_EXCEPTION2( E57_ERROR_CONVERSION_REQUIRED, "pathName=" + pathName_ );
+            throw E57_EXCEPTION2( ErrorConversionRequired, "pathName=" + pathName_ );
          }
          *reinterpret_cast<double *>( p ) = scaledValue;
          break;
-      case E57_USTRING:
-         throw E57_EXCEPTION2( E57_ERROR_EXPECTING_NUMERIC, "pathName=" + pathName_ );
+      case UString:
+         throw E57_EXCEPTION2( ErrorExpectingNumeric, "pathName=" + pathName_ );
    }
 
    nextIndex_++;
@@ -941,15 +954,15 @@ void SourceDestBufferImpl::setNextString( const ustring &value )
 {
    /// don't checkImageFileOpen
 
-   if ( memoryRepresentation_ != E57_USTRING )
+   if ( memoryRepresentation_ != UString )
    {
-      throw E57_EXCEPTION2( E57_ERROR_EXPECTING_USTRING, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorExpectingUString, "pathName=" + pathName_ );
    }
 
    /// Verify have room.
    if ( nextIndex_ >= capacity_ )
    {
-      throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "pathName=" + pathName_ );
+      throw E57_EXCEPTION2( ErrorInternal, "pathName=" + pathName_ );
    }
 
    /// Assign to already initialized element in vector
@@ -957,38 +970,41 @@ void SourceDestBufferImpl::setNextString( const ustring &value )
    nextIndex_++;
 }
 
-void SourceDestBufferImpl::checkCompatible( const std::shared_ptr<SourceDestBufferImpl> &newBuf ) const
+void SourceDestBufferImpl::checkCompatible(
+   const std::shared_ptr<SourceDestBufferImpl> &newBuf ) const
 {
    if ( pathName_ != newBuf->pathName() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
+      throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
                             "pathName=" + pathName_ + " newPathName=" + newBuf->pathName() );
    }
    if ( memoryRepresentation_ != newBuf->memoryRepresentation() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
+      throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
                             "memoryRepresentation=" + toString( memoryRepresentation_ ) +
                                " newMemoryType=" + toString( newBuf->memoryRepresentation() ) );
    }
    if ( capacity_ != newBuf->capacity() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
-                            "capacity=" + toString( capacity_ ) + " newCapacity=" + toString( newBuf->capacity() ) );
+      throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
+                            "capacity=" + toString( capacity_ ) +
+                               " newCapacity=" + toString( newBuf->capacity() ) );
    }
    if ( doConversion_ != newBuf->doConversion() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
+      throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
                             "doConversion=" + toString( doConversion_ ) +
                                "newDoConversion=" + toString( newBuf->doConversion() ) );
    }
    if ( stride_ != newBuf->stride() )
    {
-      throw E57_EXCEPTION2( E57_ERROR_BUFFERS_NOT_COMPATIBLE,
-                            "stride=" + toString( stride_ ) + " newStride=" + toString( newBuf->stride() ) );
+      throw E57_EXCEPTION2( ErrorBuffersNotCompatible,
+                            "stride=" + toString( stride_ ) +
+                               " newStride=" + toString( newBuf->stride() ) );
    }
 }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
 void SourceDestBufferImpl::dump( int indent, std::ostream &os )
 {
    /// don't checkImageFileOpen
@@ -997,45 +1013,47 @@ void SourceDestBufferImpl::dump( int indent, std::ostream &os )
    os << space( indent ) << "memoryRepresentation: ";
    switch ( memoryRepresentation_ )
    {
-      case E57_INT8:
+      case Int8:
          os << "int8_t" << std::endl;
          break;
-      case E57_UINT8:
+      case UInt8:
          os << "uint8_t" << std::endl;
          break;
-      case E57_INT16:
+      case Int16:
          os << "int16_t" << std::endl;
          break;
-      case E57_UINT16:
+      case UInt16:
          os << "uint16_t" << std::endl;
          break;
-      case E57_INT32:
+      case Int32:
          os << "int32_t" << std::endl;
          break;
-      case E57_UINT32:
+      case UInt32:
          os << "uint32_t" << std::endl;
          break;
-      case E57_INT64:
+      case Int64:
          os << "int64_t" << std::endl;
          break;
-      case E57_BOOL:
+      case Bool:
          os << "bool" << std::endl;
          break;
-      case E57_REAL32:
+      case Real32:
          os << "float" << std::endl;
          break;
-      case E57_REAL64:
+      case Real64:
          os << "double" << std::endl;
          break;
-      case E57_USTRING:
+      case UString:
          os << "ustring" << std::endl;
          break;
       default:
          os << "<unknown>" << std::endl;
          break;
    }
-   os << space( indent ) << "base:                 " << static_cast<const void *>( base_ ) << std::endl;
-   os << space( indent ) << "ustrings:             " << static_cast<const void *>( ustrings_ ) << std::endl;
+   os << space( indent ) << "base:                 " << static_cast<const void *>( base_ )
+      << std::endl;
+   os << space( indent ) << "ustrings:             " << static_cast<const void *>( ustrings_ )
+      << std::endl;
    os << space( indent ) << "capacity:             " << capacity_ << std::endl;
    os << space( indent ) << "doConversion:         " << doConversion_ << std::endl;
    os << space( indent ) << "doScaling:            " << doScaling_ << std::endl;
