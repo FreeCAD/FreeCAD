@@ -28,9 +28,13 @@
 
 #include <deque>
 #include <vector>
+#include <functional>
+#include <optional>
+#include <string>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include "Base/Vector3D.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -67,6 +71,46 @@ enum class MessageOption {
     Quiet, /**< Suppress error. */
     Error, /**< Print an error message. */
     Throw, /**< Throw an exception. */
+};
+
+enum MeasureElementType {
+    INVALID,
+    POINT,
+    LINE,
+    LINESEGMENT,
+    CIRCLE,
+    ARC,
+    CURVE, // Has a length but no radius or axis
+    PLANE,
+    CYLINDER,
+    Volume,
+};
+
+
+using MeasureSelection = std::vector<std::tuple<std::string, std::string>>;
+using MeasureValidateMethod = std::function<bool(const MeasureSelection&)>;
+using MeasurePrioritizeMethod = std::function<bool(const MeasureSelection&)>;
+using MeasureTypeMethod = std::function<App::MeasureElementType (const char*, const char*)>;
+
+struct MeasureType {
+    std::string identifier;
+    std::string label;
+    std::string measureObject;
+
+    // Checks if the measurement works with a given selection
+    MeasureValidateMethod validatorCb;
+
+    // Allows to prioritize this over other measurement types when the measurement type is picked implicitly from the selection.
+    // Gets called only when validatorCb returned true for the given selection
+    MeasurePrioritizeMethod prioritizeCb;
+
+    bool isPython;
+    PyObject* pythonClass;
+};
+
+struct MeasureHandler {
+    std::string module;
+    MeasureTypeMethod typeCb;
 };
 
 
@@ -385,6 +429,25 @@ public:
     std::map<std::string, std::string> getExportFilters() const;
     //@}
 
+    /** @name Methods for the modular measure functionality */
+    //@{
+
+    // Callback for measurements
+
+    void addMeasureType(MeasureType* measureType);
+    void addMeasureType(std::string id, std::string label, std::string measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb);
+    void addMeasureType(const char* id, const char* label, const char* measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb);
+    const std::vector<MeasureType*> getMeasureTypes();
+    std::vector<MeasureType*> getValidMeasureTypes(App::MeasureSelection selection, std::string mode = "");
+
+    void addMeasureHandler(const char* module, MeasureTypeMethod typeCb);
+    bool hasMeasureHandler(const char* module);
+    MeasureHandler getMeasureHandler(const char* module);
+
+
+    //@}
+
+
     /** @name Init, Destruct an Access methods */
     //@{
     static void init(int argc, char ** argv);
@@ -562,6 +625,10 @@ private:
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
+
+    static PyObject* sAddMeasureType    (PyObject *self, PyObject *args);
+    static PyObject* sGetMeasureTypes    (PyObject *self, PyObject *args);
+
     static PyMethodDef    Methods[];
 
     friend class ApplicationObserver;
@@ -633,6 +700,13 @@ private:
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
+
+
+
+
+    std::vector<MeasureHandler> _mMeasureHandlers;
+    std::vector<MeasureType*> _mMeasureTypes;
+
 };
 
 /// Singleton getter of the Application

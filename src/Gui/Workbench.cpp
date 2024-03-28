@@ -815,7 +815,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup"
           << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
-          << "Separator" << "Std_MeasureDistance";
+          << "Separator" << "Std_MeasureDistance" << "Std_Measure";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);

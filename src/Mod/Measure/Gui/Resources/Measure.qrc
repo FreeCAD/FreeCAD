@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/umf-measurement.svg</file>
+        <file>icons/preferences-measure.svg</file>
+    </qresource>
+</RCC>

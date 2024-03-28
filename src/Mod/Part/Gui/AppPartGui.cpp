@@ -213,7 +213,6 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderProjectOnSurface           ::init();
     PartGui::DimensionLinear                        ::initClass();
     PartGui::DimensionAngular                       ::initClass();
-    PartGui::ArcEngine                              ::initClass();
 
     PartGui::Workbench                              ::init();
     auto manip = std::make_shared<PartGui::WorkbenchManipulator>();

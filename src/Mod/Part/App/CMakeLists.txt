@@ -218,6 +218,8 @@ SET(Features_SRCS
     AttachExtension.cpp
     PrismExtension.cpp
     PrismExtension.h
+    VectorAdapter.cpp
+    VectorAdapter.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -542,6 +544,9 @@ SET(Part_SRCS
     TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
+    MeasureClient.cpp
+    MeasureClient.h
+    MeasureInfo.h
     modelRefine.cpp
     modelRefine.h
     Tools.cpp
