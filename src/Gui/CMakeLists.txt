@@ -20,6 +20,14 @@ if (FREECAD_USE_3DCONNEXION)
     endif(APPLE)
 endif(FREECAD_USE_3DCONNEXION)
 
+if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+	add_definitions(-DUSE_3DCONNEXION_NAVLIB)
+	if(APPLE)
+		add_definitions(-D__APPLE__)
+	endif(APPLE)
+	set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
+endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+
 if (BUILD_VR)
     add_definitions(-DBUILD_VR )
 endif(BUILD_VR)
@@ -273,6 +281,21 @@ SET(FreeCADGui_SDK_MOC_HDRS
   3Dconnexion/GuiNativeEventMac.h
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
+
+if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
+    SET(NAVLIB_STUB_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/src)
+    SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/navlib/NavlibCmds.cpp
+        3Dconnexion/navlib/NavlibNavigation.cpp
+        3Dconnexion/navlib/NavlibPivot.cpp
+		${NAVLIB_STUB_DIR}/navlib_load.cpp
+		${NAVLIB_STUB_DIR}/navlib_stub.c
+    )
+    SOURCE_GROUP("3Dconnexion Navlib" FILES ${FreeCADGui_SDK_SRCS})
+	SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/navlib/NavlibInterface.h
+	)
+endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
