@@ -155,9 +155,9 @@ public:
     void restoreComboboxPref(int comboboxindex);
 
     template<typename F>
-    boost::signals2::connection registerParameterFocusOut(F&& fn)
+    boost::signals2::connection registerParameterTabOrEnterPressed(F&& fn)
     {
-        return signalParameterFocusOut.connect(std::forward<F>(fn));
+        return signalParameterTabOrEnterPressed.connect(std::forward<F>(fn));
     }
 
     template<typename F>
@@ -217,7 +217,7 @@ private:
 private:
     std::unique_ptr<Ui_SketcherToolDefaultWidget> ui;
 
-    boost::signals2::signal<void(int parameterindex)> signalParameterFocusOut;
+    boost::signals2::signal<void(int parameterindex)> signalParameterTabOrEnterPressed;
     boost::signals2::signal<void(int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
     boost::signals2::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;

@@ -11,6 +11,8 @@
 
 #include "App/Application.h"
 #include "Base/Console.h"
+#include "Document.h"
+#include "DocumentObject.h"
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -1345,6 +1347,95 @@ long ElementMap::getElementHistory(const MappedName& name, long masterTag, Mappe
         if (history) {
             history->push_back(ret.copy());
         }
+    }
+}
+
+void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallback cb) const
+{
+    long encodedTag = 0;
+    int len = 0;
+
+    auto pos = name.findTagInElementName(&encodedTag, &len, nullptr, nullptr, true);
+    if (cb(name, len, encodedTag, masterTag) || pos < 0) {
+        return;
+    }
+
+    if (name.startsWith(POSTFIX_EXTERNAL_TAG, len)) {
+        return;
+    }
+
+    std::set<long> tagSet;
+
+    std::vector<MappedName> names;
+    if (masterTag) {
+        tagSet.insert(std::abs(masterTag));
+    }
+    if (encodedTag) {
+        tagSet.insert(std::abs(encodedTag));
+    }
+    names.push_back(name);
+
+    masterTag = encodedTag;
+    MappedName tmp;
+    bool first = true;
+
+    // TODO: element tracing without object is inherently unsafe, because of
+    // possible external linking object which means the element may be encoded
+    // using external string table. Looking up the wrong table may accidentally
+    // cause circular mapping, and is actually quite easy to reproduce. See
+    //
+    // https://github.com/realthunder/FreeCAD_assembly3/issues/968
+    //
+    // An arbitrary depth limit is set here to not waste time. 'tagSet' above is
+    // also used for early detection of 'recursive' mapping.
+
+    for (int index = 0; index < 50; ++index) {
+        if (!len || len > pos) {
+            return;
+        }
+        if (first) {
+            first = false;
+            size_t offset = 0;
+            if (name.startsWith(ELEMENT_MAP_PREFIX)) {
+                offset = ELEMENT_MAP_PREFIX_SIZE;
+            }
+            tmp = MappedName(name, offset, len);
+        }
+        else {
+            tmp = MappedName(tmp, 0, len);
+        }
+        tmp = dehashElementName(tmp);
+        names.push_back(tmp);
+        encodedTag = 0;
+        pos = tmp.findTagInElementName(&encodedTag, &len, nullptr, nullptr, true);
+        if (pos >= 0 && tmp.startsWith(POSTFIX_EXTERNAL_TAG, len)) {
+            break;
+        }
+
+        if (encodedTag && masterTag != std::abs(encodedTag)
+            && !tagSet.insert(std::abs(encodedTag)).second) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("circular element mapping");
+                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE)) {
+                    auto doc = App::GetApplication().getActiveDocument();
+                    if (doc) {
+                        auto obj = doc->getObjectByID(masterTag);
+                        if (obj) {
+                            FC_LOG("\t" << obj->getFullName() << obj->getFullName() << "." << name);
+                        }
+                    }
+                    for (auto& errname : names) {
+                        FC_ERR("\t" << errname);
+                    }
+                }
+            }
+            break;
+        }
+
+        if (cb(tmp, len, encodedTag, masterTag) || pos < 0) {
+            return;
+        }
+        masterTag = encodedTag;
     }
 }
 

@@ -80,7 +80,7 @@ def setup(doc=None, solvertype="elmer"):
     # name is important because the other method in this module use obj name
     geom_obj = doc.addObject("PartDesign::Body", "Body")
     base_sketch = geom_obj.newObject("Sketcher::SketchObject", "Base_Sketch")
-    base_sketch.Support = (doc.getObject("XY_Plane"), [""])
+    base_sketch.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
     base_sketch.MapMode = "FlatFace"
     base_geoList = [
         Part.LineSegment(Vector(0.000000, 0.000000, 0), Vector(57.407921, 0.000000, 0)),
@@ -111,7 +111,7 @@ def setup(doc=None, solvertype="elmer"):
     pad.Length2 = 1000.0
 
     upper_sketch = geom_obj.newObject("Sketcher::SketchObject", "Upper_Sketch")
-    upper_sketch.Support = None
+    upper_sketch.AttachmentSupport = None
     upper_sketch.MapMode = "Deactivated"
     upper_sketch.Placement = FreeCAD.Placement(Vector(0, 0, 1000), Rotation(Vector(0, 0, 1), 0))
     upper_geoList = [

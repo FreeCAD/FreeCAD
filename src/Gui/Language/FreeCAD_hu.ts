@@ -188,8 +188,8 @@
       <translation>Elhelyezés</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
@@ -2787,7 +2787,7 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Szövegcimke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -6124,15 +6124,15 @@ El akarja menteni a változásokat?</translation>
       <translation>PDF formátum</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Graphviz formátum</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Export grafikon</translation>
     </message>
@@ -7077,7 +7077,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>Szövegfelirat</translation>
+      <translation>Szövegcimke</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -8061,8 +8061,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>PDF exportálása...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Nem mentett dokumentum</translation>
     </message>
@@ -8932,8 +8932,8 @@ az aktuális példány elveszik.
       <translation>Átfedés váltása</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Lebegő ablak váltása</translation>
     </message>
@@ -8976,7 +8976,7 @@ az aktuális példány elveszik.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Megjeleníti a láthatóság ikont</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9146,12 +9146,12 @@ az aktuális példány elveszik.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Némítás visszavonása</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Elnémít</translation>
     </message>
   </context>
   <context>
@@ -10077,8 +10077,8 @@ az aktuális példány elveszik.
       <translation>Új üres munkalap létrehozása</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>
@@ -11762,7 +11762,7 @@ Még mindig fojtatni szeretné?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Ha engedélyezett, a fa nézet elemei előtt megjelenik egy szem ikon, amely az elemek láthatósági állapotát mutatja. Kattintásra a láthatóság változik</translation>
     </message>
   </context>
   <context>

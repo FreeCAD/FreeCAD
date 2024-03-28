@@ -260,10 +260,13 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
-        if (curmode == NavigationStyle::SPINNING || this->lockButton1 && curmode != NavigationStyle::SELECTION)
+        if (curmode == NavigationStyle::SPINNING
+            || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
             newmode = NavigationStyle::IDLE;
-        else
+        }
+        else {
             newmode = NavigationStyle::SELECTION;
+        }
         break;
     case BUTTON3DOWN:
         if (curmode == NavigationStyle::SPINNING) { break; }

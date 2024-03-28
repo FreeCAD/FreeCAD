@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Standard Part</source>
-      <translation>Обични део</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Направи пројекат склопа</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>

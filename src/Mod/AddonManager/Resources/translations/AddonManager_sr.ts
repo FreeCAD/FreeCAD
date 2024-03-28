@@ -261,17 +261,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation>Уреди ознаке</translation>
+      <translation>Уреди тагове</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Листа ознака раздвојених зарезима које описују ову ставку:</translation>
+      <translation>Листа тагова раздвојених зарезима које описују ову ставку:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>САВЕТ: Уобичајене ознаке укључују &quot;Склоп&quot;, &quot;FEM&quot;, &quot;Мрежа&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>САВЕТ: Уобичајени тагови укључују &quot;Склоп&quot;, &quot;FEM&quot;, &quot;Мрежа&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -381,7 +381,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="127"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation>(ознаке)</translation>
+      <translation>(тагови)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="130"/>
@@ -459,7 +459,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>Предстојеће верзије FreeCAD Менаџера додатака ће подржавати програмерско подешавање одређене гране или ознаке за употребу са одређеном верзијом FreeCAD-а (нпр. подешавање одређене ознаке као последње верзије вашег Додатка за подршку v0.19, итд.)</translation>
+      <translation>Предстојеће верзије FreeCAD Менаџера додатака ће подржавати програмерско подешавање одређених грана или тагова за употребу са одређеном верзијом FreeCAD-а (нпр. подешавање одређеног таг-а као последње верзије вашег Додатка за подршку v0.19, итд.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -469,7 +469,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation>Најбоља доступна грана, ознака или commit</translation>
+      <translation>Најбоља доступна грана, таг или commit</translation>
     </message>
   </context>
   <context>
@@ -605,12 +605,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="324"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>URL извора оцена</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="343"/>
       <source>The URL for the Addon Score data (see documentation for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see documentation for formatting and hosting details).</translation>
+      <translation>УРЛ за оцене додатка (погледајте документацију за детаље).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -842,7 +842,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation>Ознаке...</translation>
+      <translation>Тагови...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
@@ -1242,18 +1242,18 @@ installed addons will be checked for available updates
       <translation>Извршавање макроа није успело. Погледај конзолу за детаље о грешкама.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="343"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Програмер задужен за одржавање</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="355"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Аутор</translation>
     </message>
@@ -1367,8 +1367,8 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="415"/>
       <location filename="../../package_list.py" line="465"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Инсталирано</translation>
     </message>
@@ -1380,7 +1380,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="281"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation>Git ознака &apos;{}&apos; checked out, ажурирања нису могућа</translation>
+      <translation>Git таг &apos;{}&apos; checked out, ажурирања нису могућа</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="276"/>
@@ -1578,9 +1578,9 @@ installed addons will be checked for available updates
       <translation>Изабери датотеку иконе за ову ставку садржаја</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} није подфасцикла {}</translation>
     </message>
@@ -1939,32 +1939,32 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="313"/>
       <source>Tags</source>
-      <translation>Ознаке</translation>
+      <translation>Тагови</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="376"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} ★ на GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="378"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>Нема ★, или нема на GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="383"/>
       <source>Created </source>
-      <translation type="unfinished">Created </translation>
+      <translation>Направљено </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="391"/>
       <source>Updated </source>
-      <translation type="unfinished">Updated </translation>
+      <translation>Ажурирано </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="394"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>Оцена: </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="417"/>
@@ -1975,9 +1975,9 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="419"/>
       <location filename="../../package_list.py" line="473"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Доступно је ажурирање</translation>
     </message>
@@ -2351,14 +2351,14 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_workers_startup.py" line="938"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
-      <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
+      <translation>Није успело преузимање статистике о додатку од {} – само ће сортирање по абецедном реду бити тачно
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="970"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
-      <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
+      <translation>Неуспешно преузимање о додатку од &apos;{}&apos; -- сортирање по оценама неће успети
 </translation>
     </message>
     <message>
@@ -2447,31 +2447,31 @@ installed addons will be checked for available updates
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
       <source>Alphabetical</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>По абецедном реду</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
       <source>Last Updated</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>Последње ажурирано</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
       <source>Date Created</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Date Created</translation>
+      <translation>Датум креирања</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
       <source>GitHub Stars</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">GitHub Stars</translation>
+      <translation>GitHub звезде</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>Оцена</translation>
     </message>
   </context>
   <context>

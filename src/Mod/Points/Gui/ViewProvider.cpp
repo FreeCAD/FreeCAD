@@ -62,7 +62,7 @@ ViewProviderPoints::ViewProviderPoints()
 {
     static const char* osgroup = "Object Style";
 
-    ADD_PROPERTY_TYPE(PointSize, (2.0f), osgroup, App::Prop_None, "Set point size");
+    ADD_PROPERTY_TYPE(PointSize, (2.0F), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
     // Create the selection node

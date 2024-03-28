@@ -76,6 +76,8 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
+    bool onDelete(const std::vector<std::string> & parms) override;
+
 
     TechDraw::DrawViewDimension* getViewObject() const override;
 

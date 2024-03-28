@@ -701,17 +701,17 @@ For stock from the Base object&apos;s bounding box it means the extra material i
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
         <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
+        <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
         <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
         <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
-        <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
         <location filename="../panels/PropertyBag.ui" line="48"/>
+        <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+        <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -762,8 +762,8 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
         <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
+        <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
         <source>All objects will be processed using the same operation properties.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -808,32 +808,32 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="39"/>
         <location filename="../panels/SetupGlobal.ui" line="36"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="39"/>
         <source>Start Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="46"/>
         <location filename="../panels/PageDiametersEdit.ui" line="27"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="46"/>
         <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="59"/>
         <location filename="../panels/PageDiametersEdit.ui" line="43"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="59"/>
         <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="92"/>
         <location filename="../panels/PageDiametersEdit.ui" line="64"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="92"/>
         <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="105"/>
         <location filename="../panels/PageDiametersEdit.ui" line="80"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="105"/>
         <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -848,14 +848,14 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="85"/>
         <location filename="../panels/SetupGlobal.ui" line="52"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="85"/>
         <source>Final Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageDepthsEdit.ui" line="131"/>
         <location filename="../panels/SetupGlobal.ui" line="68"/>
+        <location filename="../panels/PageDepthsEdit.ui" line="131"/>
         <source>Step Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -895,34 +895,34 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
         <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-        <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
-        <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
         <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
         <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
         <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
         <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
         <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
         <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-        <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
         <source>The tool and its settings to be used for this operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-        <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
-        <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-        <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
-        <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-        <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
-        <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
         <location filename="../panels/SetupGlobal.ui" line="255"/>
         <location filename="../panels/SetupGlobal.ui" line="261"/>
+        <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
+        <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+        <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+        <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+        <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+        <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
         <source>Coolant Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -932,28 +932,28 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
-        <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-        <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
-        <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-        <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-        <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
         <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-        <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-        <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-        <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
-        <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
         <location filename="../panels/SetupGlobal.ui" line="180"/>
+        <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+        <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
+        <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+        <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+        <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
+        <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
+        <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
+        <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
+        <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
         <source>Tool Controller</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
-        <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
         <location filename="../panels/SetupGlobal.ui" line="249"/>
+        <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
+        <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
         <source>Coolant</source>
         <translation type="unfinished"></translation>
     </message>
@@ -973,8 +973,8 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
         <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
+        <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
         <source>Step Over Percent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,8 +1024,8 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
         <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
+        <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
         <source>Use Outline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1080,10 +1080,10 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
+        <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
         <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
         <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
-        <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
         <source>Direction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1093,15 +1093,15 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
         <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
         <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
-        <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
         <source>CW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
         <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
         <source>CCW</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1126,8 +1126,6 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
-        <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
         <location filename="../panels/ToolEditor.ui" line="77"/>
         <location filename="../panels/ToolEditor.ui" line="134"/>
         <location filename="../panels/ToolEditor.ui" line="144"/>
@@ -1137,6 +1135,8 @@ Reset deletes all current items from the list and fills the list with all circul
         <location filename="../panels/ToolEditor.ui" line="223"/>
         <location filename="../panels/ToolEditor.ui" line="240"/>
         <location filename="../panels/ToolEditor.ui" line="280"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
+        <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1352,11 +1352,11 @@ Reset deletes all current items from the list and fills the list with all circul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-        <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
         <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
         <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
         <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+        <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+        <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
         <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
         <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
         <source>The tool and its settings to be used for this operation</source>
@@ -1455,9 +1455,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
         <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
         <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
+        <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
         <source>Use Start Point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1713,9 +1713,9 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
         <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
         <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
-        <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
         <source>Layer Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1755,8 +1755,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
         <source>Cut Pattern</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1771,14 +1771,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
         <source>Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
         <source>Select the overall boundary for the operation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1788,14 +1788,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
         <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
         <source>Set the geometric clearing pattern to use for the operation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1820,14 +1820,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
         <source>Set the Z-axis depth offset from the target surface.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
         <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1837,8 +1837,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
         <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1873,28 +1873,28 @@ The latter can be used to face of the entire stock area to ensure uniform height
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
         <source>Step over</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
         <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
         <source>Sample interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
         <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
+        <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
         <source>Optimize Linear Paths</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2028,8 +2028,8 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
         <location filename="../panels/ToolEditor.ui" line="43"/>
+        <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2059,8 +2059,8 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
         <location filename="../panels/SetupGlobal.ui" line="24"/>
+        <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
         <source>Operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2943,8 +2943,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/AxisMapEdit.ui" line="20"/>
         <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+        <location filename="../panels/AxisMapEdit.ui" line="20"/>
         <source>Radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3359,8 +3359,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
 <context>
     <name>TaskPathSimulator</name>
     <message>
-        <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
         <location filename="../panels/TaskPathSimulator.ui" line="14"/>
+        <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
         <source>Path Simulator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4191,9 +4191,10 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
         <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
+        <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
         <source>Edit</source>
+        <extracomment>int = field(default=None)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4335,8 +4336,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
         <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
+        <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
         <source>%s is not a Base Model object of the job %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4356,8 +4357,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Post/Command.py" line="561"/>
         <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+        <location filename="../../../Path/Post/Command.py" line="561"/>
         <source>Choose a Path Job</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4461,7 +4462,6 @@ For example:
     <message>
         <location filename="../../../Path/Base/PropertyBag.py" line="75"/>
         <source>List of custom property groups</source>
-        <extracomment>int = field(default=None)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4524,12 +4524,12 @@ For example:
     <message>
         <location filename="../../../Path/Dressup/Boundary.py" line="53"/>
         <location filename="../../../Path/Dressup/Tags.py" line="940"/>
-        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
-        <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
         <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
         <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
         <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
         <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
+        <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
+        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
         <source>The base path to modify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4823,9 +4823,9 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Job.py" line="501"/>
         <location filename="../../../Path/Op/Base.py" line="192"/>
         <location filename="../../../Path/Op/Base.py" line="463"/>
+        <location filename="../../../Path/Main/Job.py" line="501"/>
         <source>Operations Cycle Time Estimation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4910,8 +4910,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Fixture.py" line="63"/>
         <location filename="../../../Path/Op/Base.py" line="172"/>
+        <location filename="../../../Path/Main/Gui/Fixture.py" line="63"/>
         <source>Make False, to prevent operation from generating code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4931,8 +4931,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Adaptive.py" line="983"/>
         <location filename="../../../Path/Op/Helix.py" line="127"/>
+        <location filename="../../../Path/Op/Adaptive.py" line="983"/>
         <location filename="../../../Path/Op/PocketBase.py" line="151"/>
         <source>Percent of cutter diameter to step over on each pass</source>
         <translation type="unfinished"></translation>
@@ -5108,10 +5108,10 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="314"/>
-        <location filename="../../../Path/Op/Slot.py" line="236"/>
         <location filename="../../../Path/Op/Surface.py" line="431"/>
+        <location filename="../../../Path/Op/Slot.py" line="236"/>
         <location filename="../../../Path/Op/Waterline.py" line="460"/>
+        <location filename="../../../Path/Op/Base.py" line="314"/>
         <source>Make True, if specifying a Start Point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5225,9 +5225,9 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../Path/Op/Vcarve.py" line="214"/>
         <location filename="../../../Path/Op/Engrave.py" line="71"/>
         <location filename="../../../Path/Op/Engrave.py" line="81"/>
-        <location filename="../../../Path/Op/Vcarve.py" line="214"/>
         <source>Additional base objects to be engraved</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5268,9 +5268,9 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../Path/Op/Profile.py" line="143"/>
         <location filename="../../../Path/Op/Helix.py" line="142"/>
         <location filename="../../../Path/Op/Helix.py" line="167"/>
-        <location filename="../../../Path/Op/Profile.py" line="143"/>
         <source>Extra value to stay away from final profile- good for roughing toolpath</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5290,9 +5290,9 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Pocket.py" line="66"/>
-        <location filename="../../../Path/Op/Profile.py" line="117"/>
         <location filename="../../../Path/Op/Surface.py" line="247"/>
+        <location filename="../../../Path/Op/Profile.py" line="117"/>
+        <location filename="../../../Path/Op/Pocket.py" line="66"/>
         <location filename="../../../Path/Op/Waterline.py" line="267"/>
         <source>Choose how to process multiple Base Geometry features.</source>
         <translation type="unfinished"></translation>
@@ -5313,8 +5313,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/PocketBase.py" line="128"/>
         <location filename="../../../Path/Op/Profile.py" line="108"/>
+        <location filename="../../../Path/Op/PocketBase.py" line="128"/>
         <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5421,8 +5421,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Slot.py" line="122"/>
         <location filename="../../../Path/Op/Surface.py" line="127"/>
+        <location filename="../../../Path/Op/Slot.py" line="122"/>
         <location filename="../../../Path/Op/Waterline.py" line="205"/>
         <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
         <translation type="unfinished"></translation>
@@ -5438,8 +5438,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Slot.py" line="147"/>
         <location filename="../../../Path/Op/Surface.py" line="291"/>
+        <location filename="../../../Path/Op/Slot.py" line="147"/>
         <location filename="../../../Path/Op/Waterline.py" line="329"/>
         <source>Set the geometric clearing pattern to use for the operation.</source>
         <translation type="unfinished"></translation>
@@ -5455,8 +5455,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Slot.py" line="174"/>
         <location filename="../../../Path/Op/Surface.py" line="326"/>
+        <location filename="../../../Path/Op/Slot.py" line="174"/>
         <location filename="../../../Path/Op/Waterline.py" line="372"/>
         <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
         <translation type="unfinished"></translation>
@@ -5487,8 +5487,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Slot.py" line="228"/>
         <location filename="../../../Path/Op/Surface.py" line="423"/>
+        <location filename="../../../Path/Op/Slot.py" line="228"/>
         <location filename="../../../Path/Op/Waterline.py" line="452"/>
         <source>The custom start point for the path of this operation</source>
         <translation type="unfinished"></translation>
@@ -6002,22 +6002,22 @@ For example:
 <context>
     <name>Path_Dressup</name>
     <message>
-        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
         <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="366"/>
+        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
         <source>Please select one path object
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="289"/>
         <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="371"/>
+        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="289"/>
         <source>The selected object is not a path
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
         <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="376"/>
+        <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
         <source>Please select a Path object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6174,8 +6174,8 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
         <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6903,14 +6903,14 @@ For example:
 <context>
     <name>PathProfile</name>
     <message>
-        <location filename="../../../Path/Op/Helix.py" line="75"/>
         <location filename="../../../Path/Op/Profile.py" line="209"/>
+        <location filename="../../../Path/Op/Helix.py" line="75"/>
         <source>Outside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Helix.py" line="76"/>
         <location filename="../../../Path/Op/Profile.py" line="210"/>
+        <location filename="../../../Path/Op/Helix.py" line="76"/>
         <source>Inside</source>
         <translation type="unfinished"></translation>
     </message>

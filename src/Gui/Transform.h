@@ -119,7 +119,6 @@ public:
 
 private:
     Transform* dialog;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace Dialog

@@ -1564,7 +1564,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     QTreeWidget::mousePressEvent(event);
 
-    // Handle the visibility icon after the normal event processing to not interfer with
+    // Handle the visibility icon after the normal event processing to not interfere with
     // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
@@ -5163,8 +5163,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     auto linked = obj->getLinkedObject(false);
     bool external = object()->getDocument() != getOwnerDocument()->document() ||
         (linked && linked->getDocument() != obj->getDocument());
+    bool freezed = pObject->isFreezed();
 
     int currentStatus =
+        ((freezed ? 0 : 1) << 5) |
         ((external ? 0 : 1) << 4) |
         ((object()->showInTree() ? 0 : 1) << 3) |
         ((pObject->isError() ? 1 : 0) << 2) |
@@ -5320,41 +5322,70 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
         }
 
+        if (freezed) {
+            static QPixmap pxFreeze;
+            if (pxFreeze.isNull()) {
+                // object is in freezed state
+                const char* const feature_freezed_xpm[] = {
+                                                           "16 16 2 1",
+                                                           " 	c None",
+                                                           ".	c #00EEFF",
+                                                           "      . . .     ",
+                                                           "    .  ...  .   ",
+                                                           "   ..   .   ..  ",
+                                                           "  ....  .  .... ",
+                                                           "     .. . ..    ",
+                                                           " .    . . .    .",
+                                                           "  .    ...    . ",
+                                                           " ...............",
+                                                           "  .    ...    . ",
+                                                           " .    . . .    .",
+                                                           "     .. . ..    ",
+                                                           "  ....  .  .... ",
+                                                           "   ..   .   ..  ",
+                                                           "    .  ...  .   ",
+                                                           "      . . .     ",
+                                                           "                "};
+                pxFreeze = QPixmap(feature_freezed_xpm);
+            }
+            pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
+            pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
+        }
+
         icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
 
         icon = object()->mergeColorfulOverlayIcons(icon);
+
+        if (isVisibilityIconEnabled()) {
+            static QPixmap pxVisible, pxInvisible;
+            if (pxVisible.isNull()) {
+                pxVisible = BitmapFactory().pixmap("TreeItemVisible");
+            }
+            if (pxInvisible.isNull()) {
+                pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
+            }
+
+            // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
+            QIcon new_icon;
+            for (auto state: {QIcon::On, QIcon::Off}) {
+                QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
+
+                QPixmap px(2*px_org.width(), px_org.height());
+                px.fill(Qt::transparent);
+
+                QPainter pt;
+                pt.begin(&px);
+                pt.setPen(Qt::NoPen);
+                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+                pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+                pt.end();
+
+                new_icon.addPixmap(px, QIcon::Normal, state);
+            }
+            icon = new_icon;
+        }
     }
-
-    if (isVisibilityIconEnabled()) {
-        static QPixmap pxVisible, pxInvisible;
-        if (pxVisible.isNull()) {
-            pxVisible = BitmapFactory().pixmap("TreeItemVisible");
-        }
-        if (pxInvisible.isNull()) {
-            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible");
-        }
-
-        // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
-        QIcon new_icon;
-        for (auto state: {QIcon::On, QIcon::Off}) {
-            QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
-
-            QPixmap px(2*px_org.width(), px_org.height());
-            px.fill(Qt::transparent);
-
-            QPainter pt;
-            pt.begin(&px);
-            pt.setPen(Qt::NoPen);
-            pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
-            pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
-            pt.end();
-
-            new_icon.addPixmap(px, QIcon::Normal, state);
-        }
-        icon = new_icon;
-    }
-
 
     _Timing(2, setIcon);
     this->setIcon(0, icon);

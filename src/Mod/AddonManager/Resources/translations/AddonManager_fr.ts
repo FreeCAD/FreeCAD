@@ -109,7 +109,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation>Modules Python optionnels</translation>
+      <translation>Modules Python facultatifs</translation>
     </message>
   </context>
   <context>
@@ -349,7 +349,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation>S'il s'agit d'une dépendance optionnelle, le gestionnaire des extensions proposera de l'installer (quand c'est possible), mais ne bloquera pas l'installation si l'utilisateur choisit de ne pas installer le paquet ou s'il ne peut pas le faire.</translation>
+      <translation>S'il s'agit d'une dépendance facultative, le gestionnaire des extensions proposera de l'installer (quand cela est possible) mais ne bloquera pas l'installation si l'utilisateur choisit de ne pas installer le paquet ou s'il ne peut pas le faire.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -403,7 +403,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation type="unfinished">labelSort</translation>
+      <translation>Trier par libellés</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -605,22 +605,22 @@ Cela nécessite l'installation du paquet GitPython sur votre système.</translat
     <message>
       <location filename="../../AddonManagerOptions.ui" line="324"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>URL des scores</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="343"/>
       <source>The URL for the Addon Score data (see documentation for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see documentation for formatting and hosting details).</translation>
+      <translation>L'URL du score de l'extension, (voir la documentation pour les détails de formatage et d'hébergement).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Path to git executable (optional):</source>
-      <translation>Chemin vers l'exécutable git (facultatif) :</translation>
+      <translation>Chemin vers l'exécutable de git (facultatif) :</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation>Le chemin vers l'exécutable git. Détecté automatiquement si nécessaire et non spécifié.</translation>
+      <translation>Le chemin vers l'exécutable de git. Détecté automatiquement si nécessaire et non spécifié.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="394"/>
@@ -691,7 +691,7 @@ Cela nécessite l'installation du paquet GitPython sur votre système.</translat
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire des extensions pour satisfaire les dépendances de l'extension. Emplacement d'installation :</translation>
+      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire des extensions pour satisfaire les dépendances de l'extension. Emplacement de l'installation :</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -716,7 +716,7 @@ Cela nécessite l'installation du paquet GitPython sur votre système.</translat
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation>Un astérisque (*) dans la colonne "Utilisé par" indique une dépendance optionnelle.
+      <translation>Un astérisque (*) dans la colonne "Utilisé par" indique une dépendance facultative.
 Remarque : "Utilisé par" n'enregistre que les importations directes dans l'extension.
 D'autres paquets Python dont dépendent ces paquets peuvent également avoir été installés.</translation>
     </message>
@@ -1244,18 +1244,18 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="343"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="355"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1369,8 +1369,8 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../package_list.py" line="415"/>
       <location filename="../../package_list.py" line="465"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Installé</translation>
     </message>
@@ -1382,7 +1382,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="281"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation>La balise Git &apos;{}&apos; a été retirée, aucune mise à jour possible</translation>
+      <translation>La balise de git "{}" a été retirée, aucune mise à jour possible.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="276"/>
@@ -1579,9 +1579,9 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Sélectionner un fichier d'icône pour cet élément de contenu.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} n'est pas un sous-répertoire de {}</translation>
     </message>
@@ -1945,27 +1945,27 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../package_list.py" line="376"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} ★ sur GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="378"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>Pas d'★ ou pas sur GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="383"/>
       <source>Created </source>
-      <translation type="unfinished">Created </translation>
+      <translation>Créé </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="391"/>
       <source>Updated </source>
-      <translation type="unfinished">Updated </translation>
+      <translation>Mis à jour </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="394"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>Score : </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="417"/>
@@ -1976,9 +1976,9 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../package_list.py" line="419"/>
       <location filename="../../package_list.py" line="473"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Mise à jour disponible</translation>
     </message>
@@ -2242,14 +2242,13 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="269"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation>Git est désactivé, les macros Git sont ignorées</translation>
+      <translation>Git est désactivé, les macros sous git sont ignorées.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="317"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation>Tentative de changement de la configuration des macro non-Git pour utiliser Git
-</translation>
+      <translation>Tentative de changement de la configuration des macro non-git pour utiliser git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="334"/>
@@ -2279,7 +2278,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="592"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation>Ne parvient pas à récupérer les mises à jour git pour l'atelier {}</translation>
+      <translation>Impossible de récupérer les mises à jour sous git pour l'atelier {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="605"/>
@@ -2352,15 +2351,13 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../addonmanager_workers_startup.py" line="938"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
-      <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
-</translation>
+      <translation>Échec de la récupération des statistiques de l'extension {}, seul le tri par ordre alphabétique sera correct.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="970"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
-      <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
-</translation>
+      <translation>Échec de la récupération du score de l'extension de "{}". Le tri par score échouera.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="262"/>
@@ -2392,7 +2389,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>
       <source>Git branch rename failed with the following message:</source>
-      <translation>Le renommage de la branche Git a échoué avec le message suivant :</translation>
+      <translation>Le renommage de la branche git a échoué avec le message suivant :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
@@ -2448,7 +2445,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
       <source>Alphabetical</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>Alphabétique</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
@@ -2460,19 +2457,19 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
       <source>Date Created</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Date Created</translation>
+      <translation>Date de création</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
       <source>GitHub Stars</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">GitHub Stars</translation>
+      <translation>Étoiles sous GitHub</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>Score</translation>
     </message>
   </context>
   <context>

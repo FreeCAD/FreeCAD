@@ -435,7 +435,7 @@
       <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Intersezione</translation>
+      <translation>Interseca</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
@@ -1458,7 +1458,7 @@ nei suoi componenti X, Y e Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Intersection</source>
-      <translation>Interseca</translation>
+      <translation>Intersezione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="360"/>
@@ -2344,7 +2344,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="304"/>
       <source>Wire</source>
-      <translation>Filo</translation>
+      <translation>Polilinea</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="356"/>
@@ -5672,8 +5672,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -5764,20 +5764,20 @@ Do you want to continue?</source>
       <translation>Nessun riferimento selezionato</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Bordo</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Vertice</translation>
     </message>
@@ -5804,7 +5804,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
-      <translation>Polilinea</translation>
+      <translation>Filo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>

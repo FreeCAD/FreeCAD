@@ -188,8 +188,8 @@
       <translation>Posizionamento</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Trasforma</translation>
@@ -6125,15 +6125,15 @@ Si desidera salvare le modifiche?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Formato Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Esporta grafico</translation>
     </message>
@@ -8061,8 +8061,8 @@ Vuoi specificare un'altra cartella?</translation>
       <translation>Esportazione PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Documento non salvato</translation>
     </message>
@@ -8933,8 +8933,8 @@ la copia corrente andranno perse.
       <translation>Attiva/disattiva sovrapposizione</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Attiva/disattiva finestra fluttuante</translation>
     </message>
@@ -8977,7 +8977,7 @@ la copia corrente andranno perse.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Mostra icona di visibilità</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9147,12 +9147,12 @@ la copia corrente andranno perse.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Annullare soppressione</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Sopprime</translation>
     </message>
   </context>
   <context>
@@ -10078,8 +10078,8 @@ la copia corrente andranno perse.
       <translation>Crea un documento vuoto</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>
@@ -11763,7 +11763,7 @@ Si desidera ancora procedere?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Se abilitata, mostra un'icona ad occhio prima degli elementi della vista ad albero che mostran lo stato di visibilità degli elementi. Quando fai clic sulla visibilità viene attivata o meno</translation>
     </message>
   </context>
   <context>

@@ -271,7 +271,7 @@ void CmdPartDesignBody::activated(int iMsg)
                         App::Plane* plane = static_cast<App::Plane*>(features.front());
                         std::string supportString = Gui::Command::getObjectCmd(plane,"(",", [''])");
 
-                        FCMD_OBJ_CMD(baseFeature,"Support = " << supportString);
+                        FCMD_OBJ_CMD(baseFeature,"AttachmentSupport = " << supportString);
                         FCMD_OBJ_CMD(baseFeature,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
                         Gui::Command::updateActive();
                     };

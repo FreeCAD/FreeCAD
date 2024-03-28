@@ -52,12 +52,9 @@ using namespace TechDrawGui;
 
 
 //**************************************************************
-QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
-    m_weldFeat(nullptr),
-    m_leadFeat(nullptr),
+QGIWeldSymbol::QGIWeldSymbol() :
     m_arrowFeat(nullptr),
     m_otherFeat(nullptr),
-    m_qgLead(myParent),
     m_tailText(nullptr),
     m_fieldFlag(nullptr),
     m_allAround(nullptr),
@@ -67,9 +64,6 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
     setCacheMode(QGraphicsItem::NoCache);
-
-    setParentItem(m_qgLead);
-    m_leadFeat = m_qgLead->getFeature();
     setZValue(ZVALUE::DIMENSION);
 
     m_tailText = new QGCustomText();
@@ -126,12 +120,14 @@ void QGIWeldSymbol::updateView(bool update)
 {
 //    Base::Console().Message("QGIWS::updateView()\n");
     Q_UNUSED(update);
-    auto viewWeld( dynamic_cast<TechDraw::DrawWeldSymbol*>(getViewObject()) );
-    if (!viewWeld)
-        return;
 
-    if (!getFeature()) {
+    TechDraw::DrawWeldSymbol *feature = getFeature();
+    if (!feature) {
         Base::Console().Warning("QGIWS::updateView - no feature!\n");
+        return;
+    }
+
+    if (feature->isRestoring() || !getLeader()) {
         return;
     }
 
@@ -171,16 +167,17 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
         return;
     }
 
-    const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
+    const auto sym = getFeature();
     if (!sym)
         return;
-    auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
+    auto vp = dynamic_cast<ViewProviderWeld *>(getViewProvider(sym));
     if (!vp)
         return;
     std::string fontName = vp->Font.getValue();
     int         fontSize = QGIView::exactFontSize(vp->Font.getValue(),
                                                   vp->TileFontSize.getValue());
-    double featScale = m_leadFeat->getScale();
+
+    double featScale = getLeader()->getScale();
 
     std::string tileTextL = tileFeat->LeftText.getValue();
     std::string tileTextR = tileFeat->RightText.getValue();
@@ -202,8 +199,8 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 //    tile->setSymbolFile(symbolFile);
     tile->setZValue(ZVALUE::DIMENSION);
     tile->setTileScale(featScale);
-    tile->setTailRight(m_weldFeat->isTailRightSide());
-    tile->setAltWeld(m_weldFeat->AlternatingWeld.getValue());
+    tile->setTailRight(getFeature()->isTailRightSide());
+    tile->setAltWeld(getFeature()->AlternatingWeld.getValue());
 
     tile->draw();
 }
@@ -227,8 +224,11 @@ void QGIWeldSymbol::drawAllAround()
     m_allAround->setFill(Qt::NoBrush);
 //    m_allAround->setRadius(calculateFontPixelSize(getDimFontSize()));
     m_allAround->setRadius(PreferencesGui::dimFontSizePX());
-    double width = m_qgLead->getLineWidth();
-    m_allAround->setWidth(width);
+
+    auto qgiLead = dynamic_cast<QGILeaderLine *>(getQGIVByName(getLeader()->getNameInDocument()));
+    if (qgiLead) {
+         m_allAround->setWidth(qgiLead->getLineWidth());
+    }
     m_allAround->setZValue(ZVALUE::DIMENSION);
 }
 
@@ -244,10 +244,10 @@ void QGIWeldSymbol::drawTailText()
     } else {
         m_tailText->show();
     }
-    const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
+    const auto sym = getFeature();
     if (!sym)
         return;
-    auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
+    auto vp = dynamic_cast<ViewProviderWeld *>(getViewProvider(sym));
     if (!vp) {
         return;
     }
@@ -305,8 +305,10 @@ void QGIWeldSymbol::drawFieldFlag()
         path.lineTo(flagPoints.at(i) * scale);
     }
 
-    double width = m_qgLead->getLineWidth();
-    m_fieldFlag->setWidth(width);
+    auto qgiLead = dynamic_cast<QGILeaderLine *>(getQGIVByName(getLeader()->getNameInDocument()));
+    if (qgiLead) {
+        m_fieldFlag->setWidth(qgiLead->getLineWidth());
+    }
     m_fieldFlag->setZValue(ZVALUE::DIMENSION);
 
     m_fieldFlag->setPath(path);
@@ -449,35 +451,38 @@ void QGIWeldSymbol::setPrettySel()
 
 QPointF QGIWeldSymbol::getTileOrigin()
 {
-    Base::Vector3d org = m_leadFeat->getTileOrigin();
+    Base::Vector3d org = getLeader()->getTileOrigin();
     QPointF result(org.x, org.y);
     return result;
 }
 
 QPointF QGIWeldSymbol::getKinkPoint()
 {
-    Base::Vector3d org = m_leadFeat->getKinkPoint();
+    Base::Vector3d org = getLeader()->getKinkPoint();
     QPointF result(org.x, org.y);
     return result;
 }
 
 QPointF QGIWeldSymbol::getTailPoint()
 {
-    Base::Vector3d org = m_leadFeat->getTailPoint();
+    Base::Vector3d org = getLeader()->getTailPoint();
     QPointF result(org.x, org.y);
     return result;
 }
 
-void QGIWeldSymbol::setFeature(TechDraw::DrawWeldSymbol* feat)
-{
-//    Base::Console().Message("QGIWS::setFeature(%s)\n", feat->getNameInDocument());
-    m_weldFeat = feat;
-    m_weldFeatName = feat->getNameInDocument();
-}
-
 TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature()
 {
-    return m_weldFeat;
+    return dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject());
+}
+
+TechDraw::DrawLeaderLine *QGIWeldSymbol::getLeader()
+{
+    DrawWeldSymbol *feature = getFeature();
+    if (!feature) {
+        return nullptr;
+    }
+
+    return dynamic_cast<TechDraw::DrawLeaderLine *>(feature->Leader.getValue());
 }
 
 //preference

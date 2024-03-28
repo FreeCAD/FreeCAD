@@ -403,7 +403,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation type="unfinished">labelSort</translation>
+      <translation>sortowanie etykiet</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -605,12 +605,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="324"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>Adres URL źródła wyniku</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="343"/>
       <source>The URL for the Addon Score data (see documentation for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see documentation for formatting and hosting details).</translation>
+      <translation>Adres URL dla danych o punktacji dodatków (szczegóły dotyczące formatowania i hostingu znajdują się w dokumentacji).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -1241,18 +1241,18 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Wykonanie makrodefinicji nie powiodło się. Szczegóły awarii znajdują się w konsoli.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="343"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Opiekun</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="355"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1366,8 +1366,8 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="415"/>
       <location filename="../../package_list.py" line="465"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Zainstalowano</translation>
     </message>
@@ -1577,9 +1577,9 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Wybierz plik ikon dla tego elementu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nie jest podkatalogiem {}</translation>
     </message>
@@ -1943,27 +1943,27 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="376"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} ★ na GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="378"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>Bez ★, lub nie na GitHub</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="383"/>
       <source>Created </source>
-      <translation type="unfinished">Created </translation>
+      <translation>Utworzono </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="391"/>
       <source>Updated </source>
-      <translation type="unfinished">Updated </translation>
+      <translation>Zaktualizowano </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="394"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>Wynik: </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="417"/>
@@ -1974,9 +1974,9 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../package_list.py" line="419"/>
       <location filename="../../package_list.py" line="473"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Dostępna aktualizacja</translation>
     </message>
@@ -2352,14 +2352,14 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../addonmanager_workers_startup.py" line="938"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
-      <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
+      <translation>Nie udało się pobrać statystyk dodatku z {} - tylko sortowanie alfabetyczne będzie dokładne.
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="970"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
-      <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
+      <translation>Nie udało się pobrać wyniku dodatku z "{}" -- sortowanie według wyniku nie powiedzie się.
 </translation>
     </message>
     <message>
@@ -2448,7 +2448,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
       <source>Alphabetical</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>Alfabetycznie</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
@@ -2460,19 +2460,19 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
       <source>Date Created</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Date Created</translation>
+      <translation>Data utworzenia</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
       <source>GitHub Stars</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">GitHub Stars</translation>
+      <translation>Odznaki GitHub</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>Wynik</translation>
     </message>
   </context>
   <context>

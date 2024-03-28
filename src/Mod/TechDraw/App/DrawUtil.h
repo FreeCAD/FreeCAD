@@ -58,6 +58,9 @@
 #define SVG_NS_URI "http://www.w3.org/2000/svg"
 #define FREECAD_SVG_NS_URI "https://www.freecad.org/wiki/index.php?title=Svg_Namespace"
 
+#define FREECAD_ATTR_EDITABLE "freecad:editable"
+#define FREECAD_ATTR_AUTOFILL "freecad:autofill"
+
 //some shapes are being passed in where edges that should be connected are in fact
 //separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
 //this value is used in EdgeWalker, DrawProjectSplit and DrawUtil and needs to be in sync in
@@ -149,6 +152,7 @@ public:
     static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
 
     static double getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
+    static gp_Vec maskDirection(gp_Vec inVec, gp_Dir directionToMask);
 
     static double getDefaultLineWeight(std::string s);
     //! is pt between end1 and end2?
@@ -217,6 +221,7 @@ public:
     static void angleNormalize(double& fi);
     static double angleComposition(double fi, double delta);
     static double angleDifference(double fi1, double fi2, bool reflex = false);
+    static std::pair<int, int> nearestFraction(double val, int maxDenom = 999);
 
     // Interval marking functions
     static unsigned int intervalMerge(std::vector<std::pair<double, bool>>& marking,

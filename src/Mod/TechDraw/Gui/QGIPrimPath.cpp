@@ -53,6 +53,8 @@ QGIPrimPath::QGIPrimPath():
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
+
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setAcceptHoverEvents(true);
@@ -86,6 +88,7 @@ QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &valu
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
+            setFocus();
         } else {
             setPrettyNormal();
         }
@@ -98,6 +101,7 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     if (!isSelected()) {
         setPrettyPre();
     }
+    setFocus();
     QGraphicsPathItem::hoverEnterEvent(event);
 }
 

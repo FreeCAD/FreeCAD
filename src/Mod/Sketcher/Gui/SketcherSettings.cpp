@@ -168,6 +168,8 @@ void SketcherSettings::saveSettings()
 
     index = ui->ovpVisibility->currentIndex();
     hGrp->SetInt("OnViewParameterVisibility", index);
+
+    checkForRestart();
 }
 
 void SketcherSettings::loadSettings()
@@ -179,7 +181,9 @@ void SketcherSettings::loadSettings()
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();
+    setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
+    setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -193,6 +197,7 @@ void SketcherSettings::loadSettings()
     bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
     ui->dimensioningMode->setCurrentIndex(index);
+    setProperty("dimensioningMode", index);
     connect(ui->dimensioningMode,
             QOverload<int>::of(&QComboBox::currentIndexChanged),
             this,
@@ -225,7 +230,20 @@ void SketcherSettings::loadSettings()
 void SketcherSettings::dimensioningModeChanged(int index)
 {
     ui->radiusDiameterMode->setEnabled(index != 1);
-    SketcherSettings::requireRestart();
+}
+
+void SketcherSettings::checkForRestart()
+{
+    if (property("dimensioningMode").toInt() != ui->dimensioningMode->currentIndex()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxUnifiedCoincident").toBool()
+        != ui->checkBoxUnifiedCoincident->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
 }
 
 /**

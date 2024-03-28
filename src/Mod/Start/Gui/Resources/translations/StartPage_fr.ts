@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Créer un projet d'assemblage</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>

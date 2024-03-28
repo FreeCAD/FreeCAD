@@ -90,7 +90,6 @@ public:
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape,
                                               const Base::Vector3d& direction);
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs);
-    static gp_Pnt findCentroidXY(const TopoDS_Shape& shape, const gp_Ax2& coordSys);
 
 
 //! creates a RH coordinate system with the origin at origin and the Z axis along direction.

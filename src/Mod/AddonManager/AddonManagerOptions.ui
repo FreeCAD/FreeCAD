@@ -334,13 +334,13 @@ installed addons will be checked for available updates
         </sizepolicy>
        </property>
        <property name="prefEntry" stdset="0">
-        <cstring>AddonScoreURL</cstring>
+        <cstring>AddonsScoreURL</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Addons</cstring>
        </property>
        <property name="toolTip">
-        <string>The URL for the Addon Score data (see documentation for formatting and hosting details).</string>
+        <string>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</string>
        </property>
       </widget>
      </item>

@@ -393,6 +393,7 @@ def _get_param_dictionary():
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
+        "applyConstructionStyle":      ("bool",      True),
         "ClaimHosted":                 ("bool",      True),
         "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
         "createIfcGroups":             ("bool",      False),  # importIFClegacy.py

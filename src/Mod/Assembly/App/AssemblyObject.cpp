@@ -1190,7 +1190,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
     }
 
     AssemblyObject::setJointActivated(joint, state);
-    /*if (limit > 1000) {  // Inifinite loop protection
+    /*if (limit > 1000) {  // Infinite loop protection
         return {};
     }
     limit++;
@@ -1243,7 +1243,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
 std::vector<App::DocumentObject*> AssemblyObject::getUpstreamParts(App::DocumentObject* part,
                                                                    int limit)
 {
-    if (limit > 1000) {  // Inifinite loop protection
+    if (limit > 1000) {  // Infinite loop protection
         return {};
     }
     limit++;

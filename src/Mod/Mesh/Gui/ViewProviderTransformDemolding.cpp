@@ -135,11 +135,11 @@ void ViewProviderMeshTransformDemolding::calcNormalVector()
 
 void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation& rot)
 {
-    SbVec3f Up(0, 0, 1), result;
+    SbVec3f Up(0, 0, 1);
+    SbVec3f result;
 
     int i = 0;
-    for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end();
-         ++it, i++) {
+    for (auto it = normalVector.begin(); it != normalVector.end(); ++it, i++) {
         rot.multVec(*it, result);
     }
 }

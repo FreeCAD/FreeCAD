@@ -85,6 +85,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeaturePartSection.h"
 #include "FeaturePartSpline.h"
+#include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
@@ -398,6 +399,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+    Part::PropertyShapeCache    ::init();
     Part::PropertyTopoShapeList ::init();
 
     Part::FaceMaker             ::init();
@@ -443,6 +445,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Extrusion             ::init();
     Part::Scale                 ::init();
     Part::Revolution            ::init();
+    Part::ProjectOnSurface      ::init();
     Part::Mirroring             ::init();
     Part::ImportStep            ::init();
     Part::ImportIges            ::init();

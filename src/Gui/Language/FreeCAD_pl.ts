@@ -80,7 +80,7 @@
       <location filename="../CommandTest.cpp" line="716"/>
       <location filename="../CommandTest.cpp" line="717"/>
       <source>Run test cases to verify console messages</source>
-      <translation>Uruchom przypadki testowe w celu weryfikacji wiadomości z konsoli</translation>
+      <translation>Uruchom testy w celu zweryfikowania komunikatów konsoli</translation>
     </message>
   </context>
   <context>
@@ -188,8 +188,8 @@
       <translation>Umiejscowienie</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Domyślnie</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="56"/>
       <source>Press middle mouse button</source>
-      <translation>Wciśnij środkowy przycisk myszki</translation>
+      <translation>Naciśnij środkowy przycisk myszy</translation>
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>Naciśnij lewy przycisk myszki</translation>
+      <translation>Wciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Wciśnij środkowy przycisk myszki</translation>
+      <translation>Naciśnij środkowy przycisk myszy</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1124,7 +1124,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgActions.ui" line="17"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="29"/>
@@ -1904,7 +1904,8 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="307"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation>Otwórz Menedżera dodatków, gdzie można pobrać makrodefinicje utworzone przez społeczność oraz inne dodatki.</translation>
+      <translation>Otwórz Menedżera dodatków, gdzie można pobrać 
+makrodefinicje utworzone przez społeczność oraz inne dodatki.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="310"/>
@@ -2420,7 +2421,8 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation>Przełącz widoczność pakietu preferencji dodatku '%1' (użyj Menedżera dodatków, aby usunąć na stałe)</translation>
+      <translation>Przełącz widoczność paczki preferencji dodatków: '%1' 
+(użyj Menedżera Dodatków, aby trwale usunąć)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="179"/>
@@ -2443,7 +2445,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferences.ui" line="158"/>
       <source>Reset</source>
-      <translation>Resetuj</translation>
+      <translation>Reset</translation>
     </message>
     <message>
       <location filename="../DlgPreferences.ui" line="198"/>
@@ -2515,7 +2517,8 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="717"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>Musisz zrestartować FreeCAD, aby zmiany zaczęły obowiązywać.</translation>
+      <translation>Musisz zrestartować FreeCAD, 
+aby zmiany zaczęły obowiązywać.</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="722"/>
@@ -2739,7 +2742,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="106"/>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Resetuj</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
@@ -2759,7 +2762,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="14"/>
       <source>Revert to Backup Config</source>
-      <translation>Przywróć konfigurację kopii zapasowej</translation>
+      <translation>Przywróć konfigurację z kopii zapasowej</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="26"/>
@@ -3039,7 +3042,8 @@ ale wolniej reaguje na każdą zmianę ujęcia.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="369"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation>Rozmiar wierzchołków w Szkicowniku, Rysunku Technicznym i innych środowiskach pracy</translation>
+      <translation>Rozmiar wierzchołków w Szkicowniku, Rysunku Technicznym
+i innych środowiskach pracy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="376"/>
@@ -3698,7 +3702,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="50"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
-      <translation>Licencja CERN Open Hardware silnie oparta na zasadzie wzajemności</translation>
+      <translation>Licencja CERN Open Hardware silnie wzajemna</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformationImp.cpp" line="51"/>
@@ -3926,7 +3930,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
@@ -4120,7 +4124,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Domyślny</translation>
+      <translation>Domyślnie</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4467,7 +4471,7 @@ Ustaw wartość 0, aby wyłączyć.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
       <source>Other</source>
-      <translation>Pozostałe</translation>
+      <translation>Inne</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
@@ -5534,7 +5538,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../TextureMapping.ui" line="33"/>
       <source>Environment</source>
-      <translation>Środowisko</translation>
+      <translation>Otoczenie</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="71"/>
@@ -6128,15 +6132,15 @@ Do you want to save your changes?</source>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Eksport wykresu</translation>
     </message>
@@ -6280,7 +6284,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="380"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1184"/>
@@ -6354,7 +6358,7 @@ Do you want to save your changes?</source>
       <location filename="../MainWindow.cpp" line="2142"/>
       <location filename="../MainWindow.cpp" line="2234"/>
       <source>Unsaved document</source>
-      <translation>Niezapisany dokument</translation>
+      <translation>Dokument niezapisany</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2143"/>
@@ -7197,7 +7201,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>Unsaved document</source>
-      <translation>Dokument niezapisany</translation>
+      <translation>Niezapisany dokument</translation>
     </message>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="233"/>
@@ -7226,7 +7230,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Wciśnij środkowy przycisk myszki</translation>
+      <translation>Naciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7244,7 +7248,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Wciśnij lewy przycisk myszki</translation>
+      <translation>Naciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7698,7 +7702,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="246"/>
       <source>Export PDF</source>
-      <translation>Eksportuj do PDF</translation>
+      <translation>Eksportuj do formatu PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
@@ -8006,7 +8010,9 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../StartupProcess.cpp" line="354"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation>W tym systemie działa OpenGL w wersji %1.%2. FreeCAD wymaga OpenGL 2.0 lub nowszego. W razie potrzeby zaktualizuj sterownik i/lub kartę graficzną.</translation>
+      <translation>W tym systemie działa OpenGL w wersji %1.%2. 
+FreeCAD wymaga OpenGL 2.0 lub nowszego. 
+W razie potrzeby zaktualizuj sterownik i / lub kartę graficzną.</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="363"/>
@@ -8032,7 +8038,10 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../CommandDoc.cpp" line="166"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Podczas wczytywania pliku wystąpiły błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji na temat obiektów, których to dotyczy.</translation>
+      <translation>Podczas wczytywania pliku wystąpiły błędy. 
+Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. 
+Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji 
+na temat obiektów, których to dotyczy.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="171"/>
@@ -8060,8 +8069,8 @@ Do you want to specify another directory?</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
@@ -8225,7 +8234,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../CommandView.cpp" line="2099"/>
       <source>Choose an image file to open</source>
-      <translation>Wybierz plik obrazu, aby otworzyć</translation>
+      <translation>Wybierz plik obrazu do otwarcia</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="553"/>
@@ -8368,7 +8377,8 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="1159"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation>Zbyt wiele otwartych powiadomień. Powiadomienia są pomijane!</translation>
+      <translation>Zbyt wiele otwartych powiadomień. 
+Powiadomienia są pomijane!</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1052"/>
@@ -8387,7 +8397,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1072"/>
       <source>Please check report view for more...</source>
-      <translation>Proszę, sprawdź widok raportu, aby uzyskać więcej informacji ...</translation>
+      <translation>Proszę sprawdzić widok raportu w celu uzyskania dodatkowych informacji ...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1075"/>
@@ -8830,7 +8840,8 @@ podkreślenie i nie może zaczynać się od cyfry.</translation>
       <location filename="../ViewProviderLink.cpp" line="2447"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation>Zastosuj to ustawienie do wszystkich łączy. Można też usunąć zaznaczenie tej opcji,
+      <translation>Zastosuj to ustawienie do wszystkich łączy. 
+Można też usunąć zaznaczenie tej opcji,
 aby zastosować ustawienie tylko do bieżącego łącza.</translation>
     </message>
     <message>
@@ -8930,8 +8941,8 @@ bieżącej kopii zostaną utracone.
       <translation>Włącz / wyłącz nakładkę</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Włącz / wyłącz pływające okno</translation>
     </message>
@@ -8974,7 +8985,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Pokaż ikonkę widoczności</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9144,12 +9155,12 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Nie wstrzymuj</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Wstrzymaj</translation>
     </message>
   </context>
   <context>
@@ -10075,8 +10086,8 @@ bieżącej kopii zostaną utracone.
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -10965,7 +10976,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1465"/>
       <source>Isometric</source>
-      <translation>Izometryczny</translation>
+      <translation>Widok izometryczny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1466"/>
@@ -11259,7 +11270,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11497,7 +11508,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
       <location filename="../CommandView.cpp" line="1766"/>
       <location filename="../CommandView.cpp" line="1768"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11505,7 +11516,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11539,7 +11550,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
       <location filename="../CommandView.cpp" line="1675"/>
       <location filename="../CommandView.cpp" line="1677"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11760,7 +11771,9 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Jeśli opcja ta jest włączona, przed elementami widoku drzewa wyświetlana jest ikonka oka, 
+pokazująca stan widoczności elementów. 
+Po kliknięciu widoczność jest przełączana.</translation>
     </message>
   </context>
   <context>
@@ -11863,7 +11876,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="553"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
@@ -11886,7 +11899,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Eksportuj do formatu PDF</translation>
+      <translation>Eksportuj do PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -12249,7 +12262,8 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="88"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation>Jeśli opcja jest odznaczona, %1 nie pojawi się na liście dostępnych środowisk pracy.</translation>
+      <translation>Jeśli ta opcja jest odznaczona, środowisko pracy %1
+nie pojawi się na liście dostępnych.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="93"/>
@@ -12269,7 +12283,8 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="132"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation>Jeśli opcja jest zaznaczona, %1 zostanie załadowany automatycznie po uruchomieniu programu FreeCAD</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, środowisko pracy%1 
+zostanie załadowane automatycznie po uruchomieniu programu FreeCAD</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="138"/>
@@ -13664,7 +13679,7 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Blokuje pasek narzędzi, dzięki czemu nie można już go przesuwać.</translation>
+      <translation>Blokuje paski narzędzi, aby nie można było ich przesuwać.</translation>
     </message>
   </context>
   <context>
@@ -13677,7 +13692,7 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation>Wyświetla widok właściwości, który wyświetla właściwości wybranego obiektu.</translation>
+      <translation>Pokazuje widok właściwości, który wyświetla właściwości wybranego obiektu.</translation>
     </message>
   </context>
 </TS>

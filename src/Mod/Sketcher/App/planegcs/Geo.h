@@ -433,7 +433,7 @@ public:
     DeriVector2 CalculateNormal(const double* param,
                                 const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
-    // Returns value in homogenous coordinates (x*w, y*w, w) at given parameter u
+    // Returns value in homogeneous coordinates (x*w, y*w, w) at given parameter u
     void valueHomogenous(const double u,
                          double* xw,
                          double* yw,

@@ -34,6 +34,8 @@ import sys
 from functools import partial
 from typing import Dict, List, Tuple
 
+import addonmanager_freecad_interface as fci
+
 import FreeCAD
 import FreeCADGui
 from freecad.utils import get_python_exe
@@ -69,7 +71,7 @@ class CheckForPythonPackageUpdatesWorker(QtCore.QThread):
 
 def check_for_python_package_updates() -> bool:
     """Returns True if any of the Python packages installed into the AdditionalPythonPackages
-    directory have updates available, or False if the are all up-to-date."""
+    directory have updates available, or False if they are all up-to-date."""
 
     vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
     package_counter = 0
@@ -163,7 +165,8 @@ class PythonPackageManager:
                 translate("AddonsInstaller", "New Python Version Detected"),
                 translate(
                     "AddonsInstaller",
-                    "This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?",
+                    "This appears to be the first time this version of Python has been used with the Addon Manager. "
+                    "Would you like to install the same auto-installed dependencies for it?",
                 ),
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
             )
@@ -343,8 +346,13 @@ class PythonPackageManager:
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         try:
+            FreeCAD.Console.PrintLog(
+                f"Running 'pip install --upgrade --target {self.vendor_path} {package_name}'\n"
+            )
             call_pip(["install", "--upgrade", package_name, "--target", self.vendor_path])
             self._create_list_from_pip()
+            while self.worker_thread.isRunning():
+                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
         except PipFailed as e:
             FreeCAD.Console.PrintError(str(e) + "\n")
             return
@@ -360,6 +368,7 @@ class PythonPackageManager:
             ):
                 updates.append(package_name)
 
+        FreeCAD.Console.PrintLog(f"Running update for {len(updates)} Python packages...\n")
         for package_name in updates:
             self._update_package(package_name)
 

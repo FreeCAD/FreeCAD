@@ -163,7 +163,7 @@ def add_attributes(obj, ccx_prefs):
             "App::PropertyEnumeration",
             "MaterialNonlinearity",
             "Fem",
-            "Set material nonlinearity (needs geometrical nonlinearity)"
+            "Set material nonlinearity"
         )
         obj.MaterialNonlinearity = choices_material_nonlinear
         obj.MaterialNonlinearity = choices_material_nonlinear[0]
@@ -198,19 +198,23 @@ def add_attributes(obj, ccx_prefs):
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
-    if not hasattr(obj, "IterationsThermoMechMaximum"):
-        help_string_IterationsThermoMechMaximum = (
-            "Maximum Number of thermo mechanical iterations "
+    if not hasattr(obj, "IterationsMaximum"):
+        help_string_IterationsMaximum = (
+            "Maximum Number of iterations "
             "in each time step before stopping jobs"
         )
         obj.addProperty(
             "App::PropertyIntegerConstraint",
-            "IterationsThermoMechMaximum",
+            "IterationsMaximum",
             "Fem",
-            help_string_IterationsThermoMechMaximum
+            help_string_IterationsMaximum
         )
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
-        obj.IterationsThermoMechMaximum = niter
+        obj.IterationsMaximum = niter
+
+    if hasattr(obj, "IterationsThermoMechMaximum"):
+        obj.IterationsMaximum = obj.IterationsThermoMechMaximum
+        obj.removeProperty("IterationsThermoMechMaximum")
 
     if not hasattr(obj, "BucklingFactors"):
         obj.addProperty(
@@ -241,6 +245,26 @@ def add_attributes(obj, ccx_prefs):
         )
         eni = ccx_prefs.GetFloat("AnalysisTime", 1.0)
         obj.TimeEnd = eni
+
+    if not hasattr(obj, "TimeMinimumStep"):
+        obj.addProperty(
+            "App::PropertyFloatConstraint",
+            "TimeMinimumStep",
+            "Fem",
+            "Minimum time step"
+        )
+        mini = ccx_prefs.GetFloat("AnalysisTimeMinimumStep", 0.00001)
+        obj.TimeMinimumStep = mini
+
+    if not hasattr(obj, "TimeMaximumStep"):
+        obj.addProperty(
+            "App::PropertyFloatConstraint",
+            "TimeMaximumStep",
+            "Fem",
+            "Maximum time step"
+        )
+        maxi = ccx_prefs.GetFloat("AnalysisTimeMaximumStep", 1.0)
+        obj.TimeMaximumStep = maxi
 
     if not hasattr(obj, "ThermoMechSteadyState"):
         obj.addProperty(
@@ -332,7 +356,7 @@ def add_attributes(obj, ccx_prefs):
     if not hasattr(obj, "IterationsUserDefinedTimeStepLength"):
         help_string_IterationsUserDefinedTimeStepLength = (
             "Set to True to use the user defined time steps. "
-            "The time steps are set with TimeInitialStep and TimeEnd"
+            "They are set with TimeInitialStep, TimeEnd, TimeMinimum and TimeMaximum"
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -380,6 +404,30 @@ def add_attributes(obj, ccx_prefs):
             "Set to True to use beam elements with reduced integration"
         )
         obj.BeamReducedIntegration = True
+
+    if not hasattr(obj, "OutputFrequency"):
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "OutputFrequency",
+            "Fem",
+            "Set the output frequency in increments"
+        )
+        obj.OutputFrequency = 1
+
+    if not hasattr(obj, "ModelSpace"):
+        model_space_types = [
+            "3D",
+            "plane stress",
+            "plane strain",
+            "axisymmetric"
+        ]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ModelSpace",
+            "Fem",
+            "Type of model space"
+        )
+        obj.ModelSpace = model_space_types
 
 """
 Should there be some equation object for Calculix too?

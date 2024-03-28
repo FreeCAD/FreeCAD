@@ -1242,18 +1242,18 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Makroaren exekuzioak huts egin du. Begiratu kontsola xehetasun gehiagorako.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="343"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Mantentzailea</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="355"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Egilea</translation>
     </message>
@@ -1367,8 +1367,8 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="415"/>
       <location filename="../../package_list.py" line="465"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="271"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Instalatuta</translation>
     </message>
@@ -1578,9 +1578,9 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <translation>Hautatu ikono-fitxategi bat eduki-elementu honetarako</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} ez da {} direktorioaren azpidirektorio bat</translation>
     </message>
@@ -1975,9 +1975,9 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="419"/>
       <location filename="../../package_list.py" line="473"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="301"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="309"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Eguneraketa eskuragarri</translation>
     </message>

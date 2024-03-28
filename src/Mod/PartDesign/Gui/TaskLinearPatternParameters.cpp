@@ -221,7 +221,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
-        else if (selectionMode == SelectionMode::Reference) {
+        else {
             auto pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
             std::vector<std::string> directions;
@@ -232,9 +232,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             }
 
             // Note: ReferenceSelection has already checked the selection for validity
-            if (selObj->isDerivedFrom<App::Line>() || selObj->isDerivedFrom<Part::Feature>()
-                || selObj->isDerivedFrom<PartDesign::Line>()
-                || selObj->isDerivedFrom<PartDesign::Plane>()) {
+            if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Line>()) {
                 setupTransaction();
                 pcLinearPattern->Direction.setValue(selObj, directions);
                 recomputeFeature();

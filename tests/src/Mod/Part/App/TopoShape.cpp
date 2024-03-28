@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "gtest/gtest.h"
+#include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
 
 // clang-format off
@@ -87,4 +88,21 @@ TEST(TopoShape, TestTypeNull)
     EXPECT_EQ(Part::TopoShape::getTypeAndIndex(nullptr),
               std::make_pair(std::string(), 0UL));
 }
+
+TEST(TopoShape, TestGetSubshape)
+{
+    // Arrange
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoTopoShapeCubes();
+    // Act
+    auto face = cube1.getSubShape("Face2");
+    auto vertex = cube2.getSubShape(TopAbs_VERTEX,2);
+    auto silentFail = cube1.getSubShape("NotThere", true);
+    // Assert
+    EXPECT_EQ(face.ShapeType(), TopAbs_FACE);
+    EXPECT_EQ(vertex.ShapeType(), TopAbs_VERTEX);
+    EXPECT_TRUE(silentFail.IsNull());
+    EXPECT_THROW(cube1.getSubShape("Face7"), Base::IndexError);          // Out of range
+    EXPECT_THROW(cube1.getSubShape("WOOHOO", false), Base::ValueError);  // Invalid
+}
+
 // clang-format on

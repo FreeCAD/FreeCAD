@@ -542,8 +542,10 @@ def getSVG(source,
 
     # add additional edge symbols from windows
     cutwindows = []
-    if cutface and windows:
-        cutwindows = [w.Name for w in windows if w.Shape.BoundBox.intersect(cutface.BoundBox)]
+    if cutface and windows and BoundBoxValid(cutface.BoundBox):
+        cutwindows = [
+            w.Name for w in windows if BoundBoxValid(w.Shape.BoundBox) and w.Shape.BoundBox.intersect(cutface.BoundBox)
+        ]
     if windows:
         sh = []
         for w in windows:
@@ -574,6 +576,11 @@ def getSVG(source,
                 svg += '</g>'
 
     return svg
+
+
+def BoundBoxValid(boundBox)->bool:
+    """Return true if boundBox has a non-zero volume"""
+    return boundBox.XLength > 0 and boundBox.YLength > 0 and boundBox.ZLength > 0
 
 
 def getDXF(obj):

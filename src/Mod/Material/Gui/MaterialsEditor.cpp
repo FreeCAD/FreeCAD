@@ -963,7 +963,9 @@ void MaterialsEditor::updateMaterialAppearance()
                     QList<QStandardItem*> items;
 
                     QString key = itp->first;
-                    auto propertyItem = new QStandardItem(key);
+                    // auto propertyItem = new QStandardItem(key);
+                    auto propertyItem = new QStandardItem(itp->second.getDisplayName());
+                    propertyItem->setData(key);
                     propertyItem->setToolTip(itp->second.getDescription());
                     items.append(propertyItem);
 
@@ -1026,7 +1028,9 @@ void MaterialsEditor::updateMaterialProperties()
                     QString key = itp->first;
                     Materials::ModelProperty modelProperty =
                         static_cast<Materials::ModelProperty>(itp->second);
-                    auto propertyItem = new QStandardItem(key);
+                    // auto propertyItem = new QStandardItem(key);
+                    auto propertyItem = new QStandardItem(modelProperty.getDisplayName());
+                    propertyItem->setData(key);
                     propertyItem->setToolTip(modelProperty.getDescription());
                     items.append(propertyItem);
 

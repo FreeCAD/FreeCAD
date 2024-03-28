@@ -188,8 +188,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformer</translation>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Par défaut</translation>
+      <translation>Défaut</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -561,7 +561,7 @@
     <message>
       <location filename="../AutoSaver.cpp" line="171"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Veuillez patienter jusqu'à ce que le fichier de récupération automatique ait été enregistré...</translation>
+      <translation>Patienter jusqu'à ce que le fichier de récupération automatique ait été enregistré...</translation>
     </message>
   </context>
   <context>
@@ -597,7 +597,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la roulette de la souris</translation>
+      <translation>Appuyez sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1392,7 +1392,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>rien</translation>
+      <translation>aucun</translation>
     </message>
   </context>
   <context>
@@ -2135,7 +2135,7 @@ Peut-être une erreur de permission du fichier ?</translation>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="129"/>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>Vous n'avez pas d'autorisation en écriture pour ce répertoire. Veuillez en choisir un autre.</translation>
+      <translation>Vous n'avez pas les droits en écriture pour le répertoire. Veuillez en choisir un autre.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="173"/>
@@ -2598,7 +2598,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="293"/>
       <source>License URL</source>
-      <translation>URL de licence</translation>
+      <translation>URL de la licence</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="308"/>
@@ -2714,7 +2714,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPropertyLink.ui" line="53"/>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation>Si activé, la sélection de la vue 3D sera synchronisée avec la hiérarchie complète des objets.</translation>
+      <translation>Si cette option est cochée, la sélection de la vue 3D sera synchronisée avec la hiérarchie complète des objets.</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.ui" line="56"/>
@@ -2785,7 +2785,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Étiquette de texte</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -3149,7 +3149,7 @@ la taille de la boîte englobante de l'objet 3D affichée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="181"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Ouvrir une nouvelle visionneuse ou redémarrer %1 pour appliquer les modifications d'anticrénelage.</translation>
+      <translation>Ouvrir une nouvelle fenêtre ou redémarrer %1 pour appliquer les modifications d'anticrénelage.</translation>
     </message>
   </context>
   <context>
@@ -3708,7 +3708,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="691"/>
       <source>License URL</source>
-      <translation>URL de licence</translation>
+      <translation>URL de la licence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="698"/>
@@ -4110,7 +4110,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Défaut</translation>
+      <translation>Par défaut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4135,7 +4135,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="246"/>
       <source>Color</source>
-      <translation>Couleur</translation>
+      <translation>Colorier</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="253"/>
@@ -4940,12 +4940,12 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../DownloadItem.cpp" line="439"/>
       <source>Error saving: %1</source>
-      <translation>Erreur d'enregistrement: %1</translation>
+      <translation>Erreur d'enregistrement : %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="448"/>
       <source>Network Error: %1</source>
-      <translation>Erreur réseau : %1</translation>
+      <translation>Erreur de réseau : %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="541"/>
@@ -5018,7 +5018,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../DownloadManager.cpp" line="299"/>
       <source>1 Download</source>
-      <translation>1 Téléchargement</translation>
+      <translation>1 téléchargement</translation>
     </message>
     <message>
       <location filename="../DownloadManager.cpp" line="299"/>
@@ -5281,19 +5281,19 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
       <location filename="../Placement.ui" line="47"/>
       <location filename="../Placement.ui" line="145"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="63"/>
       <location filename="../Placement.ui" line="161"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="79"/>
       <location filename="../Placement.ui" line="177"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
@@ -6118,15 +6118,15 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Exporter un graphique</translation>
     </message>
@@ -6154,7 +6154,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la molette de la souris</translation>
+      <translation>Appuyer sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="55"/>
@@ -6344,7 +6344,7 @@ Voulez enregistrer les modifications ?</translation>
       <location filename="../MainWindow.cpp" line="2142"/>
       <location filename="../MainWindow.cpp" line="2234"/>
       <source>Unsaved document</source>
-      <translation>Document non sauvegardé</translation>
+      <translation>Document non enregistré</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2143"/>
@@ -6872,7 +6872,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <message>
       <location filename="../Action.cpp" line="1042"/>
       <source>none</source>
-      <translation>aucun</translation>
+      <translation>rien</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1057"/>
@@ -7066,7 +7066,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7216,7 +7216,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyez sur la roulette de la souris</translation>
+      <translation>Appuyer sur la molette de la souris</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7688,7 +7688,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="246"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter en PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
@@ -7770,17 +7770,17 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="22"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="43"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="64"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="86"/>
@@ -8050,10 +8050,10 @@ Do you want to specify another directory?</source>
       <translation>Exportation PDF ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
-      <translation>Document non enregistré</translation>
+      <translation>Document non sauvegardé</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1232"/>
@@ -8920,8 +8920,8 @@ apportée à la copie en cours sera perdue.
       <translation>Activer/désactiver la superposition</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Activer/désactiver la fenêtre flottante</translation>
     </message>
@@ -8964,7 +8964,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Afficher l'icône de visibilité</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9134,12 +9134,12 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Annuler la suppression</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
@@ -10003,7 +10003,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandView.cpp" line="3219"/>
       <source>Measure distance</source>
-      <translation>Mesurer une distance</translation>
+      <translation>Mesurer la distance</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3220"/>
@@ -10017,7 +10017,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Mesurer la distance</translation>
+      <translation>Mesurer une distance</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -10066,8 +10066,8 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
       <translation>Créer un nouveau document vide</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -11753,7 +11753,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Si cette option est cochée, une icône en forme d'œil apparaît devant les éléments de la vue en arborescence, indiquant l'état de visibilité des éléments. Lorsque l'on clique sur l'icône, la visibilité est modifiée.</translation>
     </message>
   </context>
   <context>
@@ -11879,7 +11879,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Exporter en PDF</translation>
+      <translation>Exporter vers PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -12726,10 +12726,9 @@ after FreeCAD launches</source>
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
 dot/period will always be printed.</source>
-      <translation>Si activé, le séparateur décimal du pavé numérique
-sera remplacé par le séparateur de la langue du système,
-sauf dans la console Python et l'éditeur de Macro où un
-point sera toujours affiché.</translation>
+      <translation>Si cette option est cochée, le séparateur décimal du pavé numérique sera remplacé
+par le séparateur de la langue du système, sauf dans la console Python et l'éditeur
+de macro où un point sera toujours affiché.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
@@ -13542,7 +13541,7 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
       <source>None</source>
-      <translation>Rien</translation>
+      <translation>Aucun</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>

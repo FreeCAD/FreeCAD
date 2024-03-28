@@ -439,7 +439,12 @@ int ViewProviderViewPart::prefHighlightStyle()
 // TODO: does this need to be implemented for Leaderlines and ???? others?
 void ViewProviderViewPart::fixSceneDependencies()
 {
-    auto scene = getViewProviderPage()->getQGSPage();
+    auto page = getViewProviderPage();
+    if (!page) {
+        return;
+    }
+
+    auto scene = page->getQGSPage();
     auto partQView = getQView();
 
     auto dimensions =  getViewPart()->getDimensions();

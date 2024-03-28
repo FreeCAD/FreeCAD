@@ -99,11 +99,6 @@ public:
 
     PyObject* getExtensionPyObject() override;
 
-protected:
-/*    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, */
-/*                                              const char* TypeName, */
-/*                                              const char* PropName);*/
-
 private:
 
 };

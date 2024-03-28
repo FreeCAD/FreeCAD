@@ -78,7 +78,6 @@ public:
 
 private:
     Mirroring* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

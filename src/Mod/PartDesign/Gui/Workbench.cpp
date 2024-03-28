@@ -52,6 +52,9 @@ namespace sp = std::placeholders;
     qApp->translate("Workbench", "Involute gear...");
     qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Edge tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start boolean");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start part");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
     //
@@ -234,13 +237,20 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
             if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
                 *item << "Std_Placement"
+                      << "Std_ToggleVisibility"
+                      << "Std_ShowSelection"
+                      << "Std_HideSelection"
+                      << "Std_ToggleSelectability"
+                      << "Std_TreeSelectAllInstances"
+                      << "Separator"
                       << "Std_SetAppearance"
                       << "Std_RandomColor"
+                      << "Std_ToggleTransparency"
                       << "Std_Cut"
                       << "Std_Copy"
                       << "Std_Paste"
-                      << "Separator"
-                      << "Std_Delete";
+                      << "Std_Delete"
+                      << "Separator";
             }
         }
     }

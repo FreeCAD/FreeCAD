@@ -188,8 +188,8 @@
       <translation>Ubicación</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformar</translation>
@@ -6122,15 +6122,15 @@ Desea guardar los cambios?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Graphviz format</source>
       <translation>Formato Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Exportar gráfico</translation>
     </message>
@@ -8056,8 +8056,8 @@ Do you want to specify another directory?</source>
       <translation>Exportando a PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
       <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
@@ -8925,8 +8925,8 @@ la copia actual se perderá.
       <translation>Alternar superposición</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Alternar ventana flotante</translation>
     </message>
@@ -8969,7 +8969,7 @@ la copia actual se perderá.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Mostrar icono de visibilidad</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -9139,12 +9139,12 @@ la copia actual se perderá.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
       <source>UnSuppress</source>
-      <translation type="unfinished">UnSuppress</translation>
+      <translation>Anular la supresión</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="116"/>
       <source>Suppress</source>
-      <translation type="unfinished">Suppress</translation>
+      <translation>Suprimir</translation>
     </message>
   </context>
   <context>
@@ -10070,8 +10070,8 @@ la copia actual se perderá.
       <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2339"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
@@ -11755,7 +11755,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Si está activado, mostrar un icono con forma de ojo antes de los elementos de la vista del árbol, mostrando el estado de visibilidad de los elementos. Cuando se hace clic la visibilidad alterna</translation>
     </message>
   </context>
   <context>
@@ -12165,7 +12165,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation>Dirección inversa</translation>
+      <translation>Invertir dirección</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>

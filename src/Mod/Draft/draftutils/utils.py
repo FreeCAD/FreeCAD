@@ -426,6 +426,8 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
+    if hasattr(obj, "Class") and "Ifc" in str(obj.Class):
+        return obj.Class
     if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     if hasattr(obj, 'TypeId'):
@@ -705,8 +707,8 @@ def compare_objects(obj1, obj2):
                 elif p == "Placement":
                     delta = obj1.Placement.Base.sub(obj2.Placement.Base)
                     text = translate("draft", "Objects have different placements. "
-                                              "Distance between the two base points: ")
-                    _msg(text + str(delta.Length))
+                                              "Distance between the two base points:")
+                    _msg(text + " " + str(delta.Length))
                 else:
                     if getattr(obj1, p) != getattr(obj2, p):
                         _msg("'{}' ".format(p) + translate("draft", "has a different value"))
@@ -1106,11 +1108,8 @@ def use_instead(function, version=""):
         then we should not give a version.
     """
     if version:
-        _wrn(translate("draft", "This function will be deprecated in ")
-             + "{}. ".format(version)
-             + translate("draft", "Please use ") + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated in {}. Please use '{}'.") .format(version, function))
     else:
-        _wrn(translate("draft", "This function will be deprecated. ")
-             + translate("draft", "Please use ") + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated. Please use '{}'.") .format(function))
 
 ## @}

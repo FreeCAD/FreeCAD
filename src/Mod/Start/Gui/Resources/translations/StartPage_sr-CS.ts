@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Standard Part</source>
-      <translation>Obični deo</translation>
+      <translation>Deo</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Napravi projekat sklopa</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>

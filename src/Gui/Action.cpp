@@ -325,7 +325,7 @@ QString Action::createToolTip(QString helpText,
     //
     // The long winding code is to deal with the fact that Qt will auto wrap
     // a rich text tooltip but the width is too short. We can escape the auto
-    // wrappin using <p style='white-space:pre'>.
+    // wrapping using <p style='white-space:pre'>.
 
     QString shortcut = shortCut;
     if (!shortcut.isEmpty() && helpText.endsWith(shortcut)) {

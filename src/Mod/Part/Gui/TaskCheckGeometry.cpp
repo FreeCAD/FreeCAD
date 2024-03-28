@@ -678,13 +678,13 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
 
 #ifdef FC_DEBUG
-  Base::TimeInfo start_time;
+  Base::TimeElapsed start_time;
 #endif
 
   BOPCheck.Perform();
 
 #ifdef FC_DEBUG
-  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  float bopAlgoTime = Base::TimeElapsed::diffTimeF(start_time, Base::TimeElapsed());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
 #endif
 

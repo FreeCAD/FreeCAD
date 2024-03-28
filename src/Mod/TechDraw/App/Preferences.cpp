@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <string>
-
+# include <QApplication>
 # include <QString>
 #endif
 
@@ -422,6 +422,18 @@ bool Preferences::SectionUsePreviousCut()
 //! an index into the list of available line standards/version found in LineGroupDirectory
 int Preferences::lineStandard()
 {
+    // there is a condition where the LineStandard parameter exists, but is -1 (the
+    // qt value for no current index in a combobox).  This is likely caused by an old
+    // development version writing an unvalidated value.  In this case, the
+    // existing but invalid value will be returned.  This is a temporary fix and
+    // can be removed for production.
+    // this message will appear many times if the parameter is invalid.
+    int parameterValue = getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
+    if (parameterValue < 0) {
+        Base::Console().Warning(qPrintable(QApplication::translate(
+        "Preferences", "The LineStandard parameter is invalid. Using zero instead.", nullptr)));
+        return 0;
+    }
     return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
 }
 
@@ -527,3 +539,13 @@ int Preferences::sectionLineConvention()
 {
     return getPreferenceGroup("Standards")->GetInt("SectionLineStandard", 1);
 }
+
+
+//! true if the GeometryMatcher should be used in correcting Dimension references
+bool Preferences::useExactMatchOnDims()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
+}
+
+
+

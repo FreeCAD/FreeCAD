@@ -211,8 +211,10 @@ void Property::destroy(Property *p) {
 void Property::touch()
 {
     PropertyCleaner guard(this);
-    if (father)
+    if (father) {
+        father->onEarlyChange(this);
         father->onChanged(this);
+    }
     StatusBits.set(Touched);
 }
 

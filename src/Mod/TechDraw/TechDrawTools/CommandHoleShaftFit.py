@@ -35,6 +35,9 @@ import FreeCADGui as Gui
 
 import TechDrawTools
 
+translate = App.Qt.translate
+
+
 class CommandHoleShaftFit:
     """Adds a hole or shaft fit to a selected dimension."""
 
@@ -48,11 +51,11 @@ class CommandHoleShaftFit:
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "TechDraw_HoleShaftFit",
-                "Add a hole or shaft fit to a dimension<br>\
-                - select one length dimension or diameter dimension<br>\
-                - click the tool button, a panel opens<br>\
-                - select shaft fit / hole fit<br>\
-                - select the desired ISO 286 fit field using the combo box",
+                "Add a hole or shaft fit to a dimension\n"
+                "- select one length dimension or diameter dimension\n"
+                "- click the tool button, a panel opens\n"
+                "- select shaft fit / hole fit\n"
+                "- select the desired ISO 286 fit field using the combo box",
             ),
         }
 
@@ -65,10 +68,10 @@ class CommandHoleShaftFit:
             Gui.Control.showDialog(self.ui)
         else:
             msgBox = QtGui.QMessageBox()
-            msgTitle = QT_TRANSLATE_NOOP(
+            msgTitle = translate(
                 "TechDraw_HoleShaftFit", "Add a hole or shaft fit to a dimension"
             )
-            msg = QT_TRANSLATE_NOOP(
+            msg = translate(
                 "TechDraw_HoleShaftFit",
                 "Please select one length dimension or diameter dimension and retry",
             )

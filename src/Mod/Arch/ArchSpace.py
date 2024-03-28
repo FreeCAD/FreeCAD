@@ -656,6 +656,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                             t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
                             t = t.replace("$ceiling",vobj.Object.FinishCeiling)
+                        if hasattr(vobj.Object,"LongName"):
+                            t = t.replace("$longname",vobj.Object.LongName)
+                        if hasattr(vobj.Object,"Description"):
+                            t = t.replace("$description",vobj.Object.Description)
                         if first:
                             text1.append(t)
                         else:

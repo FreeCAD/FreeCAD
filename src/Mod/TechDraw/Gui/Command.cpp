@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <sstream>
 #include <vector>
 #endif
 
@@ -54,6 +53,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
@@ -75,7 +75,7 @@
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
+#include "ViewProviderDrawingView.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -106,40 +106,33 @@ void CmdTechDrawPageDefault::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     QString templateFileName = Preferences::defaultTemplate();
-
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawPage', 'Page', '%s')",
-              PageName.c_str(), PageName.c_str());
 
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawSVGTemplate', 'Template', '%s')",
-              TemplateName.c_str(), TemplateName.c_str());
+        auto page = dynamic_cast<TechDraw::DrawPage *>
+                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        if (!page) {
+            throw Base::TypeError("CmdTechDrawPageDefault - page not created");
+        }
+        page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        doCommand(Doc, "App.activeDocument().%s.Template = '%s'", TemplateName.c_str(),
-                  templateFileName.toStdString().c_str());
-        doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
+        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
+                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        if (!svgTemplate) {
+            throw Base::TypeError("CmdTechDrawPageDefault - template not created");
+        }
+        svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
+
+        page->Template.setValue(svgTemplate);
+        svgTemplate->Template.setValue(templateFileName.toStdString());
 
         updateActive();
         commitCommand();
-        TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
-        if (!fp) {
-            throw Base::TypeError("CmdTechDrawPageDefault fp not found\n");
-        }
 
-        Gui::ViewProvider* vp =
-            Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
+                                                 (Gui::Application::Instance->getViewProvider(page));
         if (dvp) {
             dvp->show();
         }
@@ -183,44 +176,33 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         return;
     }
 
-    std::string PageName = getUniqueObjectName("Page");
-    std::string TemplateName = getUniqueObjectName("Template");
-
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawPage', '%s')",
-                  PageName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawPage', 'Page', '%s')",
-              PageName.c_str(), PageName.c_str());
 
-        // Create the Template Object to attach to the page
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawSVGTemplate', '%s')",
-                  TemplateName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawSVGTemplate', 'Template', '%s')",
-              TemplateName.c_str(), TemplateName.c_str());
+        auto page = dynamic_cast<TechDraw::DrawPage *>
+                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        if (!page) {
+            throw Base::TypeError("CmdTechDrawPageTemplate - page not created");
+        }
+        page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        //why is "Template" property set twice? -wf
-        // once to set DrawSVGTemplate.Template to OS template file name
-        templateFileName = Base::Tools::escapeEncodeFilename(templateFileName);
-        doCommand(Doc, "App.activeDocument().%s.Template = \"%s\"", TemplateName.c_str(),
-                  templateFileName.toUtf8().constData());
-        // once to set Page.Template to DrawSVGTemplate.Name
-        doCommand(Doc, "App.activeDocument().%s.Template = App.activeDocument().%s",
-                  PageName.c_str(), TemplateName.c_str());
-        // consider renaming DrawSVGTemplate.Template property?
+        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
+                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        if (!svgTemplate) {
+            throw Base::TypeError("CmdTechDrawPageTemplate - template not created");
+        }
+        svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
+
+        page->Template.setValue(svgTemplate);
+        svgTemplate->Template.setValue(templateFileName.toStdString());
 
         updateActive();
         commitCommand();
-        TechDraw::DrawPage* fp =
-            dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
-        if (!fp) {
-            throw Base::TypeError("CmdTechDrawNewPagePick fp not found\n");
-        }
-        Gui::ViewProvider* vp =
-            Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+
+        TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
+                                                 (Gui::Application::Instance->getViewProvider(page));
         if (dvp) {
             dvp->show();
         }

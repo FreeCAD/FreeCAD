@@ -30,6 +30,7 @@ App = FreeCAD
 from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
+from parttests.TopoShapeTest import TopoShapeTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -170,7 +171,9 @@ class PartTestBSplineCurve(unittest.TestCase):
             box.getElement("InvalidName")
         with self.assertRaises(ValueError):
             box.getElement("Face6_abc")
-        with self.assertRaises(Part.OCCError):
+        # getSubTopoShape now catches this before it gets to OCC, so the error changes:
+        # with self.assertRaises(Part.OCCError):
+        with self.assertRaises(IndexError):
             box.getElement("Face7")
 
     def tearDown(self):
