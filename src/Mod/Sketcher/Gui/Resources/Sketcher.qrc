@@ -137,8 +137,8 @@
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSplineByInterpolation.svg</file>
         <file>icons/geometry/Sketcher_CreateBSplineByInterpolation_Constr.svg</file>
-        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation.svg</file>
-        <file>icons/geometry/Sketcher_Create_Periodic_BSplineByInterpolation_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreatePeriodicBSplineByInterpolation.svg</file>
+        <file>icons/geometry/Sketcher_CreatePeriodicBSplineByInterpolation_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateChamfer.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>

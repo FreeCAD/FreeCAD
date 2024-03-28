@@ -1049,9 +1049,9 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
     sMenuText = QT_TR_NOOP("Create periodic B-spline by knots");
     sToolTipText =
         QT_TR_NOOP("Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.");
-    sWhatsThis = "Sketcher_Create_Periodic_BSplineByInterpolation";
+    sWhatsThis = "Sketcher_CreatePeriodicBSplineByInterpolation";
     sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_Create_Periodic_BSplineByInterpolation";
+    sPixmap = "Sketcher_CreatePeriodicBSplineByInterpolation";
     sAccel = "G, B, O";
     eType = ForEdit;
 }
@@ -1139,7 +1139,7 @@ Gui::Action* CmdSketcherCompCreateBSpline::createAction()
 
     QAction* periodicbsplinebyknot = pcAction->addAction(QString());
     periodicbsplinebyknot->setIcon(
-        Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSplineByInterpolation"));
+        Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePeriodicBSplineByInterpolation"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1168,7 +1168,7 @@ void CmdSketcherCompCreateBSpline::updateAction(int mode)
             a[2]->setIcon(
                 Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation"));
             a[3]->setIcon(Gui::BitmapFactory().iconFromTheme(
-                "Sketcher_Create_Periodic_BSplineByInterpolation"));
+                "Sketcher_CreatePeriodicBSplineByInterpolation"));
             getAction()->setIcon(a[index]->icon());
             break;
         case GeometryCreationMode::Construction:
@@ -1178,7 +1178,7 @@ void CmdSketcherCompCreateBSpline::updateAction(int mode)
             a[2]->setIcon(
                 Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSplineByInterpolation_Constr"));
             a[3]->setIcon(Gui::BitmapFactory().iconFromTheme(
-                "Sketcher_Create_Periodic_BSplineByInterpolation_Constr"));
+                "Sketcher_CreatePeriodicBSplineByInterpolation_Constr"));
             getAction()->setIcon(a[index]->icon());
             break;
     }
@@ -1219,13 +1219,13 @@ void CmdSketcherCompCreateBSpline::languageChange()
                                                         "Create a B-spline by knots"));
     QAction* periodicbsplinebyknot = a[3];
     periodicbsplinebyknot->setText(
-        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+        QApplication::translate("Sketcher_CreatePeriodicBSplineByInterpolation",
                                 "Periodic B-spline by knots"));
     periodicbsplinebyknot->setToolTip(
-        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+        QApplication::translate("Sketcher_CreatePeriodicBSplineByInterpolation",
                                 "Create a periodic B-spline by knots"));
     periodicbsplinebyknot->setStatusTip(
-        QApplication::translate("Sketcher_Create_Periodic_BSplineByInterpolation",
+        QApplication::translate("Sketcher_CreatePeriodicBSplineByInterpolation",
                                 "Create a periodic B-spline by knots"));
 }
 
