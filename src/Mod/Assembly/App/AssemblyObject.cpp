@@ -68,6 +68,8 @@
 #include <OndselSolver/ASMTPlanarJoint.h>
 #include <OndselSolver/ASMTRevCylJoint.h>
 #include <OndselSolver/ASMTCylSphJoint.h>
+#include <OndselSolver/ASMTRackPinionJoint.h>
+#include <OndselSolver/ASMTScrewJoint.h>
 #include <OndselSolver/ASMTSphSphJoint.h>
 #include <OndselSolver/ASMTTime.h>
 #include <OndselSolver/ASMTConstantGravity.h>
