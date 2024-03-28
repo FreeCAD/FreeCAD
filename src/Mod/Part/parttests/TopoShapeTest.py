@@ -4,6 +4,7 @@ import Part
 import unittest
 
 class TopoShapeAssertions:
+
     def assertAttrEqual(self, toposhape, attr_value_list, msg=None):
         for attr, value in attr_value_list:
             result = toposhape.__getattribute__(
@@ -45,10 +46,22 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def setUp(self):
         """Create a document and some TopoShapes of various types"""
         self.doc = App.newDocument("TopoShape")
-        self.box = Part.makeBox(1, 2, 2)
-        Part.show(self.box, "Box1")
-        self.box2 = Part.makeBox(2, 1, 2)
-        Part.show(self.box2, "Box2")
+        # self.box = Part.makeBox(1, 2, 2)
+        # Part.show(self.box, "Box1")
+        # self.box2 = Part.makeBox(2, 1, 2)
+        # Part.show(self.box2, "Box2")
+        # Even on LS3 these boxes have no element maps.
+        self.doc.addObject("Part::Box", "Box1")
+        self.doc.Box1.Length = 1
+        self.doc.Box1.Width = 2
+        self.doc.Box1.Height = 2
+        self.doc.addObject("Part::Box", "Box2")
+        self.doc.Box2.Length = 2
+        self.doc.Box2.Width = 1
+        self.doc.Box2.Height = 2
+        self.doc.recompute()
+        self.box = self.doc.Box1.Shape
+        self.box2 = self.doc.Box2.Shape
 
     def tearDown(self):
         App.closeDocument("TopoShape")
@@ -155,39 +168,15 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             # Todo: This should contain something as soon as the Python interface for Part.Compound TNP exists
             # self.assertEqual(len(compound1.ElementMap), 52, "ElementMap is Incorrect:  {0}".format(compound1.ElementMap))
             self.assertEqual(
-                len(compound2.ElementReverseMap),
+                compound2.ElementMapSize,
                 52,
                 "ElementMap is Incorrect:  {0}".format(compound2.ElementMap),
             )
-
-    # def testTopoShapeOperations(self):
-    #     compound1 = Part.Compound([self.doc.Box1.Shape, self.doc.Box2.Shape])
-    #     box1ts = self.doc.Box1.Shape
-    #     box2ts = self.doc.Box2.Shape
-    #     face1 = Part.Face(Part.Wire([Part.makeCircle(10)]))
-    #     cut1 = box1ts.cut(box2ts)
-    #     common1 = box1ts.common(box2ts)
-    #     fuse1 = box1ts.fuse(box2ts)
-    #     fuse2 = box1ts.generalFuse([box2ts])
-    #     fuse3 = box1ts.multiFuse([box2ts])
-    #     mirror1 = box1ts.mirror(App.Vector(0, 0, 0), App.Vector(1, 0, 0))
-    #     clean1 = box1ts.cleaned()
-    #     # complement1 = box1ts.complement()
-    #     # fix1 = box1ts.fix()
-    #     rotate1 = box1ts.rotated(App.Vector(0, 0, 0), App.Vector(1, 0, 0), 45)
-    #     scale1 = box1ts.scaled(2)
-    #     translate1 = box1ts.translated((2, 0, 0))
-    #     section1 = box1ts.section(face1)
-    #     slice1 = box1ts.slice(App.Vector(1, 0, 0), 2)
-    #     slice2 = box1ts.slices(App.Vector(1, 0, 0), [2, 3])
-    #     # clean, complement, fix, reverse, scale,
 
     def testPartCommon(self):
         self.doc.addObject("Part::MultiCommon", "Common")
         self.doc.Common.Shapes = [self.doc.Box1, self.doc.Box2]
         self.doc.recompute()
-        names = list(self.doc.Common.Shape.ElementReverseMap.keys())
-        names.sort()
         if self.doc.Common.Shape.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertKeysInMap(self.doc.Common.Shape.ElementReverseMap,
             [
@@ -263,11 +252,70 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.Fuse.Tool = self.doc.Box2
         self.doc.recompute()
         if self.doc.Fuse.Shape.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(len(self.doc.Fuse.Shape.ElementReverseMap), 58)
+            self.assertEqual(self.doc.Fuse.Shape.ElementMapSize, 58)
             self.doc.Fuse.Refine = True
             self.doc.recompute()
-            self.assertEqual(len(self.doc.Fuse.Shape.ElementReverseMap), 38)
+            self.assertEqual(self.doc.Fuse.Shape.ElementMapSize, 38)
         # Shape is an extruded L, with 8 Faces, 12 Vertexes, 18 Edges
+
+    def testAppPartmakeCompound(self):
+        # This doesn't do element maps.
+        # compound1 = Part.Compound([self.doc.Box1.Shape, self.doc.Box2.Shape])
+        compound1 = Part.makeCompound([self.doc.Box1.Shape, self.doc.Box2.Shape])
+        if compound1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(compound1.ElementMapSize, 52)
+
+    def testAppPartmakeShell(self):
+        shell1 = Part.makeShell(self.doc.Box1.Shape.Faces)
+        if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(shell1.ElementMapSize, 26)
+
+    def testAppPartmakeFace(self):
+        face1 = Part.makeFace(self.doc.Box1.Shape.Faces[0],"Part::FaceMakerCheese")
+        if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(face1.ElementMapSize, 10)
+
+    def testAppPartmakeFilledFace(self):
+        face1 = Part.makeFilledFace(self.doc.Box1.Shape.Faces[3].Edges)
+        if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(face1.ElementMapSize, 9)
+
+    def testAppPartmakeSolid(self):
+        solid1 = Part.makeSolid(self.doc.Box1.Shape.Shells[0])
+        if solid1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(solid1.ElementMapSize, 26)
+
+    def testAppPartmakeRuled(self):
+        surface1 = Part.makeRuledSurface(*self.doc.Box1.Shape.Edges[3:5])
+        if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(surface1.ElementMapSize, 9)
+
+    def testAppPartmakeShellFromWires(self):
+        wire1 = self.doc.Box1.Shape.Wires[0] #.copy()   Todo: prints double generated/modified warning because
+        wire2 = self.doc.Box1.Shape.Wires[1] #.copy()   Todo: copy() isn't TNP ready yet.  Fix when it is.
+        shell1 = Part.makeShellFromWires([wire1,wire2])
+        if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(shell1.ElementMapSize, 24)
+
+    def testAppPartmakeSweepSurface(self):
+        pass  # Todo:  This is already fixed in a future commit
+        # surface1 = Part.makeSweepSurface(*self.doc.Box1.Shape.Faces[3].Edges[0:2],1)
+        # if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        #     self.assertEqual(surface1.ElementMapSize, 7)
+
+    def testAppPartmakeLoft(self):
+        solid2 = Part.makeLoft(self.doc.Box1.Shape.Wires[0:2])
+        if solid2.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(solid2.ElementMapSize, 24)
+
+    def testAppPartmakeSplitShape(self):
+        # Todo: Refine this test after all TNP code in place to elimate warnings.
+        edge1 = self.doc.Box1.Shape.Faces[0].Edges[0].translated(App.Vector(0,0.5,0))
+        face1 = self.doc.Box1.Shape.Faces[0]
+        solids1 = Part.makeSplitShape(face1,[(edge1,face1)])
+        if solids1[0][0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(solids1[0][0].ElementMapSize, 9)
+            self.assertEqual(solids1[1][0].ElementMapSize, 9)
 
 
 # TODO: Consider the following possible test objects:
