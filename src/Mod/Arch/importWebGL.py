@@ -733,7 +733,7 @@ def export( exportList, filename, colors = None, camera = None ):
         if obj.isDerivedFrom('Part::Feature'):
 
             deviation = 0.5
-            if FreeCADGui:
+            if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation
 
                 # obj.ViewObject.DiffuseColor is length=1 when all faces are the same color, length=len(faces) for when they're not
