@@ -47,6 +47,7 @@
 #include <Base/VectorPy.h>
 
 #include "OCCError.h"
+#include "PartPyCXX.h"
 #include "Tools.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
@@ -87,6 +88,9 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     try {
+#ifdef FC_USE_TNP_FIX
+        getTopoShapePtr()->makeElementSolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
+#else
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
             ->getTopoShapePtr()->getShape();
         //first, if we were given a compsolid, try making a solid out of it
@@ -122,7 +126,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         } else /*if (count > 1)*/ {
             Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
-
+#endif
     }
     catch (Standard_Failure& err) {
         std::stringstream errmsg;
@@ -216,7 +220,14 @@ Py::Object TopoShapeSolidPy::getOuterShell() const
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
         shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
+#ifdef FC_USE_TNP_FIX
+    TopoShape res;
+    res.setShape(shell);
+    res.mapSubElement(*getTopoShapePtr());
+    return shape2pyshape(res);
+#else
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
+#endif
 }
 
 PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
@@ -316,7 +327,13 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     try {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
+#ifdef FC_USE_TNP_FIX
+        TopoShape res;
+        res.setShape(offsetshape);
+        return Py::new_reference_to(shape2pyshape(res));
+#else
         return new TopoShapeSolidPy(new TopoShape(offsetshape));
+#endif
     }
     catch (Standard_Failure& e) {
 
