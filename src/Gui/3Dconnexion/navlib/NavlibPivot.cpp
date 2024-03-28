@@ -130,7 +130,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 
     // Get the camera rotation
     SoCamera* pCamera = getCamera<SoCamera*>();
-    
+
     if (pCamera == nullptr)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 

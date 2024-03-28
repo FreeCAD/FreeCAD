@@ -199,14 +199,11 @@ void NavlibInterface::connectActiveTab()
     pQTabBar->connect(pQTabBar, &QTabBar::currentChanged, [this, pQTabBar](int idx) {
         activeTab = {idx, idx >= 0 ? pQTabBar->tabText(idx).toStdString() : ""};
     });
-
-    return;
 }
 
 void NavlibInterface::disableNavigation()
 {
     CNav3D::EnableNavigation(false, errorCode);
-    return;
 }
 
 long NavlibInterface::GetCameraMatrix(navlib::matrix_t& matrix) const
@@ -314,7 +311,7 @@ long NavlibInterface::GetViewFrustum(navlib::frustum_t& frustum) const
     const SbViewVolume viewVolume = pCamera->getViewVolume(pCamera->aspectRatio.getValue());
     float halfHeight = viewVolume.getHeight() / 2.0f;
     float halfWidth = viewVolume.getWidth() / 2.0f;
-  
+
     frustum = {-halfWidth,
                halfWidth,
                -halfHeight,

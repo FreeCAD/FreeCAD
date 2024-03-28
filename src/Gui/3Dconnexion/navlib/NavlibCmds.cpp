@@ -118,7 +118,6 @@ void NavlibInterface::removeMarkups(std::string& text) const
 
         textBegin = text.erase(markupBegin, ++markupEnd);
     }
-    return;
 }
 
 TDxCommand NavlibInterface::getCCommand(const Gui::Command& command,
@@ -211,8 +210,6 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
         index++;
     }
     category.push_back(std::move(subCategory));
-
-    return;
 }
 
 void NavlibInterface::exportCommands(const std::string& workbench)

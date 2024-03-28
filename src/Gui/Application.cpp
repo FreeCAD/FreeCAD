@@ -514,8 +514,8 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-	// Instantiate the 3DConnexion controller
-	pNavlibInterface = new NavlibInterface();
+    // Instantiate the 3DConnexion controller
+    pNavlibInterface = new NavlibInterface();
 #endif
 
     if (GUIenabled) {
@@ -526,11 +526,10 @@ Application::Application(bool GUIenabled)
 
 Application::~Application()
 {
+    Base::Console().Log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
     delete pNavlibInterface;
 #endif
-
-    Base::Console().Log("Destruct Gui::Application\n");
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
     SelectionSingleton::destruct();
