@@ -150,6 +150,9 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
+    void rewriteVarSetExpressions(const DocumentObject * parent, const char * nameProperty,
+                                  const DocumentObject * varSet, bool add);
+
     App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const override;
 
     size_t numExpressions() const;
@@ -189,6 +192,7 @@ private:
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
+    void varSetChanged(const App::DocumentObject &obj, const App::Property &prop);
     void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
     void updateHiddenReference(const std::string &key);
 
