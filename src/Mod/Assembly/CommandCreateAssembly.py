@@ -55,6 +55,9 @@ class CommandCreateAssembly:
         }
 
     def IsActive(self):
+        if Gui.Control.activeDialog():
+            return False
+
         if Preferences.preferences().GetBool("EnforceOneAssemblyRule", True):
             activeAssembly = UtilsAssembly.activeAssembly()
 

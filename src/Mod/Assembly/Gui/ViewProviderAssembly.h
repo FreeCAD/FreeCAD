@@ -31,10 +31,16 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderPart.h>
 
+class SoSwitch;
+class SoSensor;
+class SoDragger;
+class SoFieldSensor;
+
 namespace Gui
 {
+class SoFCCSysDragger;
 class View3DInventorViewer;
-}
+}  // namespace Gui
 
 namespace AssemblyGui
 {
@@ -71,6 +77,7 @@ public:
     //@{
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     bool isInEditMode() const;
 
     /// Ask the view provider if it accepts object deletions while in edit
@@ -96,7 +103,7 @@ public:
 
     /// Finds what drag mode should be used based on the user selection.
     DragMode findDragMode();
-    void initMove();
+    void initMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void endMove();
     virtual void setEnableMovement(bool enable = true)
     {
@@ -107,7 +114,8 @@ public:
         return enableMovement;
     }
 
-    bool getSelectedObjectsWithinAssembly();
+
+    bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
     App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
     std::vector<std::string> parseSubNames(std::string& subNamesStr);
 
@@ -120,22 +128,45 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
+    // Dragger controls:
+    void initMoveDragger();
+    void endMoveDragger();
+    static void draggerMotionCallback(void* data, SoDragger* d);
+
+    void setDragger();
+    void unsetDragger();
+    void setDraggerVisibility(bool val);
+    bool getDraggerVisibility();
+    void setDraggerPlacement(Base::Placement plc);
+    Base::Placement getDraggerPlacement();
+    Gui::SoFCCSysDragger* getDragger();
+
+    static Base::Vector3d getCenterOfBoundingBox(const std::vector<App::DocumentObject*>& objs,
+                                                 const std::vector<App::DocumentObject*>& parts);
+
     DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
     bool enableMovement;
     bool jointVisibilityBackup;
+    bool ctrlPressed;
     int numberOfSel;
     Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
     Base::Vector3d initialPositionRot;
     Base::Placement jcsPlc;
     Base::Placement jcsGlobalPlc;
+    Base::Placement draggerInitPlc;
 
     App::DocumentObject* movingJoint;
 
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> docsToMove;
+
+    Gui::SoFCCSysDragger* asmDragger = nullptr;
+    SoSwitch* asmDraggerSwitch = nullptr;
+    SoFieldSensor* translationSensor = nullptr;
+    SoFieldSensor* rotationSensor = nullptr;
 };
 
 }  // namespace AssemblyGui

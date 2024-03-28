@@ -55,6 +55,7 @@ namespace Assembly
 {
 
 class JointGroup;
+class ViewGroup;
 
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
@@ -64,8 +65,57 @@ enum class JointType
     Cylindrical,
     Slider,
     Ball,
-    Distance
+    Distance,
 };
+
+enum class DistanceType
+{
+    PointPoint,
+
+    LineLine,
+    LineCircle,
+    CircleCircle,
+
+    PlanePlane,
+    PlaneCylinder,
+    PlaneSphere,
+    PlaneCone,
+    PlaneTorus,
+    CylinderCylinder,
+    CylinderSphere,
+    CylinderCone,
+    CylinderTorus,
+    ConeCone,
+    ConeTorus,
+    ConeSphere,
+    TorusTorus,
+    TorusSphere,
+    SphereSphere,
+
+    PointPlane,
+    PointCylinder,
+    PointSphere,
+    PointCone,
+    PointTorus,
+
+    LinePlane,
+    LineCylinder,
+    LineSphere,
+    LineCone,
+    LineTorus,
+
+    CurvePlane,
+    CurveCylinder,
+    CurveSphere,
+    CurveCone,
+    CurveTorus,
+
+    PointLine,
+    PointCurve,
+
+    Other,
+};
+
 
 class AssemblyExport AssemblyObject: public App::Part
 {
@@ -82,6 +132,8 @@ public:
     {
         return "AssemblyGui::ViewProviderAssembly";
     }
+
+    App::DocumentObjectExecReturn* execute() override;
 
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
@@ -111,11 +163,6 @@ public:
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint,
                                                        JointType jointType);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceFaceVertex(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceEdgeVertex(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceFaceEdge(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceEdgeEdge(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceFaceFace(App::DocumentObject* joint);
     std::string handleOneSideOfJoint(App::DocumentObject* joint,
                                      const char* propObjLinkName,
                                      const char* propPartName,
@@ -123,7 +170,8 @@ public:
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup();
-    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true);
+    ViewGroup* getExplodedViewGroup();
+    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true, bool delBadJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
@@ -153,6 +201,8 @@ public:
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
+    std::vector<AssemblyObject*> getSubAssemblies();
+    void updateGroundedJointsPlacements();
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
@@ -171,12 +221,14 @@ public:
     // Can't put the functions by themselves in AssemblyUtils.cpp :
     // see https://forum.freecad.org/viewtopic.php?p=729577#p729577
 
-    void swapJCS(App::DocumentObject* joint);
+    static void swapJCS(App::DocumentObject* joint);
 
-    bool isEdgeType(App::DocumentObject* obj, const char* elName, GeomAbs_CurveType type);
-    bool isFaceType(App::DocumentObject* obj, const char* elName, GeomAbs_SurfaceType type);
-    double getFaceRadius(App::DocumentObject* obj, const char* elName);
-    double getEdgeRadius(App::DocumentObject* obj, const char* elName);
+    static bool isEdgeType(App::DocumentObject* obj, const char* elName, GeomAbs_CurveType type);
+    static bool isFaceType(App::DocumentObject* obj, const char* elName, GeomAbs_SurfaceType type);
+    static double getFaceRadius(App::DocumentObject* obj, const char* elName);
+    static double getEdgeRadius(App::DocumentObject* obj, const char* elName);
+
+    static DistanceType getDistanceType(App::DocumentObject* joint);
 
     // getters to get from properties
     static void setJointActivated(App::DocumentObject* joint, bool val);
