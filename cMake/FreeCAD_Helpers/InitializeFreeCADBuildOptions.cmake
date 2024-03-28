@@ -162,10 +162,10 @@ macro(InitializeFreeCADBuildOptions)
         option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
     endif(NOT MSVC)
 
-	if(FREECAD_3CONNEXION_SUPPORT STREQUAL "NavLib" AND FREECAD_USE_3DCONNEXION)
-		set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
-		set(FREECAD_USE_3DCONNEXION OFF)
-	endif()
+    if(FREECAD_3CONNEXION_SUPPORT STREQUAL "NavLib" AND FREECAD_USE_3DCONNEXION)
+        set(FREECAD_USE_3DCONNEXION_NAVLIB ON)
+        set(FREECAD_USE_3DCONNEXION OFF)
+    endif()
 
     # if this is set override some options
     if (FREECAD_BUILD_DEBIAN)
