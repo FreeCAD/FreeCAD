@@ -328,7 +328,7 @@ public:
     }
 
     template<>
-    TextOutputStream& operator<<(const std::string& object)
+    TextOutputStream& operator<<(const std::string object)  // NOLINT - making it a ref breaks
     {
         return (*this) << object.c_str();
     }

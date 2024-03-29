@@ -27,7 +27,7 @@ TEST_F(TextOutputStreamTest, singleLineCharStar)
     Base::TextOutputStream tos(ss);
 
     // Act
-    tos << testString.c_str();
+    tos << testString;
 
     // Assert - the number of newlines in the string, a colon, the string, a newline
     EXPECT_EQ(std::string("0:") + testString + "\n", ss.str());
@@ -55,7 +55,7 @@ TEST_F(TextOutputStreamTest, singleLineCharStarWithCarriageReturns)
     Base::TextOutputStream tos(ss);
 
     // Act
-    tos << testString.c_str();
+    tos << testString;
 
     // Assert - the number of newlines in the string, a colon, the string, a newline. Carriage
     // returns are left alone because they aren't followed by a newline
@@ -71,7 +71,7 @@ TEST_F(TextOutputStreamTest, multiLineCharStarWithCarriageReturnsAndNewlines)
     Base::TextOutputStream tos(ss);
 
     // Act
-    tos << testString.c_str();
+    tos << testString;
 
     // Assert - the number of newlines in the string, a colon, the string, a newline, but the string
     // has been stripped of the carriage returns.
