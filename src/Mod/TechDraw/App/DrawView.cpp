@@ -31,6 +31,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Link.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
@@ -324,7 +325,22 @@ void DrawView::validateScale()
 int DrawView::countParentPages() const
 {
     int count = 0;
-    std::vector<App::DocumentObject*> parentAll = getInList();
+    std::vector<App::DocumentObject*> parentRaw = getInList();
+    std::vector<App::DocumentObject*> parentAll;
+
+    // Some parents are Links, we need the pages.
+    for (auto& parent : parentRaw) {
+        if (parent->isDerivedFrom<App::Link>()) {
+            for (auto& linkParent : parent->getInList()) {
+                if (linkParent->isDerivedFrom<DrawPage>()) {
+                    parentAll.push_back(linkParent);
+                }
+            }
+        }
+        else {
+            parentAll.push_back(parent);
+        }
+    }
 
     //it can happen that a page is repeated in the InList, so we need to
     //prune the duplicates
@@ -367,31 +383,34 @@ DrawPage* DrawView::findParentPage() const
 
 std::vector<DrawPage*> DrawView::findAllParentPages() const
 {
-    // Get Feature Page
-    std::vector<DrawPage*> result;
-    DrawPage *page = nullptr;
-    DrawViewCollection *collection = nullptr;
-    std::vector<App::DocumentObject*> parentsAll = getInList();
+    std::vector<DrawPage*> pages;
 
-   for (auto& parent : parentsAll) {
+   for (auto parent : getInList()) {
+       if (parent->isDerivedFrom<App::Link>()) {
+           for (auto& linkParent : parent->getInList()) {
+               if (linkParent->isDerivedFrom<DrawPage>()
+                   || linkParent->isDerivedFrom<DrawViewCollection>()) {
+                   parent = linkParent;
+                   break;
+               }
+           }
+       }
+
         if (parent->isDerivedFrom<DrawPage>()) {
-            page = static_cast<TechDraw::DrawPage*>(parent);
-        } else if (parent->isDerivedFrom<DrawViewCollection>()) {
-            collection = static_cast<TechDraw::DrawViewCollection *>(parent);
-            page = collection->findParentPage();
+            pages.emplace_back(static_cast<TechDraw::DrawPage*>(parent));
         }
-
-        if(page) {
-            result.emplace_back(page);
+        else if (parent->isDerivedFrom<DrawViewCollection>()) {
+            auto* collection = static_cast<TechDraw::DrawViewCollection*>(parent);
+            pages.emplace_back(collection->findParentPage());
         }
     }
 
     //prune the duplicates
-    std::sort(result.begin(), result.end());
-    auto last = std::unique(result.begin(), result.end());
-    result.erase(last, result.end());
+    std::sort(pages.begin(), pages.end());
+    auto last = std::unique(pages.begin(), pages.end());
+    pages.erase(last, pages.end());
 
-    return result;
+    return pages;
 }
 
 bool DrawView::isInClip()
