@@ -399,5 +399,43 @@ TEST_F(VarSetInPart, setParentPropertyNonEquivalent)
     EXPECT_THROW(propVarSet->setValue(varSet2), Base::ValueError);
 }
 
+// Tests whether exposed is enabled when the VarSet is in a Part, but it is
+// accessed as a generic group
+TEST_F(VarSet, exposeEnabledGenericGroup)
+{
+    // Arrange
+    auto varSet = doc()->addObject("App::VarSet", NAME_VARSET);
+    auto part = dynamic_cast<App::GroupExtension*>(doc()->addObject("App::Part", "Part"));
+    part->addObject(varSet);
+
+    // Act
+    auto propExposed =
+        dynamic_cast<App::PropertyBool*>(varSet->getPropertyByName(NAME_PROPERTY_EXPOSED));
+
+    // Assert
+    expectExposedEnabled(propExposed, false);
+}
+
+// Tests whether exposed is enabled when the VarSet is in a Part, but it is a
+// generic group by means of the extension
+TEST_F(VarSet, exposeEnabledGenericGroupExtension)
+{
+    // Arrange
+    auto varSet = doc()->addObject("App::VarSet", NAME_VARSET);
+    auto part = doc()->addObject("App::Part", "Part");
+
+    if (part->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+        auto group = part->getExtensionByType<App::GroupExtension>();
+        group->addObject(varSet);
+    }
+
+    // Act
+    auto propExposed =
+        dynamic_cast<App::PropertyBool*>(varSet->getPropertyByName(NAME_PROPERTY_EXPOSED));
+
+    // Assert
+    expectExposedEnabled(propExposed, false);
+}
+
 
 // NOLINTEND(readability-magic-numbers)
