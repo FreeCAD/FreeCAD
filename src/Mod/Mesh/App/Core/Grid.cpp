@@ -83,13 +83,6 @@ void MeshGrid::Rebuild(unsigned long ulX, unsigned long ulY, unsigned long ulZ)
     RebuildGrid();
 }
 
-void MeshGrid::Rebuild(unsigned long ulPerGrid, unsigned long ulMaxGrid)
-{
-    _ulCtElements = HasElements();
-    CalculateGridLength(ulPerGrid, ulMaxGrid);
-    RebuildGrid();
-}
-
 void MeshGrid::Rebuild(int iCtGridPerAxis)
 {
     _ulCtElements = HasElements();
@@ -104,7 +97,7 @@ void MeshGrid::InitGrid()
     // Calculate grid length if not initialised
     //
     if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0)) {
-        CalculateGridLength(MESH_CT_GRID, MESH_MAX_GRIDS);
+        CalculateGridLength(MESH_CT_GRID_PER_AXIS);
     }
 
     // Determine grid length and offset
@@ -286,66 +279,8 @@ void MeshGrid::Position(const Base::Vector3f& rclPoint,
     }
 }
 
-void MeshGrid::CalculateGridLength(unsigned long ulCtGrid, unsigned long ulMaxGrids)
-{
-    // Calculate grid lengths or number of grids per dimension
-    // There should be about 10 (?!?!) facets per grid
-    // respectively max grids should not exceed 10000
-    Base::BoundBox3f clBBMeshEnlarged = _pclMesh->GetBoundBox();
-    float fGridLen = 0;
-
-    float fLenX = clBBMeshEnlarged.LengthX();
-    float fLenY = clBBMeshEnlarged.LengthY();
-    float fLenZ = clBBMeshEnlarged.LengthZ();
-
-    float fVolume = fLenX * fLenY * fLenZ;
-    if (fVolume > 0.0f) {
-        float fVolElem {};
-        if (_ulCtElements > (ulMaxGrids * ulCtGrid)) {
-            fVolElem = (fLenX * fLenY * fLenZ) / float(ulMaxGrids * ulCtGrid);
-        }
-        else {
-            fVolElem = (fLenX * fLenY * fLenZ) / float(_ulCtElements);
-        }
-
-        float fVol = fVolElem * float(ulCtGrid);
-        fGridLen = float(pow(fVol, 1.0f / 3.0f));
-    }
-    else {
-        // Planar bounding box
-        float fArea = fLenX * fLenY + fLenX * fLenZ + fLenY * fLenZ;
-        float fAreaElem {};
-        if (_ulCtElements > (ulMaxGrids * ulCtGrid)) {
-            fAreaElem = fArea / float(ulMaxGrids * ulCtGrid);
-        }
-        else {
-            fAreaElem = fArea / float(_ulCtElements);
-        }
-
-        float fRepresentativeArea = fAreaElem * static_cast<float>(ulCtGrid);
-        fGridLen = sqrt(fRepresentativeArea);
-    }
-
-    if (fGridLen > 0) {
-        _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenX / fGridLen), 1);
-        _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenY / fGridLen), 1);
-        _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenZ / fGridLen), 1);
-    }
-    else {
-        // Degenerated grid
-        _ulCtGridsX = 1;
-        _ulCtGridsY = 1;
-        _ulCtGridsZ = 1;
-    }
-}
-
 void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
 {
-    if (iCtGridPerAxis <= 0) {
-        CalculateGridLength(MESH_CT_GRID, MESH_MAX_GRIDS);
-        return;
-    }
-
     // Calculate grid lengths or number of grids per dimension
     // There should be about 10 (?!?!) facets per grid
     // respectively max grids should not exceed 10000
@@ -405,12 +340,9 @@ void MeshGrid::CalculateGridLength(int iCtGridPerAxis)
 
             float fLengthGrid = pow(fVolumenGrid, 1.0f / 3.0f);
 
-            _ulCtGridsX =
-                std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
-            _ulCtGridsY =
-                std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
-            _ulCtGridsZ =
-                std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
+            _ulCtGridsX = std::max(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1UL);
+            _ulCtGridsY = std::max(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1UL);
+            _ulCtGridsZ = std::max(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1UL);
 
         } break;
         case 1: {

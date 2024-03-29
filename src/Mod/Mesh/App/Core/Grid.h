@@ -76,9 +76,6 @@ public:
      * rebuilt automatically. */
     virtual void Attach(const MeshKernel& rclM);
     /** Rebuilds the grid structure. */
-    virtual void Rebuild(unsigned long ulPerGrid = MESH_CT_GRID,
-                         unsigned long ulMaxGrid = MESH_MAX_GRIDS);
-    /** Rebuilds the grid structure. */
     virtual void Rebuild(int iCtGridPerAxis = MESH_CT_GRID_PER_AXIS);
     /** Rebuilds the grid structure. */
     virtual void Rebuild(unsigned long ulX, unsigned long ulY, unsigned long ulZ);
@@ -189,8 +186,6 @@ protected:
     virtual void InitGrid();
     /** Deletes the grid structure. */
     virtual void Clear();
-    /** Calculates the grid length dependent on maximum number of grids. */
-    virtual void CalculateGridLength(unsigned long ulCtGrid, unsigned long ulMaxGrids);
     /** Calculates the grid length dependent on the number of grids per axis. */
     virtual void CalculateGridLength(int iCtGridPerAxis);
     /** Rebuilds the grid structure. Must be implemented in sub-classes. */
