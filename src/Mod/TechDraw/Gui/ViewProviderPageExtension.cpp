@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
@@ -59,11 +60,17 @@ bool ViewProviderPageExtension::extensionCanDropObjects() const { return true; }
 
 bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj) const
 {
+    // Accept links to views as well.
+    if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
+        auto* link = static_cast<App::Link*>(obj);
+        obj = link->getLinkedObject();
+    }
+
     //only DrawView objects can live on pages (except special case Template)
-    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         return true;
     }
-    if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         //don't let another extension try to drop templates
         return true;
     }
@@ -78,11 +85,18 @@ bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* ob
     Q_UNUSED(owner);
     Q_UNUSED(subname);
     Q_UNUSED(elements);
+
+    // Accept links to views as well.
+    if (obj->isDerivedFrom<App::Link>()) {
+        auto* link = static_cast<App::Link*>(obj);
+        obj = link->getLinkedObject();
+    }
+
     //only DrawView objects can live on pages (except special case Template)
-    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         return true;
     }
-    if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         //don't let another extension try to drop templates
         return true;
     }
@@ -92,21 +106,54 @@ bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* ob
 
 void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
 {
-    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    bool linkToView = false;
+    if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
+        auto* link = static_cast<App::Link*>(obj);
+        if (link->getLinkedObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+            linkToView = true;
+        }
+    }
+
+    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) || linkToView) {
         dropObject(obj);
         return;
     }
 }
 
 //this code used to live in ViewProviderPage
-void ViewProviderPageExtension::dropObject(App::DocumentObject* docObj)
+void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
 {
-    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
         //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
         return;
     }
-    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        auto dv = static_cast<TechDraw::DrawView*>(docObj);
+    if (obj->isDerivedFrom<App::Link>()) {
+        auto* link = static_cast<App::Link*>(obj);
+        if (!link->getLinkedObject()->isDerivedFrom<TechDraw::DrawView>()) {
+            return;
+        }
+
+        TechDraw::DrawPage* page = nullptr;
+        for (auto& parent : obj->getInListRecursive()) {
+            if (parent->isDerivedFrom<TechDraw::DrawPage>()) {
+                page = static_cast<TechDraw::DrawPage*>(parent);
+            }
+
+            if (page) {
+                break;
+            }
+        }
+        if (page) {
+            page->removeView(obj);
+        }
+
+        getViewProviderPage()->getDrawPage()->addView(obj);
+
+        return;
+    }
+
+    if (obj->isDerivedFrom<TechDraw::DrawView>()) {
+        auto dv = static_cast<TechDraw::DrawView*>(obj);
         if (dv->findParentPage()) {
             dv->findParentPage()->removeView(dv);
         }

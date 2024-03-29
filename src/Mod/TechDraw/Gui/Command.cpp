@@ -1360,7 +1360,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     auto view(static_cast<TechDraw::DrawView*>(dObj.front()));
 
     TechDraw::DrawPage* page = view->findParentPage();
-    const std::vector<App::DocumentObject*> pViews = page->Views.getValues();
+    const std::vector<App::DocumentObject*> pViews = page->getViews();
     TechDraw::DrawViewClip* clip(nullptr);
     for (auto& v : pViews) {
         clip = dynamic_cast<TechDraw::DrawViewClip*>(v);
@@ -1721,7 +1721,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> views = page->Views.getValues();
+    std::vector<App::DocumentObject*> views = page->getViews();
     for (auto& v : views) {
         if (v->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())) {
             QMessageBox::StandardButton rc = QMessageBox::question(

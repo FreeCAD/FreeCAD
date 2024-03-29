@@ -91,7 +91,8 @@ public:
     int getOrientation() const;
     bool isUnsetting() { return nowUnsetting; }
     void requestPaint();
-    std::vector<App::DocumentObject*> getAllViews();
+    std::vector<App::DocumentObject*> getViews() const;
+    std::vector<App::DocumentObject*> getAllViews() const;
 
     int getNextBalloonIndex();
 
