@@ -298,8 +298,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
-    *views << "TechDraw_ArchView";
-    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ProjectShape";
 
@@ -405,7 +403,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
-    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ProjectShape";
 

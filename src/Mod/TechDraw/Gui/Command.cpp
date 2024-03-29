@@ -294,7 +294,7 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert View");
-    sToolTipText = QT_TR_NOOP("Insert a View");
+    sToolTipText = QT_TR_NOOP("Insert a View in current page. You can select Shapes, SpreadSheets or Section Plane from Arch Workbench objects.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_View";
@@ -303,23 +303,62 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
 void CmdTechDrawView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    bool viewCreated = false;
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
 
     //set projection direction from selected Face
     //use first object with a face selected
-    std::vector<App::DocumentObject*> shapes;
-    std::vector<App::DocumentObject*> xShapes;
+    std::vector<App::DocumentObject*> shapes, xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
-    auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
-                                                   resolve, single);
+    auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId());
     for (auto& sel : selection) {
         bool is_linked = false;
         auto obj = sel.getObject();
-        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+        if (obj->isDerivedFrom<TechDraw::DrawPage>() || obj->isDerivedFrom<TechDraw::DrawView>()) {
             continue;
         }
+
+        if (obj->isDerivedFrom<Spreadsheet::Sheet>()) {
+            std::string SpreadName = obj->getNameInDocument();
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
+            std::string FeatName = getUniqueObjectName("Sheet");
+            doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
+                FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+                FeatName.c_str(), FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
+                SpreadName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                FeatName.c_str());
+            updateActive();
+            commitCommand();
+            viewCreated = true;
+            continue;
+        }
+        else if (DrawGuiUtil::isArchSection(obj)) {
+            std::string FeatName = getUniqueObjectName("ArchView");
+            std::string SourceName = obj->getNameInDocument();
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
+            doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
+                FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
+                FeatName.c_str(), FeatName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
+                SourceName.c_str());
+            doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                FeatName.c_str());
+            updateActive();
+            commitCommand();
+            viewCreated = true;
+            continue;
+        }
+
         if (obj->isDerivedFrom(App::LinkElement::getClassTypeId())
             || obj->isDerivedFrom(App::LinkGroup::getClassTypeId())
             || obj->isDerivedFrom(App::Link::getClassTypeId())) {
@@ -365,19 +404,15 @@ void CmdTechDrawView::activated(int iMsg)
     }
 
     if (shapes.empty() && xShapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Shapes, Groups or Links in this selection"));
+        if (!viewCreated) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("No Suitable objects in this selection"));
+        }
         return;
     }
 
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
     Base::Vector3d projDir;
-
     Gui::WaitCursor wc;
     openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
     std::string FeatName = getUniqueObjectName("View");
@@ -1493,15 +1528,14 @@ void CmdTechDrawDraftView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end();
-         ++it) {
-         if ((*it)->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
-            (*it)->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+    for (auto* obj : objects) {
+         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ||
+             obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
             // skip over TechDraw objects as they are not valid subjects for a DraftView
             continue;
         }
         std::string FeatName = getUniqueObjectName("DraftView");
-        std::string SourceName = (*it)->getNameInDocument();
+        std::string SourceName = obj->getNameInDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDraft', '%s')",
                   FeatName.c_str());
