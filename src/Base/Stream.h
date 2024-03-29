@@ -256,6 +256,101 @@ private:
     std::ostringstream _ss;
 };
 
+/**
+ * The TextOutputStream class provides writing of ASCII data to an ostream, with custom handling
+ * for std::string to make it easier to write a single multi-line (or multi-word) string. This is
+ * designed for easy compatibility with the LinkStage3 implementation of the OutputStream class,
+ * used to store StringHashers for the toponaming mitigation technique.
+ */
+class BaseExport TextOutputStream: public Stream
+{
+public:
+    /** Constructor
+     * @param rin: upstream input
+     */
+    explicit TextOutputStream(std::ostream& rout)
+        : _out(rout)
+    {}
+
+    TextOutputStream(const TextOutputStream&) = delete;
+
+    TextOutputStream(const TextOutputStream&&) noexcept = delete;
+
+    void operator=(const TextOutputStream&) = delete;
+
+    void operator=(const TextOutputStream&&) = delete;
+
+    ~TextOutputStream() override = default;
+
+    template<typename T>
+    TextOutputStream& operator<<(T object)
+    {
+        _out << object << '\n';
+        return *this;
+    }
+
+    template<>
+    TextOutputStream& operator<<(const char* object)
+    {
+        std::string_view str(object);
+
+        // Count the lines so that we can deal with potential EOL conversions by external software
+        uint32_t lineCount = 0;
+        for (const auto character : str) {
+            if (character == '\n') {
+                ++lineCount;
+            }
+        }
+        // Stores the line count followed by a colon as the delimiter. We don't use
+        // whitespace because the input stream may also start with whitespace.
+        _out << lineCount << ':';
+
+        // Store the text, and normalize the end of line to a single '\n'.
+        bool foundSlashR = false;
+        for (const auto character : str) {
+            if (character == '\r') {
+                foundSlashR = true;
+                continue;
+            }
+            if (foundSlashR) {
+                if (character != '\n') {
+                    // We allow '\r' if it is not at the end of a line
+                    _out.put('\r');
+                }
+                foundSlashR = false;  // Reset for next time
+            }
+            _out.put(character);
+        }
+
+        // Add an extra newline as the delimiter for the following data.
+        _out.put('\n');
+        return *this;
+    }
+
+    template<>
+    TextOutputStream& operator<<(const std::string& object)
+    {
+        return (*this) << object.c_str();
+    }
+
+    template<>
+    TextOutputStream& operator<<(char object)
+    {
+        _out.put(object);
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        // test if _Ipfx succeeded
+        return !_out.eof();
+    }
+
+private:
+    std::ostream& _out;
+    std::ostringstream _ss;
+};
+
 // ----------------------------------------------------------------------------
 
 /**
