@@ -24,6 +24,8 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QCheckBox>
+#include <QPushButton>
 #include <vector>
 #endif
 
@@ -294,7 +296,9 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert View");
-    sToolTipText = QT_TR_NOOP("Insert a View in current page. You can select Shapes, SpreadSheets or Section Plane from Arch Workbench objects.");
+    sToolTipText = QT_TR_NOOP("Insert a View in current page.\n"
+        "Selected objects, spreadsheets or Arch WB section planes will be added with the current camera orientation.\n"
+        "Without a selection, a file browser lets you select a SVG or image file.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_View";
@@ -403,14 +407,67 @@ void CmdTechDrawView::activated(int iMsg)
         }
     }
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
     if (shapes.empty() && xShapes.empty()) {
         if (!viewCreated) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("No Suitable objects in this selection"));
+            // If nothing was selected, then we offer to insert SVG or Images files.
+            bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
+            if (!dontShowAgain) {
+                QMessageBox msgBox;
+                msgBox.setText(msgBox.tr("Note: If you want to insert a shape you need to select it before starting the tool, else it opens a file browser to insert SVG or Images."));
+                QCheckBox dontShowCheckBox(msgBox.tr("Do not show this message again"), &msgBox);
+                msgBox.setCheckBox(&dontShowCheckBox);
+                QPushButton* okButton = msgBox.addButton(QMessageBox::Ok);
+
+                msgBox.exec();
+
+                if (msgBox.clickedButton() == okButton && dontShowCheckBox.isChecked()) {
+                    // Save the preference to not show the message again
+                    hGrp->SetBool("DontShowInsertFileMessage", true);
+                }
+            }
+
+            QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), 
+                QObject::tr("Select a SVG or Image file to open"), QString(),
+                QString::fromLatin1("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
+                .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
+
+            if (!filename.isEmpty()) {
+                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive) 
+                    || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
+                    std::string FeatName = getUniqueObjectName("Symbol");
+                    filename = Base::Tools::escapeEncodeFilename(filename);
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
+                    doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filename.toUtf8());
+                    doCommand(Doc, "svg = f.read()");
+                    doCommand(Doc, "f.close()");
+                    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
+                        FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSymbol', 'Symbol', '%s')",
+                        FeatName.c_str(), FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.Symbol = svg", FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+                        FeatName.c_str());
+                }
+                else {
+                    std::string FeatName = getUniqueObjectName("Image");
+                    filename = Base::Tools::escapeEncodeFilename(filename);
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
+                    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
+                        FeatName.c_str(), FeatName.c_str());
+                    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filename.toUtf8().constData());
+                    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+                    updateActive();
+                    commitCommand();
+                }
+
+                updateActive();
+                commitCommand();
+            }
         }
         return;
     }
-
 
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
