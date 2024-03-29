@@ -257,7 +257,9 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
 }
 
 void PropertyExpressionEngine::varSetChanged(const App::DocumentObject &, const App::Property &) {
-    dynamic_cast<DocumentObject*>(getContainer())->touch(false);
+    if (auto obj = dynamic_cast<DocumentObject*>(getContainer())) {
+        obj->touch(false);
+    }
 }
 
 void PropertyExpressionEngine::slotChangedObject(const App::DocumentObject &obj, const App::Property &) {

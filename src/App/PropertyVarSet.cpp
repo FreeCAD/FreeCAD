@@ -38,8 +38,7 @@ PropertyVarSet::PropertyVarSet() = default;
 void PropertyVarSet::setValue(DocumentObject* obj)
 {
     if (obj) {
-        if (obj->isDerivedFrom<VarSet>()) {
-            auto varSet = dynamic_cast<VarSet*>(obj);
+        if (auto varSet = dynamic_cast<VarSet*>(obj)) {
             auto oldVarSet = getValue();
             if (oldVarSet) {
                 if (!varSet->isEquivalent(oldVarSet)) {

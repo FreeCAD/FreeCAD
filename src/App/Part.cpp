@@ -113,8 +113,7 @@ std::vector<DocumentObject*> Part::addObjects(std::vector<DocumentObject*> objs)
 
     for(auto obj : addedObjs) {
         // if of type VarSet, enable exposed
-        if (obj->isDerivedFrom<App::VarSet>()) {
-            auto varSet = dynamic_cast<App::VarSet*>(obj);
+        if (auto varSet = dynamic_cast<App::VarSet*>(obj)) {
             varSet->enableExposed();
         }
     }
@@ -125,8 +124,7 @@ std::vector<DocumentObject*> Part::removeObjects(std::vector<DocumentObject*> ob
 {
     for(auto obj : objs) {
         // if of type VarSet, disable exposed
-        if (obj->isDerivedFrom<App::VarSet>()) {
-            auto varSet = dynamic_cast<App::VarSet*>(obj);
+        if (auto varSet = dynamic_cast<App::VarSet*>(obj)) {
             varSet->disableExposed();
         }
     }
