@@ -40,7 +40,7 @@ namespace App
 class AppExport VarSet : public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::VarSet);
-	
+
 public:
 
     /**
@@ -55,7 +55,7 @@ public:
      * @return The name of the property that points to the original VarSet
      */
     static std::string getNameOriginalVarSetProperty(const char* name);
-    
+
 
     /**
      * @brief Create a VarSet that is not exposed.
@@ -66,7 +66,7 @@ public:
     void onBeforeChange(const Property* prop) override;
     void onChanged(const Property* prop) override;
     void onDocumentRestored() override;
-    
+
     const char* getViewProviderName() const override;
 
     /**
@@ -118,7 +118,7 @@ private:
     PropertyBool Exposed;
     PropertyVarSet ReplacedBy;
     PropertyString NamePropertyParent;
-    
+
     void exposedChanged();
 
     const char* getNameVarSetPropertyParent();
@@ -144,7 +144,7 @@ private:
      * @return the parent document object of the exposed VarSet or nullptr otherwise
      */
     DocumentObject* getParentExposed();
-    
-    }; 
+
+    };
 }
 #endif

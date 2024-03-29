@@ -37,7 +37,7 @@ class AppExport PropertyVarSet : public PropertyXLink
 {
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    
+
 public:
 
     /**

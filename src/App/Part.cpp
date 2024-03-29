@@ -110,7 +110,7 @@ std::vector<DocumentObject*> Part::addObjects(std::vector<DocumentObject*> objs)
     // note that addObjects inherits from OriginGroupExtension while
     // removeObjects from GeoFeatureGroupExtension
     std::vector<DocumentObject*> addedObjs = OriginGroupExtension::addObjects(objs);
-    
+
     for(auto obj : addedObjs) {
         // if of type VarSet, enable exposed
         if (obj->isDerivedFrom<App::VarSet>()) {

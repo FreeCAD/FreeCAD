@@ -238,7 +238,7 @@ void VarSet::createVarSetPropertyParent(DocumentObject* parent, const char* name
     }
 }
 
-std::string VarSet::getNameOriginalVarSetProperty(const char* name) 
+std::string VarSet::getNameOriginalVarSetProperty(const char* name)
 {
     return "_" + std::string(name) + "Original";
 }
@@ -296,7 +296,7 @@ void VarSet::removeVarSetPropertiesParent()
     DocumentObject* parent = getFirstParent();
     if (parent) {
         rewriteExpressionsParent(parent, REMOVE);
-        
+
         // the property may not be there when constructing the object
         const char *nameProperty = getNameVarSetPropertyParent();
         parent->removeDynamicProperty(nameProperty);
