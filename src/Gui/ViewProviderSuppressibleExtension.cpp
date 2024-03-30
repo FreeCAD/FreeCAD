@@ -72,29 +72,7 @@ QIcon ViewProviderSuppressibleExtension::extensionMergeColorfullOverlayIcons (co
     QIcon mergedicon = orig;
 
     if(isSetSuppressedIcon) {
-        QPixmap px;
-        static const char * feature_suppressed_xpm[] = {
-                                                       "16 16 2 1",
-                                                       "     c None",
-                                                       ".    c #FF0000",
-                                                       ".               ",
-                                                       " ..             ",
-                                                       " ...            ",
-                                                       "  ...           ",
-                                                       "   ...          ",
-                                                       "    ...         ",
-                                                       "     ...        ",
-                                                       "      ...       ",
-                                                       "       ...      ",
-                                                       "        ...     ",
-                                                       "         ...    ",
-                                                       "          ...   ",
-                                                       "           ...  ",
-                                                       "            ... ",
-                                                       "             .. ",
-                                                       "               ."};
-
-        px = QPixmap(feature_suppressed_xpm);
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("feature_suppressed", QSize(16, 16)));
 
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::TopLeft);
     }

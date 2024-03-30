@@ -1655,6 +1655,7 @@ public:
 
         addCommand("Std_ViewIsometric");
         addCommand("Std_ViewFront");
+        addCommand("Std_ViewTop");
         addCommand("Std_ViewRight");
         addCommand("Std_ViewRear");
         addCommand("Std_ViewBottom");
