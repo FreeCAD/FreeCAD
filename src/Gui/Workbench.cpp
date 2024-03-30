@@ -791,12 +791,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     edit->setCommand("Edit");
     *edit << "Std_Undo" << "Std_Redo"
           << "Separator" << "Std_Refresh";
-    
+
     // Clipboard
     auto clipboard = new ToolBarItem( root , ToolBarItem::DefaultVisibility::Hidden );
     clipboard->setCommand("Clipboard");
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
-    
+
     // Workbench switcher
     if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
         auto wb = new ToolBarItem(root);
@@ -825,8 +825,8 @@ ToolBarItem* StdWorkbench::setupToolBars() const
                      << "Std_ViewTop"
                      << "Std_ViewRight"
                      << "Std_ViewRear"
-                     << "Std_ViewLeft"
-                     << "Std_ViewBottom";
+                     << "Std_ViewBottom"
+                     << "Std_ViewLeft";
 
     // Structure
     auto structure = new ToolBarItem( root );
