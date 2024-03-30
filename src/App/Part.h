@@ -98,6 +98,8 @@ public:
     static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
     PyObject *getPyObject() override;
+
+    DocumentObjectExecReturn *execute() override;
 };
 
 //using PartPython = App::FeaturePythonT<Part>;

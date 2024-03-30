@@ -149,6 +149,19 @@ void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeNa
     }
 }
 
+DocumentObjectExecReturn *Part::execute()
+{
+    for (auto obj : Group.getValues()) {
+        if (auto varSet = dynamic_cast<VarSet*>(obj)) {
+            if (varSet->isExposed()) {
+                 varSet->checkRewritesExpressions();
+            }
+        }
+    }
+
+    return DocumentObject::execute();
+}
+
 // Python feature ---------------------------------------------------------
 
 // Not quite sure yet making Part derivable in Python is good Idea!

@@ -303,3 +303,10 @@ void VarSet::removeVarSetPropertiesParent()
         parent->removeDynamicProperty(getNameOriginalVarSetProperty(nameProperty).c_str());
     }
 }
+
+void VarSet::checkRewritesExpressions()
+{
+    if (isExposed()) {
+        rewriteExpressionsParent(getParentExposed(), ADD);
+    }
+}

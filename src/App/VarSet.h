@@ -114,6 +114,8 @@ public:
      */
     bool isEquivalent(VarSet* other) const;
 
+    void checkRewritesExpressions();
+
 private:
     PropertyBool Exposed;
     PropertyVarSet ReplacedBy;
