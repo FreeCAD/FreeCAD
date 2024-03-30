@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
 #endif
 
 #include <App/OriginFeature.h>
@@ -40,14 +40,19 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(MirrorPlane,
+                      (nullptr),
+                      "Mirrored",
+                      (App::PropertyType)(App::Prop_None),
+                      "Mirror plane");
 }
 
 short Mirrored::mustExecute() const
@@ -58,7 +63,8 @@ short Mirrored::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*> /*obj*/)
+const std::list<gp_Trsf>
+Mirrored::getTransformations(const std::vector<App::DocumentObject*> /*obj*/)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (!refObject) {
@@ -84,29 +90,34 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
         }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
-            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+            int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
                 axis.setBase(axis.getBase() + 0.5 * axis.getDirection());
-                axis.setDirection(Base::Vector3d(-axis.getDirection().y, axis.getDirection().x, axis.getDirection().z));
+                axis.setDirection(Base::Vector3d(-axis.getDirection().y,
+                                                 axis.getDirection().x,
+                                                 axis.getDirection().z));
             }
         }
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (auto const plane = Base::freecad_dynamic_cast<PartDesign::Plane>(refObject)) {
+    }
+    else if (auto const plane = Base::freecad_dynamic_cast<PartDesign::Plane>(refObject)) {
         Base::Vector3d base = plane->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = plane->getNormal();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (auto const plane = Base::freecad_dynamic_cast<App::Plane>(refObject)) {
+    }
+    else if (auto const plane = Base::freecad_dynamic_cast<App::Plane>(refObject)) {
         Base::Vector3d base = plane->Placement.getValue().getPosition();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Rotation rot = plane->Placement.getValue().getRotation();
-        Base::Vector3d dir(0,0,1);
+        Base::Vector3d dir(0, 0, 1);
         rot.multVec(dir, dir);
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (auto const feature = Base::freecad_dynamic_cast<Part::Feature>(refObject)) {
+    }
+    else if (auto const feature = Base::freecad_dynamic_cast<Part::Feature>(refObject)) {
         std::vector<std::string> const subStrings = MirrorPlane.getSubValues();
         if (subStrings[0].empty()) {
             throw Base::ValueError("No direction reference specified");
@@ -126,8 +137,10 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
         axbase = getPointFromFace(face);
         axdir = adapt.Plane().Axis().Direction();
-    } else {
-        throw Base::ValueError("Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
+    }
+    else {
+        throw Base::ValueError(
+            "Mirror plane reference must be a sketch axis, a face of a feature or a datum plane");
     }
 
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
@@ -138,10 +151,10 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
     std::list<gp_Trsf> transformations;
     gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
+    transformations.push_back(trans);  // identity transformation
     trans.SetMirror(mirrorAxis);
-    transformations.push_back(trans); // mirrored transformation
+    transformations.push_back(trans);  // mirrored transformation
     return transformations;
 }
 
-}
+}  // namespace PartDesign
