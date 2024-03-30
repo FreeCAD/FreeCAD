@@ -266,7 +266,7 @@ class BaseExport TextOutputStream: public Stream
 {
 public:
     /** Constructor
-     * @param rin: upstream input
+     * @param rout: upstream output
      */
     explicit TextOutputStream(std::ostream& rout)
         : _out(rout)
@@ -289,7 +289,6 @@ public:
         return *this;
     }
 
-    template<>
     TextOutputStream& operator<<(const char* object)
     {
         std::string_view str(object);
@@ -327,13 +326,11 @@ public:
         return *this;
     }
 
-    template<>
-    TextOutputStream& operator<<(const std::string object)  // NOLINT - making it a ref breaks
+    TextOutputStream& operator<<(const std::string& object)
     {
         return (*this) << object.c_str();
     }
 
-    template<>
     TextOutputStream& operator<<(char object)
     {
         _out.put(object);
@@ -348,7 +345,6 @@ public:
 
 private:
     std::ostream& _out;
-    std::ostringstream _ss;
 };
 
 // ----------------------------------------------------------------------------

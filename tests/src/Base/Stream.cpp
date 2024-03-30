@@ -77,3 +77,51 @@ TEST_F(TextOutputStreamTest, multiLineCharStarWithCarriageReturnsAndNewlines)
     // has been stripped of the carriage returns.
     EXPECT_EQ(std::string("1:") + testStringWithoutCR + "\n", ss.str());
 }
+
+
+class TextStreamIntegrationTest: public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {}
+
+    void TearDown() override
+    {}
+};
+
+TEST_F(TextStreamIntegrationTest, OutputThenInputSimpleMultiLine)
+{
+    // Arrange
+    std::string multiLineString("One\nTwo\nThree");
+
+    // Act
+    std::ostringstream ssO;
+    Base::TextOutputStream tos(ssO);
+    tos << multiLineString;
+    std::istringstream ssI(ssO.str());
+    Base::TextInputStream tis(ssI);
+    std::string result;
+    tis >> result;
+
+    // Assert
+    EXPECT_EQ(multiLineString, result);
+}
+
+TEST_F(TextStreamIntegrationTest, OutputThenInputMultiLineWithCarriageReturns)
+{
+    // Arrange
+    std::string multiLineString("One\r\nTwo\r\nThree");
+    std::string multiLineStringResult("One\nTwo\nThree");
+
+    // Act
+    std::ostringstream ssO;
+    Base::TextOutputStream tos(ssO);
+    tos << multiLineString;
+    std::istringstream ssI(ssO.str());
+    Base::TextInputStream tis(ssI);
+    std::string result;
+    tis >> result;
+
+    // Assert
+    EXPECT_EQ(multiLineStringResult, result);
+}
