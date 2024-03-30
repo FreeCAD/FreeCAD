@@ -62,13 +62,13 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (!refObject)
         throw Base::ValueError("No mirror plane reference specified");
-    std::vector<std::string> subStrings = MirrorPlane.getSubValues();
-    if (subStrings.empty())
-        throw Base::ValueError("No mirror plane reference specified");
 
     gp_Pnt axbase;
     gp_Dir axdir;
     if (refObject->isDerivedFrom<Part::Part2DObject>()) {
+        std::vector<std::string> const subStrings = MirrorPlane.getSubValues();
+        if (subStrings.empty())
+            throw Base::ValueError("No mirror plane reference specified");
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis")
@@ -103,6 +103,7 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         rot.multVec(dir, dir);
         axdir = gp_Dir(dir.x, dir.y, dir.z);
     } else if (refObject->isDerivedFrom<Part::Feature>()) {
+        std::vector<std::string> const subStrings = MirrorPlane.getSubValues();
         if (subStrings[0].empty())
             throw Base::ValueError("No direction reference specified");
         Part::TopoShape baseShape = static_cast<Part::Feature*>(refObject)->Shape.getShape();
