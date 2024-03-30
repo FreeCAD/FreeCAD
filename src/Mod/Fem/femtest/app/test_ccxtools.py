@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Ccxtools FEM unit tests"
+__title__ = "CcxTools FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
