@@ -5941,7 +5941,7 @@ normal vector of the face is used as direction</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculiXCcxTools</name>
+    <name>FEM_SolverCalculixCxxtools</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1027"/>
       <source>Solver CalculiX Standard</source>

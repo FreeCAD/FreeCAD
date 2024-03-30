@@ -5724,7 +5724,7 @@ elasticidad (estrés)</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculiXCcxTools</name>
+    <name>FEM_SolverCalculixCxxtools</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1058"/>
       <source>Solver CalculiX Standard</source>
