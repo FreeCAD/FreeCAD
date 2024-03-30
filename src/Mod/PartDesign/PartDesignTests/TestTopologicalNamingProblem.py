@@ -33,11 +33,17 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc = App.newDocument("PartDesignTestTNP")
 
     def testPadsOnBaseObject(self):
+        # This is a simple TNP case.  By creating three Pads dependent on each other in succession,
+        #     and then moving the middle one we can determine if the last one breaks because of a broken
+        #     reference to the middle one.  This is the essence of a TNP. Pretty much a duplicate of the
+        #     steps at https://wiki.freecad.org/Topological_naming_problem
+
+        # Arrange
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         # Make first offset cube Pad
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.PadSketch)
-        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         self.Body.addObject(self.Pad)
@@ -50,9 +56,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
         self.PadSketch1.AttachmentSupport = [(self.Doc.getObject('Pad'),'Face6')]
-        self.PadSketch1.AttachmentOffset = App.Placement(
-            App.Vector(0.0000000000, 1.0000000000, 0.0000000000),
-            App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
@@ -66,9 +69,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Body.addObject(self.PadSketch2)
         self.PadSketch2.MapMode = 'FlatFace'
         self.PadSketch2.AttachmentSupport = [(self.Doc.getObject('Pad1'),'Face6')]
-        self.PadSketch2.AttachmentOffset = App.Placement(
-            App.Vector(0.0000000000, 1.0000000000, 0.0000000000),
-            App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         TestSketcherApp.CreateRectangleSketch(self.PadSketch2, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad2 = self.Doc.addObject("PartDesign::Pad", "Pad2")
@@ -82,16 +82,20 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Pad1.isValid())
         self.assertTrue(self.Pad2.isValid())
 
+        # Act
         # Move the second pad ( the sketch attachment point )
         self.PadSketch1.AttachmentOffset = App.Placement(
-            App.Vector(0.5000000000, 1.0000000000, 0.0000000000),
+            App.Vector(0.5000000000, 0.0000000000, 0.0000000000),
             App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         self.Doc.recompute()
 
-        # Assert everything is valid.
+        # Assert everything is still valid.
         self.assertTrue(self.Pad.isValid())
         self.assertTrue(self.Pad1.isValid())
-        # self.assertTrue(self.Pad2.isValid())  # Todo: Use this instead of the prints
+
+        # Todo switch to actually asserting this and remove the printed lines as soon as
+        #  the main branch is capable of passing this test.
+        # self.assertTrue(self.Pad2.isValid())
         if self.Pad2.isValid():
             print("Topological Naming Problem is not present.")
         else:
