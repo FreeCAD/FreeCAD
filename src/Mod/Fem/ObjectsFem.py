@@ -879,11 +879,11 @@ def makeEquationMagnetodynamic2D(
     return obj
 
 
-def makeSolverCalculixCcxTools(
+def makeSolverCalculiXCcxTools(
     doc,
     name="SolverCcxTools"
 ):
-    """makeSolverCalculixCcxTools(document, [name]):
+    """makeSolverCalculiXCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
     from femobjects import solver_ccxtools

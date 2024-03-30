@@ -1072,7 +1072,7 @@ class _SolverCcxtools(CommandManager):
         FreeCADGui.addModule("FemGui")
         if has_nonlinear_material_obj:
             FreeCADGui.doCommand(
-                "solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)"
+                "solver = ObjectsFem.makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument)"
             )
             FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
@@ -1080,7 +1080,7 @@ class _SolverCcxtools(CommandManager):
         else:
             FreeCADGui.doCommand(
                 "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-                "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
+                "makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument))"
             )
         FreeCAD.ActiveDocument.commitTransaction()
         # expand analysis object in tree view

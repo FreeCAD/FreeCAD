@@ -153,7 +153,7 @@ class TestCcxTools(unittest.TestCase):
         if analysis_dir is None:
             analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
         analysis = self.document.Analysis
-        solver_object = self.document.CalculiXccxTools
+        solver_object = self.document.CalculiXCcxTools
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
         fea.update_objects()
 
