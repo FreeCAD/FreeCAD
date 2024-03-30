@@ -297,7 +297,7 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert View");
     sToolTipText = QT_TR_NOOP("Insert a View in current page.\n"
-        "Selected objects, spreadsheets or Arch WB section planes will be added with the current camera orientation.\n"
+        "Selected objects, spreadsheets or Arch WB section planes will be added.\n"
         "Without a selection, a file browser lets you select a SVG or image file.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
@@ -469,51 +469,72 @@ void CmdTechDrawView::activated(int iMsg)
         return;
     }
 
-    Base::Vector3d projDir;
     Gui::WaitCursor wc;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
-    std::string FeatName = getUniqueObjectName("View");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewPart', 'View', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
+    bool createProjGroup = hGrp->GetBool("InsertAsProjGroup", true);
+    if (createProjGroup) {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Projection Group"));
 
-    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
-    if (!dvp) {
-        throw Base::TypeError("CmdTechDrawView DVP not found\n");
-    }
-    dvp->Source.setValues(shapes);
-    dvp->XSource.setValues(xShapes);
-    if (!faceName.empty()) {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs =
-            DrawGuiUtil::getProjDirFromFace(partObj, faceName);
-        projDir = dirs.first;
+        std::string multiViewName = getUniqueObjectName("ProjGroup");
+        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')",
+            multiViewName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+            multiViewName.c_str());
+
+        App::DocumentObject* docObj = getDocument()->getObject(multiViewName.c_str());
+        auto multiView(static_cast<TechDraw::DrawProjGroup*>(docObj));
+        multiView->Source.setValues(shapes);
+        multiView->XSource.setValues(xShapes);
+        doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
+
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-        //do something clever with dirs.second;
-        //        dvp->setXDir(dirs.second);
-        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
+        doCommand(Doc,
+            "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
+            multiViewName.c_str());
+        doCommand(Doc,
+            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(1.0, 0.0, 0.0)",
+            multiViewName.c_str());
+        doCommand(Doc,
+            "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
+            multiViewName.c_str());
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
+
+        doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
+        commitCommand();
+        updateActive();
+
+        // create the rest of the desired views
+        Gui::Control().showDialog(new TaskDlgProjGroup(multiView, true));
     }
     else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-        projDir = dirs.first;
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
+        std::string FeatName = getUniqueObjectName("View");
+        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
+            FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewPart', 'View', '%s')",
+            FeatName.c_str(), FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+            FeatName.c_str());
+
+        App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
+        if (!dvp) {
+            throw Base::TypeError("CmdTechDrawView DVP not found\n");
+        }
+        dvp->Source.setValues(shapes);
+        dvp->XSource.setValues(xShapes);
+
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        //        dvp->setXDir(dirs.second);
+        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
+            FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
+            FeatName.c_str());
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
+        commitCommand();
+
+        // create the rest of the desired views
+        Gui::Control().showDialog(new TaskDlgProjGroup(dvp, true));
     }
-    commitCommand();
 }
 
 bool CmdTechDrawView::isActive() { return DrawGuiUtil::needPage(this); }
@@ -1106,37 +1127,21 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     multiView->XSource.setValues(xShapes);
     doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
 
-    if (!faceName.empty()) {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs =
-            DrawGuiUtil::getProjDirFromFace(partObj, faceName);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
-        doCommand(
-            Doc,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-    }
-    else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
-        doCommand(
-            Doc,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        doCommand(Doc,
-                  "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-                  multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-    }
+    std::pair<Base::Vector3d, Base::Vector3d> dirs = !faceName.empty() ?
+        DrawGuiUtil::getProjDirFromFace(partObj, faceName)
+        : DrawGuiUtil::get3DDirAndRot();
+
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    doCommand(Doc,
+        "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+        multiViewName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
 
     doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     commitCommand();

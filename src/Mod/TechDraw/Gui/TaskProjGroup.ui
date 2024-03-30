@@ -27,39 +27,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Projection</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="projection">
-       <property name="toolTip">
-        <string>First or Third Angle</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>First Angle</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Third Angle</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Page</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="label">
@@ -88,17 +55,6 @@
          <string>Custom</string>
         </property>
        </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,1,0,1">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Custom Scale</string>
-       </property>
       </widget>
      </item>
      <item>
@@ -176,7 +132,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Adjust Primary Direction</string>
+        <string>Adjust Direction</string>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -193,6 +149,27 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="butCWRotate">
+       <property name="toolTip">
+        <string>Spin clock wise</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/arrow-cw.svg</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="butTopRotate">
        <property name="sizePolicy">
@@ -210,6 +187,27 @@
        <property name="icon">
         <iconset>
          <normalon>:/icons/arrow-up.svg</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="butCCWRotate">
+       <property name="toolTip">
+        <string>Spin counter clock wise</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/arrow-ccw.svg</normalon>
         </iconset>
        </property>
        <property name="iconSize">
@@ -290,17 +288,25 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <spacer name="horizontalSpacer_8">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QPushButton" name="butFront">
+       <property name="toolTip">
+        <string>Set document front view as primary direction.</string>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/view-front.svg</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>24</width>
+         <height>24</height>
         </size>
        </property>
-      </spacer>
+      </widget>
      </item>
      <item row="2" column="1">
       <widget class="QPushButton" name="butDownRotate">
@@ -324,17 +330,25 @@
       </widget>
      </item>
      <item row="2" column="2">
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QPushButton" name="butCam">
+       <property name="toolTip">
+        <string>Set direction of the camera, or selected face if any, as primary direction.</string>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/TechDraw_CameraOrientation.svg</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>24</width>
+         <height>24</height>
         </size>
        </property>
-      </spacer>
+      </widget>
      </item>
     </layout>
    </item>
@@ -575,75 +589,35 @@ height: 24px;
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="butCWRotate">
-       <property name="toolTip">
-        <string>Spin CW</string>
-       </property>
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normalon>:/icons/arrow-cw.svg</normalon>
-        </iconset>
+        <string>Projection</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="butCCWRotate">
+      <widget class="QComboBox" name="projection">
        <property name="toolTip">
-        <string>Spin CCW</string>
+        <string>First or Third Angle</string>
        </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normalon>:/icons/arrow-ccw.svg</normalon>
-        </iconset>
-       </property>
+       <item>
+        <property name="text">
+         <string>First Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Third Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Page</string>
+        </property>
+       </item>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

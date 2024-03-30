@@ -56,6 +56,7 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskDetail.h"
+#include "TaskProjGroup.h"
 #include "ViewProviderViewPart.h"
 #include "ViewProviderPage.h"
 #include "QGIViewDimension.h"
@@ -264,6 +265,10 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     if (Gui::Control().activeDialog())  {         //TaskPanel already open!
         return false;
     }
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
@@ -271,12 +276,14 @@ bool ViewProviderViewPart::setEdit(int ModNum)
             Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(dvd->getDocument()->getName(),
                                         dvd->getNameInDocument());
+    }
+    else {
+        auto* view = dynamic_cast<TechDraw::DrawView*>(getObject());
+        Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
     }
 
     return true;
