@@ -52,31 +52,37 @@ Mirrored::Mirrored()
 
 short Mirrored::mustExecute() const
 {
-    if (MirrorPlane.isTouched())
+    if (MirrorPlane.isTouched()) {
         return 1;
+    }
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
+const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*> /*obj*/)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (!refObject)
+    if (!refObject) {
         throw Base::ValueError("No mirror plane reference specified");
+    }
 
     gp_Pnt axbase;
     gp_Dir axdir;
-    if (refObject->isDerivedFrom<Part::Part2DObject>()) {
+    if (auto const refSketch = Base::freecad_dynamic_cast<Part::Part2DObject>(refObject)) {
         std::vector<std::string> const subStrings = MirrorPlane.getSubValues();
-        if (subStrings.empty())
+        if (subStrings.empty()) {
             throw Base::ValueError("No mirror plane reference specified");
-        Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
+        }
+
         Base::Axis axis;
-        if (subStrings[0] == "H_Axis")
+        if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
-        else if (subStrings[0] == "V_Axis")
+        }
+        else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0].empty())
+        }
+        else if (subStrings[0].empty()) {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+        }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
@@ -88,33 +94,35 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
-        PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);
+    } else if (auto const plane = Base::freecad_dynamic_cast<PartDesign::Plane>(refObject)) {
         Base::Vector3d base = plane->getBasePoint();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = plane->getNormal();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->isDerivedFrom<App::Plane>()) {
-        App::Plane* plane = static_cast<App::Plane*>(refObject);
+    } else if (auto const plane = Base::freecad_dynamic_cast<App::Plane>(refObject)) {
         Base::Vector3d base = plane->Placement.getValue().getPosition();
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Rotation rot = plane->Placement.getValue().getRotation();
         Base::Vector3d dir(0,0,1);
         rot.multVec(dir, dir);
         axdir = gp_Dir(dir.x, dir.y, dir.z);
-    } else if (refObject->isDerivedFrom<Part::Feature>()) {
+    } else if (auto const feature = Base::freecad_dynamic_cast<Part::Feature>(refObject)) {
         std::vector<std::string> const subStrings = MirrorPlane.getSubValues();
-        if (subStrings[0].empty())
+        if (subStrings[0].empty()) {
             throw Base::ValueError("No direction reference specified");
-        Part::TopoShape baseShape = static_cast<Part::Feature*>(refObject)->Shape.getShape();
+        }
+
+        Part::TopoShape baseShape = feature->Shape.getShape();
         // TODO: Check for multiple mirror planes?
         TopoDS_Shape shape = baseShape.getSubShape(subStrings[0].c_str());
         TopoDS_Face face = TopoDS::Face(shape);
-        if (face.IsNull())
+        if (face.IsNull()) {
             throw Base::ValueError("Failed to extract mirror plane");
+        }
         BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
+        if (adapt.GetType() != GeomAbs_Plane) {
             throw Base::TypeError("Mirror face must be planar");
+        }
 
         axbase = getPointFromFace(face);
         axdir = adapt.Plane().Axis().Direction();
