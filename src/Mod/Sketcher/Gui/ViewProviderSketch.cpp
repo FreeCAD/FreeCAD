@@ -4084,7 +4084,8 @@ void ViewProviderSketch::generateContextMenu()
                 }
                 if (selectedPoints == 1) {
                     menu << "Sketcher_ConstrainPerpendicular"
-                         << "Sketcher_ConstrainTangent";
+                         << "Sketcher_ConstrainTangent"
+                         << "Sketcher_ConstrainSymmetric";
                 }
             }
             else {
@@ -4109,13 +4110,35 @@ void ViewProviderSketch::generateContextMenu()
                     menu << "Sketcher_JoinCurves";
                 }
             }
+            if (selectedPoints == 3) {
+                menu << "Sketcher_ConstrainSymmetric";
+            }
         }
         else if (selectedLines >= 1 && selectedPoints >= 1 && !onlyOrigin) {
-            menu << "Sketcher_Dimension"
-                 << "Sketcher_ConstrainHorVer"
+            menu << "Sketcher_Dimension";
+
+            if (selectedPoints == 1) {
+                menu << "Sketcher_ConstrainCoincidentUnified";
+            }
+
+            menu << "Sketcher_ConstrainHorVer"
                  << "Sketcher_ConstrainHorizontal"
                  << "Sketcher_ConstrainVertical";
+
+            if (selectedLines > 1) {
+                menu << "Sketcher_ConstrainParallel";
+            }
+
+            if (selectedLines == 2 && selectedPoints == 1) {
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
+            }
+
+            if (selectedLines == 1 && selectedPoints == 1) {
+                menu << "Sketcher_ConstrainSymmetric";
+            }
         }
+
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
             menu << "Sketcher_ToggleDrivingConstraint"
@@ -4133,6 +4156,7 @@ void ViewProviderSketch::generateContextMenu()
                  << "Sketcher_Rotate"
                  << "Sketcher_Scale"
                  << "Sketcher_Offset"
+                 << "Sketcher_Symmetry"
                  << "Separator"
                  << "Sketcher_CompDimensionTools"
                  << "Sketcher_CompConstrainTools"
