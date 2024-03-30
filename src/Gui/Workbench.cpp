@@ -822,8 +822,8 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     individualViews->setCommand("Individual views");
     *individualViews << "Std_ViewIsometric"
                      << "Std_ViewFront"
-                     << "Std_ViewRight"
                      << "Std_ViewTop"
+                     << "Std_ViewRight"
                      << "Std_ViewRear"
                      << "Std_ViewLeft"
                      << "Std_ViewBottom";
