@@ -266,12 +266,12 @@ class GitControl(VersionControl):
                 if remote in self.remotes:
                     url = self.remotes[remote]
                     # rewrite github to public url
-                    match = re.match("git@github\.com:(\S+?)/(\S+\.git)", url) or re.match(
-                        "https://github\.com/(\S+)/(\S+\.git)", url
+                    match = re.match(r"git@github\.com:(\S+?)/(\S+\.git)", url) or re.match(
+                        r"https://github\.com/(\S+)/(\S+\.git)", url
                     )
                     if match is not None:
                         url = "git://github.com/%s/%s" % match.groups()
-                    match = re.match("ssh://\S+?@(\S+)", url)
+                    match = re.match(r"ssh://\S+?@(\S+)", url)
                     if match is not None:
                         url = "git://%s" % match.group(1)
                     entryscore = (
@@ -369,7 +369,7 @@ class GitControl(VersionControl):
             "%Y/%m/%d %H:%M:%S", time.gmtime(float(info.strip().split(" ", 1)[0]))
         )
         for self.branch in os.popen("git branch --no-color").read().split("\n"):
-            if re.match("\*", self.branch) is not None:
+            if re.match(r"\*", self.branch) is not None:
                 break
         self.branch = self.branch[2:]
         self.getremotes()  # setup self.remotes and branchlst
