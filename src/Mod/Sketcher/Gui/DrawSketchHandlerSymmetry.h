@@ -86,6 +86,7 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        Q_UNUSED(onSketchPos);
         switch (state()) {
             case SelectMode::SeekFirst: {
                 int VtId = getPreselectPoint();
