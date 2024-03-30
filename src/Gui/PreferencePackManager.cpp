@@ -224,7 +224,7 @@ void Gui::PreferencePackManager::importConfig(const std::string& packName,
     auto savedPreferencePacksDirectory =
         fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
     auto cfgFilename = savedPreferencePacksDirectory / packName / (packName + ".cfg");
-    fs::copy_file(path, cfgFilename, fs::copy_option::overwrite_if_exists);
+    fs::copy_file(path, cfgFilename, fs::copy_options::overwrite_existing);
     rescan();
 }
 
