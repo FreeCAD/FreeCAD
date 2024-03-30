@@ -20,26 +20,35 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+
+""" Tests related to the Topological Naming Problem """
+
 import unittest
 
-
 import FreeCAD as App
-import Part
-import Sketcher
+# import Part
+# import Sketcher
 import TestSketcherApp
 
+
 class TestTopologicalNamingProblem(unittest.TestCase):
+    """ Tests related to the Topological Naming Problem """
+
+    # pylint: disable=attribute-defined-outside-init
+
     def setUp(self):
+        """ Create a document for the test suite """
         self.Doc = App.newDocument("PartDesignTestTNP")
 
     def testPadsOnBaseObject(self):
-        # This is a simple TNP case.  By creating three Pads dependent on each other in succession,
-        #     and then moving the middle one we can determine if the last one breaks because of a broken
-        #     reference to the middle one.  This is the essence of a TNP. Pretty much a duplicate of the
-        #     steps at https://wiki.freecad.org/Topological_naming_problem
+        """ Simple TNP test case
+            By creating three Pads dependent on each other in succession, and then moving the
+            middle one we can determine if the last one breaks because of a broken reference
+            to the middle one.  This is the essence of a TNP. Pretty much a duplicate of the
+            steps at https://wiki.freecad.org/Topological_naming_problem """
 
         # Arrange
-        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
         # Make first offset cube Pad
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.PadSketch)
@@ -55,7 +64,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.AttachmentSupport = [(self.Doc.getObject('Pad'),'Face6')]
+        self.PadSketch1.AttachmentSupport = [(self.Doc.getObject('Pad'), 'Face6')]
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
@@ -68,7 +77,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.PadSketch2 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad2')
         self.Body.addObject(self.PadSketch2)
         self.PadSketch2.MapMode = 'FlatFace'
-        self.PadSketch2.AttachmentSupport = [(self.Doc.getObject('Pad1'),'Face6')]
+        self.PadSketch2.AttachmentSupport = [(self.Doc.getObject('Pad1'), 'Face6')]
         TestSketcherApp.CreateRectangleSketch(self.PadSketch2, (0, 0), (1, 1))
         self.Doc.recompute()
         self.Pad2 = self.Doc.addObject("PartDesign::Pad", "Pad2")
@@ -135,6 +144,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # self.Doc.getObject('Sketch').Visibility = False
         # self.Doc.recompute()
 
-
-def tearDown(self):
-    App.closeDocument("PartDesignTestTNP")
+    def tearDown(self):
+        """ Close our test document """
+        App.closeDocument("PartDesignTestTNP")
