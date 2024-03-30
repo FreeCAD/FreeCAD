@@ -229,7 +229,7 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    auto setObjectLabel = [=](const Gui::SelectionChanges& msg) {
+    auto setObjectLabel = [this](const Gui::SelectionChanges& msg) {
         App::DocumentObject* obj = msg.Object.getObject();
         if (obj) {
             ui->baseEdit->setText(QString::fromStdString(obj->Label.getStrValue()));

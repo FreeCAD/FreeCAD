@@ -1714,7 +1714,7 @@ ButtonGroup::ButtonGroup(QObject *parent)
     QButtonGroup::setExclusive(false);
 
     connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
-            [=](QAbstractButton *button) {
+            [this](QAbstractButton *button) {
         if (exclusive()) {
             const auto btns = buttons();
             for (auto btn : btns) {

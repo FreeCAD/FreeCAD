@@ -179,7 +179,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             this,
             &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged);
 
-    connect(ui->buttonDirection, &QPushButton::pressed, this, [=] {
+    connect(ui->buttonDirection, &QPushButton::pressed, this, [this] {
         onButtonDirection(true);
     });
     connect(ui->checkReverse,
