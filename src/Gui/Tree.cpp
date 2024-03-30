@@ -5050,7 +5050,7 @@ void DocumentObjectItem::restoreBackground() {
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
-    auto highlight = [=](const QColor& col) {
+    auto highlight = [this, set](const QColor& col) {
         if (set)
             this->setBackground(0, col);
         else
