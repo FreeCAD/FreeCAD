@@ -8,14 +8,15 @@ Installation of program files, dictionaries and external components
 
 #--------------------------------
 # Program files
+!include LogicLib.nsh
 
 Section -ProgramFiles SecProgramFiles
 
   # if the $INSTDIR does not contain "FreeCAD" we must add a subfolder to avoid that FreeCAD will e.g.
   # be installed directly to C:\programs - the uninstaller will then delete the whole
   # C:\programs directory
-  StrCpy $String $INSTDIR
-  StrCpy $Search ${APP_NAME}
+  StrCpy $String "$INSTDIR"
+  StrCpy $Search "${APP_NAME}"
   Call StrPoint # function from Utils.nsh
   ${if} $Pointer == "-1"
    StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
@@ -38,8 +39,11 @@ Section -ProgramFiles SecProgramFiles
   File /r "${FILES_FREECAD}\bin\*.*"
   
   # MSVC redistributable DLLs
-  SetOutPath "$INSTDIR\bin"
-  File "${FILES_DEPS}\*.*"
+  !ifdef FILES_DEPS
+    !echo "Including MSVC Redist files from ${FILES_DEPS}"
+    SetOutPath "$INSTDIR\bin"
+    File "${FILES_DEPS}\*.*"
+  !endif
   
   # Others
   SetOutPath "$INSTDIR\data"
@@ -52,10 +56,6 @@ Section -ProgramFiles SecProgramFiles
   File /r "${FILES_FREECAD}\lib\*.*"
   SetOutPath "$INSTDIR\Mod"
   File /r "${FILES_FREECAD}\Mod\*.*"
-  SetOutPath "$INSTDIR\resources"
-  File /r "${FILES_FREECAD}\resources\*.*"
-  SetOutPath "$INSTDIR\translations"
-  File /r "${FILES_FREECAD}\translations\*.*"
   SetOutPath "$INSTDIR"
   File /r "${FILES_THUMBS}"
     

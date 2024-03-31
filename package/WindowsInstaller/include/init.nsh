@@ -50,7 +50,7 @@ Function PostMultiUserPageInit
 
   # check if there is an existing FreeCAD installation of the same FreeCAD series
   # we usually don't release more than 10 versions so with 20 we are safe to check if a newer version is installed
-  IntOp $4 ${APP_VERSION_REVISION} + 20
+  IntOp $4 ${APP_VERSION_PATCH} + 20
   ${for} $5 0 $4
    ReadRegStr $0 SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$5" "DisplayVersion"
    # also check for an emergency release
@@ -110,7 +110,8 @@ Function .onInit
   ${orif} $R0 == "5.1" # XP
   ${orif} $R0 == "5.2" # 2003
   ${orif} $R0 == "6.0" # Vista
-    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 7 or newer." /SD IDOK
+  ${orif} $R0 == "6.1" # 7
+    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 8 or newer." /SD IDOK
     Quit
   ${endif}
   
@@ -130,7 +131,7 @@ Function .onInit
   # plugin must be unloaded
   ${nsProcess::Unload}
   
-  # initialize the multi-uder installer UI
+  # initialize the multi-user installer UI
   !insertmacro MULTIUSER_INIT
 
   # this can be reset to "true" in section SecDesktop

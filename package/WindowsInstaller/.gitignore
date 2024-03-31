@@ -1,0 +1,5 @@
+*.exe
+*-SHA256.txt
+MSVCRedist
+FreeCAD
+version.nsh
