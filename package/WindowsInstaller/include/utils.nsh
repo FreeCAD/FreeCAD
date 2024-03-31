@@ -18,8 +18,8 @@
  # and returns the number of the character in the FindStr where the SearchStr was found (Pointer)
  # if nothing was found or the search is impossible the Pointer is set to -1
  
- StrLen $R2 ${SearchStr}
- StrLen $R4 ${FindStr}
+ StrLen $R2 "${SearchStr}"
+ StrLen $R4 "${FindStr}"
  StrCpy $R5 0
  ${if} $R2 == 0
  ${orif} $R4 == 0
@@ -27,8 +27,8 @@
  ${endif}
  IntCmp $R4 $R2 loopA NotFound
  loopA:
-  StrCpy $R3 ${FindStr} $R2 $R5
-  StrCmp $R3 ${SearchStr} Found
+  StrCpy $R3 "${FindStr}" $R2 $R5
+  StrCmp $R3 "${SearchStr}" Found
   IntOp $R5 $R5 + 1
   IntCmp $R4 $R5 loopA NotFound
   Goto loopA
