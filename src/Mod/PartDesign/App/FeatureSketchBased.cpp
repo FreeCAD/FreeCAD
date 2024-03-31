@@ -170,7 +170,11 @@ Part::TopoShape ProfileBased::getProfileShape() const
         std::vector<Part::TopoShape> shapes;
         for (auto& sub : Profile.getSubValues(true))
             shapes.emplace_back(shape.getSubShape(sub.c_str()));
+#ifdef FC_USE_TNP_FIX
+        shape = Part::TopoShape().makeElementCompound(shapes);
+#else
         shape = Part::TopoShape().makeCompound(shapes);
+#endif
     }
     return shape;
 }
@@ -192,6 +196,19 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
             else {
                 auto faces = shape.getSubTopoShapes(TopAbs_FACE);
                 if (faces.empty()) {
+#ifdef FC_USE_TNP_FIX
+                    if (!shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makeElementWires();
+                    if (shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makeElementFace(nullptr, "Part::FaceMakerBullseye");
+                    else
+                        err = "Cannot make face from profile";
+                }
+                else if (faces.size() == 1)
+                    shape = faces.front();
+                else
+                    shape = TopoShape().makeElementCompound(faces);
+#else
                     if (!shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makeWires();
                     if (shape.hasSubShape(TopAbs_WIRE))
@@ -203,6 +220,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                     shape = faces.front();
                 else
                     shape = TopoShape().makeCompound(faces);
+#endif
             }
             if (!err)
                 return shape.getShape();
