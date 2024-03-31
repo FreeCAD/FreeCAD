@@ -69,14 +69,14 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
         if (auto refSketch = dynamic_cast<Part::Part2DObject*>(refObject)) {
             Base::Axis axis;
-            if (subStrings[0] == "H_Axis") {
+            if (subStrings.empty() || subStrings[0].empty()) {
+                axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+            }
+            else if (subStrings[0] == "H_Axis") {
                 axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
             }
             else if (subStrings[0] == "V_Axis") {
                 axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-            }
-            else if (subStrings[0].empty()) {
-                axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
             }
             else if (subStrings[0].compare(0, 4, "Axis") == 0) {
                 int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
@@ -84,6 +84,9 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
                     axis = refSketch->getAxis(AxId);
                     axis.setBase(axis.getBase() + 0.5 * axis.getDirection());
                     axis.setDirection(Base::Vector3d(-axis.getDirection().y, axis.getDirection().x, axis.getDirection().z));
+                }
+                else {
+                    throw Base::ValueError("No valid axis specified");
                 }
             }
             axis *= refSketch->Placement.getValue();
@@ -131,6 +134,9 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         std::vector<std::string> subStrings = MirrorPlane.getSubValues();
 
         if (auto feature = dynamic_cast<Part::Feature*>(refObject)) {
+            if (subStrings.empty()) {
+                throw Base::ValueError("No mirror plane reference specified");
+            }
             if (subStrings[0].empty()) {
                 throw Base::ValueError("No direction reference specified");
             }
@@ -160,10 +166,6 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
 
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (!refObject) {
-        throw Base::ValueError("No mirror plane reference specified");
-    }
-    std::vector<std::string> subStrings = MirrorPlane.getSubValues();
-    if (subStrings.empty()) {
         throw Base::ValueError("No mirror plane reference specified");
     }
 

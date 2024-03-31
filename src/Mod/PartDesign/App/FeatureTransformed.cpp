@@ -183,8 +183,12 @@ App::DocumentObjectExecReturn *Transformed::execute()
     try {
         std::list<gp_Trsf> t_list = getTransformations(originals);
         transformations.insert(transformations.end(), t_list.begin(), t_list.end());
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
     if (transformations.empty())
