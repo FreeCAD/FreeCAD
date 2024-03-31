@@ -28,7 +28,7 @@ Function PostMultiUserPageInit
   # check if this FreeCAD version is already installed
   ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "UninstallString"
   ${if} $0 != ""
-   # check if the uninstaller was acidentally deleted
+   # check if the uninstaller was accidentally deleted
    # if so, don't bother the user if they really want to install a new FreeCAD over an existing one
    # because they won't have a chance to deny this
 
@@ -50,7 +50,7 @@ Function PostMultiUserPageInit
 
   # check if there is an existing FreeCAD installation of the same FreeCAD series
   # we usually don't release more than 10 versions so with 20 we are safe to check if a newer version is installed
-  IntOp $4 ${APP_VERSION_REVISION} + 20
+  IntOp $4 ${APP_VERSION_PATCH} + 20
   ${for} $5 0 $4
    ReadRegStr $0 SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$5" "DisplayVersion"
    # also check for an emergency release
@@ -138,7 +138,7 @@ Function .onInit
   StrCpy $CreateFileAssociations "false"
  
   ${IfNot} ${Silent}
-    # Show banner while installer is intializating 
+    # Show banner while installer is initializing 
     Banner::show /NOUNLOAD "Checking system"
     Banner::destroy
   ${EndIf}

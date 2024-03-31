@@ -58,7 +58,7 @@ BrandingText " "
 !insertmacro MUI_PAGE_INSTFILES
 
 # The option to run FreeCAD from the finish page is currently disabled because
-# it may run with Administrator priviledges, therefore causing a different
+# it may run with Administrator privileges, therefore causing a different
 # user directory to be used. This could be fixed by creating a separate
 # process without UAC elevation.
 #!define MUI_FINISHPAGE_RUN_TEXT "$(FinishPageRun)"
@@ -92,7 +92,7 @@ BrandingText " "
 
 VIProductVersion "${APP_VERSION_NUMBER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${APP_NAME}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${APP_DIR}.${APP_VERSION_REVISION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${APP_DIR}.${APP_VERSION_PATCH}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${APP_INFO}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APP_VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "${APP_COPYRIGHT}"
