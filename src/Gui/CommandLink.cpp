@@ -882,6 +882,8 @@ public:
         eType         = AlterDoc;
         bCanLog       = false;
 
+        setCheckable(false);
+
         addCommand(new StdCmdLinkMake());
         addCommand(new StdCmdLinkMakeRelative());
         addCommand(new StdCmdLinkReplace());
