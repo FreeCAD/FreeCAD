@@ -48,3 +48,11 @@ Model:
     Description: >
       Thermal expansion coefficient (linear) in [FreeCAD
       ThermalExpansionCoefficient unit]
+  ThermalExpansionReferenceTemperature:
+    DisplayName: "Thermal Expansion Reference Temperature"
+    Type: 'Quantity'
+    Units: 'K'
+    URL: ''
+    Description: >
+      The reference temperature is the temperature at which zero thermal
+      strains exist for the analysis.

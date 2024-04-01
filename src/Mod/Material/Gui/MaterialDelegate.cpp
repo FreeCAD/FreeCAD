@@ -133,8 +133,10 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
         // auto propertyName = group->child(row, 0)->text();
         auto propertyName = group->child(row, 0)->data().toString();
-        material->getProperty(propertyName)->setValue(value);
-        group->child(row, 1)->setText(value.toString());
+        std::string _name = propertyName.toStdString();
+        auto property = material->getProperty(propertyName);
+        property->setValue(value);
+        group->child(row, 1)->setText(property->getString());
     }
 
     notifyChanged(model, index);
@@ -267,7 +269,7 @@ void MaterialDelegate::showImageModal(const QString& propertyName, QStandardItem
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -281,7 +283,7 @@ void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem*
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -295,7 +297,7 @@ void MaterialDelegate::showMultiLineStringModal(const QString& propertyName, QSt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -310,7 +312,7 @@ void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardIt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -324,7 +326,7 @@ void MaterialDelegate::showArray3DModal(const QString& propertyName, QStandardIt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
