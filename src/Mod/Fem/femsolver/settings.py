@@ -173,7 +173,7 @@ def get_default_solver():
     """
     solver_map = {0: "None"}
     if get_binary("Calculix", True):
-        solver_map[1] = "CalculixCcxTools"
+        solver_map[1] = "CalculiXCcxTools"
     if get_binary("ElmerSolver", True):
         solver_map[len(solver_map)] = "Elmer"
     if get_binary("Mystran", True):
