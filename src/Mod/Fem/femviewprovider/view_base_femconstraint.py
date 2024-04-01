@@ -32,25 +32,15 @@ __url__ = "https://www.freecad.org"
 
 from pivy import coin
 
+from FreeCAD import getResourceDir
 from femviewprovider import view_base_femobject
 
 
 class VPBaseFemConstraint(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Pythons base constraint."""
 
+    resource_symbol_dir = getResourceDir() + "Mod/Fem/Resources/symbols/"
+
     def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-        self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
-        # self.ViewObject = vobj  # not used ATM
-
-    def getDisplayModes(self, obj):
-        "Return a list of display modes."
-        modes = ["Default"]
-        return modes
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def setDisplayMode(self, mode):
-        return mode
+        # used on various places, claim childreens, get icon, etc.
+        self.Object = vobj.Object
