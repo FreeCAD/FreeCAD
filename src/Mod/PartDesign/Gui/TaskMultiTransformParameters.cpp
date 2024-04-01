@@ -258,7 +258,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
 {
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
-    auto pcBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -295,7 +295,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     //
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
-    auto pcBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -317,7 +317,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     else {
         // set Direction value before filling up the combo box to avoid creating an empty item
         // inside updateUI()
-        auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
+        auto body = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
         if (body) {
             FCMD_OBJ_CMD(Feat,
                          "Direction = (" << Gui::Command::getObjectCmd(body->getOrigin()->getX())
@@ -339,7 +339,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
 {
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
-    auto pcBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -376,7 +376,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
 {
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
-    auto pcBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
