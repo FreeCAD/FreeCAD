@@ -32,7 +32,7 @@ list(APPEND Material_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-if(yaml-cpp_VERSION VERSION_LESS 0.7.0)
+if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
     list(APPEND Material_LIBS
         ${YAML_CPP_LIBRARIES}
     )
