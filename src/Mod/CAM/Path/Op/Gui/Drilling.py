@@ -62,11 +62,20 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def registerSignalHandlers(self, obj):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
+        self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.setChipBreakControl)
+
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckDepth.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.chipBreakEnabled.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.setChipBreakControl)
 
         self.form.dwellEnabled.toggled.connect(self.form.dwellTime.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
+        self.form.dwellEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
 
         self.form.peckRetractHeight.setEnabled(True)
@@ -74,15 +83,18 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
+            self.form.feedRetractEnabled.setEnabled(False)
             self.form.peckDepth.setEnabled(True)
             self.form.peckDepthLabel.setEnabled(True)
             self.form.chipBreakEnabled.setEnabled(True)
         elif self.form.dwellEnabled.isChecked():
+            self.form.feedRetractEnabled.setEnabled(False)
             self.form.peckEnabled.setEnabled(False)
             self.form.dwellTime.setEnabled(True)
             self.form.dwellTimelabel.setEnabled(True)
             self.form.chipBreakEnabled.setEnabled(False)
         else:
+            self.form.feedRetractEnabled.setEnabled(True)
             self.form.chipBreakEnabled.setEnabled(False)
 
     def setChipBreakControl(self):
@@ -116,6 +128,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
+        if obj.feedRetractEnabled != self.form.feedRetractEnabled.isChecked():
+            obj.feedRetractEnabled = self.form.feedRetractEnabled.isChecked()
         if obj.chipBreakEnabled != self.form.chipBreakEnabled.isChecked():
             obj.chipBreakEnabled = self.form.chipBreakEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
@@ -154,6 +168,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         else:
             self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Unchecked)
 
+        if obj.feedRetractEnabled:
+            self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Unchecked)
+
         self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
         self.setupToolController(obj, self.form.toolController)
@@ -173,6 +192,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
         signals.append(self.form.KeepToolDownEnabled.stateChanged)
+        signals.append(self.form.feedRetractEnabled.stateChanged)
 
         return signals
 

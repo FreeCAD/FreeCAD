@@ -105,6 +105,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
             )
 
+        if not hasattr(obj, "feedRetractEnabled"):
+            obj.addProperty(
+                "App::PropertyBool", "feedRetractEnabled", "Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use G85 boring cycle with feed out")
+            )
+
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
         obj.addProperty(
@@ -177,6 +185,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Apply G99 retraction: only retract to RetractHeight between holes in this operation")
+        )
+        obj.addProperty(
+            "App::PropertyBool", "feedRetractEnabled", "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Use G85 boring cycle with feed out")
         )
 
         for n in self.propertyEnumerations():
@@ -276,6 +290,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     repeat,
                     obj.RetractHeight.Value,
                     chipBreak=chipBreak,
+                    feedRetract=obj.feedRetractEnabled
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
