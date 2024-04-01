@@ -91,24 +91,47 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Pad1.isValid())
         self.assertTrue(self.Pad2.isValid())
 
+        # Make sure we have elementMaps for the sketches
+        self.assertEqual(self.PadSketch.Shape.ElementMapSize,12 )
+        self.assertEqual(self.PadSketch1.Shape.ElementMapSize,12 )
+        self.assertEqual(self.PadSketch2.Shape.ElementMapSize,12 )
+        # Make sure we don't have elementMaps for the pads.
+        self.assertEqual(self.Pad.Shape.ElementMapSize,0 )
+        self.assertEqual(self.Pad1.Shape.ElementMapSize,0 )
+        self.assertEqual(self.Pad2.Shape.ElementMapSize,0 )
+        # could also check .Shape.BoundBox.   AttachmentSupport will always be consistent.
+
         # Act
         # Move the second pad ( the sketch attachment point )
         self.PadSketch1.AttachmentOffset = App.Placement(
-            App.Vector(0.5000000000, 0.0000000000, 0.0000000000),
+            App.Vector(0.5000000000, 1.0000000000, 0.0000000000),
             App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         self.Doc.recompute()
 
-        # Assert everything is still valid.
+        # Todo: Helper method for comparing BoundBoxes ( exists in PartTests )
+        # Assert everything is valid.
+        # self.assertEqual(self.Pad1.Shape.BoundBox.XMax,1.5)
+        # self.assertEqual(self.Pad2.Shape.BoundBox.XMax,1.5)
         self.assertTrue(self.Pad.isValid())
         self.assertTrue(self.Pad1.isValid())
-
-        # Todo switch to actually asserting this and remove the printed lines as soon as
-        #  the main branch is capable of passing this test.
-        # self.assertTrue(self.Pad2.isValid())
+        # self.assertTrue(self.Pad2.isValid())  # Todo: Use this instead of the prints
         if self.Pad2.isValid():
             print("Topological Naming Problem is not present.")
         else:
             print("TOPOLOGICAL NAMING PROBLEM IS PRESENT.")
+
+
+    def testSketchObject(self):
+        # Arrange
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Act
+        self.Sketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.Sketch)
+        TestSketcherApp.CreateRectangleSketch(self.Sketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+        # Assert    Note that sketch already calls the makeElement versions, so no guard needed
+        # if self.Sketch.Shape.ElementMapVersion != "":
+        self.assertEqual(self.Sketch.Shape.ElementMapSize,12 )
 
     # def testFutureStuff(self):
         # self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
