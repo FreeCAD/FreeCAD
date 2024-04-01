@@ -237,6 +237,8 @@ protected:
     bool okToProceed();
     void updateSavedGeometry();
 
+    bool validateReferenceForm() const;
+
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
