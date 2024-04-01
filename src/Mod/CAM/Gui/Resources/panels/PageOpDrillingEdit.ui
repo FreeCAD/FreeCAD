@@ -175,6 +175,9 @@
           <property name="text">
             <string>Feed retract</string>
           </property>
+          <property name="toolTip">
+            <string>G85: Retract from the hole at the given feedrate instead of rapid move</string>
+          </property>
         </widget>
       </item>
     </layout>
