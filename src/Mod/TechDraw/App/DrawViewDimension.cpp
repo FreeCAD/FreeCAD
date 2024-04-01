@@ -446,7 +446,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
 {
     // Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!okToProceed()) {
-        return App::DocumentObject::StdReturn;
+        return  new App::DocumentObjectExecReturn("Dimension could not execute");
     }
 
     resetLinear();
@@ -478,13 +478,6 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     }
     // references are good, we can proceed
     m_referencesCorrect = true;
-
-    // is this check still relevant or is it replace by the autocorrect and
-    // validate methods?
-    if (References3D.getValues().empty() && !checkReferences2D()) {
-        Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
-        return new App::DocumentObjectExecReturn("Dimension object has invalid 2d references");
-    }
 
     // we have either or both valid References3D and References2D
     ReferenceVector references = getEffectiveReferences();
@@ -544,7 +537,8 @@ bool DrawViewDimension::okToProceed()
 
     if (!has2DReferences() && !has3DReferences()) {
         // no references, can't do anything
-        return App::DocumentObject::StdReturn;
+        Base::Console().Warning("Dimension object has no valid references\n");
+        return false;
     }
 
     if (!getViewPart()->hasGeometry()) {
@@ -552,7 +546,13 @@ bool DrawViewDimension::okToProceed()
         return false;
     }
 
-    return true;
+    // is this check still relevant or is it replaced by the autocorrect and
+    // validate methods?
+    if (References3D.getValues().empty() && !checkReferences2D()) {
+        Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
+        return false;
+    }
+    return validateReferenceForm();
 }
 
 bool DrawViewDimension::isMultiValueSchema() const
@@ -1451,8 +1451,8 @@ bool DrawViewDimension::hasBroken3dReferences() const
 
 void DrawViewDimension::updateSavedGeometry()
 {
-    //    Base::Console().Message("DVD::updateSavedGeometry() - %s - savedGeometry: %d\n",
-    //        getNameInDocument(), SavedGeometry.getValues().size());
+    // Base::Console().Message("DVD::updateSavedGeometry() - %s - savedGeometry: %d\n",
+    //    getNameInDocument(), SavedGeometry.getValues().size());
     ReferenceVector references = getEffectiveReferences();
     if (references.empty()) {
         // no references to save
@@ -1622,6 +1622,108 @@ void DrawViewDimension::setAll3DMeasurement()
             m_3dObjectCache.insert(firstParent->getNameInDocument());
         }
     }
+}
+
+//! check the effective references have the correct number and type for this
+//! dimension.
+bool DrawViewDimension::validateReferenceForm() const
+{
+   // we have either or both valid References3D and References2D
+    ReferenceVector references = getEffectiveReferences();
+    if (references.empty()) {
+        return false;
+    }
+
+    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
+        if (getRefType() == oneEdge) {
+            if (references.size() != 1) {
+                return false;
+            }
+            std::string subGeom = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+            if (subGeom != "Edge") {
+                return false;
+            }
+            return true;
+        }
+        else if (getRefType() == twoEdge) {
+            if (references.size() != 2) {
+                return false;
+            }
+            std::string subGeom0 = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+            std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.back().getSubName());
+            if (subGeom0 != "Edge" || subGeom1 != "Edge") {
+                return false;
+            }
+            return true;
+        }
+        else if (getRefType() == twoVertex) {
+            if (references.size() != 2) {
+                return false;
+            }
+            std::string subGeom0 = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+            std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.back().getSubName());
+            if (subGeom0 != "Vertex" || subGeom1 != "Vertex") {
+                return false;
+            }
+            return true;
+        }
+        else if (getRefType() == vertexEdge) {
+            if (references.size() != 2) {
+                return false;
+            }
+            std::string subGeom0 = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+            std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.back().getSubName());
+            if ( (subGeom0 == "Vertex" && subGeom1 == "Edge") ||
+                 (subGeom0 == "Edge" && subGeom1 == "Vertex") ) {
+                return true;
+            }
+            return false;
+        }
+    }
+    else if (Type.isValue("Radius")) {
+        if (references.size() != 1) {
+            return false;
+        }
+        std::string subGeom = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+        if (subGeom != "Edge") {
+            return false;
+        }
+        return true;
+    }
+    else if (Type.isValue("Diameter")) {
+        if (references.size() != 1) {
+            return false;
+        }
+        std::string subGeom = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+        if (subGeom != "Edge") {
+            return false;
+        }
+        return true;
+    }
+    else if (Type.isValue("Angle")) {
+        if (references.size() != 2) {
+            return false;
+        }
+        std::string subGeom0 = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+        std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.back().getSubName());
+        if (subGeom0 != "Edge" || subGeom1 != "Edge") {
+            return false;
+        }
+        return true;
+    }
+    else if (Type.isValue("Angle3Pt")) {
+        if (references.size() != 3) {
+            return false;
+        }
+        std::string subGeom0 = DrawUtil::getGeomTypeFromName(references.at(0).getSubName());
+        std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.at(1).getSubName());
+        std::string subGeom2 = DrawUtil::getGeomTypeFromName(references.at(2).getSubName());
+        if (subGeom0 != "Vertex" || subGeom1 != "Vertex" || subGeom2 != "Vertex") {
+            return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 // delete all previous measurements
@@ -1862,5 +1964,8 @@ Base::BoundBox3d DrawViewDimension::getSavedBox()
 
 Base::BoundBox3d DrawViewDimension::getFeatureBox()
 {
-    return getViewPart()->getBoundingBox();
+    if (getViewPart() && getViewPart()->getBoundingBox().IsValid()) {
+        return getViewPart()->getBoundingBox();
+    }
+    return Base::BoundBox3d();
 }
