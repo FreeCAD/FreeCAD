@@ -118,6 +118,7 @@ public:
     Py::Object remGroup(const Py::Tuple&);
     Py::Object hasGroup(const Py::Tuple&);
     Py::Object renameGroup(const Py::Tuple&);
+    Py::Object copyTo(const Py::Tuple&);
 
     Py::Object getManager(const Py::Tuple&);
     Py::Object getParent(const Py::Tuple&);
@@ -193,6 +194,7 @@ void ParameterGrpPy::init_type()
     add_varargs_method("RemGroup", &ParameterGrpPy::remGroup, "RemGroup(str)");
     add_varargs_method("HasGroup", &ParameterGrpPy::hasGroup, "HasGroup(str)");
     add_varargs_method("RenameGroup", &ParameterGrpPy::renameGroup, "RenameGroup(str, str)");
+    add_varargs_method("CopyTo", &ParameterGrpPy::copyTo, "copyTo(ParameterGrp)");
 
     add_varargs_method("Manager", &ParameterGrpPy::getManager, "Manager()");
     add_varargs_method("Parent", &ParameterGrpPy::getParent, "Parent()");
@@ -700,6 +702,18 @@ Py::Object ParameterGrpPy::renameGroup(const Py::Tuple& args)
     }
 
     return Py::Boolean(_cParamGrp->RenameGrp(oldname, newname));  // NOLINT
+}
+
+Py::Object ParameterGrpPy::copyTo(const Py::Tuple& args)
+{
+    PyObject* pygrp {};
+    if (!PyArg_ParseTuple(args.ptr(), "O!", ParameterGrpPy::type_object(), &pygrp)) {
+        throw Py::Exception();
+    }
+
+    auto grp = static_cast<ParameterGrpPy*>(pygrp);  // NOLINT
+    _cParamGrp->copyTo(grp->_cParamGrp);
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
