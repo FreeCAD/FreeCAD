@@ -43,6 +43,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "ShapeBinder.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -478,6 +479,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
     std::vector<const Base::Matrix4D*> shapeMats;
+    std::vector<std::pair<int,int> > shapeOwners;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
     bool init = (!forced && (options & UpdateForced)) ? true : false;
@@ -510,6 +512,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    int idx = -1;
     for (auto& l : Support.getSubListValues()) {
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
@@ -686,12 +689,35 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             if (hit)
                 return;
         }
-
+#ifdef FC_USE_TNP_FIX
+        std::ostringstream ss;
+        idx = -1;
+        for(auto &shape : shapes) {
+            ++idx;
+            if(shape.Hasher
+                && shape.getElementMapSize()
+                && shape.Hasher != getDocument()->getStringHasher())
+            {
+                ss.str("");
+                ss << Data::POSTFIX_EXTERNAL_TAG
+                   << Data::ComplexGeoData::elementMapPrefix()
+                   << Part::OpCodes::Shapebinder << ':' << shapeOwners[idx].first
+                   << ':' << shapeOwners[idx].second;
+                shape.reTagElementMap(-getID(),
+                                      getDocument()->getStringHasher(),ss.str().c_str());
+            }
+            if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
+                shape = shape.makeElementCopy();
+        }
+#endif
         if (shapes.size() == 1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
         else {
             for (size_t i = 0; i < shapes.size(); ++i) {
                 auto& shape = shapes[i];
+#ifdef FC_USE_TNP_FIX
+                shape = shape.makeElementTransform(*shapeMats[i]);
+#else
                 shape = shape.makeTransform(*shapeMats[i]);
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
@@ -700,6 +726,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 //     shape.reTagElementMap(getID(),
                 //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
                 // }
+#endif
             }
         }
 
@@ -708,8 +735,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             return;
         }
 
+#ifdef FC_USE_TNP_FIX
+        result.makeElementCompound(shapes);
+#else
         result.makeCompound(shapes);
-
+#endif
         bool fused = false;
         if (Fuse.getValue()) {
             // If the compound has solid, fuse them together, and ignore other type of
@@ -728,11 +758,27 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
+#ifdef FC_USE_TNP_FIX
+                result.makeElementCompound({ solid });
+#else
                 result.makeCompound({ solid });
+#endif
                 fused = true;
             }
         }
 
+#ifdef FC_USE_TNP_FIX
+        if (!fused && MakeFace.getValue()
+            && !result.hasSubShape(TopAbs_FACE)
+            && result.hasSubShape(TopAbs_EDGE))
+        {
+            result = result.makeElementWires();
+            try {
+                result = result.makeElementFace(nullptr);
+            }
+            catch (...) {}
+        }
+#else
         if (!fused && (MakeFace.getValue() || Offset.getValue() != 0.0)
             && !result.hasSubShape(TopAbs_FACE)
             && result.hasSubShape(TopAbs_EDGE))
@@ -745,7 +791,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 catch (...) {}
             }
         }
-
+#endif
         if (!fused && result.hasSubShape(TopAbs_WIRE)
             && Offset.getValue() != 0.0) {
             try {
@@ -763,8 +809,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         if (Refine.getValue())
+#ifdef FC_USE_TNP_FIX
+            result = result.makeElementRefine();
+#else
             result = result.makeRefine();
-
+#endif
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
     }
