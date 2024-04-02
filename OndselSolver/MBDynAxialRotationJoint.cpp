@@ -23,8 +23,8 @@ void MbD::MBDynAxialRotationJoint::createASMT()
 {
 	MBDynJoint::createASMT();
 	auto asmtAsm = asmtAssembly();
-	asmtMotion = std::make_shared<ASMTRotationalMotion>();
-	asmtMotion->setName(name.append("Motion"));
+	asmtMotion = ASMTRotationalMotion::With();
+	asmtMotion->setName(name + "Motion");
 	asmtMotion->setMotionJoint(asmtItem->fullName(""));
 	asmtMotion->setRotationZ(asmtFormulaIntegral());
 	asmtAsm->addMotion(asmtMotion);
@@ -33,5 +33,7 @@ void MbD::MBDynAxialRotationJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynAxialRotationJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTRevoluteJoint>();
+	auto joint = ASMTRevoluteJoint::With();
+	joint->initialize();
+	return joint;
 }

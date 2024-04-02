@@ -16,6 +16,15 @@ TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frm
 {
 }
 
+std::shared_ptr<TranslationConstraintIJ> MbD::TranslationConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
+{
+    assert(frmi->isEndFrameqc());
+    assert(frmj->isEndFrameqc());
+    auto tranConIJ = std::make_shared<TranslationConstraintIqcJqc>(frmi, frmj, axisi);
+    tranConIJ->initialize();
+    return tranConIJ;
+}
+
 void TranslationConstraintIJ::initialize()
 {
     ConstraintIJ::initialize();

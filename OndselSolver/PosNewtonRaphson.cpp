@@ -17,7 +17,7 @@ using namespace MbD;
 
 void PosNewtonRaphson::preRun()
 {
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->prePosIC(); });
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->prePosIC(); });
 }
 
 void PosNewtonRaphson::incrementIterNo()
@@ -44,10 +44,10 @@ void PosNewtonRaphson::incrementIterNo()
 
 void PosNewtonRaphson::askSystemToUpdate()
 {
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosICIteration(); });
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->postPosICIteration(); });
 }
 
 void PosNewtonRaphson::postRun()
 {
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosIC(); });
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->postPosIC(); });
 }

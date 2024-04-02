@@ -91,7 +91,6 @@ void MbD::AngleZIecJec::prePosIC()
 {
 	aA00IeJe->prePosIC();
 	aA10IeJe->prePosIC();
-	assert(thez != std::numeric_limits<double>::min());
 	KinematicIeJe::prePosIC();
 }
 

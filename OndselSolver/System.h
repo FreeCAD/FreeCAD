@@ -21,6 +21,7 @@
 #include <functional>
 
 #include "Item.h"
+#include "LimitIJ.h"
 
 namespace MbD {
 	class Part;
@@ -50,6 +51,8 @@ namespace MbD {
 		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f);
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void partsJointsMotionsLimitsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void partsJointsMotionsLimitsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str) override;
 		double mbdTimeValue();
 		void mbdTimeValue(double t);
@@ -61,6 +64,7 @@ namespace MbD {
 		void addPart(std::shared_ptr<Part> part);
 		void addJoint(std::shared_ptr<Joint> joint);
 		void addMotion(std::shared_ptr<PrescribedMotion> motion);
+		void addLimit(std::shared_ptr<LimitIJ> limit);
 		void addForceTorque(std::shared_ptr<ForceTorqueItem> forTor);
 
 		double maximumMass();
@@ -68,10 +72,13 @@ namespace MbD {
 		double translationLimit();
 		double rotationLimit();
 		void outputFor(AnalysisType type);
+		bool limitsSatisfied();
+		void deactivateLimits();
 
 		std::shared_ptr<ExternalSystem> externalSystem;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
+		std::shared_ptr<std::vector<std::shared_ptr<LimitIJ>>> limits;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;

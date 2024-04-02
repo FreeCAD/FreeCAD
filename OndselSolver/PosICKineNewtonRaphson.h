@@ -16,9 +16,7 @@ namespace MbD {
         //Kinematics with under constrained system
     public:
         void initializeGlobally() override;
-        void assignEquationNumbers() override;
         void preRun() override;
-        bool isConverged() override;
 
     };
 }

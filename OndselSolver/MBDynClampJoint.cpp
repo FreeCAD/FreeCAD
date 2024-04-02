@@ -46,5 +46,7 @@ void MbD::MBDynClampJoint::readMarkerJ(std::vector<std::string>& args)
 
 std::shared_ptr<ASMTJoint> MbD::MBDynClampJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTFixedJoint>();
+	auto joint = ASMTFixedJoint::With();
+	joint->initialize();
+	return joint;
 }

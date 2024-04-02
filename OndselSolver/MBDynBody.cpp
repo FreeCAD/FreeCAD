@@ -36,7 +36,7 @@ void MbD::MBDynBody::readMass(std::vector<std::string>& args)
 	parser->variables = mbdynVariables();
 	auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 	parser->parseUserFunction(userFunc);
-	auto sym = parser->stack->top();
+	auto& sym = parser->stack->top();
 	mass = sym->getValue();
 }
 
@@ -45,14 +45,14 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
 	aJmat = std::make_shared<FullMatrix<double>>(3, 3);
-	auto str = args.at(0);	//Must copy string
+	std::string str = args.at(0);	//Must copy string
 	if (str.find("diag") != std::string::npos) {
 		args.erase(args.begin());
 		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);
-			auto sym = parser->stack->top();
+			auto& sym = parser->stack->top();
 			aJmat->at(i)->at(i) = sym->getValue();
 		}
 	}
@@ -67,7 +67,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 
 void MbD::MBDynBody::createASMT()
 {
-	auto asmtMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	auto asmtMassMarker = ASMTPrincipalMassMarker::With();
 	asmtItem = asmtMassMarker;
 	asmtMassMarker->setMass(mass);
 	if (aJmat->isDiagonalToWithin(1.0e-6)) {

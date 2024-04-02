@@ -8,14 +8,15 @@
 #include <fstream>	
 
 #include "ASMTJoint.h"
+#include "Joint.h"
 
 using namespace MbD;
 
-void MbD::ASMTJoint::parseASMT(std::vector<std::string>& lines)
+std::shared_ptr<ASMTJoint> MbD::ASMTJoint::With()
 {
-	readName(lines);
-	readMarkerI(lines);
-	readMarkerJ(lines);
+	auto asmt = std::make_shared<ASMTJoint>();
+	asmt->initialize();
+	return asmt;
 }
 
 void MbD::ASMTJoint::readJointSeries(std::vector<std::string>& lines)
@@ -52,4 +53,11 @@ void MbD::ASMTJoint::storeOnTimeSeries(std::ofstream& os)
 	label = label.substr(15, label.size() - 15);
 	os << label << "Series\t" << fullName("") << std::endl;
 	ASMTItemIJ::storeOnTimeSeries(os);
+}
+
+void MbD::ASMTJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	ASMTConstraintSet::createMbD(mbdSys, mbdUnits);
+	auto mbdJt = std::static_pointer_cast<Joint>(mbdObject);
+	mbdSys->addJoint(mbdJt);
 }

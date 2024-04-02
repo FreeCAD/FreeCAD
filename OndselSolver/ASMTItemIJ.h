@@ -29,6 +29,9 @@ namespace MbD {
         void readTZonIs(std::vector<std::string>& lines);
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
+        void parseASMT(std::vector<std::string>& lines) override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        virtual std::shared_ptr<ItemIJ> mbdClassNew();
 
         std::string markerI, markerJ;
         FRowDsptr fxs, fys, fzs, txs, tys, tzs;

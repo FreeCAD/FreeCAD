@@ -101,7 +101,7 @@ double MbD::Polynomial::getValue()
 	return answer;
 }
 
-void MbD::Polynomial::integrationConstant(double integConstant)
+void MbD::Polynomial::setIntegrationConstant(double integConstant)
 {
 	auto coeff0 = coeffs->at(0);
 	coeff0->setValue(coeff0->getValue() + integConstant);

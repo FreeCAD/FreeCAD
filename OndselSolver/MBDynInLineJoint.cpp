@@ -23,5 +23,7 @@ void MbD::MBDynInLineJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynInLineJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTPointInLineJoint>();
+	auto joint = ASMTPointInLineJoint::With();
+	joint->initialize();
+	return joint;
 }

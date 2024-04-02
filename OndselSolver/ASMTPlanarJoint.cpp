@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTPlanarJoint::mbdClassNew()
+std::shared_ptr<ASMTPlanarJoint> MbD::ASMTPlanarJoint::With()
+{
+	auto asmt = std::make_shared<ASMTPlanarJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTPlanarJoint::mbdClassNew()
 {
     return CREATE<PlanarJoint>::With();
 }

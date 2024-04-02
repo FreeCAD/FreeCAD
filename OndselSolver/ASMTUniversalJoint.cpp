@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTUniversalJoint::mbdClassNew()
+std::shared_ptr<ASMTUniversalJoint> MbD::ASMTUniversalJoint::With()
+{
+	auto asmt = std::make_shared<ASMTUniversalJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTUniversalJoint::mbdClassNew()
 {
     return CREATE<UniversalJoint>::With();
 }

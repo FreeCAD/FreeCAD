@@ -133,7 +133,7 @@ void MbD::ScrewConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 void MbD::ScrewConstraintIqcJqc::init_zthez()
 {
 	zIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 2);
-	thezIeJe = CREATE<AngleZIeqcJeqc>::With(frmJ, frmI);
+	thezIeJe = CREATE<AngleZIeqcJeqc>::With(frmI, frmJ);
 }
 
 void MbD::ScrewConstraintIqcJqc::useEquationNumbers()

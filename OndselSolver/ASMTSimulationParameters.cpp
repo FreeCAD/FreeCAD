@@ -10,6 +10,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTSimulationParameters> MbD::ASMTSimulationParameters::With()
+{
+	auto asmt = std::make_shared<ASMTSimulationParameters>();
+	asmt->initialize();
+	return asmt;
+}
+
 void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 {
 	//tstart, tend, hmin, hmax, hout, errorTol;

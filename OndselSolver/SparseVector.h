@@ -11,6 +11,7 @@
 #include <map>
 #include <cmath>
 #include <sstream> 
+#include <iomanip>
 
 namespace MbD {
 	template<typename T>
@@ -115,16 +116,20 @@ namespace MbD {
 	template<typename T>
 	inline std::ostream& SparseVector<T>::printOn(std::ostream& s) const
 	{
-		s << "{";
+
+		std::stringstream ss;
+		ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+		ss << "{" << std::endl;
 		auto index = 0;
 		for (const auto& keyValue : *this) {
-			if (index > 0) s << ", ";
-			s << keyValue.first;
-			s << "->";
-			s << keyValue.second;
+			if (index > 0) ss << ", " << std::endl;
+			ss << keyValue.first;
+			ss << "->";
+			ss << keyValue.second;
 			index++;
 		}
-		s << "}";
+		ss << std::endl << "}";
+		s << ss.str();
 		return s;
 	}
 }

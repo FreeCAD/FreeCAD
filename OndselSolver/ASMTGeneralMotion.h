@@ -15,11 +15,12 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTGeneralMotion> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void readrIJI(std::vector<std::string>& lines);
         void readangIJJ(std::vector<std::string>& lines);
         void readRotationOrder(std::vector<std::string>& lines);
-        std::shared_ptr<Joint> mbdClassNew() override;
+        std::shared_ptr<ItemIJ> mbdClassNew() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;

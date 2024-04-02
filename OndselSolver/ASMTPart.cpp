@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTPart> MbD::ASMTPart::With()
+{
+	auto asmt = std::make_shared<ASMTPart>();
+	asmt->initialize();
+	return asmt;
+}
+
 void MbD::ASMTPart::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
@@ -57,7 +64,7 @@ void MbD::ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("PrincipalMassMarker") != std::string::npos);
 	lines.erase(lines.begin());
-	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	principalMassMarker = ASMTPrincipalMassMarker::With();
 	principalMassMarker->parseASMT(lines);
 	principalMassMarker->owner = this;
 }

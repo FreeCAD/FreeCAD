@@ -68,7 +68,6 @@ namespace MbD {
 		virtual void fillqsudotWeights(DiagMatDsptr diagMat);
 		virtual void fillqsulam(FColDsptr col);
 		virtual void fillqsuWeights(DiagMatDsptr diagMat);
-		virtual void fillqsuWeightsSmall(FColDsptr col);
 		virtual void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
 		virtual void fillStaticError(FColDsptr col);
 		virtual void fillStaticJacob(FMatDsptr mat);

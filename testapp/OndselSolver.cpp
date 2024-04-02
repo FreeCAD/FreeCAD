@@ -26,8 +26,9 @@ void sharedptrTest();
 
 int main()
 {
-	ASMTAssembly::runFile("../testapp/pistonAllowZRotation.asmt");
 	ASMTAssembly::runDraggingTest();
+	//ASMTAssembly::runFile("../testapp/pistonWithLimits.asmt");
+	ASMTAssembly::runFile("../testapp/pistonAllowZRotation.asmt");
 	ASMTAssembly::runFile("../testapp/Schmidt_Coupling_Ass_1-1.asmt");
 	ASMTAssembly::runFile("../testapp/RevRevJt.asmt");
 	ASMTAssembly::runFile("../testapp/RevCylJt.asmt");
@@ -76,9 +77,9 @@ int main()
 	sharedptrTest();
 }
 void sharedptrTest() {
-	auto assm = std::make_shared<ASMTAssembly>();
+	auto assm = ASMTAssembly::With();
 
-	auto assm1 = assm;	//New shared_ptr to old object. Reference count incremented.
+	std::shared_ptr<ASMTAssembly> assm1 = assm;	//New shared_ptr to old object. Reference count incremented.
 	assert(assm == assm1);
 	assert(assm.get() == assm1.get());
 	assert(&assm != &assm1);

@@ -16,6 +16,7 @@ namespace MbD {
 		//
 	public:
 		ASMTPrincipalMassMarker();
+		static std::shared_ptr<ASMTPrincipalMassMarker> With();
 		void parseASMT(std::vector<std::string>& lines) override;
 		void setMass(double mass);
 		void setDensity(double density);

@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTAngleJoint::mbdClassNew()
+std::shared_ptr<ASMTAngleJoint> MbD::ASMTAngleJoint::With()
+{
+	auto asmt = std::make_shared<ASMTAngleJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTAngleJoint::mbdClassNew()
 {
     return CREATE<AngleJoint>::With();
 }

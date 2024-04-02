@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTRackPinionJoint::mbdClassNew()
+std::shared_ptr<ASMTRackPinionJoint> MbD::ASMTRackPinionJoint::With()
+{
+	auto asmt = std::make_shared<ASMTRackPinionJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTRackPinionJoint::mbdClassNew()
 {
     return CREATE<RackPinJoint>::With();
 }

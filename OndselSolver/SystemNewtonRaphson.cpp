@@ -5,7 +5,10 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <fstream>	
+#include <iomanip>
+
 #include "SystemNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "SparseMatrix.h"
@@ -19,9 +22,14 @@ using namespace MbD;
 void SystemNewtonRaphson::initializeGlobally()
 {
 	this->assignEquationNumbers();
-	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
+	system->partsJointsMotionsLimitsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 	this->createVectorsAndMatrices();
 	matrixSolver = this->matrixSolverClassNew();
+}
+
+void MbD::SystemNewtonRaphson::assignEquationNumbers()
+{
+	assert(false);
 }
 
 void SystemNewtonRaphson::createVectorsAndMatrices()
@@ -39,8 +47,10 @@ std::shared_ptr<MatrixSolver> SystemNewtonRaphson::matrixSolverClassNew()
 void SystemNewtonRaphson::calcdxNorm()
 {
 	VectorNewtonRaphson::calcdxNorm();
-	std::string str("MbD: Convergence = ");
-	str += std::to_string(dxNorm);
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+	ss << "MbD: Convergence = " << dxNorm;
+	auto str = ss.str();
 	system->logString(str);
 }
 
@@ -67,5 +77,26 @@ void SystemNewtonRaphson::handleSingularMatrix()
 		else {
 			assert(false);
 		}
+	}
+}
+
+void MbD::SystemNewtonRaphson::outputSpreadsheet()
+{
+	std::ofstream os("../testapp/spreadsheetcpp.csv");
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
+	for (size_t i = 0; i < pypx->nrow(); i++)
+	{
+		auto rowi = pypx->at(i);
+		for (size_t j = 0; j < pypx->ncol(); j++)
+		{
+			if (j > 0) os << '\t';
+			if (rowi->find(j) == rowi->end()) {
+				os << 0.0;
+			}
+			else {
+				os << rowi->at(j);
+			}
+		}
+		os << "\t\t" << y->at(i) << std::endl;
 	}
 }

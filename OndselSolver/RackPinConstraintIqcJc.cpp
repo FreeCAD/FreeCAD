@@ -135,7 +135,7 @@ void MbD::RackPinConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 void MbD::RackPinConstraintIqcJc::init_xthez()
 {
 	xIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 0);
-	thezIeJe = CREATE<AngleZIeqcJec>::With(frmJ, frmI);
+	thezIeJe = CREATE<AngleZIeqcJec>::With(frmI, frmJ);
 }
 
 void MbD::RackPinConstraintIqcJc::useEquationNumbers()

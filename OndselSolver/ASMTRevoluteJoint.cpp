@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTRevoluteJoint::mbdClassNew()
+std::shared_ptr<ASMTRevoluteJoint> MbD::ASMTRevoluteJoint::With()
+{
+	auto asmt = std::make_shared<ASMTRevoluteJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTRevoluteJoint::mbdClassNew()
 {
 	return CREATE<RevoluteJoint>::With();
 }

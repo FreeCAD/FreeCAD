@@ -12,6 +12,7 @@
 #include "Sum.h"
 #include "Constant.h"
 #include <algorithm>
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -102,21 +103,18 @@ Symsptr Sum::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>>
 			newTerms->push_back(newTerm);
 		}
 	}
+	if (newTerms->size() == 0 && constant == 0.0) {
+		return sptrConstant(0.0);
+	}
 	if (constant != 0.0) {
 		newTerms->insert(newTerms->begin(), sptrConstant(constant));
 	}
-	auto newSize = newTerms->size();
-	if (newSize == 0) {
-		return sptrConstant(0.0);
-	}
-	else if (newSize == 1) {
+	if (newTerms->size() == 1) {
 		return newTerms->at(0);
 	}
-	else {
-		auto answer = std::make_shared<Sum>();
-		answer->terms = newTerms;
-		return answer;
-	}
+	auto answer = std::make_shared<Sum>();
+	answer->terms = newTerms;
+	return answer;
 }
 
 bool Sum::isSum()
@@ -139,19 +137,21 @@ Symsptr MbD::Sum::clonesptr()
 Symsptr MbD::Sum::differentiateWRT(Symsptr var)
 {
 	auto derivatives = std::make_shared<std::vector<Symsptr>>();
-	std::transform(terms->begin(),
-		terms->end(),
-		std::back_inserter(*derivatives),
-		[var](Symsptr term) { return term->differentiateWRT(var); }
-	);
+	for (const auto& term : *terms) {
+		auto deriv = term->differentiateWRT(var);
+		derivatives->push_back(deriv);
+	}
 	auto answer = std::make_shared<Sum>();
 	answer->terms = derivatives;
-	return answer;
+	return answer->simplified();
 }
 
 Symsptr MbD::Sum::integrateWRT(Symsptr var)
 {
 	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;;
 	if (simple->isSum()) {
 		auto newTerms = simple->getTerms();
 		auto integrals = std::make_shared<std::vector<Symsptr>>();
@@ -160,13 +160,14 @@ Symsptr MbD::Sum::integrateWRT(Symsptr var)
 			std::back_inserter(*integrals),
 			[var](Symsptr term) { return term->integrateWRT(var); }
 		);
-		auto answer = std::make_shared<Sum>();
-		answer->terms = integrals;
-		return answer;
+		auto sum = std::make_shared<Sum>();
+		sum->terms = integrals;
+		answer->expression = sum->simplified();
 	}
 	else {
-		return simple->integrateWRT(var);
+		answer->expression = simple->integrateWRT(var);
 	}
+	return answer;
 }
 
 std::ostream& Sum::printOn(std::ostream& s) const

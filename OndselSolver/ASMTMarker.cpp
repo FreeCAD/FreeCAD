@@ -17,6 +17,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTMarker> MbD::ASMTMarker::With()
+{
+	auto asmt = std::make_shared<ASMTMarker>();
+	asmt->initialize();
+	return asmt;
+}
+
 void ASMTMarker::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);

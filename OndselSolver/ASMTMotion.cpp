@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTMotion.h"
+#include "Joint.h"
 
 using namespace MbD;
 
@@ -41,4 +42,11 @@ void ASMTMotion::storeOnLevel(std::ofstream&, size_t)
 void ASMTMotion::storeOnTimeSeries(std::ofstream&)
 {
 	assert(false);
+}
+
+void MbD::ASMTMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	ASMTConstraintSet::createMbD(mbdSys, mbdUnits);
+	auto mbdJt = std::static_pointer_cast<Joint>(mbdObject);
+	mbdSys->addJoint(mbdJt);
 }

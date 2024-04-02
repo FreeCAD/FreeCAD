@@ -135,7 +135,7 @@ void MbD::MBDynInitialValue::readDerivativesCoefficient(std::vector<std::string>
 
 void MbD::MBDynInitialValue::createASMT()
 {
-	auto simulationParameters = std::make_shared<ASMTSimulationParameters>();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	asmtItem = simulationParameters;
 	simulationParameters->settstart(initialTime);
 	simulationParameters->settend(finalTime);	//tstart == tend Initial Conditions only.

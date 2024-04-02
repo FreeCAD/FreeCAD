@@ -23,6 +23,13 @@ MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIe
 	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
+std::shared_ptr<AngleZIeqcJeqc> MbD::AngleZIeqcJeqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto angleZIJ = std::make_shared<AngleZIeqcJeqc>(frmi, frmj);
+	angleZIJ->initialize();
+	return angleZIJ;
+}
+
 void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	AngleZIeqcJec::calcPostDynCorrectorIteration();

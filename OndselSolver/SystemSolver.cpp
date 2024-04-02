@@ -29,6 +29,7 @@
 #include "VelICKineSolver.h"
 #include "AccICKineNewtonRaphson.h"
 #include "PosICDragNewtonRaphson.h"
+#include "PosICDragLimitNewtonRaphson.h"
 
 using namespace MbD;
 
@@ -175,6 +176,7 @@ void SystemSolver::runPreDrag()
 void MbD::SystemSolver::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
 {
 	runPosICDrag(dragParts);
+	runPosICDragLimit();
 }
 
 void SystemSolver::runQuasiKinematic()
@@ -219,6 +221,14 @@ void MbD::SystemSolver::runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr
 	icTypeSolver->run();
 }
 
+void MbD::SystemSolver::runPosICDragLimit()
+{
+	auto newtonRaphson = PosICDragLimitNewtonRaphson::With();
+	icTypeSolver = newtonRaphson;
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
+}
+
 void SystemSolver::runPosICKine()
 {
 	icTypeSolver = CREATE<PosICKineNewtonRaphson>::With();
@@ -255,6 +265,11 @@ std::shared_ptr<std::vector<std::shared_ptr<Part>>> SystemSolver::parts()
 	return system->parts;
 }
 
+std::shared_ptr<std::vector<std::shared_ptr<LimitIJ>>> MbD::SystemSolver::limits()
+{
+	return system->limits;
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> SystemSolver::essentialConstraints()
 {
 	return system->essentialConstraints();
@@ -288,6 +303,16 @@ void SystemSolver::postNewtonRaphson()
 void SystemSolver::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
 {
 	system->partsJointsMotionsForcesTorquesDo(f);
+}
+
+void MbD::SystemSolver::partsJointsMotionsLimitsDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	system->partsJointsMotionsLimitsDo(f);
+}
+
+void MbD::SystemSolver::partsJointsMotionsLimitsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	system->partsJointsMotionsLimitsForcesTorquesDo(f);
 }
 
 void SystemSolver::discontinuityBlock()
@@ -343,4 +368,14 @@ void SystemSolver::output()
 void SystemSolver::time(double t)
 {
 	system->mbdTimeValue(t);
+}
+
+bool MbD::SystemSolver::limitsSatisfied()
+{
+	return 	system->limitsSatisfied();
+}
+
+void MbD::SystemSolver::deactivateLimits()
+{
+	system->deactivateLimits();
 }

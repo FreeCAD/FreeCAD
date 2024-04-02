@@ -15,7 +15,7 @@ KinematicIeJe::KinematicIeJe()
 {
 }
 
-KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj)
+KinematicIeJe::KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : ItemIJ(frmi, frmj)
 {
 }
 

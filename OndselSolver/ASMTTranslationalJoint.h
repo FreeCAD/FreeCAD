@@ -15,7 +15,8 @@ namespace MbD {
     {
         //
     public:
-        std::shared_ptr<Joint> mbdClassNew() override;
+        static std::shared_ptr<ASMTTranslationalJoint> With();
+        std::shared_ptr<ItemIJ> mbdClassNew() override;
         void storeOnTimeSeries(std::ofstream& os) override;
 
 

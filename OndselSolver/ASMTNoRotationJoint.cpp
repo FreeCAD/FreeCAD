@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTNoRotationJoint::mbdClassNew()
+std::shared_ptr<ASMTNoRotationJoint> MbD::ASMTNoRotationJoint::With()
+{
+	auto asmt = std::make_shared<ASMTNoRotationJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTNoRotationJoint::mbdClassNew()
 {
     return CREATE<NoRotationJoint>::With();
 }

@@ -23,5 +23,7 @@ void MbD::MBDynRevoluteHingeJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynRevoluteHingeJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTRevoluteJoint>();
+	auto joint = ASMTRevoluteJoint::With();
+	joint->initialize();
+	return joint;
 }

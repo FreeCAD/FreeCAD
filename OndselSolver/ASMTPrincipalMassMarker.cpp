@@ -17,6 +17,13 @@ MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
 	name = "MassMarker";
 }
 
+std::shared_ptr<ASMTPrincipalMassMarker> MbD::ASMTPrincipalMassMarker::With()
+{
+	auto asmt = std::make_shared<ASMTPrincipalMassMarker>();
+	asmt->initialize();
+	return asmt;
+}
+
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 {
 	auto pos = lines[0].find_first_not_of("\t");

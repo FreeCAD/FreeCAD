@@ -50,7 +50,7 @@ void MbD::ASMTAllowRotation::initMarkers()
 	}
 }
 
-std::shared_ptr<Joint> MbD::ASMTAllowRotation::mbdClassNew()
+std::shared_ptr<ItemIJ> MbD::ASMTAllowRotation::mbdClassNew()
 {
 	return AllowZRotation::With();
 }

@@ -20,6 +20,7 @@ namespace MbD {
 		void arguments(Symsptr args) override;
 		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
 		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+		void setIntegrationConstant(double integConstant) override;
 
 		std::ostream& printOn(std::ostream& s) const override;
 

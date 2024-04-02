@@ -189,7 +189,7 @@ FColDsptr MbD::MBDynItem::readVector3(std::vector<std::string>& args)
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
 	auto rFfF = std::make_shared<FullColumn<double>>(3);
-	auto str = args.at(0); //Must copy string
+	std::string str = args.at(0); //Must copy string
 	if (str.find("null") != std::string::npos) {
 		args.erase(args.begin());
 	}
@@ -210,7 +210,7 @@ FColDsptr MbD::MBDynItem::readPosition(std::vector<std::string>& args)
 {
 	auto rOfO = std::make_shared<FullColumn<double>>(3);
 	if (args.empty()) return rOfO;
-	auto str = args.at(0); //Must copy string
+	std::string str = args.at(0); //Must copy string
 	if (str.find("position") != std::string::npos) {
 		args.erase(args.begin());
 		rOfO = readBasicPosition(args);
@@ -249,7 +249,7 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 {
 	auto aAOf = FullMatrix<double>::identitysptr(3);
 	if (args.empty()) return aAOf;
-	auto str = args.at(0); //Must copy string
+	std::string str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
 		args.erase(args.begin());
 		auto refName = readStringOffTop(args);
@@ -282,7 +282,7 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 {
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
-	auto str = args.at(0);	//Must copy string
+	std::string str = args.at(0);	//Must copy string
 	if (str.find("euler") != std::string::npos) {
 		args.erase(args.begin());
 		auto euler = std::make_shared<EulerAngles<Symsptr>>();
@@ -421,7 +421,7 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 
 std::string MbD::MBDynItem::popOffTop(std::vector<std::string>& args)
 {
-	auto str = args.at(0);	//Must copy string
+	std::string str = args.at(0);	//Must copy string
 	args.erase(args.begin());
 	return str;
 }

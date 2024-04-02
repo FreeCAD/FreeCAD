@@ -19,8 +19,6 @@ namespace MbD {
     public:
         static std::shared_ptr<PosICDragNewtonRaphson> With();
         void initializeGlobally() override;
-        void assignEquationNumbers() override;
-        bool isConverged() override;
         void setdragParts(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 
         std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts;

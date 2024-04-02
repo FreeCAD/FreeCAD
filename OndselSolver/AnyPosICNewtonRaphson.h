@@ -24,7 +24,8 @@ namespace MbD {
         void fillY() override;
         void fillPyPx() override;
         void passRootToSystem() override;
-        void assignEquationNumbers() override = 0;
+        void assignEquationNumbers() override;
+        bool isConverged() override;
 
         size_t nqsu = SIZE_MAX;
         FColDsptr qsuOld;

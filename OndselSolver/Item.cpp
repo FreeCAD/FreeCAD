@@ -200,11 +200,6 @@ void Item::fillqsuWeights(DiagMatDsptr)
 {
 }
 
-void MbD::Item::fillqsuWeightsSmall(FColDsptr)
-{
-	assert(false);
-}
-
 void Item::fillqsulam(FColDsptr)
 {
 }

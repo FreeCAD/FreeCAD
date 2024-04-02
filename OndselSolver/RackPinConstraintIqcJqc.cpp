@@ -35,7 +35,6 @@ void MbD::RackPinConstraintIqcJqc::initthezIeJe()
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpEJ()
 {
-	pGpEJ = xIeJeIe->pvaluepEJ()->plusFullRow(thezIeJe->pvaluepEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpXJ()
@@ -131,7 +130,7 @@ void MbD::RackPinConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 void MbD::RackPinConstraintIqcJqc::init_xthez()
 {
 	xIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 0);
-	thezIeJe = CREATE<AngleZIeqcJeqc>::With(frmJ, frmI);
+	thezIeJe = CREATE<AngleZIeqcJeqc>::With(frmI, frmJ);
 }
 
 void MbD::RackPinConstraintIqcJqc::useEquationNumbers()

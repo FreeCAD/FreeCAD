@@ -25,6 +25,7 @@ namespace MbD {
 	class Constraint;
 	class Solver;
 	class QuasiIntegrator;
+	class Limit;
 
 	class SystemSolver : public Solver
 	{
@@ -55,12 +56,13 @@ namespace MbD {
 		void runVelKine();
 		void runAccKine();
 		void runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
+		void runPosICDragLimit();
 		void runPosICKine();
 		void runVelICKine();
 		void runAccICKine();
-		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void logString(std::string& str) override;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
+		std::shared_ptr<std::vector<std::shared_ptr<LimitIJ>>> limits();
 		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();
 		//std::shared_ptr<std::vector<UHolder>> uHolders();
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();
@@ -70,7 +72,10 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints();
 		
 		virtual void postNewtonRaphson();
+		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void partsJointsMotionsLimitsDo(const std::function <void(std::shared_ptr<Item>)>& f);
+		void partsJointsMotionsLimitsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void discontinuityBlock();
 		double startTime();
 		double outputStepSize();
@@ -86,6 +91,8 @@ namespace MbD {
 		void tstartPastsAddFirst(double t);
 		void output();
 		void time(double t);
+		bool limitsSatisfied();
+		void deactivateLimits();
 
 		double errorTolPosKine = 1.0e-6;
 		double errorTolAccKine = 1.0e-6;

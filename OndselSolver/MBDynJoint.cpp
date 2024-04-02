@@ -345,71 +345,8 @@ void MbD::MBDynJoint::createASMT()
 std::shared_ptr<ASMTJoint> MbD::MBDynJoint::asmtClassNew()
 {
 	assert(false);
-	return std::make_shared<ASMTJoint>();
+	return ASMTJoint::With();
 }
-
-//void MbD::MBDynJoint::createASMT()
-//{
-//	mkr1->createASMT();
-//	if (mkr2) mkr2->createASMT();
-//	std::shared_ptr<ASMTJoint> asmtJoint;
-//	if (joint_type == "clamp") {
-//		auto asmtAsm = asmtAssembly();
-//		asmtJoint = std::make_shared<ASMTFixedJoint>();
-//		asmtJoint->setName(name);
-//		asmtJoint->setMarkerI(mkr1->asmtItem->fullName(""));
-//		asmtJoint->setMarkerJ(mkr2->asmtItem->fullName(""));
-//		asmtAsm->addJoint(asmtJoint);
-//		return;
-//	}
-//	if (joint_type == "axial rotation") {
-//		auto asmtAsm = asmtAssembly();
-//		asmtJoint = std::make_shared<ASMTRevoluteJoint>();
-//		asmtItem = asmtJoint;
-//		asmtJoint->setName(name);
-//		asmtJoint->setMarkerI(mkr1->asmtItem->fullName(""));
-//		asmtJoint->setMarkerJ(mkr2->asmtItem->fullName(""));
-//		asmtAsm->addJoint(asmtJoint);
-//		auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
-//		asmtItem = asmtMotion;
-//		asmtMotion->setName(name.append("Motion"));
-//		asmtMotion->setMotionJoint(asmtJoint->fullName(""));
-//		asmtMotion->setRotationZ(asmtFormulaIntegral());
-//		asmtAsm->addMotion(asmtMotion);
-//		return;
-//	}
-//	if (joint_type == "drive hinge") {
-//		auto asmtAsm = asmtAssembly();
-//		auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
-//		asmtItem = asmtMotion;
-//		asmtMotion->setName(name);
-//		asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
-//		asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
-//		asmtMotion->setRotationZ(formula);
-//		asmtAsm->addMotion(asmtMotion);
-//		return;
-//	}
-//	if (joint_type == "revolute hinge") {
-//		asmtJoint = std::make_shared<ASMTRevoluteJoint>();
-//	}
-//	else if (joint_type == "spherical hinge") {
-//		asmtJoint = std::make_shared<ASMTSphericalJoint>();
-//	}
-//	else if (joint_type == "in line") {
-//		asmtJoint = std::make_shared<ASMTPointInLineJoint>();
-//	}
-//	else if (joint_type == "prismatic") {
-//		asmtJoint = std::make_shared<ASMTNoRotationJoint>();
-//	}
-//	else {
-//		assert(false);
-//	}
-//	asmtItem = asmtJoint;
-//	asmtJoint->setName(name);
-//	asmtJoint->setMarkerI(mkr1->asmtItem->fullName(""));
-//	asmtJoint->setMarkerJ(mkr2->asmtItem->fullName(""));
-//	asmtAssembly()->addJoint(asmtJoint);
-//}
 
 std::string MbD::MBDynJoint::asmtFormula()
 {

@@ -14,25 +14,6 @@
 
 using namespace MbD;
 
-void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units>)
-{
-	//self dataSeries : OrderedCollection new.
-	//self discontinuities : OrderedCollection new.
-	auto mbdJt = this->mbdClassNew();
-	mbdObject = mbdJt;
-	mbdJt->name = fullName("");
-	auto mrkI = std::static_pointer_cast<EndFramec>(root()->markerAt(markerI)->mbdObject);
-	auto mrkJ = std::static_pointer_cast<EndFramec>(root()->markerAt(markerJ)->mbdObject);
-	mbdJt->connectsItoJ(mrkI, mrkJ);
-	mbdSys->addJoint(mbdJt);
-}
-
-std::shared_ptr<Joint> MbD::ASMTConstraintSet::mbdClassNew()
-{
-	assert(false);
-	return std::shared_ptr<Joint>();
-}
-
 void MbD::ASMTConstraintSet::updateFromMbD()
 {
 	//"

@@ -23,5 +23,7 @@ void MbD::MBDynPrismaticJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynPrismaticJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTNoRotationJoint>();
+	auto joint = ASMTNoRotationJoint::With();
+	joint->initialize();
+	return joint;
 }

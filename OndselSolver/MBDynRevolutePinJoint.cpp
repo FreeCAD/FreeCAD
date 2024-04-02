@@ -24,5 +24,5 @@ void MbD::MBDynRevolutePinJoint::createASMT()
 std::shared_ptr<ASMTJoint> MbD::MBDynRevolutePinJoint::asmtClassNew()
 {
 	assert(false);
-	return std::make_shared<ASMTJoint>();
+	return ASMTJoint::With();
 }

@@ -25,7 +25,7 @@ void MbD::MBDynDriveHingeJoint::createASMT()
 	mkr1->createASMT();
 	if (mkr2) mkr2->createASMT();
 	auto asmtAsm = asmtAssembly();
-	auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
+	auto asmtMotion = ASMTRotationalMotion::With();
 	asmtItem = asmtMotion;
 	asmtMotion->setName(name);
 	asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
@@ -37,5 +37,6 @@ void MbD::MBDynDriveHingeJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynDriveHingeJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTJoint>();
+	assert(false);
+	return ASMTJoint::With();
 }

@@ -37,6 +37,11 @@ Symsptr MbD::Integral::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set
 	return answer;
 }
 
+void MbD::Integral::setIntegrationConstant(double integConstant)
+{
+	integrationConstant = sptrConstant(integConstant);
+}
+
 std::ostream& MbD::Integral::printOn(std::ostream& s) const
 {
 	s << *expression << " + ";

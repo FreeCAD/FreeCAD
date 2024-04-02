@@ -58,7 +58,7 @@ void MbD::ASMTItem::parseASMT(std::vector<std::string>&)
 
 std::string MbD::ASMTItem::popOffTop(std::vector<std::string>& args)
 {
-	auto str = args.at(0);	//Must copy string
+	std::string str = args.at(0);	//Must copy string
 	args.erase(args.begin());
 	return str;
 }

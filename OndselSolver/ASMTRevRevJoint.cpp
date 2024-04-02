@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTRevRevJoint::mbdClassNew()
+std::shared_ptr<ASMTRevRevJoint> MbD::ASMTRevRevJoint::With()
+{
+	auto asmt = std::make_shared<ASMTRevRevJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTRevRevJoint::mbdClassNew()
 {
     return CREATE<RevRevJoint>::With();
 }

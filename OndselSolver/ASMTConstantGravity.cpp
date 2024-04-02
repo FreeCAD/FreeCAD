@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTConstantGravity> MbD::ASMTConstantGravity::With()
+{
+	auto asmt = std::make_shared<ASMTConstantGravity>();
+	asmt->initialize();
+	return asmt;
+}
+
 void MbD::ASMTConstantGravity::parseASMT(std::vector<std::string>& lines)
 {
 	g = readColumnOfDoubles(lines[0]);

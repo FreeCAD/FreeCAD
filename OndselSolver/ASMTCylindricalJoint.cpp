@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTCylindricalJoint::mbdClassNew()
+std::shared_ptr<ASMTCylindricalJoint> MbD::ASMTCylindricalJoint::With()
+{
+	auto asmt = std::make_shared<ASMTCylindricalJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTCylindricalJoint::mbdClassNew()
 {
     return CREATE<CylindricalJoint>::With();
 }

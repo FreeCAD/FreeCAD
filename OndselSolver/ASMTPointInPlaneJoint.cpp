@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTPointInPlaneJoint::mbdClassNew()
+std::shared_ptr<ASMTPointInPlaneJoint> MbD::ASMTPointInPlaneJoint::With()
+{
+	auto asmt = std::make_shared<ASMTPointInPlaneJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTPointInPlaneJoint::mbdClassNew()
 {
     return CREATE<PointInPlaneJoint>::With();
 }

@@ -99,7 +99,7 @@ namespace MbD {
         FRowDsptr axs, ays, azs, alpxs, alpys, alpzs;
         FRowDsptr invxs, invys, invzs, inomexs, inomeys, inomezs;
         FRowDsptr inaxs, inays, inazs, inalpxs, inalpys, inalpzs;
-        std::shared_ptr<ASMTPrincipalMassMarker> principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
+        std::shared_ptr<ASMTPrincipalMassMarker> principalMassMarker = ASMTPrincipalMassMarker::With();
 
     };
 }

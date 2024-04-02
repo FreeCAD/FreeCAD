@@ -17,7 +17,8 @@ namespace MbD {
     public:
         AngleZIeqcJeqc();
         AngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
-        
+        static std::shared_ptr<AngleZIeqcJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         void init_aAijIeJe() override;
         void initialize() override;

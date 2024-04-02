@@ -18,7 +18,7 @@ namespace MbD {
         void parseASMT(std::vector<std::string>& lines) override;
         void initMarkers() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        std::shared_ptr<Joint> mbdClassNew() override;
+        std::shared_ptr<ItemIJ> mbdClassNew() override;
         void readMotionJoint(std::vector<std::string>& lines);
         void readTranslationZ(std::vector<std::string>& lines);
         void storeOnLevel(std::ofstream& os, size_t level) override;

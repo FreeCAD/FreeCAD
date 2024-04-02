@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTSphericalJoint::mbdClassNew()
+std::shared_ptr<ASMTSphericalJoint> MbD::ASMTSphericalJoint::With()
+{
+	auto asmt = std::make_shared<ASMTSphericalJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTSphericalJoint::mbdClassNew()
 {
     return CREATE<SphericalJoint>::With();
 }

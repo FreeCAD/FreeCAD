@@ -8,13 +8,13 @@
  
 #pragma once
 
-#include "Item.h"
+#include "ItemIJ.h"
 
 namespace MbD {
 	class EndFramec;
 	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
-	class KinematicIeJe : public Item
+	class KinematicIeJe : public ItemIJ
 	{
 		//frmI frmJ 
 	public:
@@ -84,7 +84,6 @@ namespace MbD {
 		virtual FRowDsptr ppvaluepEKpt();
 		virtual double value();
 
-		EndFrmsptr frmI, frmJ;
 	};
 }
 

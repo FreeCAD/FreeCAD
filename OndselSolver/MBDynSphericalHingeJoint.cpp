@@ -23,5 +23,7 @@ void MbD::MBDynSphericalHingeJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynSphericalHingeJoint::asmtClassNew()
 {
-	return std::make_shared<ASMTSphericalJoint>();
+	auto joint = ASMTSphericalJoint::With();
+	joint->initialize();
+	return joint;
 }

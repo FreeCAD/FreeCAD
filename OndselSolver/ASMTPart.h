@@ -17,6 +17,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTPart> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void readFeatureOrder(std::vector<std::string>& lines);
         void readPrincipalMassMarker(std::vector<std::string>& lines);

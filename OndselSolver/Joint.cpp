@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include<algorithm>
+#include <algorithm>
 #include <memory>
 #include <typeinfo>
 
@@ -26,19 +26,8 @@ Joint::Joint() {
 
 }
 
-Joint::Joint(const char* str) : Item(str) {
+Joint::Joint(const char* str) : ConstraintSet(str) {
 
-}
-
-void Joint::initialize()
-{
-	constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-}
-
-void Joint::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
-{
-	frmI = frmi;
-	frmJ = frmj;
 }
 
 void Joint::initializeLocally()
@@ -50,28 +39,6 @@ void Joint::initializeLocally()
 		}
 	}
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeLocally(); });
-}
-
-void Joint::initializeGlobally()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeGlobally(); });
-}
-
-void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
-{
-	std::for_each(constraints->begin(), constraints->end(), f);
-}
-
-void Joint::postInput()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postInput(); });
-
-}
-
-void Joint::addConstraint(std::shared_ptr<Constraint> con)
-{
-	con->owner = this;
-	constraints->push_back(con);
 }
 
 FColDsptr MbD::Joint::aFIeJtIe()
@@ -89,83 +56,9 @@ FColDsptr MbD::Joint::aFIeJtO()
 	return aFIeJtO;
 }
 
-void Joint::prePosIC()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosIC(); });
-}
-
-void Joint::prePosKine()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosKine(); });
-}
-
-void Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillEssenConstraints(con, essenConstraints); });
-}
-
-void Joint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillDispConstraints(con, dispConstraints); });
-}
-
-void Joint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPerpenConstraints(con, perpenConstraints); });
-}
-
 void Joint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillRedundantConstraints(con, redunConstraints); });
-}
-
-void Joint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillConstraints(con, allConstraints); });
-}
-
-void Joint::fillqsulam(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsulam(col); });
-}
-
-void Joint::fillqsudot(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
-}
-
-void Joint::fillqsudotWeights(DiagMatDsptr)
-{
-}
-
-void Joint::useEquationNumbers()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
-}
-
-void Joint::setqsulam(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
-}
-
-void Joint::setqsudotlam(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsudotlam(col); });
-}
-
-void Joint::postPosICIteration()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
-}
-
-void Joint::fillPosICError(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICError(col); });
-}
-
-void Joint::fillPosICJacob(SpMatDsptr mat)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
 }
 
 void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
@@ -208,66 +101,6 @@ void Joint::constraintsReport()
 			this->logString(str);
 			});
 	}
-}
-
-void Joint::postPosIC()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosIC(); });
-}
-
-void Joint::preDyn()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preDyn(); });
-}
-
-void Joint::fillPosKineError(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineError(col); });
-}
-
-void Joint::fillPosKineJacob(SpMatDsptr mat)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillPosKineJacob(mat); });
-}
-
-void MbD::Joint::fillqsuddotlam(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillqsuddotlam(col); });
-}
-
-void Joint::preVelIC()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preVelIC(); });
-}
-
-void Joint::fillVelICError(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICError(col); });
-}
-
-void Joint::fillVelICJacob(SpMatDsptr mat)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillVelICJacob(mat); });
-}
-
-void Joint::preAccIC()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preAccIC(); });
-}
-
-void Joint::fillAccICIterError(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterError(col); });
-}
-
-void Joint::fillAccICIterJacob(SpMatDsptr mat)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillAccICIterJacob(mat); });
-}
-
-void Joint::setqsuddotlam(FColDsptr col)
-{
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsuddotlam(col); });
 }
 
 std::shared_ptr<StateData> Joint::stateData()
@@ -327,9 +160,4 @@ FColDsptr Joint::jointTorqueI()
 	auto jointTorque = std::make_shared <FullColumn<double>>(3);
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->addToJointTorqueI(jointTorque); });
 	return jointTorque;
-}
-
-void Joint::postDynStep()
-{
-	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postDynStep(); });
 }

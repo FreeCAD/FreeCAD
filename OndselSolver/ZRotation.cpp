@@ -28,7 +28,7 @@ void ZRotation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);
+		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);	//Use Iy and Jx to make sin(theta).
 		addConstraint(dirCosCon);
 		this->root()->hasChanged = true;
 	}

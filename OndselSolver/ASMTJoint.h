@@ -17,10 +17,11 @@ namespace MbD {
     {
         //
     public:
-        void parseASMT(std::vector<std::string>& lines) override;
+        static std::shared_ptr<ASMTJoint> With();
         void readJointSeries(std::vector<std::string>& lines);
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
         std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
 

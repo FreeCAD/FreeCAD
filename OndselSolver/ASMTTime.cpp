@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTTime> MbD::ASMTTime::With()
+{
+	auto asmt = std::make_shared<ASMTTime>();
+	asmt->initialize();
+	return asmt;
+}
+
 void MbD::ASMTTime::deleteMbD()
 {
 	xx = nullptr;

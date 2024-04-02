@@ -54,7 +54,7 @@ namespace MbD {
 		virtual Symsptr clonesptr();
 		std::shared_ptr<Constant> sptrConstant(double value);
 		virtual bool isVariable();
-		virtual void integrationConstant(double integConstant);
+		virtual void setIntegrationConstant(double integConstant);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym)

@@ -15,7 +15,8 @@ namespace MbD {
     {
         //
     public:
-        std::shared_ptr<Joint> mbdClassNew() override;
+        static std::shared_ptr<ASMTRackPinionJoint> With();
+        std::shared_ptr<ItemIJ> mbdClassNew() override;
         void parseASMT(std::vector<std::string>& lines) override;
         void readPitchRadius(std::vector<std::string>& lines);
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;

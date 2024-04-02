@@ -109,7 +109,7 @@ void MbD::MBDynTotalJoint::createASMT()
 	mkr1->createASMT();
 	if (mkr2) mkr2->createASMT();
 	auto asmtAsm = asmtAssembly();
-	auto asmtMotion = std::make_shared<ASMTGeneralMotion>();
+	auto asmtMotion = ASMTGeneralMotion::With();
 	asmtItem = asmtMotion;
 	asmtMotion->setName(name);
 	asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));

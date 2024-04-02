@@ -25,6 +25,7 @@ namespace MbD {
         void calcdxNorm() override;
         void basicSolveEquations() override;
         void handleSingularMatrix() override;
+        void outputSpreadsheet();
 
         SpMatDsptr pypx;
     };

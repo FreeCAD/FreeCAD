@@ -87,7 +87,7 @@ std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> MbD::MBD
 
 void MbD::MBDynSystem::createASMT()
 {
-	auto asmtAsm = std::make_shared<ASMTAssembly>();
+	auto asmtAsm = ASMTAssembly::With();
 	asmtAsm->mbdynItem = this;
 	asmtItem = asmtAsm;
 	asmtItem->setName("Assembly");

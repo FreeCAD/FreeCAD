@@ -58,6 +58,9 @@
 #include "ExternalSystem.h"
 #include "SystemSolver.h"
 #include "ASMTRevRevJoint.h"
+#include "ASMTLimit.h"
+#include "ASMTRotationLimit.h"
+#include "ASMTTranslationLimit.h"
 
 using namespace MbD;
 
@@ -68,8 +71,9 @@ MbD::ASMTAssembly::ASMTAssembly() : ASMTSpatialContainer()
 
 std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::With()
 {
-	auto assembly = std::make_shared<ASMTAssembly>();
-	return assembly;
+	auto asmt = std::make_shared<ASMTAssembly>();
+	asmt->initialize();
+	return asmt;
 }
 
 void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
@@ -183,7 +187,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 	assembly->setVelocity3D(0, 0, 0);
 	assembly->setOmega3D(0, 0, 0);
 
-	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	auto massMarker = ASMTPrincipalMassMarker::With();
 	massMarker->setMass(0.0);
 	massMarker->setDensity(0.0);
 	massMarker->setMomentOfInertias(0, 0, 0);
@@ -214,7 +218,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 	part->setOmega3D(0, 0, 0);
 	assembly->addPart(part);
 
-	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker = ASMTPrincipalMassMarker::With();
 	massMarker->setMass(0.2);
 	massMarker->setDensity(10.0);
 	massMarker->setMomentOfInertias(8.3333333333333e-4, 0.016833333333333, 0.017333333333333);
@@ -282,7 +286,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	auto ome3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	assembly->setOmega3D(ome3D);
 	//
-	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	auto massMarker = ASMTPrincipalMassMarker::With();
 	massMarker->setMass(0.0);
 	massMarker->setDensity(0.0);
 	auto aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
@@ -327,7 +331,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	part->setOmega3D(ome3D);
 	assembly->addPart(part);
 	//
-	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker = ASMTPrincipalMassMarker::With();
 	massMarker->setMass(0.2);
 	massMarker->setDensity(10.0);
 	aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 8.3333333333333e-4, 0.016833333333333, 0.017333333333333 });
@@ -439,7 +443,27 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 
 void MbD::ASMTAssembly::runDraggingTest()
 {
+	//auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+
+	auto limit1 = ASMTRotationLimit::With();
+	limit1->setName("Limit1");
+	limit1->setMarkerI("/Assembly1/Marker2");
+	limit1->setMarkerJ("/Assembly1/Part1/Marker1");
+	limit1->settype("=>");
+	limit1->setlimit("30.0*pi/180.0");
+	limit1->settol("1.0e-9");
+	assembly->addLimit(limit1);
+
+	auto limit2 = ASMTTranslationLimit::With();
+	limit2->setName("Limit2");
+	limit2->setMarkerI("/Assembly1/Part3/Marker2");
+	limit2->setMarkerJ("/Assembly1/Marker1");
+	limit2->settype("=<");
+	limit2->setlimit("1.2");
+	limit2->settol("1.0e-9");
+	assembly->addLimit(limit2);
+
 	auto& dragPart = assembly->parts->at(0);
 	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 	dragParts->push_back(dragPart);
@@ -581,6 +605,7 @@ void MbD::ASMTAssembly::readConstraintSets(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	readJoints(lines);
 	readMotions(lines);
+	readLimits(lines);
 	readGeneralConstraintSets(lines);
 }
 
@@ -680,7 +705,10 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 	assert(lines[0] == "\t\tMotions");
 	lines.erase(lines.begin());
 	motions->clear();
-	auto it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
+	auto it = std::find(lines.begin(), lines.end(), "\t\tLimits");
+	if (it == lines.end()) {
+		it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
+	}
 	std::vector<std::string> motionsLines(lines.begin(), it);
 	std::shared_ptr<ASMTMotion> motion;
 	while (!motionsLines.empty()) {
@@ -707,6 +735,33 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 	}
 	lines.erase(lines.begin(), it);
 
+}
+
+void MbD::ASMTAssembly::readLimits(std::vector<std::string>& lines)
+{
+	if (lines[0] != "\t\tLimits") return;
+	lines.erase(lines.begin());
+	limits->clear();
+	auto it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
+	std::vector<std::string> limitsLines(lines.begin(), it);
+	std::shared_ptr<ASMTLimit> limit;
+	while (!limitsLines.empty()) {
+		if (limitsLines[0] == "\t\t\tRotationLimit") {
+			limit = ASMTRotationLimit::With();
+		}
+		else if (limitsLines[0] == "\t\t\tTranslationLimit") {
+			limit = ASMTTranslationLimit::With();
+		}
+		else {
+			assert(false);
+		}
+		limitsLines.erase(limitsLines.begin());
+		limit->parseASMT(limitsLines);
+		limits->push_back(limit);
+		limit->owner = this;
+		limit->initMarkers();
+	}
+	lines.erase(lines.begin(), it);
 }
 
 void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines) const
@@ -1011,6 +1066,7 @@ void MbD::ASMTAssembly::deleteMbD()
 	for (auto& part : *parts) { part->deleteMbD(); }
 	for (auto& joint : *joints) { joint->deleteMbD(); }
 	for (auto& motion : *motions) { motion->deleteMbD(); }
+	for (auto& limit : *limits) { limit->deleteMbD(); }
 	for (auto& forceTorque : *forcesTorques) { forceTorque->deleteMbD(); }
 
 
@@ -1026,9 +1082,11 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	jointsMotions->insert(jointsMotions->end(), joints->begin(), joints->end());
 	jointsMotions->insert(jointsMotions->end(), motions->begin(), motions->end());
 	std::sort(jointsMotions->begin(), jointsMotions->end(), [](std::shared_ptr<ASMTConstraintSet> a, std::shared_ptr<ASMTConstraintSet> b) { return a->name < b->name; });
+	std::sort(limits->begin(), limits->end(), [](std::shared_ptr<ASMTLimit> a, std::shared_ptr<ASMTLimit> b) { return a->name < b->name; });
 	std::sort(forcesTorques->begin(), forcesTorques->end(), [](std::shared_ptr<ASMTForceTorque> a, std::shared_ptr<ASMTForceTorque> b) { return a->name < b->name; });
 	for (auto& part : *parts) { part->createMbD(mbdSys, mbdUnits); }
 	for (auto& joint : *jointsMotions) { joint->createMbD(mbdSys, mbdUnits); }
+	for (auto& limit : *limits) { limit->createMbD(mbdSys, mbdUnits); }
 	for (auto& forceTorque : *forcesTorques) { forceTorque->createMbD(mbdSys, mbdUnits); }
 
 	auto& mbdSysSolver = mbdSys->systemSolver;
@@ -1138,7 +1196,7 @@ void MbD::ASMTAssembly::runKINEMATIC()
 
 void MbD::ASMTAssembly::initprincipalMassMarker()
 {
-	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	principalMassMarker = ASMTPrincipalMassMarker::With();
 	principalMassMarker->mass = 0.0;
 	principalMassMarker->density = 0.0;
 	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
@@ -1262,6 +1320,13 @@ void MbD::ASMTAssembly::addMotion(std::shared_ptr<ASMTMotion> motion)
 	motions->push_back(motion);
 	motion->owner = this;
 	motion->initMarkers();
+}
+
+void MbD::ASMTAssembly::addLimit(std::shared_ptr<ASMTLimit> limit)
+{
+	limits->push_back(limit);
+	limit->owner = this;
+	limit->initMarkers();
 }
 
 void MbD::ASMTAssembly::setConstantGravity(std::shared_ptr<ASMTConstantGravity> gravity)

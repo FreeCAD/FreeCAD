@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTGearJoint::mbdClassNew()
+std::shared_ptr<ASMTGearJoint> MbD::ASMTGearJoint::With()
+{
+	auto asmt = std::make_shared<ASMTGearJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTGearJoint::mbdClassNew()
 {
     return CREATE<GearJoint>::With();
 }

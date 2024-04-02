@@ -12,7 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTFixedJoint::mbdClassNew()
+std::shared_ptr<ASMTFixedJoint> MbD::ASMTFixedJoint::With()
+{
+	auto asmt = std::make_shared<ASMTFixedJoint>();
+	asmt->initialize();
+	return asmt;
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTFixedJoint::mbdClassNew()
 {
     return CREATE<FixedJoint>::With();
 }

@@ -18,7 +18,7 @@ using namespace MbD;
 void PosKineNewtonRaphson::initializeGlobally()
 {
 	SystemNewtonRaphson::initializeGlobally();
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsu(x); });
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->fillqsu(x); });
 	iterMax = system->iterMaxPosKine;
 	dxTol = system->errorTolPosKine;
 }
@@ -26,14 +26,14 @@ void PosKineNewtonRaphson::initializeGlobally()
 void PosKineNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosKineJacob(pypx);
 		});
 }
 
 void PosKineNewtonRaphson::passRootToSystem()
 {
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsu(x); });
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->setqsu(x); });
 }
 
 void PosKineNewtonRaphson::assignEquationNumbers()
@@ -75,13 +75,13 @@ void PosKineNewtonRaphson::preRun()
 {
 	std::string str = "MbD: Solving for kinematic position.";
 	system->logString(str);
-	system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->prePosKine(); });
+	system->partsJointsMotionsLimitsDo([](std::shared_ptr<Item> item) { item->prePosKine(); });
 }
 
 void PosKineNewtonRaphson::fillY()
 {
 	y->zeroSelf();
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
+	system->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosKineError(y);
 		//std::cout << item->name << *y << std::endl;
 		//noop();

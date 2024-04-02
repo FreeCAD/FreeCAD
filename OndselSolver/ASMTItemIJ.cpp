@@ -8,15 +8,21 @@
 #include <fstream>	
 
 #include "ASMTItemIJ.h"
+#include "ASMTAssembly.h"
+#include "ASMTMarker.h"
+#include "ItemIJ.h"
+
+using namespace MbD;
 
 MbD::ASMTItemIJ::ASMTItemIJ()
 {
-	fxs = std::make_shared<FullRow<double>>();
-	fys = std::make_shared<FullRow<double>>();
-	fzs = std::make_shared<FullRow<double>>();
-	txs = std::make_shared<FullRow<double>>();
-	tys = std::make_shared<FullRow<double>>();
-	tzs = std::make_shared<FullRow<double>>();
+	//Use initialize to be consistent with Smalltalk Twin
+	//fxs = std::make_shared<FullRow<double>>();
+	//fys = std::make_shared<FullRow<double>>();
+	//fzs = std::make_shared<FullRow<double>>();
+	//txs = std::make_shared<FullRow<double>>();
+	//tys = std::make_shared<FullRow<double>>();
+	//tzs = std::make_shared<FullRow<double>>();
 }
 
 void MbD::ASMTItemIJ::initialize()
@@ -143,4 +149,29 @@ void MbD::ASMTItemIJ::storeOnTimeSeries(std::ofstream& os)
 		os << tzs->at(i) << '\t';
 	}
 	os << std::endl;
+}
+
+void MbD::ASMTItemIJ::parseASMT(std::vector<std::string>& lines)
+{
+	readName(lines);
+	readMarkerI(lines);
+	readMarkerJ(lines);
+}
+
+void MbD::ASMTItemIJ::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	//self dataSeries : OrderedCollection new.
+	//self discontinuities : OrderedCollection new.
+	auto mbdJt = this->mbdClassNew();
+	mbdObject = mbdJt;
+	mbdJt->name = fullName("");
+	auto mrkI = std::static_pointer_cast<EndFramec>(root()->markerAt(markerI)->mbdObject);
+	auto mrkJ = std::static_pointer_cast<EndFramec>(root()->markerAt(markerJ)->mbdObject);
+	mbdJt->connectsItoJ(mrkI, mrkJ);
+}
+
+std::shared_ptr<ItemIJ> MbD::ASMTItemIJ::mbdClassNew()
+{
+	assert(false);
+	return std::shared_ptr<ItemIJ>();
 }

@@ -18,6 +18,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTMarker> With();
         void parseASMT(std::vector<std::string>& lines) override;
         FColDsptr rpmp();
         FMatDsptr aApm();

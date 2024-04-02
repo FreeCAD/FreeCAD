@@ -217,7 +217,7 @@ bool MbD::Symbolic::isVariable()
 	return false;
 }
 
-void MbD::Symbolic::integrationConstant(double)
+void MbD::Symbolic::setIntegrationConstant(double)
 {
 	assert(false);
 }

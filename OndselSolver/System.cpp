@@ -25,6 +25,7 @@ System::System() {
 	time = std::make_shared<Time>();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
+	limits = std::make_shared<std::vector<std::shared_ptr<LimitIJ>>>();
 	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueItem>>>();
 	systemSolver = std::make_shared<SystemSolver>(this);
 }
@@ -59,6 +60,12 @@ void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
 	jointsMotions->push_back(motion);
 }
 
+void MbD::System::addLimit(std::shared_ptr<LimitIJ> limit)
+{
+	limit->owner = this;
+	limits->push_back(limit);
+}
+
 void MbD::System::addForceTorque(std::shared_ptr<ForceTorqueItem> forTor)
 {
 	forTor->owner = this;
@@ -74,7 +81,7 @@ void System::runKINEMATIC(std::shared_ptr<System> self)
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
-	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
 	externalSystem->outputFor(INPUT);
 	systemSolver->runAllIC();
 	externalSystem->outputFor(INITIALCONDITION);
@@ -86,13 +93,13 @@ void System::initializeLocally()
 {
 	hasChanged = false;
 	time->value = systemSolver->tstart;
-	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeLocally(); });
+	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeLocally(); });
 	systemSolver->initializeLocally();
 }
 
 void System::initializeGlobally()
 {
-	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeGlobally(); });
+	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->initializeGlobally(); });
 	systemSolver->initializeGlobally();
 }
 
@@ -113,14 +120,14 @@ void MbD::System::runPreDrag(std::shared_ptr<System> self)
 		initializeGlobally();
 		if (!hasChanged) break;
 	}
-	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
 	systemSolver->runPreDrag();
 	externalSystem->updateFromMbD();
 }
 
 void MbD::System::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
 {
-	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
 	systemSolver->runDragStep(dragParts);
 	externalSystem->updateFromMbD();
 }
@@ -145,6 +152,21 @@ void System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::sha
 {
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
+}
+
+void MbD::System::partsJointsMotionsLimitsDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	std::for_each(parts->begin(), parts->end(), f);
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+	std::for_each(limits->begin(), limits->end(), f);
+}
+
+void MbD::System::partsJointsMotionsLimitsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f)
+{
+	std::for_each(parts->begin(), parts->end(), f);
+	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
+	std::for_each(limits->begin(), limits->end(), f);
 	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
 }
 
@@ -194,7 +216,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allRedundantCo
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allConstraints()
 {
 	auto constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
+	this->partsJointsMotionsLimitsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
 	return constraints;
 }
 
@@ -233,4 +255,14 @@ double System::rotationLimit()
 void System::outputFor(AnalysisType type)
 {
 	externalSystem->outputFor(type);
+}
+
+bool MbD::System::limitsSatisfied()
+{
+	return  std::all_of(limits->cbegin(), limits->cend(), [](auto& limit) { return limit->satisfied(); });
+}
+
+void MbD::System::deactivateLimits()
+{
+	std::for_each(limits->cbegin(), limits->cend(), [](auto& limit) { limit->deactivate(); });
 }

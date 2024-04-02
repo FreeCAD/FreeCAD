@@ -15,6 +15,7 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<ASMTSimulationParameters> With();
 		void parseASMT(std::vector<std::string>& lines) override;
 		void settstart(double tstart);
 		void settend(double tend);
