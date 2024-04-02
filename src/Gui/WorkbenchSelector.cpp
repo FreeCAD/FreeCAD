@@ -145,7 +145,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     refreshList(aGroup->getEnabledWbActions());
     connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::refreshList);
     connect(aGroup->groupAction(), &QActionGroup::triggered, this, [this, aGroup](QAction* action) {
-        int index = std::min(aGroup->actions().indexOf(action), this->count() - 1);
+        int index = std::min<int>(aGroup->actions().indexOf(action), this->count() - 1);
         setCurrentIndex(index);
     });
     connect(this, qOverload<int>(&QTabBar::tabBarClicked), aGroup, [aGroup, moreAction](int index) {
