@@ -443,7 +443,7 @@ def fill_femresult_mechanical(
                     nodes = len(disp.values())
                     for i in range(nodes):
                         # how is this possible? An example is needed!
-                        Console.PrintError("Temperature seams to have exptra nodes.\n")
+                        Console.PrintError("Temperature seems to have extra nodes.\n")
                         Temp_value = Temp_extra_nodes[i]
                         Temp.append(Temp_value)
                     res_obj.Temperature = list(map((lambda x: x), Temp))
