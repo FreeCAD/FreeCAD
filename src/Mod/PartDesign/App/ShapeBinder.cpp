@@ -514,6 +514,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
     int idx = -1;
     for (auto& l : Support.getSubListValues()) {
+        ++idx;
         auto obj = l.getValue();
         if (!obj || !obj->isAttachedToDocument())
             continue;
@@ -624,6 +625,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
+        int sidx = copied?-1:idx;
+        int subidx = -1;
         std::set<std::string> subs(subvals.begin(), subvals.end());
         static std::string none;
         if (subs.empty())
@@ -631,11 +634,15 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else if (subs.size() > 1)
             subs.erase(none);
         for (const auto& sub : subs) {
+            ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
                     shapeMats.push_back(&res.first->second);
+#ifdef FC_USE_TNP_FIX
+                    shapeOwners.emplace_back(sidx, subidx);
+#endif
                 }
             }
             catch (Base::Exception& e) {
@@ -731,7 +738,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         if (shapes.empty()) {
-            // Shape.resetElementMapVersion();
+#ifdef FC_USE_TNP_FIX
+             Shape.resetElementMapVersion();
+#endif
             return;
         }
 
@@ -792,8 +801,14 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
         }
 #endif
+
+#ifdef FC_USE_TNP_FIX
+        if (!fused && result.hasSubShape(TopAbs_EDGE)
+            && Offset.getValue() != 0.0) {
+#else
         if (!fused && result.hasSubShape(TopAbs_WIRE)
             && Offset.getValue() != 0.0) {
+#endif
             try {
                 result = result.makeOffset2D(Offset.getValue(),
                                              OffsetJoinType.getValue(),

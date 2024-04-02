@@ -104,7 +104,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Act
         # Move the second pad ( the sketch attachment point )
         self.PadSketch1.AttachmentOffset = App.Placement(
-            App.Vector(0.5000000000, 1.0000000000, 0.0000000000),
+            App.Vector(0.5000000000, 0.0000000000, 0.0000000000),
             App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         self.Doc.recompute()
 
@@ -129,43 +129,32 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Body.addObject(self.Sketch)
         TestSketcherApp.CreateRectangleSketch(self.Sketch, (0, 0), (1, 1))
         self.Doc.recompute()
-        # Assert    Note that sketch already calls the makeElement versions, so no guard needed
+        # Assert    Note that sketch already calls the makeElement versions, so no guard if needed
         # if self.Sketch.Shape.ElementMapVersion != "":
         self.assertEqual(self.Sketch.Shape.ElementMapSize,12 )
 
-    # def testFutureStuff(self):
-        # self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
-        # geoList = []
-        # geoList.append(Part.LineSegment(App.Vector(0,0,0),App.Vector(20,0,0)))
-        # geoList.append(Part.LineSegment(App.Vector(20,0,0),App.Vector(20,10,0)))
-        # geoList.append(Part.LineSegment(App.Vector(20,10,0),App.Vector(10,10,0)))
-        # geoList.append(Part.LineSegment(App.Vector(10,10,0),App.Vector(10,20,0)))
-        # geoList.append(Part.LineSegment(App.Vector(10,20,0),App.Vector(0,20,0)))
-        # geoList.append(Part.LineSegment(App.Vector(0,20,0),App.Vector(0,0,0)))
-        # self.Doc.getObject('Sketch').addGeometry(geoList,False)
-        # conList = []
-        # conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        # conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        # conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        # conList.append(Sketcher.Constraint('Coincident',3,2,4,1))
-        # conList.append(Sketcher.Constraint('Coincident',4,2,5,1))
-        # conList.append(Sketcher.Constraint('Coincident',5,2,0,1))
-        # conList.append(Sketcher.Constraint('Horizontal',0))
-        # conList.append(Sketcher.Constraint('Horizontal',2))
-        # conList.append(Sketcher.Constraint('Horizontal',4))
-        # conList.append(Sketcher.Constraint('Vertical',1))
-        # conList.append(Sketcher.Constraint('Vertical',3))
-        # conList.append(Sketcher.Constraint('Vertical',5))
-        # self.Doc.getObject('Sketch').addConstraint(conList)
-        # del geoList, conList
-        # self.Doc.recompute()
-        # self.Doc.getObject('Body').newObject('PartDesign::Pad','Pad002')
-        # self.Doc.getObject('Pad002').Length = 10
-        # self.Doc.Pad002.Profile = self.Doc.Sketch
-        # self.Doc.recompute()
-        # self.Doc.getObject('Pad002').ReferenceAxis = (self.Doc.getObject('Sketch'),['N_Axis'])
-        # self.Doc.getObject('Sketch').Visibility = False
-        # self.Doc.recompute()
+
+    def testShapeBinder(self):
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body','Body3')
+        box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+
+        box.Length=10.00000
+        box.Width=10.00000
+        box.Height=10.00000
+
+        # Act
+        binder = body.newObject('PartDesign::SubShapeBinder','Binder')
+        binder.Support=(box, "")
+        self.Doc.recompute()
+
+        # Assert
+        self.assertAlmostEqual(binder.Shape.Length, 240)
+        self.assertEqual(box.Shape.ElementMapSize,0)
+        if box.Shape.ElementMapVersion != "":
+            self.assertEqual(binder.Shape.ElementMapSize,26)
+
 
     def tearDown(self):
         """ Close our test document """
