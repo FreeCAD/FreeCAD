@@ -546,7 +546,7 @@ void QuantitySpinBox::openFormulaDialog()
     if (d->checkRangeInExpression) {
         box->setRange(d->minimum, d->maximum);
     }
-    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
+    QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [this, box]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
         else if (box->discardedFormula())

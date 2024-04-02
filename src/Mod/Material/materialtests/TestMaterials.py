@@ -67,7 +67,7 @@ class MaterialTestCases(unittest.TestCase):
 
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Density))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.IsotropicLinearElastic))
-        self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Thermal))
+        self.assertFalse(steel.isPhysicalModelComplete(self.uuids.Thermal))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic))
         self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering))
 

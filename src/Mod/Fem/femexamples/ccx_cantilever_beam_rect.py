@@ -34,7 +34,7 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg3",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"]
     }

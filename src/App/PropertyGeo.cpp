@@ -589,7 +589,7 @@ double toDouble(const boost::any &value)
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         Base::Vector3d base = _cPos.getPosition();
@@ -601,7 +601,7 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         setValue(plm);
     };
 
-    auto updateYawPitchRoll = [=](int index, double angle) {
+    auto updateYawPitchRoll = [this](int index, double angle) {
         Base::Vector3d base = _cPos.getPosition();
         Base::Rotation rot = _cPos.getRotation();
         double yaw, pitch, roll;
@@ -1076,7 +1076,7 @@ void PropertyRotation::getPaths(std::vector<ObjectIdentifier> &paths) const
 
 void PropertyRotation::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         _rot.getRawValue(axis, angle);

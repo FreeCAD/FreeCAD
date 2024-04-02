@@ -249,7 +249,6 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
 
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
     connect(ui->AutoloadModuleCombo, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
-    connect(ui->WorkbenchSelectorPosition, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
     connect(ui->CheckBox_WbByTab, &QCheckBox::toggled, this, &DlgSettingsWorkbenchesImp::onWbByTabToggled);
 }
 
@@ -355,19 +354,16 @@ void DlgSettingsWorkbenchesImp::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    //reset "Ordered" parameter
     hGrp->RemoveASCII("Ordered");
-    //reset "Disabled" parameter
     hGrp->RemoveASCII("Disabled");
+    hGrp->RemoveASCII("WorkbenchSelectorType");
+    hGrp->RemoveASCII("WorkbenchSelectorItem");
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    //reset "BackgroundAutoloadModules" parameter
     hGrp->RemoveASCII("BackgroundAutoloadModules");
-    //reset "AutoloadModule" parameter
     hGrp->RemoveASCII("AutoloadModule");
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    //reset "WSPosition" parameter
     hGrp->RemoveASCII("WSPosition");
     if  (ui->WorkbenchSelectorPosition->currentIndex() != WorkbenchSwitcher::getIndex()) {
         requireRestart();
@@ -504,20 +500,57 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
 {
     //save workbench selector position
+    int prevIndex = WorkbenchSwitcher::getIndex();
     auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    WorkbenchSwitcher::setIndex(index);
+    if (prevIndex != index) {
+        WorkbenchSwitcher::setIndex(index);
+        requireRestart();
+    }
+
+    //save workbench selector type
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    prevIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
+    index = ui->WorkbenchSelectorType->currentIndex();
+    if (prevIndex != index) {
+        hGrp->SetInt("WorkbenchSelectorType", index);
+        requireRestart();
+    }
+
+    // save workbench selector items style
+    prevIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
+    index = ui->WorkbenchSelectorItem->currentIndex();
+    if (prevIndex != index) {
+        hGrp->SetInt("WorkbenchSelectorItem", index);
+        requireRestart();
+    }
 }
 
 void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 {
-    QSignalBlocker sigblk(ui->WorkbenchSelectorPosition);
-
     //workbench selector position combobox setup
     ui->WorkbenchSelectorPosition->clear();
     ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
     ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
     ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
     ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+
+    //workbench selector type setup
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    int widgetTypeIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
+    ui->WorkbenchSelectorType->clear();
+    ui->WorkbenchSelectorType->addItem(tr("ComboBox"));
+    ui->WorkbenchSelectorType->addItem(tr("TabBar"));
+    ui->WorkbenchSelectorType->setCurrentIndex(widgetTypeIndex);
+
+    // workbench selector items style
+    int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
+    ui->WorkbenchSelectorItem->clear();
+    ui->WorkbenchSelectorItem->addItem(tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->addItem(tr("Icon"));
+    ui->WorkbenchSelectorItem->addItem(tr("Text"));
+    ui->WorkbenchSelectorItem->setCurrentIndex(itemStyleIndex);
 }
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
@@ -615,21 +648,6 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
         if (wbItem) {
             wbItem->setStartupWb(wbItem->objectName() == wbName);
         }
-    }
-}
-
-void DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
-{
-    Q_UNUSED(index);
-    /**
-     * TODO: move the following code somewhere else so that the restart request isn't asked
-     * everytime the WorkbenchSwitcher is changed but only when the value that will be saved in
-     * the parameter is actually different from the current one.
-     * The code, as is now, will request the restart even if the use selects again the same value
-     * that is already saved in the parameters
-     */
-    if (ui->WorkbenchSelectorPosition->currentIndex() != WorkbenchSwitcher::getIndex()) {
-        requireRestart();
     }
 }
 
