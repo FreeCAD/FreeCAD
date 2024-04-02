@@ -98,7 +98,7 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
 }
 
 
-WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent) 
+WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     : QTabBar(parent)
     , wbActionGroup(aGroup)
 {
@@ -124,7 +124,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     });
 
     if (parent->inherits("QToolBar")) {
-        // set the initial orientation. We cannot do updateLayoutAndTabOrientation(false); 
+        // set the initial orientation. We cannot do updateLayoutAndTabOrientation(false);
         // because on init the toolbar area is always TopToolBarArea.
         ParameterGrp::handle hGrp;
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
@@ -202,7 +202,7 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
     else {
         addTab(icon, tr("More"));
     }
-    
+
     buildPrefMenu();
 }
 
