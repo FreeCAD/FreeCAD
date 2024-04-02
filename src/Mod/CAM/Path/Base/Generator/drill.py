@@ -61,7 +61,7 @@ def generate(
 
     If feedRetract is True, the generator will produce G85 cycles which retract
     the tool at the specified feed rate instead of performing a rapid move.
-    This is useful for boring or reaming operations.
+    This is useful for boring or reaming operations. Peck or dwell cannot be used with feed retract.
     http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g85
 
     """
@@ -77,6 +77,12 @@ def generate(
 
     if dwelltime > 0.0 and peckdepth > 0.0:
         raise ValueError("Peck and Dwell cannot be used together")
+
+    if dwelltime > 0.0 and feedRetract:
+        raise ValueError("Dwell and feed retract cannot be used together")
+
+    if peckdepth > 0.0 and feedRetract:
+        raise ValueError("Peck and feed retract cannot be used together")
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")
