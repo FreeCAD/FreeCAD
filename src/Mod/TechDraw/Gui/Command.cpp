@@ -314,6 +314,14 @@ void CmdTechDrawView::activated(int iMsg)
     }
     std::string PageName = page->getNameInDocument();
 
+    // switch to the page if it's not current active window
+    auto* vpp = dynamic_cast<ViewProviderPage*>
+        (Gui::Application::Instance->getViewProvider(page));
+    if (vpp) {
+        vpp->switchToMdiViewPage();
+    }
+
+
     //set projection direction from selected Face
     //use first object with a face selected
     std::vector<App::DocumentObject*> shapes, xShapes;
