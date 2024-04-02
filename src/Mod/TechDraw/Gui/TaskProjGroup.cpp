@@ -25,7 +25,19 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <QMessageBox>
+# include <QGroupBox>
+# include <QVBoxLayout>
+# include <QHBoxLayout>
+# include <QLabel>
+# include <QPushButton>
+# include <QDialog>
+# include <QScreen>
 #endif // #ifndef _PreComp_
+
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QDialog>
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -35,6 +47,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/QuantitySpinBox.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -96,6 +109,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     connect(ui->butCCWRotate,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butFront,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butCam,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
+
+    connect(ui->lePrimary,   &QPushButton::clicked, this, &TaskProjGroup::customDirectionClicked);
 
 //    //Reset button
 //    connect(ui->butReset,   SIGNAL(clicked()), this, SLOT(onResetClicked()));
@@ -287,6 +302,38 @@ void TaskProjGroup::viewToggled(bool toggle)
         view->recomputeFeature();
     }
     wc.restoreCursor();
+}
+
+void TaskProjGroup::customDirectionClicked()
+{
+    auto* dirEditDlg = new DirectionEditDialog();
+
+    if (multiView) {
+        dirEditDlg->setDirection(multiView->getAnchor()->Direction.getValue());
+        dirEditDlg->setAngle(0.0);
+    }
+    else {
+        auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
+        dirEditDlg->setDirection(viewPart->Direction.getValue());
+        dirEditDlg->setAngle(0.0);
+    }
+
+    if (dirEditDlg->exec() == QDialog::Accepted) {
+        if (multiView) {
+            multiView->getAnchor()->Direction.setValue(dirEditDlg->getDirection());
+            multiView->spin(Base::toRadians(dirEditDlg->getAngle()));
+        }
+        else {
+            auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
+            viewPart->Direction.setValue(dirEditDlg->getDirection());
+            viewPart->spin(Base::toRadians(dirEditDlg->getAngle()));
+        }
+
+        setUiPrimary();
+    }
+
+
+    delete dirEditDlg;
 }
 
 void TaskProjGroup::rotateButtonClicked()
@@ -757,5 +804,107 @@ bool TaskDlgProjGroup::reject()
     return true;
 }
 
+
+DirectionEditDialog::DirectionEditDialog(QWidget* parent) : QDialog(parent) {
+    setWindowFlags(Qt::Popup); // Make the dialog non-intrusive
+    createUI();
+}
+
+void DirectionEditDialog::setDirection(const Base::Vector3d& pos) {
+    xSpinBox->setValue(pos.x);
+    ySpinBox->setValue(pos.y);
+    zSpinBox->setValue(pos.z);
+}
+
+Base::Vector3d DirectionEditDialog::getDirection() const {
+    return Base::Vector3d(xSpinBox->value().getValue(), ySpinBox->value().getValue(), zSpinBox->value().getValue());
+}
+
+void DirectionEditDialog::setAngle(double val) {
+    angleSpinBox->setValue(val);
+}
+
+double DirectionEditDialog::getAngle() const {
+    return angleSpinBox->value().getValue();
+}
+
+void DirectionEditDialog::showEvent(QShowEvent* event) {
+    QDialog::showEvent(event);
+
+    // Calculate the position to ensure the dialog appears within the screen boundaries
+    QPoint cursorPos = QCursor::pos();
+    QSize screenSize = QApplication::primaryScreen()->size(); // Get the size of the primary screen
+    int x = cursorPos.x();
+    int y = cursorPos.y();
+    int dialogWidth = this->width();
+    int dialogHeight = this->height();
+
+    // Check if the dialog goes beyond the right edge of the screen
+    if (x + dialogWidth > screenSize.width()) {
+        x = screenSize.width() - dialogWidth;
+    }
+
+    // Check if the dialog goes beyond the bottom edge of the screen
+    if (y + dialogHeight > screenSize.height()) {
+        y = screenSize.height() - dialogHeight;
+    }
+
+    // Move the dialog to the calculated position
+    this->move(x, y);
+}
+
+void DirectionEditDialog::createUI() {
+    auto* directionGroup = new QGroupBox(tr("Direction"));
+    auto* directionLayout = new QVBoxLayout; // Use QVBoxLayout for vertical alignment
+
+    // Create layout and widgets for X
+    auto* xLayout = new QHBoxLayout;
+    auto* xLabel = new QLabel(tr("X: "));
+    xSpinBox = new Gui::QuantitySpinBox;
+    xSpinBox->setUnit(Base::Unit::Length);
+    xLayout->addWidget(xLabel);
+    xLayout->addWidget(xSpinBox);
+
+    // Create layout and widgets for Y
+    auto* yLayout = new QHBoxLayout;
+    auto* yLabel = new QLabel(tr("Y: "));
+    ySpinBox = new Gui::QuantitySpinBox;
+    ySpinBox->setUnit(Base::Unit::Length);
+    yLayout->addWidget(yLabel);
+    yLayout->addWidget(ySpinBox);
+
+    // Create layout and widgets for Z
+    auto* zLayout = new QHBoxLayout;
+    auto* zLabel = new QLabel(tr("Z: "));
+    zSpinBox = new Gui::QuantitySpinBox;
+    zSpinBox->setUnit(Base::Unit::Length);
+    zLayout->addWidget(zLabel);
+    zLayout->addWidget(zSpinBox);
+
+    // Add the layouts to the direction group
+    directionLayout->addLayout(xLayout);
+    directionLayout->addLayout(yLayout);
+    directionLayout->addLayout(zLayout);
+    directionGroup->setLayout(directionLayout);
+
+    angleSpinBox = new Gui::QuantitySpinBox;
+    angleSpinBox->setUnit(Base::Unit::Angle);
+
+    auto* buttonsLayout = new QHBoxLayout;
+    auto* okButton = new QPushButton(tr("OK"));
+    auto* cancelButton = new QPushButton(tr("Cancel"));
+    buttonsLayout->addWidget(okButton);
+    buttonsLayout->addWidget(cancelButton);
+
+    auto* mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(directionGroup);
+    mainLayout->addWidget(new QLabel(tr("Rotate by")));
+    mainLayout->addWidget(angleSpinBox);
+    mainLayout->addLayout(buttonsLayout);
+    setLayout(mainLayout);
+
+    connect(okButton, &QPushButton::clicked, this, &QDialog::accept);
+    connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+}
 
 #include <Mod/TechDraw/Gui/moc_TaskProjGroup.cpp>

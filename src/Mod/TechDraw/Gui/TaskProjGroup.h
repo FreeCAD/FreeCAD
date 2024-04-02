@@ -31,6 +31,9 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+namespace Gui {
+    class QuantitySpinBox;
+}
 
 namespace TechDraw {
 class DrawView;
@@ -87,6 +90,8 @@ protected Q_SLOTS:
 
     /// Requests appropriate rotation of our DrawProjGroup
     void rotateButtonClicked();
+
+    void customDirectionClicked();
 
     void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
@@ -161,6 +166,31 @@ protected:
 private:
     TaskProjGroup * widget;
     Gui::TaskView::TaskBox* taskbox;
+};
+
+
+class DirectionEditDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit DirectionEditDialog(QWidget* parent = nullptr);
+
+    void setDirection(const Base::Vector3d& pos);
+    Base::Vector3d getDirection() const;
+
+    void setAngle(double val);
+    double getAngle() const;
+
+protected:
+    void showEvent(QShowEvent* event) override;
+
+private:
+    Gui::QuantitySpinBox* xSpinBox;
+    Gui::QuantitySpinBox* ySpinBox;
+    Gui::QuantitySpinBox* zSpinBox;
+    Gui::QuantitySpinBox* angleSpinBox;
+
+    void createUI();
 };
 
 } //namespace TechDrawGui

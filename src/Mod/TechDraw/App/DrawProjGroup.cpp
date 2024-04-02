@@ -1219,6 +1219,11 @@ void DrawProjGroup::spin(const std::string& spindirection)
     if (spindirection == "CCW")
         angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
+    spin(angle);
+}
+
+void DrawProjGroup::spin(double angle)
+{
     DrawProjGroupItem* anchor = getAnchor();
     Base::Vector3d org(0.0, 0.0, 0.0);
     Base::Vector3d curRot = anchor->getXDirection();
