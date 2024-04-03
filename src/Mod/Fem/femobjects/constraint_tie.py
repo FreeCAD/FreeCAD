@@ -105,7 +105,7 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
 
 
     def onDocumentRestored(self, obj):
-        # update old proyect with new properties
+        # update old project with new properties
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)

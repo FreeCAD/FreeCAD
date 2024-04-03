@@ -169,7 +169,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -259,7 +259,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -277,7 +277,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -295,7 +295,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="611"/>
@@ -331,7 +331,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1162"/>
@@ -349,7 +349,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
@@ -655,7 +655,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="280"/>
@@ -673,7 +673,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -813,7 +813,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Projekt Części</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -885,8 +885,8 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
       <translation>Utwórz klona</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Utwórz kopię</translation>
     </message>
@@ -911,8 +911,8 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
       <translation>Utwórz cechę funkcją logiczną</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="190"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Dodaj zawartość</translation>
     </message>
@@ -1009,11 +1009,26 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
+      <source>Edge tools</source>
+      <translation>Narzędzia krawędzi</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="56"/>
+      <source>Start boolean</source>
+      <translation>Rozpocznij operację logiczną</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="57"/>
+      <source>Start part</source>
+      <translation>Część początkowa</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Sketch tools</source>
       <translation>Przybory do szkicowania</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Create Geometry</source>
       <translation>Utwórz Geometrię</translation>
     </message>
@@ -3162,17 +3177,17 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Tworzenie addytywnego walca przez podanie promienia, wysokości i kąta</translation>
+      <translation>Tworzy addytywny walec przez podanie promienia, wysokości i kąta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Tworzenie addytywnej sfery poprzez podanie promienia i rożnych kątów</translation>
+      <translation>Tworzy addytywną sferę poprzez podanie promienia i różnych kątów</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
-      <translation>Utwórz addytywny stożek</translation>
+      <translation>Tworzy addytywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
@@ -3182,17 +3197,17 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
-      <translation>Utwórz addytywny torus</translation>
+      <translation>Tworzy addytywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
-      <translation>Utwórz addytywny graniastosłup</translation>
+      <translation>Tworzy addytywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
-      <translation>Utwórz addytywny klin</translation>
+      <translation>Tworzy addytywny klin</translation>
     </message>
   </context>
   <context>
@@ -3205,37 +3220,37 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Tworzenie subtraktywnego walca przez podanie promienia, wysokości i kąta</translation>
+      <translation>Tworzy subtraktywny walec przez podanie promienia, wysokości i kąta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Tworzenie subtraktywnej sfery poprzez podanie promienia i rożnych kątów</translation>
+      <translation>Tworzy subtraktywną sferę poprzez podanie promienia i różnych kątów</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Utwórz subtraktywny stożek</translation>
+      <translation>Tworzy subtraktywny stożek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Utwórz subtraktywną elipsoidę</translation>
+      <translation>Tworzy subtraktywną elipsoidę</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
-      <translation>Utwórz subtraktywny torus</translation>
+      <translation>Tworzy subtraktywny torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
-      <translation>Utwórz subtraktywny graniastosłup</translation>
+      <translation>Tworzy subtraktywny graniastosłup</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Utwórz subtraktywny klin</translation>
+      <translation>Tworzy subtraktywny klin</translation>
     </message>
   </context>
   <context>
@@ -3349,28 +3364,28 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę dla umieszczenia szkicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="97"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>Czy chcesz zamknąć to okno?</translation>
     </message>
@@ -3638,14 +3653,14 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Nie jest możliwe utworzenie elementu do odjęcia bez dostępnego elementu bazowego</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <source>Vertical sketch axis</source>
       <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <source>Horizontal sketch axis</source>
       <translation>Pozioma oś szkicu</translation>
     </message>
@@ -3699,10 +3714,10 @@ Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez 
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -4408,7 +4423,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation>Utwórz cechę przez odjecie</translation>
+      <translation>Utwórz cechę przez odjęcie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4436,27 +4451,27 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <translation>Kreator projektowania wału</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Measure</source>
       <translation>Pomiary</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>Refresh</source>
       <translation>Odśwież pomiary</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Toggle 3D</source>
       <translation>Włącz / wyłącz widok pomiarów 3D</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Part Design Helper</source>
       <translation>Projekt Części — pomocnik</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Part Design Modeling</source>
       <translation>Projekt Części — modelowanie</translation>
     </message>
@@ -4553,6 +4568,47 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
       <source>Section %s</source>
       <translation>Przekrój %s</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <source>None</source>
+      <translation>Brak</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <source>Fixed</source>
+      <translation>Nieruchomy</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <source>Force</source>
+      <translation>Siła</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <source>Bearing</source>
+      <translation>Łożysko</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <source>Gear</source>
+      <translation>Zębatka</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <source>Pulley</source>
+      <translation>Koło pasowe</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <source>Chamfer</source>
+      <translation>Sfazowanie</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <source>Fillet</source>
+      <translation>Zaokrąglenie</translation>
     </message>
   </context>
   <context>
@@ -4663,17 +4719,17 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <translation>Połączenie narzędzi nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="229"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Otrzymany kształt nie jest bryłą</translation>
     </message>
@@ -4688,22 +4744,22 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <translation>Operacja części wspólnej nie powiodła się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="233"/>
-      <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="233"/>
+      <location filename="../../../App/FeaturePad.cpp" line="242"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Wynik ma wiele brył: to nie jest obecnie wspierane.</translation>
     </message>
@@ -4766,8 +4822,8 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <translation>Kąt rowka zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="108"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4778,14 +4834,14 @@ powyżej 90°: większy promień otworu u dołu</translation>
   - wybrany szkic nie należy do aktywnej zawartości.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <location filename="../../../App/FeatureGroove.cpp" line="130"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <source>Creating a face from sketch failed</source>
       <translation>Tworzenie ściany ze szkicu nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Oś obrotu przecina szkic</translation>
     </message>
@@ -4795,14 +4851,14 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <translation>Wycięcie cechy podstawowej nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nie można obrócić szkicu!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <location filename="../../../App/FeatureGroove.cpp" line="236"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nie można utworzyć ściany ze szkicu.
@@ -4857,10 +4913,10 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: nie udało się zbudować</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <location filename="../../../App/FeatureHelix.cpp" line="303"/>
       <location filename="../../../App/FeatureHelix.cpp" line="339"/>
       <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Błąd: wynik nie jest bryłą</translation>
     </message>
@@ -4962,15 +5018,15 @@ Przecinające się obiekty w szkicu są niedozwolone.</translation>
       <translation>Błąd: Dodanie gwintu nie powiodło się</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Operacja logiczna nie powiodła się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nie można utworzyć ściany ze szkicu.
@@ -5249,100 +5305,100 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
       <translation>Odejmowanie prymitywu nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="198"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="193"/>
       <source>Length of box too small</source>
       <translation>Długość prostopadłościanu jest zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="200"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="195"/>
       <source>Width of box too small</source>
       <translation>Szerokość prostopadłościanu jest zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="202"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Height of box too small</source>
       <translation>Wysokość prostopadłościanu zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="248"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="243"/>
       <source>Radius of cylinder too small</source>
       <translation>Promień walca zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="250"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="245"/>
       <source>Height of cylinder too small</source>
       <translation>Wysokość walca zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Kąt obrotu walca zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="305"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="300"/>
       <source>Radius of sphere too small</source>
       <translation>Promień kuli zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="354"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="356"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="349"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="351"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Promień stożka nie może być ujemny</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="358"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
       <source>Height of cone too small</source>
       <translation>Wysokość stożka zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="421"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="423"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="416"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Promień elipsoidy zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="505"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="500"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
       <source>Radius of torus too small</source>
       <translation>Promień torusa zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="565"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Wielokąt graniastosłupa jest nieprawidłowa, musi mieć 3 lub więcej boków</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="572"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Promień opisany wielokąta graniastosłupa jest zbyt mały</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Height of prism is too small</source>
       <translation>Wysokość graniastosłupa jest zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="650"/>
       <source>delta x of wedge too small</source>
       <translation>delta x klina zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="653"/>
       <source>delta y of wedge too small</source>
       <translation>delta y klina zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="656"/>
       <source>delta z of wedge too small</source>
       <translation>delta z klina zbyt mała</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="659"/>
       <source>delta z2 of wedge is negative</source>
       <translation>delta z2 klina jest ujemna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="667"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="662"/>
       <source>delta x2 of wedge is negative</source>
       <translation>delta x2 klina jest ujemna</translation>
     </message>

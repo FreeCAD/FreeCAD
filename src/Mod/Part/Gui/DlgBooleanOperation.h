@@ -86,7 +86,6 @@ public:
 
 private:
     DlgBooleanOperation* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace PartGui

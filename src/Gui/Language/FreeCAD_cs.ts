@@ -137,22 +137,22 @@
       <translation>Vytvořit skupinu odkazů</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>Vytvořit odkaz</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>Vytvořit pododkaz</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>Importovat odkazy</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>Importovat všechny odkazy</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>Vložit textový dokument</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Přidat část</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Přidat skupinu</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>Umístění</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformace</translation>
@@ -234,6 +234,11 @@
       <location filename="../CommandFeat.cpp" line="92"/>
       <source>Set Random Color</source>
       <translation type="unfinished">Set Random Color</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
     </message>
   </context>
   <context>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Výraz: </translation>
+      <source>Expression:</source>
+      <translation type="unfinished">Expression:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Prosím počkejte než se uloží soubor Automatické obnovy...</translation>
     </message>
@@ -1272,17 +1277,17 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Zpoždění sekvence více kláves: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation type="unfinished">Multi-key sequence delay:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Doba v milisekundách, po kterou se čeká na další stisk aktuální sekvence kláves.
-Například při dvojím stisknutí klávesy 'F' za dobu kratší, než je zde nastavená časová prodleva, bude
-považováno za krátkou sekvenci kláves 'F, F'.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
+For example, pressing 'F' twice in less than the time delay setting here will be
+treated as shortcut key sequence 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -2845,11 +2850,6 @@ pravém dolním rohu v otevřených souborech</translation>
       <translation>Zobrazit souřadný systém v rohu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Relativní velikost:   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2930,6 +2930,11 @@ mohou být vykreslována přímo grafickým procesorem.
 Poznámka: Někdy může tato funkce vést k řadě různých
 problémů, od grafických anomálií až po chyby při pádu GPU. Nezapomeňte
 při hledání podpory na fóru FreeCADu oznámit, že je toto nastavení povoleno</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation type="unfinished">Relative size:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -4453,8 +4458,8 @@ místo v konzoli Pythonu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation>Interval profilování Pythonu (ms): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -5948,7 +5953,7 @@ Chcete uložit provedené změny?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Přesná shoda</translation>
     </message>
@@ -5956,7 +5961,7 @@ Chcete uložit provedené změny?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Přesná shoda</translation>
     </message>
@@ -6122,15 +6127,15 @@ Chcete uložit provedené změny?</translation>
       <translation>PDF formát</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Formát Graphvizu</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Exportovat graf</translation>
     </message>
@@ -7042,7 +7047,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation>Poloha</translation>
+      <translation type="unfinished">Position</translation>
     </message>
   </context>
   <context>
@@ -7577,7 +7582,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>Přejmenovat</translation>
     </message>
@@ -7667,12 +7672,12 @@ Do you want to specify another directory?</source>
       <translation>Přepočítat vybraný objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (ale musí být provedeno)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, vnitřní název: %2</translation>
     </message>
@@ -7861,8 +7866,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation type="unfinished">5 m</translation>
     </message>
   </context>
   <context>
@@ -8057,8 +8062,8 @@ Do you want to specify another directory?</source>
       <translation>Exportovat PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Neuložený dokument</translation>
     </message>
@@ -8350,8 +8355,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>Oznamovatel: </translation>
+      <source>Notifier:</source>
+      <translation type="unfinished">Notifier:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8741,32 +8746,32 @@ Prosím, otevřete okno prohlížeče a zadejte: http://localhost:%1.</translati
       <translation>Vytvoření skupiny odkazů selhalo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>Selhalo vytvoření odkazu</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>Selhalo vytvoření relativního odkazu</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>Selhalo odpojení</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>Selhalo nahrazení odkazu</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Selhal import odkazů</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Selhal import všech odkazů</translation>
     </message>
@@ -8923,18 +8928,18 @@ na aktuální kopii budou ztraceny.
       <translation>Barva Legenda</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation>Přepnout překrytí</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Přepnout plovoucí okno</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation>Zavřít dokové okno</translation>
     </message>
@@ -9715,12 +9720,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Vytvořit skupinu</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>Skupina je univerzální kontejner pro seskupení objektů ve stromovém zobrazení, bez ohledu na jejich datový typ. Je to jednoduchá složka pro uspořádání objektů v modelu.</translation>
     </message>
@@ -9780,13 +9785,13 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>Akce odkazů</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>Akce, které se použijí pro propojení objektů</translation>
     </message>
@@ -9794,12 +9799,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>Importovat odkazy</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>Importovat vybrané externí odkaz(y)</translation>
     </message>
@@ -9807,12 +9812,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>Importovat všechny odkazy</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>Importovat všechny odkazy aktivního dokumentu</translation>
     </message>
@@ -9825,9 +9830,9 @@ na aktuální kopii budou ztraceny.
       <translation>Vytvořit odkaz</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation>Odkaz je objekt, který odkazuje nebo se váže na jiný objekt ve stejném dokumentu nebo v jiném dokumentu. Narozdíl od klonů, odkazy odkazují přímo na původní tvar, takže jsou paměťově efektivnější, což pomáhá při vytváření komplexních sestav.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9846,12 +9851,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>Vytvořit pododkaz</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Vytvořit odkaz na dílčí objekt nebo dílčí prvek</translation>
     </message>
@@ -9859,12 +9864,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>Nahradit za odkaz</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Nahradit vybraný(é) objekt(y) odkazem</translation>
     </message>
@@ -9872,13 +9877,13 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>Odkazová navigace</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>Akce odkazové navigace</translation>
     </message>
@@ -9886,12 +9891,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>Vybrat všechny odkazy</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>Vybrat všechny odkazy na aktuálně vybraný objekt</translation>
     </message>
@@ -9899,12 +9904,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>Přejít na propojený objekt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Vyberte propojený objekt a přepněte na vlastnický dokument</translation>
     </message>
@@ -9912,12 +9917,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>Přejít na nejhlubší propojený objekt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Vyberte nejhlubší propojený objekt a přepněte na jeho vlastnický dokument</translation>
     </message>
@@ -9925,12 +9930,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>Zrušit propojení</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>Pásek na úrovni odkazu</translation>
     </message>
@@ -10073,8 +10078,8 @@ na aktuální kopii budou ztraceny.
       <translation>Vytvořit nový prázdný dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>
@@ -10149,11 +10154,9 @@ na aktuální kopii budou ztraceny.
       <translation>Vytvoř díl</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>Díl je univerzální kontejner, který udržuje skupinu objektů tak, aby působily v 3D pohledu jako jediný objekt.
-Jejím cílem je uspořádat objekty, které mají díl TopoShape, jako jsou primitivní díly, tělesa návrh dílu a další díly.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10471,13 +10474,13 @@ Jejím cílem je uspořádat objekty, které mají díl TopoShape, jako jsou pri
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Poslat do konzoly Pythonu</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Odelat vybraný objekt do konzoly Pythonu</translation>
     </message>
@@ -11686,7 +11689,7 @@ Chcete dokument nyní uložit?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Skupina</translation>
     </message>
@@ -12154,17 +12157,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation>Rovina XY</translation>
+      <translation type="unfinished">XY-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation>Rovina XZ</translation>
+      <translation type="unfinished">XZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation>Rovina YZ</translation>
+      <translation type="unfinished">YZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12174,7 +12177,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation>Odsazení:</translation>
+      <translation type="unfinished">Offset:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -13681,6 +13684,19 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</translation>
     </message>
   </context>
 </TS>

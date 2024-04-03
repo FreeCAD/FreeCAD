@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cassert>
 
+#ifndef _PreComp_
 # include <QPainterPath>
 # include <QPainterPathStroker>
 #endif
@@ -34,7 +33,6 @@
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIEdge.h"
 #include "PreferencesGui.h"
@@ -50,6 +48,9 @@ QGIEdge::QGIEdge(int index) :
     isHiddenEdge(false),
     isSmoothEdge(false)
 {
+    setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
     m_width = 1.0;
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);

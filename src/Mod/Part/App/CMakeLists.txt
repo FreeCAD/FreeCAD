@@ -176,6 +176,8 @@ SET(Features_SRCS
     FeaturePartSection.h
     FeaturePartSpline.cpp
     FeaturePartSpline.h
+    FeatureProjectOnSurface.cpp
+    FeatureProjectOnSurface.h
     FeatureChamfer.cpp
     FeatureChamfer.h
     FeatureCompound.cpp
@@ -554,6 +556,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    WireJoiner.cpp
+    WireJoiner.h
 )
 
 if(FREECAD_USE_PCH)

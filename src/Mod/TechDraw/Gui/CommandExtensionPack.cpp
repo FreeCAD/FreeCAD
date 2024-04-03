@@ -2122,8 +2122,8 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 
         TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-        // start and end points are scaled and rotated. invert the points
-        // so the canonicalPoint math works correctly.
+        // start and end points are scaled,rotated and inverted (CSRIx). We need to
+        // uninvert the points so the canonicalPoint math works correctly.
         Base::Vector3d start0 = DU::invertY(line0->getStartPoint());
         Base::Vector3d end0 = DU::invertY(line0->getEndPoint());
         Base::Vector3d start1 = DU::invertY(line1->getStartPoint());
@@ -2133,11 +2133,6 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
         start1 = CosmeticVertex::makeCanonicalPoint(objFeat, start1);
         end0 = CosmeticVertex::makeCanonicalPoint(objFeat, end0);
         end1 = CosmeticVertex::makeCanonicalPoint(objFeat, end1);
-        // put the points back into weird Qt coord system.
-        start0 = DU::invertY(start0);
-        start1 = DU::invertY(start1);
-        end0 = DU::invertY(end0);
-        end1 = DU::invertY(end1);
         if (DrawUtil::circulation(start0, end0, start1)
             != DrawUtil::circulation(end0, end1, start1)) {
             Base::Vector3d help1 = start1;
@@ -2148,6 +2143,7 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
         float kernelDiam = (start1 - start0).Length();
         float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
         Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
+        // addCosmeticEdge(pt1, pt2) inverts the points before creating the edge
         std::string line0Tag =
             objFeat->addCosmeticEdge(start0 - delta, end0 - delta);
         std::string line1Tag =

@@ -646,13 +646,7 @@ bool Mesh2ShapeGmsh::loadOutput()
 TaskTessellation::TaskTessellation()
 {
     widget = new Tessellation();
-    Gui::TaskView::TaskBox* taskbox =
-        new Gui::TaskView::TaskBox(QPixmap() /*Gui::BitmapFactory().pixmap("MeshPart_Mesher")*/,
-                                   widget->windowTitle(),
-                                   true,
-                                   nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 void TaskTessellation::open()

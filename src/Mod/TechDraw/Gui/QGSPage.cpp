@@ -257,16 +257,6 @@ int QGSPage::addQView(QGIView* view)
         // Find if it belongs to a parent
         QGIView *parent = findParent(view);
         if (parent) {
-            auto parentDocObj = parent->getViewObject();
-            auto parentDPG = dynamic_cast<TechDraw::DrawProjGroup*>(parentDocObj);
-            if (parentDPG) {
-                // move the DPGI to the center of the DPG.  the DPGI must be placed in the
-                // correct position on the page before adding it to the DPG or it will be
-                // placed at scene(0,0).
-                QPointF posRef(0., 0.);
-                QPointF mapPos = view->mapToItem(parent, posRef);
-                view->moveBy(-mapPos.x(), -mapPos.y());
-            }
             parent->addToGroup(view);
         }
         view->setPos(viewPos);
@@ -403,6 +393,8 @@ QGIView* QGSPage::addViewPart(TechDraw::DrawViewPart* partFeat)
     viewPart->setViewPartFeature(partFeat);
 
     addQView(viewPart);
+    // we need to install an event filter for any views derived from DrawViewPart
+    viewPart->installSceneEventFilter(viewPart);
     return viewPart;
 }
 
@@ -413,6 +405,7 @@ QGIView* QGSPage::addViewSection(DrawViewSection* sectionFeat)
     viewSection->setViewPartFeature(sectionFeat);
 
     addQView(viewSection);
+    viewSection->installSceneEventFilter(viewSection);
     return viewSection;
 }
 
@@ -423,6 +416,8 @@ QGIView* QGSPage::addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat)
 
     qview->setViewFeature(projGroupFeat);
     addQView(qview);
+    qview->installSceneEventFilter(qview);
+
     return qview;
 }
 
@@ -744,24 +739,6 @@ QGIView* QGSPage::findParent(QGIView* view) const
         }
     }
 
-    // Check if part of view collection
-    for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        QGIViewCollection* grp = nullptr;
-        grp = dynamic_cast<QGIViewCollection*>(*it);
-        if (grp) {
-            TechDraw::DrawViewCollection* collection = nullptr;
-            collection = dynamic_cast<TechDraw::DrawViewCollection*>(grp->getViewObject());
-            if (collection) {
-                std::vector<App::DocumentObject*> objs = collection->Views.getValues();
-                for (std::vector<App::DocumentObject*>::iterator it = objs.begin();
-                     it != objs.end(); ++it) {
-                    if (strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
-
-                        return grp;
-                }
-            }
-        }
-    }
     // Not found a parent
     return nullptr;
 }

@@ -1564,7 +1564,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     QTreeWidget::mousePressEvent(event);
 
-    // Handle the visibility icon after the normal event processing to not interfer with
+    // Handle the visibility icon after the normal event processing to not interfere with
     // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
@@ -5050,7 +5050,7 @@ void DocumentObjectItem::restoreBackground() {
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
-    auto highlight = [=](const QColor& col) {
+    auto highlight = [this, set](const QColor& col) {
         if (set)
             this->setBackground(0, col);
         else
@@ -5127,6 +5127,17 @@ void DocumentObjectItem::testStatus(bool resetStatus)
     testStatus(resetStatus, icon, icon2);
 }
 
+namespace {
+enum Status {
+    Visible = 1 << 0,
+    Recompute = 1 << 1,
+    Error = 1 << 2,
+    Hidden = 1 << 3,
+    External = 1 << 4,
+    Freezed = 1 << 5
+};
+}
+
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
     App::DocumentObject* pObject = object()->getObject();
@@ -5166,8 +5177,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     bool freezed = pObject->isFreezed();
 
     int currentStatus =
-        ((freezed ? 0 : 1) << 5) |
-        ((external ? 0 : 1) << 4) |
+        ((freezed ? 1 : 0) << 5) |
+        ((external ? 1 : 0) << 4) |
         ((object()->showInTree() ? 0 : 1) << 3) |
         ((pObject->isError() ? 1 : 0) << 2) |
         ((pObject->isTouched() || pObject->mustExecute() == 1 ? 1 : 0) << 1) |
@@ -5183,7 +5194,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (isVisibilityIconEnabled() || (currentStatus & 1)) { // visible
+    if (isVisibilityIconEnabled() || (currentStatus & Status::Visible)) {
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5210,47 +5221,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     if (icon.isNull()) {
         Timing(getIcon);
         QPixmap px;
-        if (currentStatus & 4) {
+        if (currentStatus & Status::Error) {
             static QPixmap pxError;
             if (pxError.isNull()) {
                 // object is in error state
-                const char* const feature_error_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #ff0000",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "###aaa###",
-                    "###aaa###",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..." };
-                pxError = QPixmap(feature_error_xpm);
+                pxError = Gui::BitmapFactory().pixmapFromSvg("overlay_error", QSize(10, 10));
             }
             px = pxError;
         }
-        else if (currentStatus & 2) {
+        else if (currentStatus & Status::Recompute) {
             static QPixmap pxRecompute;
             if (pxRecompute.isNull()) {
                 // object must be recomputed
-                const char* const feature_recompute_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #0000ff",
-                    "a c #ffffff",
-                    "...###...",
-                    ".######aa",
-                    ".#####aa.",
-                    "#####aa##",
-                    "#aa#aa###",
-                    "#aaaa####",
-                    ".#aa####.",
-                    ".#######.",
-                    "...###..." };
-                pxRecompute = QPixmap(feature_recompute_xpm);
+                pxRecompute = Gui::BitmapFactory().pixmapFromSvg("overlay_recompute", QSize(10, 10));
             }
             px = pxRecompute;
         }
@@ -5280,73 +5263,30 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             pxOn = icon_org.pixmap(w, w, mode, QIcon::On);
         }
 
-        if (currentStatus & 8) {// hidden item
+        if (currentStatus & Status::Hidden) {
             static QPixmap pxHidden;
             if (pxHidden.isNull()) {
-                const char* const feature_hidden_xpm[] = {
-                    "9 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "...###...",
-                    "..#aaa#..",
-                    ".#a###a#.",
-                    "#aa###aa#",
-                    ".#a###a#.",
-                    "..#aaa#..",
-                    "...###..." };
-                pxHidden = QPixmap(feature_hidden_xpm);
+                pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10, 10));
             }
             pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
         }
 
-        if (external) {// external item
+        if (currentStatus & Status::External) {
             static QPixmap pxExternal;
             if (pxExternal.isNull()) {
-                const char* const feature_external_xpm[] = {
-                    "7 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "..###..",
-                    ".#aa##.",
-                    "..#aa##",
-                    "..##aa#",
-                    "..#aa##",
-                    ".#aa##.",
-                    "..###.." };
-                pxExternal = QPixmap(feature_external_xpm);
+                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
+                                                              QSize(24, 24));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
         }
 
-        if (freezed) {
+        if (currentStatus & Status::Freezed) {
             static QPixmap pxFreeze;
             if (pxFreeze.isNull()) {
                 // object is in freezed state
-                const char* const feature_freezed_xpm[] = {
-                                                           "16 16 2 1",
-                                                           " 	c None",
-                                                           ".	c #00EEFF",
-                                                           "      . . .     ",
-                                                           "    .  ...  .   ",
-                                                           "   ..   .   ..  ",
-                                                           "  ....  .  .... ",
-                                                           "     .. . ..    ",
-                                                           " .    . . .    .",
-                                                           "  .    ...    . ",
-                                                           " ...............",
-                                                           "  .    ...    . ",
-                                                           " .    . . .    .",
-                                                           "     .. . ..    ",
-                                                           "  ....  .  .... ",
-                                                           "   ..   .   ..  ",
-                                                           "    .  ...  .   ",
-                                                           "      . . .     ",
-                                                           "                "};
-                pxFreeze = QPixmap(feature_freezed_xpm);
+                pxFreeze = Gui::BitmapFactory().pixmapFromSvg("Std_ToggleFreeze", QSize(16, 16));
             }
             pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
@@ -5377,7 +5317,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
-                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
                 pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 

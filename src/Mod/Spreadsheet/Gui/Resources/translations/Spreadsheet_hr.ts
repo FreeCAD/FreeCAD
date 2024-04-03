@@ -355,13 +355,13 @@
       <location filename="../../SheetTableView.cpp" line="340"/>
       <location filename="../../SheetTableView.cpp" line="373"/>
       <source>Insert rows</source>
-      <translation>Umetni redove</translation>
+      <translation>Umetni retke</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="393"/>
       <location filename="../../SheetTableView.cpp" line="471"/>
       <source>Remove rows</source>
-      <translation>Ukloni redove</translation>
+      <translation>Ukloni retke</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="415"/>
@@ -959,8 +959,18 @@ Zadano: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
+      <source>Delimiter Character:</source>
       <translation>Znak za razgraničenje:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Znak navoda:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Znak za izlaz:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -973,19 +983,9 @@ Zadano: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Citat znak:</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak koji se koristi za razgraničenje nizova, obično je jednostruki navodnik (') ili dvostruki navodnik (&amp;quot;). Mora biti jedan znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape znak: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1012,18 +1012,18 @@ Zadano: %V = %A
       <location filename="../../SheetTableView.cpp" line="129"/>
       <source>Insert %n row(s) above</source>
       <translation>
-        <numerusform>Umetni %n red(ova) iznad</numerusform>
-        <numerusform>Umetni %n redova iznad</numerusform>
-        <numerusform>Umetanje %n redova iznad</numerusform>
+        <numerusform>Umetni %n redak(a) iznad</numerusform>
+        <numerusform>Umetni %n redaka iznad</numerusform>
+        <numerusform>Umetanje %n redaka iznad</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
       <translation>
-        <numerusform>Umetni %n red(ova) ispod</numerusform>
-        <numerusform>Umetni %n redova ispod</numerusform>
-        <numerusform>Umetanje %n redova ispod</numerusform>
+        <numerusform>Umetni %n redak(a) ispod</numerusform>
+        <numerusform>Umetni %n redaka ispod</numerusform>
+        <numerusform>Umetanje %n redaka ispod</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1039,9 +1039,9 @@ Zadano: %V = %A
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
       <translation>
-        <numerusform>Ukloni red(ove)</numerusform>
-        <numerusform>Ukloni redove</numerusform>
-        <numerusform>Uklanjanje redova</numerusform>
+        <numerusform>Ukloni redak</numerusform>
+        <numerusform>Ukloni retke</numerusform>
+        <numerusform>Uklanjanje redaka</numerusform>
       </translation>
     </message>
     <message numerus="yes">

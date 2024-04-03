@@ -60,7 +60,6 @@ public:
                      QPushButton* btnApply);
 
     void updateTask();
-    std::pair<int, int> nearestFraction(double val, long int maxDenom = 999) const;
     // Sets the numerator and denominator widgets to match newScale
     void setFractionalScale(double newScale);
     void setCreateMode(bool mode) { m_createMode = mode;}

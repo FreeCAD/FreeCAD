@@ -137,22 +137,22 @@
       <translation>Crea un gruppo di link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>Crea un collegamento</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>Crea un collegamento relativo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>Importa un collegamento</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>Importa tutti i collegamenti</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>Inserimento documento di testo</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Aggiungi parte</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Aggiungi gruppo</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>Posizionamento</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Trasforma</translation>
@@ -234,6 +234,11 @@
       <location filename="../CommandFeat.cpp" line="92"/>
       <source>Set Random Color</source>
       <translation>Imposta un colore casuale</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
     </message>
   </context>
   <context>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Espressione: </translation>
+      <source>Expression:</source>
+      <translation type="unfinished">Expression:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Si prega di attendere durante il salvataggio del file di recupero automatico...</translation>
     </message>
@@ -1272,16 +1277,17 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Ritardo sequenza pressione-multipla: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation type="unfinished">Multi-key sequence delay:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Tempo in millisecondi per attendere la prossima pressione del tasto della sequenza corrente.
-Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione del ritardo sarà considerata come sequenza di tasti scorciatoia 'F, F'.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
+For example, pressing 'F' twice in less than the time delay setting here will be
+treated as shortcut key sequence 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -2846,11 +2852,6 @@ lower right corner within opened files</source>
       <translation>Mostra il sistema di coordinate all'angolo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Dimensione relativa:   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2931,6 +2932,11 @@ possono essere visualizzati direttamente dalla GPU.
 Nota: a volte questa funzione può causare a una miriade di problemi
 diversi che vanno dalle anomalie grafiche ai bug crash della GPU. Ricordarsi di
 segnalare che questa impostazione è stata abilitata quando si cerca supporto sui forum di FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation type="unfinished">Relative size:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -4455,8 +4461,8 @@ orizzontale nella console di Python</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation type="unfinished">Python profiler interval (milliseconds): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -5951,7 +5957,7 @@ Si desidera salvare le modifiche?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Corrispondenza esatta</translation>
     </message>
@@ -5959,7 +5965,7 @@ Si desidera salvare le modifiche?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Corrispondenza esatta</translation>
     </message>
@@ -6125,15 +6131,15 @@ Si desidera salvare le modifiche?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Formato Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Esporta grafico</translation>
     </message>
@@ -7581,7 +7587,7 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>Rinomina</translation>
     </message>
@@ -7671,12 +7677,12 @@ Vuoi specificare un'altra cartella?</translation>
       <translation>Ricalcola l'oggetto selezionato</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (ma deve essere eseguito)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nome interno: %2</translation>
     </message>
@@ -7865,8 +7871,8 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation type="unfinished">5 m</translation>
     </message>
   </context>
   <context>
@@ -8061,8 +8067,8 @@ Vuoi specificare un'altra cartella?</translation>
       <translation>Esportazione PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Documento non salvato</translation>
     </message>
@@ -8355,8 +8361,8 @@ Vuoi continuare?</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>Notificato da:</translation>
+      <source>Notifier:</source>
+      <translation type="unfinished">Notifier:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8746,32 +8752,32 @@ Aprire una finestra browser e scrivere http://localhost:%1.</translation>
       <translation>Creazione del gruppo di collegamenti fallita</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>Creazione del collegamento fallita</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>Impossibile creare il collegamento relativo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>Scollegamento non riuscito</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>Sostituzione del collegamento fallita</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Impossibile importare i collegamenti</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Impossibile importare tutti i collegamenti</translation>
     </message>
@@ -8928,18 +8934,18 @@ la copia corrente andranno perse.
       <translation>Legenda dei colori</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation>Attiva/disattiva sovrapposizione</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Attiva/disattiva finestra fluttuante</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation>Chiudi finestra d'aggancio</translation>
     </message>
@@ -9720,12 +9726,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Crea gruppo</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
     </message>
@@ -9785,13 +9791,13 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>Azioni collegamenti</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>Azioni che si applicano agli oggetti collegati</translation>
     </message>
@@ -9799,12 +9805,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>Importa un collegamento</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>Importa i link esterni selezionati</translation>
     </message>
@@ -9812,12 +9818,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>Importa tutti i collegamenti</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>Importa tutti i link del documento attivo</translation>
     </message>
@@ -9830,9 +9836,9 @@ la copia corrente andranno perse.
       <translation>Crea un collegamento</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation>Un collegamento è un oggetto che fa riferimento o collega a un altro oggetto nello stesso documento o in un altro documento. A differenza dei cloni, i collegamenti fanno riferimento direttamente alla forma originale, rendendoli più efficienti in termini di memoria, il che aiuta nella creazione di assiemi complessi.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9851,12 +9857,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>Crea un collegamento relativo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Crea un sotto-oggetto o un collegamento al sotto-elemento</translation>
     </message>
@@ -9864,12 +9870,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>Sostituisci con il collegamento</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Sostituisce gli oggetti selezionati con un collegamento</translation>
     </message>
@@ -9877,13 +9883,13 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>Navigazione dei collegamenti</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>Azioni di navigazione dei collegamenti</translation>
     </message>
@@ -9891,12 +9897,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>Seleziona tutti i collegamenti</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>Seleziona tutti i link all'oggetto selezionato corrente</translation>
     </message>
@@ -9904,12 +9910,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>Vai all'oggetto collegato</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Seleziona l'oggetto collegato e passa al relativo documento proprietario</translation>
     </message>
@@ -9917,12 +9923,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>Vai all'oggetto collegato più profondo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Seleziona l'oggetto collegato più profondo e passa al suo documento proprietario</translation>
     </message>
@@ -9930,12 +9936,12 @@ la copia corrente andranno perse.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>Annulla il link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>Elimina il link e lo sostituisce con l'oggetto</translation>
     </message>
@@ -10078,8 +10084,8 @@ la copia corrente andranno perse.
       <translation>Crea un documento vuoto</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Senza nome</translation>
     </message>
@@ -10154,11 +10160,9 @@ la copia corrente andranno perse.
       <translation>Crea una parte</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>Una Parte è un contenitore per scopi generali che ha la funzione di tenere insieme un gruppo di oggetti in modo che fungano da unità nella vista 3D.
-Ha lo scopo di organizzare oggetti che hanno una Part TopoShape, tipo le Primitive Part, i Corpi PartDesign  e altre Parti.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10476,13 +10480,13 @@ Ha lo scopo di organizzare oggetti che hanno una Part TopoShape, tipo le Primiti
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Invia alla Console Python</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Invia l'oggetto selezionato alla console Python</translation>
     </message>
@@ -11691,7 +11695,7 @@ Vuoi salvare il documento ora?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Gruppo</translation>
     </message>
@@ -13681,6 +13685,19 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation>Mostra la vista proprietà, che visualizza le proprietà dell'oggetto selezionato.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</translation>
     </message>
   </context>
 </TS>

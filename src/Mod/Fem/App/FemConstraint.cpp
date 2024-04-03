@@ -430,7 +430,9 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
                 if (classifier.State() != TopAbs_OUT) {
                     points.emplace_back(p.X(), p.Y(), p.Z());
                     props.Normal(u, v, center, normal);
-                    normal.Normalize();
+                    if (normal.SquareMagnitude() > 0.0) {
+                        normal.Normalize();
+                    }
                     normals.emplace_back(normal.X(), normal.Y(), normal.Z());
                 }
             };

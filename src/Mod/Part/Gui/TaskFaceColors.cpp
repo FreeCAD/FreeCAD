@@ -451,10 +451,7 @@ void FaceColors::changeEvent(QEvent* e)
 TaskFaceColors::TaskFaceColors(ViewProviderPartExt* vp)
 {
     widget = new FaceColors(vp);
-    taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 TaskFaceColors::~TaskFaceColors() = default;

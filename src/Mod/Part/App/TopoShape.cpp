@@ -336,49 +336,19 @@ Data::Segment* TopoShape::getSubElement(const char* Type, unsigned long n) const
     return new ShapeSegment(getSubShape(temp.c_str()));
 }
 
-TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const
-{
-    auto res = shapeTypeAndIndex(Type);
-    return getSubShape(res.first,res.second,silent);
+// Type can be (should be?) a subshape name, not a type, E.G. Edge3
+TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const {
+    TopoShape s(*this);
+    s.Tag = 0;
+    return s.getSubTopoShape(Type,silent).getShape();
 }
 
-TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silent) const
-{
-    if(index <= 0) {
-        if(silent)
-            return {};
-        // TODO: Is this message clear?  Should we complain about the negative index instead
-        Standard_Failure::Raise("Unsupported sub-shape type");
-    }
-
-    if (this->_Shape.IsNull()) {
-        if(silent)
-            return {};
-        Standard_Failure::Raise("Cannot get sub-shape from empty shape");
-    }
-
-    try {
-        if(type == TopAbs_SHAPE) {
-            int i=1;
-            for(TopoDS_Iterator it(_Shape);it.More();it.Next(),++i) {
-                if(i == index)
-                    return it.Value();
-            }
-        } else {
-            TopTools_IndexedMapOfShape anIndices;
-            TopExp::MapShapes(this->_Shape, type, anIndices);
-            if(index <= anIndices.Extent())
-                return anIndices.FindKey(index);
-        }
-    } catch(Standard_Failure &) {
-        if(silent)
-            return {};
-        throw;
-    }
-    if(!silent)
-        Standard_Failure::Raise("Index out of bound");
-    return {};
+TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int idx, bool silent) const {
+    TopoShape s(*this);
+    s.Tag = 0;
+    return s.getSubTopoShape(type,idx,silent).getShape();
 }
+
 
 unsigned long TopoShape::countSubShapes(const char* Type) const
 {
@@ -609,6 +579,14 @@ void TopoShape::setPyObject(PyObject* obj)
         throw Base::TypeError(error);
     }
 }
+
+//void TopoShape::operator = (const TopoShape& sh)
+//{
+//    if (this != &sh) {
+//        this->Tag = sh.Tag;
+//        this->_Shape = sh._Shape;
+//    }
+//}
 
 void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {

@@ -105,7 +105,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
     QObject::connect(ui->shortcutTimeout, qOverload<int>(&QSpinBox::valueChanged), timer, [=](int) {
         timer->start(100);
     });
-    QObject::connect(timer, &QTimer::timeout, [=]() {
+    QObject::connect(timer, &QTimer::timeout, [this]() {
         ui->shortcutTimeout->onSave();
     });
 }

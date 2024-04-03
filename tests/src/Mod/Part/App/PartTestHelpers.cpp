@@ -111,6 +111,8 @@ CreateFaceWithRoundHole(float len, float wid, float radius)
     auto edge5 = BRepBuilderAPI_MakeEdge(circ1).Edge();
     auto wire2 = BRepBuilderAPI_MakeWire(edge5).Wire();
     auto face2 = BRepBuilderAPI_MakeFace(face1, wire2).Face();
+    // Beware:  somewhat counterintuitively, face2 is the sum of face1 and the area inside wire2,
+    // not the difference.
     return {face2, wire1, wire2};
 }
 
@@ -173,9 +175,17 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
             if (std::find_if(elements.begin(),
                              elements.end(),
                              [&, name](const Data::MappedElement& element) {
-                                 return matchStringsWithoutClause(element.name.toString(),
-                                                                  name,
-                                                                  ";D[a-fA-F0-9]+");
+                                 return matchStringsWithoutClause(
+                                     element.name.toString(),
+                                     name,
+                                     "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?");
+                                 // ;D ;:H and ;K are the sections of an encoded name for
+                                 // Duplicate, Tag and a Face name in slices.  All three of these
+                                 // can vary from run to run or platform to platform, as they are
+                                 // based on either explicit random numbers or memory addresses.
+                                 // Thus we remove the value from comparisons and just check that
+                                 // they exist.  The full form could be something like ;:He59:53
+                                 // which is what we match and remove.
                              })
                 == elements.end()) {
                 return testing::AssertionFailure() << mappedElementVectorToString(elements);

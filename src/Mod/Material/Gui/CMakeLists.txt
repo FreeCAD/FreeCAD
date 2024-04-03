@@ -121,7 +121,7 @@ SET(MatGuiImages
     Resources/images/default_image.png
 )
 
-add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})
+add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages})
 target_link_libraries(MatGui ${MatGui_LIBS})
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)

@@ -75,6 +75,7 @@ public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
 
 private:
+    void saveUnitSystemSettings();
     void saveDockWindowVisibility();
     void loadDockWindowVisibility();
     void setRecentFileSize();

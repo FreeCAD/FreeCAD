@@ -296,11 +296,7 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
 {
     widget = new ThicknessWidget(offset);
     widget->setWindowTitle(ThicknessWidget::tr("Thickness"));
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Thickness"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Thickness"), widget);
 }
 
 Part::Thickness* TaskThickness::getObject() const

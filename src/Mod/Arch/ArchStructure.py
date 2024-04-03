@@ -325,6 +325,7 @@ class _CommandStructure:
             title=translate("Arch","First point of the beam")+":"
         else:
             title=translate("Arch","Base point of column")+":"
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
 
     def getPoint(self,point=None,obj=None):
@@ -334,12 +335,16 @@ class _CommandStructure:
         self.bmode = self.modeb.isChecked()
         if point is None:
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         if self.bmode and (self.bpoint is None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         horiz = True # determines the type of rotation to apply to the final object
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")

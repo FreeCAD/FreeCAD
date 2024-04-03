@@ -279,7 +279,7 @@ class _ArchPipe(ArchComponent.Component):
                 sh = shapes[0]
             else:
                 sh = Part.makeCompound(shapes)
-            obj.Shape = sh
+            obj.Shape = self.processSubShapes(obj,sh,pl)
             if obj.Base:
                 obj.Length = w.Length
             else:

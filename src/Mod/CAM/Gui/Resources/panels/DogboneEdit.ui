@@ -104,7 +104,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="incisionLabel">
          <property name="text">
-          <string>Incision          </string>
+          <string>Incision</string>
          </property>
         </widget>
        </item>

@@ -195,7 +195,7 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
 
 void DlgSettingsColorGradientImp::setRange(float fMin, float fMax)
 {
-    auto toString = [=](float value, int decimals) {
+    auto toString = [this](float value, int decimals) {
         int pos = 0;
         while (decimals > 0) {
             QString str = QLocale().toString(value, 'g', decimals--);

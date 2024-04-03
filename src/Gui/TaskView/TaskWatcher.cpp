@@ -58,6 +58,30 @@ TaskWatcher::~TaskWatcher()
 
 //==== implementer ===========================================================================
 
+QWidget* TaskWatcher::addTaskBox(QWidget* widget, bool expandable, QWidget* parent)
+{
+    return addTaskBox(QPixmap(), widget, expandable, parent);
+}
+
+QWidget* TaskWatcher::addTaskBox(const QPixmap& icon,
+                                 QWidget* widget,
+                                 bool expandable,
+                                 QWidget* parent)
+{
+    auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+    return taskbox;
+}
+
+QWidget* TaskWatcher::addTaskBoxWithoutHeader(QWidget* widget)
+{
+    auto taskbox = new Gui::TaskView::TaskBox();
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+    return taskbox;
+}
+
 std::vector<QWidget*> &TaskWatcher::getWatcherContent()
 {
     return Content;

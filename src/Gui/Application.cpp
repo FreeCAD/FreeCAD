@@ -1270,6 +1270,10 @@ void Application::viewActivated(MDIView* pcView)
 #endif
 
     signalActivateView(pcView);
+    getMainWindow()->setWindowTitle(pcView->buildWindowTitle());
+    if (auto document = pcView->getGuiDocument()) {
+        getMainWindow()->setWindowModified(document->isModified());
+    }
 
     // Set the new active document which is taken of the activated view. If, however,
     // this view is passive we let the currently active document unchanged as we would

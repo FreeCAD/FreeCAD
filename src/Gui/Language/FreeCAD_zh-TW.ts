@@ -137,22 +137,22 @@
       <translation>建立鏈結群組</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>建立鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>建立子鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>匯入鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>匯入所有鏈結</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>插入文字文件</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>新增部件</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>新增群組</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>佈置</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>轉換</translation>
@@ -233,7 +233,12 @@
     <message>
       <location filename="../CommandFeat.cpp" line="92"/>
       <source>Set Random Color</source>
-      <translation type="unfinished">Set Random Color</translation>
+      <translation>使用隨機色彩</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
     </message>
   </context>
   <context>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>表示式： </translation>
+      <source>Expression:</source>
+      <translation type="unfinished">Expression:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>自動修復檔儲存中，請稍候</translation>
     </message>
@@ -1272,16 +1277,17 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>多重按鍵順序延遲： </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation type="unfinished">Multi-key sequence delay:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>等待當前按鍵序列的下一個鍵盤按鍵的時間，以毫秒 (ms) 為單位。
-例如，在設定的時間延遲內快速按兩次 'F' 將被視為快捷鍵序列 'F, F'。</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
+For example, pressing 'F' twice in less than the time delay setting here will be
+treated as shortcut key sequence 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -2461,7 +2467,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="543"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>重設頁面'%1'的使用者設定</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="546"/>
@@ -2471,7 +2477,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="549"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>重設頁面'%1'的使用者設定</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="552"/>
@@ -2481,7 +2487,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="555"/>
       <source>Resets the user settings entirely</source>
-      <translation type="unfinished">Resets the user settings entirely</translation>
+      <translation>完全重設使用者設定</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="571"/>
@@ -2843,11 +2849,6 @@ lower right corner within opened files</source>
       <translation>在角落顯示座標系統</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>相對大小：   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2924,14 +2925,19 @@ VBO 能夠提供顯著的性能提升，因為數據存儲在顯示卡記憶體�
 注意：有時，此功能可能會導致各種不同的問題，從圖形異常到GPU崩潰錯誤。在FreeCAD論壇尋求支援時，請記住報告此設置已啟用。</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation type="unfinished">Relative size:</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
       <source>Letter color:</source>
-      <translation type="unfinished">Letter color:</translation>
+      <translation>字體顏色：</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="106"/>
       <source>Axis letter color</source>
-      <translation type="unfinished">Axis letter color</translation>
+      <translation>軸字體顏色</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="232"/>
@@ -4120,12 +4126,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Opacity when inactive</source>
-      <translation type="unfinished">Opacity when inactive</translation>
+      <translation>非啟用時爲不透明</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="221"/>
       <source>Opacity of the navigation cube when not focused</source>
-      <translation type="unfinished">Opacity of the navigation cube when not focused</translation>
+      <translation>導覽方塊不在焦點時顯示爲不透明</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="246"/>
@@ -4275,12 +4281,12 @@ The value is the diameter of the sphere to fit on the screen.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="802"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>拖曳時於某些導航樣式中啟用旋轉動畫</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="805"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>啟用旋轉動畫</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
@@ -4439,8 +4445,8 @@ horizontal space in Python console</source>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation>Python性能分析器間隔（毫秒）： </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -5933,7 +5939,7 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>完全符合</translation>
     </message>
@@ -5941,7 +5947,7 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>完全符合</translation>
     </message>
@@ -6107,15 +6113,15 @@ Do you want to save your changes?</source>
       <translation>PDF 格式</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz 格式</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>匯出圖形</translation>
     </message>
@@ -7557,7 +7563,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>重新命名</translation>
     </message>
@@ -7647,12 +7653,12 @@ Do you want to specify another directory?</source>
       <translation>重新計算所選的物件</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (但是必須被執行)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1，內部名稱：%2</translation>
     </message>
@@ -7841,8 +7847,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m</translation>
+      <source>5 m</source>
+      <translation type="unfinished">5 m</translation>
     </message>
   </context>
   <context>
@@ -8037,8 +8043,8 @@ Do you want to specify another directory?</source>
       <translation>匯出 PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
@@ -8328,8 +8334,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>通知人: </translation>
+      <source>Notifier:</source>
+      <translation type="unfinished">Notifier:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8713,32 +8719,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>建立鏈結群組失敗</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>建立連結失敗</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>無法建立相對連結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>斷開鏈結失敗</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>取代連結失敗</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>匯入鏈結失敗</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>匯入所有鏈結失敗</translation>
     </message>
@@ -8891,18 +8897,18 @@ the current copy will be lost.
       <translation>顏色圖例</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation>切換重疊視圖</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation>關閉停靠視窗</translation>
     </message>
@@ -9683,12 +9689,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>建立群組</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>群組(Group) 是一個通用容器，用於在樹狀檢視中將物件分組，不管它們的資料類型如何。它是一個簡單的文件夾，用於組織模型中的物件。</translation>
     </message>
@@ -9748,13 +9754,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>連結動作</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>適用於鏈接物件的操作</translation>
     </message>
@@ -9762,12 +9768,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>匯入鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>匯入被擇擇之外部鏈結</translation>
     </message>
@@ -9775,12 +9781,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>匯入所有鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>匯入作業中文件的所有連結</translation>
     </message>
@@ -9793,9 +9799,9 @@ the current copy will be lost.
       <translation>建立鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation>鏈結 (Link) 是一種對同一文件或另一文件中的其它物件進行引用或連接的物件。與克隆不同，鏈結直接引用原始形狀，使其在記憶體使用上更有效率，有助於創建複雜的組件。</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9814,12 +9820,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>建立子鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>建立一個子物件或子元件鏈結</translation>
     </message>
@@ -9827,12 +9833,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>以鏈結取代</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>使用鏈結取代選取的物件</translation>
     </message>
@@ -9840,13 +9846,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>鏈結導覽</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>鏈結導覽動作</translation>
     </message>
@@ -9854,12 +9860,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>選擇所有鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>選擇到當前所選物件的所有鏈結</translation>
     </message>
@@ -9867,12 +9873,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>轉到連結物件</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>選擇鏈結物件並切換到其所有人文件</translation>
     </message>
@@ -9880,12 +9886,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>前往最深層的鏈結物件</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>選擇最深層的鏈結物件並切換到其所有人文件</translation>
     </message>
@@ -9893,12 +9899,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>斷開鏈結</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>在鏈結層剝除</translation>
     </message>
@@ -10041,8 +10047,8 @@ the current copy will be lost.
       <translation>建立一個新的空白檔案</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
@@ -10117,11 +10123,9 @@ the current copy will be lost.
       <translation>建立零件</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>一個零件(Part) 是一個通用容器，用於將一組物件集合在一起，以便它們在 3D 視圖中作為一個單元操作。
-它旨在安排具有 Part TopoShape 的物件，例如 Part 基本物件、PartDesign 實體和其它零件。</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10439,13 +10443,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>發送到 Python 主控台(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>將所選物件發送到 Python 主控台</translation>
     </message>
@@ -11654,7 +11658,7 @@ Do you want to save the document now?</source>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>群組</translation>
     </message>
@@ -12121,17 +12125,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation>XY-平面</translation>
+      <translation type="unfinished">XY-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation>XZ-平面</translation>
+      <translation type="unfinished">XZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation>YZ-平面</translation>
+      <translation type="unfinished">YZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12141,7 +12145,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation>偏移：</translation>
+      <translation type="unfinished">Offset:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -13637,6 +13641,19 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</translation>
     </message>
   </context>
 </TS>

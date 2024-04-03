@@ -949,8 +949,18 @@ Standard: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Trennzeichen: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Trennzeichen:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Anführungszeichen:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Escape-Zeichen:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -963,19 +973,9 @@ Standard: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Anführungszeichen: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zeichen, das verwendet wird, um Zeichenketten abzugrenzen, typischerweise ein einfaches Anführungszeichen (') oder ein doppeltes Anführungszeichen (&amp;quot;). Muss ein einzelnes Zeichen sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape-Zeichen: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>

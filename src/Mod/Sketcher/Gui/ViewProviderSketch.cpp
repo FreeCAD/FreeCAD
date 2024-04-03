@@ -1731,6 +1731,18 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
     // with memory allocation
     const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
 
+    // lambda to finalize the move
+    auto cleanAndDraw = [this, geomlist](){
+        // delete the cloned objects
+        for (Part::Geometry* geomPtr : geomlist) {
+            if (geomPtr) {
+                delete geomPtr;
+            }
+        }
+
+        draw(true, false);
+    };
+
 #ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
@@ -1806,23 +1818,33 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
-                p1 = center;
+                double startangle, endangle;
+                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
-                double angle = Constr->LabelPosition;
-                if (angle == 10) {
-                    double startangle, endangle;
-                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-                    angle = (startangle + endangle) / 2;
+                if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
+                    //arc length
+                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
+                    Constr->LabelDistance = dir.Length();
+
+                    cleanAndDraw();
+                    return;
                 }
                 else {
-                    Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                    angle = atan2(tmpDir.y, tmpDir.x);
+                    // radius and diameter
+                    p1 = center;
+                    double angle = Constr->LabelPosition;
+                    if (angle == 10) {
+                        angle = (startangle + endangle) / 2;
+                    }
+                    else {
+                        Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
+                        angle = atan2(tmpDir.y, tmpDir.x);
+                    }
+                    if (Constr->Type == Sketcher::Diameter)
+                        p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+
+                    p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
-
-                if (Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
-
-                p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
             }
             else if (geo->is<Part::GeomCircle>()) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
@@ -1863,7 +1885,6 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         }
         else
             return;
-
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
@@ -1893,14 +1914,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    // delete the cloned objects
-    for (Part::Geometry* geomPtr : geomlist) {
-        if (geomPtr) {
-            delete geomPtr;
-        }
-    }
-
-    draw(true, false);
+    cleanAndDraw();
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
@@ -1961,7 +1975,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             if (reverse) {
                 obj->reverseAngleConstraintToSupplementary(constr, constNum);
 
-                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                ap3 = intersection + dir1 - dir2; //- dir2 instead of std::swap(dir1, dir2) and dir1 = -dir1
                 sign1 = isLeftOfLine(p11, p12, ap3);
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
@@ -3140,13 +3154,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
             QString::fromUtf8("conflicting_constraints"),
-            tr("Over-constrained: "),
+            tr("Over-constrained:") + QLatin1String(" "),
             QString::fromUtf8("#conflicting"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
         signalSetUp(QString::fromUtf8("malformed_constraints"),
-                    tr("Malformed constraints: "),
+                    tr("Malformed constraints:") + QLatin1String(" "),
                     QString::fromUtf8("#malformed"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
@@ -3154,13 +3168,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (hasRedundancies) {
         signalSetUp(
             QString::fromUtf8("redundant_constraints"),
-            tr("Redundant constraints:"),
+            tr("Redundant constraints:") + QLatin1String(" "),
             QString::fromUtf8("#redundant"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
-                    tr("Partially redundant:"),
+                    tr("Partially redundant:") + QLatin1String(" "),
                     QString::fromUtf8("#partiallyredundant"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
@@ -3173,7 +3187,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:"),
+                    tr("Under constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
@@ -3618,23 +3632,7 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
     QIcon mergedicon = orig;
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
-        QPixmap px;
-
-        static const char* const sketcher_notfullyconstrained_xpm[] = {"9 9 3 1",
-                                                                       ". c None",
-                                                                       "# c #dbaf00",
-                                                                       "a c #ffcc00",
-                                                                       "##.....##",
-                                                                       "#a#...#a#",
-                                                                       "#aa#.#aa#",
-                                                                       ".#a#.#a#.",
-                                                                       ".#a#.#a#.",
-                                                                       ".#a#.#a#.",
-                                                                       "#aa#.#aa#",
-                                                                       "#a#...#a#",
-                                                                       "##.....##"};
-        px = QPixmap(sketcher_notfullyconstrained_xpm);
-
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(
             mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
     }
@@ -4068,7 +4066,8 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainEqual";
             }
             else if (selectedConics == 1 && selectedLines == 1) {
-                menu << "Sketcher_ConstrainTangent";
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
             }
         }
         else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
@@ -4161,7 +4160,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_ToggleConstruction"
              << "Separator"
-             << "Sketcher_CreatePointFillet"
+             << "Sketcher_CreateFillet"
+             << "Sketcher_CreateChamfer"
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"

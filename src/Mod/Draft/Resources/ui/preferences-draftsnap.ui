@@ -517,10 +517,10 @@ These lines are thicker than normal grid lines.</string>
         <property name="toolTip">
          <string>This is a delay during which the mouse is inactive, after entering
 numbers manually in any of the coordinate fields. Setting this
-to 0 disables the delay. If a delay of 1 is set, after enterting a numeric
+to 0 disables the delay. If a delay of 1 is set, after entering a numeric
 value, the mouse will not update the field anymore during one
-second, to avoid moving the mouse accidentally and modify the
-entered value. If you use a very large value, for ex. 3600, mouse
+second, to avoid moving the mouse accidentally and modifying the
+entered value. If you use a very large value, e.g. 3600, the mouse
 movement will be disabled until the command finishes.</string>
         </property>
         <property name="suffix">

@@ -38,7 +38,7 @@ else:
 
 
 def generate(
-    edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False
+    edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False, feedRetract=False
 ):
     """
     Generates Gcode for drilling a single hole.
@@ -59,6 +59,11 @@ def generate(
     full retracts to clear chips from the hole.
     http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g73
 
+    If feedRetract is True, the generator will produce G85 cycles which retract
+    the tool at the specified feed rate instead of performing a rapid move.
+    This is useful for boring or reaming operations. Peck or dwell cannot be used with feed retract.
+    http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g85
+
     """
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
@@ -72,6 +77,12 @@ def generate(
 
     if dwelltime > 0.0 and peckdepth > 0.0:
         raise ValueError("Peck and Dwell cannot be used together")
+
+    if dwelltime > 0.0 and feedRetract:
+        raise ValueError("Dwell and feed retract cannot be used together")
+
+    if peckdepth > 0.0 and feedRetract:
+        raise ValueError("Peck and feed retract cannot be used together")
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")
@@ -112,7 +123,9 @@ def generate(
     if repeat > 1:
         cmdParams["L"] = repeat
 
-    if peckdepth == 0.0:
+    if feedRetract:
+        cmd = "G85"
+    elif peckdepth == 0.0:
         if dwelltime > 0.0:
             cmd = "G82"
             cmdParams["P"] = dwelltime

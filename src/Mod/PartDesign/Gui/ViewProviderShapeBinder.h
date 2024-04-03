@@ -78,7 +78,7 @@ public:
 private:
     enum {
         Synchronize = 0,
-        SelectObject = 1
+        SelectObject = 4  // must be higher than 3 (EditMode::Color)
     };
     void updatePlacement(bool transaction);
 };

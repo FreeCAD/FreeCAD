@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>669</height>
+    <width>707</width>
+    <height>728</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>424</width>
-        <height>268</height>
+        <width>681</width>
+        <height>370</height>
        </rect>
       </property>
       <attribute name="label">
@@ -146,8 +146,8 @@ If left empty no template will be preselected.</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>424</width>
-        <height>432</height>
+        <width>681</width>
+        <height>518</height>
        </rect>
       </property>
       <attribute name="label">
@@ -285,7 +285,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Post Processors Selection </string>
+             <string>Post Processors Selection</string>
             </property>
            </widget>
           </item>
@@ -312,10 +312,10 @@ See the file save policy below on how to deal with name conflicts.</string>
              <string>Select one of the post processors as the default.</string>
             </property>
             <property name="prefEntry" stdset="0">
-             <string>DefaultPostProcessor</string>
+             <string notr="true">DefaultPostProcessor</string>
             </property>
             <property name="prefPath" stdset="0">
-             <string>Mod/CAM</string>
+             <string notr="true">Mod/CAM</string>
             </property>
            </widget>
           </item>
@@ -362,8 +362,8 @@ See the file save policy below on how to deal with name conflicts.</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>411</width>
-        <height>527</height>
+        <width>662</width>
+        <height>755</height>
        </rect>
       </property>
       <attribute name="label">
@@ -639,8 +639,8 @@ See the file save policy below on how to deal with name conflicts.</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>424</width>
-        <height>200</height>
+        <width>681</width>
+        <height>171</height>
        </rect>
       </property>
       <attribute name="label">
@@ -652,7 +652,7 @@ See the file save policy below on how to deal with name conflicts.</string>
          <property name="toolTip">
           <string>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
-Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. </string>
+Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</string>
          </property>
          <property name="text">
           <string>Store Absolute Paths</string>

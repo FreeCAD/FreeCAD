@@ -117,11 +117,12 @@ public:
       */
     //@{
     enum AntiAliasing {
-        None,
-        Smoothing,
-        MSAA2x,
-        MSAA4x,
-        MSAA8x
+        None = 0,
+        Smoothing = 1,
+        MSAA2x = 2,
+        MSAA4x = 3,
+        MSAA6x = 5,
+        MSAA8x = 4
     };
     //@}
 

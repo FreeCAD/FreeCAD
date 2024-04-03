@@ -349,6 +349,7 @@ class _CommandWall:
             import WorkingPlane
             self.wp = WorkingPlane.get_working_plane()
             self.tracker = DraftTrackers.boxTracker()
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,
                                         extradlg=self.taskbox(),
                                         title=translate("Arch","First point of wall")+":")
@@ -373,6 +374,8 @@ class _CommandWall:
                     self.existing.append(obj)
         if point is None:
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -390,6 +393,8 @@ class _CommandWall:
             l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
                                  self.wp.get_local_coords(self.points[1]))
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')
@@ -1205,7 +1210,10 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
+            import DraftGeomUtils
+            normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
+            if normal == None:
+                normal = Vector(0,0,1)
         else:
             normal = Vector(obj.Normal)
         base = None
@@ -1270,7 +1278,10 @@ class _Wall(ArchComponent.Component):
 
                     # If the object is a single edge, use that as the
                     # basewires.
-                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
+
+                    # TODO 2023.11.26: Need to check if it isn't Sketch after all first
+                    # or use algorithm for Sketch altogether?
+
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 

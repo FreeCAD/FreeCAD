@@ -213,6 +213,8 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderProjectOnSurface.cpp
+    ViewProviderProjectOnSurface.h
     ViewProviderRuledSurface.cpp
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp

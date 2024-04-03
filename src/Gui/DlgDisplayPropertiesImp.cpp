@@ -627,9 +627,7 @@ TaskDisplayProperties::TaskDisplayProperties()
 {
     this->setButtonPosition(TaskDisplayProperties::North);
     widget = new DlgDisplayPropertiesImp(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 TaskDisplayProperties::~TaskDisplayProperties() = default;

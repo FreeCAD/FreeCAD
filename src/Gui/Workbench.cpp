@@ -538,6 +538,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Workbench");
     qApp->translate("Workbench", "Structure");
     qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Individual views");
     qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
@@ -661,7 +662,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     stdviews->setCommand("Standard views");
     *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
-              << "Std_ViewRight" << "Separator" << "Std_ViewRear"
+              << "Std_ViewRight" << "Std_ViewRear"
               << "Std_ViewBottom" << "Std_ViewLeft"
               << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight"
               << "Separator" << "Std_StoreWorkingView" << "Std_RecallWorkingView";
@@ -702,6 +703,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ToggleNavigation"
           << "Std_SetAppearance"
           << "Std_RandomColor"
+          << "Std_ToggleTransparency"
           << "Separator"
           << "Std_Workbench"
           << "Std_ToolBarMenu"
@@ -710,7 +712,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
         *view << "Std_DockOverlay";
     }
     *view << "Separator"
-          << "Std_ToggleTransparency"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
@@ -790,12 +791,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     edit->setCommand("Edit");
     *edit << "Std_Undo" << "Std_Redo"
           << "Separator" << "Std_Refresh";
-    
+
     // Clipboard
     auto clipboard = new ToolBarItem( root , ToolBarItem::DefaultVisibility::Hidden );
     clipboard->setCommand("Clipboard");
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
-    
+
     // Workbench switcher
     if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
         auto wb = new ToolBarItem(root);
@@ -812,11 +813,20 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     auto view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
-          << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
-          << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup"
           << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
           << "Separator" << "Std_MeasureDistance";
+
+    // Individual views
+    auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
+    individualViews->setCommand("Individual views");
+    *individualViews << "Std_ViewIsometric"
+                     << "Std_ViewFront"
+                     << "Std_ViewTop"
+                     << "Std_ViewRight"
+                     << "Std_ViewRear"
+                     << "Std_ViewBottom"
+                     << "Std_ViewLeft";
 
     // Structure
     auto structure = new ToolBarItem( root );
@@ -827,7 +837,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto help = new ToolBarItem( root );
     help->setCommand("Help");
     *help << "Std_WhatsThis";
-    
+
     return root;
 }
 
@@ -839,7 +849,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("Standard views");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
-          << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
+          << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop"
           << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
 
     // Special Ops
