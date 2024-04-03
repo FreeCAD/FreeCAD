@@ -10,6 +10,7 @@
 
 #include "AngleZIecJec.h"
 #include "Numeric.h"
+#include <iostream>
 
 using namespace MbD;
 
@@ -30,6 +31,8 @@ void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 	auto sumOfSquaresSquared = sumOfSquares * sumOfSquares;
 	auto thez0to2pi = Numeric::arcTan0to2piYoverX(sthez, cthez);
 	thez = std::round((thez - thez0to2pi) / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
+	//std::cout << "AngleZIecJec thez = " << thez << std::endl;
+
 	cosOverSSq = cthez / sumOfSquares;
 	sinOverSSq = sthez / sumOfSquares;
 	twoCosSinOverSSqSq = 2.0 * cthez * sthez / sumOfSquaresSquared;

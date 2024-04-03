@@ -14,7 +14,7 @@ std::shared_ptr<TranslationLimitIJ> MbD::TranslationLimitIJ::With()
 void MbD::TranslationLimitIJ::initializeGlobally()
 {
 	if (constraints->empty()) {
-		auto transConIJ = TranslationConstraintIJ::With(frmJ, frmI, 2);
+		auto transConIJ = TranslationConstraintIJ::With(frmI, frmJ, 2);
 		transConIJ->setConstant(limit);
 		addConstraint(transConIJ);
 		this->root()->hasChanged = true;

@@ -42,6 +42,7 @@ namespace MbD {
 		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
 		static void runFile(const char* chars);
 		static void runDraggingTest();
+		static void runDraggingTest2();
 		static void readWriteFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
