@@ -84,7 +84,7 @@ DimensionGeometryType getGeometryConfiguration3d(DrawViewPart* dvp,
 
 GeomCountMap loadRequiredCounts(StringVector& acceptableGeometry,
                                                std::vector<int>& minimumCouts);
-bool checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts);
+bool checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts);
 
 DimensionGeometryType isValidVertexes(ReferenceVector refs);
 DimensionGeometryType isValidMultiEdge(ReferenceVector refs);
