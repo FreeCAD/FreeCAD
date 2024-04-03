@@ -24,6 +24,7 @@
 #define PART_GEOMETRY_H
 
 #include <Adaptor3d_Curve.hxx>
+#include <Approx_ParametrizationType.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -339,7 +340,15 @@ public:
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
     void increaseDegree(int degree);
-    bool approximate(double tol3d, int maxSegments, int maxDegree, int continuity);
+    void approximate(double tol3d, int maxSegments, int maxDegree, GeomAbs_Shape continuity);
+    void approximate(const std::vector<Base::Vector3d>& pnts, int minDegree = 3, int maxDegree = 8,
+                     GeomAbs_Shape continuity = GeomAbs_C2, double tol3d = 1.0e-3);
+    void approximate(const std::vector<Base::Vector3d>& pnts, Approx_ParametrizationType parType,
+                     int minDegree = 3, int maxDegree = 8,
+                     GeomAbs_Shape continuity = GeomAbs_C2, double tol3d = 1.0e-3);
+    void approximate(const std::vector<Base::Vector3d>& pnts,
+                     double weight1, double weight2, double weight3, int maxDegree = 8,
+                     GeomAbs_Shape continuity = GeomAbs_C2, double tol3d = 1.0e-3);
 
     void increaseMultiplicity(int index, int multiplicity);
     void insertKnot(double param, int multiplicity);
@@ -353,7 +362,7 @@ public:
     void Save(Base::Writer &/*writer*/) const override;
     void Restore(Base::XMLReader &/*reader*/) override;
     // Base implementer ----------------------------
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     bool isSame(const Geometry &other, double tol, double atol) const override;
 

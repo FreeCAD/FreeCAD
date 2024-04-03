@@ -6508,9 +6508,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         int maxdegree = cdegree - degreedecrement;
         if (maxdegree == 0)
             return false;
-        bool ok = bspline->approximate(Precision::Confusion(), 20, maxdegree, 0);
-        if (!ok)
-            return false;
+        bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
