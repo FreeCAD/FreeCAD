@@ -132,7 +132,7 @@ def get_pynastran_mesh(
     # print(pynas_nodes)
 
     # elements
-    # Nastran seams to have the same node order as SMESH (FreeCAD) has
+    # Nastran seems to have the same node order as SMESH (FreeCAD) has
     # thus just write the nodes at once
     pynas_elements = "# elements cards\n"
     for element in femelement_table:
