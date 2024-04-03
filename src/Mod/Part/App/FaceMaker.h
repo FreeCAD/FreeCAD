@@ -51,11 +51,11 @@ namespace Part
 class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseClass
 {
     Q_DECLARE_TR_FUNCTIONS(FaceMaker)
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     FaceMaker() {}
-    virtual ~FaceMaker() {}
+    ~FaceMaker() override {}
 
     void addTopoShape(const TopoShape &s);
     void useTopoCompound(const TopoShape &comp);
@@ -90,7 +90,7 @@ public:
 #if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
 #else
-    virtual void Build();
+    void Build() override;
 #endif
 
     //fails to compile, huh!
@@ -132,7 +132,7 @@ protected:
  */
 class PartExport FaceMakerPublic : public FaceMaker
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual std::string getUserFriendlyName() const = 0;
     virtual std::string getBriefExplanation() const = 0;

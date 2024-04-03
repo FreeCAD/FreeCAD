@@ -1186,6 +1186,7 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
 
 bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 {
+    (void)container;
 #ifdef FC_USE_TNP_FIX
     return false;
 #else

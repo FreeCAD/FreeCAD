@@ -238,7 +238,7 @@ void WorkbenchTabWidget::buildPrefMenu()
     menu->addSeparator();
 
     QAction* preferencesAction = menu->addAction(tr("Preferences"));
-    connect(preferencesAction, &QAction::triggered, this, [this]() {
+    connect(preferencesAction, &QAction::triggered, this, []() {
         Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
         cDlg.activateGroupPage(QString::fromUtf8("Workbenches"), 0);
         cDlg.exec();
