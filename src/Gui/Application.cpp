@@ -803,8 +803,7 @@ void Application::createStandardOperations()
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 {
 #ifdef FC_DEBUG
-    std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
-    assert(it==d->documents.end());
+    assert(d->documents.find(&Doc) == d->documents.end());
 #endif
     auto pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;

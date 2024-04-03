@@ -249,7 +249,7 @@ private:
                 Obj->getSymmetric(listOfGeoIds, dummy1, dummy2, refGeoId, refPosId);
 
             for (auto* geo : symGeos) {
-                ShapeGeometry.emplace_back(std::move(std::unique_ptr<Part::Geometry>(geo)));
+                ShapeGeometry.emplace_back(geo);
             }
         }
     }

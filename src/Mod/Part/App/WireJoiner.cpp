@@ -1724,9 +1724,7 @@ public:
         if (FC_LOG_INSTANCE.level() <= FC_LOGLEVEL_TRACE) {
             return;
         }
-        int idx = 0;
         for (auto &info : edges) {
-            ++idx;
             if (auto wire = info.wireInfo.get()) {
 
                 // Originally here there was a call to the precompiler macro assertCheck(), which
