@@ -237,7 +237,7 @@ obj : Gui.ViewProvider</UserDocu>
       </Documentation>
       <Parameter Name="Transacting" Type="Boolean" />
     </Attribute>
-    <Attribute Name="Modified" ReadOnly="true">
+    <Attribute Name="Modified">
       <Documentation>
         <UserDocu>Returns True if the document is marked as modified, and False otherwise.</UserDocu>
       </Documentation>

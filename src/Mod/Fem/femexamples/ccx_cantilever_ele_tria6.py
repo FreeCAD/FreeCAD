@@ -32,7 +32,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "z88"],
+        "solvers": ["ccxtools", "z88"],
         "material": "solid",
         "equations": ["mechanical"]
     }

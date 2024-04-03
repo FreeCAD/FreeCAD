@@ -45,6 +45,7 @@
 
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -59,8 +60,9 @@
 
 using namespace PartGui;
 
+namespace {
 //////////////////////////////////////////////////////////////////////////
-class DlgProjectionOnSurface::EdgeSelection: public Gui::SelectionFilterGate
+class EdgeSelection: public Gui::SelectionFilterGate
 {
 public:
     bool canSelect = false;
@@ -93,7 +95,7 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-class DlgProjectionOnSurface::FaceSelection: public Gui::SelectionFilterGate
+class FaceSelection: public Gui::SelectionFilterGate
 {
 public:
     bool canSelect = false;
@@ -125,7 +127,7 @@ public:
     }
 };
 //////////////////////////////////////////////////////////////////////////
-
+}
 
 DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     : QWidget(parent)
@@ -1182,6 +1184,415 @@ void TaskProjectionOnSurface::clicked(int id)
         catch (Base::AbortException&) {
         }
     }
+}
+
+// ------------------------------------------------------------------------------------------------
+
+DlgProjectOnSurface::DlgProjectOnSurface(Part::ProjectOnSurface* feature, QWidget* parent)
+    : QWidget(parent)
+    , ui(new Ui::DlgProjectionOnSurface)
+    , filterEdge(nullptr)
+    , filterFace(nullptr)
+    , feature(feature)
+{
+    ui->setupUi(this);
+    ui->doubleSpinBoxExtrudeHeight->setValue(feature->Height.getValue());
+    ui->doubleSpinBoxSolidDepth->setValue(feature->Offset.getValue());
+    fetchDirection();
+    fetchMode();
+    setupConnections();
+
+    ui->pushButtonAddEdge->setCheckable(true);
+    ui->pushButtonAddFace->setCheckable(true);
+    ui->pushButtonAddProjFace->setCheckable(true);
+    ui->pushButtonAddWire->setCheckable(true);
+}
+
+DlgProjectOnSurface::~DlgProjectOnSurface()
+{
+    if (filterFace || filterEdge) {
+        Gui::Selection().rmvSelectionGate();
+    }
+}
+
+void DlgProjectOnSurface::setupConnections()
+{
+    // clang-format off
+    connect(ui->pushButtonAddFace, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onAddFaceClicked);
+    connect(ui->pushButtonAddEdge, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onAddEdgeClicked);
+    connect(ui->pushButtonGetCurrentCamDir, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onGetCurrentCamDirClicked);
+    connect(ui->pushButtonDirX, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onDirXClicked);
+    connect(ui->pushButtonDirY, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onDirYClicked);
+    connect(ui->pushButtonDirZ, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onDirZClicked);
+    connect(ui->pushButtonAddProjFace, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onAddProjFaceClicked);
+    connect(ui->radioButtonShowAll, &QRadioButton::clicked,
+            this, &DlgProjectOnSurface::onShowAllClicked);
+    connect(ui->radioButtonFaces, &QRadioButton::clicked,
+            this, &DlgProjectOnSurface::onFacesClicked);
+    connect(ui->radioButtonEdges, &QRadioButton::clicked,
+            this, &DlgProjectOnSurface::onEdgesClicked);
+    connect(ui->doubleSpinBoxExtrudeHeight, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectOnSurface::onExtrudeHeightValueChanged);
+    connect(ui->pushButtonAddWire, &QPushButton::clicked,
+            this, &DlgProjectOnSurface::onAddWireClicked);
+    connect(ui->doubleSpinBoxSolidDepth, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &DlgProjectOnSurface::onSolidDepthValueChanged);
+    // clang-format off
+}
+
+void DlgProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    // clang-format off
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (selectionMode == SelectionMode::AddFace ||
+            selectionMode == SelectionMode::AddEdge) {
+            addSelection(msg);
+        }
+        else if (selectionMode == SelectionMode::AddWire) {
+            addWire(msg);
+        }
+        else if (selectionMode == SelectionMode::SupportFace) {
+            ui->pushButtonAddProjFace->setChecked(false);
+            setSupportFace(msg);
+            onAddProjFaceClicked();
+        }
+    }
+    // clang-format on
+}
+
+void DlgProjectOnSurface::accept()
+{
+    if (!feature.expired()) {
+        auto document = feature->getDocument();
+        document->commitTransaction();
+        document->recompute();
+    }
+}
+
+void DlgProjectOnSurface::reject()
+{
+    if (!feature.expired()) {
+        auto document = feature->getDocument();
+        document->abortTransaction();
+    }
+}
+
+void DlgProjectOnSurface::onAddProjFaceClicked()
+{
+    if (ui->pushButtonAddProjFace->isChecked()) {
+        selectionMode = SelectionMode::SupportFace;
+        if (!filterFace) {
+            filterFace = new FaceSelection();
+            Gui::Selection().addSelectionGate(filterFace);
+        }
+    }
+    else {
+        selectionMode = SelectionMode::None;
+        Gui::Selection().rmvSelectionGate();
+        filterFace = nullptr;
+    }
+}
+
+void DlgProjectOnSurface::onAddFaceClicked()
+{
+    if (ui->pushButtonAddFace->isChecked()) {
+        selectionMode = SelectionMode::AddFace;
+        if (!filterFace) {
+            filterFace = new FaceSelection();
+            Gui::Selection().addSelectionGate(filterFace);
+        }
+    }
+    else {
+        selectionMode = SelectionMode::None;
+        Gui::Selection().rmvSelectionGate();
+        filterFace = nullptr;
+    }
+}
+
+void DlgProjectOnSurface::onAddWireClicked()
+{
+    if (ui->pushButtonAddWire->isChecked()) {
+        selectionMode = SelectionMode::AddWire;
+        if (!filterEdge) {
+            filterEdge = new EdgeSelection();
+            Gui::Selection().addSelectionGate(filterEdge);
+        }
+        ui->radioButtonEdges->setChecked(true);
+        onEdgesClicked();
+    }
+    else {
+        selectionMode = SelectionMode::None;
+        Gui::Selection().rmvSelectionGate();
+        filterEdge = nullptr;
+    }
+}
+
+void DlgProjectOnSurface::onAddEdgeClicked()
+{
+    if (ui->pushButtonAddEdge->isChecked()) {
+        selectionMode = SelectionMode::AddEdge;
+        if (!filterEdge) {
+            filterEdge = new EdgeSelection();
+            Gui::Selection().addSelectionGate(filterEdge);
+        }
+        ui->radioButtonEdges->setChecked(true);
+        onEdgesClicked();
+    }
+    else {
+        selectionMode = SelectionMode::None;
+        Gui::Selection().rmvSelectionGate();
+        filterEdge = nullptr;
+    }
+}
+
+void DlgProjectOnSurface::onGetCurrentCamDirClicked()
+{
+    auto mainWindow = Gui::getMainWindow();
+
+    auto mdiObject = dynamic_cast<Gui::View3DInventor*>(mainWindow->activeWindow());
+    if (!mdiObject) {
+        return;
+    }
+    auto camerRotation = mdiObject->getViewer()->getCameraOrientation();
+
+    SbVec3f lookAt(0, 0, -1);
+    camerRotation.multVec(lookAt, lookAt);
+
+    float valX {};
+    float valY {};
+    float valZ {};
+    lookAt.getValue(valX, valY, valZ);
+
+    ui->doubleSpinBoxDirX->setValue(valX);
+    ui->doubleSpinBoxDirY->setValue(valY);
+    ui->doubleSpinBoxDirZ->setValue(valZ);
+    setDirection();
+}
+
+void DlgProjectOnSurface::onDirXClicked()
+{
+    auto currentVal = ui->doubleSpinBoxDirX->value();
+    ui->doubleSpinBoxDirX->setValue(currentVal > 0 ? -1 : 1);
+    ui->doubleSpinBoxDirY->setValue(0);
+    ui->doubleSpinBoxDirZ->setValue(0);
+    setDirection();
+}
+
+void DlgProjectOnSurface::onDirYClicked()
+{
+    auto currentVal = ui->doubleSpinBoxDirY->value();
+    ui->doubleSpinBoxDirX->setValue(0);
+    ui->doubleSpinBoxDirY->setValue(currentVal > 0 ? -1 : 1);
+    ui->doubleSpinBoxDirZ->setValue(0);
+    setDirection();
+}
+
+void DlgProjectOnSurface::onDirZClicked()
+{
+    auto currentVal = ui->doubleSpinBoxDirZ->value();
+    ui->doubleSpinBoxDirX->setValue(0);
+    ui->doubleSpinBoxDirY->setValue(0);
+    ui->doubleSpinBoxDirZ->setValue(currentVal > 0 ? -1 : 1);
+    setDirection();
+}
+
+void DlgProjectOnSurface::setDirection()
+{
+    if (!feature.expired()) {
+        auto xVal = ui->doubleSpinBoxDirX->value();
+        auto yVal = ui->doubleSpinBoxDirY->value();
+        auto zVal = ui->doubleSpinBoxDirZ->value();
+        feature->Direction.setValue(Base::Vector3d(xVal, yVal, zVal));
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::addWire(const Gui::SelectionChanges& msg)
+{
+    auto isEdgePartOf = [](const TopoDS_Shape& wire, const TopoDS_Shape& edge) {
+        for (TopExp_Explorer xp(wire, TopAbs_EDGE); xp.More(); xp.Next()) {
+            if (edge.IsSame(xp.Current())) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+    if (selectionMode != SelectionMode::AddWire) {
+        return;
+    }
+
+    Gui::SelectionObject selObj(msg);
+    if (!selObj.hasSubNames()) {
+        return;
+    }
+
+    Part::TopoShape part = Part::Feature::getTopoShape(selObj.getObject());
+    if (part.isNull()) {
+        return;
+    }
+
+    std::string subName = selObj.getSubNames().front();
+    TopoDS_Shape edge = part.getSubShape(subName.c_str(), true);
+    if (edge.IsNull() || edge.ShapeType() != TopAbs_EDGE) {
+        return;
+    }
+
+    int index = 1;
+    const TopoDS_Shape& shape = part.getShape();
+    for (TopExp_Explorer xp(shape, TopAbs_WIRE); xp.More(); xp.Next()) {
+        if (isEdgePartOf(xp.Current(), edge)) {
+            std::string name{"Wire"};
+            name += std::to_string(index);
+            addSelection(msg, name);
+            break;
+        }
+        index++;
+    }
+}
+
+void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg,
+                                       const std::string& subName)
+{
+    if (!feature.expired()) {
+        Gui::SelectionObject selObj(msg);
+        feature->Projection.addValue(selObj.getObject(), {subName});
+    }
+}
+
+void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg)
+{
+    if (!feature.expired()) {
+        Gui::SelectionObject selObj(msg);
+        feature->Projection.addValue(selObj.getObject(), selObj.getSubNames());
+    }
+}
+
+void DlgProjectOnSurface::setSupportFace(const Gui::SelectionChanges& msg)
+{
+    Gui::SelectionObject selObj(msg);
+    if (!feature.expired()) {
+        feature->SupportFace.setValue(selObj.getObject(), selObj.getSubNames());
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::fetchDirection()
+{
+    if (!feature.expired()) {
+        auto dir = feature->Direction.getValue();
+        ui->doubleSpinBoxDirX->setValue(dir.x);
+        ui->doubleSpinBoxDirY->setValue(dir.y);
+        ui->doubleSpinBoxDirZ->setValue(dir.z);
+    }
+}
+
+void DlgProjectOnSurface::fetchMode()
+{
+    if (!feature.expired()) {
+        if (strcmp(feature->Mode.getValueAsString(), Part::ProjectOnSurface::AllMode) == 0) {
+            ui->radioButtonShowAll->setChecked(true);
+        }
+        else if (strcmp(feature->Mode.getValueAsString(), Part::ProjectOnSurface::FacesMode) == 0) {
+            ui->radioButtonFaces->setChecked(true);
+        }
+        else if (strcmp(feature->Mode.getValueAsString(), Part::ProjectOnSurface::EdgesMode) == 0) {
+            ui->radioButtonEdges->setChecked(true);
+        }
+    }
+}
+
+void DlgProjectOnSurface::onShowAllClicked()
+{
+    if (!feature.expired()) {
+        feature->Mode.setValue(Part::ProjectOnSurface::AllMode);
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::onFacesClicked()
+{
+    if (!feature.expired()) {
+        feature->Mode.setValue(Part::ProjectOnSurface::FacesMode);
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::onEdgesClicked()
+{
+    if (!feature.expired()) {
+        feature->Mode.setValue(Part::ProjectOnSurface::EdgesMode);
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::onExtrudeHeightValueChanged(double value)
+{
+    if (!feature.expired()) {
+        feature->Height.setValue(value);
+        feature->recomputeFeature();
+    }
+}
+
+void DlgProjectOnSurface::onSolidDepthValueChanged(double value)
+{
+    if (!feature.expired()) {
+        feature->Offset.setValue(value);
+        feature->recomputeFeature();
+    }
+}
+
+// ---------------------------------------
+
+TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
+{
+    setDocumentName(doc->getName());
+    doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Project on surface"));
+    auto obj = doc->addObject("Part::ProjectOnSurface", "Projection");
+    auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
+    widget = new DlgProjectOnSurface(feature);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
+                                         widget->windowTitle(), true, nullptr);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+TaskProjectOnSurface::TaskProjectOnSurface(Part::ProjectOnSurface* feature)
+    : widget(new DlgProjectOnSurface(feature))
+    , taskbox(new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
+                                         widget->windowTitle(),
+                                         true,
+                                         nullptr))
+{
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+void TaskProjectOnSurface::resetEdit()
+{
+    std::string document = getDocumentName();
+    Gui::doCommandT(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document);
+}
+
+bool TaskProjectOnSurface::accept()
+{
+    widget->accept();
+    resetEdit();
+    return true;
+}
+
+bool TaskProjectOnSurface::reject()
+{
+    widget->reject();
+    resetEdit();
+    return true;
 }
 
 #include "moc_DlgProjectionOnSurface.cpp"

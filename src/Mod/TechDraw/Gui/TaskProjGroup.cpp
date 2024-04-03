@@ -108,7 +108,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(ui->projection, qOverload<const QString&>(&QComboBox::currentIndexChanged), this, &TaskProjGroup::projectionTypeChanged);
 #else
-    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
+    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         projectionTypeChanged(ui->projection->itemText(index));
     });
 #endif

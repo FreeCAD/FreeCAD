@@ -1406,12 +1406,7 @@ TaskDlgOrthoViews::TaskDlgOrthoViews()
     : TaskDialog()
 {
     widget = new TaskOrthoViews();
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/drawing-orthoviews"),
-                                         widget->windowTitle(),
-                                         true,
-                                         nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("actions/drawing-orthoviews"), widget, true, nullptr);
 }
 
 TaskDlgOrthoViews::~TaskDlgOrthoViews()

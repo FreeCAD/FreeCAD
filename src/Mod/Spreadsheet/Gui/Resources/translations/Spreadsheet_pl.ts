@@ -682,7 +682,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation>CSV (*.csv *.CSV);;Wszystkie (*)</translation>
+      <translation>CSV (*.csv *.CSV);Wszystkie (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -951,8 +951,18 @@ Domyślnie %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Znak separatora: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Znak separatora:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Znak cudzysłowu:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Znak "Escape":</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -965,19 +975,9 @@ Domyślnie %V = %A
       <translation>tabulator</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Znak cytatu: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak używany do określenia granic ciągów znaków, zazwyczaj jest to pojedynczy cudzysłów (') lub podwójny cudzysłów (&amp;quot;). Musi to być pojedynczy znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Znak "Escape": </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>

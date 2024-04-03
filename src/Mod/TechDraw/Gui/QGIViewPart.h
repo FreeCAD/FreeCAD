@@ -63,6 +63,7 @@ public:
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 
 
     void toggleCache(bool state) override;
@@ -114,6 +115,8 @@ public:
     void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
 
     virtual QGraphicsItem *getQGISubItemByName(const std::string &subName) const;
+
+    virtual bool removeSelectedCosmetic() const;
 
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;

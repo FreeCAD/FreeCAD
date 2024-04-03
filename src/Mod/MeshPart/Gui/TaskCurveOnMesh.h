@@ -80,7 +80,6 @@ public:
 
 private:
     CurveOnMeshWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshPartGui

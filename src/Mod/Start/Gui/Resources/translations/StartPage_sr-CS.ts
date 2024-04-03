@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Nedavno korišćene datoteke</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;Forum FreeCAD-a&lt;/a&gt; je sjajno mesto za dobijanje pomoći od drugih korisnika i programera FreeCAD-a. Forum ima mnogo odeljaka za različite vrste problema i teme diskusije. Ako imaš nedoumice, objavi u opštem odeljku &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Pomoć pri korišćenju FreeCAD-a&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="154"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Putanja datoteke</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
@@ -403,7 +403,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation type="unfinished">Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</translation>
+      <translation>Radno okruženje koje će se otvoriti nakon otvaranja nedavno korišćene datoteka. Važi samo ako je Start početno radno okruženje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
@@ -418,12 +418,12 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>Umanjena slika datoteke</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>Prikaži umanjene slike</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -612,7 +612,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
       <source>Custom CSS</source>
-      <translation type="unfinished">Custom CSS</translation>
+      <translation>Sopstveni CSS</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>

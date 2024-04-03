@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>標準單位(mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
@@ -16,12 +16,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
-      <translation type="unfinished">US customary (in, lb)</translation>
+      <translation>美制單位(in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation type="unfinished">Imperial decimal (in, lb)</translation>
+      <translation>英制(in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>

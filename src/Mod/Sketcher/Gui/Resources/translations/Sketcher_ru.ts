@@ -186,7 +186,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="560"/>
       <source>Endpoints and rim point</source>
-      <translation type="unfinished">Endpoints and rim point</translation>
+      <translation>Конечные точки и точка обода</translation>
     </message>
   </context>
   <context>
@@ -240,22 +240,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="892"/>
       <source>Ellipse by center, radius, rim point</source>
-      <translation type="unfinished">Ellipse by center, radius, rim point</translation>
+      <translation>Эллипс по центру, радиусу, точке края</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Ellipse by axis endpoints, rim point</source>
-      <translation type="unfinished">Ellipse by axis endpoints, rim point</translation>
+      <translation>Эллипс по конечным точкам оси, точка обода</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="910"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
-      <translation type="unfinished">Arc of ellipse by center, radius, endpoints</translation>
+      <translation>Дуга эллипса по центру, радиусу, конечным точкам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="920"/>
       <source>Arc of hyperbola by center, vertex, endpoints</source>
-      <translation type="unfinished">Arc of hyperbola by center, vertex, endpoints</translation>
+      <translation>Дуга гиперболы по центру, вершине, конечным точкам</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="929"/>
@@ -283,7 +283,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1575"/>
       <source>Corner-preserving sketch fillet</source>
-      <translation type="unfinished">Corner-preserving sketch fillet</translation>
+      <translation>Эскизное скругление с сохранением углов</translation>
     </message>
   </context>
   <context>
@@ -595,19 +595,6 @@ and an edge as an interface.</source>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
       <translation>Создать ограничение симметрии между двумя точками относительно линии или третьей точки</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherConstrainTangent</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6430"/>
-      <source>Constrain tangent</source>
-      <translation>Ограничение касательности</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6431"/>
-      <source>Create a tangent constraint between two entities</source>
-      <translation>Создать ограничение касательности между двумя объектами</translation>
     </message>
   </context>
   <context>
@@ -1165,12 +1152,12 @@ with respect to a line or a third point</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
-      <source>Set the 'Support' of a sketch.
+      <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation>Установите 'Поддержку' эскиза.
-Сначала выберите поддерживающую геометрию, например, грань или ребро твердотельного объекта,
-вызовите эту команду, а затем выберите нужный эскиз.</translation>
+      <translation>Установите «AttachmentSupport» эскиза.
+Сначала выберите опорную геометрию, например грань или ребро твердого объекта,
+затем вызовите эту команду, затем выберите нужный эскиз.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1218,7 +1205,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="844"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
@@ -1288,9 +1275,9 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</source>
-      <translation>Разместите выбранный эскиз на одной из глобальных плоскостей координат.
-Это очистит свойство "Поддержка", если оно имеется.</translation>
+This will clear the 'AttachmentSupport' property, if any.</source>
+      <translation>Поместите выбранный эскиз на одну из глобальных координатных плоскостей.
+Это очистит свойство AttachmentSupport, если таковое имеется.</translation>
     </message>
   </context>
   <context>
@@ -2091,7 +2078,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Вставить узел</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1055"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1068"/>
       <source>Join Curves</source>
       <translation>Объединить кривые</translation>
     </message>
@@ -2154,8 +2141,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Обновить ограничения виртуального пространства</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="957"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
+      <location filename="../../DrawSketchHandler.cpp" line="957"/>
       <source>Add auto constraints</source>
       <translation>Добавить автоматические ограничения</translation>
     </message>
@@ -2281,54 +2268,54 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Не удалось рассчитать пересечение кривых. Попробуйте добавить ограничение совпадения между вершинами кривых, которые вы намерены скруглить.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6527"/>
-      <location filename="../../../App/SketchObject.cpp" line="6735"/>
+      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6765"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline идентификатор геометрии (GeoID) находится вне границ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6532"/>
+      <location filename="../../../App/SketchObject.cpp" line="6562"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запрашиваете никаких изменений в множественности узлов.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6538"/>
-      <location filename="../../../App/SketchObject.cpp" line="6745"/>
+      <location filename="../../../App/SketchObject.cpp" line="6568"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Идентификатор геометрии (GeoId) не является B-сплайн кривой.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6547"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Индекс узла выходит за границы. Обратите внимание, что в соответствии с нотацией OCC первый узел имеет индекс 1, а не ноль.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6558"/>
+      <location filename="../../../App/SketchObject.cpp" line="6588"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратность не может быть увеличена сверх степени B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6566"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратность не может быть уменьшена ниже нуля.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6580"/>
+      <location filename="../../../App/SketchObject.cpp" line="6610"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC неспособен уменьшить кратность в пределах максимального допуска.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6739"/>
+      <location filename="../../../App/SketchObject.cpp" line="6769"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Узел не может иметь нулевой кратности.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6756"/>
+      <location filename="../../../App/SketchObject.cpp" line="6786"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Кратность узла не может быть выше степени BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6762"/>
+      <location filename="../../../App/SketchObject.cpp" line="6792"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Узел не может быть вставлен за пределы диапазона параметров BSpline.</translation>
     </message>
@@ -2408,20 +2395,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Не присоединять</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandAlterGeometry.cpp" line="165"/>
       <location filename="../../CommandAlterGeometry.cpp" line="174"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2541,6 +2516,15 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="9870"/>
       <location filename="../../CommandConstraints.cpp" line="9946"/>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandSketcherTools.cpp" line="79"/>
       <location filename="../../CommandSketcherTools.cpp" line="361"/>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
@@ -2558,8 +2542,11 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherTools.cpp" line="2399"/>
       <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherTools.cpp" line="2511"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="166"/>
@@ -2707,9 +2694,9 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Количество выбранных объектов не 3</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
       <location filename="../../CommandConstraints.cpp" line="784"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1085"/>
       <source>Error</source>
       <translation>Ошибка</translation>
     </message>
@@ -3111,9 +3098,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Укажите степень B-сплайна, между 1 и %1:</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>Ошибка ядра CAD</translation>
     </message>
@@ -4714,8 +4701,8 @@ However, no constraints linking to the endpoints were found.</source>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1541"/>
-      <source>Impossible to update visibility tracking: </source>
-      <translation>Обновление видимости трекинга невозможно: </translation>
+      <source>Impossible to update visibility tracking:</source>
+      <translation>Невозможно обновить отслеживание видимости:</translation>
     </message>
   </context>
   <context>
@@ -4752,7 +4739,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location filename="../../TaskSketcherElements.cpp" line="1813"/>
       <location filename="../../TaskSketcherElements.cpp" line="1819"/>
       <source>Construction</source>
-      <translation>Конструкция</translation>
+      <translation>Конструктор</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1162"/>
@@ -5151,13 +5138,13 @@ This is done by analyzing the sketch geometries and constraints.</source>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3143"/>
-      <source>Over-constrained: </source>
-      <translation>Чрезмерно ограничено: </translation>
+      <source>Over-constrained:</source>
+      <translation>Чрезмерное ограничение:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3149"/>
-      <source>Malformed constraints: </source>
-      <translation>Неправильные ограничения: </translation>
+      <source>Malformed constraints:</source>
+      <translation>Неверные ограничения:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3157"/>
@@ -5351,6 +5338,16 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1367"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Создать круг, используя его центр и периферийную точку</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="366"/>
+      <source>Center</source>
+      <translation>Центр</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="367"/>
+      <source>3 rim points</source>
+      <translation>По трём точкам</translation>
     </message>
   </context>
   <context>
@@ -5912,11 +5909,16 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
+      <source>Sketcher visual</source>
+      <translation>Эскиз визуальный</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher virtual space</source>
       <translation>Виртуальное пространство эскиза</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Sketcher edit tools</source>
       <translation>Инструменты редактирования эскиза</translation>
     </message>
@@ -6053,22 +6055,22 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
   <context>
     <name>GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1119"/>
+      <location filename="../../Command.cpp" line="1120"/>
       <source>Grid auto spacing</source>
       <translation>Автоматический шаг сетки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1120"/>
+      <location filename="../../Command.cpp" line="1121"/>
       <source>Resize grid automatically depending on zoom.</source>
       <translation>Автоматическое изменение размера сетки в зависимости от масштаба.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1123"/>
+      <location filename="../../Command.cpp" line="1124"/>
       <source>Spacing</source>
       <translation>Интервал</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>Distance between two subsequent grid lines.</source>
       <translation>Расстояние между соседними линиями сетки.</translation>
     </message>
@@ -6086,46 +6088,46 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Sketch имеет частично избыточные ограничения!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9200"/>
+      <location filename="../../../App/SketchObject.cpp" line="9244"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Параболы были перенесены. Перемещенные файлы не будут открыты в предыдущих версиях FreeCAD!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="130"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="130"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <source>Error</source>
       <translation>Ошибки</translation>
     </message>
@@ -6161,9 +6163,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Ограничение имеет неверную индексную информацию и является неправильным.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="432"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="609"/>
@@ -6171,6 +6170,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../CommandConstraints.cpp" line="773"/>
       <location filename="../../CommandConstraints.cpp" line="6068"/>
       <location filename="../../CommandConstraints.cpp" line="6272"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="1066"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <source>Invalid Constraint</source>
@@ -6212,8 +6214,8 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Ошибка при создании полюса B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
       <source>Error creating B-spline</source>
       <translation>Ошибка создания B-сплайна</translation>
     </message>
@@ -6269,17 +6271,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Не удалось добавить строку</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation>Выполнение инструмента прервано</translation>
     </message>
@@ -6314,9 +6316,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Не удалось обрезать ребро</translation>
     </message>
     <message>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
       <translation>Ошибка значения</translation>
     </message>
@@ -6341,12 +6343,12 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Неожиданная избыточность/конфликтующее ограничение. Проверьте ограничения и автоограничения этой операции.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1119"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1120"/>
       <source>Invalid Value</source>
       <translation>Недопустимое значение</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1120"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
       <source>Offset value can't be 0.</source>
       <translation>Значение смещения не может быть 0.</translation>
     </message>
@@ -6407,34 +6409,34 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
   <context>
     <name>SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>Snap to objects</source>
       <translation>Привязка к объектам</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Новые точки привязываются к заранее выбранному объекту, а также привязываются к середине линий и дуг.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
+      <location filename="../../Command.cpp" line="1369"/>
       <source>Snap to grid</source>
       <translation>Привязать к сетке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Новые точки будут привязаны к ближайшей линии сетки.
 Точки должны быть установлены ближе, чем пятая часть шага сетки к линии сетки для привязки.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1373"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Snap angle</source>
       <translation>Угол привязки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Угловой шаг для инструментов, использующих "Угловую привязку" (например, линия). Удерживайте CTRL, чтобы включить функцию "Угловая привязка". Угол осчитывается от положительного направлекния оси X эскиза.</translation>
     </message>
@@ -6442,23 +6444,23 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
-      <location filename="../../Command.cpp" line="1616"/>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Normal Geometry</source>
       <translation>Основная геометрия</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
-      <location filename="../../Command.cpp" line="1617"/>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Construction Geometry</source>
       <translation>Вспомогательная геометрия</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
-      <location filename="../../Command.cpp" line="1618"/>
-      <location filename="../../Command.cpp" line="1625"/>
+      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>External Geometry</source>
       <translation>Внешняя геометрия</translation>
     </message>
@@ -6466,12 +6468,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Configure rendering order</source>
       <translation>Настройка порядка прорисовки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Reorder the items in the list to configure rendering order.</source>
       <translation>Измените порядок элементов в списке, чтобы настроить порядок рендеринга.</translation>
     </message>
@@ -6479,12 +6481,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Toggle grid</source>
       <translation>Переключить сетку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
       <translation>Переключение сетки в эскизе. В меню можно изменить настройки сетки.</translation>
     </message>
@@ -6492,12 +6494,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1477"/>
       <source>Toggle snap</source>
       <translation>Переключить привязку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
       <translation>Включить/выключить привязку. В меню можно выбрать "Привязку к сетке" и "Привязку к объектам" по отдельности, а также изменить другие настройки привязки.</translation>
     </message>
@@ -6709,7 +6711,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1096"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1097"/>
       <source>Delete original geometries (U)</source>
       <translation>Удалить оригинальные геометрии (U)</translation>
     </message>
@@ -6727,7 +6729,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1100"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1101"/>
       <source>Add offset constraint (J)</source>
       <translation>Добавить ограничение смещения (J)</translation>
     </message>
@@ -6735,12 +6737,32 @@ Left clicking on empty space will validate the current constraint. Right clickin
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
+      <source>Corner, width, height</source>
+      <translation>Угол, ширина, высота</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
+      <source>Center, width, height</source>
+      <translation>Центр, ширина, высота</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
+      <source>3 corners</source>
+      <translation>3 угла</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
+      <source>Center, 2 corners</source>
+      <translation>Центр, 2 угла</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
       <source>Rounded corners (U)</source>
       <translation>Скругленные углы (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1661"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1662"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Создать прямоугольник с закруглёнными углами.</translation>
     </message>
@@ -6748,14 +6770,14 @@ Left clicking on empty space will validate the current constraint. Right clickin
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1667"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
       <source>Frame (J)</source>
       <translation>Рамка (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1670"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
       <source>Create two rectangles with a constant offset.</source>
-      <translation type="unfinished">Create two rectangles with a constant offset.</translation>
+      <translation>Создать два прямоугольника с постоянным смещением.</translation>
     </message>
   </context>
   <context>
@@ -7266,7 +7288,17 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="555"/>
       <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Create an arc by its center and by its endpoints</source>
-      <translation type="unfinished">Create an arc by its center and by its endpoints</translation>
+      <translation>Создать дугу по её центру и её конечным точкам</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="468"/>
+      <source>Center</source>
+      <translation>Центр</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="469"/>
+      <source>3 rim points</source>
+      <translation>По трём точкам</translation>
     </message>
   </context>
   <context>
@@ -7275,7 +7307,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="562"/>
       <location filename="../../CommandCreateGeo.cpp" line="565"/>
       <source>Create an arc by its endpoints and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its endpoints and a point along the arc</translation>
+      <translation>Создать дугу, указав её конечные точки и точку вдоль дуги</translation>
     </message>
   </context>
   <context>
@@ -7284,7 +7316,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="894"/>
       <location filename="../../CommandCreateGeo.cpp" line="897"/>
       <source>Create an ellipse by its center, one of its radii and a rim point</source>
-      <translation type="unfinished">Create an ellipse by its center, one of its radii and a rim point</translation>
+      <translation>Создать эллипс по центру, одному из радиусов и оси</translation>
     </message>
   </context>
   <context>
@@ -7293,7 +7325,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="903"/>
       <location filename="../../CommandCreateGeo.cpp" line="906"/>
       <source>Create an ellipse by the endpoints of one of its axes and a rim point</source>
-      <translation type="unfinished">Create an ellipse by the endpoints of one of its axes and a rim point</translation>
+      <translation>Начертить эллипс, указав концы одной из осей и точку обода</translation>
     </message>
   </context>
   <context>
@@ -7302,7 +7334,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="912"/>
       <location filename="../../CommandCreateGeo.cpp" line="915"/>
       <source>Create an arc of ellipse by its center, one of its radii, and its endpoints</source>
-      <translation type="unfinished">Create an arc of ellipse by its center, one of its radii, and its endpoints</translation>
+      <translation>Создать дугу эллипса по центру, одному из радиусов и его конечным точкам</translation>
     </message>
   </context>
   <context>
@@ -7311,7 +7343,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="923"/>
       <location filename="../../CommandCreateGeo.cpp" line="926"/>
       <source>Create an arc of hyperbola by its center, vertex and endpoints</source>
-      <translation type="unfinished">Create an arc of hyperbola by its center, vertex and endpoints</translation>
+      <translation>Создать дугу гиперболы по центру, вершине и конечным точкам</translation>
     </message>
   </context>
   <context>
@@ -7320,7 +7352,77 @@ Left clicking on empty space will validate the current constraint. Right clickin
       <location filename="../../CommandCreateGeo.cpp" line="932"/>
       <location filename="../../CommandCreateGeo.cpp" line="935"/>
       <source>Create an arc of parabola by its focus, vertex and endpoints</source>
-      <translation type="unfinished">Create an arc of parabola by its focus, vertex and endpoints</translation>
+      <translation>Создать дугу параболы по ее фокусу, вершине и конечным точкам</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherConstrainTangent</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6430"/>
+      <source>Constrain tangent or colinear</source>
+      <translation>Ограничить касательную или коллинеарность</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6431"/>
+      <source>Create a tangent or colinear constraint between two entities</source>
+      <translation>Создайте касательную или коллинеарную зависимость между двумя объектами</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateArcSlot</name>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
+      <source>Arc ends</source>
+      <translation>Концы дуги</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
+      <source>Flat ends</source>
+      <translation>Концы плоскости</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateEllipse</name>
+    <message>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="433"/>
+      <source>Center</source>
+      <translation>Центр</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
+      <source>Axis endpoints</source>
+      <translation>Конечные точки оси</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateLine</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
+      <source>Point, length, angle</source>
+      <translation>Точка, длина, угол</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="280"/>
+      <source>Point, width, height</source>
+      <translation>Точка, ширина, высота</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="281"/>
+      <source>2 points</source>
+      <translation>2 точки</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateOffset</name>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1084"/>
+      <source>Arc</source>
+      <translation>Дуга</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1085"/>
+      <source>Intersection</source>
+      <translation>Пересечение</translation>
     </message>
   </context>
 </TS>

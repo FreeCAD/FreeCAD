@@ -137,22 +137,22 @@
       <translation>Criar grupo de links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>Criar link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>Criar sub-link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>Importar links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>Importar todos os links</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>Inserir documento de texto</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Adicionar uma peça</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Adicionar um grupo</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>Posicionamento</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformar</translation>
@@ -234,6 +234,11 @@
       <location filename="../CommandFeat.cpp" line="92"/>
       <source>Set Random Color</source>
       <translation type="unfinished">Set Random Color</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation>Alternar congelamento</translation>
     </message>
   </context>
   <context>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Expressão: </translation>
+      <source>Expression:</source>
+      <translation>Expressão:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Por favor, aguarde até que o arquivo de auto recuperação tenha sido salvo...</translation>
     </message>
@@ -1272,17 +1277,17 @@ Se este campo não estiver marcado, então, a propriedade deve ser nomeada e ace
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Atraso de sequência multi-teclas: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation type="unfinished">Multi-key sequence delay:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Tempo em milissegundos para esperar pelo próximo pressionar de tecla da sequência de teclas atual.
-Por exemplo, pressionar 'F' duas vezes menos do que a configuração de atraso de tempo aqui será
-tratado como uma sequência de teclas de atalho 'F, F'.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
+For example, pressing 'F' twice in less than the time delay setting here will be
+treated as shortcut key sequence 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -2566,7 +2571,7 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Sistema de unidades para este arquivo</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2628,7 +2633,7 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Extrair documento</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2650,12 +2655,12 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Criar documento</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Carregar arquivo de documento após a criação</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2694,12 +2699,12 @@ Por favor especifique outro diretório.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Falha ao extrair o documento</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Falha ao criar o documento</translation>
     </message>
   </context>
   <context>
@@ -2846,11 +2851,6 @@ canto inferior direito dentro dos arquivos abertos</translation>
       <translation>Mostrar sistema de coordenadas no canto</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Tamanho relativo:   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2933,14 +2933,19 @@ problemas que variam de anomalias gráficas a erros e bugs da GPU. Lembre-se de
 relatar esta configuração como ativada ao buscar suporte nos fóruns do FreeCAD</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation>Tamanho realativo:</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
       <source>Letter color:</source>
-      <translation type="unfinished">Letter color:</translation>
+      <translation>Cor das letras:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="106"/>
       <source>Axis letter color</source>
-      <translation type="unfinished">Axis letter color</translation>
+      <translation>Cor das letras do eixo</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="232"/>
@@ -3139,17 +3144,17 @@ tamanho da caixa delimitadora do objeto 3D que está sendo exibido.</translation
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="133"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="134"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="180"/>
@@ -4134,12 +4139,12 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Opacity when inactive</source>
-      <translation type="unfinished">Opacity when inactive</translation>
+      <translation>Opacidade quando inativo</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="221"/>
       <source>Opacity of the navigation cube when not focused</source>
-      <translation type="unfinished">Opacity of the navigation cube when not focused</translation>
+      <translation>Opacidade do cubo de navegação enquanto não estiver focado</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="246"/>
@@ -4154,27 +4159,27 @@ Você também pode usar o formulário: João Silva &lt;joao@silva.com&gt;</trans
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="276"/>
       <source>Rotation center indicator</source>
-      <translation type="unfinished">Rotation center indicator</translation>
+      <translation>Indicador de rotação central</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="285"/>
       <source>Sphere size</source>
-      <translation type="unfinished">Sphere size</translation>
+      <translation>Tamanho da esfera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="292"/>
       <source>Color and transparency</source>
-      <translation type="unfinished">Color and transparency</translation>
+      <translation>Cor e transparência</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="305"/>
       <source>The size of the rotation center indicator</source>
-      <translation type="unfinished">The size of the rotation center indicator</translation>
+      <translation>O tamanho do indicador do centro de rotação</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="333"/>
       <source>The color of the rotation center indicator</source>
-      <translation type="unfinished">The color of the rotation center indicator</translation>
+      <translation>A cor do indicador do centro de rotação</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="378"/>
@@ -4284,32 +4289,32 @@ O valor é o diâmetro de uma esfera que caberia na tela.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="736"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animações</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="802"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Ativar animações giratórias usadas em alguns estilos de navegação após arrastar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="805"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Ativar animações giratórias</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
       <source>Duration of navigation animations that have a fixed duration</source>
-      <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
+      <translation>Duração das animações de navegação com duração fixa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="748"/>
       <source>Animation duration</source>
-      <translation type="unfinished">Animation duration</translation>
+      <translation>Duração da animação</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>The duration of navigation animations in milliseconds</source>
-      <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
+      <translation>A duração das animações de navegação em milissegundos</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="631"/>
@@ -4453,8 +4458,8 @@ horizontal space in Python console</source>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation type="unfinished">Python profiler interval (milliseconds): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -5947,7 +5952,7 @@ Deseja salvar as alterações?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Correspondência exata</translation>
     </message>
@@ -5955,7 +5960,7 @@ Deseja salvar as alterações?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Correspondência exata</translation>
     </message>
@@ -6121,15 +6126,15 @@ Deseja salvar as alterações?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Exportar gráfico</translation>
     </message>
@@ -7573,7 +7578,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>Renomear</translation>
     </message>
@@ -7663,12 +7668,12 @@ Do you want to specify another directory?</source>
       <translation>Recalcula o objeto selecionado</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (mas deve ser executado)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Nome interno: %2</translation>
     </message>
@@ -7857,8 +7862,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation type="unfinished">5 m</translation>
     </message>
   </context>
   <context>
@@ -8053,8 +8058,8 @@ Do you want to specify another directory?</source>
       <translation>Exportar PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Documento não salvo</translation>
     </message>
@@ -8344,8 +8349,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>Notificador: </translation>
+      <source>Notifier:</source>
+      <translation type="unfinished">Notifier:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8733,32 +8738,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Falha ao criar um grupo de vínculos</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>Falha ao criar um vínculo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>Falha ao criar um vínculo relativo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>Falha ao desvincular</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>A substituição de vínculo falhou</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Falha ao importar links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Falha ao importar todos os vínculos</translation>
     </message>
@@ -8915,18 +8920,18 @@ cópia atual será perdida.
       <translation>Cor da Legenda</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation type="unfinished">Close dock window</translation>
     </message>
@@ -8934,12 +8939,12 @@ cópia atual será perdida.
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Pressione ESC para esconder dica</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>Interface do usuário</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8949,7 +8954,7 @@ cópia atual será perdida.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>Cor de fundo do item</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
@@ -8959,7 +8964,7 @@ cópia atual será perdida.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>Colunas redimensionáveis</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
@@ -9109,7 +9114,7 @@ cópia atual será perdida.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>Ativar ao passar o mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
@@ -9129,7 +9134,7 @@ cópia atual será perdida.
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Objeto ativo</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="114"/>
@@ -9707,12 +9712,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Criar grupo</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
     </message>
@@ -9772,13 +9777,13 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>Ações de vínculos</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>Ações que se aplicam a objetos vinculados</translation>
     </message>
@@ -9786,12 +9791,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>Importar links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>Importar vínculos externos selecionados</translation>
     </message>
@@ -9799,12 +9804,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>Importar todos os links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>Importar todos os vínculos do documento ativo</translation>
     </message>
@@ -9817,9 +9822,9 @@ cópia atual será perdida.
       <translation>Criar link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9838,12 +9843,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>Criar sub-link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Criar um vínculo para sub-objeto ou sub-elemento</translation>
     </message>
@@ -9851,12 +9856,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>Substituir por vínculo</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Substituir o(s) objeto(s) selecionado(s) por um vínculo</translation>
     </message>
@@ -9864,13 +9869,13 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>Navegação em vínculos</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>Ações de navegação em vínculos</translation>
     </message>
@@ -9878,12 +9883,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>Selecionar todos os links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>Selecionar todos os vínculos para o objeto selecionado</translation>
     </message>
@@ -9891,12 +9896,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>Ir para o objeto vinculado</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Seleciona o objeto vinculado e muda para o documento onde ele está inserido</translation>
     </message>
@@ -9904,12 +9909,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>Ir para o mais profundo objeto vinculado</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Seleciona o objeto mais profundo vinculado e muda para o documento onde está inserido</translation>
     </message>
@@ -9917,12 +9922,12 @@ cópia atual será perdida.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>Desvincular</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>Retirar um nível do vínculo</translation>
     </message>
@@ -10030,7 +10035,7 @@ cópia atual será perdida.
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>Combinar documento...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="522"/>
@@ -10038,7 +10043,7 @@ cópia atual será perdida.
       <location filename="../CommandDoc.cpp" line="534"/>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>Combinar documento</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="535"/>
@@ -10048,7 +10053,7 @@ cópia atual será perdida.
     <message>
       <location filename="../CommandDoc.cpp" line="544"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Não é possível combinar esse documento com ele mesmo.</translation>
     </message>
   </context>
   <context>
@@ -10065,8 +10070,8 @@ cópia atual será perdida.
       <translation>Criar um novo documento vazio</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
     </message>
@@ -10141,11 +10146,9 @@ cópia atual será perdida.
       <translation>Criar peça</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation type="unfinished">A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10463,13 +10466,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Enviar para o Console Python</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Envia o objeto selecionado para o console do Python</translation>
     </message>
@@ -11678,7 +11681,7 @@ Deseja salvar o documento agora?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Grupo</translation>
     </message>
@@ -12066,7 +12069,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector position:</source>
-      <translation type="unfinished">Workbench selector position:</translation>
+      <translation>Posição do seletor da bancada de trabalho:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
@@ -12660,7 +12663,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system:</source>
-      <translation type="unfinished">Default unit system:</translation>
+      <translation>Sistema de unidades padrão:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -12675,17 +12678,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Sistema de unidades para todas as partes do aplicativo. Pode ser substituído especificando um sistema de unidades de documento.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Se ativado, os sistemas de unidades de documento são ignorados</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>Ignorar o sistema de unidades do projeto e usar o padrão</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -13664,6 +13667,19 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation>Alternar congelamento</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</translation>
     </message>
   </context>
 </TS>

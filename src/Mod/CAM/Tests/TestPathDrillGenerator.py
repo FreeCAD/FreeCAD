@@ -175,3 +175,69 @@ class TestPathDrillGenerator(PathTestUtils.PathTestBase):
         command = result[0]
 
         self.assertTrue(command.Name == "G73")
+
+    def test70(self):
+        """Test feed retract enabled produces G85"""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+
+        e = Part.makeLine(v1, v2)
+
+        args = {"edge": e, "feedRetract": True}
+        result = generator.generate(**args)
+        command = result[0]
+
+        self.assertEqual(command.Name, "G85")
+        # G85 does not support peck or dwell
+        self.assertFalse(hasattr(command.Parameters, "Q"))
+        self.assertFalse(hasattr(command.Parameters, "P"))
+
+    def test71(self):
+        """Test that dwell can be used when feed retract is not enabled"""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+
+        e = Part.makeLine(v1, v2)
+
+        args = {"edge": e, "dwelltime": 0.5, "feedRetract": False}
+        result = generator.generate(**args)
+
+        command = result[0]
+
+        self.assertEqual(command.Name, "G82")
+        self.assertEqual(command.Parameters["P"], 0.5)
+
+    def test72(self):
+        """Test that peck can be used when feed retract is not enabled"""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+
+        e = Part.makeLine(v1, v2)
+
+        args = {"edge": e, "peckdepth": 1.0, "feedRetract": False}
+        result = generator.generate(**args)
+
+        command = result[0]
+
+        self.assertTrue(command.Name == "G83")
+        self.assertEqual(command.Parameters["Q"], 1.0)
+
+    def test73(self):
+        """Test error when feed retract and dwell are enabled"""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+
+        e = Part.makeLine(v1, v2)
+
+        args = {"edge": e, "dwelltime": 1.0, "feedRetract": True}
+        self.assertRaises(ValueError, generator.generate, **args)
+
+    def test74(self):
+        """Test error when feed retract and peck are enabled"""
+        v1 = FreeCAD.Vector(0, 0, 10)
+        v2 = FreeCAD.Vector(0, 0, 0)
+
+        e = Part.makeLine(v1, v2)
+
+        args = {"edge": e, "peckdepth": 1.0, "chipBreak": True, "feedRetract": True}
+        self.assertRaises(ValueError, generator.generate, **args)

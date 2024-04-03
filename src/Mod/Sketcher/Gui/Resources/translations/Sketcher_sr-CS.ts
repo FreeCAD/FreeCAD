@@ -599,19 +599,6 @@ u odnosu na pravu ili treću tačku</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConstrainTangent</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6430"/>
-      <source>Constrain tangent</source>
-      <translation>Ograničenje tangentnosti</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6431"/>
-      <source>Create a tangent constraint between two entities</source>
-      <translation>Napravi tangentno ograničenje između dva entiteta</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
@@ -1166,12 +1153,12 @@ u odnosu na pravu ili treću tačku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
-      <source>Set the 'Support' of a sketch.
+      <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation>Podesi 'Osnova' skice.
-Prvo izaberi na čemu će da leži skica, na primer, stranicu ili ivicu punog tela,
-zatim pozovi ovu komandu, a zatim izaberi željenu skicu.</translation>
+      <translation type="unfinished">Set the 'AttachmentSupport' of a sketch.
+First select the supporting geometry, for example, a face or an edge of a solid object,
+then call this command, then choose the desired sketch.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1290,9 +1277,9 @@ koristeći koordinatni početak ili ose X i Y kao referentne.</translation>
     <message>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</source>
-      <translation>Postavi izabranu skicu na jednu od glavnih koordinatnih ravni.
-Ovo će obrisati osobinu 'Osnova', ako postoji.</translation>
+This will clear the 'AttachmentSupport' property, if any.</source>
+      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
+This will clear the 'AttachmentSupport' property, if any.</translation>
     </message>
   </context>
   <context>
@@ -2094,7 +2081,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Umetni čvor</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1055"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1068"/>
       <source>Join Curves</source>
       <translation>Spoji krive</translation>
     </message>
@@ -2157,8 +2144,8 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Ažuriraj virtuelni prostor ograničenja</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="957"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
+      <location filename="../../DrawSketchHandler.cpp" line="957"/>
       <source>Add auto constraints</source>
       <translation>Dodaj automatska ograničenja</translation>
     </message>
@@ -2284,54 +2271,54 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Nije moguće odrediti presečnu tačku krivih. Pokušaj da dodaš ograničenje podudarnosti između tačaka krivih gde nameravaš da napraviš zaobljenje.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6527"/>
-      <location filename="../../../App/SketchObject.cpp" line="6735"/>
+      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6765"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks B-Splajn geometrije (GeoID) je van granica.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6532"/>
+      <location filename="../../../App/SketchObject.cpp" line="6562"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate promenu u višestrukosti čvorova.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6538"/>
-      <location filename="../../../App/SketchObject.cpp" line="6745"/>
+      <location filename="../../../App/SketchObject.cpp" line="6568"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Navedeni Geometrijski index (GeoId) nije B-spline kriva.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6547"/>
+      <location filename="../../../App/SketchObject.cpp" line="6577"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks čvorova je van granica. Imajte na umu da u skladu sa OCC napomenom, prvi čvor ima indeks 1, a ne nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6558"/>
+      <location filename="../../../App/SketchObject.cpp" line="6588"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Višestrukost se ne može povećati iznad stepena B-splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6566"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Višestrukost ne može biti manje od nule.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6580"/>
+      <location filename="../../../App/SketchObject.cpp" line="6610"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nije u stanju da smanji višestrukost unutar maksimalne tolerancije.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6739"/>
+      <location filename="../../../App/SketchObject.cpp" line="6769"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Čvor ne može imati nultu višestrukost.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6756"/>
+      <location filename="../../../App/SketchObject.cpp" line="6786"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Višestrukost čvorova ne može biti veća od stepena B-Splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6762"/>
+      <location filename="../../../App/SketchObject.cpp" line="6792"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Čvor se ne može umetnuti izvan opsega parametara B-Splajna.</translation>
     </message>
@@ -2411,20 +2398,8 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Nemoj prikačiti</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandAlterGeometry.cpp" line="165"/>
       <location filename="../../CommandAlterGeometry.cpp" line="174"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2544,6 +2519,15 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <location filename="../../CommandConstraints.cpp" line="9870"/>
       <location filename="../../CommandConstraints.cpp" line="9946"/>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandSketcherTools.cpp" line="79"/>
       <location filename="../../CommandSketcherTools.cpp" line="361"/>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
@@ -2561,6 +2545,9 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2399"/>
       <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherTools.cpp" line="2511"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -2710,9 +2697,9 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Broj izabranih objekata nije 3</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
       <location filename="../../CommandConstraints.cpp" line="784"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1085"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
@@ -3116,9 +3103,9 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <translation>Podesi stepen B-splajn krive, između 1 i %1:</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>Greška CAD jezgra</translation>
     </message>
@@ -4722,8 +4709,8 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1541"/>
-      <source>Impossible to update visibility tracking: </source>
-      <translation type="unfinished">Impossible to update visibility tracking: </translation>
+      <source>Impossible to update visibility tracking:</source>
+      <translation type="unfinished">Impossible to update visibility tracking:</translation>
     </message>
   </context>
   <context>
@@ -5159,13 +5146,13 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3143"/>
-      <source>Over-constrained: </source>
-      <translation>Previše ograničeno: </translation>
+      <source>Over-constrained:</source>
+      <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3149"/>
-      <source>Malformed constraints: </source>
-      <translation>Oštećena ograničenja: </translation>
+      <source>Malformed constraints:</source>
+      <translation type="unfinished">Malformed constraints:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3157"/>
@@ -5358,6 +5345,16 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1367"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Napravi kružnicu pomoću centra i tačke na kružnici</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="366"/>
+      <source>Center</source>
+      <translation>Po sredini</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="367"/>
+      <source>3 rim points</source>
+      <translation>Kružnica pomoću 3 tačke</translation>
     </message>
   </context>
   <context>
@@ -5921,11 +5918,16 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
+      <source>Sketcher visual</source>
+      <translation type="unfinished">Sketcher visual</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Sketcher virtual space</source>
       <translation>Virtuelni prostor skice</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Sketcher edit tools</source>
       <translation>Alati za uređivanje skice</translation>
     </message>
@@ -6062,22 +6064,22 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
   <context>
     <name>GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1119"/>
+      <location filename="../../Command.cpp" line="1120"/>
       <source>Grid auto spacing</source>
       <translation>Automatski razmak koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1120"/>
+      <location filename="../../Command.cpp" line="1121"/>
       <source>Resize grid automatically depending on zoom.</source>
       <translation>Promenite veličinu koordinatne mreže automatski u zavisnosti od zuma.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1123"/>
+      <location filename="../../Command.cpp" line="1124"/>
       <source>Spacing</source>
       <translation>Razmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1124"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>Distance between two subsequent grid lines.</source>
       <translation>Rastojanje između dve naredne linije koordinatne mreže.</translation>
     </message>
@@ -6095,46 +6097,46 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Skica ima delimično suvišna ograničenja!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9200"/>
+      <location filename="../../../App/SketchObject.cpp" line="9244"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole su migrirale. Migrirane datoteke neće biti moguće otvarati u prethodnim verzijama FreeCAD-a!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="265"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="344"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="579"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="130"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="656"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2031"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2468"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="130"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
@@ -6170,9 +6172,6 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Ograničenje ima pogrešne indeksne informacije tako da je neispravno.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="432"/>
       <location filename="../../CommandConstraints.cpp" line="512"/>
       <location filename="../../CommandConstraints.cpp" line="609"/>
@@ -6180,6 +6179,9 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <location filename="../../CommandConstraints.cpp" line="773"/>
       <location filename="../../CommandConstraints.cpp" line="6068"/>
       <location filename="../../CommandConstraints.cpp" line="6272"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="1066"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <source>Invalid Constraint</source>
@@ -6221,8 +6223,8 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Greška prilikom pravljenja pola B-Splajn krive</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="580"/>
+      <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="657"/>
       <source>Error creating B-spline</source>
       <translation>Greška prilikom pravljenja B-Splajn krive</translation>
     </message>
@@ -6278,17 +6280,17 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Dodavanje duži nije uspelo</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="135"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation>Izvršavanje alatke je prekinuto</translation>
     </message>
@@ -6323,9 +6325,9 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Opsecanje ivice nije uspelo</translation>
     </message>
     <message>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Value Error</source>
       <translation>Greška vrednosti</translation>
     </message>
@@ -6350,12 +6352,12 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
       <translation>Neočekivana pojava suvišnih/konfliktnih ograničenja. Proverite ograničenja i auto-ograničenja.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1119"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1120"/>
       <source>Invalid Value</source>
       <translation>Pogrešna vrednost</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1120"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
       <source>Offset value can't be 0.</source>
       <translation>Vrednost odmaka ne može biti 0.</translation>
     </message>
@@ -6416,34 +6418,34 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
   <context>
     <name>SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>Snap to objects</source>
       <translation>Uhvati objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Nove tačke će se uhvatiti za trenutno izabrani objekat. Takođe će se uhvatiti za sredinu linija i lukova.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
+      <location filename="../../Command.cpp" line="1369"/>
       <source>Snap to grid</source>
       <translation>Uhvati koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Nove tačke će se uhvatiti za najbližu liniju koordinatne mreže.
 Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da bi se uhvatile za liniju mreže.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1373"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Snap angle</source>
       <translation>Uhvati ugao</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Ugaoni korak za alatke koje koriste 'Uhvati pod uglom' (na primer linija). Drži CTRL da bi omogućio 'Uhvati pod uglom'. Ugao počinje od horizontalne ose usmerene nadesno.</translation>
     </message>
@@ -6451,23 +6453,23 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
-      <location filename="../../Command.cpp" line="1616"/>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Normal Geometry</source>
       <translation>Regularna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
-      <location filename="../../Command.cpp" line="1617"/>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1627"/>
       <source>Construction Geometry</source>
       <translation>Pomoćna geometrija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
-      <location filename="../../Command.cpp" line="1618"/>
-      <location filename="../../Command.cpp" line="1625"/>
+      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>External Geometry</source>
       <translation>Spoljašnja geometrija</translation>
     </message>
@@ -6475,12 +6477,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Configure rendering order</source>
       <translation>Podesi redosled iscrtavanja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Reorder the items in the list to configure rendering order.</source>
       <translation>Promeni redosled stavki na listi da bi podesio redosled iscrtavanja.</translation>
     </message>
@@ -6488,12 +6490,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>Toggle grid</source>
       <translation>Sakrij/Prikaži koordinatnu mrežu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
       <translation>Uključi/Isključi koordinatnu mrežu na skici. U meniju možeš promeniti podešavanja koordinatne mreže.</translation>
     </message>
@@ -6501,12 +6503,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1477"/>
       <source>Toggle snap</source>
       <translation>Uključi/Isključi hvatanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
       <translation>Uključi/Isključi sve funkcije hvatanja. U meniju možeš pojedinačno da prebacuješ 'Uhvati koordinatnu mrežu', 'Uhvati objekte' a takođe i ostala podešavanja hvatanja.</translation>
     </message>
@@ -6572,7 +6574,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Kotiranje - Dimenziona ograničenja</translation>
+      <translation>Kota</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
@@ -6718,7 +6720,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1096"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1097"/>
       <source>Delete original geometries (U)</source>
       <translation>Obriši originalnu geometriju (U)</translation>
     </message>
@@ -6736,7 +6738,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1100"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1101"/>
       <source>Add offset constraint (J)</source>
       <translation>Dodaj kotu odmaka (J)</translation>
     </message>
@@ -6744,12 +6746,32 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
+      <source>Corner, width, height</source>
+      <translation type="unfinished">Corner, width, height</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
+      <source>Center, width, height</source>
+      <translation type="unfinished">Center, width, height</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
+      <source>3 corners</source>
+      <translation type="unfinished">3 corners</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
+      <source>Center, 2 corners</source>
+      <translation type="unfinished">Center, 2 corners</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
       <source>Rounded corners (U)</source>
       <translation>Zaobljeni uglovi (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1661"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1662"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Napravi pravougaonik sa zaobljenim uglovima.</translation>
     </message>
@@ -6757,12 +6779,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1667"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
       <source>Frame (J)</source>
       <translation>Okvir (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1670"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Napravite dva pravougaonika, jedan u drugom sa konstantnim odmakom.</translation>
     </message>
@@ -7277,6 +7299,16 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
       <source>Create an arc by its center and by its endpoints</source>
       <translation>Napravi kružni luk pomoću centra i krajnjih tačaka</translation>
     </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="468"/>
+      <source>Center</source>
+      <translation>Po sredini</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArc.h" line="469"/>
+      <source>3 rim points</source>
+      <translation>Kružnica pomoću 3 tačke</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_Create3PointArc</name>
@@ -7330,6 +7362,76 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
       <location filename="../../CommandCreateGeo.cpp" line="935"/>
       <source>Create an arc of parabola by its focus, vertex and endpoints</source>
       <translation>Napravi luk parabole pomoću fokusa, temena i krajnjih tačaka</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherConstrainTangent</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6430"/>
+      <source>Constrain tangent or colinear</source>
+      <translation type="unfinished">Constrain tangent or colinear</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6431"/>
+      <source>Create a tangent or colinear constraint between two entities</source>
+      <translation type="unfinished">Create a tangent or colinear constraint between two entities</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateArcSlot</name>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
+      <source>Arc ends</source>
+      <translation type="unfinished">Arc ends</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
+      <source>Flat ends</source>
+      <translation type="unfinished">Flat ends</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateEllipse</name>
+    <message>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="433"/>
+      <source>Center</source>
+      <translation>Po sredini</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
+      <source>Axis endpoints</source>
+      <translation type="unfinished">Axis endpoints</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateLine</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
+      <source>Point, length, angle</source>
+      <translation type="unfinished">Point, length, angle</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="280"/>
+      <source>Point, width, height</source>
+      <translation type="unfinished">Point, width, height</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="281"/>
+      <source>2 points</source>
+      <translation type="unfinished">2 points</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateOffset</name>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1084"/>
+      <source>Arc</source>
+      <translation>Kružni luk</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1085"/>
+      <source>Intersection</source>
+      <translation>Presek</translation>
     </message>
   </context>
 </TS>

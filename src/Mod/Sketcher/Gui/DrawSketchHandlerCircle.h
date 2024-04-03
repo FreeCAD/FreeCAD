@@ -134,8 +134,8 @@ private:
             } break;
             case SelectMode::SeekThird: {
                 try {
-                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
-                        // If points are colinear then we can't calculate the center.
+                    if (areCollinear(firstPoint, secondPoint, onSketchPos)) {
+                        // If points are collinear then we can't calculate the center.
                         return;
                     }
 
@@ -465,7 +465,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
             }
             if (onViewParameters[OnViewParameter::Fifth]->isSet
                 && onViewParameters[OnViewParameter::Sixth]->isSet
-                && areColinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
+                && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
             }

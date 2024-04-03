@@ -79,7 +79,6 @@ public:
 
 private:
     ThicknessWidget* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui

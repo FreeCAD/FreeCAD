@@ -137,22 +137,22 @@
       <translation>Maak linkgroep</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="243"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>Maak link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="296"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>Maak sublink</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="584"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>Importeer links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="625"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>Importeer alle links</translation>
     </message>
@@ -167,12 +167,12 @@
       <translation>Tekst document invoegen</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Voeg een onderdeel toe</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Een groep toevoegen</translation>
     </message>
@@ -188,8 +188,8 @@
       <translation>Plaatsing</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
@@ -234,6 +234,11 @@
       <location filename="../CommandFeat.cpp" line="92"/>
       <source>Set Random Color</source>
       <translation>Willekeurige kleur instellen</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="147"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
     </message>
   </context>
   <context>
@@ -470,8 +475,8 @@
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Expressie: </translation>
+      <source>Expression:</source>
+      <translation type="unfinished">Expression:</translation>
     </message>
   </context>
   <context>
@@ -559,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Wacht tot het AutoHerstel-bestand gered is...</translation>
     </message>
@@ -867,7 +872,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="190"/>
       <source>View</source>
-      <translation>Aanzicht</translation>
+      <translation>Weergave</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="197"/>
@@ -1272,17 +1277,17 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Vertraging voor toets combinaties: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation type="unfinished">Multi-key sequence delay:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Beschikbare tijd in milliseconden voor de volgende toets van de huidige toetscombinatie.
-Bijvoorbeeld, het twee keer indrukken van 'F' in minder dan de ingestelde tijd zal
-worden behandeld als een snelkoppeling toetscombinatie 'F, F'.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
+For example, pressing 'F' twice in less than the time delay setting here will be
+treated as shortcut key sequence 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -1484,7 +1489,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="102"/>
       <source>Command</source>
-      <translation>Commando</translation>
+      <translation>Opdracht</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="73"/>
@@ -2101,7 +2106,7 @@ Misschien een fout met bestandsrechten?</translation>
     <message>
       <location filename="../DlgMacroRecord.ui" line="156"/>
       <source>Close</source>
-      <translation>Sluiten</translation>
+      <translation>Afsluiten</translation>
     </message>
   </context>
   <context>
@@ -2333,7 +2338,7 @@ Kies een andere map, alstublieft.</translation>
       <location filename="../DlgParameterImp.cpp" line="69"/>
       <location filename="../DlgParameterImp.cpp" line="233"/>
       <source>Group</source>
-      <translation>Groep</translation>
+      <translation>Groeperen</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="78"/>
@@ -2845,11 +2850,6 @@ rechtsonder in de geopende bestanden getoond</translation>
       <translation>Toon coördinatenstelsel in de hoek</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Relatieve grootte:   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2925,6 +2925,11 @@ Een VBO is een OpenGL functie die methoden biedt voor het uploaden van vertex da
 VBO's bieden aanzienlijke prestatiewinst omdat de gegevens in het grafische geheugen worden opgeslagen in plaats van in het systeemgeheugen en zo direct kunnen worden weergegeven door de GPU.
 
 Opmerking: Soms kan deze functie leiden tot een scala van verschillende problemen, van grafische afwijkingen tot GPU crash bugs. Vergeet niet om deze instelling als -ingeschakeld- te rapporteren, bij het zoeken naar ondersteuning op de FreeCAD forums</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation type="unfinished">Relative size:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -4443,8 +4448,8 @@ horizontale ruimte in de Python-console overschrijden</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation>Python profiler interval (milliseconden): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -4780,7 +4785,7 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="203"/>
       <source>Close</source>
-      <translation>Afsluiten</translation>
+      <translation>Sluiten</translation>
     </message>
   </context>
   <context>
@@ -5423,7 +5428,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="655"/>
       <source>Command</source>
-      <translation>Opdracht</translation>
+      <translation>Commando</translation>
     </message>
   </context>
   <context>
@@ -5934,7 +5939,7 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Exacte overeenkomst</translation>
     </message>
@@ -5942,7 +5947,7 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Exacte overeenkomst</translation>
     </message>
@@ -6108,15 +6113,15 @@ Wilt u uw wijzigingen opslaan?</translation>
       <translation>PDF formaat</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="618"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz format</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="619"/>
       <source>Export graph</source>
       <translation>Grafiek exporteren</translation>
     </message>
@@ -7517,7 +7522,7 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <location filename="../Tree.cpp" line="1061"/>
       <source>Group</source>
-      <translation>Groeperen</translation>
+      <translation>Groep</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3158"/>
@@ -7561,7 +7566,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3170"/>
-      <location filename="../Tree.cpp" line="5399"/>
+      <location filename="../Tree.cpp" line="5430"/>
       <source>Rename</source>
       <translation>Hernoemen</translation>
     </message>
@@ -7651,12 +7656,12 @@ Wilt u een andere map opgeven?</translation>
       <translation>Het geselecteerde object herberekenen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5370"/>
+      <location filename="../Tree.cpp" line="5401"/>
       <source> (but must be executed)</source>
       <translation> (maar moet worden uitgevoerd)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5372"/>
+      <location filename="../Tree.cpp" line="5403"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, interne naam: %2</translation>
     </message>
@@ -7845,8 +7850,8 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation type="unfinished">5 m</translation>
     </message>
   </context>
   <context>
@@ -8041,8 +8046,8 @@ Wilt u een andere map opgeven?</translation>
       <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
@@ -8334,8 +8339,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
-      <source>Notifier: </source>
-      <translation>Melder: </translation>
+      <source>Notifier:</source>
+      <translation type="unfinished">Notifier:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8724,32 +8729,32 @@ Open een browservenster en typ: http://localhost:%1.</translation>
       <translation>Aanmaken linkgroep mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="264"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>Aanmaken link mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="339"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>Aanmaken van relatieve link mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>Ontkoppelen mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="467"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>Linkvervanging mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="597"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Links importeren is mislukt</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="636"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Alle links importeren is mislukt</translation>
     </message>
@@ -8902,18 +8907,18 @@ de huidige kopie verloren gaat.
       <translation>Kleurenlegende</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
       <translation>Schakel scherm zichtbaarheid in/uit</translation>
     </message>
     <message>
+      <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Zet zwevend venster aan/uit</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
       <translation>Sluit deelvenster</translation>
     </message>
@@ -9694,12 +9699,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Groep maken</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>Een Groep is een algemene container om objecten in de boomweergave te groeperen, ongeacht hun gegevenstype. Het is een eenvoudige map om de objecten in een model te organiseren.</translation>
     </message>
@@ -9759,13 +9764,13 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="881"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>Linkacties</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="882"/>
-      <location filename="../CommandLink.cpp" line="884"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>Acties die van toepassing zijn om objecten te koppelen</translation>
     </message>
@@ -9773,12 +9778,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="547"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>Importeer links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="548"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>Importeer geselecteerde externe link(s)</translation>
     </message>
@@ -9786,12 +9791,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="611"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>Importeer alle links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="612"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>Importeer alle links van het actieve document</translation>
     </message>
@@ -9804,9 +9809,9 @@ de huidige kopie verloren gaat.
       <translation>Maak link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="212"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation>Een link is een object dat verwijst of koppelt naar een ander object in hetzelfde document, of in een ander document. Anders dan Clones, verwijzen Links direct naar de oorspronkelijke vorm, waardoor ze geheugen efficiënter worden wat helpt bij het maken van complexe samenstellingen.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
     </message>
   </context>
   <context>
@@ -9825,12 +9830,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="278"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>Maak sublink</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="279"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Maak een subobject- of subelementlink aan</translation>
     </message>
@@ -9838,12 +9843,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="499"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>Vervang door link</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="500"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Vervang elk geselecteerd object door een link</translation>
     </message>
@@ -9851,13 +9856,13 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="855"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>Linknavigatie</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="856"/>
-      <location filename="../CommandLink.cpp" line="858"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>Linknavigatieacties</translation>
     </message>
@@ -9865,12 +9870,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="815"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>Selecteer alle links</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="816"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>Selecteer alle links naar het huidige geselecteerde object</translation>
     </message>
@@ -9878,12 +9883,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="652"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>Ga naar gekoppeld object</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="653"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Selecteer het gekoppelde object en schakel over naar het eigenaarsdocument</translation>
     </message>
@@ -9891,12 +9896,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="780"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>Ga naar het diepste gekoppelde object</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="781"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Selecteer het diepst gekoppelde object en schakel over naar het eigenaarsdocument</translation>
     </message>
@@ -9904,12 +9909,12 @@ de huidige kopie verloren gaat.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="523"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>Ontkoppel</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="524"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>Snij op linkniveau</translation>
     </message>
@@ -10052,8 +10057,8 @@ de huidige kopie verloren gaat.
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>
@@ -10128,11 +10133,9 @@ de huidige kopie verloren gaat.
       <translation>Onderdeel maken</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation>Een Onderdeel is een algemene container om een groep objecten bij elkaar te houden, zodat ze in de 3D-weergave behandeld worden als een eenheid.
-Het is bedoeld om objecten te ordenen die een Part TopoShape hebben, zoals Part Primitives, PartDesign Bodies en andere Parts.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
     </message>
   </context>
   <context>
@@ -10450,13 +10453,13 @@ Het is bedoeld om objecten te ordenen die een Part TopoShape hebben, zoals Part 
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="135"/>
+      <location filename="../CommandFeat.cpp" line="184"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Verzenden naar Python-console</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="136"/>
-      <location filename="../CommandFeat.cpp" line="138"/>
+      <location filename="../CommandFeat.cpp" line="185"/>
+      <location filename="../CommandFeat.cpp" line="187"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Verzendt het geselecteerde object naar de Python-console</translation>
     </message>
@@ -11665,7 +11668,7 @@ Wilt u het document nu opslaan?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Groep</translation>
     </message>
@@ -11845,7 +11848,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
       <source>View</source>
-      <translation>Weergave</translation>
+      <translation>Aanzicht</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="555"/>
@@ -13649,6 +13652,19 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="132"/>
+      <source>Toggle freeze</source>
+      <translation type="unfinished">Toggle freeze</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="134"/>
+      <source>Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze sate of the selected objects. A freezed object is not recomputed when its parents change.</translation>
     </message>
   </context>
 </TS>

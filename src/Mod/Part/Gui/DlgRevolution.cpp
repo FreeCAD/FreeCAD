@@ -570,11 +570,7 @@ void DlgRevolution::autoSolid()
 TaskRevolution::TaskRevolution()
 {
     widget = new DlgRevolution();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Revolve"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Revolve"), widget);
 }
 
 bool TaskRevolution::accept()

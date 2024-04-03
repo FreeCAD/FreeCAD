@@ -48,36 +48,6 @@
 
 using namespace Gui;
 
-/* XPM */
-static const char *not_found[]={
-"24 24 2 1",
-"# c #000000",
-". c #ffffff",
-"........................",
-"........................",
-"...##..............##...",
-"..####............####..",
-"..#####..........#####..",
-"..######........#####...",
-"...######......######...",
-"....######....######....",
-".....######..######.....",
-"......############......",
-".......##########.......",
-"........########........",
-".........######.........",
-"........########........",
-".......##########.......",
-"......############......",
-".....######..######.....",
-"....######....######....",
-"..#######......######...",
-".#######........######..",
-".######..........#####..",
-"..####.............##...",
-"........................",
-"........................"};
-
 namespace Gui {
 class BitmapFactoryInstP
 {
@@ -281,11 +251,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     }
 
     Base::Console().Warning("Cannot find icon: %s\n", name);
-    return QPixmap(not_found);
+    return QPixmap(Gui::BitmapFactory().pixmapFromSvg("help-browser", QSize(16, 16)));
 }
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
-    const std::map<unsigned long, unsigned long>& colorMapping) const
+                                         const ColorMap& colorMapping) const
 {
     // If an absolute path is given
     QPixmap icon;
@@ -321,8 +291,18 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
     return icon;
 }
 
+QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
+                                         const ColorMap& colorMapping) const
+{
+    qreal width = size.width() * dpr;
+    qreal height = size.height() * dpr;
+    QPixmap px(pixmapFromSvg(name, QSizeF(width, height), colorMapping));
+    px.setDevicePixelRatio(dpr);
+    return px;
+}
+
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
-                                         const std::map<unsigned long, unsigned long>& colorMapping) const
+                                         const ColorMap& colorMapping) const
 {
     QString stringContents = QString::fromUtf8(originalContents);
     for ( const auto &colorToColor : colorMapping ) {

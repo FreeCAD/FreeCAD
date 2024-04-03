@@ -135,7 +135,6 @@ public:
 
 private:
     RemeshGmsh* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace MeshGui

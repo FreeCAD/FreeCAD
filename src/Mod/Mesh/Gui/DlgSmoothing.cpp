@@ -152,21 +152,16 @@ SmoothingDialog::~SmoothingDialog() = default;
 TaskSmoothing::TaskSmoothing()
 {
     widget = new DlgSmoothing();  // NOLINT
-    Gui::TaskView::TaskBox* taskbox =
-        new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false, nullptr);
 
     selection = new Selection();  // NOLINT
     selection->setObjects(
         Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
-    Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
-    tasksel->groupLayout()->addWidget(selection);
-    tasksel->hide();
-    Content.push_back(tasksel);
+    QWidget* box = addTaskBoxWithoutHeader(selection);
+    box->hide();
 
-    connect(widget, &DlgSmoothing::toggledSelection, tasksel, &QWidget::setVisible);
+    connect(widget, &DlgSmoothing::toggledSelection, box, &QWidget::setVisible);
 }
 
 bool TaskSmoothing::accept()

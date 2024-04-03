@@ -230,6 +230,36 @@ public:
                                  ElementIDRefs *sid = nullptr,
                                  bool copy = false) const;
 
+    /** Add a sub-element name mapping.
+     *
+     * @param element: the original \c Type + \c Index element name
+     * @param name: the mapped sub-element name. May or may not start with
+     * elementMapPrefix().
+     * @param sid: in case you use a hasher to hash the element name, pass in
+     * the string id reference using this parameter. You can have more than one
+     * string id associated with the same name.
+     * @param overwrite: if true, it will overwrite existing names
+     *
+     * @return Returns the stored mapped element name.
+     *
+     * An element can have multiple mapped names. However, a name can only be
+     * mapped to one element
+     *
+     * Note: the original proc was in the context of ComplexGeoData, which provided `Tag` access,
+     *   now you must pass in `long masterTag` explicitly.
+     */
+    MappedName setElementName(const IndexedName& element,
+                              const MappedName& name,
+                              long masterTag,
+                              const ElementIDRefs* sid = nullptr,
+                              bool overwrite = false) {
+        return _elementMap -> setElementName(element, name, masterTag, sid, overwrite);
+    }
+
+    bool hasElementMap() {
+        return _elementMap != nullptr;
+    }
+
     /** Get mapped element names
      *
      * @param element: original element name with \c Type + \c Index

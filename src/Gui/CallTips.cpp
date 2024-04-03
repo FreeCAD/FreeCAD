@@ -472,20 +472,7 @@ void CallTipsList::showTips(const QString& line)
     static QPixmap property_icon = BitmapFactory().pixmap("ClassBrowser/property.svg");
 
     // object is in error state
-    static const char * const forbidden_xpm[]={
-            "8 8 3 1",
-            ". c None",
-            "# c #ff0000",
-            "a c #ffffff",
-            "..####..",
-            ".######.",
-            "########",
-            "#aaaaaa#",
-            "#aaaaaa#",
-            "########",
-            ".######.",
-            "..####.."};
-    static QPixmap forbidden_icon(forbidden_xpm);
+    static QPixmap forbidden_icon(Gui::BitmapFactory().pixmapFromSvg("forbidden", property_icon.size() / 4));
     static QPixmap forbidden_type_module_icon = BitmapFactory().merge(type_module_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_type_class_icon = BitmapFactory().merge(type_class_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_method_icon = BitmapFactory().merge(method_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);

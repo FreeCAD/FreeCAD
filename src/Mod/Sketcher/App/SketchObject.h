@@ -368,7 +368,16 @@ public:
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int>& geoIdList,
                      int refGeoId,
-                     Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+                     Sketcher::PointPos refPosId = Sketcher::PointPos::none,
+                     bool addSymmetryConstraints = false);
+    // get the symmetric geometries of the geoIdList
+    std::vector<Part::Geometry*>
+    getSymmetric(const std::vector<int>& geoIdList,
+                 std::map<int, int>& geoIdMap,
+                 std::map<int, bool>& isStartEndInverted,
+                 int refGeoId,
+                 Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+
     /// with default parameters adds a copy of the geometric elements displaced by the displacement
     /// vector. It creates an array of csize elements in the direction of the displacement vector by
     /// rsize elements in the direction perpendicular to the displacement vector, wherein the
@@ -691,6 +700,9 @@ public:
     }
 
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
+
+    std::pair<std::string, std::string> getElementName(const char* name,
+                                                       ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
     {

@@ -1372,22 +1372,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="924"/>
+      <location filename="../../CommandCreateDims.cpp" line="926"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="925"/>
+      <location filename="../../CommandCreateDims.cpp" line="927"/>
       <source>Insert Extent Dimension</source>
       <translation>Txertatu hedadura-kota bat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="993"/>
+      <location filename="../../CommandCreateDims.cpp" line="995"/>
       <source>Horizontal Extent</source>
       <translation>Hedadura horizontala</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="998"/>
+      <location filename="../../CommandCreateDims.cpp" line="1000"/>
       <source>Vertical Extent</source>
       <translation>Hedadura bertikala</translation>
     </message>
@@ -1447,12 +1447,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1021"/>
+      <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1022"/>
+      <location filename="../../CommandCreateDims.cpp" line="1024"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Txertatu hedadura horizontaleko kota</translation>
     </message>
@@ -1489,12 +1489,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1229"/>
+      <location filename="../../CommandCreateDims.cpp" line="1231"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1230"/>
+      <location filename="../../CommandCreateDims.cpp" line="1232"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Txertatu mugarri-kota - ESPERIMENTALA</translation>
     </message>
@@ -1528,12 +1528,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="844"/>
+      <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="845"/>
+      <location filename="../../CommandCreateDims.cpp" line="847"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Estekatu kota 3D geometria batekin</translation>
     </message>
@@ -1901,12 +1901,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1134"/>
+      <location filename="../../CommandCreateDims.cpp" line="1136"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1135"/>
+      <location filename="../../CommandCreateDims.cpp" line="1137"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Txertatu hedadura bertikaleko kota</translation>
     </message>
@@ -1996,8 +1996,8 @@
       <translation>Sortu kalkulu-orriaren bista</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="388"/>
       <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../PagePrinter.cpp" line="388"/>
       <source>Save page to dxf</source>
       <translation>Gorde orria DXF fitxategi batean</translation>
     </message>
@@ -2017,8 +2017,8 @@
       <translation>Sortu oharpena</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1360"/>
+      <location filename="../../CommandCreateDims.cpp" line="1279"/>
+      <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
       <translation>Sortu kota</translation>
     </message>
@@ -2058,7 +2058,7 @@
       <translation>Arrastatu kota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="536"/>
+      <location filename="../../QGSPage.cpp" line="535"/>
       <source>Create Balloon</source>
       <translation>Sortu bunbuiloa</translation>
     </message>
@@ -2073,8 +2073,8 @@
       <translation>Sortu erdiko lerroa</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>Sortu lerro kosmetikoa</translation>
     </message>
@@ -2119,7 +2119,7 @@
       <translation>Editatu oharpena</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="508"/>
+      <location filename="../../TaskSectionView.cpp" line="505"/>
       <source>Create SectionView</source>
       <translation>Sortu sekzio-bista</translation>
     </message>
@@ -2130,17 +2130,17 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
-      <location filename="../../TaskSectionView.cpp" line="589"/>
+      <location filename="../../TaskSectionView.cpp" line="586"/>
       <source>Edit SectionView</source>
       <translation>Editatu sekzio-bista</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="607"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="561"/>
       <source>Create WeldSymbol</source>
       <translation>Sortu soldadura-ikurra</translation>
     </message>
     <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="615"/>
+      <location filename="../../TaskWeldingSymbol.cpp" line="569"/>
       <source>Edit WeldSymbol</source>
       <translation>Editatu soldadura-ikurra</translation>
     </message>
@@ -2686,16 +2686,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1309"/>
-      <location filename="../../CommandAnnotate.cpp" line="1317"/>
-      <location filename="../../CommandAnnotate.cpp" line="1364"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1513"/>
-      <location filename="../../CommandAnnotate.cpp" line="1577"/>
-      <location filename="../../CommandCreateDims.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2713,6 +2703,16 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
+      <location filename="../../CommandCreateDims.cpp" line="1251"/>
+      <location filename="../../CommandCreateDims.cpp" line="1260"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -2744,9 +2744,10 @@
       <translation>Ez da profil-objekturik aurkitu hautapenean</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2754,38 +2755,38 @@
       <location filename="../../CommandCreateDims.cpp" line="600"/>
       <location filename="../../CommandCreateDims.cpp" line="692"/>
       <location filename="../../CommandCreateDims.cpp" line="784"/>
-      <location filename="../../CommandCreateDims.cpp" line="1056"/>
-      <location filename="../../CommandCreateDims.cpp" line="1423"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
-      <location filename="../../CommandCreateDims.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandCreateDims.cpp" line="1058"/>
+      <location filename="../../CommandCreateDims.cpp" line="1425"/>
+      <location filename="../../CommandCreateDims.cpp" line="1433"/>
+      <location filename="../../CommandCreateDims.cpp" line="1442"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
       <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandExtensionPack.cpp" line="1894"/>
       <source>Incorrect selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1426"/>
       <source>Select an object first</source>
       <translation>Hautatu objektu bat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Too many objects selected</source>
       <translation>Objektu gehiegi hautatuta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1443"/>
       <source>Create a page first.</source>
       <translation>Lehenengo, sortu orrialde bat.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2793,8 +2794,7 @@
       <location filename="../../CommandCreateDims.cpp" line="601"/>
       <location filename="../../CommandCreateDims.cpp" line="693"/>
       <location filename="../../CommandCreateDims.cpp" line="785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1057"/>
-      <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../CommandCreateDims.cpp" line="1059"/>
       <source>No View of a Part in selection.</source>
       <translation>Ez dago piezaren bistarik hautapenean.</translation>
     </message>
@@ -2906,8 +2906,6 @@
       <translation>Hautatutako ertza B-spline bat da. Erradioa gutxi gorabeherakoa izango da. Jarraitu?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="309"/>
@@ -2922,15 +2920,17 @@
       <location filename="../../CommandCreateDims.cpp" line="727"/>
       <location filename="../../CommandCreateDims.cpp" line="804"/>
       <location filename="../../CommandCreateDims.cpp" line="819"/>
-      <location filename="../../CommandCreateDims.cpp" line="884"/>
-      <location filename="../../CommandCreateDims.cpp" line="891"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
-      <location filename="../../CommandCreateDims.cpp" line="1098"/>
-      <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <location filename="../../CommandCreateDims.cpp" line="886"/>
+      <location filename="../../CommandCreateDims.cpp" line="893"/>
+      <location filename="../../CommandCreateDims.cpp" line="1086"/>
+      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="1192"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -3023,41 +3023,44 @@
       <translation>Ezin da angeluko 3D kota egin hautapenetik</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <location filename="../../CommandCreateDims.cpp" line="1087"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>Ezin da 2D hedadura-kota egin hautapenetik</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <location filename="../../CommandCreateDims.cpp" line="1101"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>Ezin da 3D hedadura-kota egin hautapenetik</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1191"/>
+      <location filename="../../CommandCreateDims.cpp" line="1193"/>
       <source>There is no Dimension in your selection</source>
       <translation>Ez dago kotarik hautapenean</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="885"/>
+      <location filename="../../CommandCreateDims.cpp" line="887"/>
       <source>There is no 3D object in your selection</source>
       <translation>Ez dago 3D objekturik zure hautapenean</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="892"/>
+      <location filename="../../CommandCreateDims.cpp" line="894"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Ez dago 3D ertzik edo erpinik zure hautapenean</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1250"/>
+      <location filename="../../CommandCreateDims.cpp" line="1252"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Hautatu bi puntu-objektu eta bista bat. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1259"/>
+      <location filename="../../CommandCreateDims.cpp" line="1261"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Hautatu bi puntu-objektu eta bista bat. (2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3081,14 +3084,9 @@
       <location filename="../../CommandCreateDims.cpp" line="580"/>
       <location filename="../../CommandCreateDims.cpp" line="672"/>
       <location filename="../../CommandCreateDims.cpp" line="764"/>
-      <location filename="../../CommandCreateDims.cpp" line="938"/>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
-      <location filename="../../CommandCreateDims.cpp" line="1149"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
+      <location filename="../../CommandCreateDims.cpp" line="940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1038"/>
+      <location filename="../../CommandCreateDims.cpp" line="1151"/>
       <location filename="../../CommandExtensionDims.cpp" line="323"/>
       <location filename="../../CommandExtensionDims.cpp" line="546"/>
       <location filename="../../CommandExtensionDims.cpp" line="838"/>
@@ -3096,18 +3094,23 @@
       <location filename="../../CommandExtensionDims.cpp" line="1513"/>
       <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <location filename="../../CommandExtensionDims.cpp" line="2137"/>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandExtensionPack.cpp" line="300"/>
       <location filename="../../CommandExtensionPack.cpp" line="614"/>
       <location filename="../../CommandExtensionPack.cpp" line="1102"/>
       <location filename="../../CommandExtensionPack.cpp" line="1346"/>
       <location filename="../../CommandExtensionPack.cpp" line="1647"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Ataza abian</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3131,14 +3134,9 @@
       <location filename="../../CommandCreateDims.cpp" line="581"/>
       <location filename="../../CommandCreateDims.cpp" line="673"/>
       <location filename="../../CommandCreateDims.cpp" line="765"/>
-      <location filename="../../CommandCreateDims.cpp" line="939"/>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
-      <location filename="../../CommandCreateDims.cpp" line="1150"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../CommandCreateDims.cpp" line="941"/>
+      <location filename="../../CommandCreateDims.cpp" line="1039"/>
+      <location filename="../../CommandCreateDims.cpp" line="1152"/>
       <location filename="../../CommandExtensionDims.cpp" line="324"/>
       <location filename="../../CommandExtensionDims.cpp" line="547"/>
       <location filename="../../CommandExtensionDims.cpp" line="839"/>
@@ -3146,14 +3144,16 @@
       <location filename="../../CommandExtensionDims.cpp" line="1514"/>
       <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <location filename="../../CommandExtensionDims.cpp" line="2138"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandExtensionPack.cpp" line="301"/>
       <location filename="../../CommandExtensionPack.cpp" line="615"/>
       <location filename="../../CommandExtensionPack.cpp" line="1103"/>
       <location filename="../../CommandExtensionPack.cpp" line="1347"/>
       <location filename="../../CommandExtensionPack.cpp" line="1648"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Itxi ataza aktiboaren elkarrizketa-koadroa eta saiatu berriro.</translation>
     </message>
@@ -3411,11 +3411,6 @@
       <translation>Esportatu orrialdea PDF gisa</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="325"/>
-      <source>Document Name: </source>
-      <translation>Dokumentu-izena: </translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="496"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
@@ -3426,19 +3421,19 @@
       <translation>Esportatu orrialdea SVG gisa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="211"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ziur zaude jarraitu nahi duzula?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="232"/>
       <source>Show drawing</source>
       <translation>Erakutsi marrazkia</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="234"/>
       <source>Toggle KeepUpdated</source>
       <translation>Txandakatu eguneratuta mantentzea</translation>
     </message>
@@ -3463,9 +3458,9 @@
       <translation>Testu aberatsaren sortzailea</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Testu aberatsaren editorea</translation>
     </message>
@@ -3548,7 +3543,7 @@
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="716"/>
-      <location filename="../../TaskSectionView.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="648"/>
       <source>Operation Failed</source>
       <translation>Eragiketak huts egin du</translation>
     </message>
@@ -3583,8 +3578,8 @@
       <translation>Editatu xehetasun-bista</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>Editatu %1</translation>
     </message>
@@ -3851,11 +3846,16 @@ thick: %4</translation>
       <source>Edit Cosmetic Circle</source>
       <translation type="unfinished">Edit Cosmetic Circle</translation>
     </message>
+    <message>
+      <location filename="../../PagePrinter.cpp" line="325"/>
+      <source>Document Name:</source>
+      <translation>Dokumentuaren izena:</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderLeader.cpp" line="209"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>Ezin da gida-marra hau ezabatu
@@ -3867,17 +3867,17 @@ hautsi daitekeen soldadura-ikur bat duelako.</translation>
       <translation>Ezin da bista hau ezabatu, hautsita geratuko liratekeen mendeko bista bat edo gehiago dituelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="229"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
     </message>
@@ -3902,7 +3902,7 @@ hautsi daitekeen soldadura-ikur bat duelako.</translation>
       <translation>Ezin da bista hau ezabatu hautsita geratuko litzatekeen gida-marra bat duelako.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="205"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Orria ez dago hutsik, eta honako erreferentzia
@@ -4020,7 +4020,6 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     <name>TaskPojGroup</name>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
-      <location filename="../../TaskSectionView.cpp" line="436"/>
       <source> updates pending</source>
       <translation> eguneraketa falta dira</translation>
     </message>
@@ -7280,8 +7279,8 @@ Puntu gehiago ere aukeratu daitezke lerro segmentuak sortzeko.</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
-      <source>Geometry2: </source>
-      <translation>2 geometria:</translation>
+      <source>Geometry2:</source>
+      <translation>Geometria2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -7874,13 +7873,21 @@ emandako X/Y espazioa erabilita</translation>
       <source>Z</source>
       <translation>Z</translation>
     </message>
+    <message numerus="yes">
+      <location filename="../../TaskSectionView.cpp" line="435"/>
+      <source>%n update(s) pending</source>
+      <translation type="unfinished">
+        <numerusform>%n eguneratzeke</numerusform>
+        <numerusform>%n update(s) pending</numerusform>
+      </translation>
+    </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="448"/>
+      <location filename="../../TaskSectionView.cpp" line="445"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>Ez dago aplikatzeko ezer. Oraindik ez da sekzio-norabiderik aukeratu</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="650"/>
+      <location filename="../../TaskSectionView.cpp" line="647"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ezin da jarraitu. Ez da * %1 edo %2 objektua aurkitu.</translation>
     </message>
@@ -8104,11 +8111,6 @@ emandako X/Y espazioa erabilita</translation>
       <source>other</source>
       <translation>beste bat</translation>
     </message>
-    <message>
-      <location filename="../../TaskWeldingSymbol.cpp" line="460"/>
-      <source>SectionView</source>
-      <translation>Sekzio-bista</translation>
-    </message>
   </context>
   <context>
     <name>TechDrawGui::dlgTemplateField</name>
@@ -8189,7 +8191,7 @@ emandako X/Y espazioa erabilita</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="995"/>
+      <location filename="../../CommandCreateDims.cpp" line="997"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Txertatu hedadura horizontaleko kota</translation>
     </message>
@@ -8253,7 +8255,7 @@ emandako X/Y espazioa erabilita</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="999"/>
+      <location filename="../../CommandCreateDims.cpp" line="1001"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Txertatu hedadura bertikaleko kota</translation>
     </message>
@@ -8272,7 +8274,6 @@ emandako X/Y espazioa erabilita</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
-      <location filename="../../Workbench.cpp" line="61"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Hedapenak: erdiko lerroak/harilkatzea</translation>
     </message>
@@ -8303,71 +8304,96 @@ emandako X/Y espazioa erabilita</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
+      <source>Page</source>
+      <translation>Orrialdea</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Attributes</source>
       <translation>TechDraw atributuak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Centerlines</source>
       <translation>TechDraw erdiko lerroak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>TechDraw luzatu kotak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
       <translation>TechDraw orriak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Stacking</source>
       <translation>TechDraw pilaketa</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
       <translation>TechDraw bistak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Clips</source>
       <translation>TechDraw klipak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
       <translation>TechDraw kotak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Tool Attributes</source>
       <translation>TechDraw tresna-atributuak</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
       <translation>TechDraw fitxategi-atzitzea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
       <translation>TechDraw apaingarria</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Annotation</source>
       <translation>TechDraw oharpena</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
+      <source>Views From Other Workbenches</source>
+      <translation type="unfinished">Views From Other Workbenches</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="62"/>
+      <source>Clipped Views</source>
+      <translation type="unfinished">Clipped Views</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="63"/>
+      <source>Hatching</source>
+      <translation type="unfinished">Hatching</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="64"/>
+      <source>Symbols</source>
+      <translation type="unfinished">Symbols</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Views</source>
       <translation>Bistak</translation>
     </message>
@@ -8539,12 +8565,12 @@ emandako X/Y espazioa erabilita</translation>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1174"/>
+      <location filename="../../CommandCreateDims.cpp" line="1176"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1175"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <source>Repair Dimension References</source>
       <translation>Konpondu kota-erreferentziak</translation>
     </message>
@@ -8591,30 +8617,30 @@ emandako X/Y espazioa erabilita</translation>
   <context>
     <name>TechDraw_HoleShaftFit</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="51"/>
       <source>Add hole or shaft fit</source>
       <translation>Gehitu doikuntza emea edo arra</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="56"/>
-      <source>Add a hole or shaft fit to a dimension&lt;br&gt;
-                - select one length dimension or diameter dimension&lt;br&gt;
-                - click the tool button, a panel opens&lt;br&gt;
-                - select shaft fit / hole fit&lt;br&gt;
-                - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Gehitu doikuntza emea edo arra kota bati&lt;br&gt;
-                - hautatu luzera- edo diametro-kota bat&lt;br&gt;
-                - egin klik tresnaren botoian, panel bat irekiko da&lt;br&gt;
-                - hautatu doikuntza arra edo emea&lt;br&gt;
-                - hautatu, konbinazio-koadroan, erabiliko den ISO 286 doikuntza-eremua</translation>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="59"/>
+      <source>Add a hole or shaft fit to a dimension
+- select one length dimension or diameter dimension
+- click the tool button, a panel opens
+- select shaft fit / hole fit
+- select the desired ISO 286 fit field using the combo box</source>
+      <translation type="unfinished">Add a hole or shaft fit to a dimension
+- select one length dimension or diameter dimension
+- click the tool button, a panel opens
+- select shaft fit / hole fit
+- select the desired ISO 286 fit field using the combo box</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="71"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="74"/>
       <source>Add a hole or shaft fit to a dimension</source>
       <translation type="unfinished">Add a hole or shaft fit to a dimension</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="75"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="78"/>
       <source>Please select one length dimension or diameter dimension and retry</source>
       <translation type="unfinished">Please select one length dimension or diameter dimension and retry</translation>
     </message>
@@ -8976,8 +9002,8 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="207"/>
-      <source>Start angle (conventional) of arc in degrees. </source>
-      <translation>Arkuaren hasierako angelua (konbentzionala) graduetan. </translation>
+      <source>Start angle (conventional) of arc in degrees.</source>
+      <translation type="unfinished">Start angle (conventional) of arc in degrees.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="220"/>
@@ -9086,17 +9112,17 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
       <translation type="unfinished">Use document info to populate the template fields</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="135"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="136"/>
       <source>Fill Template Fields in </source>
       <translation type="unfinished">Fill Template Fields in </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="142"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="143"/>
       <source>Update</source>
       <translation>Eguneratu</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="351"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
       <translation type="unfinished">Update All</translation>
     </message>
@@ -9119,7 +9145,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
       <translation type="unfinished">View or Projection Group missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="381"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="382"/>
       <source>Corresponding template fields missing</source>
       <translation type="unfinished">Corresponding template fields missing</translation>
     </message>

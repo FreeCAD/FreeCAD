@@ -692,7 +692,7 @@ def export( exportList, filename, colors = None, camera = None ):
 
         color = '#cccccc'
         opacity = 1.0
-        if FreeCADGui:
+        if FreeCADGui and hasattr(obj.ViewObject, "ShapeColor"):
             color = Draft.getrgb(obj.ViewObject.ShapeColor, testbw = False)
             opacity = int((100 - obj.ViewObject.Transparency)/5) / 20 # 0>>1 with step of 0.05
         elif colors:
@@ -733,7 +733,7 @@ def export( exportList, filename, colors = None, camera = None ):
         if obj.isDerivedFrom('Part::Feature'):
 
             deviation = 0.5
-            if FreeCADGui:
+            if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation
 
                 # obj.ViewObject.DiffuseColor is length=1 when all faces are the same color, length=len(faces) for when they're not

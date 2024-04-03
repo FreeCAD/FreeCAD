@@ -4617,6 +4617,33 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
+        else if (isArcOfCircle(*geom)) {
+            auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+            double ActLength = arc->getAngle(false) * arc->getRadius();
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
+                GeoId1,
+                ActLength);
+
+            // it is a constraint on a external line, make it non-driving
+            if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt
+                || constraintCreationMode == Reference) {
+                const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                    "setDriving(%d,%s)",
+                    ConStr.size() - 1,
+                    "False");
+                finishDatumConstraint(this, Obj, false);
+            }
+            else {
+                finishDatumConstraint(this, Obj, true);
+            }
+
+            return;
+        }
     }
 
     Gui::TranslatedUserWarning(Obj,
@@ -6427,8 +6454,8 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain tangent or colinear");
-    sToolTipText = QT_TR_NOOP("Create a tangent or colinear constraint between two entities");
+    sMenuText = QT_TR_NOOP("Constrain tangent or collinear");
+    sToolTipText = QT_TR_NOOP("Create a tangent or collinear constraint between two entities");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";

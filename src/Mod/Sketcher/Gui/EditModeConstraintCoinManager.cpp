@@ -891,6 +891,33 @@ Restart:
                             pnt1 = lineSeg->getStartPoint();
                             pnt2 = lineSeg->getEndPoint();
                         }
+                        else if (isArcOfCircle(*geo)) {
+                            // arc length
+                            auto arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+                            int index = static_cast<int>(ConstraintNodePosition::DatumLabelIndex);
+                            auto* asciiText = static_cast<SoDatumLabel*>(sep->getChild(index));
+                            center1 = arc->getCenter();
+                            pnt1 = arc->getStartPoint();
+                            pnt2 = arc->getEndPoint();
+
+                            double startAngle, endAngle;
+                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/false);
+
+                            asciiText->datumtype = SoDatumLabel::ARCLENGTH;
+                            asciiText->param1 = Constr->LabelDistance;
+                            asciiText->string =
+                                SbString(std::string("◠ ")
+                                             .append(getPresentationString(Constr).toUtf8())
+                                             .c_str());
+
+                            asciiText->pnts.setNum(3);
+                            SbVec3f* verts = asciiText->pnts.startEditing();
+                            verts[0] = SbVec3f(center1.x, center1.y, center1.z);
+                            verts[1] = SbVec3f(pnt1.x, pnt1.y, pnt1.z);
+                            verts[2] = SbVec3f(pnt2.x, pnt2.y, pnt2.z);
+                            asciiText->pnts.finishEditing();
+                            break;
+                        }
                         else {
                             break;
                         }
@@ -2375,7 +2402,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         switch (constraint->Type) {
 
-            case Tangent: {  // second icon is available only for colinear line segments
+            case Tangent: {  // second icon is available only for collinear line segments
                 const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(constraint->First);
                 const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(constraint->Second);
                 if (geo1 && geo1->is<Part::GeomLineSegment>() && geo2

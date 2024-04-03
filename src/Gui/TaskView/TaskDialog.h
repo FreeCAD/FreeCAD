@@ -57,7 +57,9 @@ public:
     TaskDialog();
     ~TaskDialog() override;
 
-    void addTaskBox(QWidget*);
+    QWidget* addTaskBox(QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBoxWithoutHeader(QWidget* widget);
 
     void setButtonPosition(ButtonPosition p)
     { pos = p; }
