@@ -92,13 +92,13 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Pad2.isValid())
 
         # Make sure we have elementMaps for the sketches
-        self.assertEqual(self.PadSketch.Shape.ElementMapSize,12 )
-        self.assertEqual(self.PadSketch1.Shape.ElementMapSize,12 )
-        self.assertEqual(self.PadSketch2.Shape.ElementMapSize,12 )
+        self.assertEqual(self.PadSketch.Shape.ElementMapSize, 12)
+        self.assertEqual(self.PadSketch1.Shape.ElementMapSize, 12)
+        self.assertEqual(self.PadSketch2.Shape.ElementMapSize, 12)
         # Make sure we don't have elementMaps for the pads.
-        self.assertEqual(self.Pad.Shape.ElementMapSize,0 )
-        self.assertEqual(self.Pad1.Shape.ElementMapSize,0 )
-        self.assertEqual(self.Pad2.Shape.ElementMapSize,0 )
+        self.assertEqual(self.Pad.Shape.ElementMapSize, 0)
+        self.assertEqual(self.Pad1.Shape.ElementMapSize, 0)
+        self.assertEqual(self.Pad2.Shape.ElementMapSize, 0)
         # could also check .Shape.BoundBox.   AttachmentSupport will always be consistent.
 
         # Act
@@ -120,10 +120,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             print("TOPOLOGICAL NAMING PROBLEM IS PRESENT.")
 
-
     def testSketchObject(self):
         # Arrange
-        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
         # Act
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
         self.Body.addObject(self.Sketch)
@@ -131,13 +130,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert    Note that sketch already calls the makeElement versions, so no guard if needed
         # if self.Sketch.Shape.ElementMapVersion != "":
-        self.assertEqual(self.Sketch.Shape.ElementMapSize,12 )
-
+        self.assertEqual(self.Sketch.Shape.ElementMapSize, 12)
 
     def testShapeBinder(self):
         # Arrange
-        body = self.Doc.addObject('PartDesign::Body','Body3')
-        box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        body = self.Doc.addObject('PartDesign::Body', 'Body3')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
         body.addObject(box)
 
         box.Length=10.00000
