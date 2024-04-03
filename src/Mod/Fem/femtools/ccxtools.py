@@ -595,14 +595,14 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 QtGui.QMessageBox.critical(None, "No CalculiX binary ccx", error_message)
             return
         progress_bar = FreeCAD.Base.ProgressIndicator()
-        progress_bar.start("Everything seams fine. CalculiX ccx will be executed ...", 0)
+        progress_bar.start("Everything seems fine. CalculiX ccx will be executed ...", 0)
         ret_code = self.start_ccx()
         self.finished.emit(ret_code)
         progress_bar.stop()
         if ret_code or self.ccx_stderr:
             if ret_code == 201 and self.solver.AnalysisType == "check":
                 FreeCAD.Console.PrintMessage(
-                    "It seams we run into NOANALYSIS problem, "
+                    "It seems we run into NOANALYSIS problem, "
                     "thus workaround for wrong exit code for *NOANALYSIS check "
                     "and set ret_code to 0.\n"
                 )
