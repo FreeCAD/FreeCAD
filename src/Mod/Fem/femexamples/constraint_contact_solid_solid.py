@@ -172,8 +172,8 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint contact
     con_contact = ObjectsFem.makeConstraintContact(doc, "ConstraintContact")
     con_contact.References = [
-        (geom_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
-        (geom_obj, "Face3"),  # second seams master face, TODO proof in writer code!
+        (geom_obj, "Face7"),  # first seems slave face, TODO proof in writer code!
+        (geom_obj, "Face3"),  # second seems master face, TODO proof in writer code!
     ]
     con_contact.Friction = False
     con_contact.Slope = "1000000.0 GPa/m"
