@@ -71,7 +71,7 @@ w  # should print 112.3 mm
 
 CalculiX FEM max deflection:
 - 112.2 mm
-- but the rotation seams 90 degree rotated (FIXME)
+- but the rotation seems 90 degree rotated (FIXME)
 
 """
 
