@@ -480,6 +480,43 @@ void MbD::ASMTAssembly::runDraggingTest()
 	assembly->runPostDrag();	//Do this after last drag
 }
 
+void MbD::ASMTAssembly::runDraggingTest2()
+{
+	//auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+
+	auto limit1 = ASMTRotationLimit::With();
+	limit1->setName("Limit1");
+	limit1->setmotionJoint("/Assembly1/Joint1");
+	limit1->settype("=>");
+	limit1->setlimit("0.0*pi/180.0");
+	limit1->settol("1.0e-9");
+	assembly->addLimit(limit1);
+
+	auto limit2 = ASMTTranslationLimit::With();
+	limit2->setName("Limit2");
+	limit2->setmotionJoint("/Assembly1/Joint4");
+	limit2->settype("=<");
+	limit2->setlimit("0.0");
+	limit2->settol("1.0e-9");
+	assembly->addLimit(limit2);
+
+	auto& dragPart = assembly->parts->at(0);
+	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	dragParts->push_back(dragPart);
+	assembly->runPreDrag();	//Do this before first drag
+	FColDsptr pos3D, delta;
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.2, 0.3 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.3, 0.2, 0.1 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	assembly->runPostDrag();	//Do this after last drag
+}
+
 void MbD::ASMTAssembly::readWriteFile(const char* fileName)
 {
 	std::ifstream stream(fileName);

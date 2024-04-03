@@ -38,6 +38,7 @@ void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 	aAjOKe = efrmKqc->aAjOe(axisK);
 	rIeJeO = frmJqc->rOeO->minusFullColumn(frmIqc->rOeO);
 	riIeJeKe = aAjOKe->dot(rIeJeO);
+	//std::cout << "DispCompIecJecKeqc riIeJeKe = " << riIeJeKe << std::endl;
 	pAjOKepEKT = efrmKqc->pAjOepET(axisK);
 	ppAjOKepEKpEK = efrmKqc->ppAjOepEpE(axisK);
 	for (size_t i = 0; i < 4; i++)

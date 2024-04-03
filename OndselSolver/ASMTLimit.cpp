@@ -87,6 +87,11 @@ void MbD::ASMTLimit::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<U
 	limitIJ->tol = geotol->getValue();
 }
 
+void MbD::ASMTLimit::setmotionJoint(std::string _motionJoint)
+{
+	motionJoint = _motionJoint;
+}
+
 void MbD::ASMTLimit::settype(std::string _type)
 {
 	type = _type;
