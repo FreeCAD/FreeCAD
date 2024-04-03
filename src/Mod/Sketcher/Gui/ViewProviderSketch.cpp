@@ -4142,6 +4142,9 @@ void ViewProviderSketch::generateContextMenu()
 
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
+            if (selectedConstraints == 1) {
+                menu << "Sketcher_ChangeDimensionConstraint";
+            }
             menu << "Sketcher_ToggleDrivingConstraint"
                  << "Sketcher_ToggleActiveConstraint"
                  << "Sketcher_SelectElementsAssociatedWithConstraints"
