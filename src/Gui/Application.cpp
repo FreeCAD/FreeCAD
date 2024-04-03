@@ -514,7 +514,7 @@ Application::Application(bool GUIenabled)
     _pcWorkbenchDictionary = PyDict_New();
 
 #ifdef USE_3DCONNEXION_NAVLIB
-    // Instantiate the 3DConnexion controller
+    // Instantiate the 3Dconnexion controller
     pNavlibInterface = new NavlibInterface();
 #endif
 

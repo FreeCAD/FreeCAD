@@ -25,7 +25,7 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 	if(APPLE)
 		add_definitions(-D__APPLE__)
 	endif(APPLE)
-	set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3DConnexion/inc)
+	set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 if (BUILD_VR)
@@ -283,7 +283,7 @@ SET(FreeCADGui_SDK_MOC_HDRS
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
-    SET(NAVLIB_STUB_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3DConnexion/src)
+    SET(NAVLIB_STUB_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/src)
     SET(FreeCADGui_SDK_SRCS
         3Dconnexion/navlib/NavlibCmds.cpp
         3Dconnexion/navlib/NavlibNavigation.cpp
