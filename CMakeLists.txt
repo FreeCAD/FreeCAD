@@ -41,6 +41,9 @@ set(ONDSELSOLVER_SRC
         OndselSolver/AccKineNewtonRaphson.cpp
         OndselSolver/AccNewtonRaphson.cpp
         OndselSolver/AngleJoint.cpp
+        OndselSolver/AngleZConstraintIJ.cpp
+        OndselSolver/AngleZConstraintIqcJc.cpp
+        OndselSolver/AngleZConstraintIqcJqc.cpp
         OndselSolver/AngleZIecJec.cpp
         OndselSolver/AngleZIeqcJec.cpp
         OndselSolver/AngleZIeqcJeqc.cpp
@@ -69,6 +72,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ASMTItemIJ.cpp
         OndselSolver/ASMTJoint.cpp
         OndselSolver/ASMTKinematicIJ.cpp
+        OndselSolver/ASMTLimit.cpp
         OndselSolver/ASMTLineInPlaneJoint.cpp
         OndselSolver/ASMTMarker.cpp
         OndselSolver/ASMTMotion.cpp
@@ -89,6 +93,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ASMTRevoluteJoint.cpp
         OndselSolver/ASMTRevRevJoint.cpp
         OndselSolver/ASMTRotationalMotion.cpp
+        OndselSolver/ASMTRotationLimit.cpp
         OndselSolver/ASMTScrewJoint.cpp
         OndselSolver/ASMTSimulationParameters.cpp
         OndselSolver/ASMTSpatialContainer.cpp
@@ -98,6 +103,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ASMTTime.cpp
         OndselSolver/ASMTTranslationalJoint.cpp
         OndselSolver/ASMTTranslationalMotion.cpp
+        OndselSolver/ASMTTranslationLimit.cpp
         OndselSolver/ASMTUniversalJoint.cpp
         OndselSolver/AtPointConstraintIJ.cpp
         OndselSolver/AtPointConstraintIqcJc.cpp
@@ -115,6 +121,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ConstantVelocityJoint.cpp
         OndselSolver/Constraint.cpp
         OndselSolver/ConstraintIJ.cpp
+        OndselSolver/ConstraintSet.cpp
         OndselSolver/ConstVelConstraintIJ.cpp
         OndselSolver/ConstVelConstraintIqcJc.cpp
         OndselSolver/ConstVelConstraintIqcJqc.cpp
@@ -215,6 +222,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/Integrator.cpp
         OndselSolver/IntegratorInterface.cpp
         OndselSolver/Item.cpp
+        OndselSolver/ItemIJ.cpp
         OndselSolver/Joint.cpp
         OndselSolver/KineIntegrator.cpp
         OndselSolver/KinematicIeJe.cpp
@@ -224,6 +232,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/LDUSpMatParPv.cpp
         OndselSolver/LDUSpMatParPvMarko.cpp
         OndselSolver/LDUSpMatParPvPrecise.cpp
+        OndselSolver/LimitIJ.cpp
         OndselSolver/LinearMultiStepMethod.cpp
         OndselSolver/LineInPlaneJoint.cpp
         OndselSolver/Ln.cpp
@@ -281,6 +290,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/PointInLineJoint.cpp
         OndselSolver/PointInPlaneJoint.cpp
         OndselSolver/Polynomial.cpp
+        OndselSolver/PosICDragLimitNewtonRaphson.cpp
         OndselSolver/PosICDragNewtonRaphson.cpp
         OndselSolver/PosICKineNewtonRaphson.cpp
         OndselSolver/PosICNewtonRaphson.cpp
@@ -301,6 +311,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/RevCylJoint.cpp
         OndselSolver/RevoluteJoint.cpp
         OndselSolver/RevRevJoint.cpp
+        OndselSolver/RotationLimitIJ.cpp
         OndselSolver/ScalarNewtonRaphson.cpp
         OndselSolver/ScrewConstraintIJ.cpp
         OndselSolver/ScrewConstraintIqcJc.cpp
@@ -334,6 +345,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/TranslationConstraintIqcJc.cpp
         OndselSolver/TranslationConstraintIqcJqc.cpp
         OndselSolver/TranslationConstraintIqctJqc.cpp
+        OndselSolver/TranslationLimitIJ.cpp
         OndselSolver/Units.cpp
         OndselSolver/UniversalJoint.cpp
         OndselSolver/UserFunction.cpp
@@ -364,6 +376,9 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/AccKineNewtonRaphson.h
         OndselSolver/AccNewtonRaphson.h
         OndselSolver/AngleJoint.h
+        OndselSolver/AngleZConstraintIJ.h
+        OndselSolver/AngleZConstraintIqcJc.h
+        OndselSolver/AngleZConstraintIqcJqc.h
         OndselSolver/AngleZIecJec.h
         OndselSolver/AngleZIeqcJec.h
         OndselSolver/AngleZIeqcJeqc.h
@@ -392,6 +407,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ASMTItemIJ.h
         OndselSolver/ASMTJoint.h
         OndselSolver/ASMTKinematicIJ.h
+        OndselSolver/ASMTLimit.h
         OndselSolver/ASMTLineInPlaneJoint.h
         OndselSolver/ASMTMarker.h
         OndselSolver/ASMTMotion.h
@@ -412,6 +428,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ASMTRevoluteJoint.h
         OndselSolver/ASMTRevRevJoint.h
         OndselSolver/ASMTRotationalMotion.h
+        OndselSolver/ASMTRotationLimit.h
         OndselSolver/ASMTScrewJoint.h
         OndselSolver/ASMTSimulationParameters.h
         OndselSolver/ASMTSpatialContainer.h
@@ -421,6 +438,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ASMTTime.h
         OndselSolver/ASMTTranslationalJoint.h
         OndselSolver/ASMTTranslationalMotion.h
+        OndselSolver/ASMTTranslationLimit.h
         OndselSolver/ASMTUniversalJoint.h
         OndselSolver/AtPointConstraintIJ.h
         OndselSolver/AtPointConstraintIqcJc.h
@@ -438,6 +456,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ConstantVelocityJoint.h
         OndselSolver/Constraint.h
         OndselSolver/ConstraintIJ.h
+        OndselSolver/ConstraintSet.h
         OndselSolver/ConstVelConstraintIJ.h
         OndselSolver/ConstVelConstraintIqcJc.h
         OndselSolver/ConstVelConstraintIqcJqc.h
@@ -540,6 +559,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/Integrator.h
         OndselSolver/IntegratorInterface.h
         OndselSolver/Item.h
+        OndselSolver/ItemIJ.h
         OndselSolver/Joint.h
         OndselSolver/KineIntegrator.h
         OndselSolver/KinematicIeJe.h
@@ -549,6 +569,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/LDUSpMatParPv.h
         OndselSolver/LDUSpMatParPvMarko.h
         OndselSolver/LDUSpMatParPvPrecise.h
+        OndselSolver/LimitIJ.h
         OndselSolver/LinearMultiStepMethod.h
         OndselSolver/LineInPlaneJoint.h
         OndselSolver/Ln.h
@@ -603,6 +624,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/PlanarJoint.h
         OndselSolver/PointInLineJoint.h
         OndselSolver/PointInPlaneJoint.h
+        OndselSolver/PosICDragLimitNewtonRaphson.h
         OndselSolver/PosICDragNewtonRaphson.h
         OndselSolver/PosICKineNewtonRaphson.h
         OndselSolver/PosICNewtonRaphson.h
@@ -623,6 +645,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/RevCylJoint.h
         OndselSolver/RevoluteJoint.h
         OndselSolver/RevRevJoint.h
+        OndselSolver/RotationLimitIJ.h
         OndselSolver/ScalarNewtonRaphson.h
         OndselSolver/ScrewConstraintIJ.h
         OndselSolver/ScrewConstraintIqcJc.h
@@ -656,6 +679,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/TranslationConstraintIqcJc.h
         OndselSolver/TranslationConstraintIqcJqc.h
         OndselSolver/TranslationConstraintIqctJqc.h
+        OndselSolver/TranslationLimitIJ.h
         OndselSolver/Units.h
         OndselSolver/UniversalJoint.h
         OndselSolver/UserFunction.h
