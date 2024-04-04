@@ -412,6 +412,12 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                 propPlacement->setValue(plc);
             }
         }
+
+        // Delta drag test :
+        /*SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
+        Base::Vector3d newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
+        Base::Vector3d delta = newPos - prevPosition;*/
+
         prevPosition = newPos;
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -419,8 +425,8 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
         if (solveOnMove) {
             auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
-            assemblyPart->solve();
-            // assemblyPart->doDragStep();
+            assemblyPart->solve(/*enableRedo = */ false, /*updateJCS = */ false);
+            // assemblyPart->doDragStep(delta);
         }
     }
     return false;
@@ -773,11 +779,12 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
 
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         assemblyPart->setObjMasses(objectMasses);
-        /*std::vector<App::DocumentObject*> dragParts;
+        std::vector<App::DocumentObject*> dragParts;
         for (auto& pair : docsToMove) {
             dragParts.push_back(pair.first);
         }
-        assemblyPart->preDrag(dragParts);*/
+        assemblyPart->solve();
+        // assemblyPart->preDrag(dragParts);
     }
 }
 

@@ -232,11 +232,100 @@ class CommandCreateJointDistance:
         }
 
     def IsActive(self):
-        # return False
         return isCreateJointActive()
 
     def Activated(self):
         activateJoint(5)
+
+
+class CommandCreateJointRackPinion:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointRackPinion",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion", "Create Rack and Pinion Joint"
+            ),
+            "Accel": "P",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion",
+                "Create a Rack and Pinion Joint: Links a part with a sliding joint with a part with a revolute joint.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointRackPinion",
+                "The pitch radius defines the movement ratio between the rack and the pinion.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(6)
+
+
+class CommandCreateJointScrew:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointScrew",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointScrew", "Create Screw Joint"),
+            "Accel": "W",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Create a Screw Joint: Links a part with a sliding joint with a part with a revolute joint.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "The pitch radius defines the movement ratio between the rotating screw and the sliding part.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(7)
+
+
+class CommandCreateJointGears:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointGears",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gears Joint"),
+            "Accel": "X",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGears",
+                "Create a Gears Joint: Links two rotating gears together.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(8)
 
 
 def createGroundedJoint(obj):
@@ -330,3 +419,6 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointSlider", CommandCreateJointSlider())
     Gui.addCommand("Assembly_CreateJointBall", CommandCreateJointBall())
     Gui.addCommand("Assembly_CreateJointDistance", CommandCreateJointDistance())
+    Gui.addCommand("Assembly_CreateJointRackPinion", CommandCreateJointRackPinion())
+    Gui.addCommand("Assembly_CreateJointScrew", CommandCreateJointScrew())
+    Gui.addCommand("Assembly_CreateJointGears", CommandCreateJointGears())

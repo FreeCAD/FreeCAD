@@ -66,6 +66,10 @@ enum class JointType
     Slider,
     Ball,
     Distance,
+    RackPinion,
+    Screw,
+    Gears,
+    Pulleys,
 };
 
 enum class DistanceType
@@ -138,9 +142,9 @@ public:
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
-    int solve(bool enableRedo = false);
+    int solve(bool enableRedo = false, bool updateJCS = true);
     void preDrag(std::vector<App::DocumentObject*> dragParts);
-    void doDragStep();
+    void doDragStep(Base::Vector3d delta);
     void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
@@ -182,6 +186,7 @@ public:
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
 
     bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
+    bool isJointTypeConnecting(App::DocumentObject* joint);
 
     void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                  std::vector<App::DocumentObject*> groundedObjs);
@@ -234,6 +239,7 @@ public:
     static void setJointActivated(App::DocumentObject* joint, bool val);
     static bool getJointActivated(App::DocumentObject* joint);
     static double getJointDistance(App::DocumentObject* joint);
+    static double getJointDistance2(App::DocumentObject* joint);
     static JointType getJointType(App::DocumentObject* joint);
     static const char* getElementFromProp(App::DocumentObject* obj, const char* propName);
     static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);

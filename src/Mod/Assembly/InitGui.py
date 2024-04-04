@@ -94,6 +94,10 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateJointSlider",
             "Assembly_CreateJointBall",
             "Assembly_CreateJointDistance",
+            "Separator",
+            "Assembly_CreateJointRackPinion",
+            "Assembly_CreateJointScrew",
+            "Assembly_CreateJointGears",
         ]
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdList)
