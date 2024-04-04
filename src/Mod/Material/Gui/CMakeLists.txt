@@ -21,7 +21,6 @@ link_directories(${OCC_LIBRARY_DIR})
 set(MatGui_LIBS
     Materials
     FreeCADGui
-    Part
 )
 
 include_directories(

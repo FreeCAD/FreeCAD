@@ -195,7 +195,6 @@ bool MaterialTreeWidget::findInTree(const QStandardItem& node,
     }
 
     if (node.hasChildren()) {
-        int rows = node.rowCount();
         for (int i = 0; i < node.rowCount(); i++) {
             auto child = node.child(i);
             if (findInTree(*child, index, uuid)) {
