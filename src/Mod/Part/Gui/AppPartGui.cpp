@@ -123,6 +123,7 @@ PyMOD_INIT_FUNC(PartGui)
     // load needed modules
     try {
         Base::Interpreter().runString("import Part");
+        Base::Interpreter().runString("import MatGui");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());

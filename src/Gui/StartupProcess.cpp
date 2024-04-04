@@ -451,9 +451,6 @@ void StartupPostProcess::showMainWindow()
 
 void StartupPostProcess::activateWorkbench()
 {
-    // Always activate the material workbench
-     guiApp.activateWorkbench("MaterialWorkbench");
-
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
