@@ -875,16 +875,15 @@ class _Wall(ArchComponent.Component):
                                         offset = obj.OffsetFirst.Value
                                     else:
                                         offset = obj.OffsetSecond.Value
+
                                     # only 1 wire (first) is supported
-                                    if len(obj.Base.Shape.Edges) == 1:
-                                        # If there is a single edge, the wire was used
-                                        baseEdges = self.basewires[0].Edges
-                                    elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                                        # if obj.Base is Sketch, self.baseWires[0] returned is already a list of edge
-                                        baseEdges = self.basewires[0]
-                                    else:
-                                        # otherwise, it is wire
-                                        baseEdges = self.basewires[0].Edges
+                                    # TODO - Can support multiple wires?
+
+                                    # self.basewires was list of list of edges,
+                                    # no matter Base is DWire, Sketch or else
+                                    # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
+                                    baseEdges = self.basewires[0]
+
                                     for edge in baseEdges:
                                         while offset < (edge.Length-obj.Joint.Value):
                                             #print i," Edge ",edge," : ",edge.Length," - ",offset
@@ -1276,15 +1275,6 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
-                    # If the object is a single edge, use that as the
-                    # basewires.
-
-                    # TODO 2023.11.26: Need to check if it isn't Sketch after all first
-                    # or use algorithm for Sketch altogether?
-
-                    elif len(obj.Base.Shape.Edges) == 1:
-                        self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
-
                     # Sort Sketch edges consistently with below procedures
                     # without using Sketch.Shape.Edges - found the latter order
                     # in some corner case != getSortedClusters()
@@ -1318,7 +1308,8 @@ class _Wall(ArchComponent.Component):
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
-                    else:
+                    else:  #For all objects except Sketch, single edge or more
+                        # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
                         # See discussion - https://forum.freecad.org/viewtopic.php?t=82207&start=10
                         #self.basewires = obj.Base.Shape.Wires
                         #
