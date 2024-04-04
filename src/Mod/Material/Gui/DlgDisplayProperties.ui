@@ -105,7 +105,7 @@
      <property name="title">
       <string>Display</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QGridLayout" name="gridLayout1">
       <property name="leftMargin">
        <number>9</number>
       </property>

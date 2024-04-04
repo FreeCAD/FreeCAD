@@ -335,7 +335,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
             }
         }
         else if (prop.isDerivedFrom<App::PropertyMaterialList>()) {
-            auto& value = static_cast<const App::PropertyMaterialList&>(prop).getValue();
+            //auto& value = static_cast<const App::PropertyMaterialList&>(prop).getValue();
             if (prop_name == "ShapeAppearance") {
                 // bool blocked = d->ui.buttonColor->blockSignals(true);
                 // auto color = value.diffuseColor;
@@ -566,12 +566,12 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
 void DlgDisplayPropertiesImp::setMaterial(const std::vector<Gui::ViewProvider*>& views)
 {
     bool material = false;
-    App::Material::MaterialType matType = App::Material::DEFAULT;
+    //App::Material::MaterialType matType = App::Material::DEFAULT;
     for (auto view : views) {
         if (auto* prop =
                 dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeMaterial"))) {
             material = true;
-            matType = prop->getValue().getType();
+    //        matType = prop->getValue().getType();
             break;
         }
     }

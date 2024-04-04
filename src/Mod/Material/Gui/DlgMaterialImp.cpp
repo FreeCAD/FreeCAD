@@ -41,7 +41,7 @@
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/ModelUuids.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Material/App/PropertyMaterial.h>
 
 #include "DlgMaterialImp.h"
 #include "ui_DlgMaterial.h"
@@ -171,7 +171,7 @@ void DlgMaterialImp::slotChangedObject(const Gui::ViewProvider& obj, const App::
         }
         std::string prop_name = name;
         if (prop.isDerivedFrom<App::PropertyMaterial>()) {
-            auto& value = static_cast<const App::PropertyMaterial&>(prop).getValue();
+            //auto& value = static_cast<const App::PropertyMaterial&>(prop).getValue();
             if (prop_name == "ShapeMaterial") {
                 // bool blocked = d->ui.buttonColor->blockSignals(true);
                 // auto color = value.diffuseColor;
@@ -200,10 +200,9 @@ void DlgMaterialImp::reject()
 void DlgMaterialImp::setMaterial(const std::vector<App::DocumentObject*>& objects)
 {
     for (auto it : objects) {
-        if (auto* obj = dynamic_cast<Part::Feature*>(it)) {
-            auto material = obj->ShapeMaterial.getValue();
+        if (auto prop = dynamic_cast<Materials::PropertyMaterial*>(it->getPropertyByName("ShapeMaterial"))) {
             try {
-                std::string mat = material.getUUID().toStdString();
+                const auto& material = prop->getValue();
                 d->ui.widgetMaterial->setMaterial(material.getUUID());
                 return;
             }
@@ -244,11 +243,10 @@ std::vector<App::DocumentObject*> DlgMaterialImp::getSelectionObjects() const
 
 void DlgMaterialImp::onMaterialSelected(const std::shared_ptr<Materials::Material>& material)
 {
-    std::string mat = material->getUUID().toStdString();
     std::vector<App::DocumentObject*> objects = getSelectionObjects();
     for (auto it : objects) {
-        if (auto* obj = dynamic_cast<Part::Feature*>(it)) {
-            obj->ShapeMaterial.setValue(*material);
+        if (auto prop = dynamic_cast<Materials::PropertyMaterial*>(it->getPropertyByName("ShapeMaterial"))) {
+            prop->setValue(*material);
         }
     }
 }
