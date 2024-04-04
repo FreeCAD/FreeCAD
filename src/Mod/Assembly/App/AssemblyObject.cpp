@@ -58,6 +58,7 @@
 #include <OndselSolver/ASMTPart.h>
 #include <OndselSolver/ASMTJoint.h>
 #include <OndselSolver/ASMTFixedJoint.h>
+#include <OndselSolver/ASMTGearJoint.h>
 #include <OndselSolver/ASMTRevoluteJoint.h>
 #include <OndselSolver/ASMTCylindricalJoint.h>
 #include <OndselSolver/ASMTTranslationalJoint.h>
@@ -69,6 +70,8 @@
 #include <OndselSolver/ASMTRevCylJoint.h>
 #include <OndselSolver/ASMTCylSphJoint.h>
 #include <OndselSolver/ASMTRackPinionJoint.h>
+#include <OndselSolver/ASMTRotationLimit.h>
+#include <OndselSolver/ASMTTranslationLimit.h>
 #include <OndselSolver/ASMTScrewJoint.h>
 #include <OndselSolver/ASMTSphSphJoint.h>
 #include <OndselSolver/ASMTTime.h>
@@ -83,6 +86,25 @@ namespace PartApp = Part;
 
 using namespace Assembly;
 using namespace MbD;
+
+void printPlacement(Base::Placement plc, const char* name)
+{
+    Base::Vector3d pos = plc.getPosition();
+    Base::Vector3d axis;
+    double angle;
+    Base::Rotation rot = plc.getRotation();
+    rot.getRawValue(axis, angle);
+    Base::Console().Warning(
+        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
+        name,
+        pos.x,
+        pos.y,
+        pos.z,
+        axis.x,
+        axis.y,
+        axis.z,
+        angle);
+}
 
 // ================================ Assembly Object ============================
 
@@ -115,7 +137,7 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
     return ret;
 }
 
-int AssemblyObject::solve(bool enableRedo)
+int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
@@ -126,7 +148,7 @@ int AssemblyObject::solve(bool enableRedo)
         return -6;
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints();
+    std::vector<App::DocumentObject*> joints = getJoints(updateJCS);
 
     removeUnconnectedJoints(joints, groundedObjs);
 
@@ -153,6 +175,7 @@ int AssemblyObject::solve(bool enableRedo)
 
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
+    Base::Console().Warning("pre drag\n");
     solve();
 
     dragMbdParts.clear();
@@ -163,8 +186,9 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     mbdAssembly->runPreDrag();
 }
 
-void AssemblyObject::doDragStep()
+void AssemblyObject::doDragStep(Base::Vector3d delta)
 {
+    Base::Console().Warning("doDragStep\n");
     for (auto& mbdPart : dragMbdParts) {
         App::DocumentObject* part = nullptr;
         for (auto& pair : objectPartMap) {
@@ -177,7 +201,13 @@ void AssemblyObject::doDragStep()
             continue;
         }
 
-        Base::Placement plc = getPlacementFromProp(part, "Placement");
+        FColDsptr pos3D, delta2;
+        pos3D = mbdPart->position3D;
+        delta2 = std::make_shared<FullColumn<double>>(ListD {delta.x, delta.y, delta.z});
+        mbdPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta2));
+
+        /*Base::Placement plc = getPlacementFromProp(part, "Placement");
+        printPlacement(plc, "init plc");
         Base::Vector3d pos = plc.getPosition();
         mbdPart->setPosition3D(pos.x, pos.y, pos.z);
 
@@ -187,7 +217,7 @@ void AssemblyObject::doDragStep()
         Base::Vector3d r0 = mat.getRow(0);
         Base::Vector3d r1 = mat.getRow(1);
         Base::Vector3d r2 = mat.getRow(2);
-        mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
+        mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);*/
     }
 
     auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
@@ -198,6 +228,7 @@ void AssemblyObject::doDragStep()
 
 void AssemblyObject::postDrag()
 {
+    Base::Console().Warning("post drag \n");
     mbdAssembly->runPostDrag();  // Do this after last drag
 }
 
@@ -614,6 +645,9 @@ void AssemblyObject::fixGroundedPart(App::DocumentObject* obj,
 
 bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, const char* propname)
 {
+    if (!isJointTypeConnecting(joint)) {
+        return false;
+    }
 
     auto* propPart = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propname));
     if (!propPart) {
@@ -659,6 +693,13 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
     }
 
     return isConnected;
+}
+
+bool AssemblyObject::isJointTypeConnecting(App::DocumentObject* joint)
+{
+    JointType jointType = getJointType(joint);
+    return jointType != JointType::RackPinion && jointType != JointType::Screw
+        && jointType != JointType::Gears && jointType != JointType::Pulleys;
 }
 
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
@@ -716,6 +757,10 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 {
     std::vector<App::DocumentObject*> connectedParts;
     for (auto joint : joints) {
+        if (!isJointTypeConnecting(joint)) {
+            continue;
+        }
+
         App::DocumentObject* obj1 = getLinkObjFromProp(joint, "Part1");
         App::DocumentObject* obj2 = getLinkObjFromProp(joint, "Part2");
         if (obj1 == part) {
@@ -801,6 +846,22 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
     }
     else if (type == JointType::Distance) {
         return makeMbdJointDistance(joint);
+    }
+    else if (type == JointType::RackPinion) {
+        auto mbdJoint = CREATE<ASMTRackPinionJoint>::With();
+        mbdJoint->pitchRadius = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Screw) {
+        auto mbdJoint = CREATE<ASMTScrewJoint>::With();
+        mbdJoint->pitch = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Gears) {
+        auto mbdJoint = CREATE<ASMTGearJoint>::With();
+        mbdJoint->radiusI = getJointDistance(joint);
+        mbdJoint->radiusJ = getJointDistance2(joint);
+        return mbdJoint;
     }
 
     return nullptr;
@@ -1009,10 +1070,69 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
 
     std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
     std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+    std::string jointName = joint->getFullName();
 
     mbdJoint->setName(joint->getFullName());
     mbdJoint->setMarkerI(fullMarkerName1);
     mbdJoint->setMarkerJ(fullMarkerName2);
+
+    // Add limits if needed.
+    auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLimits"));
+    if (prop && prop->getValue()) {
+        if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
+            auto* propLenMin =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
+            if (propLenMin) {
+                auto limit = ASMTTranslationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitLenMin");
+                limit->setMarkerI(fullMarkerName1);
+                limit->setMarkerJ(fullMarkerName2);
+                // limit->setmotionJoint(jointName);
+                limit->settype("=>");
+                limit->setlimit(std::to_string(propLenMin->getValue()));
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+            auto* propLenMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+            if (propLenMax) {
+                auto limit = ASMTTranslationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitLenMax");
+                limit->setMarkerI(fullMarkerName1);
+                limit->setMarkerJ(fullMarkerName2);
+                limit->settype("=<");
+                limit->setlimit(std::to_string(propLenMax->getValue()));
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+        }
+        if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
+            auto* propRotMin =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
+            if (propRotMin) {
+                auto limit = ASMTRotationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitRotMin");
+                limit->setMarkerI(fullMarkerName1);
+                limit->setMarkerJ(fullMarkerName2);
+                limit->settype("=>");
+                limit->setlimit(std::to_string(propRotMin->getValue()) + "*pi/180.0");
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+            auto* propRotMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+            if (propRotMax) {
+                auto limit = ASMTRotationLimit::With();
+                limit->setName(joint->getFullName() + "-LimiRotMax");
+                limit->setMarkerI(fullMarkerName1);
+                limit->setMarkerJ(fullMarkerName2);
+                limit->settype("=<");
+                limit->setlimit(std::to_string(propRotMax->getValue()) + "*pi/180.0");
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+        }
+    }
 
     return {mbdJoint};
 }
@@ -1626,25 +1746,6 @@ DistanceType AssemblyObject::getDistanceType(App::DocumentObject* joint)
     return DistanceType::Other;
 }
 
-void printPlacement(Base::Placement plc, const char* name)
-{
-    Base::Vector3d pos = plc.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    Base::Rotation rot = plc.getRotation();
-    rot.getRawValue(axis, angle);
-    Base::Console().Warning(
-        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
-        name,
-        pos.x,
-        pos.y,
-        pos.z,
-        axis.x,
-        axis.y,
-        axis.z,
-        angle);
-}
-
 void AssemblyObject::setJointActivated(App::DocumentObject* joint, bool val)
 {
     auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
@@ -1787,6 +1888,18 @@ double AssemblyObject::getJointDistance(App::DocumentObject* joint)
     double distance = 0.0;
 
     auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance"));
+    if (prop) {
+        distance = prop->getValue();
+    }
+
+    return distance;
+}
+
+double AssemblyObject::getJointDistance2(App::DocumentObject* joint)
+{
+    double distance = 0.0;
+
+    auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance2"));
     if (prop) {
         distance = prop->getValue();
     }

@@ -14,13 +14,13 @@
    <string>Create Joint</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="2">
     <widget class="QComboBox" name="jointType"/>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="2">
     <widget class="QListWidget" name="featureList"/>
    </item>
-   <item row="2" column="0">
+   <item row="2" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutDistance">
      <item>
       <widget class="QLabel" name="distanceLabel">
@@ -44,7 +44,31 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="hLayoutDistance2">
+     <item>
+      <widget class="QLabel" name="distanceLabel2">
+       <property name="text">
+        <string>Radius 2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="distanceSpinbox2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayout">
      <item>
       <widget class="QLabel" name="offsetLabel">
@@ -68,7 +92,7 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutRotation">
      <item>
       <widget class="QLabel" name="rotationLabel">
@@ -92,7 +116,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QToolButton" name="PushButtonReverse">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -109,6 +133,96 @@
      <property name="icon">
       <iconset resource="Resources/resource.qrc">
       <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QCheckBox" name="LimitCheckbox">
+     <property name="text">
+      <string>Limits</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="limitLenMinSpinboxLabel">
+     <property name="text">
+      <string>Length min</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="Gui::QuantitySpinBox" name="limitLenMinSpinbox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="limitLenMaxSpinboxLabel">
+     <property name="text">
+      <string>Length max</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="Gui::QuantitySpinBox" name="limitLenMaxSpinbox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="limitRotMinSpinboxLabel">
+     <property name="text">
+      <string>Angle min</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="Gui::QuantitySpinBox" name="limitRotMinSpinbox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="limitRotMaxSpinboxLabel">
+     <property name="text">
+      <string>Angle max</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="Gui::QuantitySpinBox" name="limitRotMaxSpinbox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
      </property>
     </widget>
    </item>

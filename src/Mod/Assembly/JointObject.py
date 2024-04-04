@@ -51,6 +51,10 @@ TranslatedJointTypes = [
     translate("Assembly", "Slider"),
     translate("Assembly", "Ball"),
     translate("Assembly", "Distance"),
+    translate("Assembly", "RackPinion"),
+    translate("Assembly", "Screw"),
+    translate("Assembly", "Gears"),
+    # translate("Assembly", "Pulleys"),
 ]
 
 JointTypes = [
@@ -60,10 +64,21 @@ JointTypes = [
     "Slider",
     "Ball",
     "Distance",
+    "RackPinion",
+    "Screw",
+    "Gears",
+    # "Pulleys",
 ]
 
 JointUsingDistance = [
     "Distance",
+    "RackPinion",
+    "Screw",
+    "Gears",
+]
+
+JointUsingDistance2 = [
+    "Gears",
 ]
 
 JointUsingOffset = [
@@ -82,6 +97,16 @@ JointUsingReverse = [
     "Cylindrical",
     "Slider",
     "Distance",
+]
+
+JointUsingLimitLength = [
+    "Cylindrical",
+    "Slider",
+]
+
+JointUsingLimitAngle = [
+    "Revolute",
+    "Cylindrical",
 ]
 
 
@@ -131,151 +156,241 @@ class Joint:
         joint.JointType = JointTypes  # sets the list
         joint.JointType = JointTypes[type_index]  # set the initial value
 
-        # First Joint Connector
-        joint.addProperty(
-            "App::PropertyString",  # Not PropertyLink because they don't support external objects
-            "Object1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyLink",
-            "Part1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The first part of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Element1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The selected element of the first object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Vertex1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the first object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the local coordinate system within object1 that will be used for the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Detach1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
-            ),
-        )
-
-        # Second Joint Connector
-        joint.addProperty(
-            "App::PropertyString",
-            "Object2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyLink",
-            "Part2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The second part of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Element2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The selected element of the second object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Vertex2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the second object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the local coordinate system within object2 that will be used for the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Detach2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyFloat",
-            "Distance",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the distance of the joint. It is used only by the distance joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyFloat",
-            "Rotation",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the rotation of the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyVector",
-            "Offset",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the offset vector of the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Activated",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This indicates if the joint is active.",
-            ),
-        )
-        joint.Activated = True
+        self.createProperties(joint)
 
         self.setJointConnectors(joint, [])
+
+    def onDocumentRestored(self, joint):
+        self.createProperties(joint)
+
+    def createProperties(self, joint):
+        # First Joint Connector
+        if not hasattr(joint, "Object1"):
+            joint.addProperty(
+                "App::PropertyString",  # Not PropertyLink because they don't support external objects
+                "Object1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
+            )
+
+        if not hasattr(joint, "Part1"):
+            joint.addProperty(
+                "App::PropertyLink",
+                "Part1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The first part of the joint"),
+            )
+
+        if not hasattr(joint, "Element1"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Element1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The selected element of the first object"),
+            )
+
+        if not hasattr(joint, "Vertex1"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Vertex1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the first object"),
+            )
+
+        if not hasattr(joint, "Placement1"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Placement1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the local coordinate system within object1 that will be used for the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Detach1"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Detach1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        # Second Joint Connector
+        if not hasattr(joint, "Object2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Object2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
+            )
+
+        if not hasattr(joint, "Part2"):
+            joint.addProperty(
+                "App::PropertyLink",
+                "Part2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The second part of the joint"),
+            )
+
+        if not hasattr(joint, "Element2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Element2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The selected element of the second object"),
+            )
+
+        if not hasattr(joint, "Vertex2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Vertex2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the second object"),
+            )
+
+        if not hasattr(joint, "Placement2"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Placement2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the local coordinate system within object2 that will be used for the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Detach2"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Detach2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        if not hasattr(joint, "Distance"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Distance",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears(radius1)",
+                ),
+            )
+
+        if not hasattr(joint, "Distance2"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Distance2",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
+                ),
+            )
+
+        if not hasattr(joint, "Rotation"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Rotation",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the rotation of the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Offset"):
+            joint.addProperty(
+                "App::PropertyVector",
+                "Offset",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the offset vector of the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Activated"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Activated",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This indicates if the joint is active.",
+                ),
+            )
+            joint.Activated = True
+
+        if not hasattr(joint, "EnableLimits"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableLimits",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Is this joint using limits.",
+                ),
+            )
+            joint.EnableLimits = False
+
+        if not hasattr(joint, "LengthMin"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "LengthMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the minimum limit for the length between both coordinate systems (along their Z axis).",
+                ),
+            )
+
+        if not hasattr(joint, "LengthMax"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "LengthMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the maximum limit for the length between both coordinate systems (along their Z axis).",
+                ),
+            )
+
+        if not hasattr(joint, "AngleMin"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "AngleMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the minimum limit for the angle between both coordinate systems (between their X axis).",
+                ),
+            )
+
+        if not hasattr(joint, "AngleMax"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "AngleMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the maximum limit for the angle between both coordinate systems (between their X axis).",
+                ),
+            )
 
     def dumps(self):
         return None
 
     def loads(self, state):
+
         return None
 
     def getAssembly(self, joint):
@@ -313,7 +428,7 @@ class Joint:
                 else:
                     self.updateJCSPlacements(joint)
 
-        if prop == "Distance":
+        if prop == "Distance" and joint.JointType == "Distance":
             # during loading the onchanged may be triggered before full init.
             if hasattr(joint, "Vertex1"):  # so we check Vertex1
                 solveIfAllowed(self.getAssembly(joint))
@@ -723,6 +838,12 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointBall.svg"
         elif self.app_obj.JointType == "Distance":
             return ":/icons/Assembly_CreateJointDistance.svg"
+        elif self.app_obj.JointType == "RackPinion":
+            return ":/icons/Assembly_CreateJointRackPinion.svg"
+        elif self.app_obj.JointType == "Screw":
+            return ":/icons/Assembly_CreateJointScrew.svg"
+        elif self.app_obj.JointType == "Gears":
+            return ":/icons/Assembly_CreateJointGears.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
 
@@ -1023,7 +1144,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.activeType = "Assembly"
 
         self.doc = self.assembly.Document
-        self.gui_doc = Gui.getDocument(doc)
+        self.gui_doc = Gui.getDocument(self.doc)
 
         self.view = self.gui_doc.activeView()
 
@@ -1046,6 +1167,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.form.LimitCheckbox.stateChanged.connect(self.adaptUi)
+        self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
+        self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
+        self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
+        self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1073,10 +1199,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.visibilityBackup = False
             self.handleInitialSelection()
 
-        self.toggleDistanceVisibility()
-        self.toggleOffsetVisibility()
-        self.toggleRotationVisibility()
-        self.toggleReverseVisibility()
+        self.adaptUi()
 
         self.setJointsPickableState(False)
 
@@ -1211,10 +1334,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onJointTypeChanged(self, index):
 
         self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
-        self.toggleDistanceVisibility()
-        self.toggleOffsetVisibility()
-        self.toggleRotationVisibility()
-        self.toggleReverseVisibility()
+        self.adaptUi()
 
     def onDistanceChanged(self, quantity):
         self.joint.Distance = self.form.distanceSpinbox.property("rawValue")
@@ -1225,38 +1345,97 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onRotationChanged(self, quantity):
         self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
 
+    def onLimitLenMinChanged(self, quantity):
+        self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
+
+    def onLimitLenMaxChanged(self, quantity):
+        self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
+
+    def onLimitRotMinChanged(self, quantity):
+        self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
+
+    def onLimitRotMaxChanged(self, quantity):
+        self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
+
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
-    def toggleDistanceVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingDistance:
+    def adaptUi(self):
+        jType = JointTypes[self.form.jointType.currentIndex()]
+
+        if jType in JointUsingDistance:
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
+            if jType == "Distance":
+                self.form.distanceLabel.setText("Distance")
+            elif jType == "Gears":
+                self.form.distanceLabel.setText("Radius 1")
+            else:
+                self.form.distanceLabel.setText("Pitch radius")
         else:
             self.form.distanceLabel.hide()
             self.form.distanceSpinbox.hide()
 
-    def toggleOffsetVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingOffset:
+        if jType in JointUsingDistance2:
+            self.form.distanceLabel2.show()
+            self.form.distanceSpinbox2.show()
+        else:
+            self.form.distanceLabel2.hide()
+            self.form.distanceSpinbox2.hide()
+
+        if jType in JointUsingOffset:
             self.form.offsetLabel.show()
             self.form.offsetSpinbox.show()
         else:
             self.form.offsetLabel.hide()
             self.form.offsetSpinbox.hide()
 
-    def toggleRotationVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingRotation:
+        if jType in JointUsingRotation:
             self.form.rotationLabel.show()
             self.form.rotationSpinbox.show()
         else:
             self.form.rotationLabel.hide()
             self.form.rotationSpinbox.hide()
 
-    def toggleReverseVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingReverse:
+        if jType in JointUsingReverse:
             self.form.PushButtonReverse.show()
         else:
             self.form.PushButtonReverse.hide()
+
+        needLengthLimits = jType in JointUsingLimitLength
+        needAngleLimits = jType in JointUsingLimitAngle
+
+        showLimits = False
+        if needLengthLimits or needAngleLimits:
+            self.form.LimitCheckbox.show()
+            showLimits = True
+        else:
+            self.form.LimitCheckbox.hide()
+
+        showLimits = showLimits and self.form.LimitCheckbox.isChecked()
+        self.joint.EnableLimits = showLimits
+
+        if needLengthLimits and showLimits:
+            self.form.limitLenMinSpinboxLabel.show()
+            self.form.limitLenMaxSpinboxLabel.show()
+            self.form.limitLenMinSpinbox.show()
+            self.form.limitLenMaxSpinbox.show()
+        else:
+            self.form.limitLenMinSpinboxLabel.hide()
+            self.form.limitLenMaxSpinboxLabel.hide()
+            self.form.limitLenMinSpinbox.hide()
+            self.form.limitLenMaxSpinbox.hide()
+
+        if needAngleLimits and showLimits:
+            self.form.limitRotMinSpinboxLabel.show()
+            self.form.limitRotMaxSpinboxLabel.show()
+            self.form.limitRotMinSpinbox.show()
+            self.form.limitRotMaxSpinbox.show()
+        else:
+            self.form.limitRotMinSpinboxLabel.hide()
+            self.form.limitRotMaxSpinboxLabel.hide()
+            self.form.limitRotMinSpinbox.hide()
+            self.form.limitRotMaxSpinbox.hide()
 
     def updateTaskboxFromJoint(self):
         self.current_selection = []
@@ -1296,6 +1475,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
         self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
+
+        self.form.LimitCheckbox.setChecked(self.joint.EnableLimits)
+        self.form.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
+        self.form.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
+        self.form.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
+        self.form.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax)
 
         self.form.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
