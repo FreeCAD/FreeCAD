@@ -2560,83 +2560,11 @@ PyObject* PropertyMaterial::getPyObject()
 
 void PropertyMaterial::setPyObject(PyObject* value)
 {
-    App::Color cCol;
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
     }
-    else if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
-        PyObject* item;
-        item = PyTuple_GetItem(value, 0);
-        if (PyFloat_Check(item)) {
-            cCol.r = (float)PyFloat_AsDouble(item);
-            item = PyTuple_GetItem(value, 1);
-            if (PyFloat_Check(item)) {
-                cCol.g = (float)PyFloat_AsDouble(item);
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (float)");
-            }
-            item = PyTuple_GetItem(value, 2);
-            if (PyFloat_Check(item)) {
-                cCol.b = (float)PyFloat_AsDouble(item);
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (float)");
-            }
-            if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value, 3);
-                if (PyFloat_Check(item)) {
-                    cCol.a = (float)PyFloat_AsDouble(item);
-                }
-                else {
-                    throw Base::TypeError("Type in tuple must be consistent (float)");
-                }
-            }
-
-            setValue(cCol);
-        }
-        else if (PyLong_Check(item)) {
-            cCol.r = PyLong_AsLong(item) / 255.0;
-            item = PyTuple_GetItem(value, 1);
-            if (PyLong_Check(item)) {
-                cCol.g = PyLong_AsLong(item) / 255.0;
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (integer)");
-            }
-            item = PyTuple_GetItem(value, 2);
-            if (PyLong_Check(item)) {
-                cCol.b = PyLong_AsLong(item) / 255.0;
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (integer)");
-            }
-            if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value, 3);
-                if (PyLong_Check(item)) {
-                    cCol.a = PyLong_AsLong(item) / 255.0;
-                }
-                else {
-                    throw Base::TypeError("Type in tuple must be consistent (integer)");
-                }
-            }
-
-            setValue(cCol);
-        }
-        else {
-            throw Base::TypeError("Type in tuple must be float or integer");
-        }
-    }
-    else if (PyLong_Check(value)) {
-        cCol.setPackedValue(PyLong_AsUnsignedLong(value));
-
-        setValue(cCol);
-    }
     else {
-        std::string error = std::string(
-            "type must be 'Material', integer, tuple of float, or tuple of integer, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        setValue(MaterialPy::toColor(value));
     }
 }
 
@@ -3269,7 +3197,6 @@ void PropertyMaterialList::RestoreDocFileV1(Base::Reader& reader)
     std::vector<Material> values(count);
     uint32_t value;  // must be 32 bit long
     float valueF;
-    char valueS[37];  // UUID length is 36 including '-'s
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);
