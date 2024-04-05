@@ -301,6 +301,31 @@ void MbD::ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
 	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
 }
 
+void MbD::ASMTSpatialContainer::updateMbDFromPosition3D(double a, double b, double c)
+{
+	auto pos3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+	updateMbDFromPosition3D(pos3D);
+}
+
+void MbD::ASMTSpatialContainer::updateMbDFromRotationMatrix(FMatDsptr mat)
+{
+	rotationMatrix = mat;
+	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
+	auto mbdUnits = this->mbdUnits();
+	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
+	mbdPart->qE(qEp());
+}
+
+void MbD::ASMTSpatialContainer::updateMbDFromRotationMatrix(double v11, double v12, double v13, double v21, double v22, double v23, double v31, double v32, double v33)
+{
+	auto rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ v11, v12, v13 },
+		{ v21, v22, v23 },
+		{ v31, v32, v33 }
+		});
+	updateMbDFromRotationMatrix(rotMat);
+}
+
 FColDsptr MbD::ASMTSpatialContainer::rOcmO()
 {
 	auto& rOPO = position3D;

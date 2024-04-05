@@ -72,7 +72,9 @@ void MbD::ScrewConstraintIJ::postInput()
 {
 	zIeJeIe->postInput();
 	thezIeJe->postInput();
-	aConstant = (2.0 * OS_M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
+	if (aConstant == std::numeric_limits<double>::min()) {
+		aConstant = (2.0 * OS_M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
+	}
 	ConstraintIJ::postInput();
 }
 
