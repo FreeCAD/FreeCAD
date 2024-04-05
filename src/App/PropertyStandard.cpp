@@ -2666,6 +2666,17 @@ void PropertyMaterialList::setSizeOne()
     }
 }
 
+int PropertyMaterialList::resizeByOneIfNeeded(int index)
+{
+    int size = getSize();
+    if (index == -1 || index == size) {
+        index = size;
+        setSize(size + 1);
+    }
+
+    return index;
+}
+
 void PropertyMaterialList::setValue()
 {
     Material empty;
@@ -2687,11 +2698,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index] = mat;
     hasSetValue();
 }
@@ -2731,11 +2738,7 @@ void PropertyMaterialList::setAmbientColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor = col;
     hasSetValue();
 }
@@ -2745,11 +2748,7 @@ void PropertyMaterialList::setAmbientColor(int index, float r, float g, float b,
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2759,11 +2758,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2803,11 +2798,7 @@ void PropertyMaterialList::setDiffuseColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor = col;
     hasSetValue();
 }
@@ -2817,11 +2808,7 @@ void PropertyMaterialList::setDiffuseColor(int index, float r, float g, float b,
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2831,11 +2818,7 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2875,11 +2858,7 @@ void PropertyMaterialList::setSpecularColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor = col;
     hasSetValue();
 }
@@ -2889,11 +2868,7 @@ void PropertyMaterialList::setSpecularColor(int index, float r, float g, float b
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2903,11 +2878,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2947,11 +2918,7 @@ void PropertyMaterialList::setEmissiveColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor = col;
     hasSetValue();
 }
@@ -2961,11 +2928,7 @@ void PropertyMaterialList::setEmissiveColor(int index, float r, float g, float b
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2975,11 +2938,7 @@ void PropertyMaterialList::setEmissiveColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2999,11 +2958,7 @@ void PropertyMaterialList::setShininess(int index, float val)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].shininess = val;
     hasSetValue();
 }
@@ -3023,11 +2978,7 @@ void PropertyMaterialList::setTransparency(int index, float val)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].transparency = val;
     hasSetValue();
 }
