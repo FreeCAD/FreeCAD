@@ -601,7 +601,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
               << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Separator" << "Std_SetMaterial" << "Std_SetAppearance" << "Std_ToggleVisibility"
+            *item << "Separator" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Std_TransformManip" << "Std_Placement";
@@ -613,7 +613,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item  << "Std_ToggleFreeze" << "Separator"
                   << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
-                  << "Std_SetMaterial" << "Std_SetAppearance" << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
+                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Separator";
         }
@@ -701,8 +701,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
           << "Separator" << visu
           << "Std_ToggleNavigation"
-          << "Std_SetMaterial"
-          << "Std_SetAppearance"
           << "Std_RandomColor"
           << "Std_ToggleTransparency"
           << "Separator"

@@ -111,6 +111,8 @@ SET(MatGui_SRCS
     TextEdit.ui
     Workbench.cpp
     Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
 )
 
 if(FREECAD_USE_PCH)
