@@ -20,7 +20,9 @@ def runUpdate(filename):
 
     # Location of branch on local system
     local_branch = remote_branch.bzrdir.sprout(LOCAL_BRANCH).open_branch()
-    False if local_branch.__name__ else True  # "Use" to silence analyzers, pending PEP 640 or similar
+    (
+        False if local_branch.__name__ else True
+    )  # "Use" to silence analyzers, pending PEP 640 or similar
 
     # Change a file in the local branch
     try:
