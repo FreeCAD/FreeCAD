@@ -58,7 +58,7 @@ namespace Fem
  *  and @ref Scale and the protected method @ref getPoints(points&, normals&,
  *  scale&).
  */
-class FemExport Constraint: public App::DocumentObject, App::SuppressibleExtension
+class FemExport Constraint: public App::DocumentObject, public App::SuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::Constraint);
 

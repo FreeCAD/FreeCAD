@@ -47,7 +47,7 @@ namespace FemGui
 class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject,
-                                              Gui::ViewProviderSuppressibleExtension
+                                              public Gui::ViewProviderSuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraint);
 
