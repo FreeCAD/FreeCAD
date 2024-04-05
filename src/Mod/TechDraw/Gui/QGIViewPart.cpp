@@ -1059,6 +1059,7 @@ void QGIViewPart::drawBreakLines()
         Base::Vector3d direction = dbv->directionFromObj(*breakObj);
         direction.Normalize();
         breakLine->setDirection(direction);
+        // the bounds describe two corners of the removed area
         std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
         // the bounds are in 3d form, so we need to invert & rez them
         Base::Vector3d topLeft = Rez::guiX(DU::invertY(bounds.first));

@@ -344,7 +344,7 @@ TopoDS_Shape DrawBrokenView::makeHalfSpace(Base::Vector3d planePoint, Base::Vect
 //! extract the break points from the break object.
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromObj(const App::DocumentObject& breakObj) const
 {
-    Base::Console().Message("DBV::breakPointsFromObj()\n");
+    // Base::Console().Message("DBV::breakPointsFromObj()\n");
     if (ShapeExtractor::isSketchObject(&breakObj)) {
         return breakPointsFromSketch(breakObj);
     }
@@ -437,7 +437,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromSketch(
     // they should both have the same orientation
     TopoDS_Edge first = sketchEdges.front();
     TopoDS_Edge last  = sketchEdges.back();
-    Base::Console().Message("DBV::breakPointsFromSketch - isvertical first: %d  last: %d\n", isVertical(first), isVertical(last));
     if ((isVertical(first) && isVertical(last)) ||
         (isHorizontal(first) && isHorizontal(last))) {
         auto ends0 = SU::getEdgeEnds(first);
@@ -491,70 +490,43 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromObj(con
 //! broken view.  used in making break lines.
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromSketch(const App::DocumentObject& breakObj) const
 {
-    Base::Console().Message("DBV::breakBoundsFromSketch()\n");
+    // Base::Console().Message("DBV::breakBoundsFromSketch()\n");
     std::pair<Base::Vector3d, Base::Vector3d> breakPoints = breakPointsFromObj(breakObj);
     Base::Vector3d anchor = (breakPoints.first + breakPoints.second) / 2.0;
     Base::Vector3d breakDir = directionFromObj(breakObj);
     breakDir.Normalize();
     Base::Vector3d lineDir = makePerpendicular(breakDir);
     lineDir.Normalize();
-    Base::Console().Message("DBV::breakBoundsFromSketch - breakDir: %s  lineDir: %s\n",
-                            DU::formatVector(breakDir).c_str(),
-                            DU::formatVector(lineDir).c_str());
 
     // is this right? or do we need to project the points first?  Should be alright
     // if the break points are not skewed?
     double removed = (breakPoints.first - breakPoints.second).Length();
-    Base::Console().Message("DBV::breakBoundsfromSketch - removed: %.3f\n", removed);
 
     // get the midpoint of the zigzags
     Base::Vector3d ptOnLine0 = anchor + breakDir * removed / 2.0;
     Base::Vector3d ptOnLine1 = anchor - breakDir * removed / 2.0;
     double lineLength = breaklineLength(breakObj);
-    Base::Console().Message("DBV::breakBoundsFromSketch - pol0: %s  pol1: %s  lineLength: %.3f\n",
-                            DU::formatVector(ptOnLine0).c_str(),
-                            DU::formatVector(ptOnLine1).c_str(),  lineLength);
-
-    Base::Console().Message("DBV::breakBoundsFromSketch - lineDir: %s\n", DU::formatVector(lineDir).c_str());
 
     Base::Vector3d corner0 = ptOnLine0 - lineDir * lineLength / 2.0;
     Base::Vector3d corner1 = ptOnLine1 + lineDir * lineLength / 2.0;
-    Base::Console().Message("DBV::breakBoundsFromSketch - before map c0: %s  c1: %s\n",
-                            DU::formatVector(corner0).c_str(),
-                            DU::formatVector(corner1).c_str());
-
     corner0 = mapPoint3dToView(corner0);
     corner1 = mapPoint3dToView(corner1);
     // these are unscaled, unrotated points
-    Base::Console().Message("DBV::breakBoundsFromSketch - returns c0: %s  c1: %s\n",
-                            DU::formatVector(corner0).c_str(),
-                            DU::formatVector(corner1).c_str());
     return{corner0, corner1};
 }
 
 //! extract the boundary of the break lines from an edge
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(const App::DocumentObject& breakObj) const
 {
-    Base::Console().Message("DBV::breakBoundsFromEdge()\n");
+    // Base::Console().Message("DBV::breakBoundsFromEdge()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
     if (locShape.ShapeType() != TopAbs_EDGE) {
         return {Base::Vector3d(), Base::Vector3d()};
     }
-    auto oldEdge = TopoDS::Edge(locShape);
-    gp_Pnt gStart = BRep_Tool::Pnt(TopExp::FirstVertex(oldEdge));
-    Base::Vector3d oldStart = DU::toVector3d(gStart);
-    gp_Pnt gEnd = BRep_Tool::Pnt(TopExp::LastVertex(oldEdge));
-    Base::Vector3d oldEnd = DU::toVector3d(gEnd);
-    Base::Console().Message("DBV::breakBoundsFromEdge - OLD start: %s  end: %s\n",
-                            DU::formatVector(oldStart).c_str(),
-                            DU::formatVector(oldEnd).c_str());
 
     auto edge = projectEdge(TopoDS::Edge(locShape));
     auto start = edge->getStartPoint();
     auto end = edge->getEndPoint();
-    Base::Console().Message("DBV::breakBoundsFromEdge - start: %s  end: %s\n",
-                            DU::formatVector(start).c_str(),
-                            DU::formatVector(end).c_str());
     Base::Vector3d direction = end - start;
     double length = direction.Length();
     direction.Normalize();
@@ -588,7 +560,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(co
 //! calculate the unscaled length of the breakline
 double DrawBrokenView::breaklineLength(const App::DocumentObject& breakObj) const
 {
-    Base::Console().Message("DBV::breaklineLength()\n");
+    // Base::Console().Message("DBV::breaklineLength()\n");
     if (ShapeExtractor::isSketchObject(&breakObj)) {
         return breaklineLengthFromSketch(breakObj);
     }
@@ -603,7 +575,7 @@ double DrawBrokenView::breaklineLength(const App::DocumentObject& breakObj) cons
 //! calculate the length of the breakline for a sketch based break
 double DrawBrokenView::breaklineLengthFromSketch(const App::DocumentObject& breakObj) const
 {
-    Base::Console().Message("DBV::breaklineLengthFromSketch()\n");
+    // Base::Console().Message("DBV::breaklineLengthFromSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
 
     // get the edges from the sketch
@@ -621,29 +593,20 @@ double DrawBrokenView::breaklineLengthFromSketch(const App::DocumentObject& brea
     std::pair<Base::Vector3d, Base::Vector3d> ends0 = SU::getEdgeEnds(sketchEdges.front());
     ends0.first = projectPoint(ends0.first, false);
     ends0.second = projectPoint(ends0.second, false);
-    Base::Console().Message("DBV::brealineLengthFromSketch - ends0.first: %s  second: %s\n",
-                            DU::formatVector(ends0.first).c_str(),
-                            DU::formatVector(ends0.second).c_str());
 
     std::pair<Base::Vector3d, Base::Vector3d> ends1 = SU::getEdgeEnds(sketchEdges.back());
     ends1.first = projectPoint(ends1.first, false);
     ends1.second = projectPoint(ends1.second, false);
-    Base::Console().Message("DBV::brealineLengthFromSketch - ends1.first: %s  second: %s\n",
-                            DU::formatVector(ends1.first).c_str(),
-                            DU::formatVector(ends1.second).c_str());
-    Base::Console().Message("DBV::brealineLengthFromSketch - ends0 vertical: %d\n", isVertical(ends0, true));
     if (isVertical(ends0, true)) {
         // sketch line is vertical, so breakline is also vertical
         double yLow = std::min({ends0.first.y, ends0.second.y, ends1.first.y, ends1.second.y});
         double yHigh = std::max({ends0.first.y, ends0.second.y, ends1.first.y, ends1.second.y});
-        Base::Console().Message("DBV::breaklineLengthFromSketch - vertical returns: %.3f\n", yHigh - yLow);
         return yHigh - yLow;
     }
 
     // sketch line is horizontal, so breakline is also horizontal
     double xLow = std::min({ends0.first.x, ends0.second.x, ends1.first.x, ends1.second.x});
     double xHigh = std::max({ends0.first.x, ends0.second.x, ends1.first.x, ends1.second.x});
-    Base::Console().Message("DBV::breaklineLengthFromSketch - horiz returns: %.3f\n", xHigh - xLow);
     return xHigh - xLow;
 }
 
@@ -665,7 +628,7 @@ double DrawBrokenView::breaklineLengthFromEdge(const App::DocumentObject& breakO
 //! return true if the edge is vertical.
 bool DrawBrokenView::isVertical(TopoDS_Edge edge, bool projected) const
 {
-    Base::Console().Message("DBV::isVertical(edge, %d)\n", projected);
+    // Base::Console().Message("DBV::isVertical(edge, %d)\n", projected);
     Base::Vector3d stdY{0.0, 1.0, 0.0};
     auto ends = SU::getEdgeEnds(edge);
     auto edgeDir = ends.second - ends.first;
@@ -688,9 +651,9 @@ bool DrawBrokenView::isVertical(TopoDS_Edge edge, bool projected) const
 //! return true if the input points are vertical
 bool DrawBrokenView::isVertical(std::pair<Base::Vector3d, Base::Vector3d> inPoints, bool projected) const
 {
-    Base::Console().Message("DBV::isVertical(%s, %s, %d)\n",
-                            DU::formatVector(inPoints.first).c_str(),
-                            DU::formatVector(inPoints.second).c_str(), projected);
+    // Base::Console().Message("DBV::isVertical(%s, %s, %d)\n",
+    //                         DU::formatVector(inPoints.first).c_str(),
+    //                         DU::formatVector(inPoints.second).c_str(), projected);
     Base::Vector3d stdY{0.0, 1.0, 0.0};
     auto pointDir = inPoints.second - inPoints.first;
     pointDir.Normalize();
@@ -889,7 +852,7 @@ BreakList DrawBrokenView::sortBreaks(BreakList& inList, bool descend)
 //! dimensions.
 Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
 {
-    Base::Console().Message("DBV::mapPoint3dToView(%s)\n", DU::formatVector(point3d).c_str());
+    // Base::Console().Message("DBV::mapPoint3dToView(%s)\n", DU::formatVector(point3d).c_str());
     Base::Vector3d stdX(1.0, 0.0, 0.0);
     Base::Vector3d stdY(0.0, 1.0, 0.0);
     Base::Vector3d result{point3d};
@@ -898,7 +861,6 @@ Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
     // of XDirection and YDirection.
     Base::Vector3d point2d = projectPoint(point3d, false);     // don't invert
 
-    Base::Console().Message("DBV::mapPoint3dToView - point2d: %s\n", DU::formatVector(point2d).c_str());
     auto breaksAll = Breaks.getValues();
     bool descend = false;
     auto moveXDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().XDirection()));
@@ -916,10 +878,6 @@ Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
     double yLimit = point2d.y;
     double yShift = shiftAmountShrink(yLimit, sortedYBreaks);
     Base::Vector3d yMove = stdY * yShift;   // move up (+Y)
-    Base::Console().Message("DBV::mapPoint3dToView - xBreaks: %d  yBreaks: %d\n", sortedXBreaks.size(), sortedYBreaks.size());
-    Base::Console().Message("DBV::mapPoint3dToView - xmove: %s ymove: %s\n",
-                            DU::formatVector(xMove).c_str(),
-                            DU::formatVector(yMove).c_str());
 
     point2d = point2d + xMove + yMove;
 
@@ -1001,13 +959,9 @@ double DrawBrokenView::shiftAmountExpand(double pointCoord, const BreakList& sor
 {
     // Base::Console().Message("DBV::shiftAmountExpand(%.3f, %d)\n", pointCoord, sortedBreaks.size());
     double shift{0};
-    size_t iBreak{0};
     for (auto& breakItem : sortedBreaks) {
-        Base::Console().Message("DBV::shiftAmountExpand - break: %d low: %.3f  high: %.3f\n", iBreak,
-                                breakItem.lowLimit, breakItem.highLimit);
         if (pointCoord >= breakItem.highLimit) {
             // leave alone, this break doesn't affect us
-            iBreak++;
             continue;
         }
 
@@ -1025,7 +979,6 @@ double DrawBrokenView::shiftAmountExpand(double pointCoord, const BreakList& sor
         double factor = 1 - gapPenetration / Gap.getValue();
         double shiftAmount = factor * (removed - Gap.getValue());
         shift += shiftAmount;
-        iBreak++;
     }
 
     return shift;
