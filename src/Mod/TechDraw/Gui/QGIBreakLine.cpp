@@ -74,28 +74,31 @@ void QGIBreakLine::draw()
     // Base::Console().Message("QGIBL::draw()\n");
     Base::Vector3d horizontal{1.0, 0.0, 0.0};
     prepareGeometryChange();
+    double offset = zigzagWidth / 2.0;
     if (m_direction.IsEqual(horizontal, EWTOLERANCE)) {
         // m_direction connects the two cut points.  The zigzags have
         // to be perpendicular to m_direction
-        // 2x vertical zigzag from upper to lower
-        Base::Vector3d start = Base::Vector3d(m_left, m_bottom, 0.0);
+        // 2x vertical zigzag
+        Base::Vector3d start = Base::Vector3d(m_left - offset, m_bottom, 0.0);
         m_line0->setPath(makeVerticalZigZag(start));
 
-        start = Base::Vector3d(m_right - zigzagWidth, m_bottom, 0.0);
+        start = Base::Vector3d(m_right - offset, m_bottom, 0.0);
         m_line1->setPath(makeVerticalZigZag(start));
     } else {
         // m_top is lower than m_bottom due to Qt Y+ down coords
         // the higher break line
-        // 2x horizontal zigszg from left to right
-        Base::Vector3d start = Base::Vector3d(m_left, m_bottom, 0.0);
+        // 2x horizontal zigszags
+        Base::Vector3d start = Base::Vector3d(m_left, m_bottom - offset, 0.0);
         m_line0->setPath(makeHorizontalZigZag(start));
 
         // the lower break line
-        start = Base::Vector3d(m_left, m_top - zigzagWidth, 0.0);
+        start = Base::Vector3d(m_left, m_top - offset, 0.0);
         m_line1->setPath(makeHorizontalZigZag(start));
     }
 
-    QRectF backgroundRect(m_left, m_bottom, std::fabs(m_right - m_left), std::fabs(m_top - m_bottom));
+    QRectF backgroundRect(m_left - offset, m_bottom - offset,
+                          std::fabs(m_right - m_left + zigzagWidth),
+                          std::fabs(m_top - m_bottom + zigzagWidth));
     m_background->setRect(backgroundRect);
 
     m_line0->show();
