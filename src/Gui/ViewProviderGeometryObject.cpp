@@ -74,28 +74,26 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     Transparency.setConstraints(&intPercent);
 
     App::Material mat(App::Material::DEFAULT);
-    auto geometry = dynamic_cast<App::GeoFeature*>(getObject());
-    if (geometry) {
-        mat = geometry->getMaterialAppearance();
-    } else {
-        // This is handled in the material code when using the object appearance
-        bool randomColor = hGrp->GetBool("RandomColor", false);
-        float r, g, b;
+    // This is handled in the material code when using the object appearance
+    bool randomColor = hGrp->GetBool("RandomColor", false);
+    float red {};
+    float green {};
+    float blue {};
 
-        if (randomColor) {
-            auto fMax = (float)RAND_MAX;
-            r = (float)rand() / fMax;
-            g = (float)rand() / fMax;
-            b = (float)rand() / fMax;
-        }
-        else {
-            unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
-            r = ((shcol >> 24) & 0xff) / 255.0;
-            g = ((shcol >> 16) & 0xff) / 255.0;
-            b = ((shcol >> 8) & 0xff) / 255.0;
-        }
-        mat.diffuseColor = App::Color(r,g,b);
+    if (randomColor) {
+        auto fMax = (float)RAND_MAX;
+        red = (float)rand() / fMax;
+        green = (float)rand() / fMax;
+        blue = (float)rand() / fMax;
     }
+    else {
+        // Color = (204, 204, 230)
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
+        red = ((shcol >> 24) & 0xff) / 255.0F;
+        green = ((shcol >> 16) & 0xff) / 255.0F;
+        blue = ((shcol >> 8) & 0xff) / 255.0F;
+    }
+    mat.diffuseColor = App::Color(red, green, blue);
 
     ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearrance");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
@@ -171,12 +169,6 @@ void ViewProviderGeometryObject::attach(App::DocumentObject* pcObj)
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
-    std::string propName = prop->getName();
-    if (propName == "Shape") {
-        // Reapply the appearance
-        const App::Material& Mat = ShapeAppearance[0];
-        setSoMaterial(Mat);
-    }
     if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
         Base::BoundBox3d box =
             static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
@@ -289,18 +281,20 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 {
     if (!pcBoundSwitch && show) {
         unsigned long bbcol = getBoundColor();
-        float r, g, b;
-        r = ((bbcol >> 24) & 0xff) / 255.0;
-        g = ((bbcol >> 16) & 0xff) / 255.0;
-        b = ((bbcol >> 8) & 0xff) / 255.0;
+        float red {};
+        float green {};
+        float blue {};
+        red = ((bbcol >> 24) & 0xff) / 255.0F;
+        green = ((bbcol >> 16) & 0xff) / 255.0F;
+        blue = ((bbcol >> 8) & 0xff) / 255.0F;
 
         pcBoundSwitch = new SoSwitch();
         auto pBoundingSep = new SoSeparator();
         auto lineStyle = new SoDrawStyle;
-        lineStyle->lineWidth = 2.0f;
+        lineStyle->lineWidth = 2.0F;
         pBoundingSep->addChild(lineStyle);
 
-        pcBoundColor->rgb.setValue(r, g, b);
+        pcBoundColor->rgb.setValue(red, green, blue);
         pBoundingSep->addChild(pcBoundColor);
         auto font = new SoFont();
         font->size.setValue(getBoundBoxFontSize());
@@ -375,6 +369,6 @@ void ViewProviderGeometryObject::handleChangedPropertyName(Base::XMLReader& read
         ShapeAppearance.setValue(prop.getValue());
     }
     else {
-        App::PropertyContainer::handleChangedPropertyName(reader, TypeName, PropName);
+        ViewProviderDragger::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }

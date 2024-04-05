@@ -844,6 +844,11 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             }
         }
     }
+    if (propName && strcmp(propName, "Shape") == 0) {
+        // Reapply the appearance
+        const App::Material& Mat = ShapeAppearance[0];
+        setSoMaterial(Mat);
+    }
     Gui::ViewProviderGeometryObject::updateData(prop);
 }
 
