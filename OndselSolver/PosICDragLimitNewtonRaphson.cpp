@@ -3,6 +3,7 @@
 #include "SimulationStoppingError.h"
 #include "Part.h"
 #include "Constraint.h"
+#include <algorithm>
 
 using namespace MbD;
 
@@ -38,7 +39,11 @@ void MbD::PosICDragLimitNewtonRaphson::run()
 	preRun();
 	system->deactivateLimits();
 	if (system->limitsSatisfied()) return;
-	for (auto& limit : *system->limits()) {
+	auto limits = system->limits();
+	std::partition(limits->begin(), limits->end(), [](auto limit) { return !limit->satisfied(); });
+	//Violated limits are in front.
+	for (auto it = limits->begin(); it != limits->end(); it++) {
+		auto limit = *it;
 		limit->activate();
 		preRun();
 		initializeLocally();
