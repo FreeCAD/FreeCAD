@@ -2570,13 +2570,17 @@ void PropertyMaterial::setPyObject(PyObject* value)
 
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyMaterial ambientColor=\""
-                    << _cMat.ambientColor.getPackedValue() << "\" diffuseColor=\""
-                    << _cMat.diffuseColor.getPackedValue() << "\" specularColor=\""
-                    << _cMat.specularColor.getPackedValue() << "\" emissiveColor=\""
-                    << _cMat.emissiveColor.getPackedValue() << "\" shininess=\"" << _cMat.shininess
-                    << "\" transparency=\"" << _cMat.transparency << "\"/>"
-                    << "\" uuid=\"" << _cMat.uuid << "\"/>" << endl;
+    // clang-format off
+    writer.Stream() << writer.ind()
+                    << "<PropertyMaterial ambientColor=\"" << _cMat.ambientColor.getPackedValue()
+                    << "\" diffuseColor=\"" << _cMat.diffuseColor.getPackedValue()
+                    << "\" specularColor=\"" << _cMat.specularColor.getPackedValue()
+                    << "\" emissiveColor=\"" << _cMat.emissiveColor.getPackedValue()
+                    << "\" shininess=\"" << _cMat.shininess
+                    << "\" transparency=\"" << _cMat.transparency
+                    << "\" uuid=\"" << _cMat.uuid
+                    << "\"/>" << std::endl;
+    // clang-format on
 }
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
