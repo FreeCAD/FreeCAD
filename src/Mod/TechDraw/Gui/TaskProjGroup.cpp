@@ -62,6 +62,7 @@
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderProjGroupItem.h"
 
 
 using namespace Gui;
@@ -72,13 +73,24 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui(new Ui_TaskProjGroup),
     view(featView),
     multiView(nullptr),
-    m_createMode(mode)
+    m_createMode(mode),
+    blockCheckboxes(false)
 {
     ui->setupUi(this);
 
     blockUpdate = true;
     multiView = dynamic_cast<TechDraw::DrawProjGroup*>(view);
     updateUi();
+
+    if (multiView) {
+        ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
+        ui->cbAutoDistribute->setChecked(multiView->AutoDistribute.getValue());
+        // disable if no AutoDistribute
+        ui->sbXSpacing->setEnabled(multiView->AutoDistribute.getValue());
+        ui->sbYSpacing->setEnabled(multiView->AutoDistribute.getValue());
+        ui->sbXSpacing->setValue(multiView->spacingX.getValue());
+        ui->sbYSpacing->setValue(multiView->spacingY.getValue());
+    }
 
     setFractionalScale(view->getScale());
     ui->cmbScaleType->setCurrentIndex(view->ScaleType.getValue());
@@ -157,14 +169,6 @@ void TaskProjGroup::updateUi()
         ui->label_7->show();
         ui->label_10->show();
         ui->label_11->show();
-
-        ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
-        ui->cbAutoDistribute->setChecked(multiView->AutoDistribute.getValue());
-        // disable if no AutoDistribute
-        ui->sbXSpacing->setEnabled(multiView->AutoDistribute.getValue());
-        ui->sbYSpacing->setEnabled(multiView->AutoDistribute.getValue());
-        ui->sbXSpacing->setValue(multiView->spacingX.getValue());
-        ui->sbYSpacing->setValue(multiView->spacingY.getValue());
     }
     else {
         setWindowTitle(QObject::tr("Part View"));
@@ -175,6 +179,12 @@ void TaskProjGroup::updateUi()
         ui->label_7->hide();
         ui->label_10->hide();
         ui->label_11->hide();
+
+        // if the view is not a proj group item, then we disable secondary projs.
+        auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(view);
+        if (!dpgi) {
+            ui->secondaryProjGroupbox->hide();
+        }
     }
 }
 
@@ -237,49 +247,20 @@ void TaskProjGroup::viewToggled(bool toggle)
     int index = sender()->objectName().mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
 
-    if (multiView) {
-        // Check if only front is now available. If so switch to normal view.
+    if (!blockCheckboxes) {
+        if (multiView) {
+            // Check if only front is left. If so switch to normal view.
+            if (multiView->Views.getValues().size() == 2 && !toggle) {
+                turnProjGroupToView();
+                wc.restoreCursor();
+                return;
+            }
+        }
+        else {
+            // If toggle then we remove the view object and create a proj group instead.
+            turnViewToProjGroup();
+        }
     }
-    else {
-        // If toggle then we remove the view object and create a proj group instead.
-
-        App::Document* doc = view->getDocument();
-
-        std::string multiViewName = doc->getUniqueObjectName("ProjGroup");
-        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')", multiViewName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.addView(App.activeDocument().%s)", view->findParentPage()->getNameInDocument(), multiViewName.c_str());
-
-        auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
-        multiView = static_cast<TechDraw::DrawProjGroup*>(doc->getObject(multiViewName.c_str()));
-        multiView->Source.setValues(viewPart->Source.getValues());
-        multiView->XSource.setValues(viewPart->XSource.getValues());
-        multiView->X.setValue(viewPart->X.getValue());
-        multiView->Y.setValue(viewPart->Y.getValue());
-        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
-
-        Base::Vector3d dir1 = viewPart->Direction.getValue();
-        Base::Vector3d dir2 = viewPart->XDirection.getValue();
-
-        doc->setStatus(App::Document::Status::SkipRecompute, true);
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dir1.x, dir1.y, dir1.z);
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dir2.x, dir2.y, dir2.z);
-        Gui::Command::doCommand(Gui::Command::Gui,
-            "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
-            multiViewName.c_str(), dir2.x, dir2.y, dir2.z);
-        doc->setStatus(App::Document::Status::SkipRecompute, false);
-
-        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
-
-        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", view->getNameInDocument());
-        view = multiView;
-
-        updateUi();
-    }
-
 
     if (toggle && !multiView->hasProjection(viewNameCStr)) {
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -302,6 +283,81 @@ void TaskProjGroup::viewToggled(bool toggle)
         view->recomputeFeature();
     }
     wc.restoreCursor();
+}
+
+
+void TaskProjGroup::turnViewToProjGroup()
+{
+    App::Document* doc = view->getDocument();
+
+    std::string multiViewName = doc->getUniqueObjectName("ProjGroup");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')", multiViewName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.addView(App.activeDocument().%s)", view->findParentPage()->getNameInDocument(), multiViewName.c_str());
+
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
+    m_page->removeView(viewPart);
+
+    multiView = static_cast<TechDraw::DrawProjGroup*>(doc->getObject(multiViewName.c_str()));
+    multiView->Source.setValues(viewPart->Source.getValues());
+    multiView->XSource.setValues(viewPart->XSource.getValues());
+    multiView->X.setValue(viewPart->X.getValue());
+    multiView->Y.setValue(viewPart->Y.getValue());
+    multiView->Scale.setValue(viewPart->Scale.getValue());
+    multiView->ScaleType.setValue(viewPart->ScaleType.getValue());
+    viewPart->X.setValue(0.0);
+    viewPart->Y.setValue(0.0);
+    viewPart->ScaleType.setValue("Custom");
+    viewPart->Scale.setStatus(App::Property::Hidden, true);
+    viewPart->ScaleType.setStatus(App::Property::Hidden, true);
+    viewPart->Label.setValue("Front");
+
+    multiView->addView(viewPart);
+    multiView->Anchor.setValue(view);
+    multiView->Anchor.purgeTouched();
+
+    viewPart->LockPosition.setValue(true);
+    viewPart->LockPosition.setStatus(App::Property::ReadOnly, true); //Front should stay locked.
+    viewPart->LockPosition.purgeTouched();
+
+    multiView->requestPaint();//make sure the group object is on the Gui page
+    view = multiView;
+
+    updateUi();
+}
+
+void TaskProjGroup::turnProjGroupToView()
+{
+    TechDraw::DrawViewPart* viewPart = multiView->getAnchor();
+    viewPart->Scale.setValue(multiView->Scale.getValue());
+    viewPart->ScaleType.setValue(multiView->ScaleType.getValue());
+    viewPart->Scale.setStatus(App::Property::Hidden, true);
+    viewPart->ScaleType.setStatus(App::Property::Hidden, true);
+    viewPart->Scale.purgeTouched();
+    viewPart->ScaleType.purgeTouched();
+    viewPart->Label.setValue("View");
+    viewPart->LockPosition.setValue(false);
+    viewPart->LockPosition.setStatus(App::Property::ReadOnly, false);
+    viewPart->LockPosition.purgeTouched();
+    viewPart->X.setValue(multiView->X.getValue());
+    viewPart->Y.setValue(multiView->Y.getValue());
+    m_page->addView(viewPart);
+
+    // remove viewPart from views before deleting the group.
+    multiView->removeView(viewPart);
+
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", multiView->getNameInDocument());
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    auto* vp = static_cast<ViewProviderProjGroupItem*>(activeGui->getViewProvider(viewPart));
+    if (vp) {
+        vp->updateIcon();
+    }
+    viewPart->recomputeFeature();
+
+    view = viewPart;
+    multiView = nullptr;
+
+    updateUi();
 }
 
 void TaskProjGroup::customDirectionClicked()
@@ -421,13 +477,16 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
 
     if (qText == QString::fromUtf8("Page")) {
         multiView->ProjectionType.setValue("Default");
-    } else {
+    }
+    else {
         std::string text = qText.toStdString();
         multiView->ProjectionType.setValue(text.c_str());
     }
 
     // Update checkboxes so checked state matches the drawing
+    blockCheckboxes = true;
     setupViewCheckboxes();
+    blockCheckboxes = false;
 
     // set the tooltips of the checkboxes
     ui->chkView0->setToolTip(getToolTipForBox(0));
@@ -630,7 +689,8 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
                 if (!multiView->canDelete(viewStr)) {
                     box->setEnabled(false);
                 }
-            } else {
+            }
+            else {
                 box->setCheckState(Qt::Unchecked);
             }
         }

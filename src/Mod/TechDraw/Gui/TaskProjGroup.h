@@ -83,6 +83,9 @@ protected:
     void restoreGroupState();
     void updateUi();
 
+    void turnViewToProjGroup();
+    void turnProjGroupToView();
+
     QString formatVector(Base::Vector3d vec);
 
 protected Q_SLOTS:
@@ -110,6 +113,7 @@ private:
     bool m_createMode;
 
     bool blockUpdate;
+    bool blockCheckboxes;
     /// Translate a view checkbox index into represented view string, depending on projection type
     const char *  viewChkIndexToCStr(int index);
     QString getToolTipForBox(int boxNumber);

@@ -422,7 +422,7 @@ void CmdTechDrawView::activated(int iMsg)
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
                 QMessageBox msgBox;
-                msgBox.setText(msgBox.tr("Note: If you want to insert a shape you need to select it before starting the tool, else it opens a file browser to insert SVG or Images."));
+                msgBox.setText(msgBox.tr("If you want to insert a view from existing objects, please select them before evoking this tool. Without a selection, a file browser will open, to insert a SVG or image file."));
                 QCheckBox dontShowCheckBox(msgBox.tr("Do not show this message again"), &msgBox);
                 msgBox.setCheckBox(&dontShowCheckBox);
                 QPushButton* okButton = msgBox.addButton(QMessageBox::Ok);
@@ -478,71 +478,36 @@ void CmdTechDrawView::activated(int iMsg)
     }
 
     Gui::WaitCursor wc;
-    bool createProjGroup = hGrp->GetBool("InsertAsProjGroup", true);
-    if (createProjGroup) {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create Projection Group"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
+    std::string FeatName = getUniqueObjectName("View");
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroupItem', '%s')",
+        FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawProjGroupItem', 'View', '%s')",
+        FeatName.c_str(), FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
+        FeatName.c_str());
 
-        std::string multiViewName = getUniqueObjectName("ProjGroup");
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')",
-            multiViewName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-            multiViewName.c_str());
-
-        App::DocumentObject* docObj = getDocument()->getObject(multiViewName.c_str());
-        auto multiView(static_cast<TechDraw::DrawProjGroup*>(docObj));
-        multiView->Source.setValues(shapes);
-        multiView->XSource.setValues(xShapes);
-        doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
-
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc,
-            "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
-            multiViewName.c_str());
-        doCommand(Doc,
-            "App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(1.0, 0.0, 0.0)",
-            multiViewName.c_str());
-        doCommand(Doc,
-            "App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
-            multiViewName.c_str());
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-
-        doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
-        commitCommand();
-        updateActive();
-
-        // create the rest of the desired views
-        Gui::Control().showDialog(new TaskDlgProjGroup(multiView, true));
+    App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
+    auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
+    if (!dvp) {
+        throw Base::TypeError("CmdTechDrawView DVP not found\n");
     }
-    else {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
-        std::string FeatName = getUniqueObjectName("View");
-        doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewPart', '%s')",
-            FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewPart', 'View', '%s')",
-            FeatName.c_str(), FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-            FeatName.c_str());
+    dvp->Source.setValues(shapes);
+    dvp->XSource.setValues(xShapes);
 
-        App::DocumentObject* docObj = getDocument()->getObject(FeatName.c_str());
-        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
-        if (!dvp) {
-            throw Base::TypeError("CmdTechDrawView DVP not found\n");
-        }
-        dvp->Source.setValues(shapes);
-        dvp->XSource.setValues(xShapes);
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
+    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
+        FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.RotationVector = FreeCAD.Vector(1.0, 0.0, 0.0)",
+        FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
+        FeatName.c_str());
+    getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
+    doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
+    commitCommand();
 
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-        doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
-            FeatName.c_str());
-        doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
-            FeatName.c_str());
-        getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-        doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
-        commitCommand();
-
-        // create the rest of the desired views
-        Gui::Control().showDialog(new TaskDlgProjGroup(dvp, true));
-    }
+    // create the rest of the desired views
+    Gui::Control().showDialog(new TaskDlgProjGroup(dvp, true));
 }
 
 bool CmdTechDrawView::isActive() { return DrawGuiUtil::needPage(this); }

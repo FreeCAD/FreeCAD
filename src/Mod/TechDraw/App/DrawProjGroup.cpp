@@ -542,9 +542,8 @@ int DrawProjGroup::purgeProjections()
 {
     while (!Views.getValues().empty()) {
         std::vector<DocumentObject*> views = Views.getValues();
-        DrawProjGroupItem* dpgi;
         DocumentObject* dObj = views.back();
-        dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
+        auto* dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
         if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
@@ -1077,8 +1076,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 {
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj) {
-        DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
-        return result;
+        return static_cast<DrawProjGroupItem*>(docObj);
     }
     return nullptr;
 }
@@ -1086,7 +1084,7 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 {
     App::DocumentObject* docObj = Anchor.getValue();
-    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    auto* item = static_cast<DrawProjGroupItem*>(docObj);
     item->Direction.setValue(dir);
 }
 
@@ -1096,7 +1094,7 @@ Base::Vector3d DrawProjGroup::getAnchorDirection()
     if (!docObj) {
         return Base::Vector3d();
     }
-    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    auto* item = static_cast<DrawProjGroupItem*>(docObj);
     return item->Direction.getValue();
 }
 
@@ -1239,8 +1237,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
     std::vector<DrawProjGroupItem*> result;
     auto views = Views.getValues();
     for (auto& v : views) {
-        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(v);
-        result.push_back(item);
+        result.push_back(static_cast<DrawProjGroupItem*>(v));
     }
     return result;
 }
@@ -1256,7 +1253,7 @@ void DrawProjGroup::dumpISO(const char* title)
     for (auto& docObj : Views.getValues()) {
         Base::Vector3d dir;
         Base::Vector3d axis;
-        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+        auto* v = static_cast<DrawProjGroupItem*>(docObj);
         std::string t = v->Type.getValueAsString();
         dir = v->Direction.getValue();
         axis = v->getXDirection();

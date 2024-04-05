@@ -123,9 +123,12 @@ void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
 //this code used to live in ViewProviderPage
 void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
 {
-    if (obj->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
-        //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
-        return;
+    if (docObj->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        //DPGI can not be dropped onto the Page if it belongs to DPG
+        auto* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(docObj);
+        if (dpgi->getPGroup()) {
+            return;
+        }
     }
     if (obj->isDerivedFrom<App::Link>()) {
         auto* link = static_cast<App::Link*>(obj);
