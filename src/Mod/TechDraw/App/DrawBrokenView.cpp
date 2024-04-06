@@ -350,7 +350,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromObj(con
     }
 
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() == TopAbs_EDGE) {
+    if (!locShape.IsNull() && locShape.ShapeType() == TopAbs_EDGE) {
         return breakPointsFromEdge(breakObj);
     }
     return {Base::Vector3d(), Base::Vector3d()};
@@ -383,7 +383,7 @@ bool DrawBrokenView::isBreakObject(const App::DocumentObject& breakObj)
         return isBreakObjectSketch(breakObj);
     }
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() == TopAbs_EDGE) {
+    if (!locShape.IsNull() && locShape.ShapeType() == TopAbs_EDGE) {
         // TODO: add check for vertical or horizontal?
         return true;
     }
@@ -397,6 +397,9 @@ bool DrawBrokenView::isBreakObjectSketch(const App::DocumentObject& breakObj)
 {
     // Base::Console().Message("DBV::isBreakObjectSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
+    if (locShape.IsNull()) {
+        return false;
+    }
 
     // get the edges from the shape.
     std::vector<TopoDS_Edge> sketchEdges;
@@ -421,6 +424,9 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromSketch(
 {
     // Base::Console().Message("DBV::breakPointsFromSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
+    if (locShape.IsNull()) {
+        return {Base::Vector3d(), Base::Vector3d()};;
+    }
 
     // get the edges from the shape.
     // vertical or horizontal
@@ -457,7 +463,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromSketch(
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromEdge(const App::DocumentObject& breakObj) const
 {
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() != TopAbs_EDGE) {
+    if (locShape.IsNull() || locShape.ShapeType() != TopAbs_EDGE) {
         return {Base::Vector3d(), Base::Vector3d()};
     }
 
@@ -478,7 +484,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromObj(con
     }
 
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() == TopAbs_EDGE) {
+    if (!locShape.IsNull() && locShape.ShapeType() == TopAbs_EDGE) {
         auto unscaled = breakBoundsFromEdge(breakObj);
         return scalePair(unscaled);
     }
@@ -520,7 +526,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(co
 {
     // Base::Console().Message("DBV::breakBoundsFromEdge()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() != TopAbs_EDGE) {
+    if (locShape.IsNull() || locShape.ShapeType() != TopAbs_EDGE) {
         return {Base::Vector3d(), Base::Vector3d()};
     }
 
@@ -566,7 +572,7 @@ double DrawBrokenView::breaklineLength(const App::DocumentObject& breakObj) cons
     }
 
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() == TopAbs_EDGE) {
+    if (!locShape.IsNull() && locShape.ShapeType() == TopAbs_EDGE) {
         return  breaklineLengthFromEdge(breakObj);
     }
     return 0.0;
@@ -577,7 +583,9 @@ double DrawBrokenView::breaklineLengthFromSketch(const App::DocumentObject& brea
 {
     // Base::Console().Message("DBV::breaklineLengthFromSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-
+    if (locShape.IsNull()) {
+        return 0;
+    }
     // get the edges from the sketch
     std::vector<TopoDS_Edge> sketchEdges;
     TopExp_Explorer expl(locShape, TopAbs_EDGE);
@@ -615,7 +623,7 @@ double DrawBrokenView::breaklineLengthFromEdge(const App::DocumentObject& breakO
 {
     // Base::Console().Message("DBV::breaklineLengthFromEdge()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.ShapeType() != TopAbs_EDGE) {
+    if (!locShape.IsNull() && locShape.ShapeType() != TopAbs_EDGE) {
         return 0.0;
     }
     // the breakline could be very long.  do we need a max breakline length?
