@@ -40,6 +40,7 @@
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
+#include "Link.h"
 #include "ObjectIdentifier.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyLinks.h"
@@ -887,19 +888,69 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
-std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subname) const {
+std::vector<DocumentObject*>
+DocumentObject::getSubObjectList(const char *subname,
+                                 std::vector<int> *sublist,
+                                 bool flatten) const
+{
     std::vector<DocumentObject*> res;
     res.push_back(const_cast<DocumentObject*>(this));
+    if (sublist) sublist->push_back(0);
     if(!subname || !subname[0])
         return res;
-    std::string sub(subname);
+    auto element = Data::findElementName(subname);
+    std::string sub(subname,element-subname);
+    App::DocumentObject *container = nullptr;
+
+    bool lastChild = false;
+    if (flatten) {
+        auto linked = getLinkedObject();
+        if (linked->getExtensionByType<App::GeoFeatureGroupExtension>(true))
+            container = const_cast<DocumentObject*>(this);
+        else if (auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked)) {
+            container = grp;
+            lastChild = true;
+        }
+    }
     for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
         char c = sub[pos+1];
         sub[pos+1] = 0;
         auto sobj = getSubObject(sub.c_str());
         if(!sobj || !sobj->isAttachedToDocument())
-            break;
+            continue;
+
+        if (flatten) {
+            auto linked = sobj->getLinkedObject();
+            if (container) {
+                auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked);
+                if (grp != container)
+                    container = nullptr;
+                else {
+                    if (lastChild && res.size()) {
+                        res.pop_back();
+                        if (sublist)
+                            sublist->pop_back();
+                    }
+                    lastChild = true;
+                }
+            }
+            if (linked->getExtensionByType<App::GeoFeatureGroupExtension>(true)) {
+                container = linked;
+                lastChild = false;
+            }
+            else if (linked != sobj || sobj->hasChildElement()) {
+                // Check for Link or LinkGroup
+                container = nullptr;
+            }
+            else if (auto ext = sobj->getExtensionByType<LinkBaseExtension>(true)) {
+                // check for Link array
+                if (ext->getElementCountValue())
+                    container = nullptr;
+            }
+        }
         res.push_back(sobj);
+        if (sublist)
+            sublist->push_back(pos+1);
         sub[pos+1] = c;
     }
     return res;
