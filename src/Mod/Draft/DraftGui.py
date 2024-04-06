@@ -131,7 +131,7 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Close)
+        return QtWidgets.QDialogButtonBox.Close.value
     def accept(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
@@ -312,7 +312,7 @@ class DraftToolBar:
         self.promptlabel = self._label("promptlabel", self.layout, hide=task)
         self.cmdlabel = self._label("cmdlabel", self.layout, hide=task)
         boldtxt = QtGui.QFont()
-        boldtxt.setWeight(75)
+        boldtxt.setWeight(QtGui.QFont.Weight.Bold)
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 

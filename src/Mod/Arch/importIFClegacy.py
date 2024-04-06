@@ -54,7 +54,7 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
 
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__','io', '_io']:
     pyopen = open # because we'll redefine open below
 
 def open(filename,skip=None):
@@ -1795,7 +1795,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
     tree.headerItem().setText(1, "")
     tree.headerItem().setText(2, "Item and Properties")
     bold = QtGui.QFont()
-    bold.setWeight(75)
+    bold.setWeight(QtGui.QFont.Weight.Bold)
     bold.setBold(True)
 
     #print(ifc.Entities)

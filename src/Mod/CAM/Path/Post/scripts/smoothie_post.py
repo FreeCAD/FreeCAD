@@ -141,7 +141,7 @@ TOOL_CHANGE = """"""
 PRECISION = 5
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
+if open.__module__ in ["__builtin__", "io", "_io"]:
     pythonopen = open
 
 

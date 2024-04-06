@@ -281,7 +281,7 @@ parser.add_argument("--repeat", action="store_true", help="repeat axis arguments
 TOOLTIP_ARGS = parser.format_help()
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
+if open.__module__ in ["__builtin__", "io", "_io"]:
     pythonopen = open
 
 # to distinguish python built-in open function from the one declared below

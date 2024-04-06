@@ -55,7 +55,7 @@ __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
 __url__    = "https://www.freecad.org"
 
 # Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ['__builtin__', 'io', '_io']:
     pyopen = open
 
 # Templates and other definitions ****

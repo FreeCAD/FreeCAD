@@ -45,7 +45,7 @@ from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
 # Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ['__builtin__', 'io', '_io']:
     pythonopen = open
 import ply.lex as lex
 import ply.yacc as yacc

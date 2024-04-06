@@ -296,7 +296,7 @@ GCODE_FOOTER = "M30"
 
 linenr = 0  # variable has to be global because it is used by linenumberify and export
 
-if open.__module__ in ["__builtin__", "io"]:
+if open.__module__ in ["__builtin__", "io", "_io"]:
     pythonopen = open
 
 

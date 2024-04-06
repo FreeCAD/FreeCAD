@@ -48,7 +48,7 @@ convexity = 'convexity = %d' % conv
 #***************************************************************************
 # Radius values not fixed for value apart from cylinder & Cone
 # no doubt there will be a problem when they do implement Value
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ['__builtin__', 'io', '_io']:
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
 

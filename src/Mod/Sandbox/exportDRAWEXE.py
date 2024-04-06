@@ -25,8 +25,8 @@ __author__ = "Sebastian Hoogen <github@sebastianhoogen.de>"
 
 import FreeCAD, Part
 
-if open.__module__ == '__builtin__':
-        pythonopen = open
+if open.__module__ in ['__builtin__','io', '_io']:
+    pythonopen = open
 
 # unsupported primitives
 # Part:: Wedge, Helix, Spiral, Elipsoid

@@ -50,7 +50,7 @@ else:
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__','io', '_io']:
     pythonopen = open
 
 def findVert(aVertex,aList):

@@ -51,7 +51,7 @@ else:
         return txt
 
 # Save the native open function to avoid collisions
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__', 'io', '_io']:
     pythonopen = open
 
 

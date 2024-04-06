@@ -75,7 +75,7 @@ else:
     draftui = None
 
 # Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ['__builtin__', 'io', '_io']:
     pythonopen = open
 
 svgcolors = {
