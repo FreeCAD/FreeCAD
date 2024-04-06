@@ -280,6 +280,16 @@ PyObject* MaterialPy::hasAppearanceProperty(PyObject* args)
     return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
+PyObject* MaterialPy::hasLegacyProperties(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    bool hasProperty = getMaterialPtr()->hasLegacyProperties();
+    return PyBool_FromLong(hasProperty ? 1 : 0);
+}
+
 Py::Dict MaterialPy::getProperties() const
 {
     Py::Dict dict;
@@ -319,6 +329,16 @@ Py::Dict MaterialPy::getProperties() const
         }
     }
 
+    auto legacy = getMaterialPtr()->getLegacyProperties();
+    for (auto& it : legacy) {
+        auto key = it.first;
+        auto value = it.second;
+
+        if (!value.isEmpty()) {
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
+    }
+
     return dict;
 }
 
@@ -351,6 +371,23 @@ Py::Dict MaterialPy::getAppearanceProperties() const
 
         if (!materialProperty->isNull()) {
             auto value = materialProperty->getDictionaryString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
+    }
+
+    return dict;
+}
+
+Py::Dict MaterialPy::getLegacyProperties() const
+{
+    Py::Dict dict;
+
+    auto legacy = getMaterialPtr()->getLegacyProperties();
+    for (auto& it : legacy) {
+        auto key = it.first;
+        auto value = it.second;
+
+        if (!value.isEmpty()) {
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
