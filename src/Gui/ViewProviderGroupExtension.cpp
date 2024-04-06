@@ -108,7 +108,12 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren() const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    auto* obj = getExtendedViewProvider()->getObject();
+    if (!obj) {
+        return {};
+    }
+
+    auto* group = obj->getExtensionByType<App::GroupExtension>();
     return group->Group.getValues();
 }
 
