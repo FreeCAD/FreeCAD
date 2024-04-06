@@ -459,10 +459,17 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     App::DocumentObject* faceObj = nullptr;
     std::string faceName;
     getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
+    if (shapes.empty() &&
+        xShapes.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
+            QObject::tr("Please select objects to break and break objects."));
+        return;
+    }
 
     // pick the Break objects out of the selected pile
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
         nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
     std::vector<App::DocumentObject*> breakObjects;
     for (auto& selObj : selection) {
         auto temp = selObj.getObject();
