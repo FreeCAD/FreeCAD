@@ -453,16 +453,30 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     }
     std::string PageName = page->getNameInDocument();
 
+    // get shape objects from a base view
+    std::vector<App::DocumentObject*> shapesFromBase;
+    std::vector<App::DocumentObject*> xShapesFromBase;
+    std::vector<App::DocumentObject*> baseViews =
+        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    if (!baseViews.empty()) {
+        TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
+        shapesFromBase = dvp->Source.getValues();
+        xShapesFromBase = dvp->XSource.getValues();
+    }
+
     // get the shape objects from the selection
     std::vector<App::DocumentObject*> shapes;
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* faceObj = nullptr;
     std::string faceName;
     getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
+    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
+    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
+
     if (shapes.empty() &&
         xShapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
-            QObject::tr("Please select objects to break and break objects."));
+            QObject::tr("Please select objects to break or a base view and break definition objects."));
         return;
     }
 
