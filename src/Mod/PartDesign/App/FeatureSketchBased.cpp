@@ -62,6 +62,8 @@
 #include "DatumPlane.h"
 
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
+
 using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
@@ -253,6 +255,134 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
+TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
+                                        bool doFit,
+                                        bool allowOpen,
+                                        const App::DocumentObject *profile,
+                                        const std::vector<std::string> &_subs) const
+{
+    auto obj = profile ? profile : Profile.getValue();
+    if(!obj || !obj->getNameInDocument()) {
+        if(silent)
+            return TopoShape();
+        throw Base::ValueError("No profile linked");
+    }
+    const auto &subs = profile ? _subs : Profile.getSubValues();
+    try {
+        TopoShape shape;
+        if(AllowMultiFace.getValue()) {
+            if (subs.empty())
+                shape = Part::Feature::getTopoShape(obj);
+            else {
+                std::vector<TopoShape> shapes;
+                for (auto &sub : subs) {
+                    auto subshape = Part::Feature::getTopoShape(
+                        obj, sub.c_str(), /*needSubElement*/true);
+                    if (subshape.isNull())
+                        FC_THROWM(Base::CADKernelError, "Sub shape not found: " <<
+                                      obj->getFullName() << "." << sub);
+                    shapes.push_back(subshape);
+                }
+                shape.makeElementCompound(shapes);
+            }
+        } else {
+            std::string sub;
+            if(!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                if(!subs.empty())
+                    sub = subs[0];
+            }
+            shape = Part::Feature::getTopoShape(obj,sub.c_str(),!sub.empty());
+        }
+        if(shape.isNull()) {
+            if (silent)
+                return shape;
+            throw Base::CADKernelError("Linked shape object is empty");
+        }
+        TopoShape openshape;
+        if(!shape.hasSubShape(TopAbs_FACE)) {
+            try {
+                if(!shape.hasSubShape(TopAbs_WIRE))
+                    shape = shape.makeElementWires();
+                if(shape.hasSubShape(TopAbs_WIRE)) {
+                    shape.Hasher = getDocument()->getStringHasher();
+                    if (allowOpen) {
+                        std::vector<TopoShape> openwires;
+                        std::vector<TopoShape> wires;
+                        for (auto &wire : shape.getSubTopoShapes(TopAbs_WIRE)) {
+                            if (!wire.isClosed())
+                                openwires.push_back(wire);
+                            else
+                                wires.push_back(wire);
+                        }
+                        if (openwires.size()) {
+                            openshape.makeElementCompound(openwires, nullptr, TopoShape ::SingleShapeCompoundCreationPolicy::returnShape);
+                            if (wires.empty())
+                                shape = TopoShape();
+                            else
+                                shape.makeElementCompound(wires, nullptr, TopoShape ::SingleShapeCompoundCreationPolicy::returnShape);
+                        }
+                    }
+                    if (!shape.isNull()) {
+                        if (AllowMultiFace.getValue())
+                            shape = shape.makeElementFace(); // default to use FaceMakerBullseye
+                        else
+                            shape = shape.makeElementFace(nullptr, "Part::FaceMakerCheese");
+                    }
+                }
+            } catch (const Base::Exception &) {
+                if (silent)
+                    return TopoShape();
+                throw;
+            } catch (const Standard_Failure &) {
+                if (silent)
+                    return TopoShape();
+                throw;
+            }
+        }
+        int count = shape.countSubShapes(TopAbs_FACE);
+        if(!count && !allowOpen) {
+            if(silent)
+                return TopoShape();
+            throw Base::CADKernelError("Cannot make face from profile");
+        }
+
+//        if (doFit && (std::abs(Fit.getValue()) > Precision::Confusion()
+//                      || std::abs(InnerFit.getValue()) > Precision::Confusion())) {
+//
+//            if (!shape.isNull())
+//                shape = shape.makEOffsetFace(Fit.getValue(),
+//                                             InnerFit.getValue(),
+//                                             static_cast<Part::TopoShape::JoinType>(FitJoin.getValue()),
+//                                             static_cast<Part::TopoShape::JoinType>(InnerFitJoin.getValue()));
+//            if (!openshape.isNull())
+//                openshape.makEOffset2D(Fit.getValue());
+//        }
+
+        if (!openshape.isNull()) {
+            if (shape.isNull())
+                shape = openshape;
+            else
+                shape.makeElementCompound({shape, openshape});
+        }
+        if(count>1) {
+            if(AllowMultiFace.getValue()
+//                || allowMultiSolid()
+                || obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+                return shape;
+            FC_WARN("Found more than one face from profile");
+        }
+        if (!openshape.isNull())
+            return shape;
+        if (count)
+            return shape.getSubTopoShape(TopAbs_FACE,1);
+        return shape;
+    }catch (Standard_Failure &) {
+        if(silent)
+            return TopoShape();
+        throw;
+    }
+}
+
 
 std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
     std::vector<TopoDS_Wire> result;
@@ -290,6 +420,22 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
         throw Base::ValueError("Linked shape object is not a wire");
 
     return result;
+}
+
+std::vector<TopoShape> ProfileBased::getTopoShapeProfileWires() const {
+    // shape copy is a workaround for an obscure OCC bug which leads to empty
+    // tessellations for some faces. Making an explicit copy of the linked
+    // shape seems to fix it.  The error mostly happens when re-computing the
+    // shape but sometimes also for the first time
+    auto shape = getProfileShape().makeElementCopy();
+
+    if(shape.hasSubShape(TopAbs_WIRE))
+        return shape.getSubTopoShapes(TopAbs_WIRE);
+
+    auto wires = shape.makeElementWires().getSubTopoShapes(TopAbs_WIRE);
+    if(wires.empty())
+        throw Part::NullShapeException("Linked shape object is not a wire");
+    return wires;
 }
 
 // Note: We cannot return a reference, because it will become Null.
@@ -354,6 +500,34 @@ TopoDS_Face ProfileBased::getSupportFace(const App::PropertyLinkSub& link) const
     TopoDS_Face face;
     getFaceFromLinkSub(face, link);
     return face;
+}
+
+TopoShape ProfileBased::getTopoShapeSupportFace() const {
+    TopoShape shape;
+    const Part::Part2DObject* sketch = getVerifiedSketch(true);
+    if (!sketch)
+        shape = getVerifiedFace();
+    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace  &&  sketch->AttachmentSupport.getValue()) {
+        const auto &Support = sketch->AttachmentSupport;
+        App::DocumentObject* ref = Support.getValue();
+        shape = Part::Feature::getTopoShape(
+            ref, Support.getSubValues().size() ? Support.getSubValues()[0].c_str() : "", true);
+    }
+    if (!shape.isNull()) {
+        if (shape.shapeType(true) != TopAbs_FACE) {
+            if (!shape.hasSubShape(TopAbs_FACE))
+                throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
+            shape = shape.getSubTopoShape(TopAbs_FACE, 1);
+        }
+        gp_Pln pln;
+        if (!shape.findPlane(pln))
+            throw Base::TypeError("No planar face in SketchBased::getSupportFace()!");
+
+        return shape;
+    }
+    if (!sketch)
+        throw Base::RuntimeError("No planar support");
+    return Feature::makeShapeFromPlane(sketch);
 }
 
 int ProfileBased::getSketchAxisCount() const
@@ -540,6 +714,54 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 }
 
+void ProfileBased::getUpToFace(TopoShape& upToFace,
+                               const TopoShape& support,
+                               const TopoShape& supportface,
+                               const TopoShape& sketchshape,
+                               const std::string& method,
+                               gp_Dir& dir)
+{
+    if ((method == "UpToLast") || (method == "UpToFirst")) {
+        std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
+        if (cfaces.empty())
+            throw Base::ValueError("SketchBased: No faces found in this direction");
+
+        // Find nearest/furthest face
+        std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
+        it_near = it_far = cfaces.begin();
+        for (it = cfaces.begin(); it != cfaces.end(); it++)
+            if (it->distsq > it_far->distsq)
+                it_far = it;
+            else if (it->distsq < it_near->distsq)
+                it_near = it;
+        upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
+    } else if (Part::findAllFacesCutBy(upToFace, sketchshape, dir).empty())
+        dir = -dir;
+
+    if (upToFace.shapeType(true) != TopAbs_FACE) {
+        if (!upToFace.hasSubShape(TopAbs_FACE))
+            throw Base::ValueError("SketchBased: Up to face: No face found");
+        upToFace = upToFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    TopoDS_Face face = TopoDS::Face(upToFace.getShape());
+
+    // Check that the upToFace does not intersect the sketch face and
+    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
+    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface.getShape()));
+    BRepAdaptor_Surface adapt2(face);
+
+    if (adapt2.GetType() == GeomAbs_Plane) {
+        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion()))
+            throw Base::ValueError("SketchBased: Up to face: Must not be parallel to extrusion direction!");
+    }
+
+    // We must measure from sketchshape, not supportface, here
+    BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
+    if (distSS.Value() < Precision::Confusion())
+        throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+}
+
 void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
 {
     // Move the face in the extrusion direction
@@ -561,6 +783,18 @@ void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, dou
         else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
         }
+    }
+}
+
+void ProfileBased::addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, double offset)
+{
+    // Move the face in the extrusion direction
+    // TODO: For non-planar faces, we could consider offsetting the surface
+    if (fabs(offset) > Precision::Confusion()) {
+        gp_Trsf mov;
+        mov.SetTranslation(offset * gp_Vec(dir));
+        TopLoc_Location loc(mov);
+        upToFace.move(loc);
     }
 }
 
@@ -739,6 +973,13 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 {
+#if FC_USE_TNP_FIX
+    (void)newShape;
+    // Realthunder: with the new topological naming, I don't think this function
+    // is necessary. A missing element will cause an explicitly error, and the
+    // user will be force to manually select the element. Various editors, such
+    // as dress up editors, can perform element guessing when activated.
+#else
     TopTools_IndexedMapOfShape faceMap;
     TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
 
@@ -830,6 +1071,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
             link->setValue(this, newSubValues);
         }
     }
+#endif
 }
 
 namespace PartDesign {

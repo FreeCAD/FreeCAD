@@ -95,6 +95,7 @@ protected:
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
     static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    TopoShape getSolid(const TopoShape &, bool force = true);
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );
 
     /// Grab any point from the given face
@@ -102,6 +103,7 @@ protected:
     /// Make a shape from a base plane (convenience method)
     static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
+    static TopoShape makeTopoShapeFromPlane(const App::DocumentObject* obj);
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

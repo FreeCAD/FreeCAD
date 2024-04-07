@@ -1359,6 +1359,47 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
     return result;
 }
 
+std::vector<Part::cutFaces> Part::findAllFacesCutBy(
+    const TopoShape& shape, const TopoShape& face, const gp_Dir& dir)
+{
+    // Find the centre of gravity of the face
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face.getShape(),props);
+    gp_Pnt cog = props.CentreOfMass();
+
+    // create a line through the centre of gravity
+    gp_Lin line = gce_MakeLin(cog, dir);
+
+    // Find intersection of line with all faces of the shape
+    std::vector<cutFaces> result;
+    BRepIntCurveSurface_Inter mkSection;
+    // TODO: Less precision than Confusion() should be OK?
+
+    for (mkSection.Init(shape.getShape(), line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
+        gp_Pnt iPnt = mkSection.Pnt();
+        double dsq = cog.SquareDistance(iPnt);
+
+        if (dsq < Precision::Confusion())
+            continue; // intersection with original face
+
+        // Find out which side of the original face the intersection is on
+        gce_MakeDir mkDir(cog, iPnt);
+        if (!mkDir.IsDone())
+            continue; // some error (appears highly unlikely to happen, though...)
+
+        if (mkDir.Value().IsOpposite(dir, Precision::Confusion()))
+            continue; // wrong side of face (opposite to extrusion direction)
+
+        cutFaces newF;
+        newF.face = mkSection.Face();
+        newF.face.mapSubElement(shape);
+        newF.distsq = dsq;
+        result.push_back(newF);
+    }
+
+    return result;
+}
+
 bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
                              const bool quick, const bool touch_is_intersection) {
 

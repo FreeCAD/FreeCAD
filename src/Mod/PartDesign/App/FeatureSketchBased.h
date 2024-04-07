@@ -99,15 +99,34 @@ public:
      */
     TopoDS_Shape getVerifiedFace(bool silent = false) const;
 
+    /**
+     * Verifies the linked Object and returns the shape used as profile
+     * @param silent: if profile property is malformed and the parameter is true
+     *                silently returns nullptr, otherwise throw a Base::Exception.
+     *                Default is false.
+     * @param doFit: Whether to fitting according to the 'Fit' property
+     * @param allowOpen: Whether allow open wire
+     * @param profile: optional profile object, if not given then use 'Profile' property
+     * @param subs: optional profile sub-object names, if not given then use 'Profile' property
+     */
+    TopoShape getTopoShapeVerifiedFace(bool silent = false,
+                              bool doFit = true,
+                              bool allowOpen = false,
+                              const App::DocumentObject *profile = nullptr,
+                              const std::vector<std::string> &subs = {}) const;
+
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getProfileWires() const;
+    std::vector<TopoShape> getTopoShapeProfileWires() const;
+
 
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
+    TopoShape getTopoShapeSupportFace() const;
 
     Base::Vector3d getProfileNormal() const;
 
-    Part::TopoShape getProfileShape() const;
+    TopoShape getProfileShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;
@@ -140,6 +159,22 @@ protected:
 
     /// Add an offset to the face
     static void addOffsetToFace(TopoDS_Face& upToFace,
+                                const gp_Dir& dir,
+                                double offset);
+    /// Extract a face from a given LinkSub
+    static void getUpToFaceFromLinkSub(TopoShape& upToFace,
+                                       const App::PropertyLinkSub& refFace);
+
+    /// Find a valid face to extrude up to
+    static void getUpToFace(TopoShape& upToFace,
+                            const TopoShape& support,
+                            const TopoShape& supportface,
+                            const TopoShape& sketchshape,
+                            const std::string& method,
+                            gp_Dir& dir);
+
+    /// Add an offset to the face
+    static void addOffsetToFace(TopoShape& upToFace,
                                 const gp_Dir& dir,
                                 double offset);
 

@@ -100,6 +100,36 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     return {};
 }
 
+// TODO REMOVE THIS METHOD AND DONT TRANSFER IN?
+bool Feature::allowMultiSolid() const {
+    auto body = getFeatureBody();
+    return body && !body->SingleSolid.getValue();
+}
+
+TopoShape Feature::getSolid(const TopoShape& shape, bool force)
+{
+    if (shape.isNull())
+        throw Part::NullShapeException("Null shape");
+    int count = shape.countSubShapes(TopAbs_SOLID);
+    if(count>1) {
+        if(allowMultiSolid()) {
+            auto res = shape;
+            res.fixSolidOrientation();
+            return res;
+        }
+        throw Base::RuntimeError("Result has multiple solids.\n"
+                                 "To allow multiple solids, please set 'SingleSolid' property of the body to false");
+    }
+    if(count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+        res.fixSolidOrientation();
+        return res;
+    }
+    if (force)
+        return TopoShape();
+    return shape;
+}
+
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
 {
     int result = 0;
@@ -238,6 +268,15 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
     return builder.Shape();
+}
+
+TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
+{
+    BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
+    if (!builder.IsDone())
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
+
+    return TopoShape(obj->getID(), nullptr, builder.Shape());
 }
 
 Body* Feature::getFeatureBody() const {

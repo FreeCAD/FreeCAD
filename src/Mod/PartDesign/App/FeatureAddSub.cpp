@@ -83,6 +83,16 @@ TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) co
     return oldShape;
 }
 
+TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
+{
+    if (this->Refine.getValue()) {
+        TopoShape shape(oldShape);
+//        this->fixShape(shape);
+        return shape.makeElementRefine();
+    }
+    return oldShape;
+}
+
 void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
 {
     if (addSubType == Additive)
