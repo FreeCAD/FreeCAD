@@ -211,18 +211,24 @@ public:
  * Find all faces cut by a line through the centre of gravity of a given face
  * Useful for the "up to face" options to pocket or pad
  */
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 struct cutFaces {
     TopoDS_Face face;
     double distsq;
 };
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 PartExport
 std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
                                         const TopoDS_Shape& face, const gp_Dir& dir);
+struct cutTopoShapeFaces
+{
+    TopoShape face;
+    double distsq;
+};
 
-PartExport
-    std::vector<cutFaces> findAllFacesCutBy(const TopoShape& shape,
-                      const TopoShape& face, const gp_Dir& dir);
+PartExport std::vector<cutTopoShapeFaces>
+findAllFacesCutBy(const TopoShape& shape, const TopoShape& face, const gp_Dir& dir);
 
 /**
   * Check for intersection between the two shapes. Only solids are guaranteed to work properly

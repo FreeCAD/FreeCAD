@@ -4231,7 +4231,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
     return makeElementShape(mkPrism, base, op);
 }
 
- TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
+TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
                                             const TopoShape& profile,
                                             const TopoShape& supportFace,
                                             const TopoShape& __uptoface,
@@ -4302,8 +4302,8 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
         if (remove_limits) {
             // Note: Using an unlimited face every time gives unnecessary failures for concave
             // faces
-            TopLoc_Location loc = face.Location(); BRepAdaptor_Surface adapt(face,
-            Standard_False);
+            TopLoc_Location loc = face.Location();
+            BRepAdaptor_Surface adapt(face, Standard_False);
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());

@@ -64,6 +64,7 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) const
 {
     if (this->Refine.getValue()) {
@@ -87,7 +88,7 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
 {
     if (this->Refine.getValue()) {
         TopoShape shape(oldShape);
-//        this->fixShape(shape);
+        //        this->fixShape(shape);        // Todo:  Not clear that this is required
         return shape.makeElementRefine();
     }
     return oldShape;

@@ -68,7 +68,8 @@ protected:
     bool hasTaperedAngle() const;
 
     /// Options for buildExtrusion()
-    enum class ExtrudeOption {
+    enum class ExtrudeOption
+    {
         MakeFace = 1,
         MakeFuse = 2,
         LegacyPocket = 4,
@@ -77,7 +78,7 @@ protected:
 
     using ExtrudeOptions = Base::Flags<ExtrudeOption>;
 
-    App::DocumentObjectExecReturn *buildExtrusion(ExtrudeOptions options);
+    App::DocumentObjectExecReturn* buildExtrusion(ExtrudeOptions options);
 
     /**
       * Generates an extrusion of the input sketchshape and stores it in the given \a prism

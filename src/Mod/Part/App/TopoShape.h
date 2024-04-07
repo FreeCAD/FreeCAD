@@ -1153,14 +1153,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementPrismUntil(const TopoShape &base,
-                              const TopoShape& profile,
-                              const TopoShape& supportFace,
-                              const TopoShape& upToFace,
-                              const gp_Dir& direction,
-                              PrismMode mode,
-                              Standard_Boolean checkLimits = Standard_True,
-                              const char *op=nullptr);
+    TopoShape& makeElementPrismUntil(const TopoShape& base,
+                                     const TopoShape& profile,
+                                     const TopoShape& supportFace,
+                                     const TopoShape& upToFace,
+                                     const gp_Dir& direction,
+                                     PrismMode mode,
+                                     Standard_Boolean checkLimits = Standard_True,
+                                     const char* op = nullptr);
 
     /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
      *
@@ -1180,21 +1180,21 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape makeElementPrismUntil(const TopoShape& profile,
-                             const TopoShape& supportFace,
-                             const TopoShape& upToFace,
-                             const gp_Dir& direction,
-                             PrismMode mode,
-                             Standard_Boolean checkLimits = Standard_True,
-                             const char *op=nullptr) const
+                                    const TopoShape& supportFace,
+                                    const TopoShape& upToFace,
+                                    const gp_Dir& direction,
+                                    PrismMode mode,
+                                    Standard_Boolean checkLimits = Standard_True,
+                                    const char* op = nullptr) const
     {
-        return TopoShape(0,Hasher).makeElementPrismUntil(*this,
-                                                   profile,
-                                                   supportFace,
-                                                   upToFace,
-                                                   direction,
-                                                   mode,
-                                                   checkLimits,
-                                                   op);
+        return TopoShape(0, Hasher).makeElementPrismUntil(*this,
+                                                          profile,
+                                                          supportFace,
+                                                          upToFace,
+                                                          direction,
+                                                          mode,
+                                                          checkLimits,
+                                                          op);
     }
 
 

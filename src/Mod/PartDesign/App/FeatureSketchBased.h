@@ -97,6 +97,7 @@ public:
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     TopoDS_Shape getVerifiedFace(bool silent = false) const;
 
     /**
@@ -110,18 +111,20 @@ public:
      * @param subs: optional profile sub-object names, if not given then use 'Profile' property
      */
     TopoShape getTopoShapeVerifiedFace(bool silent = false,
-                              bool doFit = true,
-                              bool allowOpen = false,
-                              const App::DocumentObject *profile = nullptr,
-                              const std::vector<std::string> &subs = {}) const;
+                                       bool doFit = true,
+                                       bool allowOpen = false,
+                                       const App::DocumentObject* profile = nullptr,
+                                       const std::vector<std::string>& subs = {}) const;
 
     /// Returns the wires the sketch is composed of
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     std::vector<TopoDS_Wire> getProfileWires() const;
     std::vector<TopoShape> getTopoShapeProfileWires() const;
 
 
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     TopoShape getTopoShapeSupportFace() const;
 
     Base::Vector3d getProfileNormal() const;
@@ -147,8 +150,7 @@ protected:
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
     /// Extract a face from a given LinkSub
-    static void getFaceFromLinkSub(TopoDS_Face& upToFace,
-                                   const App::PropertyLinkSub& refFace);
+    static void getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoDS_Face& upToFace,
@@ -158,12 +160,9 @@ protected:
                             const gp_Dir& dir);
 
     /// Add an offset to the face
-    static void addOffsetToFace(TopoDS_Face& upToFace,
-                                const gp_Dir& dir,
-                                double offset);
+    static void addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset);
     /// Extract a face from a given LinkSub
-    static void getUpToFaceFromLinkSub(TopoShape& upToFace,
-                                       const App::PropertyLinkSub& refFace);
+    static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,
