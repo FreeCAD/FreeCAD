@@ -830,6 +830,7 @@ void MainWindow::closeActiveWindow ()
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
     box.setIcon(QMessageBox::Question);
+    box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
     if(docName)
         box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
