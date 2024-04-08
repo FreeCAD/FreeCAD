@@ -318,28 +318,28 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
     }
-//    else if (prop == &ShapeMaterial) {
-//        pcFaceBind->value = SoMaterialBinding::OVERALL;
-//        ViewProviderGeometryObject::onChanged(prop);
-//        App::Color c = ShapeAppearance.getDiffuseColor();
-//        c.a = Transparency.getValue()/100.0f;
-//        DiffuseColor.setValue(c);
-//    }
+    else if (prop == &ShapeAppearance) {
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
+        ViewProviderGeometryObject::onChanged(prop);
+        App::Color c = ShapeAppearance.getDiffuseColor();
+        c.a = Transparency.getValue()/100.0f;
+        DiffuseColor.setValue(c);
+    }
     else if (prop == &Transparency) {
-//        const App::Material& Mat = ShapeMaterial.getValue();
-//        long value = (long)(100*Mat.transparency);
-//        if (value != Transparency.getValue()) {
-//            float trans = Transparency.getValue()/100.0f;
-//            auto colors = DiffuseColor.getValues();
-//            for (auto &c : colors)
-//                c.a = trans;
-//            DiffuseColor.setValues(colors);
-//
-//            App::PropertyContainer* parent = ShapeMaterial.getContainer();
-//            ShapeMaterial.setContainer(nullptr);
-//            ShapeMaterial.setTransparency(trans);
-//            ShapeMaterial.setContainer(parent);
-//        }
+        const App::Material& Mat = ShapeAppearance[0];
+        long value = (long)(100*Mat.transparency);
+        if (value != Transparency.getValue()) {
+            float trans = Transparency.getValue()/100.0f;
+            auto colors = DiffuseColor.getValues();
+            for (auto &c : colors)
+                c.a = trans;
+            DiffuseColor.setValues(colors);
+
+            App::PropertyContainer* parent = ShapeAppearance.getContainer();
+            ShapeAppearance.setContainer(nullptr);
+            ShapeAppearance.setTransparency(trans);
+            ShapeAppearance.setContainer(parent);
+        }
     }
     else if (prop == &Lighting) {
         if (Lighting.getValue() == 0)
