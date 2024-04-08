@@ -246,7 +246,7 @@ parser.add_argument(
 
 TOOLTIP_ARGS = parser.format_help()
 
-if open.__module__ in ["__builtin__", "io", "_io"]:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pythonopen = open
 
 

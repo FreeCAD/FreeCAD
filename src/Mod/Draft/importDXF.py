@@ -87,7 +87,7 @@ dxfLibrary = None
 
 # Save the native open function to avoid collisions
 # with the function declared here
-if open.__module__ in ['__builtin__', 'io', '_io']:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pythonopen = open
 
 

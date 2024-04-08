@@ -52,7 +52,8 @@ else:
     FreeCADGui = None
     def translate(ctxt, txt): return txt
 
-if open.__module__ in ['__builtin__','io', '_io']: pythonopen = open
+if open.__module__ in ('__builtin__', 'io', '_io'):
+    pythonopen = open
 
 ## @package importWebGL
 #  \ingroup ARCH

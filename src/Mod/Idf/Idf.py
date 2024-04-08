@@ -27,7 +27,7 @@ from math import *
 import ImportGui
 
 # to distinguish python built-in open function from the one declared here
-if open.__module__ in ['__builtin__','io', '_io']:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pythonopen = open
 
 ##########################################################

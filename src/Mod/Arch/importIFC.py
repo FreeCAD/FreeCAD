@@ -56,7 +56,7 @@ DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
 
 # Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io', '_io']:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pyopen = open
 
 # Templates and other definitions ****

@@ -25,7 +25,7 @@ __author__ = "Sebastian Hoogen <github@sebastianhoogen.de>"
 
 import FreeCAD, Part
 
-if open.__module__ in ['__builtin__','io', '_io']:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pythonopen = open
 
 # unsupported primitives

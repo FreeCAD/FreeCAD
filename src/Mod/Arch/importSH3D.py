@@ -43,7 +43,7 @@ import Part
 
 DEBUG = True
 
-if open.__module__ in ['__builtin__','io', '_io']:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pyopen = open # because we'll redefine open below
 
 

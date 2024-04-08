@@ -159,7 +159,7 @@ CURRENT_Z = 0
 
 # ***************************************************************************
 # * to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io", "_io"]:
+if open.__module__ in ('__builtin__', 'io', '_io'):
     pythonopen = open
 
 
