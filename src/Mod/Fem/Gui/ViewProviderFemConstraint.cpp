@@ -84,6 +84,8 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     wizardWidget = nullptr;
     wizardSubLayout = nullptr;
     constraintDialog = nullptr;
+
+    Gui::ViewProviderSuppressibleExtension::initExtension(this);
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
