@@ -1788,7 +1788,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                 d->interceptEvent(d->_trackingWidget, ev);
             if(isTreeViewDragging()
                     || ev->type() == QEvent::MouseButtonRelease
-                    || QApplication::mouseButtons() == Qt::NoButton)
+                    && QApplication::mouseButtons() == Qt::NoButton)
             {
                 d->_trackingWidget = nullptr;
                 if (d->_trackingOverlay == grabber
