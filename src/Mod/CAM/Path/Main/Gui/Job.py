@@ -121,29 +121,91 @@ class ViewProvider:
         if not hasattr(self, "stockVisibility"):
             self.stockVisibility = False
 
-        # setup the axis display at the origin
+        # Setup the axis display at the origin
         self.switch = coin.SoSwitch()
         self.sep = coin.SoSeparator()
         self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
-        self.axs.set("xHead.transform", "scaleFactor 2 3 2")
-        self.axs.set("yHead.transform", "scaleFactor 2 3 2")
-        self.axs.set("zHead.transform", "scaleFactor 2 3 2")
+
+        #Adjust the axis heads if needed, the scale here is just for the head
+        self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
+        self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
+        self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+
+        # Adjust the axis heads if needed, the scale here is just for the head
+        self.axs.set("xHead.transform", "translation 50 0 0")
+        self.axs.set("yHead.transform", "translation 0 50 0")
+        self.axs.set("zHead.transform", "translation 0 0 50")
+
+        # Adjust the axis line width if needed
+        self.axs.set("xAxis.transform", "scaleFactor 0.5 0.5 1")
+        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.set("yAxis.transform", "scaleFactor 0.5 0.5 1")
+        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.set("zAxis.transform", "scaleFactor 0.5 0.5 1")
+        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 9")
+
         self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
         self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(0.5)
+        self.sca.scaleFactor.setValue(1)  # Keep or adjust if needed
+
         self.mat = coin.SoMaterial()
-        self.mat.diffuseColor = coin.SbColor(0.9, 0, 0.9)
-        self.mat.transparency = 0.85
+        # Set sphere color to bright yellow
+        self.mat.diffuseColor = coin.SbColor(1, 1, 0)
+        self.mat.transparency = 0.35  # Keep or adjust if needed
+
         self.sph = coin.SoSphere()
         self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
         self.scs.setPart("shape", self.sph)
-        self.scs.scaleFactor.setValue(10)
+        # Increase the scaleFactor to make the sphere larger
+        self.scs.scaleFactor.setValue(10)  # Adjust this value as needed
+
         self.sep.addChild(self.sca)
         self.sep.addChild(self.mat)
         self.sep.addChild(self.scs)
         self.switch.addChild(self.sep)
+
+        self.switch.addChild(self.sep)
         vobj.RootNode.addChild(self.switch)
-        self.showOriginAxis(False)
+        self.showOriginAxis(True)
+
+        for base in self.obj.Model.Group:
+            Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
+
+
+    def onChanged(self, vobj, prop):
+        if prop == "Visibility":
+            self.showOriginAxis(vobj.Visibility)
+            if vobj.Visibility:
+                self.rememberStockVisibility()
+                self.obj.Stock.ViewObject.Visibility = True
+
+                self.KeepBaseVisibility()
+                for base in self.obj.Model.Group:
+                    base.ViewObject.Visibility = True
+            else:
+                self.restoreStockVisibility()
+                self.RestoreBaseVisibility()
+
+    def rememberStockVisibility(self):
+        self.stockVisibility = self.obj.Stock.ViewObject.Visibility
+
+    def restoreStockVisibility(self):
+        self.obj.Stock.ViewObject.Visibility = self.stockVisibility
+
+    def KeepBaseVisibility(self):
+        Path.Log.debug("KeepBaseVisibility")
+        self.visibilitystate = {}
+        for base in self.obj.Model.Group:
+            Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
+            self.visibilitystate[base.Name] = base.ViewObject.Visibility
+        Path.Log.debug(self.visibilitystate)
+
+    def RestoreBaseVisibility(self):
+        Path.Log.debug("RestoreBaseVisibility")
+        for base in self.obj.Model.Group:
+            base.ViewObject.Visibility = self.visibilitystate[base.Name]
+        Path.Log.debug(self.visibilitystate)
+
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
@@ -252,11 +314,11 @@ class ViewProvider:
 
     def forgetBaseVisibility(self, obj, base):
         Path.Log.track()
-        if self.baseVisibility.get(base.Name):
-            visibility = self.baseVisibility[base.Name]
-            visibility[0].ViewObject.Visibility = visibility[1]
-            visibility[2].ViewObject.Visibility = visibility[3]
-            del self.baseVisibility[base.Name]
+        # if self.baseVisibility.get(base.Name):
+        #     visibility = self.baseVisibility[base.Name]
+        #     visibility[0].ViewObject.Visibility = visibility[1]
+        #     visibility[2].ViewObject.Visibility = visibility[3]
+        #     del self.baseVisibility[base.Name]
 
     def setupEditVisibility(self, obj):
         Path.Log.track()

@@ -22,6 +22,7 @@
 
 import TestApp
 
+from Tests.TestCAMSanity import TestCAMSanity
 from Tests.TestPathProfile import TestPathProfile
 
 from Tests.TestPathAdaptive import TestPathAdaptive
@@ -76,6 +77,7 @@ from Tests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
 from Tests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
 
 # dummy usage to get flake8 and lgtm quiet
+False if TestCAMSanity.__name__ else True
 False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
 False if TestBuildPostList.__name__ else True
