@@ -40,7 +40,8 @@ EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+if open.__module__ in ('__builtin__', 'io', '_io'):
+    pyopen = open # because we'll redefine open below
 
 
 def open(

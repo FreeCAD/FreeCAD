@@ -41,7 +41,8 @@ from femmesh import meshtools
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-pyopen = open
+if open.__module__ in ('__builtin__', 'io', '_io'):
+    pyopen = open # because we'll redefine open below
 
 
 def open(
