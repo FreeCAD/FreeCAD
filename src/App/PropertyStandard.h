@@ -1166,11 +1166,11 @@ public:
     const Color& getEmissiveColor() const;
     const Color& getEmissiveColor(int index) const;
 
-    double getShininess() const;
-    double getShininess(int index) const;
+    float getShininess() const;
+    float getShininess(int index) const;
 
-    double getTransparency() const;
-    double getTransparency(int index) const;
+    float getTransparency() const;
+    float getTransparency(int index) const;
 
     PyObject* getPyObject() override;
 

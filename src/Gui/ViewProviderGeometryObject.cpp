@@ -149,7 +149,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
             getObject()->touch(true);
         }
         const App::Material& Mat = ShapeAppearance[0];
-        long value = (long)(100.0 * ShapeAppearance.getTransparency() + 0.5);
+        long value = (long)(100.0 * ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
             Transparency.setValue(value);
         }

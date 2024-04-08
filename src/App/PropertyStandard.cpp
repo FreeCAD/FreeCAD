@@ -3033,22 +3033,22 @@ const Color& PropertyMaterialList::getEmissiveColor(int index) const
     return _lValueList[index].emissiveColor;
 }
 
-double PropertyMaterialList::getShininess() const
+float PropertyMaterialList::getShininess() const
 {
     return _lValueList[0].transparency;
 }
 
-double PropertyMaterialList::getShininess(int index) const
+float PropertyMaterialList::getShininess(int index) const
 {
     return _lValueList[index].transparency;
 }
 
-double PropertyMaterialList::getTransparency() const
+float PropertyMaterialList::getTransparency() const
 {
     return _lValueList[0].transparency;
 }
 
-double PropertyMaterialList::getTransparency(int index) const
+float PropertyMaterialList::getTransparency(int index) const
 {
     return _lValueList[index].transparency;
 }
