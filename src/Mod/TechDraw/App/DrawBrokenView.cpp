@@ -224,6 +224,10 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     builder.MakeCompound(result);
     builder.Add(result, cut0);
     builder.Add(result, cut1);
+
+    // BRepTools::Write(cut0, "DBVcut0.brep");            //debug
+    // BRepTools::Write(cut1, "DBVcut1.brep");
+
     return result;
 }
 
@@ -241,32 +245,27 @@ TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) 
 //! move the broken pieces in the input shape "right" to close up the removed areas.
 //! note: breaks and pieces should not intersect by this point
 //! a break:        BbbbbbbB
-//! a piece:  PpppP                     no need to move
-//! a piece:                  PppppP    move right by removed(B)
+//! a piece:  PpppP                     move right by removed(B)
+//! a piece:                  PppppP    no need to move
 TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToCompress)const
 {
     // Base::Console().Message("DBV::compressHorizontal()\n");
     auto pieces = getPieces(shapeToCompress);
     auto breaksAll = Breaks.getValues();
-    // ?? not sure about using closestBasis here.
-    auto moveDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().XDirection()));
+    auto moveDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
     bool descend = false;
     auto sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
-    auto limits = getPieceUpperLimits(pieces, moveDirection);
+    auto limits = getPieceLimits(pieces, moveDirection);
     // for each break, move all the pieces left of the break to the right by the removed amount
     // for the break
     for (auto& breakItem : sortedBreaks) {
         // check each break against all the pieces
-        Base::Vector3d netBreakDisplace = moveDirection * (removedLengthFromObj(*breakItem.breakObj) - Gap.getValue());
+        Base::Vector3d netBreakDisplace =
+            moveDirection * (removedLengthFromObj(*breakItem.breakObj) - Gap.getValue());
         size_t iPiece{0};
-        for (auto& pieceHighLimit : limits) {
+        for (auto& pieceLimit : limits) {
             // check each piece against the current break
-            // We have a problem with low digits here. The cut operations and later
-            // bounding box creation may generate pieceHighLimits that are slightly
-            // off.  We know that the pieces were cut by a break, so we use a fuzzy
-            // comparison.
-            if (pieceHighLimit < breakItem.lowLimit  ||
-                DU::fpCompare(pieceHighLimit, breakItem.lowLimit, Precision::Confusion()) ) {
+            if (moveThisPiece(pieceLimit, breakItem, moveDirection)) {
                 // piece is to left of break, so needs to move right
                 TopoDS_Shape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
                 pieces.at(iPiece) = temp;
@@ -293,20 +292,21 @@ TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompre
     auto pieces = getPieces(shapeToCompress);
     auto breaksAll = Breaks.getValues();
     // not sure about using closestBasis here. may prevent oblique breaks later.
-    auto moveDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().YDirection()));
+    auto moveDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+
     bool descend = false;
     auto sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
-    auto limits = getPieceUpperLimits(pieces, moveDirection);
-    // for each break, move all the pieces above the break down by the removed amount
+    auto limits = getPieceLimits(pieces, moveDirection);
+    // for each break, move all the pieces below the break up by the removed amount
     // for the break
     for (auto& breakItem : sortedBreaks) {
         // check each break against all the pieces
-        Base::Vector3d netBreakDisplace = moveDirection * (removedLengthFromObj(*breakItem.breakObj) - Gap.getValue());
+        Base::Vector3d netBreakDisplace =
+            moveDirection * (removedLengthFromObj(*breakItem.breakObj) - Gap.getValue());
         size_t iPiece{0};
-        for (auto& pieceHighLimit : limits) {
+        for (auto& pieceLimit : limits) {
             // check each piece against the current break using a fuzzy equality
-            if (pieceHighLimit < breakItem.lowLimit  ||
-                DU::fpCompare(pieceHighLimit, breakItem.lowLimit, Precision::Confusion()) ) {
+            if (moveThisPiece(pieceLimit, breakItem, moveDirection)) {
                 // piece is below the break, move it up
                 TopoDS_Shape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
                 pieces.at(iPiece) = temp;
@@ -330,6 +330,10 @@ TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompre
 //! plane normal) and a point inside the half space (pointInSpace).
 TopoDS_Shape DrawBrokenView::makeHalfSpace(Base::Vector3d planePoint, Base::Vector3d planeNormal, Base::Vector3d pointInSpace) const
 {
+    // Base::Console().Message("DBV::makeHalfSpace - planePoint: %s normal: %s pointInSpace: %s\n",
+    //                         DU::formatVector(planePoint).c_str(),
+    //                         DU::formatVector(planeNormal).c_str(),
+    //                         DU::formatVector(pointInSpace).c_str());
     gp_Pnt origin = DU::togp_Pnt(planePoint);
     gp_Dir axis   = DU::togp_Dir(planeNormal);
     gp_Pln plane(origin, axis);
@@ -361,12 +365,20 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromObj(con
 //! perpendicular to the break lines.
 Base::Vector3d DrawBrokenView::directionFromObj(const App::DocumentObject& breakObj) const
 {
+    // Base::Console().Message("DBV::directionFromObj()\n");
     std::pair<Base::Vector3d, Base::Vector3d> ends = breakPointsFromObj(breakObj);
     Base::Vector3d direction = ends.second - ends.first;
     direction.Normalize();
+    // does this need to be oriented?
     return DU::closestBasis(direction);
 }
 
+
+//! extract the breakDirection from the break object in a form the gui will understand.
+Base::Vector3d DrawBrokenView::guiDirectionFromObj(const App::DocumentObject& breakObj) const
+{
+    return projectPoint(directionFromObj(breakObj));
+}
 
 //! calculate the length to be removed as specified by break object.
 double DrawBrokenView::removedLengthFromObj(const App::DocumentObject& breakObj) const
@@ -445,12 +457,28 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakPointsFromSketch(
     TopoDS_Edge last  = sketchEdges.back();
     if ((isVertical(first) && isVertical(last)) ||
         (isHorizontal(first) && isHorizontal(last))) {
+        // get points on each edge that are in line with the center of the sketch
+        // along the break direction
+        Bnd_Box edgeBox;
+        edgeBox.SetGap(0.0);
+        BRepBndLib::AddOptimal(first, edgeBox);
+        BRepBndLib::AddOptimal(last, edgeBox);
+        double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
+        edgeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+        Base::Vector3d center( (xMin + xMax) / 2.0,
+                               (yMin + yMax) / 2.0,
+                               (zMin + zMax) / 2.0 );
         auto ends0 = SU::getEdgeEnds(first);
-        // trouble here if the break points are wildly out of line?
-        // std::pair makeCardinal(p0, p1) to force horiz or vert?
-        auto break0 = (ends0.first + ends0.second) / 2.0;
+        auto dir0 = ends0.second - ends0.first;
+        dir0.Normalize();
+        // get a point on edge first on a perpendicular line through center
+        auto break0 = center.Perpendicular(ends0.first, dir0);
+
         auto ends1 = SU::getEdgeEnds(last);
-        auto break1 = (ends1.first + ends1.second) / 2.0;
+        auto dir1 = ends1.second - ends1.first;
+        dir1.Normalize();
+        auto break1 = center.Perpendicular(ends1.first, dir1);
+
         return { break0, break1 };
     }
 
@@ -496,30 +524,28 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromObj(con
 //! broken view.  used in making break lines.
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromSketch(const App::DocumentObject& breakObj) const
 {
-    // Base::Console().Message("DBV::breakBoundsFromSketch()\n");
+    //Base::Console().Message("DBV::breakBoundsFromSketch()\n");
     std::pair<Base::Vector3d, Base::Vector3d> breakPoints = breakPointsFromObj(breakObj);
-    Base::Vector3d anchor = (breakPoints.first + breakPoints.second) / 2.0;
+    Base::Vector3d center = (breakPoints.first + breakPoints.second) / 2.0;
     Base::Vector3d breakDir = directionFromObj(breakObj);
     breakDir.Normalize();
-    Base::Vector3d lineDir = makePerpendicular(breakDir);
-    lineDir.Normalize();
-
-    // is this right? or do we need to project the points first?  Should be alright
-    // if the break points are not skewed?
-    double removed = (breakPoints.first - breakPoints.second).Length();
+    Base::Vector3d perpDir = makePerpendicular(breakDir);
+    perpDir.Normalize();
 
     // get the midpoint of the zigzags
-    Base::Vector3d ptOnLine0 = anchor + breakDir * removed / 2.0;
-    Base::Vector3d ptOnLine1 = anchor - breakDir * removed / 2.0;
+    Base::Vector3d ptOnLine0 = center + breakDir * removedLengthFromObj(breakObj) / 2.0;
+    Base::Vector3d ptOnLine1 = center - breakDir * removedLengthFromObj(breakObj) / 2.0;
     double lineLength = breaklineLength(breakObj);
 
-    Base::Vector3d corner0 = ptOnLine0 - lineDir * lineLength / 2.0;
-    Base::Vector3d corner1 = ptOnLine1 + lineDir * lineLength / 2.0;
+    Base::Vector3d corner0 = ptOnLine0 - perpDir * lineLength / 2.0;
+    Base::Vector3d corner1 = ptOnLine1 + perpDir * lineLength / 2.0;
     corner0 = mapPoint3dToView(corner0);
     corner1 = mapPoint3dToView(corner1);
+
     // these are unscaled, unrotated points
     return{corner0, corner1};
 }
+
 
 //! extract the boundary of the break lines from an edge
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(const App::DocumentObject& breakObj) const
@@ -732,15 +758,15 @@ std::vector<TopoDS_Edge> DrawBrokenView::edgesFromCompound(TopoDS_Shape compound
 }
 
 
-//! find the upper limits of each piece's bounding box in direction (if we support oblique projection directions, then the
+//! find the limits of each piece's bounding box in cardinal direction (if we support oblique projection directions, then the
 //! piece will have to be transformed to align with OXYZ cardinal axes as in DrawViewPart::getSizeAlongVector)
-std::vector<double> DrawBrokenView::getPieceUpperLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction)
+PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction)
 {
     // Base::Console().Message("DBV::getPieceUpperLimits(%s)\n", DU::formatVector(direction).c_str());
     Base::Vector3d stdX{1.0, 0.0, 0.0};
     Base::Vector3d stdY{0.0, 1.0, 0.0};
     Base::Vector3d stdZ{0.0, 0.0, 1.0};
-    std::vector<double> limits;
+    PieceLimitList limits;
     limits.reserve(pieces.size());
     for (auto& item : pieces) {
         Bnd_Box pieceBox;
@@ -748,13 +774,21 @@ std::vector<double> DrawBrokenView::getPieceUpperLimits(const std::vector<TopoDS
         BRepBndLib::AddOptimal(item, pieceBox);
         double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
         pieceBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        // this is a bit crude. will only work in well behaved cases
         if (DU::fpCompare(std::fabs(direction.Dot(stdX)), 1.0, EWTOLERANCE)) {
-            limits.push_back(xMax);
+            PieceLimitEntry newEntry;
+            newEntry.highLimit = xMax;
+            newEntry.lowLimit = xMin;
+            limits.push_back(newEntry);
         } else if (DU::fpCompare(std::fabs(direction.Dot(stdY)), 1.0, EWTOLERANCE)) {
-            limits.push_back(yMax);
+            PieceLimitEntry newEntry;
+            newEntry.highLimit = yMax;
+            newEntry.lowLimit = yMin;
+            limits.push_back(newEntry);
         } else {
-            limits.push_back(zMax);
+            PieceLimitEntry newEntry;
+            newEntry.highLimit = zMax;
+            newEntry.lowLimit = zMin;
+            limits.push_back(newEntry);
         }
     }
 
@@ -779,6 +813,8 @@ std::vector<TopoDS_Shape> DrawBrokenView::getPieces(TopoDS_Shape brokenShape)
 //! sort the breaks that match direction by their minimum limit
 BreakList DrawBrokenView::makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d direction, bool descend) const
 {
+    // Base::Console().Message("DBV::makeSortedBreakList(%d, %s)\n", breaks.size(),
+    //                         DU::formatVector(direction).c_str());
     Base::Vector3d stdX{1.0, 0.0, 0.0};
     Base::Vector3d stdY{0.0, 1.0, 0.0};
     Base::Vector3d stdZ{0.0, 0.0, 1.0};
@@ -786,7 +822,7 @@ BreakList DrawBrokenView::makeSortedBreakList(const std::vector<App::DocumentObj
     BreakList unsorted;
     for (auto& breakObj : breaks) {
         auto breakDirection = directionFromObj(*breakObj);
-        if (breakDirection.IsEqual(direction, EWTOLERANCE)) {
+        if (DU::fpCompare(std::fabs(direction.Dot(breakDirection)), 1.0, EWTOLERANCE)) {
             // this break interests us
             BreakListEntry newEntry;
             newEntry.breakObj = breakObj;
@@ -856,41 +892,37 @@ BreakList DrawBrokenView::sortBreaks(BreakList& inList, bool descend)
     return false;
 }
 
+
 //! transform a 3d point into its position within the broken view.  used in creating
 //! dimensions.
 Base::Vector3d DrawBrokenView::mapPoint3dToView(Base::Vector3d point3d) const
 {
-    // Base::Console().Message("DBV::mapPoint3dToView(%s)\n", DU::formatVector(point3d).c_str());
-    Base::Vector3d stdX(1.0, 0.0, 0.0);
-    Base::Vector3d stdY(0.0, 1.0, 0.0);
+    //Base::Console().Message("DBV::mapPoint3dToView(%s)\n", DU::formatVector(point3d).c_str());
     Base::Vector3d result{point3d};
-
-    // if the input point has been projected, then we have to use stdX and stdY instead
-    // of XDirection and YDirection.
-    Base::Vector3d point2d = projectPoint(point3d, false);     // don't invert
 
     auto breaksAll = Breaks.getValues();
     bool descend = false;
-    auto moveXDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().XDirection()));
+    auto moveXDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
 
     // get the breaks that move us in X
     auto sortedXBreaks = makeSortedBreakList(breaksAll, moveXDirection, descend);
-    double xLimit = point2d.x;
-    double xShift = shiftAmountShrink(xLimit, sortedXBreaks);
-    Base::Vector3d xMove = stdX * xShift;    // move to the right (+X)
+    double xLimit = DU::coordinateForDirection(point3d, moveXDirection);
 
-    auto moveYDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().YDirection()));
+    double xShift = shiftAmountShrink(xLimit, moveXDirection, sortedXBreaks);
+    Base::Vector3d xMove = moveXDirection * xShift;    // move to the right (+X)
+
+    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
     descend = false;
     // get the breaks that move us in Y
     auto sortedYBreaks = makeSortedBreakList(breaksAll, moveYDirection, descend);
-    double yLimit = point2d.y;
-    double yShift = shiftAmountShrink(yLimit, sortedYBreaks);
-    Base::Vector3d yMove = stdY * yShift;   // move up (+Y)
+    double yLimit = DU::coordinateForDirection(point3d, moveYDirection);
+    double yShift = shiftAmountShrink(yLimit, moveYDirection, sortedYBreaks);
+    Base::Vector3d yMove = moveYDirection * yShift;   // move up (+Y)
 
-    point2d = point2d + xMove + yMove;
+    auto moved3d = point3d + xMove + yMove;
+    result = moved3d - getCompressedCentroid();
 
-    Base::Vector3d compressedCoM = projectPoint(getCompressedCentroid(), false);
-    result = point2d - compressedCoM;
+    result = projectPoint(result, false);
     return result;
 }
 
@@ -905,56 +937,105 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
 
     // convert point2d in view to pseudo-3d view coords
     Base::Vector3d projectedCoM = projectPoint(getCompressedCentroid(), false);
-    Base::Vector3d result = projectedCoM + point2d;
+
     // now shift down and left
     auto breaksAll = Breaks.getValues();
+
+    Base::Vector3d pseudo3dx = point2d + projectedCoM;
+    double xReverser = -1.0;
+    auto moveXDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
+    if (isDirectionReversed(moveXDirection)) {
+        pseudo3dx = point2d - projectedCoM;
+        xReverser = 1.0;
+    }
     bool descend = false;     // should be false so we move from lowest break to highest?
-    auto moveXDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().XDirection()));
-    // get the breaks that moved us in X
     auto sortedXBreaks = makeSortedBreakListCompressed(breaksAll, moveXDirection, descend);
-    double xLimit = result.x;
-    double xShift = shiftAmountExpand(xLimit, sortedXBreaks);
-    Base::Vector3d xMove = stdX * xShift * -1.0;    // move to the left (-X)
+    double xLimit = pseudo3dx.x;
+    double xShift = shiftAmountExpand(xLimit, moveXDirection, sortedXBreaks);
+    Base::Vector3d xMoved = pseudo3dx + stdX * xShift * xReverser;    // move to the left (-X)
 
-    auto moveYDirection = DU::closestBasis(DU::toVector3d(getProjectionCS().YDirection()));
+    Base::Vector3d pseudo3dy = point2d + projectedCoM;
+    double yReverser = -1.0;
+    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+    if (isDirectionReversed(moveXDirection)) {
+        pseudo3dy = point2d - projectedCoM;
+        yReverser = 1.0;
+    }
     descend = false;
-    // get the breaks that moved us in Y
     auto sortedYBreaks = makeSortedBreakListCompressed(breaksAll, moveYDirection, descend);
-    double yLimit = result.y;
-    double yShift = shiftAmountExpand(yLimit, sortedYBreaks);
-    Base::Vector3d yMove = stdY * yShift * -1.0;   // move down (-Y)
+    double yLimit = pseudo3dy.y;
+    double yShift = shiftAmountExpand(yLimit, moveYDirection, sortedYBreaks);
+    Base::Vector3d yMoved = pseudo3dy + stdY * yShift * yReverser;   // move down (-Y)
 
-    result = result + xMove + yMove;
-    return result;
+    Base::Vector3d movedResult{xMoved.x, yMoved.y, 0.0};
+    return movedResult;
 }
 
 
 //! returns the amount a coordinate needs to move to reflect the effect of the breaks to the right/above
 //! the input.  used in mapping points to the broken view.
-double DrawBrokenView::shiftAmountShrink(double pointCoord, const BreakList& sortedBreaks) const
+double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const
 {
-    // Base::Console().Message("DBV::shiftAmountShrink(%.3f, %d)\n", pointCoord, sortedBreaks.size());
+    // Base::Console().Message("DBV::shiftAmountShrink(%.3f, %s, %d)\n", pointCoord,
+    //                         DU::formatVector(direction).c_str(), sortedBreaks.size());
     double shift{0};
     for (auto& breakItem : sortedBreaks) {
-        if (pointCoord >= breakItem.highLimit) {
-            // leave alone, this break doesn't affect us
-            continue;
-        }
+        if (isDirectionReversed(direction)) {
+            if (pointCoord <= breakItem.lowLimit) {
+                //        h--------l      -ve
+                //                   p
+                // point is right/above break
+                // leave alone, this break doesn't affect us
+                continue;
+            }
 
-        if (pointCoord < breakItem.lowLimit  ||
-            DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
-            // move right/up by the removed area less the gap
-            shift += removedLengthFromObj(*breakItem.breakObj) - Gap.getValue();
-            continue;
-        }
+            if (pointCoord > breakItem.highLimit ||
+                DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
+                //        h--------l      -ve
+                //    p
+                // point is left/below break, but we
+                shift += removedLengthFromObj(*breakItem.breakObj) - Gap.getValue();
+                continue;
+            }
 
-        // break.start < value < break.end - point is in the break area
-        // we move our point by a fraction of the Gap length
-        double penetration = pointCoord - breakItem.lowLimit;
-        double removed = removedLengthFromObj(*breakItem.breakObj);
-        double factor = 1 - (penetration / removed);
-        double netRemoved = breakItem.highLimit - factor * Gap.getValue();
-        shift += netRemoved - pointCoord;
+            //        h--------l      -ve
+            //            p
+            // break.start < value < break.end - point is in the break area
+            // we move our point by a fraction of the Gap length
+            double penetration =  fabs(pointCoord - breakItem.highLimit);   // start(high) to point
+            double removed = removedLengthFromObj(*breakItem.breakObj);
+            double factor = 1 - (penetration / removed);
+            double netRemoved = breakItem.lowLimit - factor * Gap.getValue();
+            shift += fabs(netRemoved - pointCoord);
+
+
+        } else {
+            if (pointCoord >= breakItem.highLimit) {
+                //        l--------h     +ve
+                //                    p
+                // leave alone, this break doesn't affect us
+                continue;
+            }
+
+            if (pointCoord < breakItem.lowLimit  ||
+                DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
+                //        l--------h      +ve
+                //    p
+                // move right/up by the removed area less the gap
+                shift += removedLengthFromObj(*breakItem.breakObj) - Gap.getValue();
+                continue;
+            }
+
+            //        l--------h      +ve
+            //            p
+            // break.start < value < break.end - point is in the break area
+            // we move our point by a fraction of the Gap length
+            double penetration = fabs(pointCoord - breakItem.lowLimit);
+            double removed = removedLengthFromObj(*breakItem.breakObj);
+            double factor = 1 - (penetration / removed);
+            double netRemoved = breakItem.highLimit - factor * Gap.getValue();
+            shift += fabs(netRemoved - pointCoord);
+        }
     }
 
     return shift;
@@ -963,30 +1044,67 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, const BreakList& sor
 
 //! returns the amount a compressed coordinate needs to be shifted to reverse the effect of breaking
 //! the source shapes
-double DrawBrokenView::shiftAmountExpand(double pointCoord, const BreakList& sortedBreaks) const
+double DrawBrokenView::shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const
 {
-    // Base::Console().Message("DBV::shiftAmountExpand(%.3f, %d)\n", pointCoord, sortedBreaks.size());
+    // Base::Console().Message("DBV::shiftAmountExpand(%.3f, %s, %d)\n", pointCoord,
+    //                         DU::formatVector(direction).c_str(), sortedBreaks.size());
     double shift{0};
     for (auto& breakItem : sortedBreaks) {
-        if (pointCoord >= breakItem.highLimit) {
-            // leave alone, this break doesn't affect us
-            continue;
-        }
+        if (isDirectionReversed(direction)) {
+            if (pointCoord <= breakItem.lowLimit) {
+                //        h--------l     -ve
+                //                    p
+                // leave alone, this break doesn't affect us
+                continue;
+            }
 
-        if (pointCoord < breakItem.lowLimit  ||
-            DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
-            // move by the whole removed area
-            shift += breakItem.netRemoved;
-            continue;
-        }
+            if (pointCoord > breakItem.highLimit  ||
+                DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
+                //        h--------l      -ve
+                //    p
 
-        // break.start < value < break.end - point is in the break area
-        // we move our point by the break's net removed * the penetration factor
-        double gapPenetration = pointCoord - breakItem.lowLimit;
-        double removed = removedLengthFromObj(*breakItem.breakObj);
-        double factor = 1 - gapPenetration / Gap.getValue();
-        double shiftAmount = factor * (removed - Gap.getValue());
-        shift += shiftAmount;
+                // move by the whole removed area
+                shift += breakItem.netRemoved;
+                continue;
+            }
+
+            //        h--------l      -ve
+            //            p
+            // break.start < value < break.end - point is in the break area
+            // we move our point by the break's net removed * the penetration factor
+            double gapPenetration = fabs(pointCoord - breakItem.lowLimit);
+            double removed = removedLengthFromObj(*breakItem.breakObj);
+            double factor = gapPenetration / Gap.getValue();
+            double shiftAmount = factor * (removed - Gap.getValue());
+            shift += shiftAmount;
+
+        } else {
+            if (pointCoord >= breakItem.highLimit) {
+                //        l--------h     +ve
+                //                    p
+                // leave alone, this break doesn't affect us
+                continue;
+            }
+
+            if (pointCoord < breakItem.lowLimit  ||
+                DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
+                //        l--------h      +ve
+                //    p
+                // move by the whole removed area
+                shift += breakItem.netRemoved;
+                continue;
+            }
+
+            //        l--------h      +ve
+            //            p
+            // break.start < value < break.end - point is in the break area
+            // we move our point by the break's net removed * the penetration factor
+            double gapPenetration = pointCoord - breakItem.lowLimit;
+            double removed = removedLengthFromObj(*breakItem.breakObj);
+            double factor = 1 - gapPenetration / Gap.getValue();
+            double shiftAmount = factor * (removed - Gap.getValue());
+            shift += shiftAmount;
+        }
     }
 
     return shift;
@@ -1012,6 +1130,46 @@ Base::Vector3d  DrawBrokenView::makePerpendicular(Base::Vector3d inDir) const
     gp_Ax1 axis(origin, dir);
     auto gRotated = gDir.Rotated(axis,  M_PI_2);
     return DU::toVector3d(gRotated);
+}
+
+//! true if this piece should be moved
+bool DrawBrokenView::moveThisPiece(PieceLimitEntry piece,
+                                   BreakListEntry breakItem,
+                                   Base::Vector3d moveDirection) const
+{
+    if (isDirectionReversed(moveDirection)) {
+        // -ve direction
+        if (piece.lowLimit > breakItem.highLimit  ||
+            DU::fpCompare(piece.lowLimit, breakItem.highLimit, Precision::Confusion()) ) {
+            return true;
+        }
+    } else {
+        // +ve direction
+        if (piece.highLimit < breakItem.lowLimit  ||
+            DU::fpCompare(piece.highLimit, breakItem.lowLimit, Precision::Confusion()) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+//! true if direction is the reversed of a cardinal direction.  (1.0, 0.0, 0.0)
+//! returns false, (-1.0, 0.0, 0.0) returns true;
+bool DrawBrokenView::isDirectionReversed(Base::Vector3d direction) const
+{
+    Base::Vector3d stdX{1.0, 0.0, 0.0};
+    Base::Vector3d stdY{0.0, 1.0, 0.0};
+    Base::Vector3d stdZ{0.0, 0.0, 1.0};
+    if (DU::fpCompare(std::fabs(direction.Dot(stdX)), 1.0, EWTOLERANCE)) {
+        return DU::fpCompare(direction.Dot(stdX), -1.0, EWTOLERANCE);
+    }
+    if (DU::fpCompare(std::fabs(direction.Dot(stdY)), 1.0, EWTOLERANCE)) {
+        return DU::fpCompare(direction.Dot(stdY), -1.0, EWTOLERANCE);
+    }
+    if (DU::fpCompare(std::fabs(direction.Dot(stdZ)), 1.0, EWTOLERANCE)) {
+        return DU::fpCompare(direction.Dot(stdZ), -1.0, EWTOLERANCE);
+    }
+    return false;
 }
 
 void DrawBrokenView::printBreakList(const std::string& text, const BreakList& inBreaks) const

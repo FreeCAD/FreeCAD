@@ -861,23 +861,33 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
 //! cardinal direction or the reverse of a cardinal direction.
 gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 {
-    if (directionToMask.XYZ().IsEqual(gp::OX().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OX().Direction().Reversed().XYZ(), EWTOLERANCE)) {
-            return {0.0, inVec.Y(), inVec.Z()};
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OX().Direction().XYZ())), 1.0, EWTOLERANCE)) {
+        return {0.0, inVec.Y(), inVec.Z()};
     }
 
-    if (directionToMask.XYZ().IsEqual(gp::OY().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OY().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OY().Direction().XYZ())), 1.0, EWTOLERANCE)) {
             return {inVec.X(), 0.0, inVec.Z()};
     }
 
-    if (directionToMask.XYZ().IsEqual(gp::OZ().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OZ().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OZ().Direction().XYZ())), 1.0, EWTOLERANCE)) {
             return {inVec.X(), inVec.Y(), 0.0};
     }
 
     Base::Console().Message("DU:maskDirection - directionToMask is not cardinal\n");
     return {};
+}
+
+Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
+{
+    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+}
+
+//! get the coordinate of inPoint for the cardinal unit direction.
+double DrawUtil::coordinateForDirection(Base::Vector3d inPoint,  Base::Vector3d cardinal)
+{
+    auto masked = maskDirection(inPoint, cardinal);
+    auto stripped = inPoint - masked;
+    return stripped.x + stripped.y + stripped.z;
 }
 
 //based on Function provided by Joe Dowsett, 2014
