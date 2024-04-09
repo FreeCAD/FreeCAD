@@ -276,10 +276,10 @@ public:
     /** Normalize the subname path to use only the object internal name and old style element name
      * @return Return whether the subname has been changed
      */
-    bool normalize(NormalizeOptions options = NormalizeOption::NoElement);
+    bool normalize(NormalizeOptions options = NormalizeOption());
 
     /// Return a normalize copy of itself
-    SubObjectT normalized(NormalizeOptions options = NormalizeOption::NoElement) const;
+    SubObjectT normalized(NormalizeOptions options = NormalizeOption()) const;
 
 private:
     std::string subname;
