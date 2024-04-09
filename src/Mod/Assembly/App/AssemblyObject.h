@@ -144,7 +144,7 @@ public:
     being in an active transaction (joint creation).*/
     int solve(bool enableRedo = false, bool updateJCS = true);
     void preDrag(std::vector<App::DocumentObject*> dragParts);
-    void doDragStep(Base::Vector3d delta);
+    void doDragStep();
     void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
