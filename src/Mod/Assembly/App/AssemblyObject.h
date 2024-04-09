@@ -69,7 +69,7 @@ enum class JointType
     RackPinion,
     Screw,
     Gears,
-    Pulleys,
+    Belt,
 };
 
 enum class DistanceType

@@ -249,7 +249,7 @@ class CommandCreateJointRackPinion:
             "MenuText": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion", "Create Rack and Pinion Joint"
             ),
-            "Accel": "P",
+            "Accel": "Q",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion",
@@ -315,7 +315,7 @@ class CommandCreateJointGears:
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointGears",
-                "Create a Gears Joint: Links two rotating gears together.",
+                "Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -326,6 +326,55 @@ class CommandCreateJointGears:
 
     def Activated(self):
         activateJoint(8)
+
+
+class CommandCreateJointBelt:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointPulleys",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Create Belt Joint"),
+            "Accel": "P",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointBelt",
+                "Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(9)
+
+
+class CommandGroupGearBelt:
+    def GetCommands(self):
+        return ("Assembly_CreateJointGears", "Assembly_CreateJointBelt")
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+
+        return {
+            "Pixmap": "Assembly_CreateJointGears",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gear/Belt Joint"),
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGears",
+                "Create a Gears/Belt Joint: Links two rotating gears together.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
 
 
 def createGroundedJoint(obj):
@@ -422,3 +471,5 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointRackPinion", CommandCreateJointRackPinion())
     Gui.addCommand("Assembly_CreateJointScrew", CommandCreateJointScrew())
     Gui.addCommand("Assembly_CreateJointGears", CommandCreateJointGears())
+    Gui.addCommand("Assembly_CreateJointBelt", CommandCreateJointBelt())
+    Gui.addCommand("Assembly_CreateJointGearBelt", CommandGroupGearBelt())

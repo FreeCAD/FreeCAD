@@ -691,7 +691,7 @@ bool AssemblyObject::isJointTypeConnecting(App::DocumentObject* joint)
 {
     JointType jointType = getJointType(joint);
     return jointType != JointType::RackPinion && jointType != JointType::Screw
-        && jointType != JointType::Gears && jointType != JointType::Pulleys;
+        && jointType != JointType::Gears && jointType != JointType::Belt;
 }
 
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
@@ -853,6 +853,12 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
         auto mbdJoint = CREATE<ASMTGearJoint>::With();
         mbdJoint->radiusI = getJointDistance(joint);
         mbdJoint->radiusJ = getJointDistance2(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Belt) {
+        auto mbdJoint = CREATE<ASMTGearJoint>::With();
+        mbdJoint->radiusI = getJointDistance(joint);
+        mbdJoint->radiusJ = -getJointDistance2(joint);
         return mbdJoint;
     }
 
