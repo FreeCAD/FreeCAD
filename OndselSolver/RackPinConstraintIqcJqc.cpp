@@ -35,6 +35,7 @@ void MbD::RackPinConstraintIqcJqc::initthezIeJe()
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpEJ()
 {
+	pGpEJ = xIeJeIe->pvaluepEJ()->plusFullRow(thezIeJe->pvaluepEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpXJ()

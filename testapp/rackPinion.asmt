@@ -3,7 +3,7 @@ Assembly
 	Notes
 		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
 	Name
-		Assembly
+		OndselAssembly
 	Position3D
 		0	0	0	
 	RotationMatrix
@@ -25,9 +25,9 @@ Assembly
 			Markers
 				Marker
 					Name
-						Marker0
+						marker-rackPinion#Box001
 					Position3D
-						0	0	0	
+						-1.09127140045166	0.6816802024841309	1.622356414794922	
 					RotationMatrix
 						1	0	0	
 						0	1	0	
@@ -37,9 +37,9 @@ Assembly
 	Parts
 		Part
 			Name
-				structural_node_1
+				rackPinion#Box001
 			Position3D
-				-0.121	-1.218180697837851e-18	-0.08	
+				-1.09127140045166	0.6816802024841309	1.622356414794922	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -61,9 +61,9 @@ Assembly
 				Mass
 					1
 				MomentOfInertias
-					1	2	3	
+					1	1	1	
 				Density
-					10
+					1
 			RefPoints
 				RefPoint
 					Position3D
@@ -75,9 +75,9 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker0
+								FixingMarker
 							Position3D
-								0.121	1.218180697837851e-18	0.08	
+								0	0	0	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
@@ -92,9 +92,9 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker1
+								rackPinion#Revolute
 							Position3D
-								0	1.218180697837851e-18	0.05	
+								0	12	2	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
@@ -109,13 +109,13 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker2
+								rackPinion#Slider
 							Position3D
-								0	1.218180697837785e-18	0.08	
+								0	0	2	
 							RotationMatrix
-								2.220446049250313e-16	-2.220446049250313e-16	1	
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
 								1	0	-2.220446049250313e-16	
-								4.930380657631324e-32	1	2.220446049250313e-16	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -126,24 +126,41 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker3
+								rackPinion#Revolute001
 							Position3D
-								0	0	0	
+								37	12	2	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
 								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute002
+							Position3D
+								37	0	2	
+							RotationMatrix
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
+								1	0	-2.220446049250313e-16	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
-				structural_node_2
+				rackPinion#Cylinder
 			Position3D
-				-0.04753704894473842	0.09742200410568831	-0.03029347681223059	
+				-1.09127140045166	12.68168020248413	3.622356414794922	
 			RotationMatrix
-				0.9512512425641979	-0.1267494082121462	0.2811683855591535	
-				0.167731259496521	0.9776506595433678	-0.1267494082121462	
-				-0.258819045102521	0.167731259496521	0.9512512425641977	
+				0.9989860693358433	0.04502036509094207	0	
+				-0.04502036509094207	0.9989860693358433	-0	
+				-0	0	1	
 			Velocity3D
 				0	0	0	
 			Omega3D
@@ -153,17 +170,17 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					7.105427357601002e-18	0	7.105427357601002e-18	
+					0	0	0	
 				RotationMatrix
 					1	0	0	
 					0	1	0	
 					0	0	1	
 				Mass
-					1.448636188351172
+					1
 				MomentOfInertias
-					0.002871751015088	0.002864447840812	0.0007089594589930001	
+					1	1	1	
 				Density
-					10
+					1
 			RefPoints
 				RefPoint
 					Position3D
@@ -175,13 +192,13 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker0
+								rackPinion#Revolute
 							Position3D
-								-0.03739853284269051	0	0.003286762255221063	
+								0	0	0	
 							RotationMatrix
-								1	0	5.204170427930421e-18	
-								-0	1	0	
-								-5.204170427930421e-18	-0	1	
+								1	6.938893903907228e-18	0	
+								-6.938893903907228e-18	1	-0	
+								-0	0	1	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -192,90 +209,24 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker1
+								rackPinion#RackPinion
 							Position3D
-								0.03260146715730949	1.4210854715202e-17	0.05328676225522106	
+								0	0	2	
 							RotationMatrix
-								1	-0	5.204170427930421e-18	
-								0	1	0	
-								-5.204170427930421e-18	0	1	
+								1	6.938893903907228e-18	0	
+								-6.938893903907228e-18	1	-0	
+								-0	0	1	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
-				structural_node_3
+				rackPinion#Box
 			Position3D
-				0.07099630277370235	-0.07364765799707981	0.05840790082376057	
+				4.299936895813785	0.6816802024841309	3.622356414794925	
 			RotationMatrix
-				0.9622501868990581	0.01433011691863463	-0.271788935686915	
-				-0.08715574274765801	0.9622501868990581	-0.2578341604963	
-				0.2578341604963001	0.271788935686915	0.9271743741709766	
-			Velocity3D
-				0	0	0	
-			Omega3D
-				0	0	0	
-			FeatureOrder
-			PrincipalMassMarker
-				Name
-					MassMarker
-				Position3D
-					2.842170943040401e-17	-1.4210854715202e-17	0	
-				RotationMatrix
-					1	0	0	
-					0	1	0	
-					0	0	1	
-				Mass
-					2.852948655706768
-				MomentOfInertias
-					0.03383792198797	0.033715148099504	0.001956310318013	
-				Density
-					10
-			RefPoints
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker0
-							Position3D
-								-0.1400000000000079	-1.044497821567347e-15	0.02499999999999804	
-							RotationMatrix
-								3.322229154067983e-33	1	-5.551115123125784e-17	
-								-1	0	-5.984795992119986e-17	
-								-5.984795992119986e-17	5.551115123125784e-17	1	
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker1
-							Position3D
-								0.1399999999999913	4.423128530106624e-16	9.79127889877418e-15	
-							RotationMatrix
-								0.7254861972346578	0.6882367162699149	2.719509169040251e-15	
-								-0.6882367162699149	0.7254861972346578	1.258675848677982e-14	
-								6.689702964032028e-15	-1.100318561045113e-14	1	
-			RefCurves
-			RefSurfaces
-		Part
-			Name
-				structural_node_4
-			Position3D
-				0.3723079639890564	0.04333150035096042	0.008140985321785409	
-			RotationMatrix
-				0.9659258262890682	-0	0.2588190451025211	
+				1	0	0	
 				0	1	0	
-				-0.2588190451025211	0	0.9659258262890682	
+				0	0	1	
 			Velocity3D
 				0	0	0	
 			Omega3D
@@ -285,17 +236,17 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					2.842170943040401e-16	2.131628207280301e-17	2.273736754432321e-16	
+					0	0	0	
 				RotationMatrix
 					1	0	0	
 					0	1	0	
 					0	0	1	
 				Mass
-					10.85942720262214
+					1
 				MomentOfInertias
-					0.07706742098794901	0.066351815798527	0.061792350456255	
+					1	1	1	
 				Density
-					10
+					1
 			RefPoints
 				RefPoint
 					Position3D
@@ -307,13 +258,13 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker0
+								rackPinion#Slider
 							Position3D
-								-0.04558083463411924	-2.029935401992589e-10	1.256225164070202e-08	
+								0	0	0	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
+								-2.220446049250313e-16	0	1	
+								0	-1	0	
+								1	0	-2.220446049250313e-16	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -324,13 +275,45 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker1
+								rackPinion#RackPinion
 							Position3D
-								-0.04558083463411924	-2.029935401992589e-10	1.256225164070202e-08	
+								0	0	3	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
 								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder001
+			Position3D
+				35.90872859954834	12.68168020248413	3.622356414794922	
+			RotationMatrix
+				-0.208877917092376	-0.9779417241079095	0	
+				0.9779417241079095	-0.208877917092376	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
 				RefPoint
 					Position3D
 						0	0	0	
@@ -341,13 +324,62 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker2
+								rackPinion#Revolute001
 							Position3D
 								0	0	0	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
 								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder002
+			Position3D
+				37.90872859954834	0.6816802024841294	3.622356414794922	
+			RotationMatrix
+				-2.220446049250313e-16	5.551115123125783e-17	-1	
+				0.9455343955120326	-0.3255222064678469	-5.551115123125783e-17	
+				-0.3255222064678468	-0.9455343955120326	-2.220446049250313e-16	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute002
+							Position3D
+								-3.33066907387547e-16	0	2	
+							RotationMatrix
+								1	-2.77333911991762e-32	-3.33066907387547e-16	
+								-2.77333911991762e-32	1	-1.665334536937735e-16	
+								3.33066907387547e-16	1.665334536937735e-16	1	
 			RefCurves
 			RefSurfaces
 	KinematicIJs
@@ -355,59 +387,49 @@ Assembly
 		Joints
 			FixedJoint
 				Name
-					joint_1
+					rackPinion#GroundedJoint
 				MarkerI
-					/Assembly/Marker0
+					/OndselAssembly/marker-rackPinion#Box001
 				MarkerJ
-					/Assembly/structural_node_1/Marker0
+					/OndselAssembly/rackPinion#Box001/FixingMarker
 			RevoluteJoint
 				Name
-					joint_2
+					rackPinion#Revolute
 				MarkerI
-					/Assembly/structural_node_1/Marker1
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#Revolute
 				MarkerJ
-					/Assembly/structural_node_2/Marker0
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute
+			TranslationalJoint
+				Name
+					rackPinion#Slider
+				MarkerI
+					/OndselAssembly/rackPinion#Box/rackPinion#Slider
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Slider
 			RevoluteJoint
 				Name
-					joint_3
+					rackPinion#Revolute001
 				MarkerI
-					/Assembly/structural_node_2/Marker1
+					/OndselAssembly/rackPinion#Cylinder001/rackPinion#Revolute001
 				MarkerJ
-					/Assembly/structural_node_3/Marker0
-			PointInLineJoint
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute001
+			RevoluteJoint
 				Name
-					joint_4
+					rackPinion#Revolute002
 				MarkerI
-					/Assembly/structural_node_3/Marker1
+					/OndselAssembly/rackPinion#Cylinder002/rackPinion#Revolute002
 				MarkerJ
-					/Assembly/structural_node_4/Marker0
-			PointInLineJoint
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute002
+			RackPinionJoint
 				Name
-					joint_5
+					rackPinion#RackPinion
 				MarkerI
-					/Assembly/structural_node_1/Marker2
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#RackPinion
 				MarkerJ
-					/Assembly/structural_node_4/Marker1
-			NoRotationJoint
-				Name
-					joint_6
-				MarkerI
-					/Assembly/structural_node_1/Marker3
-				MarkerJ
-					/Assembly/structural_node_4/Marker2
+					/OndselAssembly/rackPinion#Box/rackPinion#RackPinion
+				pitchRadius
+					1
 		Motions
-			RotationalMotion
-				Name
-					joint_2Motion
-				MarkerI
-					/Assembly/structural_node_1/Marker1
-				MarkerJ
-					/Assembly/structural_node_2/Marker0
-				MotionJoint
-					/Assembly/joint_2
-				RotationZ
-					integral(time,  rampstep(time, 0.0, 0.0, 1.0, 0.0 + 6.28*(1.0 - 0.0)))
-		Limits
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity
@@ -416,13 +438,13 @@ Assembly
 		tstart
 			0
 		tend
-			3
+			1
 		hmin
 			1e-09
 		hmax
-			1
+			1000000000
 		hout
-			0.01
+			0.1
 		errorTol
 			1e-06
 	AnimationParameters

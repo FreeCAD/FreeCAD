@@ -19,10 +19,12 @@ using namespace MbD;
 
 MbD::AllowZRotation::AllowZRotation()
 {
+	//Do nothing.
 }
 
 MbD::AllowZRotation::AllowZRotation(const char* str) : PrescribedMotion(str) 
 {
+	//Do nothing.
 }
 
 std::shared_ptr<AllowZRotation> MbD::AllowZRotation::With()

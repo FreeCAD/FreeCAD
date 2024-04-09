@@ -105,6 +105,7 @@ void MbD::ASMTItemIJ::readTZonIs(std::vector<std::string>& lines)
 
 void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, size_t level)
 {
+	ASMTItem::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "MarkerI");
 	storeOnLevelString(os, level + 2, markerI);
 	storeOnLevelString(os, level + 1, "MarkerJ");

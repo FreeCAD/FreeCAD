@@ -168,6 +168,7 @@ Assembly
 				MarkerJ
 					/Assembly/structural_node_1/Marker1
 		Motions
+		Limits
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity

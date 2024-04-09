@@ -207,10 +207,10 @@ std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 	return std::make_shared<Constant>(value);
 }
 
-void MbD::ASMTItem::storeOnLevel(std::ofstream&, size_t)
+void MbD::ASMTItem::storeOnLevel(std::ofstream& os, size_t level)
 {
-	noop();
-	assert(false);
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
 }
 
 void MbD::ASMTItem::storeOnLevelTabs(std::ofstream& os, size_t level)

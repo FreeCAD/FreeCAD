@@ -21,15 +21,5 @@ std::shared_ptr<ItemIJ> MbD::ASMTTranslationLimit::mbdClassNew()
 void MbD::ASMTTranslationLimit::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "TranslationLimit");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
-	ASMTItemIJ::storeOnLevel(os, level);
-	storeOnLevelString(os, level + 1, "MotionJoint");
-	storeOnLevelString(os, level + 2, motionJoint);
-	storeOnLevelString(os, level + 1, "Limit");
-	storeOnLevelString(os, level + 2, limit);
-	storeOnLevelString(os, level + 1, "Type");
-	storeOnLevelString(os, level + 2, type);
-	storeOnLevelString(os, level + 1, "Tol");
-	storeOnLevelString(os, level + 2, tol);
+	ASMTLimit::storeOnLevel(os, level);
 }

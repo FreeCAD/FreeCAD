@@ -501,6 +501,8 @@ void MbD::ASMTAssembly::runDraggingTest2()
 	limit2->settol("1.0e-9");
 	assembly->addLimit(limit2);
 
+	assembly->outputFile("assembly.asmt");
+
 	auto& dragPart = assembly->parts->at(0);
 	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 	dragParts->push_back(dragPart);
@@ -515,6 +517,37 @@ void MbD::ASMTAssembly::runDraggingTest2()
 	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
 	assembly->runDragStep(dragParts);
 	assembly->runPostDrag();	//Do this after last drag
+}
+
+void MbD::ASMTAssembly::runDraggingTest3()
+{
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/rackPinion3.asmt");
+	auto dragPart = assembly->partNamed("/OndselAssembly/rackPinion#Box");
+	auto rotPart = assembly->partNamed("/OndselAssembly/rackPinion#Cylinder");
+	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	dragParts->push_back(dragPart);
+	FColDsptr dragPos3D, rotPos3D, delta;
+	FMatDsptr rotMat;
+	assembly->runPreDrag();	//Do this before first drag
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.0, 0.0 });
+	dragPart->updateMbDFromPosition3D(dragPos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.0, 0.0 });
+	dragPart->updateMbDFromPosition3D(dragPos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	assembly->runPostDrag();	//Do this after last drag
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
 }
 
 void MbD::ASMTAssembly::readWriteFile(const char* fileName)
@@ -1424,6 +1457,7 @@ void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, size_t lev
 	storeOnLevelString(os, level, "ConstraintSets");
 	storeOnLevelJoints(os, level + 1);
 	storeOnLevelMotions(os, level + 1);
+	storeOnLevelLimits(os, level + 1);
 	storeOnLevelGeneralConstraintSets(os, level + 1);
 }
 
@@ -1448,6 +1482,14 @@ void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, size_t level)
 	storeOnLevelString(os, level, "Motions");
 	for (auto& motion : *motions) {
 		motion->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelLimits(std::ofstream& os, size_t level)
+{
+	storeOnLevelString(os, level, "Limits");
+	for (auto& limit : *limits) {
+		limit->storeOnLevel(os, level + 1);
 	}
 }
 
