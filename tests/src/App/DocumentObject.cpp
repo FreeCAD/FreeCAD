@@ -49,17 +49,17 @@ TEST_F(DocumentObjectTest, getSubObjectList)
     auto boxName {_doc->addObject("Part::Box")->getNameInDocument()};
     // The name of a Part::Cylinder added to the document
     auto cylName {_doc->addObject("Part::Cylinder")->getNameInDocument()};
-    // The an App::Part added to the document
+    // An App::Part object added to the document
     auto part {_doc->addObject("App::Part")};
     // The name of the App::Part added to the document
     auto partName {part->getNameInDocument()};
     // The name of the object used as argument for the calls of DocumentObject::getSubObjectList()
     auto subName {std::string()};
 
-    // a vector of int used as argument for the call of DocumentObject::getSubObjectList() with
+    // A vector of int used as argument for the call of DocumentObject::getSubObjectList() with
     // argument flatten not set (or set to false)
     auto sizesNoFlatten {std::vector<int>()};
-    // a vector of int used as argument for the call of DocumentObject::getSubObjectList() with
+    // A vector of int used as argument for the call of DocumentObject::getSubObjectList() with
     // argument flatten set to true
     auto sizesFlatten {std::vector<int>()};
     // An helper string used to compose the argument of some calls of
