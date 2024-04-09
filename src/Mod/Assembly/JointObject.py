@@ -54,7 +54,7 @@ TranslatedJointTypes = [
     translate("Assembly", "RackPinion"),
     translate("Assembly", "Screw"),
     translate("Assembly", "Gears"),
-    # translate("Assembly", "Pulleys"),
+    translate("Assembly", "Belt"),
 ]
 
 JointTypes = [
@@ -67,7 +67,7 @@ JointTypes = [
     "RackPinion",
     "Screw",
     "Gears",
-    # "Pulleys",
+    "Belt",
 ]
 
 JointUsingDistance = [
@@ -75,10 +75,19 @@ JointUsingDistance = [
     "RackPinion",
     "Screw",
     "Gears",
+    "Belt",
 ]
 
 JointUsingDistance2 = [
     "Gears",
+    "Belt",
+]
+
+JointNoNegativeDistance = [
+    "RackPinion",
+    "Screw",
+    "Gears",
+    "Belt",
 ]
 
 JointUsingOffset = [
@@ -281,7 +290,7 @@ class Joint:
                 "Joint",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears(radius1)",
+                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)",
                 ),
             )
 
@@ -844,6 +853,8 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointScrew.svg"
         elif self.app_obj.JointType == "Gears":
             return ":/icons/Assembly_CreateJointGears.svg"
+        elif self.app_obj.JointType == "Belt":
+            return ":/icons/Assembly_CreateJointPulleys.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
 
@@ -1164,6 +1175,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
+        self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
@@ -1172,6 +1184,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
         self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
         self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
+
+        jType = JointTypes[self.form.jointType.currentIndex()]
+        self.form.reverseRotCheckbox.setChecked(jType == "Gears")
+        self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1332,12 +1348,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-
         self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
         self.adaptUi()
 
     def onDistanceChanged(self, quantity):
         self.joint.Distance = self.form.distanceSpinbox.property("rawValue")
+
+    def onDistance2Changed(self, quantity):
+        self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
         self.joint.Offset = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
@@ -1360,6 +1378,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
+    def reverseRotToggled(self, val):
+        if val:
+            self.form.jointType.setCurrentIndex(8)
+        else:
+            self.form.jointType.setCurrentIndex(9)
+
     def adaptUi(self):
         jType = JointTypes[self.form.jointType.currentIndex()]
 
@@ -1368,7 +1392,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.distanceSpinbox.show()
             if jType == "Distance":
                 self.form.distanceLabel.setText("Distance")
-            elif jType == "Gears":
+            elif jType == "Gears" or jType == "Belt":
                 self.form.distanceLabel.setText("Radius 1")
             else:
                 self.form.distanceLabel.setText("Pitch radius")
@@ -1379,9 +1403,26 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if jType in JointUsingDistance2:
             self.form.distanceLabel2.show()
             self.form.distanceSpinbox2.show()
+            self.form.reverseRotCheckbox.show()
+
         else:
             self.form.distanceLabel2.hide()
             self.form.distanceSpinbox2.hide()
+            self.form.reverseRotCheckbox.hide()
+
+        if jType in JointNoNegativeDistance:
+            # Setting minimum to 0.01 to prevent 0 and negative values
+            self.form.distanceSpinbox.setProperty("minimum", 1e-7)
+            if self.form.distanceSpinbox.property("rawValue") == 0.0:
+                self.form.distanceSpinbox.setProperty("rawValue", 1.0)
+
+            if jType == "Gears" or jType == "Belt":
+                self.form.distanceSpinbox2.setProperty("minimum", 1e-7)
+                if self.form.distanceSpinbox2.property("rawValue") == 0.0:
+                    self.form.distanceSpinbox2.setProperty("rawValue", 1.0)
+        else:
+            self.form.distanceSpinbox.setProperty("minimum", float("-inf"))
+            self.form.distanceSpinbox2.setProperty("minimum", float("-inf"))
 
         if jType in JointUsingOffset:
             self.form.offsetLabel.show()
