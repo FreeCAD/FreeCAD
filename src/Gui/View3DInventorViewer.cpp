@@ -2732,16 +2732,13 @@ SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& 
     SbVec3f pt, ptOnFocalPlaneAndOnLine, ptOnFocalPlane;
     SbPlane focalPlane = vol.getPlane(focalDist);
     vol.projectPointToLine(pnt2d, line);
-
-    if (!focalPlane.intersect(line, ptOnFocalPlane)) {
-        return {};  // No intersection found
-    }
+    focalPlane.intersect(line, ptOnFocalPlane);
 
     // Check if line is orthogonal to the focal plane
     SbVec3f focalPlaneNormal = focalPlane.getNormal();
     float dotProduct = fabs(axis.dot(focalPlaneNormal));
-    if (dotProduct > 1.0 - 1e-6) {
-        return {};
+    if (dotProduct > (1.0 - 1e-6)) {
+        return ptOnFocalPlane;
     }
 
     SbLine projectedLine = projectLineOntoPlane(axisCenter, axisCenter + axis, focalPlane);
@@ -2751,10 +2748,10 @@ SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& 
     // - the line passing by ptOnFocalPlaneAndOnLine normal to focalPlane
     // - The line (axisCenter, axisCenter + axis)
 
-    // Line normal to focal plane through ptOnFocalPlane
-    SbLine normalLine(ptOnFocalPlane, ptOnFocalPlane + focalPlane.getNormal());
+    // Line normal to focal plane through ptOnFocalPlaneAndOnLine
+    SbLine normalLine(ptOnFocalPlaneAndOnLine, ptOnFocalPlaneAndOnLine + focalPlaneNormal);
     SbLine axisLine(axisCenter, axisCenter + axis);
-    pt = intersection(ptOnFocalPlane, ptOnFocalPlane + focalPlane.getNormal(), axisCenter, axisCenter + axis);
+    pt = intersection(ptOnFocalPlaneAndOnLine, ptOnFocalPlaneAndOnLine + focalPlaneNormal, axisCenter, axisCenter + axis);
 
     return pt;
 }
