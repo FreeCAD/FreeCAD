@@ -175,7 +175,6 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
-    Base::Console().Warning("pre drag\n");
     solve();
 
     dragMbdParts.clear();
@@ -186,9 +185,8 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     mbdAssembly->runPreDrag();
 }
 
-void AssemblyObject::doDragStep(Base::Vector3d delta)
+void AssemblyObject::doDragStep()
 {
-    Base::Console().Warning("doDragStep\n");
     for (auto& mbdPart : dragMbdParts) {
         App::DocumentObject* part = nullptr;
         for (auto& pair : objectPartMap) {
@@ -201,15 +199,10 @@ void AssemblyObject::doDragStep(Base::Vector3d delta)
             continue;
         }
 
-        FColDsptr pos3D, delta2;
-        pos3D = mbdPart->position3D;
-        delta2 = std::make_shared<FullColumn<double>>(ListD {delta.x, delta.y, delta.z});
-        mbdPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta2));
-
-        /*Base::Placement plc = getPlacementFromProp(part, "Placement");
-        printPlacement(plc, "init plc");
+        Base::Placement plc = getPlacementFromProp(part, "Placement");
         Base::Vector3d pos = plc.getPosition();
-        mbdPart->setPosition3D(pos.x, pos.y, pos.z);
+        mbdPart->updateMbDFromPosition3D(
+            std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z}));
 
         Base::Rotation rot = plc.getRotation();
         Base::Matrix4D mat;
@@ -217,7 +210,7 @@ void AssemblyObject::doDragStep(Base::Vector3d delta)
         Base::Vector3d r0 = mat.getRow(0);
         Base::Vector3d r1 = mat.getRow(1);
         Base::Vector3d r2 = mat.getRow(2);
-        mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);*/
+        mbdPart->updateMbDFromRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
     }
 
     auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
@@ -228,7 +221,6 @@ void AssemblyObject::doDragStep(Base::Vector3d delta)
 
 void AssemblyObject::postDrag()
 {
-    Base::Console().Warning("post drag \n");
     mbdAssembly->runPostDrag();  // Do this after last drag
 }
 
