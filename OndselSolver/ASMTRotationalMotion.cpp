@@ -102,8 +102,6 @@ void MbD::ASMTRotationalMotion::setRotationZ(std::string rotZ)
 void MbD::ASMTRotationalMotion::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RotationalMotion");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
 	ASMTItemIJ::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "MotionJoint");
 	storeOnLevelString(os, level + 2, motionJoint);

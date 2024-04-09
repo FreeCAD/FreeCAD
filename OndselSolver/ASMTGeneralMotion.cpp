@@ -156,8 +156,6 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 void MbD::ASMTGeneralMotion::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "GeneralMotion");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
 	ASMTItemIJ::storeOnLevel(os, level);
 }
 

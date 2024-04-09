@@ -1595,6 +1595,7 @@ Assembly
 					/Assembly/joint_4
 				RotationZ
 					integral(time,  rampstep(time, 0.25, 0.0, 2.0, 0.0 + 0.5*(2.0 - 0.25)))
+		Limits
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity

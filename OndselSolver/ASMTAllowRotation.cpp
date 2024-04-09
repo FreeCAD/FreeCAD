@@ -62,8 +62,6 @@ void MbD::ASMTAllowRotation::setMotionJoint(std::string motionJoint)
 void MbD::ASMTAllowRotation::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "AllowRotation");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
 	ASMTItemIJ::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "MotionJoint");
 	storeOnLevelString(os, level + 2, motionJoint);
