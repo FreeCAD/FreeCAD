@@ -109,33 +109,33 @@
       <rect id="Paper size border" x="310" y="275" width="20" height="12"/>
     </g>
     <g id="Labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-      <text id="Owner label" x="370.5" y="254.6">Owner:</text>
-      <text id="Identification number label" x="230.5" y="278.6">Drawing number:</text>
-      <text id="Revision index label" x="370.5" y="278.6">Revision:</text>
-      <text id="Date of issue label" x="330.5" y="278.6">Issue date:</text>
-      <text id="Sheet number label" x="390.5" y="278.6">Sheet:</text>
-      <text id="Title label" x="230.5" y="254.6">Title:</text>
-      <text id="Approval person label" x="310.5" y="266.6">Approved by:</text>
-      <text id="Creator label" x="310.5" y="254.6">Created by:</text>
-      <text id="Document type label" x="230.5" y="266.6">Document type:</text>
-      <text id="Paper size label" x="310.5" y="278.6">Paper size:</text>
-      <text id="Sheet scale label" x="350.5" y="242.6">Scale:</text>
-      <text id="General tolerances label" x="310.5" y="242.6">General tolerances:</text>
-      <text id="Part material label" x="230.5" y="242.6">Part Material:</text>
+      <text id="Owner label" x="370.5" y="254.6">Propietari legal:</text>
+      <text id="Identification number label" x="230.5" y="278.6">Número de dibuix:</text>
+      <text id="Revision index label" x="370.5" y="278.6">Revisió:</text>
+      <text id="Date of issue label" x="330.5" y="278.6">Data:</text>
+      <text id="Sheet number label" x="390.5" y="278.6">Pàgina:</text>
+      <text id="Title label" x="230.5" y="254.6">Títol:</text>
+      <text id="Approval person label" x="310.5" y="266.6">Aprovat:</text>
+      <text id="Creator label" x="310.5" y="254.6">Creat:</text>
+      <text id="Document type label" x="230.5" y="266.6">Tipus de document:</text>
+      <text id="Paper size label" x="310.5" y="278.6">Format:</text>
+      <text id="Sheet scale label" x="350.5" y="242.6">Escala:</text>
+      <text id="General tolerances label" x="310.5" y="242.6">Toleràncies generals:</text>
+      <text id="Part material label" x="230.5" y="242.6">Material:</text>
     </g>
     <g id="Data fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-      <text id="Identification number data field" x="231" y="284.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
+      <text id="Identification number data field" x="231" y="284.2" freecad:editable="drawing_number"><tspan>ND</tspan></text>
       <text id="Revision index data field" x="380" y="284.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
-      <text id="Date of issue data field" x="331" y="284.2" freecad:editable="issue_date"><tspan>YYYY-MM-DD</tspan></text>
+      <text id="Date of issue data field" x="331" y="284.2" freecad:editable="issue_date"><tspan>DD/MM/AAAA</tspan></text>
       <text id="Sheet number data field" x="400" y="284.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
       <text id="Title data field" x="231" y="260.2" freecad:editable="title"><tspan>ISO 5457 template</tspan></text>
-      <text id="Approval person data field" x="311" y="272.2" freecad:editable="approved_by"><tspan>B. Hecate</tspan></text>
-      <text id="Creator data field" x="311" y="260.2" freecad:editable="created_by"><tspan>A. Nemesis</tspan></text>
-      <text id="Document type data field" x="231" y="272.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+      <text id="Approval person data field" x="311" y="272.2" freecad:editable="approved_by"><tspan>Víctor Sauler Roure</tspan></text>
+      <text id="Creator data field" x="311" y="260.2" freecad:editable="created_by"><tspan>Núria Sauler Roure</tspan></text>
+      <text id="Document type data field" x="231" y="272.2" freecad:editable="document_type"><tspan>Plànol de conjunt</tspan></text>
       <text id="Paper size data field" x="320" y="284.2" style="text-align:center;text-anchor:middle">A3</text>
       <text id="Sheet scale data field" x="360" y="248.2" style="text-align:center;text-anchor:middle" freecad:editable="page_scale"><tspan>1 : 1</tspan></text>
       <text id="General tolerances data field" x="311" y="248.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
-      <text id="Part material data field" x="231" y="248.2" freecad:editable="general_notes"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
+      <text id="Part material data field" x="231" y="248.2" freecad:editable="general_notes"><tspan>Acer inoxidable EN 1.4301</tspan></text>
     </g>
       <g id="Outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
       <path id="Trapezoid" d="m 389,234 -10,2.5 v 5 l 10,2.5 z"/>

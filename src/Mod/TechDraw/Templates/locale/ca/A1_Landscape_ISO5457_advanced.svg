@@ -167,39 +167,39 @@
       <rect id="Paper size border" x="731" y="572" width="20" height="12"/>
     </g>
     <g id="Labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-      <text id="Owner label" x="791.5" y="539.6">Owner:</text>
-      <text id="Identification number label" x="731.5" y="563.6">Drawing number:</text>
-      <text id="Revision index label" x="791.5" y="575.6">Revision:</text>
-      <text id="Date of issue label" x="751.5" y="575.6">Issue date:</text>
-      <text id="Sheet number label" x="811.5" y="575.6">Sheet:</text>
-      <text id="Title label" x="651.5" y="539.6">Title, supplementary title:</text>
-      <text id="Responsible department label" x="791.5" y="563.6">Responsible department:</text>
-      <text id="Approval person label" x="731.5" y="551.6">Approved by:</text>
-      <text id="Document type label" x="651.5" y="563.6">Document type:</text>
-      <text id="Creator label" x="731.5" y="539.6">Created by:</text>
-      <text id="Document status label" x="651.5" y="575.6">Document status:</text>
-      <text id="Paper size label" x="731.5" y="575.6">Paper size:</text>
-      <text id="Sheet scale label" x="771.5" y="527.6">Scale:</text>
-      <text id="General tolerances label" x="731.5" y="527.6">General tolerances:</text>
-      <text id="Part material label" x="651.5" y="527.6">Part Material:</text>
+      <text id="Owner label" x="791.5" y="539.6">Propietari legal:</text>
+      <text id="Identification number label" x="731.5" y="563.6">Número de dibuix:</text>
+      <text id="Revision index label" x="791.5" y="575.6">Revisió:</text>
+      <text id="Date of issue label" x="751.5" y="575.6">Data:</text>
+      <text id="Sheet number label" x="811.5" y="575.6">Pàgina:</text>
+      <text id="Title label" x="651.5" y="539.6">Títol, títol suplementari:</text>
+      <text id="Responsible department label" x="791.5" y="563.6">Departament:</text>
+      <text id="Approval person label" x="731.5" y="551.6">Aprovat:</text>
+      <text id="Document type label" x="651.5" y="563.6">Tipus de document:</text>
+      <text id="Creator label" x="731.5" y="539.6">Creat:</text>
+      <text id="Document status label" x="651.5" y="575.6">Estat del document</text>
+      <text id="Paper size label" x="731.5" y="575.6">Format:</text>
+      <text id="Sheet scale label" x="771.5" y="527.6">Escala:</text>
+      <text id="General tolerances label" x="731.5" y="527.6">Toleràncies generals:</text>
+      <text id="Part material label" x="651.5" y="527.6">Material:</text>
     </g>
     <g id="Data fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-      <text id="Identification number data field" x="732" y="569.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
+      <text id="Identification number data field" x="732" y="569.2" freecad:editable="drawing_number"><tspan>ND</tspan></text>
       <text id="Revision index data field" x="801" y="581.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
-      <text id="Date of issue data field" x="752" y="581.2" freecad:editable="issue_date"><tspan>YYYY-MM-DD</tspan></text>
+      <text id="Date of issue data field" x="752" y="581.2" freecad:editable="issue_date"><tspan>DD/MM/AAAA</tspan></text>
       <text id="Sheet number data field" x="821" y="581.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
-      <text id="Title data field" x="652" y="545.2" freecad:editable="title"><tspan>ISO 7200 titleblock</tspan></text>
-      <text id="Supplementary title 1 data field" x="652" y="551.2" freecad:editable="supplementary_title_1"><tspan>ST1</tspan></text>
-      <text id="Supplementary title 2 data field" x="652" y="557.2" freecad:editable="supplementary_title_2"><tspan>ST2</tspan></text>
-      <text id="Responsible department data field" x="792" y="569.2" freecad:editable="responsible_department"><tspan>RD</tspan></text>
-      <text id="Approval person data field" x="732" y="557.2" freecad:editable="approved_by"><tspan>B. Hecate</tspan></text>
-      <text id="Document type data field" x="652" y="569.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
-      <text id="Creator data field" x="732" y="545.2" freecad:editable="created_by"><tspan>A. Nemesis</tspan></text>
-      <text id="Document status data field" x="652" y="581.2" freecad:editable="document_status"><tspan>In preparation</tspan></text>
+      <text id="Title data field" x="652" y="545.2" freecad:editable="title"><tspan>Títol del dibuix</tspan></text>
+      <text id="Supplementary title 1 data field" x="652" y="551.2" freecad:editable="supplementary_title_1"><tspan>TS1</tspan></text>
+      <text id="Supplementary title 2 data field" x="652" y="557.2" freecad:editable="supplementary_title_2"><tspan>TS2</tspan></text>
+      <text id="Responsible department data field" x="792" y="569.2" freecad:editable="responsible_department"><tspan>DR</tspan></text>
+      <text id="Approval person data field" x="732" y="557.2" freecad:editable="approved_by"><tspan>Víctor Sauler Roure</tspan></text>
+      <text id="Document type data field" x="652" y="569.2" freecad:editable="document_type"><tspan>Plànol de conjunt</tspan></text>
+      <text id="Creator data field" x="732" y="545.2" freecad:editable="created_by"><tspan>Núria Sauler Roure</tspan></text>
+      <text id="Document status data field" x="652" y="581.2" freecad:editable="document_status"><tspan>En preparació</tspan></text>
       <text id="Paper size data field" x="741" y="581.2" style="text-align:center;text-anchor:middle">A1</text>
       <text id="Sheet scale data field" x="781" y="533.2" style="text-align:center;text-anchor:middle" freecad:editable="page_scale"><tspan>1 : 1</tspan></text>
       <text id="General tolerances data field" x="732" y="533.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
-      <text id="Part material data field" x="652" y="533.2" freecad:editable="general_notes"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
+      <text id="Part material data field" x="652" y="533.2" freecad:editable="general_notes"><tspan>Acer inoxidable EN 1.4301</tspan></text>
     </g>
     <g id="Outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
       <path id="Trapezoid" d="m 810,519 -10,2.5 v 5 l 10,2.5 z"/>
