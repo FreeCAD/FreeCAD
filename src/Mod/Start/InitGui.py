@@ -21,31 +21,4 @@
 #                                                                           *
 # **************************************************************************/
 
-
-class StartWorkbench(Workbench):
-    "StartWorkbench workbench"
-
-    def __init__(self):
-        self.__class__.Icon = (
-            FreeCAD.getResourceDir() + "Mod/Start/Resources/icons/StartWorkbench.svg"
-        )
-        self.__class__.MenuText = "Start"
-        self.__class__.ToolTip = "Start workbench"
-
-    def Initialize(self):
-        import StartGui
-
-    def Activated(self):
-        pass
-
-    def Deactivated(self):
-        pass
-
-    def ContextMenu(self, recipient):
-        pass
-
-    def GetClassName(self):
-        return "StartGui::Workbench"
-
-
-Gui.addWorkbench(StartWorkbench())
+import StartGui

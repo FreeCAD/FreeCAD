@@ -24,64 +24,55 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QCoreApplication>
+#include <QCoreApplication>
 #include <QLayout>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/Command.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/MDIView.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ToolBarManager.h>
-
-#include "Workbench.h"
+#include "Manipulator.h"
 #include "StartView.h"
+
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MenuManager.h>
 
 #include <3rdParty/GSL/include/gsl/pointers>
 
-using namespace StartGui;
+DEF_STD_CMD(CmdStart)
 
-TYPESYSTEM_SOURCE(StartGui::Workbench, Gui::StdWorkbench)  // NOLINT
-
-void StartGui::Workbench::activated()
+CmdStart::CmdStart()
+    : Command("Start_Start")
 {
-    loadStart();
+    sAppModule = "Start";
+    sGroup = QT_TR_NOOP("Start");
+    sMenuText = QT_TR_NOOP("Start");
+    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
+    sWhatsThis = "Start_Start";
+    sStatusTip = sToolTipText;
+    sPixmap = "StartWorkbench";
 }
 
-void StartGui::Workbench::loadStart()
+void CmdStart::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     auto mw = Gui::getMainWindow();
     auto doc = Gui::Application::Instance->activeDocument();
-    auto existingView = mw->findChild<StartView*>(QLatin1String("StartView"));
+    auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
     if (!existingView) {
-        existingView = gsl::owner<StartView*>(new StartView(doc, mw));
+        existingView = gsl::owner<StartGui::StartView*>(new StartGui::StartView(doc, mw));
         mw->addWindow(existingView);  // Transfers ownership
     }
     Gui::getMainWindow()->setActiveWindow(existingView);
     existingView->show();
 }
 
-Gui::MenuItem* StartGui::Workbench::setupMenuBar() const
+void StartGui::Manipulator::modifyMenuBar(Gui::MenuItem* menuBar)
 {
-    return Gui::StdWorkbench::setupMenuBar();
-}
-
-Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
-{
-    return Gui::StdWorkbench::setupToolBars();
-}
-
-Gui::ToolBarItem* StartGui::Workbench::setupCommandBars() const
-{
-    return Gui::StdWorkbench::setupCommandBars();
-}
-
-Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
-{
-    Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
-    root->setVisibility(false);                  // hide all dock windows by default
-    root->setVisibility("Std_ComboView", true);  // except of the combo view
-    root->setVisibility("Std_TaskView", true);   // and the task view
-    return root;
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
+    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    Gui::MenuItem* helpMenu = menuBar->findItem("&Help");
+    Gui::MenuItem* loadStart = new Gui::MenuItem();
+    loadStart->setCommand("Start_Start");
+    helpMenu->appendItem(loadStart);
 }

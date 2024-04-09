@@ -21,42 +21,23 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_MANIPULATOR_H
+#define FREECAD_MANIPULATOR_H
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/WorkbenchManipulator.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
-
-#include "Workbench.h"
-
-
-using namespace std;
-
-DEF_STD_CMD(CmdStart)
-
-CmdStart::CmdStart()
-    : Command("Start_Start")
+namespace StartGui
 {
-    sAppModule = "Start";
-    sGroup = QT_TR_NOOP("Start");
-    sMenuText = QT_TR_NOOP("Start");
-    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
-    sWhatsThis = "Start_Start";
-    sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
-}
 
-void CmdStart::activated(int iMsg)
+class Manipulator: public Gui::WorkbenchManipulator
 {
-    Q_UNUSED(iMsg);
-    StartGui::Workbench::loadStart();
-}
+protected:
+    /*!
+     * This manipulator injects the command to load the start page into the Help menu.
+     */
+    void modifyMenuBar(Gui::MenuItem* menuBar) override;
+};
 
+}  // namespace StartGui
 
-void CreateStartCommands()
-{
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
-}
+#endif  // FREECAD_MANIPULATOR_H

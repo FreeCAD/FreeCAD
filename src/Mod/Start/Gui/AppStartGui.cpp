@@ -32,7 +32,7 @@
 
 #include <3rdParty/GSL/include/gsl/pointers>
 
-#include "Workbench.h"
+#include "Manipulator.h"
 
 void loadStartResource()
 {
@@ -73,7 +73,8 @@ PyMOD_INIT_FUNC(StartGui)
 {
     Base::Console().Log("Loading GUI of Start module... ");
     PyObject* mod = StartGui::initModule();
-    StartGui::Workbench::init();
+    auto manipulator = std::make_shared<StartGui::Manipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manipulator);
     loadStartResource();
     Base::Console().Log("done\n");
 

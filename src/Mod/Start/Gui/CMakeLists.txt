@@ -23,17 +23,14 @@
 
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${PYTHON_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-        ${XercesC_INCLUDE_DIRS}
+        ${PYTHON_INCLUDE_DIRS}
         ${QtCore_INCLUDE_DIRS}
-        ${QtWidgets_INCLUDE_DIRS}
         ${QtSvg_INCLUDE_DIRS}
-        #${QtNetwork_INCLUDE_DIRS}
         ${QtUiTools_INCLUDE_DIRS}
-        #${QtQuick_INCLUDE_DIRS}
-        #${QtQuickWidgets_INCLUDE_DIRS}
+        ${QtWidgets_INCLUDE_DIRS}
+        ${XercesC_INCLUDE_DIRS}
+        ${ZLIB_INCLUDE_DIR}
 )
 
 set(StartGui_LIBS
@@ -52,17 +49,16 @@ SET(StartGui_SRCS
         ${Start_QRC_SRCS}
         ${StartGui_UIC_SRCS}
         AppStartGui.cpp
-        Command.cpp
-        PreCompiled.cpp
-        PreCompiled.h
-        StartView.cpp
-        StartView.h
         FileCardDelegate.cpp
         FileCardDelegate.h
         FileCardView.cpp
         FileCardView.h
-        Workbench.cpp
-        Workbench.h
+        Manipulator.cpp
+        Manipulator.h
+        PreCompiled.cpp
+        PreCompiled.h
+        StartView.cpp
+        StartView.h
         )
 
 SET(StartGuiIcon_SVG
