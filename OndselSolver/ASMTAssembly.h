@@ -43,6 +43,7 @@ namespace MbD {
 		static void runFile(const char* chars);
 		static void runDraggingTest();
 		static void runDraggingTest2();
+		static void runDraggingTest3();
 		static void readWriteFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;

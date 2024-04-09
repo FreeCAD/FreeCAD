@@ -1,0 +1,423 @@
+freeCAD: 3D CAD with Motion Simulation  by  askoh.com
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		OndselAssembly
+	Position3D
+		0.0 	0.0 	0.0 
+	RotationMatrix
+		1.0 	0.0 	0.0 
+		0.0 	1.0 	0.0 
+		0.0 	0.0 	1.0 
+	Velocity3D
+		0.0 	0.0 	0.0 
+	Omega3D
+		0.0 	0.0 	0.0 
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0
+			RotationMatrix
+				1	0	0
+				0	1	0
+				0	0	1
+			Markers
+				Marker
+					Name
+						marker-rackPinion#Box001
+					Position3D
+						-1.0912714004517 	0.68168020248413 	1.6223564147949 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				rackPinion#Box
+			Position3D
+				5.6962232290719 	0.68168020248413 	3.6223564147949 
+			RotationMatrix
+				1.0 	0.0 	-4.4408920985006e-16
+				0.0 	1.0 	0.0 
+				4.4408920985006e-16	0.0 	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0
+				RotationMatrix
+					1	0	0
+					0	1	0
+					0	0	1
+				Mass
+					1
+				MomentOfInertias
+					1	1	1
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#RackPinion
+							Position3D
+								-4.4408920985007e-16	0.0 	3.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#Slider
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								-2.2204460492503e-16	0.0 	1.0 
+								0.0 	-1.0 	0.0 
+								1.0 	0.0 	-2.2204460492503e-16
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Box001
+			Position3D
+				-1.0912714004517 	0.68168020248413 	1.6223564147949 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0
+				RotationMatrix
+					1	0	0
+					0	1	0
+					0	0	1
+				Mass
+					1
+				MomentOfInertias
+					1	1	1
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								FixingMarker
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute
+							Position3D
+								0.0 	12.0 	2.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#Slider
+							Position3D
+								0.0 	0.0 	2.0 
+							RotationMatrix
+								-2.2204460492503e-16	0.0 	1.0 
+								0.0 	-1.0 	0.0 
+								1.0 	0.0 	-2.2204460492503e-16
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				rackPinion#Cylinder
+			Position3D
+				-1.0912714004517 	12.681680202484 	3.6223564147949 
+			RotationMatrix
+				0.83233196026638 	-0.55427746474047 	0.0 
+				0.55427746474047 	0.83233196026638 	0.0 
+				0.0 	0.0 	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0
+				RotationMatrix
+					1	0	0
+					0	1	0
+					0	0	1
+				Mass
+					1
+				MomentOfInertias
+					1	1	1
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#RackPinion
+							Position3D
+								0.0 	0.0 	2.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+				RefPoint
+					Position3D
+						0	0	0
+					RotationMatrix
+						1	0	0
+						0	1	0
+						0	0	1
+					Markers
+						Marker
+							Name
+								rackPinion#Revolute
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	0.0 	0.0 
+								0.0 	1.0 	0.0 
+								0.0 	0.0 	1.0 
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			RackPinionJoint
+				Name
+					rackPin
+				MarkerI
+					/OndselAssembly/rackPinion#Box/rackPinion#RackPinion
+				MarkerJ
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#RackPinion
+				pitchRadius
+					1.0 
+			FixedJoint
+				Name
+					rackPinion#GroundedJoint
+				MarkerI
+					/OndselAssembly/marker-rackPinion#Box001
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/FixingMarker
+			RevoluteJoint
+				Name
+					rackPinion#Revolute
+				MarkerI
+					/OndselAssembly/rackPinion#Cylinder/rackPinion#Revolute
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Revolute
+			TranslationalJoint
+				Name
+					rackPinion#Slider
+				MarkerI
+					/OndselAssembly/rackPinion#Box/rackPinion#Slider
+				MarkerJ
+					/OndselAssembly/rackPinion#Box001/rackPinion#Slider
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	0
+	SimulationParameters
+		tstart
+			0
+		tend
+			0.0 
+		hmin
+			1.0e-9
+		hmax
+			1000000000
+		hout
+			0.1 
+		errorTol
+			1.0e-6
+	AnimationParameters
+		nframe
+			1
+		icurrent
+			1
+		istart
+			1
+		iend
+			1
+		isForward
+			true
+		framesPerSecond
+			30
+TimeSeries
+Number	Input	1
+Time	Input	0.0 
+AssemblySeries /OndselAssembly
+X	0.0 	0.0 
+Y	0.0 	0.0 
+Z	0.0 	0.0 
+Bryantx	0.0 	0.0 
+Bryanty	0.0 	0.0 
+Bryantz	0.0 	0.0 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+PartSeries /OndselAssembly/rackPinion#Box
+X	5.7924906490609 	5.6962232290719 
+Y	0.68168020248413 	0.68168020248413 
+Z	3.6223564147949 	3.6223564147949 
+Bryantx	0.0 	0.0 
+Bryanty	0.0 	-4.4408920985006e-16
+Bryantz	0.0 	0.0 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+PartSeries /OndselAssembly/rackPinion#Box001
+X	-1.0912714004517 	-1.0912714004517 
+Y	0.68168020248413 	0.68168020248413 
+Z	1.6223564147949 	1.6223564147949 
+Bryantx	0.0 	0.0 
+Bryanty	0.0 	0.0 
+Bryantz	0.0 	0.0 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+PartSeries /OndselAssembly/rackPinion#Cylinder
+X	-1.0912714004517 	-1.0912714004517 
+Y	12.681680202484 	12.681680202484 
+Z	3.6223564147949 	3.6223564147949 
+Bryantx	0.0 	0.0 
+Bryanty	0.0 	0.0 
+Bryantz	0.17703467195969 	0.58749462952357 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+RackPinionJointSeries /OndselAssembly/rackPin
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+FixedJointSeries /OndselAssembly/rackPinion#GroundedJoint
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+RevoluteJointSeries /OndselAssembly/rackPinion#Revolute
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+TranslationalJointSeries /OndselAssembly/rackPinion#Slider
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 

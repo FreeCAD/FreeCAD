@@ -12,6 +12,7 @@ using namespace MbD;
 
 MbD::Abs::Abs(Symsptr arg) : FunctionX(arg)
 {
+	//Do nothing.
 }
 
 double MbD::Abs::getValue()

@@ -56,6 +56,10 @@ void SystemNewtonRaphson::calcdxNorm()
 
 void SystemNewtonRaphson::basicSolveEquations()
 {
+	auto debug = false;
+	if (debug) {
+		outputSpreadsheet();
+	}
 	dx = matrixSolver->solvewithsaveOriginal(pypx, y->negated(), false);
 }
 

@@ -517,6 +517,37 @@ void MbD::ASMTAssembly::runDraggingTest2()
 	assembly->runPostDrag();	//Do this after last drag
 }
 
+void MbD::ASMTAssembly::runDraggingTest3()
+{
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/rackPinion2.asmt");
+	auto dragPart = assembly->partNamed("/OndselAssembly/rackPinion#Box");
+	auto rotPart = assembly->partNamed("/OndselAssembly/rackPinion#Cylinder");
+	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	dragParts->push_back(dragPart);
+	FColDsptr dragPos3D, rotPos3D, delta;
+	FMatDsptr rotMat;
+	assembly->runPreDrag();	//Do this before first drag
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.0, 0.0 });
+	dragPart->updateMbDFromPosition3D(dragPos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.0, 0.0 });
+	dragPart->updateMbDFromPosition3D(dragPos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+	assembly->runPostDrag();	//Do this after last drag
+	dragPos3D = dragPart->position3D;
+	rotPos3D = rotPart->position3D;
+	rotMat = rotPart->rotationMatrix;
+}
+
 void MbD::ASMTAssembly::readWriteFile(const char* fileName)
 {
 	std::ifstream stream(fileName);

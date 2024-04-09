@@ -20,6 +20,7 @@ using namespace MbD;
 MbD::AllowZRotationConstraintIqctJqc::AllowZRotationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	DirectionCosineConstraintIqctJqc(frmi, frmj, axisi, axisj)
 {
+	//Do nothing.
 }
 
 std::shared_ptr<AllowZRotationConstraintIqctJqc> MbD::AllowZRotationConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
