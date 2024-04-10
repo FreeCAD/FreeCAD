@@ -96,6 +96,19 @@ FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
+// Helper functions to consistently convert between float and long
+namespace {
+float fromPercent(long value)
+{
+    return static_cast<float>(value) / 100.0F;
+}
+
+long toPercent(float value)
+{
+    return static_cast<long>(100.0 * value + 0.5);
+}
+}
+
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
 
@@ -321,15 +334,19 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &ShapeAppearance) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
-        App::Color c = ShapeAppearance.getDiffuseColor();
-        c.a = Transparency.getValue()/100.0f;
-        DiffuseColor.setValue(c);
+        // While restoring a document do not override the
+        // DiffuseColor that has already been restored
+        if (!isRestoring()) {
+            App::Color c = ShapeAppearance.getDiffuseColor();
+            c.a = fromPercent(Transparency.getValue());
+            DiffuseColor.setValue(c);
+        }
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeAppearance[0];
-        long value = (long)(100*Mat.transparency);
+        long value = toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
-            float trans = Transparency.getValue()/100.0f;
+            float trans = fromPercent(Transparency.getValue());
             auto colors = DiffuseColor.getValues();
             for (auto &c : colors)
                 c.a = trans;
@@ -845,6 +862,21 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         }
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
+}
+
+void ViewProviderPartExt::startRestoring()
+{
+    Gui::ViewProviderGeometryObject::startRestoring();
+}
+
+void ViewProviderPartExt::finishRestoring()
+{
+    // The ShapeAppearance property is restored after DiffuseColor
+    // and currently sets a single color.
+    // In case DiffuseColor has defined multiple colors they will
+    // be passed to the scene graph now.
+    DiffuseColor.touch();
+    Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
 void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

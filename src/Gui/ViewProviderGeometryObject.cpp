@@ -51,6 +51,19 @@
 
 using namespace Gui;
 
+// Helper functions to consistently convert between float and long
+namespace {
+float fromPercent(long value)
+{
+    return static_cast<float>(value) / 100.0F;
+}
+
+long toPercent(float value)
+{
+    return static_cast<long>(100.0 * value + 0.5);
+}
+}
+
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
 const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
@@ -137,9 +150,9 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         setSelectable(Sel);
     }
     else if (prop == &Transparency) {
-        long value = (long)(100 * ShapeAppearance.getTransparency());
+        long value = toPercent(ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
-            float trans = (float)Transparency.getValue() / 100.0f;
+            float trans = fromPercent(Transparency.getValue());
             pcShapeMaterial->transparency = trans;
             ShapeAppearance.setTransparency(trans);
         }
@@ -149,7 +162,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
             getObject()->touch(true);
         }
         const App::Material& Mat = ShapeAppearance[0];
-        long value = (long)(100.0 * ShapeAppearance.getTransparency());
+        long value = toPercent(ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
             Transparency.setValue(value);
         }
