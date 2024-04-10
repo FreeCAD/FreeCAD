@@ -101,31 +101,14 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     return {};
 }
 
-TopoShape Feature::getSolid(const TopoShape& shape, bool force)
+TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
     }
-    int count = shape.countSubShapes(TopAbs_SOLID);
-    if (count > 1) {
-        if (getFeatureBody()) {
-            auto res = shape;
-            res.fixSolidOrientation();
-            return res;
-        }
-        throw Base::RuntimeError(
-            "Result has multiple solids.\n"
-            "To allow multiple solids, please set 'SingleSolid' property of the body to false");
-    }
-    if (count) {
-        auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
-        res.fixSolidOrientation();
-        return res;
-    }
-    if (force) {
-        return TopoShape();
-    }
-    return shape;
+    auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
+    res.fixSolidOrientation();
+    return res;
 }
 
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)

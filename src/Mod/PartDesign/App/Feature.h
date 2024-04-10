@@ -96,7 +96,7 @@ protected:
      */
     // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     static TopoDS_Shape getSolid(const TopoDS_Shape&);
-    TopoShape getSolid(const TopoShape&, bool force = true);
+    TopoShape getSolid(const TopoShape&);
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
     /// Grab any point from the given face
