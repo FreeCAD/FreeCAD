@@ -110,11 +110,38 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             print("TOPOLOGICAL NAMING PROBLEM IS PRESENT.")
 
+    def testPartDesignElementMapPad(self):
+        """ Test that padding a sketch results in a correct element map.  Note that comprehensive testing
+            of the geometric functionality of the Pad is in TestPad.py """
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        padSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        body.addObject(padSketch)
+        body.addObject(pad)
+        TestSketcherApp.CreateRectangleSketch(padSketch, (0, 0), (1, 1))
+        pad.Profile = padSketch
+        pad.Length = 1
+        # Act
+        self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        reverseMap = pad.Shape.ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        # Assert
+        self.assertEqual(pad.Shape.ElementMapSize,30)   # 4 duplicated Vertexes in here
+        self.assertEqual(len(reverseMap),26)
+        self.assertEqual(len(faces),6)
+        self.assertEqual(len(edges),12)
+        self.assertEqual(len(vertexes),8)
+
     def testPartDesignElementMapBox(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(box.Shape.childShapes()), 0)
@@ -131,7 +158,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         cylinder = self.Doc.addObject('PartDesign::AdditiveCylinder', 'Cylinder')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(cylinder.Shape.childShapes()), 0)
@@ -148,7 +175,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sphere = self.Doc.addObject('PartDesign::AdditiveSphere', 'Sphere')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(sphere.Shape.childShapes()), 0)
@@ -165,7 +192,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         cone = self.Doc.addObject('PartDesign::AdditiveCone', 'Cone')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(cone.Shape.childShapes()), 0)
@@ -182,7 +209,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         ellipsoid = self.Doc.addObject('PartDesign::AdditiveEllipsoid', 'Ellipsoid')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(ellipsoid.Shape.childShapes()), 0)
@@ -199,7 +226,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         torus = self.Doc.addObject('PartDesign::AdditiveTorus', 'Torus')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(torus.Shape.childShapes()), 0)
@@ -216,7 +243,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         prism = self.Doc.addObject('PartDesign::AdditivePrism', 'Prism')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(prism.Shape.childShapes()), 0)
@@ -233,7 +260,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         wedge = self.Doc.addObject('PartDesign::AdditiveWedge', 'Wedge')
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act / Assert
         self.assertEqual(len(wedge.Shape.childShapes()), 0)
@@ -256,7 +283,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subbox = self.Doc.addObject('PartDesign::SubtractiveBox', 'Box')
@@ -275,7 +302,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subcylinder = self.Doc.addObject('PartDesign::SubtractiveCylinder', 'Cylinder')
@@ -294,7 +321,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subsphere = self.Doc.addObject('PartDesign::SubtractiveSphere', 'Sphere')
@@ -313,7 +340,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subcone = self.Doc.addObject('PartDesign::SubtractiveCone', 'Cone')
@@ -332,7 +359,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subellipsoid = self.Doc.addObject('PartDesign::SubtractiveEllipsoid', 'Ellipsoid')
@@ -351,7 +378,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subtorus = self.Doc.addObject('PartDesign::SubtractiveTorus', 'Torus')
@@ -370,7 +397,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subprism = self.Doc.addObject('PartDesign::SubtractivePrism', 'Prism')
@@ -389,7 +416,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         subwedge = self.Doc.addObject('PartDesign::SubtractiveWedge', 'Wedge')
@@ -405,7 +432,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         pad = self.Doc.addObject('PartDesign::Pad', 'Pad')
@@ -423,7 +450,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         revolution = self.Doc.addObject('PartDesign::Revolution', 'Revolution')
@@ -444,7 +471,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch2, (0, 0), (2, 2))
         sketch2.Placement.move(App.Vector(0, 0, 3))
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         loft = self.Doc.addObject('PartDesign::AdditiveLoft', 'Loft')
@@ -465,7 +492,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
         sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch2, (0, 0), (2, 2))
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         pipe = self.Doc.addObject('PartDesign::AdditivePipe', 'Pipe')
@@ -484,7 +511,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         helix = self.Doc.addObject('PartDesign::AdditiveHelix', 'Helix')
@@ -519,6 +546,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         groove.Reversed = 0
         groove.Base = App.Vector(0, 0, 0)
         self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
         # Assert
         # print(groove.Shape.childShapes()[0].ElementMap)
         # TODO: Complete me as part of the subtractive features
@@ -543,7 +572,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad.Profile = sketch
         body.addObject(pad)
         self.Doc.recompute()
-        if not hasattr(body,"ElementMapVersion"):   # Skip without element maps.
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Assert
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
@@ -562,7 +591,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad = self.Doc.addObject('PartDesign::Pad', 'Pad')
         pad.Profile = plane
         self.Doc.recompute()
-        if not hasattr(pad,"ElementMapVersion"):   # Skip without element maps.
+        if pad.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Assert
         self.assertEqual(plane.Shape.ElementMapSize, 0)
