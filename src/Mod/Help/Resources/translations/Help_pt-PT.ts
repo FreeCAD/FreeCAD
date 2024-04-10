@@ -21,11 +21,10 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Defina isto como uma URL personalizada ou a pasta onde se localizam os ficheiros de ajuda.
+Pode facilmente transferir a documentação para uso off-line usando o Addon
+Manager e instalando a documentação &quot;offline-documentation&quot; addon. Se este campo
+for deixado em branco, o FreeCAD irá automaticamente procurar os ficheiros de ajuda na localização predefinida ( documentação de$USERAPPDATADIR/Mod/offline-).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -74,10 +73,10 @@ FreeCADwiki em https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation type="unfinished">The documentation pages will be fetched from an automatic Markdown conversion
-of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
-custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
-&apos;Pandoc&apos; Python module should be installed for optimal results.</translation>
+      <translation>As páginas de documentação serão obtidas a partir de uma conversão automática Markdown
+da wiki do FreeCAD, hospedada no FreeCAD&apos;s conta no GitHub. Isto pode ser estilizado com uma folha de estilo
+personalizada abaixo e pode parecer mais agradável que a opção wiki. O &apos;Markdown&apos; ou
+&apos;Pandoc&apos; módulo Python deve ser instalado para resultados ótimos.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -92,24 +91,24 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface.</translation>
+      <translation>A documentação será aberta numa novo separador dentro da interface do FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="173"/>
       <source>In a FreeCAD tab</source>
-      <translation type="unfinished">In a FreeCAD tab</translation>
+      <translation>Num separador do FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in your default web browser.</source>
-      <translation type="unfinished">The documentation will open in your default web browser.</translation>
+      <translation>A documentação será aberta no seu navegador predefinido da web.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="208"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open whlle working in the 3D view.</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view.</translation>
+      <translation>A documentação será aberta em uma caixa de diálogo ancorável dentro da janela do FreeCAD,
+que lhe permite mantê-la aberta enquanto trabalha na vista 3D.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="243"/>

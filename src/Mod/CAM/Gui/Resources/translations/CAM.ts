@@ -5,7 +5,7 @@
     <name>CmdPathArea</name>
     <message>
         <location filename="../../Command.cpp" line="46"/>
-        <source>Path</source>
+        <source>CAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23,7 +23,7 @@
     <name>CmdPathAreaWorkplane</name>
     <message>
         <location filename="../../Command.cpp" line="128"/>
-        <source>Path</source>
+        <source>CAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -41,7 +41,7 @@
     <name>CmdPathCompound</name>
     <message>
         <location filename="../../Command.cpp" line="218"/>
-        <source>Path</source>
+        <source>CAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -59,7 +59,7 @@
     <name>CmdPathShape</name>
     <message>
         <location filename="../../Command.cpp" line="270"/>
-        <source>Path</source>
+        <source>CAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1208,6 +1208,16 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
         <location filename="../panels/PageOpDrillingEdit.ui" line="169"/>
         <source>Chip Break</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
+        <source>Feed retract</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpDrillingEdit.ui" line="179"/>
+        <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4847,55 +4857,61 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Op/Drilling.py" line="105"/>
-        <location filename="../../../Path/Op/Drilling.py" line="129"/>
+        <location filename="../../../Path/Op/Drilling.py" line="137"/>
         <source>Use chipbreaking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="117"/>
+        <location filename="../../../Path/Op/Drilling.py" line="114"/>
+        <location filename="../../../Path/Op/Drilling.py" line="194"/>
+        <source>Use G85 boring cycle with feed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Op/Drilling.py" line="125"/>
         <source>Incremental Drill depth before retracting to clear chips</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="123"/>
+        <location filename="../../../Path/Op/Drilling.py" line="131"/>
         <source>Enable pecking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="135"/>
+        <location filename="../../../Path/Op/Drilling.py" line="143"/>
         <source>The time to dwell between peck cycles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="141"/>
+        <location filename="../../../Path/Op/Drilling.py" line="149"/>
         <source>Enable dwell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="150"/>
+        <location filename="../../../Path/Op/Drilling.py" line="158"/>
         <source>Calculate the tip length and subtract from final depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="158"/>
-        <location filename="../../../Path/Op/Drilling.py" line="222"/>
+        <location filename="../../../Path/Op/Drilling.py" line="166"/>
+        <location filename="../../../Path/Op/Drilling.py" line="236"/>
         <source>Controls tool retract height between holes in same op, Default=G98: safety height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="167"/>
+        <location filename="../../../Path/Op/Drilling.py" line="175"/>
         <source>The height where cutting feed rate starts and retract height for peck operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="173"/>
+        <location filename="../../../Path/Op/Drilling.py" line="181"/>
         <source>How far the drilling depth is extended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Drilling.py" line="180"/>
-        <location filename="../../../Path/Op/Drilling.py" line="212"/>
-        <location filename="../../../Path/Op/Gui/Drilling.py" line="134"/>
+        <location filename="../../../Path/Op/Drilling.py" line="188"/>
+        <location filename="../../../Path/Op/Drilling.py" line="226"/>
+        <location filename="../../../Path/Op/Gui/Drilling.py" line="148"/>
         <source>Apply G99 retraction: only retract to RetractHeight between holes in this operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7440,12 +7456,12 @@ Aborting op creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Gui/Drilling.py" line="189"/>
+        <location filename="../../../Path/Op/Gui/Drilling.py" line="209"/>
         <source>Drilling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Gui/Drilling.py" line="193"/>
+        <location filename="../../../Path/Op/Gui/Drilling.py" line="213"/>
         <source>Creates a Drilling toolpath from the features of a base object</source>
         <translation type="unfinished"></translation>
     </message>

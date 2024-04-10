@@ -940,22 +940,22 @@ in modo da evitare l'intersezione automatica.</translation>
       <translation>Sposta un oggetto all'interno dell'albero</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
       <source>Mirrored</source>
       <translation>Specchiato</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
       <source>Make LinearPattern</source>
       <translation>Serie rettangolare</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>PolarPattern</source>
       <translation>Serie polare</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
       <source>Scaled</source>
       <translation>Scalato</translation>
     </message>
@@ -2108,7 +2108,7 @@ fare nuovamente clic per terminare la selezione</translation>
       <translation>Occorrenze</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
       <source>Error</source>
       <translation>Errore</translation>
     </message>
@@ -2722,7 +2722,7 @@ misurata lungo la direzione specificata</translation>
       <translation>Occorrenze</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
       <source>Error</source>
       <translation>Errore</translation>
     </message>
@@ -4898,47 +4898,41 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
-      <source>Error: Could not build</source>
-      <translation>Errore: impossibile generare</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="252"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Errore: non c'è nulla da sottrarre</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="276"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="306"/>
       <source>Error: Result has multiple solids</source>
       <translation>Errore: il risultato ha più solidi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Adding the helix failed</source>
       <translation>Errore: l'aggiunta dell'elica non è riuscita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="289"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Errore: Intersezione dell'elica fallita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Errore: sottrazione dell'elica non riuscita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Errore: impossibile creare la faccia dallo schizzo</translation>
     </message>
@@ -5009,8 +5003,8 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Boolean operation failed</source>
       <translation>Operazione booleana fallita</translation>
     </message>
@@ -5418,22 +5412,22 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Nessun originale collegato alla funzione trasformata.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="217"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Impossibile trasformare la forma di supporto non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="246"/>
       <source>Transformation failed</source>
       <translation>Trasformazione fallita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>La forma della funzione additiva/sottrattiva è vuota</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Solo le lavorazioni additive e sottrattive possono essere trasformate</translation>
     </message>
