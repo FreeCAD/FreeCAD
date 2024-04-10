@@ -29,7 +29,7 @@ set(Start_Scripts
 
 if (BUILD_GUI)
     add_subdirectory(Gui)
-    list(APPEND Start_Scripts InitGui.py)
+    list(APPEND Start_Scripts InitGui.py StartMigrator.py)
 endif (BUILD_GUI)
 
 add_custom_target(StartScripts ALL
