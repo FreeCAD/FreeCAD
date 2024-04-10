@@ -500,9 +500,8 @@ class _CommandStructure:
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
-            self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        self.continueCmd = params.get_param("ContinueMode")
+        value4.setChecked(self.continueCmd)
         grid.addWidget(label4,8,0,1,1)
         grid.addWidget(value4,8,1,1,1)
 
@@ -590,8 +589,7 @@ class _CommandStructure:
     def setContinue(self,i):
 
         self.continueCmd = bool(i)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.continueMode = bool(i)
+        params.set_param("ContinueMode", bool(i))
 
     def setCategory(self,i):
 
