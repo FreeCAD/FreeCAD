@@ -3482,7 +3482,7 @@ Note: for 2D only setting for x is possible,
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="878"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="944"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3494,7 +3494,7 @@ Note: for 2D only setting for x is possible,
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="879"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="945"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3630,7 +3630,7 @@ Note: for 2D only setting for x is possible,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemConstraint.cpp" line="141"/>
+        <location filename="../../ViewProviderFemConstraint.cpp" line="142"/>
         <source>Edit analysis feature</source>
         <translation type="unfinished"></translation>
     </message>

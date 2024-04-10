@@ -934,22 +934,22 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
         <source>Mirrored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
         <source>Make LinearPattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
         <source>PolarPattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
         <source>Scaled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4968,8 +4968,8 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     </message>
     <message>
         <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-        <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
-        <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
         <source>Boolean operation failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5375,22 +5375,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="217"/>
         <source>Cannot transform invalid support shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="246"/>
         <source>Transformation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
         <source>Shape of additive/subtractive feature is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+        <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
         <source>Only additive and subtractive features can be transformed</source>
         <translation type="unfinished"></translation>
     </message>

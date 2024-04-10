@@ -1239,28 +1239,28 @@ installed addons will be checked for available updates
       <translation>Autor</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="165"/>
+      <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
       <translation>Neue Python-Version erkannt</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="170"/>
+      <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>Dies scheint das erste Mal zu sein, dass diese Version von Python mit dem Add-on Manager verwendet wurde. Möchten Sie die gleichen automatisch installierten Abhängigkeiten für die neue Version installieren?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="200"/>
+      <location filename="../../manage_python_dependencies.py" line="199"/>
       <source>Processing, please wait...</source>
       <translation>In Bearbeitung, bitte warten...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="248"/>
+      <location filename="../../manage_python_dependencies.py" line="247"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Aktualisierung</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="343"/>
+      <location filename="../../manage_python_dependencies.py" line="342"/>
       <source>Updating...</source>
       <translation>Wird aktualisiert...</translation>
     </message>
@@ -2401,17 +2401,17 @@ installed addons will be checked for available updates
       <translation>Einige Addons wurden möglicherweise aktualisiert</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="83"/>
+      <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
       <translation>Laden der Info für {} aus dem FreeCAD Makro Rezeptenwiki...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="91"/>
+      <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
       <translation>Lade Seite für {} von {}...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="109"/>
+      <location filename="../../addonmanager_readme_controller.py" line="108"/>
       <source>Failed to download data from {} -- received response code {}.</source>
       <translation>Fehler beim Herunterladen der Daten von {} -- Empfangener Antwortcode {}.</translation>
     </message>

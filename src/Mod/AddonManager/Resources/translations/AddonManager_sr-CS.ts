@@ -1241,28 +1241,28 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
       <translation>Autor</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="165"/>
+      <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
       <translation>Otkrivena je nova verzija Python-a</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="170"/>
+      <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>Čini se da je ovo prvi put da je ova verzija Python-a korišćena sa menadžerom dodataka. Da li želiš za njega da instaliraš iste automatski instalirane zavisnosti?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="200"/>
+      <location filename="../../manage_python_dependencies.py" line="199"/>
       <source>Processing, please wait...</source>
       <translation>Obrađuje se, sačekaj...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="248"/>
+      <location filename="../../manage_python_dependencies.py" line="247"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Ažuriranje</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="343"/>
+      <location filename="../../manage_python_dependencies.py" line="342"/>
       <source>Updating...</source>
       <translation>Ažuriranje...</translation>
     </message>
@@ -2403,17 +2403,17 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
       <translation>neki dodaci su možda ažurirani</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="83"/>
+      <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
       <translation type="unfinished">Loading info for {} from the FreeCAD Macro Recipes wiki...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="91"/>
+      <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
       <translation>Učitavanje stranice za {} od {}...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="109"/>
+      <location filename="../../addonmanager_readme_controller.py" line="108"/>
       <source>Failed to download data from {} -- received response code {}.</source>
       <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
     </message>
