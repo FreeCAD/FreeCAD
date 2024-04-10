@@ -168,8 +168,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(cylinder)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 8)
+        self.assertEqual(len(reverseMap),8)
+        self.assertEqual(len(faces),3)
+        self.assertEqual(len(edges),3)
+        self.assertEqual(len(vertexes),2)
 
     def testPartDesignElementMapSphere(self):
         # Arrange
@@ -185,8 +193,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(sphere)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 6)
+        self.assertEqual(len(reverseMap),6)
+        self.assertEqual(len(faces),1)
+        self.assertEqual(len(edges),3)
+        self.assertEqual(len(vertexes),2)
 
     def testPartDesignElementMapCone(self):
         # Arrange
@@ -202,8 +218,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(cone)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 8)
+        self.assertEqual(len(reverseMap),8)
+        self.assertEqual(len(faces),3)
+        self.assertEqual(len(edges),3)
+        self.assertEqual(len(vertexes),2)
 
     def testPartDesignElementMapEllipsoid(self):
         # Arrange
@@ -219,8 +243,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(ellipsoid)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 6)
+        self.assertEqual(len(reverseMap),6)
+        self.assertEqual(len(faces),1)
+        self.assertEqual(len(edges),3)
+        self.assertEqual(len(vertexes),2)
 
     def testPartDesignElementMapTorus(self):
         # Arrange
@@ -236,8 +268,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(torus)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 4)
+        self.assertEqual(len(reverseMap),4)
+        self.assertEqual(len(faces),1)
+        self.assertEqual(len(edges),2)
+        self.assertEqual(len(vertexes),1)
 
     def testPartDesignElementMapPrism(self):
         # Arrange
@@ -253,8 +293,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(prism)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 38)
+        self.assertEqual(len(reverseMap),38)
+        self.assertEqual(len(faces),8)
+        self.assertEqual(len(edges),18)
+        self.assertEqual(len(vertexes),12)
 
     def testPartDesignElementMapWedge(self):
         # Arrange
@@ -270,8 +318,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(wedge)
         self.assertEqual(len(body.Shape.childShapes()), 0)
         self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        self.assertEqual(len(reverseMap),26)
+        self.assertEqual(len(faces),6)
+        self.assertEqual(len(edges),12)
+        self.assertEqual(len(vertexes),8)
 
         # body.BaseFeature = box
 
