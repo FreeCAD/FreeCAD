@@ -125,7 +125,8 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
                 token != '#' &&
                 token != ExpressionParser::IDENTIFIER &&
                 token != ExpressionParser::STRING &&
-                token != ExpressionParser::UNIT)
+                token != ExpressionParser::UNIT && 
+                token != ExpressionParser::INTEGER)
                 break;
         }
         ++i;
