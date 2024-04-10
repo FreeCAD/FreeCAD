@@ -209,7 +209,7 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             help_string_IterationsMaximum
         )
-        niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
+        niter = ccx_prefs.GetInt("AnalysisMaxIterations", 2000)
         obj.IterationsMaximum = niter
 
     if hasattr(obj, "IterationsThermoMechMaximum"):
