@@ -48,6 +48,9 @@ def write_femelement_material(f, ccxwriter):
             return True
         return False
 
+    f.write("** Physical constants for SI(mm) unit system with Kelvins\n")
+    f.write("*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11\n")
+
     f.write("\n{}\n".format(59 * "*"))
     f.write("** Materials\n")
     f.write("** see information about units at file end\n")
