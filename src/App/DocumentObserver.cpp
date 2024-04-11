@@ -342,6 +342,22 @@ bool SubObjectT::operator==(const SubObjectT &other) const {
         && subname == other.subname;
 }
 
+namespace
+{
+bool normalizeConvertIndex(const std::vector<App::DocumentObject*>& objs, const unsigned int idx)
+{
+    if (auto ext = objs[idx - 1]->getExtensionByType<App::LinkBaseExtension>(true)) {
+        if ((ext->getElementCountValue() != 0) && !ext->getShowElementValue()) {
+            // if the parent is a collapsed link array element, then we
+            // have to keep the index no matter what, because there is
+            // no sub-object corresponding to an array element.
+            return true;
+        }
+    }
+    return false;
+}
+}  // namespace
+
 bool SubObjectT::normalize(NormalizeOptions options)
 {
     bool noElement = options.testFlag(NormalizeOption::NoElement);
@@ -352,17 +368,19 @@ bool SubObjectT::normalize(NormalizeOptions options)
     std::ostringstream ss;
     std::vector<int> subs;
     auto obj = getObject();
-    if(!obj)
+    if (!obj) {
         return false;
+    }
     auto objs = obj->getSubObjectList(subname.c_str(), &subs, flatten);
-    if (objs.empty())
+    if (objs.empty()) {
         return false;
-    for (unsigned i=1; i<objs.size(); ++i) {
+    }
+    for (unsigned i = 1; i < objs.size(); ++i) {
         // Keep digit only subname, as it maybe an index to an array, which does
         // not expand its elements as objects.
-        const char *end = subname.c_str() + subs[i];
-        const char *sub = end - 2;
-        for(;;--sub) {
+        const char* end = subname.c_str() + subs[i];
+        const char* sub = end - 2;
+        for (;; --sub) {
             if (sub < subname.c_str()) {
                 sub = subname.c_str();
                 break;
@@ -372,33 +390,30 @@ bool SubObjectT::normalize(NormalizeOptions options)
                 break;
             }
         }
-        bool _keepSub;
-        if (!std::isdigit(sub[0]))
+        bool _keepSub {};
+        if (std::isdigit(sub[0]) == 0) {
             _keepSub = keepSub;
-        else if (!convertIndex)
-            _keepSub = true;
-        else {
-            _keepSub = false;
-            if (auto ext = objs[i-1]->getExtensionByType<LinkBaseExtension>(true)) {
-                if (ext->getElementCountValue() && !ext->getShowElementValue()) {
-                    // if the parent is a collapsed link array element, then we
-                    // have to keep the index no matter what, because there is
-                    // no sub-object corresponding to an array element.
-                    _keepSub = true;
-                }
-            }
         }
-        if (_keepSub)
+        else if (!convertIndex) {
+            _keepSub = true;
+        }
+        else {
+            _keepSub = normalizeConvertIndex(objs, i);
+        }
+        if (_keepSub) {
             ss << std::string(sub, end);
-        else
+        }
+        else {
             ss << objs[i]->getNameInDocument() << ".";
+        }
     }
     if (objs.size() > 1 && objs.front()->getSubObject(ss.str().c_str()) != objs.back()) {
         // something went wrong
         return false;
     }
-    if (!noElement)
+    if (!noElement) {
         ss << getOldElementName();
+    }
     std::string sub = ss.str();
     if (objs.front() != obj || subname != sub) {
         *this = objs.front();
@@ -431,13 +446,15 @@ const char *SubObjectT::getElementName() const {
     return Data::findElementName(subname.c_str());
 }
 
-bool SubObjectT::hasSubObject() const {
+bool SubObjectT::hasSubObject() const
+{
     return Data::findElementName(subname.c_str()) != subname.c_str();
 }
 
-bool SubObjectT::hasSubElement() const {
+bool SubObjectT::hasSubElement() const
+{
     auto element = getElementName();
-    return element && element[0];
+    return (element != nullptr) && (element[0] != 0);
 }
 
 std::string SubObjectT::getNewElementName() const {

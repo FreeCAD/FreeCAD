@@ -252,22 +252,23 @@ public:
     std::string getSubObjectPython(bool force=true) const;
 
     /// Options used by normalize()
-    enum class NormalizeOption {
+    enum class NormalizeOption : uint8_t
+    {
         /// Do not include sub-element reference in the output path
-        NoElement    = 0x01,
+        NoElement = 0x01,
         /** Do not flatten the output path. If not specified, the output path
          * will be flatten to exclude intermediate objects that belong to the
          * same geo feature group before resolving. For example,
          *      Part.Fusion.Box. -> Part.Box.
          */
-        NoFlatten    = 0x02,
+        NoFlatten = 0x02,
         /** Do not change the sub-object component inside the path. Each
          * component of the subname object path can be either the object
          * internal name, the label of the object if starts with '$', or an
          * integer index. If this option is not specified, each component will
          * be converted to object internal name, except for integer index.
          */
-        KeepSubName  = 0x04,
+        KeepSubName = 0x04,
         /** Convert integer index in the path to sub-object internal name */
         ConvertIndex = 0x08,
     };
