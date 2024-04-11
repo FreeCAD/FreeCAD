@@ -54,6 +54,15 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
             heatflux_obj.AmbientTemp,
             heatflux_obj.FilmCoef * 0.001
         )
+
+    elif heatflux_obj.ConstraintType == "Radiation":
+        heatflux_key_word = "RADIATE"
+        heatflux_facetype = "R"
+        heatflux_values = "{:.13G},{:.13G}".format(
+            heatflux_obj.AmbientTemp,
+            heatflux_obj.Emissivity
+        )
+
     elif heatflux_obj.ConstraintType == "DFlux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
