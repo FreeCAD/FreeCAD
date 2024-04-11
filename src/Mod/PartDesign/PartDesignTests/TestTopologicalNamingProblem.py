@@ -532,6 +532,37 @@ class TestTopologicalNamingProblem(unittest.TestCase):
     def testPartDesignElementMapSubHelix(self):
         pass  # TODO
 
+    def testPartDesignElementMapShapeBinder(self):
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        shapebinder = self.Doc.addObject('PartDesign::ShapeBinder', 'ShapeBinder')
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        # Act / Assert
+        body.addObject(box)
+        body.addObject(shapebinder)
+        shapebinder.Support = [box]
+        self.Doc.recompute()
+        self.assertEqual(len(shapebinder.Shape.childShapes()), 1)
+        self.assertEqual(shapebinder.Shape.childShapes()[0].ElementMapSize, 26)
+
+    def testPartDesignElementMapSubShapeBinder(self):
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        subshapebinder = self.Doc.addObject('PartDesign::SubShapeBinder', 'SubShapeBinder')
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        # Act / Assert
+        body.addObject(box)
+        body.addObject(subshapebinder)
+        subshapebinder.Support = [ (box, ["Face1"]) ]
+        self.assertEqual(len(body.Shape.childShapes()), 0)
+        self.Doc.recompute()
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(subshapebinder.Shape.childShapes()[0].ElementMapSize, 9)
+
     def testSketchElementMap(self):
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
