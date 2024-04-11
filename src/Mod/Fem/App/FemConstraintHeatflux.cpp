@@ -31,19 +31,20 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"DFlux", "Convection", nullptr};
+static const char* ConstraintTypes[] = {"DFlux", "Convection", "Radiation", nullptr};
 
 ConstraintHeatflux::ConstraintHeatflux()
 {
     ADD_PROPERTY(AmbientTemp, (0.0));
     /*ADD_PROPERTY(FaceTemp,(0.0));*/
     ADD_PROPERTY(FilmCoef, (0.0));
+    ADD_PROPERTY(Emissivity, (0.0));
     ADD_PROPERTY(DFlux, (0.0));
     ADD_PROPERTY_TYPE(ConstraintType,
                       (1),
                       "ConstraintHeatflux",
                       (App::PropertyType)(App::Prop_None),
-                      "Type of constraint, surface convection or surface heat flux");
+                      "Type of constraint, surface convection, radiation or surface heat flux");
     ConstraintType.setEnums(ConstraintTypes);
 }
 
