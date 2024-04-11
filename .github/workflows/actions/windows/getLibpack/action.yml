@@ -55,7 +55,7 @@ runs:
       run: |
         mkdir -p ${{ inputs.libpackdir }}
     - name: Get cached version
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       id: getCached
       with:
         path: ${{ inputs.libpackdir }}
@@ -70,7 +70,7 @@ runs:
         rm -rf libpacktemp
     - name: Save version to cache
       if: steps.getCached.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{ inputs.libpackdir }}
         key: ${{ steps.getCached.outputs.cache-primary-key }}
