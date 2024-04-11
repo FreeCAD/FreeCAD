@@ -62,6 +62,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
             &TaskFemConstraintHeatflux::onReferenceDeleted);
 
     connect(ui->rb_convection, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Conv);
+    connect(ui->rb_radiation, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Rad);
     connect(ui->rb_dflux, &QRadioButton::clicked, this, &TaskFemConstraintHeatflux::Flux);
 
     connect(ui->if_heatflux,
@@ -76,6 +77,10 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
             qOverload<double>(&InputField::valueChanged),
             this,
             &TaskFemConstraintHeatflux::onFilmCoefChanged);
+    connect(ui->if_emissivity,
+            qOverload<double>(&InputField::valueChanged),
+            this,
+            &TaskFemConstraintHeatflux::onEmissivityChanged);
     connect(ui->lw_references,
             &QListWidget::itemClicked,
             this,
@@ -87,6 +92,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->if_ambienttemp->blockSignals(true);
     // ui->if_facetemp->blockSignals(true);
     ui->if_filmcoef->blockSignals(true);
+    ui->if_emissivity->blockSignals(true);
     ui->lw_references->blockSignals(true);
     ui->btnAdd->blockSignals(true);
     ui->btnRemove->blockSignals(true);
@@ -104,6 +110,9 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->if_filmcoef->setMinimum(0);
     ui->if_filmcoef->setMaximum(FLOAT_MAX);
 
+    ui->if_emissivity->setMinimum(0);
+    ui->if_emissivity->setMaximum(FLOAT_MAX);
+
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Convection") {
         ui->rb_convection->setChecked(true);
@@ -115,9 +124,19 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
                                           Base::Unit::ThermalTransferCoefficient);
         ui->if_filmcoef->setValue(f);
     }
+    else if (constraint_type == "Radiation") {
+        ui->rb_radiation->setChecked(true);
+        ui->sw_heatflux->setCurrentIndex(1);
+        Base::Quantity t =
+            Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
+        ui->if_ambienttemp->setValue(t);
+        Base::Quantity e = Base::Quantity(pcConstraint->Emissivity.getValue(),
+                                          Base::Unit::ThermalTransferCoefficient);
+        ui->if_emissivity->setValue(e);
+    }
     else if (constraint_type == "DFlux") {
         ui->rb_dflux->setChecked(true);
-        ui->sw_heatflux->setCurrentIndex(1);
+        ui->sw_heatflux->setCurrentIndex(2);
         Base::Quantity c = Base::Quantity(pcConstraint->DFlux.getValue(), Base::Unit::HeatFlux);
         ui->if_heatflux->setValue(c);
     }
@@ -137,6 +156,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->if_ambienttemp->blockSignals(false);
     // ui->if_facetemp->blockSignals(false);
     ui->if_filmcoef->blockSignals(false);
+    ui->if_emissivity->blockSignals(false);
     ui->lw_references->blockSignals(false);
     ui->btnAdd->blockSignals(false);
     ui->btnRemove->blockSignals(false);
@@ -169,6 +189,13 @@ void TaskFemConstraintHeatflux::onFilmCoefChanged(double val)
     pcConstraint->FilmCoef.setValue(val);  // [W]/[[m^2]/[K]]
 }
 
+void TaskFemConstraintHeatflux::onEmissivityChanged(double val)
+{
+    Fem::ConstraintHeatflux* pcConstraint =
+        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    pcConstraint->Emissivity.setValue(val);  // [-]
+}
+
 void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
 {
     Fem::ConstraintHeatflux* pcConstraint =
@@ -194,6 +221,24 @@ void TaskFemConstraintHeatflux::Conv()
     ui->sw_heatflux->setCurrentIndex(0);
 }
 
+void TaskFemConstraintHeatflux::Rad()
+{
+    Fem::ConstraintHeatflux* pcConstraint =
+        static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    std::string name = ConstraintView->getObject()->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.ConstraintType = %s",
+                            name.c_str(),
+                            get_constraint_type().c_str());
+    Base::Quantity t = Base::Quantity(300, Base::Unit::Temperature);
+    ui->if_ambienttemp->setValue(t);
+    pcConstraint->AmbientTemp.setValue(300);
+    Base::Quantity e = Base::Quantity(1, Base::Unit::ThermalTransferCoefficient);
+    ui->if_emissivity->setValue(e);
+    pcConstraint->Emissivity.setValue(1);
+    ui->sw_heatflux->setCurrentIndex(1);
+}
+
 void TaskFemConstraintHeatflux::Flux()
 {
     Fem::ConstraintHeatflux* pcConstraint =
@@ -206,7 +251,7 @@ void TaskFemConstraintHeatflux::Flux()
     Base::Quantity c = Base::Quantity(0, Base::Unit::HeatFlux);
     ui->if_heatflux->setValue(c);
     pcConstraint->DFlux.setValue(0);
-    ui->sw_heatflux->setCurrentIndex(1);
+    ui->sw_heatflux->setCurrentIndex(2);
 }
 
 void TaskFemConstraintHeatflux::addToSelection()
@@ -376,11 +421,22 @@ double TaskFemConstraintHeatflux::getFilmCoef() const
     return filmcoef_in_units;
 }
 
+double TaskFemConstraintHeatflux::getEmissivity() const
+{
+    Base::Quantity emissivity = ui->if_emissivity->getQuantity();
+    double emissivity_in_units =
+        emissivity.getValueAs(Base::Quantity(1.0, Base::Unit::ThermalTransferCoefficient));
+    return emissivity_in_units;
+}
+
 std::string TaskFemConstraintHeatflux::get_constraint_type() const
 {
     std::string type;
     if (ui->rb_convection->isChecked()) {
         type = "\"Convection\"";
+    }
+    else if (ui->rb_radiation->isChecked()) {
+        type = "\"Radiation\"";
     }
     else if (ui->rb_dflux->isChecked()) {
         type = "\"DFlux\"";
@@ -399,9 +455,11 @@ void TaskFemConstraintHeatflux::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         ui->if_ambienttemp->blockSignals(true);
         ui->if_filmcoef->blockSignals(true);
+        ui->if_emissivity->blockSignals(true);
         ui->retranslateUi(proxy);
         ui->if_ambienttemp->blockSignals(false);
         ui->if_filmcoef->blockSignals(false);
+        ui->if_emissivity->blockSignals(true);
     }
 }
 
@@ -464,6 +522,11 @@ bool TaskDlgFemConstraintHeatflux::accept()
                                 "App.ActiveDocument.%s.FilmCoef = %f",
                                 name.c_str(),
                                 parameterHeatflux->getFilmCoef());
+
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Emissivity = %f",
+                                name.c_str(),
+                                parameterHeatflux->getEmissivity());
 
         scale = parameterHeatflux->getScale();  // OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
