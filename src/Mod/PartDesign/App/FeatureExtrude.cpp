@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -567,12 +568,16 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
             // Find a valid face or datum plane to extrude up to
             TopoShape upToFace;
-            if (method == "UpToFace") {
-                getUpToFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.move(invObjLoc);
+
+            if (method != "UpToShape") {
+                if (method == "UpToFace") {
+                    getUpToFaceFromLinkSub(upToFace, UpToFace);
+                    upToFace.move(invObjLoc);
+                }
+                getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
+                addOffsetToFace(upToFace, dir, Offset.getValue());
             }
-            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
-            addOffsetToFace(upToFace, dir, Offset.getValue());
+
 
             if (!supportface.hasSubShape(TopAbs_WIRE)) {
                 supportface = TopoShape();
@@ -627,7 +632,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                                         upToFace,
                                         dir,
                                         TopoShape::PrismMode::None,
-                                        false /*CheckUpToFaceLimits.getValue()*/);
+                                        true /*CheckUpToFaceLimits.getValue()*/);
         }
         else {
             Part::ExtrusionParameters params;

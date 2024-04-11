@@ -477,7 +477,7 @@ public:
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
     bool isCoplanar(const TopoShape& other, double tol = -1) const;
-    bool findPlane(gp_Pln& plane, double tol = -1) const;
+    bool findPlane(gp_Pln& plane, double tol = -1, double atol = -1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
