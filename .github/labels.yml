@@ -1,69 +1,69 @@
 # Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
 # source:
-# - any: ['src/**/*', '!src/docs/*']
+# - any: ['src/*/*', '!src/docs/*']
 
 Core:
-- 'src/App/**/*'
-- 'src/Base/**/*'
-- 'src/Gui/**/*'
+- 'src/App/*/*'
+- 'src/Base/*/*'
+- 'src/Gui/*/*'
 
 :octocat::
-- '.github/**/*'
+- '.github/*/*'
 
 Addon Manager:
-- 'src/Mod/AddonManager/**/*'
+- 'src/Mod/AddonManager/*/*'
 
 Materials:
-- 'src/Mod/Material/**/*'
+- 'src/Mod/Material/*/*'
 
 WB Arch:
-- 'src/Mod/Arch/**/*'
+- 'src/Mod/Arch/*/*'
 
 WB Assembly:
-- 'src/Mod/Assembly/**/*'
+- 'src/Mod/Assembly/*/*'
 
 WB Draft:
-- 'src/Mod/Draft/**/*'
+- 'src/Mod/Draft/*/*'
 
 WB FEM:
-- 'src/Mod/Fem/**/*'
+- 'src/Mod/Fem/*/*'
 
 WB Mesh:
-- 'src/Mod/Mesh/**/*'
+- 'src/Mod/Mesh/*/*'
 
 WB MeshPart:
-- 'src/Mod/MeshPart/**/*'
+- 'src/Mod/MeshPart/*/*'
 
 WB OpenSCAD:
-- 'src/Mod/OpenSCAD/**/*'
+- 'src/Mod/OpenSCAD/*/*'
 
 WB Part:
-- 'src/Mod/Part/**/*'
+- 'src/Mod/Part/*/*'
 
 WB Part Design:
-- 'src/Mod/PartDesign/**/*'
+- 'src/Mod/PartDesign/*/*'
 
 WB CAM:
-- 'src/Mod/CAM/**/*'
+- 'src/Mod/CAM/*/*'
 
 WB Points:
-- 'src/Mod/Points/**/*'
+- 'src/Mod/Points/*/*'
 
 WB ReverseEngineering:
-- 'src/Mod/ReverseEngineering/**/*'
+- 'src/Mod/ReverseEngineering/*/*'
 
 WB Sketcher:
-- 'src/Mod/Sketcher/**/*'
+- 'src/Mod/Sketcher/*/*'
 
 WB Spreadsheet:
-- 'src/Mod/Spreadsheet/**/*'
+- 'src/Mod/Spreadsheet/*/*'
 
 WB Surface:
-- 'src/Mod/Surface/**/*/'
+- 'src/Mod/Surface/*/*/'
 
 WB TechDraw:
-- 'src/Mod/TechDraw/**/*'
+- 'src/Mod/TechDraw/*/*'
 
 WB Test:
-- 'src/Mod/Test/**/*'
+- 'src/Mod/Test/*/*'
 
