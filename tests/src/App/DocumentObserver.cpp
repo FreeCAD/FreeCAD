@@ -52,8 +52,9 @@ TEST_F(DocumentObserverTest, hasSubObject)
     // A subname that doesn't contain a sub object name
     auto subObjTNameWithoutSubObj {"Line"};
     // A subname that contains a sub object name
-    auto subObjTNameWithSubObj {
-        std::string(std::string(subObjTNameWithoutSubObj) + ".Edge1").c_str()};
+    auto subObjTNameWithSubObj {std::string()};
+    subObjTNameWithSubObj += subObjTNameWithoutSubObj;
+    subObjTNameWithSubObj += ".Edge1";
 
     // A variable used to store the result of the call to the method SubObjectT::hasSubObject() by
     // the object subObjTWithoutSubObj
@@ -64,7 +65,7 @@ TEST_F(DocumentObserverTest, hasSubObject)
 
     // Setting the subnames of the App::SubObjectT() objects defined previously
     subObjTWithoutSubObj.setSubName(subObjTNameWithoutSubObj);
-    subObjTWithSubObj.setSubName(subObjTNameWithSubObj);
+    subObjTWithSubObj.setSubName(subObjTNameWithSubObj.c_str());
 
     // Act
 
@@ -94,9 +95,10 @@ TEST_F(DocumentObserverTest, hasSubElement)
     // A subname that doesn't contain a sub element name
     auto subObjTNameWithoutSubEl {"Sketch."};
     // A subname that contains a sub element name
-    auto subObjTNameWithSubEl {
-        std::string(std::string(subObjTNameWithoutSubEl) + ELEMENT_MAP_PREFIX + "e1.ExternalEdge1")
-            .c_str()};
+    auto subObjTNameWithSubEl {std::string()};
+    subObjTNameWithSubEl += subObjTNameWithoutSubEl;
+    subObjTNameWithSubEl += ELEMENT_MAP_PREFIX;
+    subObjTNameWithSubEl += "e1.ExternalEdge1";
 
     // A variable used to store the result of the call to the method SubObjectT::hasSubElement() by
     // the object subObjTWithoutSubEl
@@ -107,7 +109,7 @@ TEST_F(DocumentObserverTest, hasSubElement)
 
     // Setting the subnames of the App::SubObjectT() objects defined previously
     subObjTWithoutSubEl.setSubName(subObjTNameWithoutSubEl);
-    subObjTWithSubEl.setSubName(subObjTNameWithSubEl);
+    subObjTWithSubEl.setSubName(subObjTNameWithSubEl.c_str());
 
     // Act
 
@@ -208,7 +210,7 @@ TEST_F(DocumentObserverTest, normalize)
     auto subObjTNoFlatten {SubObjectT(lGrp, subName.c_str())};
     // An App::SubObjectT object used to test SubObjectT::normalize() with the option argument set
     // to SubObjectT::NormalizeOption::KeepSubName
-    auto subObjTKeepSubName {SubObjectT(lGrp, subName.replace(0, 9, "0").c_str())};
+    auto subObjTKeepSubName {SubObjectT(lGrp, subName.replace(0, strlen(partName), "0").c_str())};
     // An App::SubObjectT object used to test SubObjectT::normalize() with the option argument set
     // to SubObjectT::NormalizeOption::ConvertIndex
     auto subObjTConvertIndex {SubObjectT(lGrp, subName.c_str())};
@@ -354,7 +356,7 @@ TEST_F(DocumentObserverTest, normalized)
     auto subObjTNoFlatten {SubObjectT(lGrp, subName.c_str())};
     // An App::SubObjectT object used to test SubObjectT::normalized() with the option argument set
     // to SubObjectT::NormalizeOption::KeepSubName
-    auto subObjTKeepSubName {SubObjectT(lGrp, subName.replace(0, 9, "0").c_str())};
+    auto subObjTKeepSubName {SubObjectT(lGrp, subName.replace(0, strlen(partName), "0").c_str())};
     // An App::SubObjectT object used to test SubObjectT::normalized() with the option argument set
     // to SubObjectT::NormalizeOption::ConvertIndex
     auto subObjTConvertIndex {SubObjectT(lGrp, subName.c_str())};

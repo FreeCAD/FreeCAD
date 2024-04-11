@@ -386,8 +386,8 @@ public:
      *
      * @return Return a list of object along the path.
      */
-    std::vector<DocumentObject*> getSubObjectList(const char *subname,
-                                                  std::vector<int> *subsizes = nullptr,
+    std::vector<DocumentObject*> getSubObjectList(const char* subname,
+                                                  std::vector<int>* subsizes = nullptr,
                                                   bool flatten = false) const;
 
     /// reason of calling getSubObjects()
