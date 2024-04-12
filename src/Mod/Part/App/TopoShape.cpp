@@ -3957,8 +3957,130 @@ TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, RefineF
     return *this;
 }
 
-// TODO: Does the toponaming branch version of this method need to be here?
-bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
+#ifdef FC_USE_TNP_FIX
+bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
+{
+    if (_Shape.IsNull()) {
+        return false;
+    }
+    if (tol < 0.0) {
+        tol = Precision::Confusion();
+    }
+    if (atol < 0.0) {
+        atol = Precision::Angular();
+    }
+    TopoDS_Shape shape;
+    if (countSubShapes(TopAbs_EDGE) == 1) {
+        // To deal with OCCT bug of wrong edge transformation
+        shape = BRepBuilderAPI_Copy(_Shape).Shape();
+    }
+    else {
+        shape = _Shape;
+    }
+    try {
+        bool found = false;
+        // BRepLib_FindSurface only really works on edges. We'll deal face first
+        for (auto& shape : getSubShapes(TopAbs_FACE)) {
+            gp_Pln plane;
+            auto face = TopoDS::Face(shape);
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() == GeomAbs_Plane) {
+                plane = adapt.Plane();
+            }
+            else {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                GeomLib_IsPlanarSurface check(surf);
+                if (check.IsPlanar()) {
+                    plane = check.Plan();
+                }
+                else {
+                    return false;
+                }
+            }
+            if (!found) {
+                found = true;
+                pln = plane;
+            }
+            else if (!pln.Position().IsCoplanar(plane.Position(), tol, atol)) {
+                return false;
+            }
+        }
+
+        // Check if there is free edges (i.e. edges does not belong to any face)
+        if (TopExp_Explorer(getShape(), TopAbs_EDGE, TopAbs_FACE).More()) {
+            // Copy shape to work around OCC transformation bug, that is, if
+            // edge has transformation, but underlying geometry does not (or the
+            // other way round), BRepLib_FindSurface returns a plane with the
+            // wrong transformation
+            BRepLib_FindSurface finder(BRepBuilderAPI_Copy(shape).Shape(), tol, Standard_True);
+            if (!finder.Found()) {
+                return false;
+            }
+            pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+            found = true;
+        }
+
+        // Check for free vertexes
+        auto vertexes = getSubShapes(TopAbs_VERTEX, TopAbs_EDGE);
+        if (vertexes.size()) {
+            if (!found && vertexes.size() > 2) {
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                for (int i = 0, c = (int)vertexes.size() - 1; i < c; ++i) {
+                    builder.Add(comp,
+                                BRepBuilderAPI_MakeEdge(TopoDS::Vertex(vertexes[i]),
+                                                        TopoDS::Vertex(vertexes[i + 1]))
+                                    .Edge());
+                }
+                BRepLib_FindSurface finder(comp, tol, Standard_True);
+                if (!finder.Found()) {
+                    return false;
+                }
+                pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+                return true;
+            }
+
+            double tt = tol * tol;
+            for (auto& v : vertexes) {
+                if (pln.SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(v))) > tt) {
+                    return false;
+                }
+            }
+        }
+
+        // To make the returned plane normal more stable, if the shape has any
+        // face, use the normal of the first face.
+        if (hasSubShape(TopAbs_FACE)) {
+            shape = getSubShape(TopAbs_FACE, 1);
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+            double u =
+                adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter()) / 2.;
+            double v =
+                adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter()) / 2.;
+            BRepLProp_SLProps prop(adapt, u, v, 2, Precision::Confusion());
+            if (prop.IsNormalDefined()) {
+                gp_Pnt pnt;
+                gp_Vec vec;
+                // handles the orientation state of the shape
+                BRepGProp_Face(TopoDS::Face(shape)).Normal(u, v, pnt, vec);
+                pln = gp_Pln(pnt, gp_Dir(vec));
+            }
+        }
+        return true;
+    }
+    catch (Standard_Failure& e) {
+        // For some reason the above BRepBuilderAPI_Copy failed to copy
+        // the geometry of some edge, causing exception with message
+        // BRepAdaptor_Curve::No geometry. However, without the above
+        // copy, circular edges often have the wrong transformation!
+        FC_LOG("failed to find surface: " << e.GetMessageString());
+        return false;
+    }
+}
+#else
+bool TopoShape::findPlane(gp_Pln &pln, double tol, double atol) const {
     if(_Shape.IsNull())
         return false;
     TopoDS_Shape shape = _Shape;
@@ -4004,6 +4126,7 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         return false;
     }
 }
+#endif
 
 bool TopoShape::isInfinite() const
 {
