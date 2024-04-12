@@ -11,6 +11,7 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/DualQuaternion.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Handle.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Matrix.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Parameter.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Placement.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Quantity.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Reader.cpp
