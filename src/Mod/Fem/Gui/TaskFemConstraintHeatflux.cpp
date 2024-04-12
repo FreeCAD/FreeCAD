@@ -420,7 +420,7 @@ double TaskFemConstraintHeatflux::getAmbientTemp() const
     if (ui->rb_convection->isChecked()) {
         temperature = ui->if_ambienttemp->getQuantity();
     }
-    else if (ui->rb_radiation->isChecked()){
+    else if (ui->rb_radiation->isChecked()) {
         temperature = ui->if_ambienttemp2->getQuantity();
     }
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
