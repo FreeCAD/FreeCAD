@@ -149,7 +149,7 @@ StdCmdToggleFreeze::StdCmdToggleFreeze()
     sGroup = "File";
     sMenuText = QT_TR_NOOP("Toggle freeze");
     static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.")
+        + QT_TR_NOOP("Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sStatusTip = sToolTipText;
