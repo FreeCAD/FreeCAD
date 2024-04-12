@@ -81,6 +81,10 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
             qOverload<double>(&InputField::valueChanged),
             this,
             &TaskFemConstraintHeatflux::onEmissivityChanged);
+    connect(ui->if_ambienttemp2,
+            qOverload<double>(&InputField::valueChanged),
+            this,
+            &TaskFemConstraintHeatflux::onAmbientTempChanged);
     connect(ui->lw_references,
             &QListWidget::itemClicked,
             this,
@@ -93,6 +97,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     // ui->if_facetemp->blockSignals(true);
     ui->if_filmcoef->blockSignals(true);
     ui->if_emissivity->blockSignals(true);
+    ui->if_ambienttemp2->blockSignals(true);
     ui->lw_references->blockSignals(true);
     ui->btnAdd->blockSignals(true);
     ui->btnRemove->blockSignals(true);
@@ -113,6 +118,9 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->if_emissivity->setMinimum(0);
     ui->if_emissivity->setMaximum(FLOAT_MAX);
 
+    ui->if_ambienttemp2->setMinimum(0);
+    ui->if_ambienttemp2->setMaximum(FLOAT_MAX);
+
     std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
     if (constraint_type == "Convection") {
         ui->rb_convection->setChecked(true);
@@ -129,7 +137,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
         ui->sw_heatflux->setCurrentIndex(1);
         Base::Quantity t =
             Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
-        ui->if_ambienttemp->setValue(t);
+        ui->if_ambienttemp2->setValue(t);
         Base::Quantity e = Base::Quantity(pcConstraint->Emissivity.getValue(), Base::Unit());
         ui->if_emissivity->setValue(e);
     }
@@ -156,6 +164,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     // ui->if_facetemp->blockSignals(false);
     ui->if_filmcoef->blockSignals(false);
     ui->if_emissivity->blockSignals(false);
+    ui->if_ambienttemp2->blockSignals(false);
     ui->lw_references->blockSignals(false);
     ui->btnAdd->blockSignals(false);
     ui->btnRemove->blockSignals(false);
@@ -230,7 +239,7 @@ void TaskFemConstraintHeatflux::Rad()
                             name.c_str(),
                             get_constraint_type().c_str());
     Base::Quantity t = Base::Quantity(300, Base::Unit::Temperature);
-    ui->if_ambienttemp->setValue(t);
+    ui->if_ambienttemp2->setValue(t);
     pcConstraint->AmbientTemp.setValue(300);
     Base::Quantity e = Base::Quantity(1, Base::Unit());
     ui->if_emissivity->setValue(e);
@@ -407,7 +416,13 @@ const std::string TaskFemConstraintHeatflux::getReferences() const
 
 double TaskFemConstraintHeatflux::getAmbientTemp() const
 {
-    Base::Quantity temperature = ui->if_ambienttemp->getQuantity();
+    Base::Quantity temperature;
+    if (ui->rb_convection->isChecked()) {
+        temperature = ui->if_ambienttemp->getQuantity();
+    }
+    else if (ui->rb_radiation->isChecked()){
+        temperature = ui->if_ambienttemp2->getQuantity();
+    }
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
     return temperature_in_kelvin;
 }
@@ -454,10 +469,12 @@ void TaskFemConstraintHeatflux::changeEvent(QEvent* e)
         ui->if_ambienttemp->blockSignals(true);
         ui->if_filmcoef->blockSignals(true);
         ui->if_emissivity->blockSignals(true);
+        ui->if_ambienttemp2->blockSignals(true);
         ui->retranslateUi(proxy);
         ui->if_ambienttemp->blockSignals(false);
         ui->if_filmcoef->blockSignals(false);
         ui->if_emissivity->blockSignals(true);
+        ui->if_ambienttemp2->blockSignals(false);
     }
 }
 
