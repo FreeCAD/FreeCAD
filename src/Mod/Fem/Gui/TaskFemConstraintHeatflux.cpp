@@ -130,8 +130,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
         Base::Quantity t =
             Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
         ui->if_ambienttemp->setValue(t);
-        Base::Quantity e = Base::Quantity(pcConstraint->Emissivity.getValue(),
-                                          Base::Unit());
+        Base::Quantity e = Base::Quantity(pcConstraint->Emissivity.getValue(), Base::Unit());
         ui->if_emissivity->setValue(e);
     }
     else if (constraint_type == "DFlux") {
@@ -424,8 +423,7 @@ double TaskFemConstraintHeatflux::getFilmCoef() const
 double TaskFemConstraintHeatflux::getEmissivity() const
 {
     Base::Quantity emissivity = ui->if_emissivity->getQuantity();
-    double emissivity_in_units =
-        emissivity.getValueAs(Base::Quantity(1.0, Base::Unit()));
+    double emissivity_in_units = emissivity.getValueAs(Base::Quantity(1.0, Base::Unit()));
     return emissivity_in_units;
 }
 
