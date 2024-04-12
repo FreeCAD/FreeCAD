@@ -131,7 +131,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
             Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
         ui->if_ambienttemp->setValue(t);
         Base::Quantity e = Base::Quantity(pcConstraint->Emissivity.getValue(),
-                                          Base::Unit::ThermalTransferCoefficient);
+                                          Base::Unit());
         ui->if_emissivity->setValue(e);
     }
     else if (constraint_type == "DFlux") {
@@ -233,7 +233,7 @@ void TaskFemConstraintHeatflux::Rad()
     Base::Quantity t = Base::Quantity(300, Base::Unit::Temperature);
     ui->if_ambienttemp->setValue(t);
     pcConstraint->AmbientTemp.setValue(300);
-    Base::Quantity e = Base::Quantity(1, Base::Unit::ThermalTransferCoefficient);
+    Base::Quantity e = Base::Quantity(1, Base::Unit());
     ui->if_emissivity->setValue(e);
     pcConstraint->Emissivity.setValue(1);
     ui->sw_heatflux->setCurrentIndex(1);
@@ -425,7 +425,7 @@ double TaskFemConstraintHeatflux::getEmissivity() const
 {
     Base::Quantity emissivity = ui->if_emissivity->getQuantity();
     double emissivity_in_units =
-        emissivity.getValueAs(Base::Quantity(1.0, Base::Unit::ThermalTransferCoefficient));
+        emissivity.getValueAs(Base::Quantity(1.0, Base::Unit()));
     return emissivity_in_units;
 }
 
