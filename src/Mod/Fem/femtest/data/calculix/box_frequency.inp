@@ -427,6 +427,8 @@ Evolumes
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
 *ELSET,ELSET=MechanicalMaterialSolid
 Evolumes
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
 
 ***********************************************************
 ** Materials
