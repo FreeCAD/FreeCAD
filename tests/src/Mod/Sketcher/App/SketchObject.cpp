@@ -276,10 +276,19 @@ TEST_F(SketchObjectTest, testGetElementName)
     EXPECT_STREQ(map[0].name.toString().c_str(), "g39;SKT");
     EXPECT_EQ(map[0].index.toString(), "Edge1");
     // Assert
+#ifndef FC_USE_TNP_FIX
+    EXPECT_STREQ(forward_normal_name.first.c_str(), "");
+    EXPECT_STREQ(forward_normal_name.second.c_str(), "g39;SKT");
+    EXPECT_STREQ(reverse_normal_name.first.c_str(), "");
+    EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
+    EXPECT_STREQ(reverse_export_name.first.c_str(), "");
+    EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+#else
     EXPECT_STREQ(forward_normal_name.first.c_str(), ";g39;SKT.Edge1");
     EXPECT_STREQ(forward_normal_name.second.c_str(), "Edge1");
     EXPECT_STREQ(reverse_normal_name.first.c_str(), ";g39v2;SKT.Vertex2");
     EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
     EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
     EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+#endif
 }

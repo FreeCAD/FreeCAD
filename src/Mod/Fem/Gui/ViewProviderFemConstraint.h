@@ -31,6 +31,8 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
 
+#include <Gui/ViewProviderSuppressibleExtension.h>
+
 
 class SoFontStyle;
 class SoText2;
@@ -44,7 +46,8 @@ namespace FemGui
 
 class TaskFemConstraint;
 
-class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject
+class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject,
+                                              public Gui::ViewProviderSuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraint);
 
@@ -56,7 +59,6 @@ public:
     // Display properties
     App::PropertyColor TextColor;
     App::PropertyColor FaceColor;
-    App::PropertyColor ShapeColor;
     App::PropertyInteger FontSize;
     App::PropertyFloat DistFactor;
     App::PropertyBool Mirror;

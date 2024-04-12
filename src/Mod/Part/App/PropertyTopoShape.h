@@ -55,7 +55,7 @@ public:
     void setValue(const TopoDS_Shape&, bool resetElementMap=true);
     /// get the part shape
     const TopoDS_Shape& getValue() const;
-    TopoShape getShape() const;
+    const TopoShape& getShape() const;
     const Data::ComplexGeoData* getComplexData() const override;
     //@}
 

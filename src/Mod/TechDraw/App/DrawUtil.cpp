@@ -642,6 +642,7 @@ gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
     return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
 }
 
+//! returns stdX, stdY or stdZ.
 Base::Vector3d DrawUtil::closestBasis(Base::Vector3d v)
 {
     Base::Vector3d result(0.0, -1, 0);
@@ -692,6 +693,63 @@ Base::Vector3d DrawUtil::closestBasis(Base::Vector3d v)
 
     if (angleZr == angleMin) {
         return Base::Vector3d(0.0, 0.0, 1.0);
+    }
+
+    //should not get to here
+    return Base::Vector3d(1.0, 0.0, 0.0);
+}
+
+//! returns +/- stdX, stdY or stdZ.
+Base::Vector3d DrawUtil::closestBasisOriented(Base::Vector3d v)
+{
+    Base::Vector3d result(0.0, -1, 0);
+    Base::Vector3d stdX(1.0, 0.0, 0.0);
+    Base::Vector3d stdY(0.0, 1.0, 0.0);
+    Base::Vector3d stdZ(0.0, 0.0, 1.0);
+    Base::Vector3d stdXr(-1.0, 0.0, 0.0);
+    Base::Vector3d stdYr(0.0, -1.0, 0.0);
+    Base::Vector3d stdZr(0.0, 0.0, -1.0);
+
+    //first check if already a basis
+    if (v.Dot(stdX) == 1.0 || v.Dot(stdY) == 1.0 || v.Dot(stdZ) == 1.0) {
+        return v;
+    }
+    if (v.Dot(stdX) == -1.0 || v.Dot(stdY) == -1.0 || v.Dot(stdZ) == -1.0) {
+        return v;
+    }
+
+    //not a basis. find smallest angle with a basis.
+    double angleX, angleY, angleZ, angleXr, angleYr, angleZr, angleMin;
+    angleX = stdX.GetAngle(v);
+    angleY = stdY.GetAngle(v);
+    angleZ = stdZ.GetAngle(v);
+    angleXr = stdXr.GetAngle(v);
+    angleYr = stdYr.GetAngle(v);
+    angleZr = stdZr.GetAngle(v);
+
+    angleMin = std::min({angleX, angleY, angleZ, angleXr, angleYr, angleZr});
+    if (angleX == angleMin) {
+        return Base::Vector3d(1.0, 0.0, 0.0);
+    }
+
+    if (angleY == angleMin) {
+        return Base::Vector3d(0.0, 1.0, 0.0);
+    }
+
+    if (angleZ == angleMin) {
+        return Base::Vector3d(0.0, 0.0, 1.0);
+    }
+
+    if (angleXr == angleMin) {
+        return Base::Vector3d(-1.0, 0.0, 0.0);
+    }
+
+    if (angleYr == angleMin) {
+        return Base::Vector3d(0.0, -1.0, 0.0);
+    }
+
+    if (angleZr == angleMin) {
+        return Base::Vector3d(0.0, 0.0, -1.0);
     }
 
     //should not get to here
@@ -803,23 +861,33 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
 //! cardinal direction or the reverse of a cardinal direction.
 gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
 {
-    if (directionToMask.XYZ().IsEqual(gp::OX().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OX().Direction().Reversed().XYZ(), EWTOLERANCE)) {
-            return {0.0, inVec.Y(), inVec.Z()};
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OX().Direction().XYZ())), 1.0, EWTOLERANCE)) {
+        return {0.0, inVec.Y(), inVec.Z()};
     }
 
-    if (directionToMask.XYZ().IsEqual(gp::OY().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OY().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OY().Direction().XYZ())), 1.0, EWTOLERANCE)) {
             return {inVec.X(), 0.0, inVec.Z()};
     }
 
-    if (directionToMask.XYZ().IsEqual(gp::OZ().Direction().XYZ(), EWTOLERANCE) ||
-        directionToMask.XYZ().IsEqual(gp::OZ().Direction().Reversed().XYZ(), EWTOLERANCE)) {
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OZ().Direction().XYZ())), 1.0, EWTOLERANCE)) {
             return {inVec.X(), inVec.Y(), 0.0};
     }
 
     Base::Console().Message("DU:maskDirection - directionToMask is not cardinal\n");
     return {};
+}
+
+Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
+{
+    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+}
+
+//! get the coordinate of inPoint for the cardinal unit direction.
+double DrawUtil::coordinateForDirection(Base::Vector3d inPoint,  Base::Vector3d cardinal)
+{
+    auto masked = maskDirection(inPoint, cardinal);
+    auto stripped = inPoint - masked;
+    return stripped.x + stripped.y + stripped.z;
 }
 
 //based on Function provided by Joe Dowsett, 2014

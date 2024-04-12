@@ -100,21 +100,20 @@ const TopoDS_Shape& PropertyPartShape::getValue() const
     return _Shape.getShape();
 }
 
-TopoShape PropertyPartShape::getShape() const
+const TopoShape& PropertyPartShape::getShape() const
 {
     _Shape.initCache(-1);
-    auto res = _Shape;
     // March, 2024 Toponaming project:  There was originally an unused feature to disable
     // elementMapping that has not been kept:
     //    if (Feature::isElementMappingDisabled(getContainer()))
     //        res.Tag = -1;
     //    else if (!res.Tag) {
-    if (!res.Tag) {
+    if (!_Shape.Tag) {
         if (auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer())) {
-            res.Tag = parent->getID();
+            _Shape.Tag = parent->getID();
         }
     }
-    return res;
+    return _Shape;
 }
 
 const Data::ComplexGeoData* PropertyPartShape::getComplexData() const

@@ -9,7 +9,7 @@ target_include_directories(Material_tests_run PUBLIC
 target_link_libraries(Material_tests_run
     gtest_main
     ${Google_Tests_LIBS}
-    Material
+    Materials
 )
 
 add_subdirectory(App)

@@ -1045,19 +1045,19 @@ class _ResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _SolverCxxtools(CommandManager):
+class _SolverCcxTools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
 
     def __init__(self):
-        super(_SolverCxxtools, self).__init__()
+        super(_SolverCcxTools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Solver CalculiX Standard"
         )
         self.accel = "S, X"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Creates a standard FEM solver CalculiX with ccx tools"
         )
         self.is_active = "with_analysis"
@@ -1072,7 +1072,7 @@ class _SolverCxxtools(CommandManager):
         FreeCADGui.addModule("FemGui")
         if has_nonlinear_material_obj:
             FreeCADGui.doCommand(
-                "solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)"
+                "solver = ObjectsFem.makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument)"
             )
             FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
@@ -1080,7 +1080,7 @@ class _SolverCxxtools(CommandManager):
         else:
             FreeCADGui.doCommand(
                 "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-                "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
+                "makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument))"
             )
         FreeCAD.ActiveDocument.commitTransaction()
         # expand analysis object in tree view
@@ -1366,8 +1366,8 @@ FreeCADGui.addCommand(
     _ResultsPurge()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculixCxxtools",
-    _SolverCxxtools()
+    "FEM_SolverCalculiXCcxTools",
+    _SolverCcxTools()
 )
 FreeCADGui.addCommand(
     "FEM_SolverCalculiX",

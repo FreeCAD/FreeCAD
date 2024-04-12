@@ -37,6 +37,11 @@
 
 namespace fs = boost::filesystem;
 
+namespace App
+{
+class Material;
+}
+
 namespace Materials
 {
 
@@ -50,11 +55,15 @@ public:
     MaterialManager();
     ~MaterialManager() override = default;
 
+    static std::shared_ptr<Material> defaultMaterial();
+    static QString defaultMaterialUUID();
+
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getMaterials() const
     {
         return _materialMap;
     }
     std::shared_ptr<Material> getMaterial(const QString& uuid) const;
+    static std::shared_ptr<Material> getMaterial(const App::Material& material);
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
     std::shared_ptr<Material> getParent(const std::shared_ptr<Material>& material) const;
@@ -66,8 +75,14 @@ public:
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                    const MaterialFilter* filter = nullptr) const
+                    const std::shared_ptr<Materials::MaterialFilter>& filter) const
     {
+        return library->getMaterialTree(filter);
+    }
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
+    {
+        std::shared_ptr<Materials::MaterialFilter> filter;
         return library->getMaterialTree(filter);
     }
     std::shared_ptr<std::list<QString>>

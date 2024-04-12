@@ -96,6 +96,21 @@ QColor PreferencesGui::sectionLineQColor()
     return fcColor.asValue<QColor>();
 }
 
+App::Color PreferencesGui::breaklineColor()
+{
+    App::Color fcColor;
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    return fcColor;
+}
+
+QColor PreferencesGui::breaklineQColor()
+{
+//if the App::Color version has already lightened the color, we don't want to do it again
+    App::Color fcColor;
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    return fcColor.asValue<QColor>();
+}
+
 App::Color PreferencesGui::centerColor()
 {
     return App::Color((uint32_t) Preferences::getPreferenceGroup("Decorations")->GetUnsigned("CenterColor", 0x000000FF));

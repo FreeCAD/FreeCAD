@@ -136,9 +136,11 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
         std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
         std::vector<QString> pageNames;
         for (auto page : pages) {
-            pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
+            if (page->isAttachedToDocument() &&
+                !page->testStatus(App::ObjectStatus::Remove)) {
+                pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
+            }
         }
-
         QCollator collator;
         std::sort(pageNames.begin(), pageNames.end(), collator);
 

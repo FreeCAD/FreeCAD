@@ -141,8 +141,8 @@ locations = [
     ],
     [
         "Material",
-        "../Mod/Material/Gui/Resources/translations",
-        "../Mod/Material/Gui/Resources/Material.qrc",
+        "../Mod/Material/Resources/translations",
+        "../Mod/Material/Resources/Material.qrc",
     ],
     [
         "Mesh",
@@ -452,12 +452,11 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
-    if not os.path.exists(newpath):
+    if not os.path.exists(tsfilepath):
         # If this language code does not exist for the given TS file, bail out
         return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
-        print(f"Generating QM for {basename}")
         try:
             subprocess.run(
                 [

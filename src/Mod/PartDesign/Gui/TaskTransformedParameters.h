@@ -171,7 +171,7 @@ protected:
 
     /**
      * Returns the base transformation
-     * For stand alone features it will be object associated with the view provider
+     * For standalone features it will be object associated with the view provider
      * For features inside MultiTransform it will be the parent MultiTransform's sub feature object
      */
     PartDesign::Transformed* getObject() const;
@@ -211,6 +211,13 @@ protected:
     /// Fill combobox with the planes from the sketch and the own bodys origin planes
     void fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
 
+    /**
+     * Returns the base transformed object
+     * For stand alone features it will be objects associated with this object
+     * For features inside multitransform it will be the base multitransform object
+     */
+    PartDesign::Transformed* getTopTransformedObject() const;
+
     bool isEnabledTransaction() const;
     void setupTransaction();
 
@@ -247,13 +254,6 @@ private:
      * For features inside multitransform it will be the view provider of the multitransform object
      */
     PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
-
-    /**
-     * Returns the base transformed object
-     * For stand alone features it will be objects associated with this object
-     * For features inside multitransform it will be the base multitransform object
-     */
-    PartDesign::Transformed* getTopTransformedObject() const;
 
     void changeEvent(QEvent* event) override;
 

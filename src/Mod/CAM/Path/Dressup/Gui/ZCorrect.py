@@ -231,7 +231,7 @@ class TaskPanel:
         )
         self.interpshape.Shape = obj.interpSurface
         self.interpshape.ViewObject.Transparency = 60
-        self.interpshape.ViewObject.ShapeColor = (1.00000, 1.00000, 0.01961)
+        self.interpshape.ViewObject.ShapeAppearance.DiffuseColor = (1.00000, 1.00000, 0.01961)
         self.interpshape.ViewObject.Selectable = False
         stock = PathUtils.findParentJob(obj).Stock
         self.interpshape.Placement.Base.z = stock.Shape.BoundBox.ZMax

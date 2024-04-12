@@ -342,8 +342,7 @@ These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Segmenti mreže će se grupirati prema boji lica objekta.
 Ove će se skupine izvoziti za podršku izlaznih formata mreža
-ove značajke (npr. format OBJ).
-</translation>
+ove funkcije (npr. format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>

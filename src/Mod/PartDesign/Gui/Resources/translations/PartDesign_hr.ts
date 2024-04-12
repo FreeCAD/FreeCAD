@@ -118,7 +118,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="123"/>
       <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
-      <translation>Radijus zaokruženja u korijenu zuba, normaliziran modulom.</translation>
+      <translation>Radijus zaobljenja u korijenu zuba, normaliziran modulom.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
@@ -131,7 +131,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1432"/>
@@ -149,7 +149,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
@@ -167,7 +167,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -185,7 +185,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
@@ -203,7 +203,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
@@ -221,7 +221,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
@@ -239,12 +239,12 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1725"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1726"/>
       <source>Chamfer</source>
-      <translation>Zarubljenje</translation>
+      <translation>Faseta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1727"/>
@@ -257,7 +257,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -275,7 +275,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1754"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
@@ -293,7 +293,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="610"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="611"/>
@@ -311,17 +311,17 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1698"/>
       <source>Fillet</source>
-      <translation>Obrubi</translation>
+      <translation>Zaobljenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1699"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Zaobli rub, površinu ili tijelo</translation>
+      <translation>Zaobli rub, lice ili tijelo</translation>
     </message>
   </context>
   <context>
@@ -329,7 +329,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1162"/>
@@ -347,7 +347,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1055"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
@@ -365,7 +365,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="192"/>
@@ -383,7 +383,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2042"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2043"/>
@@ -401,7 +401,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="316"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="317"/>
@@ -411,7 +411,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="318"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Prenesite dokument u moderni PartDesign hodogram</translation>
+      <translation>Prenesite dokument u moderni Konstruktor dijelova hodogram</translation>
     </message>
   </context>
   <context>
@@ -419,7 +419,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1980"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1981"/>
@@ -437,7 +437,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="666"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="667"/>
@@ -455,7 +455,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="833"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="834"/>
@@ -473,7 +473,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="531"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="532"/>
@@ -491,7 +491,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2220"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2221"/>
@@ -509,7 +509,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="503"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="504"/>
@@ -527,7 +527,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="991"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="992"/>
@@ -545,7 +545,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
@@ -563,7 +563,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1024"/>
@@ -581,7 +581,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -599,7 +599,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2107"/>
@@ -617,7 +617,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1103"/>
@@ -635,7 +635,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2171"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2172"/>
@@ -653,7 +653,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="280"/>
@@ -671,7 +671,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -685,7 +685,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1508"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1509"/>
@@ -703,7 +703,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
@@ -721,7 +721,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1280"/>
@@ -739,7 +739,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1823"/>
@@ -757,7 +757,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -811,7 +811,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
       <source>PartDesign</source>
-      <translation>Oblikovanje tijela</translation>
+      <translation>Konstruktor dijelova</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -883,8 +883,8 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Stvori klon</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Napravi kopiju</translation>
     </message>
@@ -901,7 +901,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2270"/>
       <source>Convert to MultiTransform feature</source>
-      <translation>Pretvori u značajku Višestruka transformacija</translation>
+      <translation>Pretvori u element Višestruke transformacije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2362"/>
@@ -909,8 +909,8 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Stvori logičku vrijednost</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="190"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Dodaj tjelo</translation>
     </message>
@@ -1007,11 +1007,26 @@ tako da je izbjegnuto samopresjecanje.</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
+      <source>Edge tools</source>
+      <translation>Alati rubova</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="56"/>
+      <source>Start boolean</source>
+      <translation>Pokretanje booloeove varijable</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="57"/>
+      <source>Start part</source>
+      <translation>Počinjem dio</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>Sketch tools</source>
       <translation>Alati skice</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>Create Geometry</source>
       <translation>Napravi geometriju</translation>
     </message>
@@ -1073,7 +1088,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
       <source>Root Fillet Coefficient</source>
-      <translation>Koeficijent obruba korijena</translation>
+      <translation>Koeficijent zaobljenja korijena</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
@@ -1551,7 +1566,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskChamferParameters.cpp" line="323"/>
       <source>Empty chamfer created !
 </source>
-      <translation>Napravljen je prazan tipski žlijeb !</translation>
+      <translation>Napravljena je prazna faseta !</translation>
     </message>
   </context>
   <context>
@@ -1839,7 +1854,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="190"/>
       <source>Empty fillet created!</source>
-      <translation>Napravljen je prazan obrub!</translation>
+      <translation>Napravljeno je prazno zaobljavanje</translation>
     </message>
   </context>
   <context>
@@ -2968,7 +2983,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="37"/>
       <source>Transformed feature messages</source>
-      <translation>Poruka elementa transformiranja</translation>
+      <translation>Poruke o transformaciji</translation>
     </message>
   </context>
   <context>
@@ -2981,7 +2996,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="359"/>
       <source>Normal sketch axis</source>
-      <translation type="unfinished">Normal sketch axis</translation>
+      <translation>Os normale skice</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="360"/>
@@ -3018,7 +3033,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Odaberite referencu...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -3061,7 +3076,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation>Parametri žlijeba</translation>
+      <translation>Parametri fasete</translation>
     </message>
   </context>
   <context>
@@ -3100,7 +3115,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parameters</source>
-      <translation>Parametari obruba</translation>
+      <translation>Parametri zaobljenja</translation>
     </message>
   </context>
   <context>
@@ -3348,28 +3363,28 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Molimo vas prvo stvorite ravninu ili odaberite lice za crtanje na</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="97"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3381,7 +3396,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Uvjerite se da tijelo sadrži značajku prije pokušaja naredbe za oduzimanje.</translation>
+      <translation>Uvjerite se da tijelo sadrži element prije pokušaja naredbe za oduzimanje.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="814"/>
@@ -3448,14 +3463,12 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../Command.cpp" line="1950"/>
       <source>Please create a feature first.</source>
-      <translation>Prvo stvorite svojstva.</translation>
+      <translation>Prvo stvorite element.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1959"/>
       <source>Please select only one feature in an active body.</source>
-      <translation>Odaberite samo jednu značajku u aktivnom tijelu.
-
-</translation>
+      <translation>Odaberite samo jedan element u aktivnom tijelu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="68"/>
@@ -3478,12 +3491,12 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="117"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Tijelo ne može se temeljiti na PartDesign objektu.</translation>
+      <translation>Tijelo se ne može temeljiti na Konstruktor dijelova objektu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 već pripada tijelu, ne može ga koristiti kao osnovnu značajku za još jedno tijelo.</translation>
+      <translation>%1 već pripada tijelu, ne može ga koristiti kao osnovni element za još jedno tijelo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
@@ -3526,7 +3539,7 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Tijela se mogu temeljiti na ne više od jednog objekta.</translation>
+      <translation>Tijela se ne mogu temeljiti na više od jednog elementa.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="198"/>
@@ -3541,7 +3554,7 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="348"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>Nema PartDesign svojstva koje ne pripada tijelu. Ništa za preseljenje.</translation>
+      <translation>Nema elemenata Konstruktora dijelova koji ne pripada tijelu. Ništa za preseljenje.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="496"/>
@@ -3575,24 +3588,24 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="569"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Samo čvrsto tijelo  može biti radna pozicija jednog tijela.</translation>
+      <translation>Samo čvrsto tijelo može biti radna pozicija jednog tijela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="687"/>
       <location filename="../../CommandBody.cpp" line="709"/>
       <location filename="../../CommandBody.cpp" line="724"/>
       <source>Features cannot be moved</source>
-      <translation>Elementi se ne mogu pomicati</translation>
+      <translation>Značajke se ne mogu pomicati</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="688"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation>Odabrana svojstva su u ovisnosti o izvornom tijelu</translation>
+      <translation>Odabrani objekti su u ovisnosti o izvornom tijelu</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="710"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation>Samo objekti jedino jednog izvora tijela mogu biti premješteni</translation>
+      <translation>Samo objekti jedino jednog izvornog tijela mogu biti premješteni</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="725"/>
@@ -3639,14 +3652,14 @@ To može dovesti do neočekivanih rezultata.</translation>
       <translation>Nije moguće stvoriti dodavajući element bez pripadajućeg osnovnog elementa</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikalna os skice</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontalna os skice</translation>
     </message>
@@ -3665,9 +3678,9 @@ To može dovesti do neočekivanih rezultata.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Da bi koristili PartDesign morate imati aktivno tijelo objekta u dokumentu. Aktivirajte jedno tijelo (dupli klik) ili stvorite novo tijelo.
+      <translation>Da bi koristili Konstruktor dijelova morate imati aktivno tijelo objekta u dokumentu. Aktivirajte jedno tijelo (dupli klik) ili stvorite novo tijelo.
 
-Ako imate naslijeđeni dokument sa PartDesign objektom bez tijela koristite funkciju transfera u modulu PartDesign da bi ste ga stavili u tijelo.</translation>
+Ako imate naslijeđeni dokument sa Konstruktor dijelova objektom bez tijela koristite funkciju transfera u modulu Konstruktor dijelova da bi ste ga stavili u tijelo.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="186"/>
@@ -3677,7 +3690,7 @@ Ako imate naslijeđeni dokument sa PartDesign objektom bez tijela koristite funk
     <message>
       <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Za stvaranje novog PartDesign objekta, morate imati aktivno tijelo objekta u dokumentu. Aktivirati jedno tijelo (dupli klik) ili stvorite novo tijelo.</translation>
+      <translation>Za stvaranje novog Konstruktor dijelova objekta, morate imati aktivno tijelo objekta u dokumentu. Aktivirati jedno tijelo (dupli klik) ili stvorite novo tijelo.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="222"/>
@@ -3700,10 +3713,10 @@ Ako imate naslijeđeni dokument sa PartDesign objektom bez tijela koristite funk
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu dio u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -3868,7 +3881,7 @@ Iako ćete moći migrirati u bilo svakom trenutku kasnije s 'Dizajn dijela -&gt;
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="41"/>
       <source>Edit chamfer</source>
-      <translation>Uredi žlijeb</translation>
+      <translation>Uredi fasetu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="42"/>
@@ -3878,7 +3891,7 @@ Iako ćete moći migrirati u bilo svakom trenutku kasnije s 'Dizajn dijela -&gt;
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
       <source>Edit fillet</source>
-      <translation>Uredi obrub</translation>
+      <translation>Uredi zaobljenje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
@@ -4443,27 +4456,27 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Čarobnjak za oblikovanje varatila</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Measure</source>
       <translation>Izmjeri</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>Refresh</source>
       <translation>Osvježi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Toggle 3D</source>
       <translation>Uključi/Isključi 3D</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Part Design Helper</source>
       <translation>Oblikovanje dijelova Pomoćnik</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Part Design Modeling</source>
       <translation>Oblikovanje dijelova Modeliranje</translation>
     </message>
@@ -4563,6 +4576,47 @@ preko 90: veći polumjer rupe na dnu</translation>
       <source>Section %s</source>
       <translation>Odjeljak %s</translation>
     </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
+      <source>None</source>
+      <translation>Prazno</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
+      <source>Fixed</source>
+      <translation>Fiksno</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
+      <source>Force</source>
+      <translation>Sila</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
+      <source>Bearing</source>
+      <translation>Ležaj</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
+      <source>Gear</source>
+      <translation>Zupčanik</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
+      <source>Pulley</source>
+      <translation>Kolotur</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
+      <source>Chamfer</source>
+      <translation>Faseta</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="167"/>
+      <source>Fillet</source>
+      <translation>Zaobljenje</translation>
+    </message>
   </context>
   <context>
     <name>TaskWizardShaft</name>
@@ -4623,28 +4677,28 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="62"/>
       <source>BaseFeature link is not set</source>
-      <translation>Poveznica na Osnovni Oblik nije postavljena</translation>
+      <translation>Poveznica na Osnovu nije postavljena</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="65"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation>BaznaZnačajka mora biti Komponenta::Značajka</translation>
+      <translation>Osnovna značajka mora biti  Part::Feature</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature has an empty shape</source>
-      <translation>BaznaZnačajka ima prazan oblik</translation>
+      <translation>Osnovna značajka ima prazan oblik</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="80"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>Ne može se izvršiti rez bulovom operacijom bez BaznaZnačajka</translation>
+      <translation>Ne može se izvršiti rez Booleovom operacijom bez Osnovne značajke</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="94"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
-      <translation>Ne može se izvršiti booleova opercija za sve osim za Komponenta::Značajka i njene izvedenice</translation>
+      <translation>Ne može se izvršiti booleova operacija za sve osim za Part::Feature i njene izvedenice</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="101"/>
@@ -4672,17 +4726,17 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Spajanje Alata nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="229"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Stvoreni oblik nije volumen tijelo</translation>
     </message>
@@ -4697,29 +4751,29 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Uobičajena operacija nije uspjela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="233"/>
-      <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="233"/>
+      <location filename="../../../App/FeaturePad.cpp" line="242"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Rezultat ima više volumenskih tijela: ovo trenutno nije podržano.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
       <source>Failed to create chamfer</source>
-      <translation>Nije uspjelo stvaranje žlijeba</translation>
+      <translation>Nije uspjelo stvaranje fasete</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
@@ -4757,12 +4811,12 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="93"/>
       <source>Fillet radius must be greater than zero</source>
-      <translation>Polumjer obruba mora biti veća od 0</translation>
+      <translation>Polumjer zaobljenja mora biti veći od 0</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="116"/>
       <source>Failed to create fillet</source>
-      <translation>Nije uspjelo stvaranje obruba</translation>
+      <translation>Nije uspjelo stvaranje zaobljenja</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="87"/>
@@ -4775,8 +4829,8 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Kut utora premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="108"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4787,14 +4841,14 @@ preko 90: veći polumjer rupe na dnu</translation>
   - odabrana skica ne pripada aktivnom tijelu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <location filename="../../../App/FeatureGroove.cpp" line="130"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <source>Creating a face from sketch failed</source>
       <translation>Stvaranje lice od skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Os zaokreta presjeca skicu </translation>
     </message>
@@ -4804,14 +4858,14 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Izrez baznog elementa nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nije moguće zavrtiti skicu!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <location filename="../../../App/FeatureGroove.cpp" line="236"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
@@ -4866,10 +4920,10 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Greška: nije moguće napraviti Heliks</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <location filename="../../../App/FeatureHelix.cpp" line="303"/>
       <location filename="../../../App/FeatureHelix.cpp" line="339"/>
       <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Greška: Rezultat nije volumensko tijelo</translation>
     </message>
@@ -4971,16 +5025,16 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Greška: Dodaj navoj nije uspjelo</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Booleanska operacija nije uspjela   
 </translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
@@ -5137,7 +5191,7 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation>Izvlačenje po putanji:  Svi dijelovi moraju biti dio značajke.</translation>
+      <translation>Cijev:  Svi segmenti moraju biti značajke djela</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
@@ -5242,7 +5296,7 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="217"/>
       <source>Pocket: Cut out of base feature failed</source>
-      <translation>Utor: Izrez baznog elementa nije uspjelo</translation>
+      <translation>Utor: Izrezivanje baznog elementa nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="89"/>
@@ -5260,100 +5314,100 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Nije uspjelo oduzeti primitiv</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="198"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="193"/>
       <source>Length of box too small</source>
       <translation>Dužina kutije je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="200"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="195"/>
       <source>Width of box too small</source>
       <translation>Širina kutije je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="202"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Height of box too small</source>
       <translation>Visina kutije je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="248"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="243"/>
       <source>Radius of cylinder too small</source>
       <translation>Polumjer cilindra je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="250"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="245"/>
       <source>Height of cylinder too small</source>
       <translation>Visina cilindra je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="252"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Kut rotacije cilindra je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="305"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="300"/>
       <source>Radius of sphere too small</source>
       <translation>Polumjer kugle je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="354"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="356"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="349"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="351"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Polumjer stožca ne može biti negativan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="358"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
       <source>Height of cone too small</source>
       <translation>Visina stožca je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="421"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="423"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="416"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Polumjer elipsoida je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="505"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="507"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="500"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
       <source>Radius of torus too small</source>
       <translation>Polumjer torusa je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="570"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="565"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Višekutnik prizme neispravan, mora imati 3 ili više strana</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="572"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Polumjer opsega višekutnika prizme je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="574"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Height of prism is too small</source>
       <translation>Visina prizme je premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="655"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="650"/>
       <source>delta x of wedge too small</source>
       <translation>delta x od klina premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="658"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="653"/>
       <source>delta y of wedge too small</source>
       <translation>delta y od klina premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="661"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="656"/>
       <source>delta z of wedge too small</source>
       <translation>delta z od klina premala</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="664"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="659"/>
       <source>delta z2 of wedge is negative</source>
       <translation>delta z2 od klina je negativna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="667"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="662"/>
       <source>delta x2 of wedge is negative</source>
       <translation>delta x2 od klina je negativna</translation>
     </message>
@@ -5408,7 +5462,7 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
     <message>
       <location filename="../../ViewProviderBody.cpp" line="136"/>
       <source>Active body</source>
-      <translation type="unfinished">Active body</translation>
+      <translation>Aktivno tijelo</translation>
     </message>
   </context>
 </TS>

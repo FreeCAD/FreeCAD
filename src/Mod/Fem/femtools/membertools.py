@@ -59,7 +59,10 @@ def get_member(analysis, t):
     for m in analysis.Group:
         # since is _derived_from is used the father could be used
         # to test too (ex. "Fem::FemMeshObject")
-        if femutils.is_derived_from(m, t):
+        if (femutils.is_derived_from(m, t)
+            and not (m.hasExtension("App::SuppressibleExtension")
+                     and m.Suppressed)
+           ):
             matching.append(m)
     return matching
 

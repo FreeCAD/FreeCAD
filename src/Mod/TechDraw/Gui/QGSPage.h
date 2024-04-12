@@ -129,6 +129,7 @@ public:
     TechDraw::DrawPage* getDrawPage();
 
     void setExportingSvg(bool enable);
+    bool getExportingSvg() { return m_exportingSvg; }
     virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
@@ -145,6 +146,8 @@ protected:
 private:
     QGITemplate* pageTemplate;
     ViewProviderPage* m_vpPage;
+
+    bool m_exportingSvg{false};
 };
 
 }// namespace TechDrawGui

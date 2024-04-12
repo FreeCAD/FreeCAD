@@ -25,6 +25,7 @@
 
 # include <QDomDocument>
 
+#include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -35,7 +36,8 @@
 namespace TechDraw
 {
 
-class TechDrawExport DrawSVGTemplate: public TechDraw::DrawTemplate
+class TechDrawExport DrawSVGTemplate: public TechDraw::DrawTemplate,
+                                      public App::DocumentObserver
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawSVGTemplate);
 
@@ -65,8 +67,14 @@ public:
 
 
 protected:
+    void onSettingDocument() override;
+
     void replaceFileIncluded(std::string newTemplateFileName);
     std::map<std::string, std::string> getEditableTextsFromTemplate();
+
+private:
+    void slotCreatedObject(const App::DocumentObject& obj) override;
+    void slotDeletedObject(const App::DocumentObject& obj) override;
 
 };
 

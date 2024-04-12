@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Összeszerelési terv létrehozása</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -463,7 +463,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../DlgStartPreferences.ui" line="620"/>
       <source>Link color</source>
-      <translation>Kapcsolat színe</translation>
+      <translation>Összekötés színe</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="698"/>
@@ -498,7 +498,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../DlgStartPreferences.ui" line="600"/>
       <source>The color of the links</source>
-      <translation>A hivatkozások színe</translation>
+      <translation>Az összekötések színe</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="343"/>
@@ -523,7 +523,7 @@ A ";;" útvonalak külön-külön történő használatával több mappát is ho
     <message>
       <location filename="../../DlgStartPreferences.ui" line="452"/>
       <source>Open links</source>
-      <translation>Nyitott kapcsolatok</translation>
+      <translation>Nyitott összekötések</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="545"/>

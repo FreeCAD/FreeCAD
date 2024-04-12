@@ -150,9 +150,12 @@ public:
     static gp_Vec closestBasis(gp_Vec inVec);
     static Base::Vector3d closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys);
     static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
+    static Base::Vector3d closestBasisOriented(Base::Vector3d v);
 
     static double getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
     static gp_Vec maskDirection(gp_Vec inVec, gp_Dir directionToMask);
+    static Base::Vector3d maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask);
+    static double coordinateForDirection(Base::Vector3d inPoint,  Base::Vector3d cardinal);
 
     static double getDefaultLineWeight(std::string s);
     //! is pt between end1 and end2?

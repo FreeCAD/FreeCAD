@@ -587,10 +587,12 @@ protected:
                                      /*avoidMouseCursor = */ true))
                                  .get();
 
-            QObject::connect(parameter, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
-                parameter->setColor(colorManager.dimConstrColor);
-                onViewValueChanged(i, value);
-            });
+            QObject::connect(parameter,
+                             &Gui::EditableDatumLabel::valueChanged,
+                             [this, parameter, i](double value) {
+                                 parameter->setColor(colorManager.dimConstrColor);
+                                 onViewValueChanged(i, value);
+                             });
         }
     }
 

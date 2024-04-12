@@ -74,6 +74,7 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("ReverseEngineering")
     {
+        add_keyword_method("approxCurve", &Module::approxCurve, "Approximate curve");
         add_keyword_method("approxSurface",&Module::approxSurface,
             "approxSurface(Points, UDegree=3, VDegree=3, NbUPoles=6, NbVPoles=6,\n"
             "Smooth=True, Weight=0.1, Grad=1.0, Bend=0.0, Curv=0.0\n"
@@ -159,6 +160,169 @@ public:
     }
 
 private:
+    static std::vector<Base::Vector3d> getPoints(PyObject* pts, bool closed)
+    {
+        std::vector<Base::Vector3d> data;
+        if (PyObject_TypeCheck(pts, &(Points::PointsPy::Type))) {
+            std::vector<Base::Vector3d> normal;
+            auto pypts = static_cast<Points::PointsPy*>(pts);
+            Points::PointKernel* points = pypts->getPointKernelPtr();
+            points->getPoints(data, normal, 0.0);
+        }
+        else {
+            Py::Sequence l(pts);
+            data.reserve(l.size());
+            for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
+                Py::Tuple t(*it);
+                data.emplace_back(
+                    Py::Float(t.getItem(0)),
+                    Py::Float(t.getItem(1)),
+                    Py::Float(t.getItem(2))
+                );
+            }
+        }
+
+        if (closed) {
+            if (!data.empty()) {
+                data.push_back(data.front());
+            }
+        }
+
+        return data;
+    }
+
+    static PyObject* approx1(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject* pts {};
+        PyObject* closed = Py_False;
+        int minDegree = 3;  // NOLINT
+        int maxDegree = 8;  // NOLINT
+        int cont = int(GeomAbs_C2);
+        double tol3d = 1.0e-3;  // NOLINT
+
+        static const std::array<const char *, 7> kwds_approx{"Points",
+                                                             "Closed",
+                                                             "MinDegree",
+                                                             "MaxDegree",
+                                                             "Continuity",
+                                                             "Tolerance",
+                                                             nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|O!iiid", kwds_approx,
+                                                 &pts, &PyBool_Type, &closed, &minDegree,
+                                                 &maxDegree, &cont, &tol3d)) {
+            return nullptr;
+        }
+
+        std::vector<Base::Vector3d> data = getPoints(pts, Base::asBoolean(closed));
+
+        Part::GeomBSplineCurve curve;
+        curve.approximate(data, minDegree, maxDegree, GeomAbs_Shape(cont), tol3d);
+        return curve.getPyObject();
+    }
+
+    static PyObject* approx2(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject* pts {};
+        char* parType {};
+        PyObject* closed = Py_False;
+        int minDegree = 3;  // NOLINT
+        int maxDegree = 8;  // NOLINT
+        int cont = int(GeomAbs_C2);
+        double tol3d = 1.0e-3;  // NOLINT
+
+        static const std::array<const char *, 8> kwds_approx{"Points",
+                                                             "ParametrizationType",
+                                                             "Closed",
+                                                             "MinDegree",
+                                                             "MaxDegree",
+                                                             "Continuity",
+                                                             "Tolerance",
+                                                             nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Os|O!iiid", kwds_approx,
+                                                 &pts, &parType, &PyBool_Type, &closed, &minDegree,
+                                                 &maxDegree, &cont, &tol3d)) {
+            return nullptr;
+        }
+
+        std::vector<Base::Vector3d> data = getPoints(pts, Base::asBoolean(closed));
+
+        Approx_ParametrizationType pt {Approx_ChordLength};
+        std::string pstr = parType;
+        if (pstr == "Uniform") {
+            pt = Approx_IsoParametric;
+        }
+        else if (pstr == "Centripetal") {
+            pt = Approx_Centripetal;
+        }
+
+        Part::GeomBSplineCurve curve;
+        curve.approximate(data, pt, minDegree, maxDegree, GeomAbs_Shape(cont), tol3d);
+        return curve.getPyObject();
+    }
+
+    static PyObject* approx3(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject* pts {};
+        double weight1 {};
+        double weight2 {};
+        double weight3 {};
+        PyObject* closed = Py_False;
+        int maxDegree = 8;  // NOLINT
+        int cont = int(GeomAbs_C2);
+        double tol3d = 1.0e-3;  // NOLINT
+
+        static const std::array<const char *, 9> kwds_approx{"Points",
+                                                             "Weight1",
+                                                             "Weight2",
+                                                             "Weight3",
+                                                             "Closed",
+                                                             "MaxDegree",
+                                                             "Continuity",
+                                                             "Tolerance",
+                                                             nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oddd|O!iid", kwds_approx,
+                                                 &pts, &weight1, &weight2, &weight3,
+                                                 &PyBool_Type, &closed,
+                                                 &maxDegree, &cont, &tol3d)) {
+            return nullptr;
+        }
+
+        std::vector<Base::Vector3d> data = getPoints(pts, Base::asBoolean(closed));
+
+        Part::GeomBSplineCurve curve;
+        curve.approximate(data, weight1, weight2, weight3, maxDegree, GeomAbs_Shape(cont), tol3d);
+        return curve.getPyObject();
+    }
+
+    Py::Object approxCurve(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        try {
+            using approxFunc = std::function<PyObject*(const Py::Tuple& args, const Py::Dict& kwds)>;
+
+            std::vector<approxFunc> funcs;
+            funcs.emplace_back(approx3);
+            funcs.emplace_back(approx2);
+            funcs.emplace_back(approx1);
+
+            for (const auto& func : funcs) {
+                if (PyObject* py = func(args, kwds)) {
+                    return Py::asObject(py);
+                }
+
+                PyErr_Clear();
+            }
+
+            throw Py::ValueError("Wrong arguments ReverseEngineering.approxCurve()");
+        }
+        catch (const Base::Exception& e) {
+            std::string msg = e.what();
+            if (msg.empty()) {
+                msg = "ReverseEngineering.approxCurve() failed";
+            }
+            throw Py::RuntimeError(msg);
+        }
+    }
+
     Py::Object approxSurface(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *o;

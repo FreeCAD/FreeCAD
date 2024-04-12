@@ -437,7 +437,7 @@ def makeElementGeometry1D(
 
 def makeElementGeometry2D(
     doc,
-    thickness=20.0,
+    thickness=1.0,
     name="ElementGeometry2D"
 ):
     """makeElementGeometry2D(document, [thickness], [name]):
@@ -879,11 +879,11 @@ def makeEquationMagnetodynamic2D(
     return obj
 
 
-def makeSolverCalculixCcxTools(
+def makeSolverCalculiXCcxTools(
     doc,
     name="SolverCcxTools"
 ):
-    """makeSolverCalculixCcxTools(document, [name]):
+    """makeSolverCalculiXCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
     from femobjects import solver_ccxtools

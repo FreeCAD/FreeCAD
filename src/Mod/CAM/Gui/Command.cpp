@@ -43,7 +43,7 @@ CmdPathArea::CmdPathArea()
     :Command("CAM_Area")
 {
     sAppModule      = "Path";
-    sGroup          = QT_TR_NOOP("Path");
+    sGroup          = QT_TR_NOOP("CAM");
     sMenuText       = QT_TR_NOOP("Area");
     sToolTipText    = QT_TR_NOOP("Creates a feature area from selected objects");
     sWhatsThis      = "CAM_Area";
@@ -125,7 +125,7 @@ CmdPathAreaWorkplane::CmdPathAreaWorkplane()
     :Command("CAM_Area_Workplane")
 {
     sAppModule      = "Path";
-    sGroup          = QT_TR_NOOP("Path");
+    sGroup          = QT_TR_NOOP("CAM");
     sMenuText       = QT_TR_NOOP("Area workplane");
     sToolTipText    = QT_TR_NOOP("Select a workplane for a FeatureArea");
     sWhatsThis      = "CAM_Area_Workplane";
@@ -215,7 +215,7 @@ CmdPathCompound::CmdPathCompound()
     :Command("CAM_Compound")
 {
     sAppModule      = "Path";
-    sGroup          = QT_TR_NOOP("Path");
+    sGroup          = QT_TR_NOOP("CAM");
     sMenuText       = QT_TR_NOOP("Compound");
     sToolTipText    = QT_TR_NOOP("Creates a compound from selected toolpaths");
     sWhatsThis      = "CAM_Compound";
@@ -267,7 +267,7 @@ CmdPathShape::CmdPathShape()
     :Command("CAM_Shape")
 {
     sAppModule      = "Path";
-    sGroup          = QT_TR_NOOP("Path");
+    sGroup          = QT_TR_NOOP("CAM");
     sMenuText       = QT_TR_NOOP("From Shape");
     sToolTipText    = QT_TR_NOOP("Creates a toolpath from a selected shape");
     sWhatsThis      = "CAM_Shape";

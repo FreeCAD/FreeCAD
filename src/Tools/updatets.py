@@ -194,6 +194,17 @@ excluded_files = [
     ("CAM", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
 ]
 
+# HTML entities that lextract creates and we want to "un-create" (because CrowdIn just displays them as plain text,
+# and does not display the entities as their resulting character, so translators see "&quot;" instead of a quote).
+html_entities = [
+    "&apos;",
+    "&quot;",
+]
+
+workbenches_for_html_cleanup = [
+    "CAM",
+]
+
 QMAKE = ""
 LUPDATE = ""
 PYLUPDATE = ""

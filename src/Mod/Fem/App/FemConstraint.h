@@ -30,6 +30,7 @@
 #include <App/PropertyUnits.h>
 #include <Base/Vector3D.h>
 #include <Mod/Fem/FemGlobal.h>
+#include <App/SuppressibleExtension.h>
 
 
 namespace Fem
@@ -57,7 +58,7 @@ namespace Fem
  *  and @ref Scale and the protected method @ref getPoints(points&, normals&,
  *  scale&).
  */
-class FemExport Constraint: public App::DocumentObject
+class FemExport Constraint: public App::DocumentObject, public App::SuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::Constraint);
 

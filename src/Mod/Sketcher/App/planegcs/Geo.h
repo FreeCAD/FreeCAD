@@ -243,6 +243,7 @@ public:
     double* startAngle;
     double* endAngle;
     // double *rad; //inherited
+    // start and end points are computed by an ArcRules constraint
     Point start;
     Point end;
     // Point center; //inherited

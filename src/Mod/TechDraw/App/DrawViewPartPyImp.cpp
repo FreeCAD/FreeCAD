@@ -110,6 +110,18 @@ PyObject* DrawViewPartPy::requestPaint(PyObject *args)
     Py_Return;
 }
 
+PyObject* DrawViewPartPy::getGeometricCenter(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d pointOut = dvp->getCurrentCentroid();
+    return new Base::VectorPy(new Base::Vector3d(pointOut));
+}
+
+
 // remove all cosmetics
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
 {

@@ -33,6 +33,7 @@
 
 #include "DlgSettingsMaterial.h"
 #include "Workbench.h"
+#include "WorkbenchManipulator.h"
 
 // use a different name to CreateCommand()
 void CreateMaterialCommands();
@@ -89,6 +90,8 @@ PyMOD_INIT_FUNC(MatGui)
     Base::Console().Log("Loading GUI of Material module... done\n");
 
     MatGui::Workbench ::init();
+    auto manip = std::make_shared<MatGui::WorkbenchManipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manip);
 
     // instantiating the commands
     CreateMaterialCommands();

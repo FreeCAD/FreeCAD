@@ -47,6 +47,7 @@ QGIMatting: 205
 QGTracker: 210
 QGILeaderLine: 232
 QGIRichAnno: 233
+QGIBreakLine: 250
 QGMText: 300
 QGEPath: 301
 QGMarker: 302

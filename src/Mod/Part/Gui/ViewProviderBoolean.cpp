@@ -103,14 +103,14 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                 std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
                 std::vector<App::Color> colTool = vpTool->DiffuseColor.getValues();
                 std::vector<App::Color> colBool;
-                colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+                colBool.resize(boolMap.Extent(), this->ShapeAppearance.getDiffuseColor());
                 applyTransparency(vpBase->Transparency.getValue(),colBase);
                 applyTransparency(vpTool->Transparency.getValue(),colTool);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                     applyColor(hist[0], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
                     applyColor(hist[0], colBase, colBool);
                 }
@@ -118,7 +118,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                 if (static_cast<int>(colTool.size()) == toolMap.Extent()) {
                     applyColor(hist[1], colTool, colBool);
                 }
-                else if (!colTool.empty() && colTool[0] != this->ShapeColor.getValue()) {
+                else if (!colTool.empty() && colTool[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colTool.resize(toolMap.Extent(), colTool[0]);
                     applyColor(hist[1], colTool, colBool);
                 }
@@ -187,7 +187,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
         std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance.getDiffuseColor());
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -206,7 +206,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                     applyColor(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
                     applyColor(hist[index], colBase, colBool);
                 }
@@ -322,7 +322,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
         TopExp::MapShapes(boolShape, TopAbs_FACE, boolMap);
 
         std::vector<App::Color> colBool;
-        colBool.resize(boolMap.Extent(), this->ShapeColor.getValue());
+        colBool.resize(boolMap.Extent(), this->ShapeAppearance.getDiffuseColor());
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -341,7 +341,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
                     applyColor(hist[index], colBase, colBool);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
                     applyColor(hist[index], colBase, colBool);
                 }

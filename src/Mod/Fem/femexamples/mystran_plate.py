@@ -39,7 +39,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Quad4",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools", "elmer", "mystran"],
+        "solvers": ["ccxtools", "elmer", "mystran"],
         "material": "solid",
         "equations": ["mechanical"]
     }
@@ -115,10 +115,8 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = u""
     elif solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
@@ -133,7 +131,7 @@ def setup(doc=None, solvertype="ccxtools"):
             "No solver object was created.\n".format(solvertype)
         )
 
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
