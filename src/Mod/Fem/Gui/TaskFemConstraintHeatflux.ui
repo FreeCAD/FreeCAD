@@ -175,16 +175,16 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutAmbientTemp">
+          <layout class="QHBoxLayout" name="layoutAmbientTemp2">
            <item>
-            <widget class="QLabel" name="lbl_ambienttemp">
+            <widget class="QLabel" name="lbl_ambienttemp2">
              <property name="text">
               <string>Ambient Temperature</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="Gui::InputField" name="if_ambienttemp">
+            <widget class="Gui::InputField" name="if_ambienttemp2">
              <property name="text">
               <string>300 K</string>
              </property>
