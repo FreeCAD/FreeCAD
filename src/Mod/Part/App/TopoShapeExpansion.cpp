@@ -158,6 +158,9 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
         _cache->subLocation.Identity();
         _subLocation.Identity();
         _parentCache.reset();
+        if ( ! elementMap->hasher && Hasher ) {
+            elementMap->hasher = Hasher;
+        }
     }
     return Data::ComplexGeoData::resetElementMap(elementMap);
 }
