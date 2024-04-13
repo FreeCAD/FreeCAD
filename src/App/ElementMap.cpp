@@ -726,8 +726,8 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
         FC_LOG("cannot de-hash id " << id);// NOLINT
         return name;
     }
-    MappedName ret(
-        sid.toString());// FIXME .toString() was missing in original function. is this correct?
+    MappedName ret(sid);
+//        sid.toString());// FIXME .toString() was missing in original function. is this correct?
     FC_TRACE("de-hash " << name << " -> " << ret);// NOLINT
     return ret;
 }
