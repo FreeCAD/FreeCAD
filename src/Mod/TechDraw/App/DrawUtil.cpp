@@ -120,7 +120,7 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
     std::stringstream ErrorMsg;
 
     if (boost::regex_search(begin, end, what, re, flags)) {
-        return what.str();//TODO: use std::stoi() in c++11
+        return what.str();
     } else {
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
