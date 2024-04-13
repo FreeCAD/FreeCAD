@@ -417,6 +417,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        self.assertEqual(body.Shape.ElementMapSize,30)
+        self.assertEqual(sketch.Shape.ElementMapSize,12)
+        self.assertEqual(pad.Shape.ElementMapSize,30)
+        self.assertEqual(pad.Shape.childShapes()[0].ElementMapSize,30)
+        # Todo: Assert that the names in the ElementMap are good; in particular that they are hashed with a # starting
 
     def testPartDesignElementMapRevolution(self):
         # Arrange
