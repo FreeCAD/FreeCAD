@@ -281,12 +281,7 @@ parser.add_argument("--repeat", action="store_true", help="repeat axis arguments
 TOOLTIP_ARGS = parser.format_help()
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
-
-# to distinguish python built-in open function from the one declared below
-if open.__module__ == "__builtin__":
-    pythonopen = open
+from builtins import open as pyopen
 
 # debug option, trace to screen while processing to see where things break up.
 trace_gcode = False
@@ -538,7 +533,7 @@ def export(objectslist, filename, argstring):
 
     if not filename == "-":
         print("export: writing to '{}'".format(filename))
-        gfile = pythonopen(filename, "w")
+        gfile = pyopen(filename, "w")
         gfile.write(final)
         gfile.close()
 

@@ -37,8 +37,8 @@ if FreeCAD.GuiUp:
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def open(filename):
@@ -119,7 +119,7 @@ def read_old(filename):
 
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
-    f = pythonopen(filename, encoding="utf8")
+    f = pyopen(filename, encoding="utf8")
     try:
         content = f.readlines()
         # print(len(content))
@@ -194,7 +194,7 @@ def read2(filename):
 
     # print(filename)
     card_name_file = os.path.splitext(os.path.basename(filename))[0]
-    f = pythonopen(filename, encoding="utf8")
+    f = pyopen(filename, encoding="utf8")
     try:
         content = f.readlines()
         # print(len(content))
@@ -335,7 +335,7 @@ def write(filename, dictionary, write_group_section=True):
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(None, "No card name", error_message)
         return
-    f = pythonopen(filename, "w", encoding="utf-8")
+    f = pyopen(filename, "w", encoding="utf-8")
     # write header
     # first five lines are the same in any card file, see comment above read def
     if header["CardName"] != card_name_file:

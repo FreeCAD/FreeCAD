@@ -39,8 +39,8 @@ import Fem
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pyopen = open # because we'll redefine open below
+from builtins import open as pyopen # because we'll redefine open below
+
 
 
 def open(

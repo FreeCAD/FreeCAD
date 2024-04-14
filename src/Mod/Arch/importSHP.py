@@ -24,8 +24,8 @@ import os
 import FreeCAD
 translate = FreeCAD.Qt.translate
 
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 def open(filename):
 
@@ -142,7 +142,7 @@ def checkShapeFileLibrary():
                     return False
                 b = u.read()
                 fp = os.path.join(FreeCAD.getUserMacroDir(True),"shapefile.py")
-                f = pythonopen(fp,"wb")
+                f = pyopen(fp,"wb")
                 f.write(b)
                 f.close()
                 try:

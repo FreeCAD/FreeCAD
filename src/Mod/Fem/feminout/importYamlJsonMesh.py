@@ -53,8 +53,8 @@ except ImportError:
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pyopen = open # because we'll redefine open below
+from builtins import open as pyopen # because we'll redefine open below
+
 
 
 def open(

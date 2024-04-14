@@ -53,8 +53,8 @@ else:
         return txt
 
 # Save the native open function to avoid collisions
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def getpoint(data):
@@ -286,7 +286,7 @@ def parse(filename, doc):
     -------
     None
     """
-    filebuffer = pythonopen(filename)
+    filebuffer = pyopen(filename)
     global objects
     objects = {}
     global color
@@ -416,7 +416,7 @@ def export(exportList, filename):
         return
 
     # writing file
-    oca = pythonopen(filename, 'w')
+    oca = pyopen(filename, 'w')
     oca.write("#oca file generated from FreeCAD\r\n")
     oca.write("# edges\r\n")
     count = 1

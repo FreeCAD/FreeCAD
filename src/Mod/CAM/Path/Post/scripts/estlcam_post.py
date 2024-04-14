@@ -159,8 +159,8 @@ CURRENT_Z = 0
 
 # ***************************************************************************
 # * to distinguish python built-in open function from the one declared below
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def processArguments(argstring):
@@ -346,7 +346,7 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # write the file
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(final)
     gfile.close()
 

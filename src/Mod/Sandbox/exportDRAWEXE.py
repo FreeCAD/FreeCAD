@@ -25,8 +25,8 @@ __author__ = "Sebastian Hoogen <github@sebastianhoogen.de>"
 
 import FreeCAD, Part
 
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 # unsupported primitives
 # Part:: Wedge, Helix, Spiral, Elipsoid
@@ -252,7 +252,7 @@ def isDeform(ob):
 class Drawexporter(object):
     def __init__(self, filename):
         self.objectcache=set()
-        self.csg = pythonopen(filename,'w')
+        self.csg = pyopen(filename,'w')
         #self.csg=csg
         self.filename=filename
         #settings

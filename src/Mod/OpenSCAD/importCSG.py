@@ -45,8 +45,8 @@ from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
 # Save the native open function to avoid collisions
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -894,8 +894,8 @@ def processSVG(fname, ext):
 
     # pathName is a Global
     filename = os.path.join(pathName,fname+'.'+ext)
-    # Use the native Python open which was saved as `pythonopen`
-    parser.parse(pythonopen(filename))
+    # Use the native Python open which was saved as `pyopen`
+    parser.parse(pyopen(filename))
 
     #combine SVG objects into one
     shapes = []

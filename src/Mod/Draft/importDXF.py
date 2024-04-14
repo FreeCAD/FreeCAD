@@ -87,8 +87,8 @@ dxfLibrary = None
 
 # Save the native open function to avoid collisions
 # with the function declared here
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def errorDXFLib(gui):
@@ -3618,7 +3618,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # arch view: export it "as is"
             dxf = exportList[0].Proxy.getDXF()
             if dxf:
-                f = pythonopen(filename, "w")
+                f = pyopen(filename, "w")
                 f.write(dxf)
                 f.close()
 
@@ -3899,11 +3899,11 @@ def exportPage(page, filename):
         template = os.path.splitext(page.Template)[0] + ".dxf"
         views = page.Group
     if os.path.exists(template):
-        f = pythonopen(template, "U")
+        f = pyopen(template, "U")
         template = f.read()
         f.close()
         # find & replace editable texts
-        f = pythonopen(page.Template, "rb")
+        f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
         editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
@@ -3943,7 +3943,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "w")
+    f = pyopen(filename, "w")
     f.write(template)
     f.close()
 

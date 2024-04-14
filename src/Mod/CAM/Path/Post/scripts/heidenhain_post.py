@@ -246,8 +246,8 @@ parser.add_argument(
 
 TOOLTIP_ARGS = parser.format_help()
 
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def processArguments(argstring):
@@ -540,7 +540,7 @@ def export(objectslist, filename, argstring):
     if SHOW_EDITOR:
         PostUtils.editor(Program_Out)
 
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(Program_Out)
     gfile.close()
 

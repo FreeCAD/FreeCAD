@@ -39,8 +39,8 @@ import Part
 import Path.Post.Utils as PostUtils
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 # Entrypoint used by FreeCAD
@@ -51,7 +51,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         code += convertobject(obj)
 
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(code)
     gfile.close()
 

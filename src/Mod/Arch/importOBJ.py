@@ -50,8 +50,8 @@ else:
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
@@ -260,7 +260,7 @@ def export(exportList,filename,colors=None):
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + filename + "\n")
     if materials:
-        outfile = pythonopen(filenamemtl,"w")
+        outfile = pyopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
         outfile.write("# https://www.freecad.org\n")
         kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr ","Dissolve":"d "}
@@ -306,7 +306,7 @@ def insert(filename,docname):
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
 
-    with pythonopen(filename,"r") as infile:
+    with pyopen(filename,"r") as infile:
         verts = []
         facets = []
         activeobject = None
@@ -327,7 +327,7 @@ def insert(filename,docname):
         if line[:7] == "mtllib ":
             matlib = os.path.join(os.path.dirname(filename),line[7:])
             if os.path.exists(matlib):
-                with pythonopen(matlib,"r") as matfile:
+                with pyopen(matlib,"r") as matfile:
                     mname = None
                     color = None
                     trans = None

@@ -30,8 +30,8 @@ import Path
 import FreeCAD
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ('__builtin__', 'io', '_io'):
-    pythonopen = open
+from builtins import open as pyopen
+
 
 
 def open(filename):
@@ -43,7 +43,7 @@ def open(filename):
 
 def insert(filename, docname):
     "called when freecad imports a file"
-    gfile = pythonopen(filename)
+    gfile = pyopen(filename)
     gcode = gfile.read()
     gfile.close()
     gcode = parse(gcode)
