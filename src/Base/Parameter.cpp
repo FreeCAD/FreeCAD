@@ -171,9 +171,7 @@ inline bool DOMTreeErrorReporter::getSawErrors() const
 ParameterGrp::ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* GroupNode,
                            const char* sName,
                            ParameterGrp* Parent)
-    : Base::Handled()
-    , Subject<const char*>()
-    , _pGroupNode(GroupNode)
+    : _pGroupNode(GroupNode)
     , _Parent(Parent)
 {
     if (sName) {
@@ -202,7 +200,7 @@ ParameterGrp::~ParameterGrp()
 //**************************************************************************
 // Access methods
 
-void ParameterGrp::copyTo(Base::Reference<ParameterGrp> Grp)
+void ParameterGrp::copyTo(const Base::Reference<ParameterGrp>& Grp)
 {
     if (Grp == this) {
         return;
@@ -215,7 +213,7 @@ void ParameterGrp::copyTo(Base::Reference<ParameterGrp> Grp)
     insertTo(Grp);
 }
 
-void ParameterGrp::insertTo(Base::Reference<ParameterGrp> Grp)
+void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Grp)
 {
     if (Grp == this) {
         return;
@@ -309,7 +307,7 @@ void ParameterGrp::revert(const char* FileName)
     revert(Base::Reference<ParameterGrp>(Mngr));
 }
 
-void ParameterGrp::revert(Base::Reference<ParameterGrp> Grp)
+void ParameterGrp::revert(const Base::Reference<ParameterGrp>& Grp)
 {
     if (Grp == this) {
         return;
@@ -869,8 +867,10 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
     if (!pcElem) {
         return lPreset;
     }
+
     // if yes check the value and return
-    return strtoul(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(), nullptr, 10);
+    const int base = 10;
+    return strtoul(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(), nullptr, base);
 }
 
 void ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
@@ -887,6 +887,7 @@ std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char* sFilter) const
     }
 
     std::string Name;
+    const int base = 10;
 
     DOMElement* pcTemp = FindElement(_pGroupNode, "FCUInt");
     while (pcTemp) {
@@ -896,7 +897,7 @@ std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char* sFilter) const
             vrValues.push_back(
                 strtoul(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),
                         nullptr,
-                        10));
+                        base));
         }
         pcTemp = FindNextElement(pcTemp, "FCUInt");
     }
@@ -913,6 +914,7 @@ ParameterGrp::GetUnsignedMap(const char* sFilter) const
     }
 
     std::string Name;
+    const int base = 10;
 
     DOMElement* pcTemp = FindElement(_pGroupNode, "FCUInt");
     while (pcTemp) {
@@ -923,7 +925,7 @@ ParameterGrp::GetUnsignedMap(const char* sFilter) const
                 Name,
                 (strtoul(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(),
                          nullptr,
-                         10)));
+                         base)));
         }
         pcTemp = FindNextElement(pcTemp, "FCUInt");
     }
@@ -1398,11 +1400,11 @@ ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
                     if (Name) {
                         DOMNode* attr = FindAttribute(clChild, "Name");
                         if (attr && !strcmp(Name, StrX(attr->getNodeValue()).c_str())) {
-                            return static_cast<DOMElement*>(clChild);
+                            return dynamic_cast<DOMElement*>(clChild);
                         }
                     }
                     else {
-                        return static_cast<DOMElement*>(clChild);
+                        return dynamic_cast<DOMElement*>(clChild);
                     }
                 }
             }
@@ -1423,7 +1425,7 @@ ParameterGrp::FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Prev, cons
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
             if (!strcmp(Type, StrX(clChild->getNodeName()).c_str())) {
-                return static_cast<DOMElement*>(clChild);
+                return dynamic_cast<DOMElement*>(clChild);
             }
         }
     }
@@ -1529,8 +1531,8 @@ void ParameterGrp::_Reset()
 //**************************************************************************
 // ParameterSerializer
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ParameterSerializer::ParameterSerializer(const std::string& fn)
-    : filename(fn)
+ParameterSerializer::ParameterSerializer(std::string fn)
+    : filename(std::move(fn))
 {}
 
 ParameterSerializer::~ParameterSerializer() = default;
@@ -1555,7 +1557,7 @@ bool ParameterSerializer::LoadOrCreateDocument(ParameterManager& mgr)
 // ParameterManager
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-static XercesDOMParser::ValSchemes gValScheme = XercesDOMParser::Val_Auto;
+static XercesDOMParser::ValSchemes gValScheme = XercesDOMParser::Val_Auto;  // NOLINT
 
 //**************************************************************************
 // Construction/Destruction
@@ -1610,6 +1612,7 @@ ParameterManager::ParameterManager()
     //
     // ---------------------------------------------------------------------------
 
+    // NOLINTBEGIN
     gDoNamespaces = false;
     gDoSchema = false;
     gSchemaFullChecking = false;
@@ -1622,6 +1625,7 @@ ParameterManager::ParameterManager()
     gDiscardDefaultContent = true;
     gUseFilter = true;
     gFormatPrettyPrint = true;
+    // NOLINTEND
 }
 
 /** Destruction
@@ -1736,8 +1740,9 @@ int ParameterManager::LoadDocument(const char* sFileName)
 
     try {
 #if defined(FC_OS_WIN32)
-        LocalFileInputSource inputSource(
-            reinterpret_cast<const XMLCh*>(file.toStdWString().c_str()));
+        std::wstring name = file.toStdWString();
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+        LocalFileInputSource inputSource(reinterpret_cast<const XMLCh*>(name.c_str()));
 #else
         LocalFileInputSource inputSource(XStr(file.filePath().c_str()).unicodeForm());
 #endif
@@ -1760,14 +1765,14 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     //  The parser will call back to methods of the ErrorHandler if it
     //  discovers errors during the course of parsing the XML document.
     //
-    XercesDOMParser* parser = new XercesDOMParser;
+    auto parser = new XercesDOMParser;
     parser->setValidationScheme(gValScheme);
     parser->setDoNamespaces(gDoNamespaces);
     parser->setDoSchema(gDoSchema);
     parser->setValidationSchemaFullChecking(gSchemaFullChecking);
     parser->setCreateEntityReferenceNodes(gDoCreate);
 
-    DOMTreeErrorReporter* errReporter = new DOMTreeErrorReporter();
+    auto errReporter = new DOMTreeErrorReporter();
     parser->setErrorHandler(errReporter);
 
     //
@@ -1778,19 +1783,16 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     try {
         parser->parse(inputSource);
     }
-
     catch (const XMLException& e) {
         std::cerr << "An error occurred during parsing\n   Message: " << StrX(e.getMessage())
                   << std::endl;
         errorsOccured = true;
     }
-
     catch (const DOMException& e) {
         std::cerr << "A DOM error occurred during parsing\n   DOMException code: " << e.code
                   << std::endl;
         errorsOccured = true;
     }
-
     catch (...) {
         std::cerr << "An error occurred during parsing\n " << std::endl;
         errorsOccured = true;
@@ -1836,11 +1838,13 @@ void ParameterManager::SaveDocument(const char* sFileName) const
         // LocalFileFormatTarget prints the resultant XML stream
         // to a file once it receives any thing from the serializer.
         //
+        XMLFormatTarget* myFormTarget {};
 #if defined(FC_OS_WIN32)
-        XMLFormatTarget* myFormTarget =
-            new LocalFileFormatTarget(reinterpret_cast<const XMLCh*>(file.toStdWString().c_str()));
+        std::wstring name = file.toStdWString();
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+        myFormTarget = new LocalFileFormatTarget(reinterpret_cast<const XMLCh*>(name.c_str()));
 #else
-        XMLFormatTarget* myFormTarget = new LocalFileFormatTarget(file.filePath().c_str());
+        myFormTarget = new LocalFileFormatTarget(file.filePath().c_str());
 #endif
         SaveDocument(myFormTarget);
         delete myFormTarget;
@@ -1857,12 +1861,14 @@ void ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         std::unique_ptr<DOMPrintFilter> myFilter;
         std::unique_ptr<DOMErrorHandler> myErrorHandler;
 
+        // NOLINTBEGIN
         // get a serializer, an instance of DOMWriter
         XMLCh tempStr[100];
         XMLString::transcode("LS", tempStr, 99);
         DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
         DOMLSSerializer* theSerializer =
             static_cast<DOMImplementationLS*>(impl)->createLSSerializer();
+        // NOLINTEND
 
         // set user specified end of line sequence and output encoding
         theSerializer->setNewLine(gMyEOLSequence);
@@ -1885,6 +1891,8 @@ void ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             // plug in user's own error handler
             myErrorHandler = std::make_unique<DOMPrintErrorHandler>();
             DOMConfiguration* config = theSerializer->getDomConfig();
+
+            // NOLINTBEGIN
             config->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler.get());
 
             // set feature if the serializer supports the feature/mode
@@ -1900,6 +1908,7 @@ void ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             if (config->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint)) {
                 config->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint);
             }
+            // NOLINTEND
 
             theOutput->setByteStream(pFormatTarget);
             theSerializer->write(_pDocument, theOutput);
@@ -1955,7 +1964,8 @@ void ParameterManager::CheckDocument() const
 
         // Either load the XSD file from disk or use the built-in string
         // const char* xsdFile = "...";
-        std::string xsdStr(xmlSchemeString);
+        std::string xsdStr(xmlSchemeString);  // NOLINT
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         MemBufInputSource xsdFile(reinterpret_cast<const XMLByte*>(xsdStr.c_str()),
                                   xsdStr.size(),
                                   "Parameter.xsd");
