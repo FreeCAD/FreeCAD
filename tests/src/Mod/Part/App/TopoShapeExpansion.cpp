@@ -2381,38 +2381,30 @@ TEST_F(TopoShapeExpansionTest, makeElementPrism)
     );
 }
 
-// TODO:  This code was written in Feb 2024 as part of the toponaming project, but appears to be
-// unused.  It is potentially useful if debugged.
-//
-// TEST_F(TopoShapeExpansionTest, makeElementPrismUntil)
-//{
-//    // Arrange
-//    auto [cube1, cube2] = CreateTwoCubes();
-//    TopoShape cube1TS {cube1, 1L};
-//    auto subFaces = cube1TS.getSubShapes(TopAbs_FACE);
-//    auto subTopoFaces = cube1TS.getSubTopoShapes(TopAbs_FACE);
-//    subTopoFaces[0].Tag = 2L;
-//    subTopoFaces[1].Tag = 3L;
-//    auto tr {gp_Trsf()};
-//    auto direction = gp_Vec(gp_XYZ(0.0, 0.0, 0.25));
-//    tr.SetTranslation(direction);
-//    auto support = subFaces[0].Moved(TopLoc_Location(tr));
-//    auto upto = support.Moved(TopLoc_Location(tr));
-//    // Act
-//    TopoShape result = cube1TS.makeElementPrismUntil(subTopoFaces[0],
-//                                                     TopoShape(support, 4L),
-//                                                     TopoShape(upto, 5L),
-//                                                     direction,
-//                                                     TopoShape::PrismMode::CutFromBase);
-//    auto elements = elementMap(result);
-//    Base::BoundBox3d bb = result.getBoundBox();
-//    // Assert shape is correct
-//    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, -0.5, 0.0, 1.5, 1.0, 1.0)));
-//    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 2);
-//    // Assert elementMap is correct
-//    EXPECT_TRUE(elementsMatch(result,
-//                              {"Edge1;:G;XTR;:H2:7,F",}));
-//}
+TEST_F(TopoShapeExpansionTest, makeElementPrismUntil)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    TopoShape cube1TS {cube1, 1L};
+    auto subTopoFaces = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    auto direction = gp_Vec(gp_XYZ(0.0, 0.0, 1));
+    // Act
+    TopoShape result = cube1TS.makeElementPrismUntil(subTopoFaces[4],
+                                                     subTopoFaces[4],
+                                                     subTopoFaces[5],
+                                                     direction,
+                                                     TopoShape::PrismMode::FuseWithBase);
+    auto elements = elementMap(result);
+    Base::BoundBox3d bb = result.getBoundBox();
+    // Assert shape is correct
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)));
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 1);
+    // Assert elementMap is correct
+    //    EXPECT_EQ(result.getElementMapSize(),26); // Todo: Sometimes too big in TNP code.  Why?
+    EXPECT_EQ(result.countSubElements("Edge"), 12);
+    EXPECT_EQ(result.countSubElements("Face"), 6);
+    EXPECT_EQ(result.countSubElements("Vertex"), 8);
+}
 
 TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
 {

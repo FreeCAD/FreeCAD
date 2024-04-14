@@ -220,6 +220,7 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
+generate_from_xml(ViewProviderGeometryObjectPy)
 generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
@@ -233,6 +234,7 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 # The XML files
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
+    ViewProviderGeometryObjectPy.xml
     ViewProviderPy.xml
     ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
@@ -297,7 +299,6 @@ SET(Gui_UIC_SRCS
     DlgChooseIcon.ui
     DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
-    DlgDisplayProperties.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -407,7 +408,6 @@ SET(Dialog_CPP_SRCS
     DlgActivateWindowImp.cpp
     DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
-    DlgDisplayPropertiesImp.cpp
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
     DlgRunExternal.cpp
@@ -447,7 +447,6 @@ SET(Dialog_HPP_SRCS
     DlgActivateWindowImp.h
     DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
-    DlgDisplayPropertiesImp.h
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
     DlgRunExternal.h
@@ -490,7 +489,6 @@ SET(Dialog_SRCS
     DlgActivateWindow.ui
     DlgUnitsCalculator.ui
     DlgAuthorization.ui
-    DlgDisplayProperties.ui
     DlgInputDialog.ui
     DlgAddProperty.ui
     DlgLocationAngle.ui
@@ -900,6 +898,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
+    ViewProviderGeometryObjectPyImp.cpp
     ViewProviderDragger.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
@@ -1041,6 +1040,7 @@ SET(Widget_CPP_SRCS
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
+    WorkbenchSelector.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1061,6 +1061,7 @@ SET(Widget_HPP_SRCS
     WidgetFactory.h
     Widgets.h
     Window.h
+    WorkbenchSelector.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}

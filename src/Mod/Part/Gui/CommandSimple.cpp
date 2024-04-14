@@ -263,7 +263,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                         v.second->getNameInDocument(),
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
-            Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", v.second);
             Gui::Command::copyVisual(newObj, "LineColor", v.second);
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
         }
@@ -378,7 +378,7 @@ void CmdPartRefineShape::activated(int iMsg)
                               obj->getNameInDocument(),
                               obj->getNameInDocument());
 
-                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument());
+                copyVisual("ActiveObject", "ShapeAppearance", obj->getNameInDocument());
                 copyVisual("ActiveObject", "LineColor", obj->getNameInDocument());
                 copyVisual("ActiveObject", "PointColor", obj->getNameInDocument());
             }

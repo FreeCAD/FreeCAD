@@ -176,6 +176,7 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
 
 bool ViewProviderAssembly::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     // Set the part as 'Activated' ie bold in the tree.
     Gui::Command::doCommand(Gui::Command::Gui,
                             "Gui.ActiveDocument.ActiveView.setActiveObject('%s', "
@@ -238,6 +239,7 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
 
 bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 {
+    Q_UNUSED(pressed);
     if (key == SoKeyboardEvent::ESCAPE) {
         if (isInEditMode()) {
 
@@ -392,6 +394,8 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
                                               const SbVec2s& cursorPos,
                                               const Gui::View3DInventorViewer* viewer)
 {
+    Q_UNUSED(cursorPos);
+    Q_UNUSED(viewer);
     // Left Mouse button ****************************************************
     if (Button == 1) {
         if (pressed) {

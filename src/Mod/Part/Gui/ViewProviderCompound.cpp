@@ -96,7 +96,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         TopExp::MapShapes(compShape, TopAbs_FACE, compMap);
 
         std::vector<App::Color> compCol;
-        compCol.resize(compMap.Extent(), this->ShapeColor.getValue());
+        compCol.resize(compMap.Extent(), this->ShapeAppearance.getDiffuseColor());
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -116,7 +116,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
                 if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
                     applyColor(hist[index], baseCol, compCol);
                 }
-                else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
+                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance.getDiffuseColor()) {
                     baseCol.resize(baseMap.Extent(), baseCol[0]);
                     applyColor(hist[index], baseCol, compCol);
                 }

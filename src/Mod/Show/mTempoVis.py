@@ -79,7 +79,8 @@ class TempoVis(object):
     MAINSTACK special value (a global stack for the document will be used), or
     None (then, the TV is not in any stack, and can be manually instertd into one if desired).
 
-    Any additional keyword args are assigned as attributes. You can use it to immediately set a tag, for example."""
+    Any additional keyword args are assigned as attributes. You can use it to immediately set a tag, for example.
+    """
 
     document = None
     stack = None  # reference to stack this TV is in
@@ -323,7 +324,8 @@ class TempoVis(object):
     def show(self, doc_obj_or_list, links_too=True, mild_restore=None):
         """show(doc_obj_or_list, links_too = True): shows objects (sets their Visibility to True).
         doc_obj_or_list can be a document object, or a list of document objects.
-        If links_too is True, all Links of the objects are also hidden, by setting LinkVisibility attribute of each object."""
+        If links_too is True, all Links of the objects are also hidden, by setting LinkVisibility attribute of each object.
+        """
         doc_obj_or_list = self._3D_objects(doc_obj_or_list)
         self.saveBodyVisibleFeature(
             doc_obj_or_list
@@ -437,7 +439,8 @@ class TempoVis(object):
 
         Implementation detail: uses SoClipPlane node. If viewprovider already has a node
         of this type as direct child, one is used. Otherwise, new one is created and
-        inserted as the very first node. The node is left, but disabled when tempovis is restoring."""
+        inserted as the very first node. The node is left, but disabled when tempovis is restoring.
+        """
 
         from .SceneDetails.ObjectClipPlane import ObjectClipPlane
         from .ShowUtils import is3DObject

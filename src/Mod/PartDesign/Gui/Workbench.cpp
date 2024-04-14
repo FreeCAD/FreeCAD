@@ -243,7 +243,6 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                       << "Std_ToggleSelectability"
                       << "Std_TreeSelectAllInstances"
                       << "Separator"
-                      << "Std_SetAppearance"
                       << "Std_RandomColor"
                       << "Std_ToggleTransparency"
                       << "Std_Cut"

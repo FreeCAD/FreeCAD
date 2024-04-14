@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <App/SuppressibleExtension.h>
 
 #include "ActionFunction.h"
@@ -51,13 +52,17 @@ ViewProviderSuppressibleExtension::~ViewProviderSuppressibleExtension() = defaul
 void ViewProviderSuppressibleExtension::extensionUpdateData(const App::Property* prop)
 {
     auto vp = getExtendedViewProvider();
-    auto obj = vp->getObject()->getExtensionByType<App::SuppressibleExtension>();
-    if (obj && prop == &obj->Suppressed) {
+    auto owner = vp->getObject();
+    if(!owner->isValid())
+        return;
+
+    auto ext = owner->getExtensionByType<App::SuppressibleExtension>();
+
+    if (ext && prop == &ext->Suppressed) {
         //update the tree item
-        bool suppressed = obj->Suppressed.getValue();
-        this->setSuppressedIcon(suppressed);
-        auto activeDoc = Gui::Application::Instance->activeDocument();
-        activeDoc->signalHighlightObject(*vp, Gui::HighlightMode::StrikeOut, suppressed, 0, 0);
+        bool suppressed = ext->Suppressed.getValue();
+        setSuppressedIcon(suppressed);
+        vp->getDocument()->signalHighlightObject(*vp, Gui::HighlightMode::StrikeOut, suppressed, owner, 0);
     }
 }
 
@@ -72,29 +77,7 @@ QIcon ViewProviderSuppressibleExtension::extensionMergeColorfullOverlayIcons (co
     QIcon mergedicon = orig;
 
     if(isSetSuppressedIcon) {
-        QPixmap px;
-        static const char * feature_suppressed_xpm[] = {
-                                                       "16 16 2 1",
-                                                       "     c None",
-                                                       ".    c #FF0000",
-                                                       ".               ",
-                                                       " ..             ",
-                                                       " ...            ",
-                                                       "  ...           ",
-                                                       "   ...          ",
-                                                       "    ...         ",
-                                                       "     ...        ",
-                                                       "      ...       ",
-                                                       "       ...      ",
-                                                       "        ...     ",
-                                                       "         ...    ",
-                                                       "          ...   ",
-                                                       "           ...  ",
-                                                       "            ... ",
-                                                       "             .. ",
-                                                       "               ."};
-
-        px = QPixmap(feature_suppressed_xpm);
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("feature_suppressed", QSize(16, 16)));
 
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::TopLeft);
     }

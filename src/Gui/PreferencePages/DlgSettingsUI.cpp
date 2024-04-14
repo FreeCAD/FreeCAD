@@ -654,7 +654,7 @@ void DlgSettingsUI::init()
     QObject::connect(DockOverlayAnimationCurve, QOverload<int>::of(&QComboBox::currentIndexChanged),
                      this, &DlgSettingsUI::onCurveChange);
 
-    QObject::connect(timer, &QTimer::timeout, [=]() {
+    QObject::connect(timer, &QTimer::timeout, [this]() {
         if (animator1->state() != QAbstractAnimation::Running) {
             this->setOffset1(1);
             this->a1 = this->b1 = 0;

@@ -178,13 +178,26 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     this->positionBySupport();
 
+    // Remove suppressed features from the list so the transformations behave as if they are not there
+    {
+        auto eraseIter = std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
+            auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            return feature != nullptr && feature->Suppressed.getValue();
+        });
+        originals.erase(eraseIter, originals.end());
+    }
+
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
     try {
         std::list<gp_Trsf> t_list = getTransformations(originals);
         transformations.insert(transformations.end(), t_list.begin(), t_list.end());
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
     if (transformations.empty())

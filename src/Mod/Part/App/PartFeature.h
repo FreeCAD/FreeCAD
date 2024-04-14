@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <TopoDS_Face.hxx>
@@ -57,6 +58,7 @@ public:
     ~Feature() override;
 
     PropertyPartShape Shape;
+    Materials::PropertyMaterial ShapeMaterial;
 
     /** @name methods override feature */
     //@{
@@ -104,6 +106,9 @@ public:
 
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    App::Material getMaterialAppearance() const override;
+    void setMaterialAppearance(const App::Material& material) override;
 
     /** Convenience function to extract shape from fully qualified subname
      *
@@ -206,14 +211,24 @@ public:
  * Find all faces cut by a line through the centre of gravity of a given face
  * Useful for the "up to face" options to pocket or pad
  */
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 struct cutFaces {
     TopoDS_Face face;
     double distsq;
 };
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 PartExport
 std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
                                         const TopoDS_Shape& face, const gp_Dir& dir);
+struct cutTopoShapeFaces
+{
+    TopoShape face;
+    double distsq;
+};
+
+PartExport std::vector<cutTopoShapeFaces>
+findAllFacesCutBy(const TopoShape& shape, const TopoShape& face, const gp_Dir& dir);
 
 /**
   * Check for intersection between the two shapes. Only solids are guaranteed to work properly

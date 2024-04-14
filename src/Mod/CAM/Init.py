@@ -21,6 +21,23 @@
 # *                                                                         *
 # ***************************************************************************
 
+# This code handles parameter groups following the CAM workbench renaming
+# (PATH -> CAM).  This code can be removed after the 1.0 release.
+
+
+ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Path")
+if ParGrp.HasGroup("CAM"):
+    pass
+elif ParGrp.HasGroup("Path"):
+    ParGrp.RenameGroup("Path", "CAM")
+
+ParGrp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+parent = ParGrp.Parent()
+if parent.HasGroup("CAM"):
+    pass
+elif parent.HasGroup("Path"):
+    result = parent.RenameGroup("Path", "CAM")
+
 # Get the Parameter Group of this module
 ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Path")
 

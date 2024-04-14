@@ -116,7 +116,7 @@ public:
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
 
-    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
+    static TopoDS_Shape centerScaleRotate(const DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                           Base::Vector3d centroid);
 
     std::vector<TechDraw::DrawHatch*> getHatches() const;

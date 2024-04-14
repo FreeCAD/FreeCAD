@@ -86,11 +86,13 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        Q_UNUSED(onSketchPos);
         switch (state()) {
             case SelectMode::SeekFirst: {
                 int VtId = getPreselectPoint();
                 int CrvId = getPreselectCurve();
                 int CrsId = getPreselectCross();
+                Sketcher::SketchObject* obj = sketchgui->getSketchObject();
 
                 if (VtId >= 0) {  // Vertex
                     SketchObject* Obj = sketchgui->getSketchObject();
@@ -108,7 +110,8 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {  // Curves
+                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }
@@ -246,7 +249,7 @@ private:
                 Obj->getSymmetric(listOfGeoIds, dummy1, dummy2, refGeoId, refPosId);
 
             for (auto* geo : symGeos) {
-                ShapeGeometry.emplace_back(std::move(std::unique_ptr<Part::Geometry>(geo)));
+                ShapeGeometry.emplace_back(geo);
             }
         }
     }

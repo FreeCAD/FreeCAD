@@ -60,6 +60,15 @@ void pointPair::move(const Base::Vector3d& offset)
     m_overrideSecond = m_overrideSecond - offset;
 }
 
+//move the points by factor
+void pointPair::scale(double factor)
+{
+    m_first = m_first * factor;
+    m_second = m_second * factor;
+    m_overrideFirst = m_overrideFirst * factor;
+    m_overrideSecond = m_overrideSecond * factor;
+}
+
 // project the points onto the dvp's paper plane.
 void pointPair::project(const DrawViewPart* dvp)
 {

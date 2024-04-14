@@ -111,6 +111,8 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRegularPolygon");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSplineByInterpolation");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSplineByInterpolation");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_ToggleConstruction");

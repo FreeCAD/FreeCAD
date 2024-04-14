@@ -14,8 +14,11 @@ SET(MaterialScripts_Files
     importFCMat.py
     MaterialEditor.py
     TestMaterialsApp.py
-    Resources/ui/materials-editor.ui
     Templatematerial.yml
+)
+
+SET(Material_Ui_Files
+    Resources/ui/materials-editor.ui
 )
 
 # SOURCE_GROUP("MaterialScripts" FILES ${MaterialScripts_Files})
@@ -31,6 +34,7 @@ SET(Material_Icon_Files
 
 # collect all the material cards:
 SET(MaterialLib_Files
+    Resources/Materials/Standard/Default.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/Standard/Aggregate/Reinforcement-FIB-B500.FCMat
@@ -282,25 +286,27 @@ set(MaterialTest_Files
     materialtests/TestMaterials.py
 )
 
-ADD_CUSTOM_TARGET(MateriaTestLib ALL
+ADD_CUSTOM_TARGET(MaterialTest ALL
     SOURCES ${MaterialTest_Files}
 )
 
-fc_target_copy_resource(MateriaTestLib
+fc_target_copy_resource(MaterialTest
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTest_Files})
 
 ADD_CUSTOM_TARGET(MaterialScripts ALL
-    SOURCES ${MaterialScripts_Files} ${Material_QRC_SRCS}
+    SOURCES ${MaterialScripts_Files} ${Material_Ui_Files} ${Material_QRC_SRCS}
 )
 
 fc_target_copy_resource(MaterialScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
-    ${MaterialScripts_Files})
+    ${MaterialScripts_Files}
+    ${Material_Ui_Files})
 
 INSTALL(FILES ${MaterialScripts_Files} DESTINATION Mod/Material)
+INSTALL(FILES ${Material_Ui_Files} DESTINATION Mod/Material/Resources/ui)
 
 ADD_CUSTOM_TARGET(MaterialToolsLib ALL
     SOURCES ${MaterialTools_Files}
@@ -368,11 +374,6 @@ fc_target_copy_resource(MaterialModelLib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
     ${MaterialModel_Files})
-
-INSTALL(
-    FILES ${Material_SRCS} ${Material_QRC_SRCS}
-    DESTINATION Mod/Material
-)
 
 INSTALL(
     FILES ${MaterialTest_Files}

@@ -562,10 +562,10 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             color.r = jt->second.Red();
             color.g = jt->second.Green();
             color.b = jt->second.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
+            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeAppearance.setDiffuseColor(color);
         }
 
-        partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue();
+        partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeAppearance.getDiffuseColor();
     }
 #endif
 

@@ -66,6 +66,7 @@
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
+#include <Mod/Material/App/MaterialManager.h>
 
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
@@ -83,6 +84,9 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature()
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+    auto mat = Materials::MaterialManager::defaultMaterial();
+    // ADD_PROPERTY_TYPE(ShapeMaterial, (mat), osgroup, App::Prop_None, "Shape material");
+    ADD_PROPERTY(ShapeMaterial, (*mat));
 }
 
 Feature::~Feature() = default;
@@ -589,6 +593,15 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
     return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
 }
 
+App::Material Feature::getMaterialAppearance() const
+{
+    return ShapeMaterial.getValue().getMaterialAppearance();
+}
+
+void Feature::setMaterialAppearance(const App::Material& material)
+{
+    ShapeMaterial.setValue(material);
+}
 
 // Toponaming project March 2024:  This method should be going away when we get to the python layer.
 void Feature::clearShapeCache() {
@@ -1186,6 +1199,7 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
 
 bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 {
+    (void)container;
 #ifdef FC_USE_TNP_FIX
     return false;
 #else
@@ -1305,6 +1319,7 @@ template<> PyObject* Part::FeaturePython::getPyObject() {
 template class PartExport FeaturePythonT<Part::Feature>;
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
         const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
 {
@@ -1338,6 +1353,51 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
 
         cutFaces newF;
         newF.face = mkSection.Face();
+        newF.distsq = dsq;
+        result.push_back(newF);
+    }
+
+    return result;
+}
+
+std::vector<Part::cutTopoShapeFaces>
+Part::findAllFacesCutBy(const TopoShape& shape, const TopoShape& face, const gp_Dir& dir)
+{
+    // Find the centre of gravity of the face
+    GProp_GProps props;
+    BRepGProp::SurfaceProperties(face.getShape(), props);
+    gp_Pnt cog = props.CentreOfMass();
+
+    // create a line through the centre of gravity
+    gp_Lin line = gce_MakeLin(cog, dir);
+
+    // Find intersection of line with all faces of the shape
+    std::vector<cutTopoShapeFaces> result;
+    BRepIntCurveSurface_Inter mkSection;
+    // TODO: Less precision than Confusion() should be OK?
+
+    for (mkSection.Init(shape.getShape(), line, Precision::Confusion()); mkSection.More();
+         mkSection.Next()) {
+        gp_Pnt iPnt = mkSection.Pnt();
+        double dsq = cog.SquareDistance(iPnt);
+
+        if (dsq < Precision::Confusion()) {
+            continue;  // intersection with original face
+        }
+
+        // Find out which side of the original face the intersection is on
+        gce_MakeDir mkDir(cog, iPnt);
+        if (!mkDir.IsDone()) {
+            continue;  // some error (appears highly unlikely to happen, though...)
+        }
+
+        if (mkDir.Value().IsOpposite(dir, Precision::Confusion())) {
+            continue;  // wrong side of face (opposite to extrusion direction)
+        }
+
+        cutTopoShapeFaces newF;
+        newF.face = mkSection.Face();
+        newF.face.mapSubElement(shape);
         newF.distsq = dsq;
         result.push_back(newF);
     }

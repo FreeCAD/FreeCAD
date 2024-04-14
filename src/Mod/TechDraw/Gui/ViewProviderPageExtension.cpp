@@ -75,6 +75,9 @@ bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* ob
     const char* subname,
     const std::vector<std::string>& elements) const
 {
+    Q_UNUSED(owner);
+    Q_UNUSED(subname);
+    Q_UNUSED(elements);
     //only DrawView objects can live on pages (except special case Template)
     if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         return true;

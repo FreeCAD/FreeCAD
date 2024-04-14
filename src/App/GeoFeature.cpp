@@ -87,6 +87,12 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     std::pair<std::string,std::string> ret;
     if(!name)
         return ret;
+
+#ifndef FC_USE_TNP_FIX
+    ret.second = name;
+
+    return ret;
+#else
     auto prop = getPropertyOfGeometry();
     if (!prop) {
         return std::make_pair("", name);
@@ -98,6 +104,7 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     }
 
     return _getElementName(name, geo->getElementName(name));
+#endif
 }
 
 std::pair<std::string, std::string>
@@ -173,3 +180,12 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return sobj;
 }
 
+App::Material GeoFeature::getMaterialAppearance() const
+{
+    return App::Material(App::Material::DEFAULT);
+}
+
+void GeoFeature::setMaterialAppearance(const App::Material& material)
+{
+    Q_UNUSED(material)
+}

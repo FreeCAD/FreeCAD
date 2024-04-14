@@ -1072,6 +1072,12 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
+    if (!part) {
+        std::string msg = std::string("The property ") + propPartName + " of Joint "
+            + joint->getFullName() + " is empty.\n";
+        THROWM(Base::ValueError, msg);
+    }
+
     std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the

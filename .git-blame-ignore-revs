@@ -100,3 +100,4 @@ c5c2ea3498f402c0c89916c46ddb071e22756622 # Assembly: Final application of pre-co
 592c992b863549fde52741fd8830418168387695 # Assembly: Apply pre-commit to Assembly files
 94ca51b7799b2ac60a2a56d7e6e753bb97a73671 # PartDesign: Fix #9377 - issue with accuracy in AdditiveHelix (#11312)
 d472927bba7b2d8d151c99fb29cf1d8dd099ea7d # Correct PartDesign Helix feature negative angles (#11399)
+b93c02e07da4990482b9d927506901e6f5d624e1 # Black updated to 24.3.0

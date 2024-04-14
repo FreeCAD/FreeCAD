@@ -76,6 +76,7 @@ public:
     void project(const DrawViewPart* dvp);
     void mapToPage(const DrawViewPart* dvp);
     void invertY();
+    void scale(double factor);
     void dump(const std::string& text) const;
 
 private:

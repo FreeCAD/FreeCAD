@@ -534,11 +534,11 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
               << "Sketcher_SelectHorizontalAxis"
               << "Sketcher_SelectVerticalAxis"
               << "Separator"
-              << "Sketcher_Offset"
+              << "Sketcher_Translate"
               << "Sketcher_Rotate"
               << "Sketcher_Scale"
+              << "Sketcher_Offset"
               << "Sketcher_Symmetry"
-              << "Sketcher_Translate"
               << "Sketcher_RemoveAxesAlignment"
               << "Separator"
               << "Sketcher_DeleteAllGeometry"
@@ -552,21 +552,15 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
-               // solver
-               // message.
-        << "Sketcher_SelectConstraints"
-        << "Sketcher_SelectElementsAssociatedWithConstraints"
-        //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver
-        // message.
-        //<< "Sketcher_SelectConflictingConstraints"
-        << "Sketcher_RestoreInternalAlignmentGeometry"
-        << "Sketcher_Offset"
-        << "Sketcher_Rotate"
-        << "Sketcher_Scale"
-        << "Sketcher_Symmetry"
-        << "Sketcher_Translate"
-        << "Sketcher_RemoveAxesAlignment";
+    consaccel << "Sketcher_Translate"
+              << "Sketcher_Rotate"
+              << "Sketcher_Scale"
+              << "Sketcher_Offset"
+              << "Sketcher_Symmetry"
+              << "Sketcher_RemoveAxesAlignment"
+              << "Sketcher_SelectConstraints"
+              << "Sketcher_SelectElementsAssociatedWithConstraints"
+              << "Sketcher_RestoreInternalAlignmentGeometry";
 }
 
 template<typename T>

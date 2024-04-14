@@ -30,7 +30,7 @@ import os
 import FreeCAD
 
 from materialtools.cardutils import get_material_template
-import Material
+import Materials
 
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -99,7 +99,7 @@ def decode(name):
 # https://github.com/berndhahnebach/FreeCAD_bhb/commits/materialdev
 
 def read(filename):
-    materialManager = Material.MaterialManager()
+    materialManager = Materials.MaterialManager()
     material = materialManager.getMaterialByPath(filename)
     return material.Properties
 

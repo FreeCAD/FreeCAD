@@ -28,7 +28,7 @@ from os.path import join
 from pathlib import Path
 
 import FreeCAD
-import Material
+import Materials
 
 
 unicode = str
@@ -260,7 +260,7 @@ def output_resources(resources):
 # used in material editor and FEM material task panels
 
 def import_materials(category='Solid', template=False):
-    materialManager = Material.MaterialManager()
+    materialManager = Materials.MaterialManager()
     mats = materialManager.Materials
     materials = {}
     cards = {}
@@ -605,13 +605,13 @@ def check_value_unit(param, value):
         # get unit and other information known by FreeCAD for this parameter
         unit = getattr(Units, param)
         quantity = Units.Quantity(1, unit)
-        user_prefered_unit = quantity.getUserPreferred()[2]
+        user_preferred_unit = quantity.getUserPreferred()[2]
         # test unit from mat dict value
         some_text = "Parameter: {} --> value: {} -->".format(param, value)
         try:
             param_value = Units.Quantity(value)
             try:
-                user_unit = param_value.getValueAs(user_prefered_unit)
+                user_unit = param_value.getValueAs(user_preferred_unit)
                 if user_unit:
                     return True
                 elif user_unit == 0:
@@ -678,10 +678,10 @@ def output_parm_unit_info(param):
             .format(quantity)
         )
 
-        user_prefered_unit = quantity.getUserPreferred()[2]
+        user_preferred_unit = quantity.getUserPreferred()[2]
         FreeCAD.Console.PrintMessage(
             '{}\n'
-            .format(user_prefered_unit)
+            .format(user_preferred_unit)
         )
 
     else:
@@ -711,17 +711,17 @@ def output_value_unit_info(param, value):
             .format(quantity)
         )
 
-        user_prefered_unit = quantity.getUserPreferred()[2]
+        user_preferred_unit = quantity.getUserPreferred()[2]
         FreeCAD.Console.PrintMessage(
             '{}\n'
-            .format(user_prefered_unit)
+            .format(user_preferred_unit)
         )
 
         # test unit from mat dict value
         try:
             param_value = Units.Quantity(value)
             try:
-                user_unit = param_value.getValueAs(user_prefered_unit)
+                user_unit = param_value.getValueAs(user_preferred_unit)
                 FreeCAD.Console.PrintMessage(
                     '{} Value in preferred unit: {}\n'
                     .format(some_text, user_unit)

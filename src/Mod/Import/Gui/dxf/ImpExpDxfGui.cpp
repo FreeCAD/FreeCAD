@@ -72,7 +72,7 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
     App::Color color = ObjectColor(m_entityAttributes.m_Color);
     view->LineColor.setValue(color);
     view->PointColor.setValue(color);
-    view->ShapeColor.setValue(color);
+    view->ShapeAppearance.setDiffuseColor(color);
     view->DrawStyle.setValue(GetDrawStyle());
     view->Transparency.setValue(0);
 }

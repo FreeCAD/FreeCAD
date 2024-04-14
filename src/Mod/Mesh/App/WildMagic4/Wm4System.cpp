@@ -893,7 +893,7 @@ int System::Sprintf (char* acDst, size_t uiDstSize, const char* acFormat, ...)
 #ifdef WM4_USING_VC80
     int iNumWritten = vsprintf_s(acDst,uiDstSize,acFormat,acArgs);
 #else
-    int iNumWritten = vsprintf(acDst,acFormat,acArgs);
+    int iNumWritten = vsnprintf(acDst,uiDstSize,acFormat,acArgs);
 #endif
 
     va_end(acArgs);

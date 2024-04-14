@@ -46,6 +46,7 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
+#include "fmt/printf.h"
 
 #include "Parameter.h"
 #include "Parameter.inl"
@@ -805,9 +806,8 @@ long ParameterGrp::GetInt(const char* Name, long lPreset) const
 
 void ParameterGrp::SetInt(const char* Name, long lValue)
 {
-    char cBuf[256];
-    sprintf(cBuf, "%li", lValue);
-    _SetAttribute(ParamType::FCInt, Name, cBuf);
+    std::string buf = fmt::sprintf("%li", lValue);
+    _SetAttribute(ParamType::FCInt, Name, buf.c_str());
 }
 
 std::vector<long> ParameterGrp::GetInts(const char* sFilter) const
@@ -875,9 +875,8 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
 
 void ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 {
-    char cBuf[256];
-    sprintf(cBuf, "%lu", lValue);
-    _SetAttribute(ParamType::FCUInt, Name, cBuf);
+    std::string buf = fmt::sprintf("%lu", lValue);
+    _SetAttribute(ParamType::FCUInt, Name, buf.c_str());
 }
 
 std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char* sFilter) const
@@ -950,9 +949,9 @@ double ParameterGrp::GetFloat(const char* Name, double dPreset) const
 
 void ParameterGrp::SetFloat(const char* Name, double dValue)
 {
-    char cBuf[256];
-    sprintf(cBuf, "%.12f", dValue);  // use %.12f instead of %f to handle values < 1.0e-6
-    _SetAttribute(ParamType::FCFloat, Name, cBuf);
+    // use %.12f instead of %f to handle values < 1.0e-6
+    std::string buf = fmt::sprintf("%.12f", dValue);
+    _SetAttribute(ParamType::FCFloat, Name, buf.c_str());
 }
 
 std::vector<double> ParameterGrp::GetFloats(const char* sFilter) const

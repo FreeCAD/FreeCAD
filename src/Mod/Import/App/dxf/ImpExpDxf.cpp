@@ -420,7 +420,8 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
     // Note that our parameters do not contain all the information needed to properly orient the
     // text. As a result the text will always appear on the XY plane
     if (m_importAnnotations) {
-        auto makeText = [=](const Base::Matrix4D& transform) -> App::FeaturePython* {
+        auto makeText = [this, rotation, point, text, height](
+                            const Base::Matrix4D& transform) -> App::FeaturePython* {
             PyObject* draftModule = getDraftModule();
             if (draftModule != nullptr) {
                 Base::Matrix4D localTransform;
@@ -537,7 +538,8 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
                                     double /*rotation*/)
 {
     if (m_importAnnotations) {
-        auto makeDimension = [=](const Base::Matrix4D& transform) -> App::FeaturePython* {
+        auto makeDimension =
+            [this, start, end, point](const Base::Matrix4D& transform) -> App::FeaturePython* {
             PyObject* draftModule = getDraftModule();
             if (draftModule != nullptr) {
                 // TODO: Capture and apply OCSOrientationTransform to OCS coordinates
