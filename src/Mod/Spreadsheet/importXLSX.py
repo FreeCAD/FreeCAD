@@ -64,9 +64,6 @@ else:
     gui = True
 
 
-
-
-
 # The sepToken structure is used in the tokenizer functions isKey and
 # getNextToken.
 # sepToken defines a search tree for separator tokens with length of 1 to 3 characters
