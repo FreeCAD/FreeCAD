@@ -627,6 +627,102 @@ class TestTopologicalNamingProblem(unittest.TestCase):
     def testPartDesignElementMapSubHelix(self):
         pass  # TODO
 
+    def testPartDesignElementMapChamfer(self):
+        """ Test Chamfer ( and  FeatureDressup )"""
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        chamfer = self.Doc.addObject('PartDesign::Chamfer', 'Chamfer')
+        chamfer.Base = (box, ['Edge1',
+                              'Edge2',
+                              'Edge3',
+                              'Edge4',
+                              'Edge5',
+                              'Edge6',
+                              'Edge7',
+                              'Edge8',
+                              'Edge9',
+                              'Edge10',
+                              'Edge11',
+                              'Edge12',
+                              ])
+        chamfer.Size = 1
+        chamfer.UseAllEdges = True
+        # Act / Assert
+        body.addObject(box)
+        body.addObject(chamfer)
+        self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 98)
+        self.assertEqual(len(reverseMap),98)
+        self.assertEqual(len(faces),26) # 6 Faces become 26 ( +8 + 2*6 )
+        self.assertEqual(len(edges),48) # 12 Edges become 48
+        self.assertEqual(len(vertexes),24) # 8 Vertices become 24
+
+    def testPartDesignElementMapFillet(self):
+        """ Test Fillet ( and  FeatureDressup )"""
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        fillet = self.Doc.addObject('PartDesign::Fillet', 'Fillet')
+        fillet.Base = (box, ['Edge1',
+                              'Edge2',
+                              'Edge3',
+                              'Edge4',
+                              'Edge5',
+                              'Edge6',
+                              'Edge7',
+                              'Edge8',
+                              'Edge9',
+                              'Edge10',
+                              'Edge11',
+                              'Edge12',
+                              ])
+        # Act / Assert
+        body.addObject(box)
+        body.addObject(fillet)
+        self.Doc.recompute()
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 106)
+        self.assertEqual(len(reverseMap),106)
+        self.assertEqual(len(faces),26) # 6 Faces become 26 ( +8 + 2*6 )
+        self.assertEqual(len(edges),56) # 12 Edges become 56  Why?
+        self.assertEqual(len(vertexes),24) # 8 Vertices become 24
+
+    def testPartDesignElementMapTransform(self):
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        multitransform = self.Doc.addObject('PartDesign::MultiTransform', 'MultiTransform')
+        scaled = self.Doc.addObject('PartDesign::Scaled', 'Scaled')
+        scaled.Factor = 2
+        scaled.Occurrences = 2
+        multitransform.Transformations = scaled
+        multitransform.Shape = box.Shape
+
+        # Act / Assert
+        self.Doc.recompute()
+        body.addObject(box)
+        body.addObject(multitransform)
+        self.assertEqual(len(body.Shape.childShapes()), 0)
+        self.Doc.recompute()
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+
     def testPartDesignElementMapShapeBinder(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
