@@ -29,6 +29,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Mod/Part/PartGlobal.h>
+#include "TopoShape.h"
 
 
 namespace Part
@@ -88,8 +89,10 @@ public:
                                          TopoDS_Wire& result);
     /** Same as makeDraft() with support of element mapping
      */
-    static void
-    makeElementDraft(const ExtrusionParameters& params, const TopoShape&, std::vector<TopoShape>&);
+    static void makeElementDraft(const ExtrusionParameters& params,
+                                 const TopoShape&,
+                                 std::vector<TopoShape>&,
+                                 App::StringHasherRef hasher);
 };
 
 } //namespace Part
