@@ -25,10 +25,12 @@ __title__ = "Tools for FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+import math
 import os
 import sys
 import tempfile
 import unittest
+from typing import Union, List, Iterator
 
 import FreeCAD
 
@@ -185,6 +187,86 @@ def get_fem_test_defs(
     print("The file was saved in:{}".format(file_path))
 
 
+def try_converting_to_float(line: str) -> Union[None, List[float]]:
+    """Does its best to split a line and convert its elements to float
+
+    Has 3 strategies of splitting:
+        * by comma - mainly in CalculiX .inp files
+        * by space - other solvers
+        * by space and ignoring the 1st word - other solvers
+            If there was only 1 word, the line will fail, no compromises
+
+    Single characters always pass
+
+    :param line: line to split and convert to floats
+    :return: None if conversion failed, else list of floats
+    """
+    strategies = [
+        lambda _line: _line[1:].split(","),
+        lambda _line: _line[1:].split(),
+        lambda _line: (lambda split_line: len(split_line) > 1 and split_line or "fail")(
+            _line[1:].split()[1:]
+        ),
+    ]
+    for strategy in strategies:
+        try:
+            return list(map(float, strategy(line)))
+        except ValueError:
+            pass
+    return None
+
+
+def are_floats_equal(
+    orig_floats: Union[None, List[float]], floats_to_compare: Union[None, List[float]]
+) -> bool:
+    """Check if floats in lists are equal with some tolerance
+
+    :param orig_floats: list of floats - left operands of comparison
+    :param floats_to_compare: list of floats - right operands of comparison
+    :return: True if both lists are equal with some tolerance element-wise, else False
+    """
+    if any(floats is None for floats in (orig_floats, floats_to_compare)):
+        return False
+    for orig_float, float_to_compare in zip(orig_floats, floats_to_compare):
+        if not math.isclose(orig_float, float_to_compare, abs_tol=1e-10):
+            return False
+    return True
+
+
+def parse_diff(diff_lines: Iterator[str]) -> List[str]:
+    """Parses lines from `united_diff`
+
+    Tries to split a line and convert its contents to float, to
+    compare float numbers with some tolerance
+
+    Recognizes blocks of changes, that start with `@@` and end either at EOF or
+    at the beginning of another block. Only bad lines are added to block.
+    All lines, which didn't pass the element-wise check, are bad lines.
+    :param diff_lines: lines produced by `united_diff`
+    :return: list of bad lines with respect to their block of change
+    """
+    bad_lines = []
+    changes_block = []
+    while True:
+        try:
+            first = next(diff_lines)
+            if first.startswith("@@"):
+                if len(changes_block) > 1:
+                    bad_lines.extend(changes_block)
+                changes_block = [first]
+                continue
+            second = next(diff_lines)
+        except StopIteration:
+            break
+        if first.startswith("---"):
+            continue
+        if not are_floats_equal(*map(try_converting_to_float, (first, second))):
+            changes_block.extend((first, second))
+    # check if we have any remaining block
+    if len(changes_block) > 1:
+        bad_lines.extend(changes_block)
+    return bad_lines
+
 def compare_inp_files(
     file_name1,
     file_name2
@@ -209,16 +291,12 @@ def compare_inp_files(
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
-    diff = difflib.unified_diff(lf1, lf2, n=0)
-    result = ""
-    for li in diff:
-        result += li
-    if result:
-        result = (
-            "Comparing {} to {} failed!\n"
-            .format(file_name1, file_name2) + result
-        )
-    return result
+
+    diff_lines = difflib.unified_diff(lf1, lf2, n=0)
+
+    bad_lines = parse_diff(diff_lines)
+    if bad_lines:
+        return f"Comparing {file_name1} to {file_name2} failed!\n{''.join(bad_lines)}"
 
 
 def compare_files(

@@ -369,11 +369,11 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    StrList.emplace_back("Nodes (surface only)");
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");
     StrList.emplace_back("Wireframe (surface only)");
+    StrList.emplace_back("Nodes (surface only)");
     return StrList;
 }
 

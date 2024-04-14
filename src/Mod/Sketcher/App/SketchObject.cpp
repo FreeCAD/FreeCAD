@@ -261,6 +261,20 @@ void SketchObject::buildShape()
         if(GeometryFacade::getConstruction(geo))
             continue;
         if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+#ifdef FC_USE_TNP_FIX
+            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+            int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
+            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(name.c_str()),0L);
+            vertices.push_back(vertex);
+            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+        } else {
+            auto indexedName = Data::IndexedName::fromConst("Edge", i);
+            shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
+        }
+
+#else
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
@@ -269,6 +283,7 @@ void SketchObject::buildShape()
         } else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
+#endif
     }
 
     // FIXME: Commented since ExternalGeometryFacade is not added
@@ -280,11 +295,14 @@ void SketchObject::buildShape()
     //     shapes.push_back(getEdge(geo, convertSubName(
     //                     Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
     // }
-     if(shapes.empty() && vertices.empty())
-         Shape.setValue(Part::TopoShape());
-     else if (vertices.empty()) {
+    if(shapes.empty() && vertices.empty()) {
+        Shape.setValue(Part::TopoShape());
+        return;
+    }
+    Part::TopoShape result(0);
+    if (vertices.empty()) {
          // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
-         Shape.setValue(Part::TopoShape().makeElementWires(shapes,Part::OpCodes::Sketch));
+         result.makeElementWires(shapes,Part::OpCodes::Sketch);
      } else {
          std::vector<Part::TopoShape> results;
          if (!shapes.empty()) {
@@ -302,8 +320,10 @@ void SketchObject::buildShape()
                  results.push_back(wire);
          }
          results.insert(results.end(), vertices.begin(), vertices.end());
-         Shape.setValue(Part::TopoShape().makeElementCompound(results, Part::OpCodes::Sketch));
+         result.makeElementCompound(results, Part::OpCodes::Sketch);
      }
+    result.Tag = getID();
+    Shape.setValue(result);
 }
 
 static const char *hasSketchMarker(const char *name) {

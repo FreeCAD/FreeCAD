@@ -61,6 +61,7 @@
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyGeomFormatList.h"
+#include "DrawBrokenViewPy.h"
 
 
 
@@ -116,6 +117,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTile            ::init();
     TechDraw::DrawTileWeld        ::init();
     TechDraw::DrawWeldSymbol      ::init();
+    TechDraw::DrawBrokenView      ::init();
 
     TechDraw::PropertyGeomFormatList::init();
     TechDraw::GeomFormat            ::init();
@@ -145,6 +147,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTilePython      ::init();
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
+    TechDraw::DrawBrokenViewPython::init();
 
     PyMOD_Return(mod);
 }
