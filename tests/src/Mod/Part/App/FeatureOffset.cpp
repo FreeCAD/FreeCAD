@@ -83,44 +83,21 @@ TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-2, -2, -2, 3, 5, 5)));
     // Assert correct element Map
 #ifdef FC_USE_TNP_FIX
-    EXPECT_TRUE(elementsMatch(
-        _offset->Shape.getShape(),
-        {
-            "Edge10;FUS;:He59:4,E;RFI;:He59:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge11;FUS;:He5a:4,E;RFI;:He5a:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge12;FUS;:He5a:4,E;RFI;:He5a:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge1;FUS;:He59:4,E;RFI;:He59:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge2;:M2(Edge2;:He5a,E);FUS;:He59:17,E;:G(Edge2;:M2;FUS;:He5a:8,E;K-1;:He5a:4,E|"
-            "Edge2;:M;FUS;:He59:7,E;K-1;:He59:4,E);RFI;:He59:53,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge3;FUS;:He5a:4,E;RFI;:He5a:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge4;:M2(Edge4;:He5a,E);FUS;:He59:17,E;:G(Edge4;:M2;FUS;:He5a:8,E;K-1;:He5a:4,E|"
-            "Edge4;:M;FUS;:He59:7,E;K-1;:He59:4,E);RFI;:He59:53,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge5;FUS;:He59:4,E;RFI;:He59:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge6;:M2(Edge6;:He5a,E);FUS;:He59:17,E;:G(Edge6;:M2;FUS;:He5a:8,E;K-1;:He5a:4,E|"
-            "Edge6;:M;FUS;:He59:7,E;K-1;:He59:4,E);RFI;:He59:53,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge7;FUS;:He5a:4,E;RFI;:He5a:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge8;:M2(Edge8;:He5a,E);FUS;:He59:17,E;:G(Edge8;:M2;FUS;:He5a:8,E;K-1;:He5a:4,E|"
-            "Edge8;:M;FUS;:He59:7,E;K-1;:He59:4,E);RFI;:He59:53,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Edge9;FUS;:He59:4,E;RFI;:He59:4,E;:G;OFS;:He60:7,E;SLD;:He60:4,E",
-            "Face1;:M2(Face1;:He5a,F);FUS;:He59:17,F;:G(Face1;:M2;FUS;:He5a:8,F;K-1;:He5a:4,F|"
-            "Face1;:M;FUS;:He59:7,F;K-1;:He59:4,F);RFI;:He59:53,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Face2;:M2(Face2;:He5a,F);FUS;:He59:17,F;:G(Face2;:M2;FUS;:He5a:8,F;K-1;:He5a:4,F|"
-            "Face2;:M;FUS;:He59:7,F;K-1;:He59:4,F);RFI;:He59:53,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Face3;FUS;:He59:4,F;RFI;:He59:4,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Face4;FUS;:He5a:4,F;RFI;:He5a:4,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Face5;:M2(Face5;:He5a,F);FUS;:He59:17,F;:G(Face5;:M2;FUS;:He5a:8,F;K-1;:He5a:4,F|"
-            "Face5;:M;FUS;:He59:7,F;K-1;:He59:4,F);RFI;:He59:53,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Face6;:M2(Face6;:He5a,F);FUS;:He59:17,F;:G(Face6;:M2;FUS;:He5a:8,F;K-1;:He5a:4,F|"
-            "Face6;:M;FUS;:He59:7,F;K-1;:He59:4,F);RFI;:He59:53,F;:G;OFS;:He60:7,F;SLD;:He60:4,F",
-            "Vertex1;FUS;:He59:4,V;RFI;:He59:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex2;FUS;:He59:4,V;RFI;:He59:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex3;FUS;:He5a:4,V;RFI;:He5a:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex4;FUS;:He5a:4,V;RFI;:He5a:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex5;FUS;:He59:4,V;RFI;:He59:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex6;FUS;:He59:4,V;RFI;:He59:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex7;FUS;:He5a:4,V;RFI;:He5a:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-            "Vertex8;FUS;:He5a:4,V;RFI;:He5a:4,V;:G;OFS;:He60:7,V;SLD;:He60:4,V",
-        }));
+    EXPECT_TRUE(
+        elementsMatch(_offset->Shape.getShape(),
+                      {
+                          "#21:3;SLD;:H1d7:4,V", "#21:4;SLD;:H1d7:4,V", "#21:7;SLD;:H1d7:4,V",
+                          "#21:8;SLD;:H1d7:4,V", "#22:1;SLD;:H1d7:4,V", "#22:2;SLD;:H1d7:4,V",
+                          "#22:5;SLD;:H1d7:4,V", "#22:6;SLD;:H1d7:4,V", "#24:3;SLD;:H1d7:4,E",
+                          "#24:7;SLD;:H1d7:4,E", "#24:b;SLD;:H1d7:4,E", "#24:c;SLD;:H1d7:4,E",
+                          "#25:2;SLD;:H1d7:4,E", "#26:4;SLD;:H1d7:4,E", "#27:1;SLD;:H1d7:4,E",
+                          "#27:5;SLD;:H1d7:4,E", "#27:9;SLD;:H1d7:4,E", "#27:a;SLD;:H1d7:4,E",
+                          "#28:6;SLD;:H1d7:4,E", "#29:8;SLD;:H1d7:4,E", "#2b:4;SLD;:H1d7:4,F",
+                          "#2c:1;SLD;:H1d7:4,F", "#2d:3;SLD;:H1d7:4,F", "#2e:6;SLD;:H1d7:4,F",
+                          "#2f:5;SLD;:H1d7:4,F", "#30:2;SLD;:H1d7:4,F",
+                      }));
+
+
 #else
     EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
 #endif
