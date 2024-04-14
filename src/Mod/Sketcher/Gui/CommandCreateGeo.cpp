@@ -434,7 +434,7 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc by three points");
+    sMenuText = QT_TR_NOOP("Create arc by 3 points");
     sToolTipText = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
     sWhatsThis = "Sketcher_Create3PointArc";
     sStatusTip = sToolTipText;
@@ -582,7 +582,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle");
+    sMenuText = QT_TR_NOOP("Create circle by center");
     sToolTipText = QT_TR_NOOP("Create a circle in the sketch");
     sWhatsThis = "Sketcher_CreateCircle";
     sStatusTip = sToolTipText;
@@ -1244,7 +1244,7 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle by three points");
+    sMenuText = QT_TR_NOOP("Create circle by 3 points");
     sToolTipText = QT_TR_NOOP("Create a circle by 3 perimeter points");
     sWhatsThis = "Sketcher_Create3PointCircle";
     sStatusTip = sToolTipText;
