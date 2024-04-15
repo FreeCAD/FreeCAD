@@ -299,7 +299,7 @@ void SketchObject::buildShape()
         Shape.setValue(Part::TopoShape());
         return;
     }
-    Part::TopoShape result(0);
+    Part::TopoShape result(0, getDocument()->getStringHasher());
     if (vertices.empty()) {
          // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
          result.makeElementWires(shapes,Part::OpCodes::Sketch);

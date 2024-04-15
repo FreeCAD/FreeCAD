@@ -555,7 +555,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
         sketchshape.move(invObjLoc);
 
-        TopoShape prism(0);
+        TopoShape prism(0, getDocument()->getStringHasher());
 
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
             // Note: This will return an unlimited planar face if support is a datum plane
@@ -663,7 +663,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     params.dir.Reverse();
                 }
                 std::vector<TopoShape> drafts;
-                Part::ExtrusionHelper::makeElementDraft(params, sketchshape, drafts);
+                Part::ExtrusionHelper::makeElementDraft(params, sketchshape, drafts, getDocument()->getStringHasher());
                 if (drafts.empty()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Padding with draft angle failed"));
@@ -693,7 +693,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prism.Tag = -this->getID();
 
             // Let's call algorithm computing a fuse operation:
-            TopoShape result(0);
+            TopoShape result(0, getDocument()->getStringHasher());
             try {
                 const char* maker;
                 switch (getAddSubType()) {
