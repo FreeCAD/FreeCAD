@@ -158,8 +158,8 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
 
     TopoDS_Shape brokenShape = breakShape(safeShape);
     m_compressedShape = compressShape(brokenShape);
-    // BRepTools::Write(brokenShape, "DBVbroken.brep");            //debug
-    // BRepTools::Write(m_compressedShape, "DBVcompressed.brep");
+    BRepTools::Write(brokenShape, "DBVbroken.brep");            //debug
+    BRepTools::Write(m_compressedShape, "DBVcompressed.brep");
 
     partExec(m_compressedShape);
 
@@ -850,25 +850,50 @@ BreakList DrawBrokenView::makeSortedBreakList(const std::vector<App::DocumentObj
 //! find the compressed location of the breaks, and sort the result by lower limit
 BreakList DrawBrokenView::makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d moveDirection, bool descend) const
 {
+    // Base::Console().Message("DBV::makeSortedBreakListCompressed(%d, %s)\n", breaks.size(),
+    //                         DU::formatVector(moveDirection).c_str());
+    // sortedBreaks is in lowLimit order
     auto sortedBreaks = makeSortedBreakList(breaks, moveDirection, descend);
     BreakList result;
     size_t iBreak{0};
     for (auto& breakObj : sortedBreaks) {
         BreakListEntry newEntry;
         double breakSum{0};
-        for (size_t iSum = iBreak + 1; iSum < sortedBreaks.size(); iSum++) {
-            // shift right by the removed amount of all the breaks to the right of this break
-            breakSum += sortedBreaks.at(iSum).netRemoved;
+        if (isDirectionReversed(moveDirection)) {
+            // reversed  X+   high  low   X-
+            // our list is sorted ascending by low limit - each is further left than the previous
+            // so we must reverse our list to get the correct shift values.
+            std::reverse(sortedBreaks.begin(), sortedBreaks.end());
+            for (size_t iSum = iBreak + 1; iSum < sortedBreaks.size(); iSum++) {
+                // shift right by the removed amount of all the breaks to the right of this break
+                breakSum += sortedBreaks.at(iSum).netRemoved;
+            }
+            newEntry.breakObj = breakObj.breakObj;
+            newEntry.lowLimit = breakObj.lowLimit - breakSum;   // move to right
+            newEntry.highLimit = newEntry.lowLimit + Gap.getValue();
+            newEntry.netRemoved = breakObj.netRemoved;
+            result.push_back(newEntry);
+        } else {
+            // forward   X-   low   high  X+
+            for (size_t iSum = iBreak + 1; iSum < sortedBreaks.size(); iSum++) {
+                // shift right by the removed amount of all the breaks to the right of this break
+                breakSum += sortedBreaks.at(iSum).netRemoved;
+            }
+            newEntry.breakObj = breakObj.breakObj;
+            newEntry.lowLimit = breakObj.lowLimit + breakObj.netRemoved + breakSum;
+            newEntry.highLimit = newEntry.lowLimit + Gap.getValue();
+            newEntry.netRemoved = breakObj.netRemoved;
+            result.push_back(newEntry);
         }
-        newEntry.breakObj = breakObj.breakObj;
-        newEntry.lowLimit = breakObj.lowLimit + breakObj.netRemoved + breakSum;
-        newEntry.highLimit = newEntry.lowLimit + Gap.getValue();
-        newEntry.netRemoved = breakObj.netRemoved;
-        result.push_back(newEntry);
         iBreak++;
+    }
+
+    if (isDirectionReversed(moveDirection)) {
+        std::reverse(sortedBreaks.begin(), sortedBreaks.end());
     }
     return result;
 }
+
 
 
 BreakList DrawBrokenView::sortBreaks(BreakList& inList, bool descend)
@@ -935,39 +960,61 @@ Base::Vector3d DrawBrokenView::mapPoint2dFromView(Base::Vector3d point2d) const
     Base::Vector3d stdX(1.0, 0.0, 0.0);
     Base::Vector3d stdY(0.0, 1.0, 0.0);
 
-    // convert point2d in view to pseudo-3d view coords
-    Base::Vector3d projectedCoM = projectPoint(getCompressedCentroid(), false);
+    // make pseudo 3d point from point2d
+    gp_Ax3 OXYZ;
+    gp_Ax3 projCS3(getProjectionCS(getCompressedCentroid()));
+    gp_Trsf xTo3d;
+    xTo3d.SetTransformation(projCS3, OXYZ);
+    auto pseudo3d = DU::toVector3d(DU::togp_Pnt(point2d).Transformed(xTo3d));
 
     // now shift down and left
     auto breaksAll = Breaks.getValues();
 
-    Base::Vector3d pseudo3dx = point2d + projectedCoM;
-    double xReverser = -1.0;
     auto moveXDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().XDirection()));
-    if (isDirectionReversed(moveXDirection)) {
-        pseudo3dx = point2d - projectedCoM;
-        xReverser = 1.0;
-    }
+    // we are expanding, so the direction should be to the "left"/"down" which is the opposite of
+    // our XDirection
+    auto moveXReverser = isDirectionReversed(moveXDirection) ? 1.0 : -1.0;
     bool descend = false;     // should be false so we move from lowest break to highest?
-    auto sortedXBreaks = makeSortedBreakListCompressed(breaksAll, moveXDirection, descend);
-    double xLimit = pseudo3dx.x;
-    double xShift = shiftAmountExpand(xLimit, moveXDirection, sortedXBreaks);
-    Base::Vector3d xMoved = pseudo3dx + stdX * xShift * xReverser;    // move to the left (-X)
+    auto sortedXBreaks = makeSortedBreakList(breaksAll, moveXDirection, descend);
+    double xLimit = DU::coordinateForDirection(pseudo3d, moveXDirection);
 
-    Base::Vector3d pseudo3dy = point2d + projectedCoM;
-    double yReverser = -1.0;
-    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
-    if (isDirectionReversed(moveXDirection)) {
-        pseudo3dy = point2d - projectedCoM;
-        yReverser = 1.0;
+    std::vector<size_t> fullGaps;
+    int partialGapIndex{-1};
+    auto compressedXBreaks = makeSortedBreakListCompressed(breaksAll, moveXDirection, descend);
+    double partialGapPenetration = getExpandGaps(xLimit, compressedXBreaks, moveXDirection, fullGaps, partialGapIndex);
+    double breakSum{0};
+    for (auto& index : fullGaps) {
+        double breakSize = sortedXBreaks.at(index).netRemoved;
+        breakSum += breakSize;
     }
-    descend = false;
-    auto sortedYBreaks = makeSortedBreakListCompressed(breaksAll, moveYDirection, descend);
-    double yLimit = pseudo3dy.y;
-    double yShift = shiftAmountExpand(yLimit, moveYDirection, sortedYBreaks);
-    Base::Vector3d yMoved = pseudo3dy + stdY * yShift * yReverser;   // move down (-Y)
+    if (partialGapIndex >= 0) {
+        double breakSize = sortedXBreaks.at(partialGapIndex).netRemoved;
+        breakSum += breakSize * partialGapPenetration;
+    }
+    double xCoord2 = xLimit + breakSum * moveXReverser;
 
-    Base::Vector3d movedResult{xMoved.x, yMoved.y, 0.0};
+    auto moveYDirection = DU::closestBasisOriented(DU::toVector3d(getProjectionCS().YDirection()));
+    auto moveYReverser = isDirectionReversed(moveYDirection) ? 1.0 : -1.0;
+    descend = false;
+    auto sortedYBreaks = makeSortedBreakList(breaksAll, moveYDirection, descend);
+    double yLimit = DU::coordinateForDirection(pseudo3d, moveYDirection);
+
+    fullGaps.clear();
+    partialGapIndex = -1;
+    auto compressedYBreaks = makeSortedBreakListCompressed(breaksAll, moveYDirection, descend);
+    partialGapPenetration = getExpandGaps(yLimit, compressedYBreaks, moveYDirection, fullGaps, partialGapIndex);
+    breakSum = 0;
+    for (auto& index : fullGaps) {
+        double breakSize = sortedYBreaks.at(index).netRemoved;
+        breakSum += breakSize;
+    }
+    if (partialGapIndex >= 0) {
+        double breakSize = sortedYBreaks.at(partialGapIndex).netRemoved;
+        breakSum += breakSize * partialGapPenetration;
+    }
+    double yCoord2 = yLimit + breakSum * moveYReverser;
+
+    Base::Vector3d movedResult{xCoord2, yCoord2, 0.0};
     return movedResult;
 }
 
@@ -993,20 +1040,22 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
                 DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
                 //        h--------l      -ve
                 //    p
-                // point is left/below break, but we
-                shift += removedLengthFromObj(*breakItem.breakObj) - Gap.getValue();
+                // point is left/below break
+                shift += breakItem.netRemoved;
                 continue;
             }
 
             //        h--------l      -ve
             //            p
+            //               g-g
+            //                p'
             // break.start < value < break.end - point is in the break area
             // we move our point by a fraction of the Gap length
-            double penetration =  fabs(pointCoord - breakItem.highLimit);   // start(high) to point
-            double removed = removedLengthFromObj(*breakItem.breakObj);
-            double factor = 1 - (penetration / removed);
-            double netRemoved = breakItem.lowLimit - factor * Gap.getValue();
-            shift += fabs(netRemoved - pointCoord);
+            double penetration =  fabs(pointCoord - breakItem.highLimit);   // (p - h) start(high) to point distance
+            double removed = removedLengthFromObj(*breakItem.breakObj);     // (h-l) full break size
+            double factor = 1 - (penetration / removed);                    // fraction of break to right
+            double toShift = pointCoord - (breakItem.lowLimit - factor * Gap.getValue());
+            shift += fabs(toShift);
 
 
         } else {
@@ -1028,13 +1077,15 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
 
             //        l--------h      +ve
             //            p
+            //              g--g
+            //               p'
             // break.start < value < break.end - point is in the break area
             // we move our point by a fraction of the Gap length
             double penetration = fabs(pointCoord - breakItem.lowLimit);
             double removed = removedLengthFromObj(*breakItem.breakObj);
             double factor = 1 - (penetration / removed);
-            double netRemoved = breakItem.highLimit - factor * Gap.getValue();
-            shift += fabs(netRemoved - pointCoord);
+            double netRemoved = pointCoord - breakItem.highLimit - factor * Gap.getValue();
+            shift += fabs(netRemoved);
         }
     }
 
@@ -1042,74 +1093,144 @@ double DrawBrokenView::shiftAmountShrink(double pointCoord, Base::Vector3d direc
 }
 
 
-//! returns the amount a compressed coordinate needs to be shifted to reverse the effect of breaking
-//! the source shapes
-double DrawBrokenView::shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const
+// //! returns the amount a compressed coordinate needs to be shifted to reverse the effect of breaking
+// //! the source shapes.  Could have problems here if gap > removed? Is that always an error?
+// double DrawBrokenView::shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const
+// {
+//     Base::Console().Message("DBV::shiftAmountExpand(%.3f, %s, %d)\n", pointCoord,
+//                             DU::formatVector(direction).c_str(), sortedBreaks.size());
+//     double shift{0};
+//     for (auto& breakItem : sortedBreaks) {
+//         if (isDirectionReversed(direction)) {
+//             Base::Console().Message("DBV::shiftAmountExpand - reversed\n");
+//             if (pointCoord <= breakItem.lowLimit) {
+//                 //        h--------l     -ve
+//                 //                    p
+//                 // leave alone, this break doesn't affect us
+//                 Base::Console().Message("DBV::shiftAmountExpand - ignore\n");
+//                 continue;
+//             }
+
+//             if (pointCoord > breakItem.highLimit  ||
+//                 DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
+//                 //        h--------l      -ve
+//                 //    p
+
+//                 // move by the whole removed area
+//                 shift += breakItem.netRemoved;
+//                 Base::Console().Message("DBV::shiftAmountExpand - full\n");
+//                 continue;
+//             }
+
+//             //        h--------l      -ve
+//             //            p
+//             // break.start < value < break.end - point is in the break area
+//             // we move our point by the break's removed * the penetration factor
+//             Base::Console().Message("DBV::shiftAmountExpand - partial\n");
+//             double breakPenetration = fabs(pointCoord - breakItem.lowLimit);
+//             double removed = removedLengthFromObj(*breakItem.breakObj);
+//             double factor = breakPenetration / removed;
+//             double shiftAmount = breakItem.lowLimit + factor * removed;
+//             Base::Console().Message("DBV::shiftAmountExpand - penetration: %.3f removed: %.3f factor: %.3f shift: %.3f\n",
+//                                     breakPenetration, removed, factor, shiftAmount);
+//             shift += std::fabs(shiftAmount);
+//         } else {
+//             Base::Console().Message("DBV::shiftAmountExpand - forward\n");
+//             if (pointCoord >= breakItem.highLimit) {
+//                 //        l--------h     +ve
+//                 //                    p
+//                 // leave alone, this break doesn't affect us
+//                 Base::Console().Message("DBV::shiftAmountExpand - ignore\n");
+//                 continue;
+//             }
+
+//             if (pointCoord < breakItem.lowLimit  ||
+//                 DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
+//                 //        l--------h      +ve
+//                 //    p
+//                 // move by the whole removed area
+//                 shift += breakItem.netRemoved;
+//                 Base::Console().Message("DBV::shiftAmountExpand - full\n");
+//                 continue;
+//             }
+
+//             //        l--------h      +ve
+//             //            p
+//             //            bpbpbp
+//             //        rrrrrrrrrr
+//             // break.start < value < break.end - point is in the break area
+//             // we move our point by the break's removed * the penetration factor
+//             Base::Console().Message("DBV::shiftAmountExpand - partial\n");
+//             double breakPenetration = std::fabs(pointCoord - breakItem.highLimit);  // (h-p)
+//             double removed = removedLengthFromObj(*breakItem.breakObj);
+//             double factor = breakPenetration / removed;
+//             double shiftAmount = breakItem.highLimit - factor * removed;
+//             Base::Console().Message("DBV::shiftAmountExpand - penetration: %.3f removed: %.3f factor: %.3f shift: %.3f\n",
+//                                     breakPenetration, removed, factor, shiftAmount);
+//             shift += std::fabs(shiftAmount);
+//         }
+//     }
+
+//     return shift;
+// }
+
+//! determine which gaps require pointCoord to move by a full gap and if there is a partial gap that must
+//! be included in the move operation. If there is a partial gap, the penetration factor is returned.
+//! penetration is measure right to left in the view.
+double  DrawBrokenView::getExpandGaps (double pointCoord,
+                                    const BreakList& compressedBreakList,
+                                    Base::Vector3d moveDirection,
+                                    std::vector<size_t>& fullGaps,
+                                    int& partialGapIndex) const
 {
-    // Base::Console().Message("DBV::shiftAmountExpand(%.3f, %s, %d)\n", pointCoord,
-    //                         DU::formatVector(direction).c_str(), sortedBreaks.size());
-    double shift{0};
-    for (auto& breakItem : sortedBreaks) {
-        if (isDirectionReversed(direction)) {
-            if (pointCoord <= breakItem.lowLimit) {
-                //        h--------l     -ve
-                //                    p
-                // leave alone, this break doesn't affect us
+    // Base::Console().Message("DBV::getExpandGaps(coord: %.3f moveDir: %s)\n", pointCoord,
+    //                         DU::formatVector(moveDirection).c_str());
+    double partialPenetrationFactor{0};
+    // check pointCoord against compressed gaps
+    size_t iBreak{0};
+    for (auto& gap : compressedBreakList) {
+        if (isDirectionReversed(moveDirection)) {
+            // reversed X+ is to the left
+            if (pointCoord < gap.lowLimit) {
+                // not interested
+                iBreak++;
                 continue;
             }
-
-            if (pointCoord > breakItem.highLimit  ||
-                DU::fpCompare(pointCoord, breakItem.highLimit, Precision::Confusion()) ) {
-                //        h--------l      -ve
-                //    p
-
-                // move by the whole removed area
-                shift += breakItem.netRemoved;
+            if (pointCoord > gap.highLimit ||
+                DU::fpCompare(pointCoord, gap.highLimit, Precision::Confusion()) ) {
+                // need to move by full length of associated break
+                fullGaps.push_back(iBreak);
+                iBreak++;
                 continue;
             }
-
-            //        h--------l      -ve
-            //            p
-            // break.start < value < break.end - point is in the break area
-            // we move our point by the break's net removed * the penetration factor
-            double gapPenetration = fabs(pointCoord - breakItem.lowLimit);
-            double removed = removedLengthFromObj(*breakItem.breakObj);
-            double factor = gapPenetration / Gap.getValue();
-            double shiftAmount = factor * (removed - Gap.getValue());
-            shift += shiftAmount;
-
+            // pointCoord is in gap
+            // X+  high > pointCoord > low  X-
+            partialGapIndex = iBreak;
+            partialPenetrationFactor = (pointCoord - gap.lowLimit) / Gap.getValue();
+            iBreak++;
         } else {
-            if (pointCoord >= breakItem.highLimit) {
-                //        l--------h     +ve
-                //                    p
-                // leave alone, this break doesn't affect us
+            // forward  +X is to the right
+            if (pointCoord > gap.highLimit) {
+                // not interested
+                iBreak++;
                 continue;
             }
-
-            if (pointCoord < breakItem.lowLimit  ||
-                DU::fpCompare(pointCoord, breakItem.lowLimit, Precision::Confusion()) ) {
-                //        l--------h      +ve
-                //    p
-                // move by the whole removed area
-                shift += breakItem.netRemoved;
+            if (pointCoord < gap.lowLimit ||
+                DU::fpCompare(pointCoord, gap.lowLimit, Precision::Confusion()) ) {
+                // need to move by full length of associated break
+                fullGaps.push_back(iBreak);
+                iBreak++;
                 continue;
             }
-
-            //        l--------h      +ve
-            //            p
-            // break.start < value < break.end - point is in the break area
-            // we move our point by the break's net removed * the penetration factor
-            double gapPenetration = pointCoord - breakItem.lowLimit;
-            double removed = removedLengthFromObj(*breakItem.breakObj);
-            double factor = 1 - gapPenetration / Gap.getValue();
-            double shiftAmount = factor * (removed - Gap.getValue());
-            shift += shiftAmount;
+            // pointCoord is in gap
+            //   low < pointCoord < highLimit  X+
+            partialGapIndex = iBreak;
+            partialPenetrationFactor = (gap.highLimit - pointCoord) / Gap.getValue();
+            iBreak++;
         }
-    }
-
-    return shift;
+   }
+   return partialPenetrationFactor;
 }
-
 
 Base::Vector3d DrawBrokenView::getCompressedCentroid() const
 {
