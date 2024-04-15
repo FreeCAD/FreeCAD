@@ -83,19 +83,19 @@ TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-2, -2, -2, 3, 5, 5)));
     // Assert correct element Map
 #ifdef FC_USE_TNP_FIX
-    EXPECT_TRUE(
-        elementsMatch(_offset->Shape.getShape(),
-                      {
-                          "#21:3;SLD;:H1d7:4,V", "#21:4;SLD;:H1d7:4,V", "#21:7;SLD;:H1d7:4,V",
-                          "#21:8;SLD;:H1d7:4,V", "#22:1;SLD;:H1d7:4,V", "#22:2;SLD;:H1d7:4,V",
-                          "#22:5;SLD;:H1d7:4,V", "#22:6;SLD;:H1d7:4,V", "#24:3;SLD;:H1d7:4,E",
-                          "#24:7;SLD;:H1d7:4,E", "#24:b;SLD;:H1d7:4,E", "#24:c;SLD;:H1d7:4,E",
-                          "#25:2;SLD;:H1d7:4,E", "#26:4;SLD;:H1d7:4,E", "#27:1;SLD;:H1d7:4,E",
-                          "#27:5;SLD;:H1d7:4,E", "#27:9;SLD;:H1d7:4,E", "#27:a;SLD;:H1d7:4,E",
-                          "#28:6;SLD;:H1d7:4,E", "#29:8;SLD;:H1d7:4,E", "#2b:4;SLD;:H1d7:4,F",
-                          "#2c:1;SLD;:H1d7:4,F", "#2d:3;SLD;:H1d7:4,F", "#2e:6;SLD;:H1d7:4,F",
-                          "#2f:5;SLD;:H1d7:4,F", "#30:2;SLD;:H1d7:4,F",
-                      }));
+    EXPECT_TRUE(elementsMatch(
+        _offset->Shape.getShape(),
+        {
+            "#10:4;:G;OFS;:H9c4:7,F", "#12:1;:G;OFS;:H9c4:7,F", "#14:3;:G;OFS;:H9c4:7,F",
+            "#16:6;:G;OFS;:H9c4:7,F", "#18:5;:G;OFS;:H9c4:7,F", "#1a:2;:G;OFS;:H9c4:7,F",
+            "#1d:3;:G;OFS;:H9c4:7,V", "#1d:4;:G;OFS;:H9c4:7,V", "#1d:7;:G;OFS;:H9c4:7,V",
+            "#1d:8;:G;OFS;:H9c4:7,V", "#1f:1;:G;OFS;:H9c4:7,V", "#1f:2;:G;OFS;:H9c4:7,V",
+            "#1f:5;:G;OFS;:H9c4:7,V", "#1f:6;:G;OFS;:H9c4:7,V", "#3:3;:G;OFS;:H9c4:7,E",
+            "#3:7;:G;OFS;:H9c4:7,E",  "#3:b;:G;OFS;:H9c4:7,E",  "#3:c;:G;OFS;:H9c4:7,E",
+            "#5:2;:G;OFS;:H9c4:7,E",  "#7:4;:G;OFS;:H9c4:7,E",  "#9:1;:G;OFS;:H9c4:7,E",
+            "#9:5;:G;OFS;:H9c4:7,E",  "#9:9;:G;OFS;:H9c4:7,E",  "#9:a;:G;OFS;:H9c4:7,E",
+            "#b:6;:G;OFS;:H9c4:7,E",  "#d:8;:G;OFS;:H9c4:7,E",
+        }));
 
 
 #else

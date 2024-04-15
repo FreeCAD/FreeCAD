@@ -1403,7 +1403,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
     ShapeInfo vertexInfo(_Shape, TopAbs_VERTEX, _cache->getAncestry(TopAbs_VERTEX));
     ShapeInfo edgeInfo(_Shape, TopAbs_EDGE, _cache->getAncestry(TopAbs_EDGE));
     ShapeInfo faceInfo(_Shape, TopAbs_FACE, _cache->getAncestry(TopAbs_FACE));
-    mapSubElement(shapes, op);
+    mapSubElement(shapes);  // Intentionally leave the op off here
 
     std::array<ShapeInfo*, 3> infos = {&vertexInfo, &edgeInfo, &faceInfo};
 
