@@ -119,16 +119,16 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutAmbientTemp">
+          <layout class="QHBoxLayout" name="layoutAmbientTempCov">
            <item>
-            <widget class="QLabel" name="lbl_ambienttemp">
+            <widget class="QLabel" name="lbl_ambienttemp_conv">
              <property name="text">
               <string>Ambient Temperature</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="Gui::InputField" name="if_ambienttemp">
+            <widget class="Gui::InputField" name="if_ambienttemp_conv">
              <property name="text">
               <string>300 K</string>
              </property>
@@ -152,7 +152,7 @@
      <widget class="QWidget" name="page_1">
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
           <layout class="QHBoxLayout" name="layoutEmissivity">
            <item>
@@ -175,16 +175,16 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layoutAmbientTemp2">
+          <layout class="QHBoxLayout" name="layoutAmbientTempRad">
            <item>
-            <widget class="QLabel" name="lbl_ambienttemp2">
+            <widget class="QLabel" name="lbl_ambienttemp_rad">
              <property name="text">
               <string>Ambient Temperature</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="Gui::InputField" name="if_ambienttemp2">
+            <widget class="Gui::InputField" name="if_ambienttemp_rad">
              <property name="text">
               <string>300 K</string>
              </property>
