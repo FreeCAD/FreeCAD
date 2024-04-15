@@ -601,7 +601,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // And the really expensive way to get the SubShape...
                 try {
-                    TopoShape result(0);
+                    TopoShape result(0, getDocument()->getStringHasher());
                     if (base.isNull()) {
                         result = prism;
                     }
