@@ -925,7 +925,7 @@ void CmdPartSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.LineColor = Gui.activeDocument().%s.ShapeAppearance.DiffuseColor",FeatName.c_str(),BaseName.c_str());
+    doCommand(Gui,"Gui.activeDocument().%s.LineMaterial = Gui.activeDocument().%s.ShapeAppearance[0]",FeatName.c_str(),BaseName.c_str());
     updateActive();
     commitCommand();
 }
