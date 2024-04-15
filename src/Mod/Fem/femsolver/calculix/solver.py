@@ -429,6 +429,20 @@ def add_attributes(obj, ccx_prefs):
         )
         obj.ModelSpace = model_space_types
 
+    if not hasattr(obj, "ThermoMechType"):
+        thermomech_types = [
+            "coupled",
+            "uncoupled",
+            "pure heat transfer"
+        ]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ThermoMechType",
+            "Fem",
+            "Type of thermomechanical analysis"
+        )
+        obj.ThermoMechType = thermomech_types
+
 """
 Should there be some equation object for Calculix too?
 
