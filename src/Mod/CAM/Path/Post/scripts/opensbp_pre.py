@@ -52,6 +52,7 @@ import FreeCAD
 import Path
 import os
 import Path
+from builtins import open as pyopen
 
 AXIS = (
     "X",
@@ -62,8 +63,6 @@ AXIS = (
 )  # OpenSBP always puts multiaxis move parameters in this order
 SPEEDS = "XY", "Z", "A", "B"
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

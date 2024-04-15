@@ -22,9 +22,9 @@
 
 import os
 import FreeCAD
+from builtins import open as pyopen
 translate = FreeCAD.Qt.translate
 
-from builtins import open as pyopen
 
 
 def open(filename):

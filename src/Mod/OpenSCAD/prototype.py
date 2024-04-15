@@ -12,8 +12,8 @@ import re
 from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
+from builtins import open as pyopen
 
-from builtins import open as pyopen # to distinguish python built-in open function from the one declared here
 
 
 

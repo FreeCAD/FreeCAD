@@ -43,6 +43,7 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 import FreeCAD
 from FreeCAD import Console as FCC
 from draftutils import params
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -50,8 +51,6 @@ else:
     def translate(context, txt):
         return txt
 
-# Save the native open function to avoid collisions
-from builtins import open as pyopen
 
 
 

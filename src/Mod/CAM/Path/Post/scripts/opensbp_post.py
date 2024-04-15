@@ -24,6 +24,7 @@
 import datetime
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 
 TOOLTIP = """
@@ -79,8 +80,6 @@ POST_OPERATION = """"""
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """"""
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 CurrentState = {}

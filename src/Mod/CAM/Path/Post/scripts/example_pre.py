@@ -35,6 +35,7 @@ from GCode.
 import FreeCAD
 import Path
 import os
+from builtins import open as pyopen
 
 # LEVEL = Path.Log.Level.DEBUG
 LEVEL = Path.Log.Level.INFO
@@ -44,8 +45,6 @@ if LEVEL == Path.Log.Level.DEBUG:
     Path.Log.trackModule(Path.Log.thisModule())
 
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

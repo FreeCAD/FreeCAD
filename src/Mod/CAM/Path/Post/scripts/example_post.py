@@ -22,6 +22,7 @@
 # ***************************************************************************
 
 import datetime
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is an example postprocessor file for the Path workbench. It is used
@@ -33,8 +34,6 @@ to GCode.
 
 now = datetime.datetime.now()
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

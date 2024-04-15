@@ -37,9 +37,8 @@ http://paulbourke.net/dataformats/hpgl/
 import FreeCAD
 import Part
 import Path.Post.Utils as PostUtils
-
-# to distinguish python built-in open function from the one declared below
 from builtins import open as pyopen
+
 
 
 

@@ -44,8 +44,6 @@ import Draft
 from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
-# Save the native open function to avoid collisions
-from builtins import open as pyopen
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -66,6 +64,7 @@ original_root_objects = []
 # Get the token map from the lexer. This is required.
 import tokrules
 from tokrules import tokens
+from builtins import open as pyopen
 
 translate = FreeCAD.Qt.translate
 

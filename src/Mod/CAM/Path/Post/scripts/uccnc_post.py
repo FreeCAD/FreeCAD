@@ -39,6 +39,7 @@ import datetime
 
 # import shlex
 import Path.Post.Utils as PostUtils
+from builtins import open as pyopen
 
 VERSION = "0.0.4"
 
@@ -280,8 +281,6 @@ parser.add_argument(
 parser.add_argument("--repeat", action="store_true", help="repeat axis arguments")
 TOOLTIP_ARGS = parser.format_help()
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 # debug option, trace to screen while processing to see where things break up.
 trace_gcode = False

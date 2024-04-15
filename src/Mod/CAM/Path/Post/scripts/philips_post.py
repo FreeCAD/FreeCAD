@@ -30,6 +30,7 @@ import time
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 import math
+from builtins import open as pyopen
 
 TOOLTIP = """Post processor for Maho M 600E mill
 
@@ -296,7 +297,6 @@ GCODE_FOOTER = "M30"
 
 linenr = 0  # variable has to be global because it is used by linenumberify and export
 
-from builtins import open as pyopen
 
 
 

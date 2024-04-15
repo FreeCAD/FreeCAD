@@ -40,6 +40,7 @@ import datetime
 import shlex
 from PathScripts import PathUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -137,8 +138,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """M05
 M09"""
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

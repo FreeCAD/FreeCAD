@@ -31,13 +31,12 @@ import FreeCAD
 
 from materialtools.cardutils import get_material_template
 import Materials
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

@@ -25,9 +25,9 @@ import FreeCAD, Part, os, FreeCADGui
 from FreeCAD import Base
 from math import *
 import ImportGui
+from builtins import open as pyopen
 
 # to distinguish python built-in open function from the one declared here
-from builtins import open as pyopen
 
 
 ##########################################################

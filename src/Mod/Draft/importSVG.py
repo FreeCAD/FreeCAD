@@ -61,6 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
@@ -74,8 +75,6 @@ else:
     gui = False
     draftui = None
 
-# Save the native open function to avoid collisions
-from builtins import open as pyopen
 
 
 svgcolors = {

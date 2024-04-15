@@ -44,6 +44,7 @@ import Part
 import OfflineRenderingUtils
 import json
 import textwrap
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -52,7 +53,6 @@ else:
     FreeCADGui = None
     def translate(ctxt, txt): return txt
 
-from builtins import open as pyopen
 
 
 ## @package importWebGL

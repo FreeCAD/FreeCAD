@@ -66,6 +66,7 @@ from FreeCAD import Console as FCC
 from Draft import LinearDimension
 from draftutils import params
 from draftutils import utils
+from builtins import open as pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -85,9 +86,7 @@ dxfReader = None
 dxfColorMap = None
 dxfLibrary = None
 
-# Save the native open function to avoid collisions
 # with the function declared here
-from builtins import open as pyopen
 
 
 

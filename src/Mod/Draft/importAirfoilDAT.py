@@ -45,6 +45,7 @@ import Draft
 import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from builtins import open as pyopen
 
 
 if FreeCAD.GuiUp:
@@ -53,7 +54,6 @@ else:
     def translate(context, txt):
         return txt
 
-from builtins import open as pyopen
 
 
 useDraftWire = True

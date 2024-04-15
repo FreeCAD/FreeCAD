@@ -34,6 +34,7 @@ import argparse
 import datetime
 import shlex
 import re
+from builtins import open as pyopen
 
 
 TOOLTIP = """
@@ -184,7 +185,6 @@ CURRENT_Z = 0
 
 # ***************************************************************************
 # * to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

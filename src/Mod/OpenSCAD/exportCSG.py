@@ -29,6 +29,7 @@ __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 
 import FreeCAD
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     gui = True
@@ -48,7 +49,6 @@ convexity = 'convexity = %d' % conv
 #***************************************************************************
 # Radius values not fixed for value apart from cylinder & Cone
 # no doubt there will be a problem when they do implement Value
-from builtins import open as pyopen # to distinguish python built-in open function from the one declared here
 
 def center(b):
     if b == 2:

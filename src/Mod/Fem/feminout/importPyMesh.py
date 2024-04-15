@@ -32,13 +32,13 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 
 from femmesh import meshtools
+from builtins import open as pyopen
 
 # ************************************************************************************************
 # ********* generic FreeCAD import and export methods ********************************************
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-from builtins import open as pyopen # because we'll redefine open below
 
 
 

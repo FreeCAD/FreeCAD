@@ -27,6 +27,7 @@ import Path
 import PathScripts
 import shlex
 import math
+from builtins import open as pyopen
 
 # **************************************************************************#
 #                   USER  EDITABLE  STUFF  HERE                            #
@@ -246,7 +247,6 @@ parser.add_argument(
 
 TOOLTIP_ARGS = parser.format_help()
 
-from builtins import open as pyopen
 
 
 

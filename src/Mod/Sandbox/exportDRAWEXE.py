@@ -24,8 +24,8 @@ __title__="FreeCAD OpenSCAD Workbench - DRAWEXE exporter"
 __author__ = "Sebastian Hoogen <github@sebastianhoogen.de>"
 
 import FreeCAD, Part
-
 from builtins import open as pyopen
+
 
 
 # unsupported primitives

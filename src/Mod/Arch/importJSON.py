@@ -27,6 +27,7 @@ import FreeCAD
 import Draft
 import Mesh
 import Part
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -37,7 +38,6 @@ else:
     def translate(ctxt, txt): return txt
 
 
-from builtins import open as pyopen
 
 
 

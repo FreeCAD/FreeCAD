@@ -24,6 +24,7 @@
 import datetime
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 TOOLTIP = """
 Dumper is an extremely simple postprocessor file for the Path workbench. It is used
@@ -35,8 +36,6 @@ shows the dialog so you can see it.  Useful for debugging, but not much else.
 now = datetime.datetime.now()
 SHOW_EDITOR = True
 
-# to distinguish python built-in open function from the one declared below
-from builtins import open as pyopen
 
 
 

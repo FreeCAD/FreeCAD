@@ -32,6 +32,7 @@ import Mesh
 import MeshPart
 import Part
 from draftutils import params
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -50,7 +51,6 @@ else:
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-from builtins import open as pyopen
 
 
 def findVert(aVertex,aList):
