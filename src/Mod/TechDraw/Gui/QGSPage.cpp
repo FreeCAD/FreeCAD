@@ -930,8 +930,10 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
 
 // RichTextAnno needs to know when it is rendering an Svg as the font size
 // is handled differently in Svg compared to the screen or Pdf.
+// Also true of QGraphicsSvgItems.
 void QGSPage::setExportingSvg(bool enable)
 {
+    m_exportingSvg = enable;
     QList<QGraphicsItem*> sceneItems = items();
     for (auto& qgi : sceneItems) {
         QGIRichAnno* qgiRTA = dynamic_cast<QGIRichAnno*>(qgi);

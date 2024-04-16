@@ -405,9 +405,10 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # write the file
-    gfile = pythonopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pythonopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
 
     return final
 

@@ -77,8 +77,9 @@ QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QI
 
 void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 {
-    if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
-        auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
+    auto obj = getExtendedViewProvider()->getObject();
+    if (obj && obj->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+        auto* attach = obj->getExtensionByType<Part::AttachExtension>();
 
         if(attach) {
             if( prop == &(attach->AttachmentSupport) ||
