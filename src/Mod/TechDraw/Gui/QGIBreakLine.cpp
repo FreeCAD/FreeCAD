@@ -75,7 +75,7 @@ void QGIBreakLine::draw()
     Base::Vector3d horizontal{1.0, 0.0, 0.0};
     prepareGeometryChange();
     double offset = zigzagWidth / 2.0;
-    if (m_direction.IsEqual(horizontal, EWTOLERANCE)) {
+    if (DU::fpCompare(fabs(m_direction.Dot(horizontal)), 1.0, EWTOLERANCE)) {
         // m_direction connects the two cut points.  The zigzags have
         // to be perpendicular to m_direction
         // 2x vertical zigzag

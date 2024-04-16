@@ -160,8 +160,9 @@ bool matchStringsWithoutClause(std::string first, std::string second, const std:
 
 /**
  *  Check to see if the elementMap in a shape contains all the names in a list
- *  The "Duplicate" clause in a name - ";Dnnn" can contain a random number, so we need to
- *  exclude those.
+ *  There are some sections of the name that can vary due to random numbers or
+ *  memory addresses, so we use a regex to exclude those sections while still
+ *  validating that the name exists and is the correct type.
  * @param shape The Shape
  * @param names The vector of names
  * @return An assertion usable by the gtest framework
@@ -178,14 +179,16 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
                                  return matchStringsWithoutClause(
                                      element.name.toString(),
                                      name,
-                                     "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?");
+                                     "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?|(\\(.*?\\))?");
                                  // ;D ;:H and ;K are the sections of an encoded name for
                                  // Duplicate, Tag and a Face name in slices.  All three of these
                                  // can vary from run to run or platform to platform, as they are
                                  // based on either explicit random numbers or memory addresses.
                                  // Thus we remove the value from comparisons and just check that
                                  // they exist.  The full form could be something like ;:He59:53
-                                 // which is what we match and remove.
+                                 // which is what we match and remove.  We also pull out any
+                                 // subexpressions wrapped in parens to keep the parse from
+                                 // becoming too complex.
                              })
                 == elements.end()) {
                 return testing::AssertionFailure() << mappedElementVectorToString(elements);

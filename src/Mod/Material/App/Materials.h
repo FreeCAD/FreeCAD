@@ -299,6 +299,15 @@ public:
     void setAppearanceValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
     void setAppearanceValue(const QString& name, const std::shared_ptr<QList<QVariant>>& value);
 
+    /*
+     * Legacy values are thosed contained in old format files that don't fit in the new
+     * property format. It should not be used as a catch all for defining a property with
+     * no model.
+     * 
+     * These values are transient and will not be saved.
+     */
+    void setLegacyValue(const QString& name, const QString& value);
+
     std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name);
     std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name) const;
     std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name);
@@ -313,6 +322,9 @@ public:
     QString getAppearanceValueString(const QString& name) const;
     bool hasPhysicalProperty(const QString& name) const;
     bool hasAppearanceProperty(const QString& name) const;
+    bool hasNonLegacyProperty(const QString& name) const;
+    bool hasLegacyProperty(const QString& name) const;
+    bool hasLegacyProperties() const;
 
     // Test if the model is defined, and if values are provided for all properties
     bool hasModel(const QString& uuid) const;
@@ -333,6 +345,10 @@ public:
     std::map<QString, std::shared_ptr<MaterialProperty>>& getAppearanceProperties()
     {
         return _appearance;
+    }
+    std::map<QString, QString>& getLegacyProperties()
+    {
+        return _legacy;
     }
 
     QString getModelByName(const QString& name) const;
@@ -438,6 +454,7 @@ private:
     QSet<QString> _allUuids;  // Includes inherited models
     std::map<QString, std::shared_ptr<MaterialProperty>> _physical;
     std::map<QString, std::shared_ptr<MaterialProperty>> _appearance;
+    std::map<QString, QString> _legacy;
     bool _dereferenced;
     bool _oldFormat;
     ModelEdit _editState;

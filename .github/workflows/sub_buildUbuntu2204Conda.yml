@@ -70,6 +70,8 @@ jobs:
         with:
           submodules: true
       - name: Setup Miniconda
+        env:
+          CONDA_VERBOSITY: 2
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
@@ -78,6 +80,8 @@ jobs:
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           ./conda/setup-environment.sh
       - name: Set Environment Variables

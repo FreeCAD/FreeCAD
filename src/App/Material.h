@@ -67,15 +67,17 @@ public:
     //@{
     /** Sets the USER_DEFINED material type. The user must set the colors afterwards. */
     Material();
+    ~Material() = default;
     /** Copy constructor. */
-    Material(const Material& other);
+    Material(const Material& other) = default;
+    Material(Material&& other) = default;
     /** Defines the colors and shininess for the material \a MatName. If \a MatName isn't defined
      * then USER_DEFINED is set and the user must define the colors itself.
      */
     explicit Material(const char* MatName);
     /** Does basically the same as the constructor above unless that it accepts a MaterialType as
      * argument. */
-    explicit Material(const MaterialType MatType);
+    explicit Material(MaterialType MatType);
     //@}
 
     /** Set a material by name
@@ -111,7 +113,7 @@ public:
      * This method is provided for convenience which does basically the same as the method above
      * unless that it accepts a MaterialType as argument.
      */
-    void setType(const MaterialType MatType);
+    void setType(MaterialType MatType);
     /**
      * Returns the currently set material type.
      */
@@ -122,6 +124,7 @@ public:
 
     /** @name Properties */
     //@{
+    // NOLINTBEGIN
     Color ambientColor;  /**< Defines the ambient color. */
     Color diffuseColor;  /**< Defines the diffuse color. */
     Color specularColor; /**< Defines the specular color. */
@@ -129,20 +132,28 @@ public:
     float shininess;
     float transparency;
     std::string uuid;
+    // NOLINTEND
     //@}
 
     bool operator==(const Material& m) const
     {
-        return _matType == m._matType && shininess == m.shininess && transparency == m.transparency
-            && ambientColor == m.ambientColor && diffuseColor == m.diffuseColor
-            && specularColor == m.specularColor && emissiveColor == m.emissiveColor
+        // clang-format off
+        return _matType == m._matType
+            && shininess == m.shininess
+            && transparency == m.transparency
+            && ambientColor == m.ambientColor
+            && diffuseColor == m.diffuseColor
+            && specularColor == m.specularColor
+            && emissiveColor == m.emissiveColor
             && uuid == m.uuid;
+        // clang-format on
     }
     bool operator!=(const Material& m) const
     {
         return !operator==(m);
     }
-    Material& operator=(const Material& other);
+    Material& operator=(const Material& other) = default;
+    Material& operator=(Material&& other) = default;
 
 private:
     MaterialType _matType;
