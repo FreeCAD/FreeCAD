@@ -80,6 +80,14 @@ public:
      */
     uint32_t getPackedValue() const;
     /**
+     * Returns color as a 32 bit packed unsigned int in the form 0xRRGGBB.
+     */
+    uint32_t getPackedRGB() const;
+    /**
+     * Sets color as a 32 bit packed unsigned int in the form 0xRRGGBB.
+     */
+    void setPackedRGB(uint32_t);
+    /**
      * Returns color as a 32 bit packed unsigned int in the form 0xAARRGGBB.
      */
     uint32_t getPackedARGB() const;
@@ -119,8 +127,13 @@ public:
      *
      */
     template <typename T>
-    inline T asValue() const {
-        return(T(int(r*255.0f),int(g*255.0f),int(b*255.0f)));
+    inline T asValue() const
+    {
+        // clang-format off
+        return(T(int(r * 255.0F + 0.5F),
+                 int(g * 255.0F + 0.5F),
+                 int(b * 255.0F + 0.5F)));
+        // clang-format on
     }
     /**
      * returns color as hex color "#RRGGBB"
