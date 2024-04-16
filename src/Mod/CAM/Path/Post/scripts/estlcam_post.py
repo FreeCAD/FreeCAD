@@ -157,12 +157,6 @@ CURRENT_X = 0
 CURRENT_Y = 0
 CURRENT_Z = 0
 
-
-# ***************************************************************************
-# * to distinguish python built-in open function from the one declared below
-
-
-
 def processArguments(argstring):
 
     global OUTPUT_HEADER

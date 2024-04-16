@@ -43,7 +43,6 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 import FreeCAD
 from FreeCAD import Console as FCC
 from draftutils import params
-from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate

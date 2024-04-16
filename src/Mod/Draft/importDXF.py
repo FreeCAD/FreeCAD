@@ -86,9 +86,6 @@ dxfReader = None
 dxfColorMap = None
 dxfLibrary = None
 
-# with the function declared here
-
-
 
 def errorDXFLib(gui):
     """Download the files required to convert DXF files.
