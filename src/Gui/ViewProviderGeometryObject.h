@@ -104,10 +104,14 @@ protected:
 
     virtual unsigned long getBoundColor() const;
 
-    void setSoMaterial(const App::Material& source);
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;
+
+private:
+    void setSoMaterial(const App::Material& source);
+    App::Material getDefaultMaterial() const;
+    bool isSelectionEnabled() const;
 
 protected:
     SoMaterial* pcShapeMaterial {nullptr};
