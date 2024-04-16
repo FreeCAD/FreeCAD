@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
-        Father="ViewProviderDocumentObjectPy"
+        Father="ViewProviderGeometryObjectPy"
         Name="ViewProviderFemConstraintPy"
         Twin="ViewProviderFemConstraint"
         TwinPointer="ViewProviderFemConstraint"
         Include="Mod/Fem/Gui/ViewProviderFemConstraint.h"
         Namespace="FemGui"
-        FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+        FatherInclude="Gui/ViewProviderGeometryObjectPy.h"
         FatherNamespace="Gui">
         <Documentation>
             <Author Licence="LGPL" Name="Mario Passaglia" EMail="mpassaglia@cbc.uba.ar" />

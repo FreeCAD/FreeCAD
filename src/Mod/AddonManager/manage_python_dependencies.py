@@ -291,7 +291,6 @@ class PythonPackageManager:
         # Package    Version
         # ---------- -------
         # gitdb      4.0.9
-        # GitPython  3.1.27
         # setuptools 41.2.0
 
         # Outdated Packages output looks like this:

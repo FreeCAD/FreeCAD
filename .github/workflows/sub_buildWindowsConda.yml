@@ -65,6 +65,8 @@ jobs:
         with:
           submodules: true
       - name: Setup Miniconda
+        env:
+          CONDA_VERBOSITY: 2
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
@@ -73,6 +75,8 @@ jobs:
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           conda config --add envs_dirs $PWD/.conda
           mamba-devenv -f conda/environment.devenv.yml

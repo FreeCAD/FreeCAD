@@ -63,5 +63,8 @@ Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or
             <Parameter Name="Transparency" Type="Float"/>
         </Attribute>
         <CustomAttributes />
+        <ClassDeclarations>public:
+    static App::Color toColor(PyObject* value);
+        </ClassDeclarations>
     </PythonExport>
 </GenerateModel>
