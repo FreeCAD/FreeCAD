@@ -355,7 +355,7 @@ void MaterialsEditor::onDescription()
     _material->setDescription(ui->editDescription->toPlainText());
 }
 
-void MaterialsEditor::propertyChange(const QString& property, const QString value)
+void MaterialsEditor::propertyChange(const QString& property, const QVariant& value)
 {
     if (_material->hasPhysicalProperty(property)) {
         _material->setPhysicalValue(property, value);

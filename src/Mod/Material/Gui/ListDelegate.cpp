@@ -74,10 +74,12 @@ void ListDelegate::setValue(QAbstractItemModel* model,
                             const QModelIndex& index,
                             const QVariant& value) const
 {
-    auto matModel = dynamic_cast<QStandardItemModel*>(model);
-    matModel->setData(index, value);
+    auto matModel = dynamic_cast<ListModel*>(model);
+    if (matModel) {
+        matModel->setData(index, value);
 
-    notifyChanged(model, index);
+        notifyChanged(model, index);
+    }
 }
 
 void ListDelegate::notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const
@@ -104,34 +106,5 @@ void ListDelegate::paint(QPainter* painter,
 
     QStyledItemDelegate::paint(painter, option, index);
 }
-
-// bool ListDelegate::editorEvent(QEvent* event,
-//                                QAbstractItemModel* model,
-//                                const QStyleOptionViewItem& option,
-//                                const QModelIndex& index)
-// {
-//     if (event->type() == QEvent::MouseButtonDblClick) {
-//         auto treeModel = index.model();
-
-//         auto item = treeModel->data(index);
-
-//         int row = index.row();
-
-//         QString propertyName = group->child(row, 0)->text();
-//         QString propertyType = QString::fromStdString("String");
-//         if (group->child(row, 2)) {
-//             propertyType = group->child(row, 2)->text();
-//         }
-
-//         std::string type = propertyType.toStdString();
-//         if (_type == Materials::MaterialValue::Image || _type ==
-//         Materials::MaterialValue::ImageList) {
-//             showImageModal(propertyName, item);
-//             // Mark as handled
-//             return true;
-//         }
-//     }
-//     return QStyledItemDelegate::editorEvent(event, model, option, index);
-// }
 
 #include "moc_ListDelegate.cpp"
