@@ -349,6 +349,9 @@ class _CommandStructure:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
+        if self.bmode:
+            self.Length = point.sub(self.bpoint).Length
+            params.set_param_arch("StructureHeight",self.Length)
         if self.Profile is not None:
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
@@ -647,17 +650,17 @@ class _CommandStructure:
 
     def rotateLH(self):
 
-        h = self.Height
-        l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(h,FreeCAD.Units.Length).UserString)
-        self.vHeight.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        l = self.vLength.text()
+        h = self.vHeight.text()
+        self.vLength.setText(h)
+        self.vHeight.setText(l)
 
     def rotateLW(self):
 
-        w = self.Width
-        l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(w,FreeCAD.Units.Length).UserString)
-        self.vWidth.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        l = self.vLength.text()
+        w = self.vWidth.text()
+        self.vLength.setText(w)
+        self.vWidth.setText(l)
 
 
 class _Structure(ArchComponent.Component):
