@@ -41,6 +41,7 @@
 
 
 #include <Mod/Material/App/MaterialFilter.h>
+#include <Mod/Material/App/MaterialFilterPy.h>
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
 
@@ -48,6 +49,7 @@ namespace MatGui
 {
 class CommandManager;
 class WidgetFactoryInst;
+class MaterialTreeWidgetPy;
 
 /** The Material Tree widget class
  * This widget is intended for use wherever materials are used. It is a light weight
@@ -65,35 +67,20 @@ class WidgetFactoryInst;
  *
  * \author David Carter
  */
-class MatGuiExport MaterialTreeWidget: public QWidget
+class MatGuiExport MaterialTreeWidget: public QWidget, public Base::BaseClass
 {
     Q_OBJECT
 
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    explicit MaterialTreeWidget(std::shared_ptr<Materials::MaterialFilter> filter,
+    explicit MaterialTreeWidget(const std::shared_ptr<Materials::MaterialFilter>& filter,
                                 QWidget* parent = nullptr);
+    explicit MaterialTreeWidget(
+        const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList,
+        QWidget* parent = nullptr);
     explicit MaterialTreeWidget(QWidget* parent = nullptr);
     ~MaterialTreeWidget() override;
-
-    //   void setEntryName( const QByteArray& name );
-    //   QByteArray entryName() const;
-    //   /** Does the same as setEntryName().
-    //    * This function is added for convenience because the ui compiler
-    //    * will use this function if the attribute stdset isn't set to 0 in a .ui file.
-    //    */
-    //   void setPrefEntry(const QByteArray& name);
-
-    //   void setParamGrpPath( const QByteArray& path );
-    //   QByteArray paramGrpPath() const;
-    //   /** Does the same as setParamGrpPath().
-    //    * This function is added for convenience because the ui compiler
-    //    * will use this function if the attribute stdset isn't set to 0 in a .ui file.
-    //    */
-    //   void setPrefPath(const QByteArray& name);
-
-    //   void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
-    //   void onSave();
-    //   void onRestore();
 
     /** Set the material by specifying its UUID
      */
@@ -103,17 +90,84 @@ public:
     QString getMaterialUUID() const;
     /** Set the material filter
      */
-    void setFilter(std::shared_ptr<Materials::MaterialFilter> filter);
+    void setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter);
+    void setFilter(
+        const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList);
+    void setActiveFilter(const QString &name);
+
+    void setExpanded(bool open);
+    bool getExpanded()
+    {
+        return m_expanded;
+    }
+
+    /* Indicates if we should show favourite materials
+     */
+    bool includeFavorites() const
+    {
+        return _filterOptions.includeFavorites();
+    }
+    void setIncludeFavorites(bool value)
+    {
+        _filterOptions.setIncludeFavorites(value);
+    }
+
+    /* Indicates if we should show recent materials
+     */
+    bool includeRecent() const
+    {
+        return _filterOptions.includeRecent();
+    }
+    void setIncludeRecent(bool value)
+    {
+        _filterOptions.setIncludeRecent(value);
+    }
+
+    /* Indicates if we should include empty folders
+     */
+    bool includeEmptyFolders() const
+    {
+        return _filterOptions.includeEmptyFolders();
+    }
+    void setIncludeEmptyFolders(bool value)
+    {
+        _filterOptions.setIncludeEmptyFolders(value);
+    }
+
+    /* Indicates if we should include empty libraries
+     */
+    bool includeEmptyLibraries() const
+    {
+        return _filterOptions.includeEmptyLibraries();
+    }
+    void setIncludeEmptyLibraries(bool value)
+    {
+        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        _filterOptions.setIncludeEmptyLibraries(value);
+    }
+
+    /* Indicates if we should include materials in the older format
+     */
+    bool includeLegacy() const
+    {
+        return _filterOptions.includeLegacy();
+    }
+    void setIncludeLegacy(bool legacy)
+    {
+        _filterOptions.setIncludeLegacy(legacy);
+    }
 
 Q_SIGNALS:
     /** Emits this signal when a material has been selected */
     void materialSelected(const std::shared_ptr<Materials::Material>& material);
+    void onMaterial(const QString& uuid);
 
 private Q_SLOTS:
     void expandClicked(bool checked);
     void editorClicked(bool checked);
     void onSelectMaterial(const QItemSelection& selected, const QItemSelection& deselected);
     void onDoubleClick(const QModelIndex& index);
+    void onFilter(const QString& text);
 
 private:
     void setup();
@@ -122,6 +176,7 @@ private:
     QPushButton* m_expand;
     QTreeView* m_materialTree;
     QPushButton* m_editor;
+    QComboBox* m_filterCombo;
     bool m_expanded;
 
     QString m_materialDisplay;
@@ -130,7 +185,10 @@ private:
     std::list<QString> _favorites;
     std::list<QString> _recents;
     std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilterTreeWidgetOptions _filterOptions;
+    std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>> _filterList;
     int _recentMax;
+    MaterialTreeWidgetPy* pyTreeWidget {nullptr};
 
     Materials::MaterialManager _materialManager;
 
@@ -146,7 +204,17 @@ protected:
     }
 
     void getFavorites();
+
     void getRecents();
+    void saveRecents();
+    void addRecent(const QString& uuid);
+    bool isRecent(const QString& uuid) const;
+    void saveWidgetSettings();
+    void saveMaterialTreeChildren(const Base::Reference<ParameterGrp>& param,
+                                  QTreeView* tree,
+                                  QStandardItemModel* model,
+                                  QStandardItem* item);
+    void saveMaterialTree();
 
     /** Create the widgets UI objects
      */
@@ -159,7 +227,13 @@ protected:
     void fillMaterialTree();
     void updateMaterialTree();
     void addExpanded(QStandardItem* parent, QStandardItem* child);
+    void addExpanded(QStandardItem* parent,
+                     QStandardItem* child,
+                     const Base::Reference<ParameterGrp>& param);
     void addExpanded(QStandardItemModel* model, QStandardItem* child);
+    void addExpanded(QStandardItemModel* model,
+                     QStandardItem* child,
+                     const Base::Reference<ParameterGrp>& param);
     void addRecents(QStandardItem* parent);
     void addFavorites(QStandardItem* parent);
     void addMaterials(
@@ -167,9 +241,13 @@ protected:
         const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>&
             modelTree,
         const QIcon& folderIcon,
-        const QIcon& icon);
-
-    void openWidgetState(bool open);
+        const QIcon& icon,
+        const Base::Reference<ParameterGrp>& param);
+    void setFilterVisible(bool open);
+    void fillFilterCombo();
+    bool hasMultipleFilters() const {
+        return (_filterList && _filterList->size() > 1);
+    }
 };
 
 }  // namespace MatGui

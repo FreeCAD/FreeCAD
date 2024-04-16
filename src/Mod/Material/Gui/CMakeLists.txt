@@ -36,6 +36,14 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
+generate_from_xml(MaterialTreeWidgetPy)
+
+SET(Python_SRCS
+    MaterialTreeWidgetPy.xml
+    MaterialTreeWidgetPyImpl.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
@@ -51,6 +59,7 @@ set(MatGui_UIC_SRCS
 )
 
 SET(MatGui_SRCS
+    ${Python_SRCS}
     ${MatGui_QRC_SRCS}
     ${MatGui_UIC_HDRS}
     AppearancePreview.h

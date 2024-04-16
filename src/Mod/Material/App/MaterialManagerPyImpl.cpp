@@ -71,7 +71,7 @@ PyObject* MaterialManagerPy::getMaterial(PyObject* args)
 
 PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
 {
-    char* path;
+    char* path {};
     const char* lib = "";
     if (!PyArg_ParseTuple(args, "et|s", "utf-8", &path, &lib)) {
         return nullptr;
