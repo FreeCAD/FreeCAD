@@ -47,8 +47,13 @@ struct BreakListEntry {
     // TODO: can the gap size change during the lifetime of BreakListEntry?  if
     // so, we need to save the gap size @ creation time?
 };
-
 using BreakList = std::vector<BreakListEntry>;
+
+struct PieceLimitEntry {
+    double lowLimit;
+    double highLimit;
+};
+using PieceLimitList = std::vector<PieceLimitEntry>;
 
 class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 {
@@ -75,6 +80,7 @@ public:
     std::pair<Base::Vector3d, Base::Vector3d>
                     breakBoundsFromObj(const App::DocumentObject& breakObj) const;
     Base::Vector3d  directionFromObj(const App::DocumentObject& breakObj) const;
+    Base::Vector3d  guiDirectionFromObj(const App::DocumentObject& breakObj) const;
 
     static bool isBreakObject(const App::DocumentObject& breakObj);
     static bool isBreakObjectSketch(const App::DocumentObject& breakObj);
@@ -114,7 +120,13 @@ private:
     TopoDS_Shape compressHorizontal(const TopoDS_Shape& inShape) const;
     TopoDS_Shape compressVertical(const TopoDS_Shape& inShape) const;
 
-    static std::vector<double> getPieceUpperLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction);
+    static PieceLimitList getPieceLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction);
+
+    double getExpandGaps(double pointCoord,
+                         const BreakList& compressedBreakList,
+                         Base::Vector3d moveDirection,
+                         std::vector<size_t>& fullGaps,
+                         int& partialGapIndex) const;
 
     BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d direction, bool descend = false) const;
     BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d moveDirection, bool descend = false) const;
@@ -122,15 +134,17 @@ private:
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);
 
-//    double pointToLimit(const Base::Vector3d& inPoint, const Base::Vector3d& direction) const;
-    double shiftAmountShrink(double pointCoord, const BreakList& sortedBreaks) const;
-    double shiftAmountExpand(double pointCoord, const BreakList& sortedBreaks) const;
+    double shiftAmountShrink(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
+    // double shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
 
     void printBreakList(const std::string& text, const BreakList& inBreaks) const;
 
     std::pair<Base::Vector3d, Base::Vector3d>
                     scalePair(std::pair<Base::Vector3d, Base::Vector3d> inPair) const;
     Base::Vector3d makePerpendicular(Base::Vector3d inDir) const;
+
+    bool moveThisPiece(PieceLimitEntry piece, BreakListEntry breakItem, Base::Vector3d moveDirection) const;
+    bool isDirectionReversed(Base::Vector3d direction) const;
 
     Base::Vector3d m_unbrokenCenter;
     TopoDS_Shape m_compressedShape;
