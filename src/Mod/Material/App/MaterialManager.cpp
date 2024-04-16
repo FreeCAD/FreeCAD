@@ -23,6 +23,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMutex>
 #include <QDirIterator>
 #include <QMutexLocker>
 

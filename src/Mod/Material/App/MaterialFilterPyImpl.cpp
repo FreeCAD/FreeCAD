@@ -61,24 +61,15 @@ int MaterialFilterPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Boolean MaterialFilterPy::getIncludeEmptyFolders() const
+Py::String MaterialFilterPy::getName() const
 {
-    return {getMaterialFilterPtr()->includeEmptyFolders()};
+    auto filterName = getMaterialFilterPtr()->name();
+    return {filterName.toStdString()};
 }
 
-void MaterialFilterPy::setIncludeEmptyFolders(const Py::Boolean value)
+void MaterialFilterPy::setName(const Py::String value)
 {
-    getMaterialFilterPtr()->setIncludeEmptyFolders(value.isTrue());
-}
-
-Py::Boolean MaterialFilterPy::getIncludeLegacy() const
-{
-    return {getMaterialFilterPtr()->includeLegacy()};
-}
-
-void MaterialFilterPy::setIncludeLegacy(const Py::Boolean value)
-{
-    getMaterialFilterPtr()->setIncludeLegacy(value.isTrue());
+    getMaterialFilterPtr()->setName(QString::fromStdString(value));
 }
 
 Py::List MaterialFilterPy::getRequiredModels() const
