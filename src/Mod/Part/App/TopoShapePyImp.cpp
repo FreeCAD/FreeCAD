@@ -122,7 +122,11 @@ static Py_hash_t _TopoShapeHash(PyObject* self)
                         "This reference is no longer valid!");
         return 0;
     }
+#if OCC_VERSION_HEX >= 0x070800
+    return std::hash<TopoDS_Shape> {}(static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape());
+#else
     return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
+#endif
 }
 
 struct TopoShapePyInit

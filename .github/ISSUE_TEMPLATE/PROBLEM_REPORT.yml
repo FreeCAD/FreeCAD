@@ -41,6 +41,7 @@ body:
         - FEM
         - File formats
         - GCS
+        - Mesh
         - OpenSCAD
         - Part
         - PartDesign
