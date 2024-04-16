@@ -65,7 +65,7 @@ public:
     void onSourceReference(const QString& text);
     void onDescription();
 
-    void propertyChange(const QString& property, const QString value);
+    void propertyChange(const QString& property, const QVariant& value);
     void onInheritNewMaterial(bool checked);
     void onNewMaterial(bool checked);
     void onFavourite(bool checked);
