@@ -2000,7 +2000,7 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
         Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
         // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
+        if (c.IsNull() || c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
             continue;
         }
 
