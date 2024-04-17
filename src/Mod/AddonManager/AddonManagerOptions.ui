@@ -18,8 +18,7 @@
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxcheckupdates">
      <property name="toolTip">
       <string>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</string>
+installed addons will be checked for available updates</string>
      </property>
      <property name="text">
       <string>Automatically check for updates at start (requires git)</string>

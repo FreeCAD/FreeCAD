@@ -67,7 +67,8 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D() const {
 
     //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
-    auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    auto* obj = getExtendedViewProvider()->getObject();
+    auto* ext = obj ? obj->getExtensionByType<App::GeoFeatureGroupExtension>() : nullptr;
     if (ext) {
         auto objs = ext->Group.getValues();
         return objs;
@@ -77,7 +78,12 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren() const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    auto* obj = getExtendedViewProvider()->getObject();
+    if (!obj) {
+        return {};
+    }
+
+    auto* group = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
     const std::vector<App::DocumentObject*> &model = group->Group.getValues ();
     std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
@@ -142,9 +148,10 @@ std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDispl
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
-    auto obj = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if (obj && prop == &obj->placement()) {
-        getExtendedViewProvider()->setTransformation ( obj->placement().getValue().toMatrix() );
+    auto obj = getExtendedViewProvider()->getObject();
+    auto grp = obj ? obj->getExtensionByType<App::GeoFeatureGroupExtension>() : nullptr;
+    if (grp && prop == &grp->placement()) {
+        getExtendedViewProvider()->setTransformation ( grp->placement().getValue().toMatrix() );
     }
     else {
         ViewProviderGroupExtension::extensionUpdateData ( prop );

@@ -2560,95 +2560,27 @@ PyObject* PropertyMaterial::getPyObject()
 
 void PropertyMaterial::setPyObject(PyObject* value)
 {
-    App::Color cCol;
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
     }
-    else if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
-        PyObject* item;
-        item = PyTuple_GetItem(value, 0);
-        if (PyFloat_Check(item)) {
-            cCol.r = (float)PyFloat_AsDouble(item);
-            item = PyTuple_GetItem(value, 1);
-            if (PyFloat_Check(item)) {
-                cCol.g = (float)PyFloat_AsDouble(item);
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (float)");
-            }
-            item = PyTuple_GetItem(value, 2);
-            if (PyFloat_Check(item)) {
-                cCol.b = (float)PyFloat_AsDouble(item);
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (float)");
-            }
-            if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value, 3);
-                if (PyFloat_Check(item)) {
-                    cCol.a = (float)PyFloat_AsDouble(item);
-                }
-                else {
-                    throw Base::TypeError("Type in tuple must be consistent (float)");
-                }
-            }
-
-            setValue(cCol);
-        }
-        else if (PyLong_Check(item)) {
-            cCol.r = PyLong_AsLong(item) / 255.0;
-            item = PyTuple_GetItem(value, 1);
-            if (PyLong_Check(item)) {
-                cCol.g = PyLong_AsLong(item) / 255.0;
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (integer)");
-            }
-            item = PyTuple_GetItem(value, 2);
-            if (PyLong_Check(item)) {
-                cCol.b = PyLong_AsLong(item) / 255.0;
-            }
-            else {
-                throw Base::TypeError("Type in tuple must be consistent (integer)");
-            }
-            if (PyTuple_Size(value) == 4) {
-                item = PyTuple_GetItem(value, 3);
-                if (PyLong_Check(item)) {
-                    cCol.a = PyLong_AsLong(item) / 255.0;
-                }
-                else {
-                    throw Base::TypeError("Type in tuple must be consistent (integer)");
-                }
-            }
-
-            setValue(cCol);
-        }
-        else {
-            throw Base::TypeError("Type in tuple must be float or integer");
-        }
-    }
-    else if (PyLong_Check(value)) {
-        cCol.setPackedValue(PyLong_AsUnsignedLong(value));
-
-        setValue(cCol);
-    }
     else {
-        std::string error = std::string(
-            "type must be 'Material', integer, tuple of float, or tuple of integer, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        setValue(MaterialPy::toColor(value));
     }
 }
 
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyMaterial ambientColor=\""
-                    << _cMat.ambientColor.getPackedValue() << "\" diffuseColor=\""
-                    << _cMat.diffuseColor.getPackedValue() << "\" specularColor=\""
-                    << _cMat.specularColor.getPackedValue() << "\" emissiveColor=\""
-                    << _cMat.emissiveColor.getPackedValue() << "\" shininess=\"" << _cMat.shininess
-                    << "\" transparency=\"" << _cMat.transparency << "\"/>"
-                    << "\" uuid=\"" << _cMat.uuid << "\"/>" << endl;
+    // clang-format off
+    writer.Stream() << writer.ind()
+                    << "<PropertyMaterial ambientColor=\"" << _cMat.ambientColor.getPackedValue()
+                    << "\" diffuseColor=\"" << _cMat.diffuseColor.getPackedValue()
+                    << "\" specularColor=\"" << _cMat.specularColor.getPackedValue()
+                    << "\" emissiveColor=\"" << _cMat.emissiveColor.getPackedValue()
+                    << "\" shininess=\"" << _cMat.shininess
+                    << "\" transparency=\"" << _cMat.transparency
+                    << "\" uuid=\"" << _cMat.uuid
+                    << "\"/>" << std::endl;
+    // clang-format on
 }
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
@@ -2734,6 +2666,17 @@ void PropertyMaterialList::setSizeOne()
     }
 }
 
+int PropertyMaterialList::resizeByOneIfNeeded(int index)
+{
+    int size = getSize();
+    if (index == -1 || index == size) {
+        index = size;
+        setSize(size + 1);
+    }
+
+    return index;
+}
+
 void PropertyMaterialList::setValue()
 {
     Material empty;
@@ -2755,11 +2698,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index] = mat;
     hasSetValue();
 }
@@ -2799,11 +2738,7 @@ void PropertyMaterialList::setAmbientColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor = col;
     hasSetValue();
 }
@@ -2813,11 +2748,7 @@ void PropertyMaterialList::setAmbientColor(int index, float r, float g, float b,
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2827,11 +2758,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].ambientColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2871,11 +2798,7 @@ void PropertyMaterialList::setDiffuseColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor = col;
     hasSetValue();
 }
@@ -2885,11 +2808,7 @@ void PropertyMaterialList::setDiffuseColor(int index, float r, float g, float b,
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2899,11 +2818,7 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].diffuseColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -2943,11 +2858,7 @@ void PropertyMaterialList::setSpecularColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor = col;
     hasSetValue();
 }
@@ -2957,11 +2868,7 @@ void PropertyMaterialList::setSpecularColor(int index, float r, float g, float b
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -2971,11 +2878,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].specularColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -3015,11 +2918,7 @@ void PropertyMaterialList::setEmissiveColor(int index, const Color& col)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor = col;
     hasSetValue();
 }
@@ -3029,11 +2928,7 @@ void PropertyMaterialList::setEmissiveColor(int index, float r, float g, float b
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor.set(r, g, b, a);
     hasSetValue();
 }
@@ -3043,11 +2938,7 @@ void PropertyMaterialList::setEmissiveColor(int index, uint32_t rgba)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].emissiveColor.setPackedValue(rgba);
     hasSetValue();
 }
@@ -3067,11 +2958,7 @@ void PropertyMaterialList::setShininess(int index, float val)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].shininess = val;
     hasSetValue();
 }
@@ -3091,11 +2978,7 @@ void PropertyMaterialList::setTransparency(int index, float val)
     verifyIndex(index);
 
     aboutToSetValue();
-    int size = getSize();
-    if (index == -1 || index == size) {
-        index = size;
-        setSize(index + 1);
-    }
+    index = resizeByOneIfNeeded(index);
     _lValueList[index].transparency = val;
     hasSetValue();
 }
@@ -3150,22 +3033,22 @@ const Color& PropertyMaterialList::getEmissiveColor(int index) const
     return _lValueList[index].emissiveColor;
 }
 
-double PropertyMaterialList::getShininess() const
+float PropertyMaterialList::getShininess() const
 {
     return _lValueList[0].transparency;
 }
 
-double PropertyMaterialList::getShininess(int index) const
+float PropertyMaterialList::getShininess(int index) const
 {
     return _lValueList[index].transparency;
 }
 
-double PropertyMaterialList::getTransparency() const
+float PropertyMaterialList::getTransparency() const
 {
     return _lValueList[0].transparency;
 }
 
-double PropertyMaterialList::getTransparency(int index) const
+float PropertyMaterialList::getTransparency(int index) const
 {
     return _lValueList[index].transparency;
 }
@@ -3269,7 +3152,6 @@ void PropertyMaterialList::RestoreDocFileV1(Base::Reader& reader)
     std::vector<Material> values(count);
     uint32_t value;  // must be 32 bit long
     float valueF;
-    char valueS[37];  // UUID length is 36 including '-'s
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);

@@ -45,6 +45,7 @@
 
 #include <App/Link.h>
 
+#include <App/Document.h>
 #include "PartFeatures.h"
 #include "TopoShapeOpCode.h"
 
@@ -837,7 +838,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
     short join = (short)Join.getValue();
 
 #ifdef FC_USE_TNP_FIX
-    this->Shape.setValue(TopoShape(0)
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher())
                              .makeElementThickSolid(base,
                                                     shapes,
                                                     thickness,

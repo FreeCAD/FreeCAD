@@ -649,14 +649,16 @@ double DrawViewDimension::getDimValue()
             return result;
         }
         if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
-            // linear points are inverted?  +Y down?  scaled!
             pointPair pts = getLinearPoints();
             auto dbv = dynamic_cast<DrawBrokenView*>(getViewPart());
             if (dbv)  {
-                // pts are inverted Y, so we need to un-invert them before mapping
-                // pts are scaled, so we need to unscale them for mapPoint2dFromView
+                // raw pts from view are inverted Y, so we need to un-invert them before mapping
+                // raw pts are scaled, so we need to unscale them for mapPoint2dFromView
                 // then rescale them for the distance calculation below
                 // centers are right side up
+                // if both points are on the expanded side  of the last (rightmost/upmost) break
+                // then we should not move the points.
+                //
                 pts.invertY();
                 pts.scale(1.0 / getViewPart()->getScale());
                 pts.first(dbv->mapPoint2dFromView(pts.first()));
