@@ -258,7 +258,7 @@ class CommandCreateJointRackPinion:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion",
-                "The pitch radius defines the movement ratio between the rack and the pinion.",
+                "Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -289,7 +289,7 @@ class CommandCreateJointScrew:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointScrew",
-                "The pitch radius defines the movement ratio between the rotating screw and the sliding part.",
+                "Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -317,6 +317,11 @@ class CommandCreateJointGears:
                 "Assembly_CreateJointGears",
                 "Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.",
             )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Select the same coordinate systems as the revolute joints.",
+            )
             + "</p>",
             "CmdType": "ForEdit",
         }
@@ -343,6 +348,11 @@ class CommandCreateJointBelt:
                 "Assembly_CreateJointBelt",
                 "Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.",
             )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointScrew",
+                "Select the same coordinate systems as the revolute joints.",
+            )
             + "</p>",
             "CmdType": "ForEdit",
         }
@@ -363,11 +373,16 @@ class CommandGroupGearBelt:
 
         return {
             "Pixmap": "Assembly_CreateJointGears",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gear/Belt Joint"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGearBelt", "Create Gear/Belt Joint"),
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
-                "Assembly_CreateJointGears",
+                "Assembly_CreateJointGearBelt",
                 "Create a Gears/Belt Joint: Links two rotating gears together.",
+            )
+            + "</p><p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointGearBelt",
+                "Select the same coordinate systems as the revolute joints.",
             )
             + "</p>",
             "CmdType": "ForEdit",

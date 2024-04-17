@@ -949,10 +949,8 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
-        if surface.TypeId == "Part::GeomPlane":
+        if hasattr(surface, "Rotation") and surface.Rotation is not None:
             plc.Rotation = App.Rotation(surface.Rotation)
-        else:
-            plc.Rotation = surface.Rotation
 
     # Now plc is the placement relative to the origin determined by the object placement.
     # But it does not take into account Part placements. So if the solid is in a part and

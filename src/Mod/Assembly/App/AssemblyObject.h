@@ -171,6 +171,10 @@ public:
                                      const char* propObjLinkName,
                                      const char* propPartName,
                                      const char* propPlcName);
+    void getRackPinionMarkers(App::DocumentObject* joint,
+                              std::string& markerNameI,
+                              std::string& markerNameJ);
+    int slidingPartIndex(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup();

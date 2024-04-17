@@ -845,6 +845,15 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
         return mbdJoint;
     }
     else if (type == JointType::Screw) {
+        int slidingIndex = slidingPartIndex(joint);
+        if (slidingIndex == 0) {  // invalid this joint needs a slider
+            return nullptr;
+        }
+
+        if (slidingIndex != 1) {
+            swapJCS(joint);  // make sure that sliding is first.
+        }
+
         auto mbdJoint = CREATE<ASMTScrewJoint>::With();
         mbdJoint->pitch = getJointDistance(joint);
         return mbdJoint;
@@ -1066,13 +1075,21 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         return {};
     }
 
-    std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
-    std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
-    std::string jointName = joint->getFullName();
+    std::string fullMarkerNameI, fullMarkerNameJ;
+    if (jointType == JointType::RackPinion) {
+        getRackPinionMarkers(joint, fullMarkerNameI, fullMarkerNameJ);
+    }
+    else {
+        fullMarkerNameI = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
+        fullMarkerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+    }
+    if (fullMarkerNameI == "" || fullMarkerNameJ == "") {
+        return {};
+    }
 
     mbdJoint->setName(joint->getFullName());
-    mbdJoint->setMarkerI(fullMarkerName1);
-    mbdJoint->setMarkerJ(fullMarkerName2);
+    mbdJoint->setMarkerI(fullMarkerNameI);
+    mbdJoint->setMarkerJ(fullMarkerNameJ);
 
     // Add limits if needed.
     auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLimits"));
@@ -1083,9 +1100,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
             if (propLenMin) {
                 auto limit = ASMTTranslationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitLenMin");
-                limit->setMarkerI(fullMarkerName1);
-                limit->setMarkerJ(fullMarkerName2);
-                // limit->setmotionJoint(jointName);
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
                 limit->setlimit(std::to_string(propLenMin->getValue()));
                 limit->settol("1.0e-9");
@@ -1096,8 +1112,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
             if (propLenMax) {
                 auto limit = ASMTTranslationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitLenMax");
-                limit->setMarkerI(fullMarkerName1);
-                limit->setMarkerJ(fullMarkerName2);
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=<");
                 limit->setlimit(std::to_string(propLenMax->getValue()));
                 limit->settol("1.0e-9");
@@ -1110,8 +1126,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
             if (propRotMin) {
                 auto limit = ASMTRotationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitRotMin");
-                limit->setMarkerI(fullMarkerName1);
-                limit->setMarkerJ(fullMarkerName2);
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
                 limit->setlimit(std::to_string(propRotMin->getValue()) + "*pi/180.0");
                 limit->settol("1.0e-9");
@@ -1122,8 +1138,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
             if (propRotMax) {
                 auto limit = ASMTRotationLimit::With();
                 limit->setName(joint->getFullName() + "-LimiRotMax");
-                limit->setMarkerI(fullMarkerName1);
-                limit->setMarkerJ(fullMarkerName2);
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=<");
                 limit->setlimit(std::to_string(propRotMax->getValue()) + "*pi/180.0");
                 limit->settol("1.0e-9");
@@ -1144,9 +1160,10 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
     if (!part) {
-        std::string msg = std::string("The property ") + propPartName + " of Joint "
-            + joint->getFullName() + " is empty.\n";
-        THROWM(Base::ValueError, msg);
+        Base::Console().Warning("The property %s or Joint %s is empty.",
+                                propPartName,
+                                joint->getFullName());
+        return "";
     }
 
     std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
@@ -1170,6 +1187,128 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     mbdPart->addMarker(mbdMarker);
 
     return "/OndselAssembly/" + mbdPart->name + "/" + markerName;
+}
+
+void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
+                                          std::string& markerNameI,
+                                          std::string& markerNameJ)
+{
+    // ASMT rack pinion joint must get the rack as I and pinion as J.
+    // - rack marker has to have Z axis parallel to pinion Z axis.
+    // - rack marker has to have X axis parallel to the sliding axis.
+    // The user will have selected the sliding marker so we need to transform it.
+    // And we need to detect which marker is the rack.
+
+    int slidingIndex = slidingPartIndex(joint);
+    if (slidingIndex == 0) {
+        return;
+    }
+
+    if (slidingIndex != 1) {
+        swapJCS(joint);  // make sure that rack is first.
+    }
+
+    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
+
+    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    // For the pinion nothing special needed :
+    markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+
+    // For the rack we need to change the placement :
+    // make the pinion plc relative to the rack placement.
+    Base::Placement pinion_global_plc = getGlobalPlacement(obj2, part2);
+    plc2 = pinion_global_plc * plc2;
+    Base::Placement rack_global_plc = getGlobalPlacement(obj1, part1);
+    plc2 = rack_global_plc.inverse() * plc2;
+
+    // The rot of the rack placement should be the same as the pinion, but with X axis along the
+    // slider axis.
+    Base::Rotation rot = plc2.getRotation();
+    // the yaw of rot has to be the same as plc1
+    Base::Vector3d currentZAxis = rot.multVec(Base::Vector3d(0, 0, 1));
+    Base::Vector3d currentXAxis = rot.multVec(Base::Vector3d(1, 0, 0));
+    Base::Vector3d targetXAxis = plc1.getRotation().multVec(Base::Vector3d(0, 0, 1));
+
+    // Calculate the angle between the current X axis and the target X axis
+    double yawAdjustment = currentXAxis.GetAngle(targetXAxis);
+
+    // Determine the direction of the yaw adjustment using cross product
+    Base::Vector3d crossProd = currentXAxis.Cross(targetXAxis);
+    if (currentZAxis * crossProd < 0) {  // If cross product is in opposite direction to Z axis
+        yawAdjustment = -yawAdjustment;
+    }
+
+    // Create a yaw rotation around the Z axis
+    Base::Rotation yawRotation(currentZAxis, yawAdjustment);
+
+    // Combine the initial rotation with the yaw adjustment
+    Base::Rotation adjustedRotation = rot * yawRotation;
+    plc1.setRotation(adjustedRotation);
+
+    // Then end of processing similar to handleOneSideOfJoint :
+
+    if (obj1->getNameInDocument() != part1->getNameInDocument()) {
+        plc1 = rack_global_plc * plc1;
+
+        Base::Placement part_global_plc = getGlobalPlacement(part1);
+        plc1 = part_global_plc.inverse() * plc1;
+    }
+
+    std::string markerName = joint->getFullName();
+    auto mbdMarker = makeMbdMarker(markerName, plc1);
+    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part1);
+    mbdPart->addMarker(mbdMarker);
+
+    markerNameI = "/OndselAssembly/" + mbdPart->name + "/" + markerName;
+}
+
+int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
+{
+    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
+
+    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    int slidingFound = 0;
+    for (auto* jt : getJoints(false, false)) {
+        if (getJointType(jt) == JointType::Slider) {
+            App::DocumentObject* jpart1 = getLinkObjFromProp(jt, "Part1");
+            App::DocumentObject* jpart2 = getLinkObjFromProp(jt, "Part2");
+            int found = 0;
+            Base::Placement plcjt, plci;
+            if (jpart1 == part1 || jpart1 == part2) {
+                found = (jpart1 == part1) ? 1 : 2;
+                plci = (jpart1 == part1) ? plc1 : plc2;
+                plcjt = getPlacementFromProp(jt, "Placement1");
+            }
+            else if (jpart2 == part1 || jpart2 == part2) {
+                found = (jpart2 == part1) ? 1 : 2;
+                plci = (jpart2 == part1) ? plc1 : plc2;
+                plcjt = getPlacementFromProp(jt, "Placement2");
+            }
+
+            if (found != 0) {
+                // check the placements plcjt and (jcs1 or jcs2 depending on found value) Z axis are
+                // colinear ie if their pitch and roll are the same.
+                double y1, p1, r1, y2, p2, r2;
+                plcjt.getRotation().getYawPitchRoll(y1, p1, r1);
+                plci.getRotation().getYawPitchRoll(y2, p2, r2);
+                if (fabs(p1 - p2) < Precision::Confusion()
+                    && fabs(r1 - r2) < Precision::Confusion()) {
+                    slidingFound = found;
+                }
+            }
+        }
+    }
+    return slidingFound;
 }
 
 std::shared_ptr<ASMTPart> AssemblyObject::getMbDPart(App::DocumentObject* obj)
