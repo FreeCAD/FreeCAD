@@ -154,10 +154,27 @@ void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
 
     if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         auto dv = static_cast<TechDraw::DrawView*>(obj);
-        if (dv->findParentPage()) {
-            dv->findParentPage()->removeView(dv);
+
+        std::vector<App::DocumentObject*> deps;
+        for (auto* dep : dv->getInList()) {
+            if (dep && dep->isDerivedFrom<TechDraw::DrawView>()) {
+                deps.push_back(dep);
+            }
         }
-        getViewProviderPage()->getDrawPage()->addView(dv);
+
+        auto* parentPage = dv->findParentPage();
+        if (parentPage) {
+            for (auto* dep : deps) {
+                parentPage->removeView(dep);
+            }
+            parentPage->removeView(dv);
+        }
+
+        getViewProviderPage()->getDrawPage()->addView(dv, false);
+        for (auto* dep : deps) {
+            getViewProviderPage()->getDrawPage()->addView(dep, false);
+        }
+
         //don't run ancestor's method as addView does everything we need
         return;
     }

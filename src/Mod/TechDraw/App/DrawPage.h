@@ -60,7 +60,7 @@ public:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
                                    App::Property* prop) override;
 
-    int addView(App::DocumentObject* docObj);
+    int addView(App::DocumentObject* docObj, bool setPosition = true);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const override;
     boost::signals2::signal<void(const DrawPage*)> signalGuiPaint;
