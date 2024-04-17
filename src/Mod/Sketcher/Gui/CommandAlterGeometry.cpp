@@ -81,11 +81,12 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     // list of toggle construction commands
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateLine");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompLine");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle_Center");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
-    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
