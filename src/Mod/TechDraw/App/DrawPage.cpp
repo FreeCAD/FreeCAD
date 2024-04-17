@@ -232,7 +232,7 @@ int DrawPage::getOrientation() const
     throw Base::RuntimeError("Template not set for Page");
 }
 
-int DrawPage::addView(App::DocumentObject* docObj)
+int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 {
     if (!docObj->isDerivedFrom<DrawView>()
         && !docObj->isDerivedFrom<App::Link>()) {
@@ -256,7 +256,8 @@ int DrawPage::addView(App::DocumentObject* docObj)
     //position all new views without owners in center of Page (exceptDVDimension)
     if (!view->claimParent()
         && !docObj->isDerivedFrom<DrawViewDimension>()
-        && !docObj->isDerivedFrom<DrawViewBalloon>()) {
+        && !docObj->isDerivedFrom<DrawViewBalloon>()
+        && setPosition) {
         view->X.setValue(getPageWidth() / 2.0);
         view->Y.setValue(getPageHeight() / 2.0);
     }
