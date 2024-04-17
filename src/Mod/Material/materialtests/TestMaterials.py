@@ -71,6 +71,8 @@ class MaterialTestCases(unittest.TestCase):
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic))
         self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering))
 
+        self.assertFalse(steel.hasLegacyProperties())
+
         self.assertTrue(steel.hasPhysicalProperty("Density"))
         self.assertTrue(steel.hasPhysicalProperty("BulkModulus"))
         self.assertTrue(steel.hasPhysicalProperty("PoissonRatio"))
@@ -117,6 +119,9 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIn("Shininess", properties)
         self.assertIn("SpecularColor", properties)
         self.assertIn("Transparency", properties)
+
+        properties = steel.LegacyProperties
+        self.assertEqual(len(properties), 0)
 
         properties = steel.Properties
         self.assertIn("Density", properties)

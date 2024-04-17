@@ -53,7 +53,7 @@ void ViewProviderSuppressibleExtension::extensionUpdateData(const App::Property*
 {
     auto vp = getExtendedViewProvider();
     auto owner = vp->getObject();
-    if(!owner->isValid())
+    if(!owner || !owner->isValid())
         return;
 
     auto ext = owner->getExtensionByType<App::SuppressibleExtension>();

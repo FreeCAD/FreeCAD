@@ -650,7 +650,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
             shape.resetElementMap();
             shape.Tag = 0;
             if ( shape.Hasher ) {
-                shape.Hasher->clear();
+                shape.Hasher = nullptr;
             }
         }
     }
@@ -702,7 +702,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                     shape.resetElementMap();
                     shape.Tag = 0;
                     if ( shape.Hasher ) {
-                        shape.Hasher->clear();
+                        shape.Hasher = nullptr;
                     }
                 }
                 Py_DECREF(pyobj);
@@ -794,7 +794,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
                 shape.resetElementMap();
                 shape.Tag = 0;
                 if ( shape.Hasher) {
-                    shape.Hasher->clear();
+                    shape.Hasher = nullptr;
                 }
             }
             return shape;
@@ -945,7 +945,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
         shape.resetElementMap();
         shape.Tag = 0;
         if ( shape.Hasher ) {
-            shape.Hasher->clear();
+            shape.Hasher = nullptr;
         }
     }
     return shape;

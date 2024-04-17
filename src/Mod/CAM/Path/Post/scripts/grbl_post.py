@@ -400,9 +400,9 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # write the file
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if filename != "-":
+        with pyopen(filename, "w") as gfile:
+            gfile.write(final)
 
     return final
 

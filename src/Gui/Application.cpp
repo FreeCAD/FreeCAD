@@ -128,6 +128,7 @@
 #include "WorkbenchManager.h"
 #include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
+#include "3Dconnexion/navlib/NavlibInterface.h"
 
 
 using namespace Gui;
@@ -512,6 +513,11 @@ Application::Application(bool GUIenabled)
     // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
+#ifdef USE_3DCONNEXION_NAVLIB
+    // Instantiate the 3Dconnexion controller
+    pNavlibInterface = new NavlibInterface();
+#endif
+
     if (GUIenabled) {
         createStandardOperations();
         MacroCommand::load();
@@ -521,6 +527,9 @@ Application::Application(bool GUIenabled)
 Application::~Application()
 {
     Base::Console().Log("Destruct Gui::Application\n");
+#ifdef USE_3DCONNEXION_NAVLIB
+    delete pNavlibInterface;
+#endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
     SelectionSingleton::destruct();
@@ -2119,6 +2128,10 @@ void Application::runApplication()
     // boot phase reference point
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
+
+#ifdef USE_3DCONNEXION_NAVLIB
+    Instance->pNavlibInterface->enableNavigation();
+#endif
 
     runEventLoop(mainApp);
 
