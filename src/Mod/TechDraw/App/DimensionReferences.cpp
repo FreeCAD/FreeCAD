@@ -106,14 +106,23 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
                 // getVertex throws on not found, but we want to return null
                 // shape
                 auto vgeom = dvp->getVertex(getSubName());
+                if (!vgeom) {
+                    return {};
+                }
                 return vgeom->getOCCVertex();
             }
             if (gType == "Edge") {
                 auto egeom = dvp->getEdge(getSubName());
+                if (!egeom) {
+                    return {};
+                }
                 return egeom->getOCCEdge();
             }
             if (gType == "Face") {
                 auto fgeom = dvp->getFace(getSubName());
+                if (!fgeom) {
+                    return {};
+                }
                 return fgeom->toOccFace();
             }
         }
@@ -123,7 +132,6 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
         }
     }
 
-    // Base::Console().Message("RE::getGeometry - getting 2d geometry\n");
     Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
     auto geoFeat = dynamic_cast<App::GeoFeature*>(getObject());
     if (geoFeat) {
