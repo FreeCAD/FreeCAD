@@ -291,8 +291,14 @@ Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->importFrom(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->importFrom(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
@@ -302,8 +308,14 @@ Py::Object ParameterGrpPy::insert(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->insert(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->insert(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
@@ -313,8 +325,14 @@ Py::Object ParameterGrpPy::exportTo(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    _cParamGrp->exportTo(pstr);
-    return Py::None();
+    try {
+        _cParamGrp->exportTo(pstr);
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
