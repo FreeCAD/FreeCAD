@@ -64,21 +64,20 @@ class AssemblyWorkbench(Workbench):
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
         import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView
-        from Preferences import PreferencesPage
-
-        # from Preferences import preferences
+        import Preferences
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
 
-        FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
+        FreeCADGui.addPreferencePage(
+            Preferences.PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly")
+        )
 
         # build commands list
         cmdList = [
             "Assembly_CreateAssembly",
             "Assembly_InsertLink",
             "Assembly_SolveAssembly",
-            "Assembly_CreateView",
         ]
 
         cmdListMenuOnly = [
@@ -94,11 +93,16 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateJointSlider",
             "Assembly_CreateJointBall",
             "Assembly_CreateJointDistance",
-            "Separator",
-            "Assembly_CreateJointRackPinion",
-            "Assembly_CreateJointScrew",
-            "Assembly_CreateJointGearBelt",
         ]
+
+        if Preferences.preferences().GetBool("ExperimentalFeatures", False):
+            cmdList = cmdList + ["Assembly_CreateView"]
+            cmdListJoints = cmdListJoints + [
+                "Separator",
+                "Assembly_CreateJointRackPinion",
+                "Assembly_CreateJointScrew",
+                "Assembly_CreateJointGearBelt",
+            ]
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)
