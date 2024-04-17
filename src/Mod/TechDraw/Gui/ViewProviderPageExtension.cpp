@@ -129,25 +129,35 @@ void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
     }
     if (obj->isDerivedFrom<App::Link>()) {
         auto* link = static_cast<App::Link*>(obj);
-        if (!link->getLinkedObject()->isDerivedFrom<TechDraw::DrawView>()) {
+        obj = link->getLinkedObject();
+        if (!obj->isDerivedFrom<TechDraw::DrawView>()) {
             return;
         }
 
-        TechDraw::DrawPage* page = nullptr;
-        for (auto& parent : obj->getInListRecursive()) {
-            if (parent->isDerivedFrom<TechDraw::DrawPage>()) {
-                page = static_cast<TechDraw::DrawPage*>(parent);
+        std::vector<App::DocumentObject*> deps;
+        for (auto& inObj : obj->getInList()) {
+            if (inObj && inObj->isDerivedFrom<TechDraw::DrawView>()) {
+                deps.push_back(inObj);
             }
+        }
 
-            if (page) {
-                break;
+        TechDraw::DrawPage* page = nullptr;
+        for (auto& inObj : link->getInList()) {
+            if (inObj->isDerivedFrom<TechDraw::DrawPage>()) {
+                page = static_cast<TechDraw::DrawPage*>(inObj);
             }
         }
         if (page) {
-            page->removeView(obj);
+            for (auto* dep : deps) {
+                page->removeView(dep);
+            }
+            page->removeView(link);
         }
 
-        getViewProviderPage()->getDrawPage()->addView(obj);
+        getViewProviderPage()->getDrawPage()->addView(link, false);
+        for (auto* dep : deps) {
+            getViewProviderPage()->getDrawPage()->addView(dep, false);
+        }
 
         return;
     }

@@ -112,7 +112,6 @@ void QGSPage::addChildrenToPage()
     // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
     // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
     // we'll have to make this recursive. -WF
-    std::vector<App::DocumentObject*> childViews;
     for (auto* view : m_vpPage->getDrawPage()->getViews()) {
         attachView(view);
         auto* collect = dynamic_cast<TechDraw::DrawViewCollection*>(view);
@@ -833,7 +832,8 @@ void QGSPage::fixOrphans(bool force)
         }
         else {
             //DrawView exists in Document.  Does it belong to this DrawPage?
-            int numParentPages = qv->getViewObject()->countParentPages();
+            TechDraw::DrawView* viewObj = qv->getViewObject();
+            int numParentPages = viewObj->countParentPages();
             if (numParentPages == 0) {
                 //DrawView does not belong to any DrawPage
                 //remove QGItem from QGScene
@@ -841,8 +841,16 @@ void QGSPage::fixOrphans(bool force)
             }
             else if (numParentPages == 1) {
                 //Does DrawView belong to this DrawPage?
-                TechDraw::DrawPage* parentPage = qv->getViewObject()->findParentPage();
+                TechDraw::DrawPage* parentPage = viewObj->findParentPage();
                 if (thisPage != parentPage) {
+                    // The view could be a child of a link (ea Dimension).
+                    TechDraw::DrawView* parentView = viewObj->claimParent();
+                    for (auto* v : thisPage->getViews()) {
+                        if (v == parentView) {
+                            continue;
+                        }
+                    }
+
                     //DrawView does not belong to this DrawPage
                     //remove QGItem from QGScene
                     removeQView(qv);
