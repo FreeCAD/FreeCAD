@@ -2309,7 +2309,7 @@ PyObject* TopoShapePy::project(PyObject *args)
 
         algo.Compute3d(Standard_True);
         algo.SetLimit(Standard_True);
-        algo.SetParams(1.e-6, 1.e-6, GeomAbs_C1, 14, 16);
+        algo.SetParams(1.e-6, 1.e-6, GeomAbs_C1, 14, 10000);
         //algo.SetDefaultParams();
         algo.Build();
         return new TopoShapePy(new TopoShape(algo.Projection()));
