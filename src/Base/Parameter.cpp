@@ -2060,16 +2060,15 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
         }
     }
 
+    // clang-format off
     switch (node->getNodeType()) {
         case DOMNode::TEXT_NODE: {
             // Filter out text element if it is under a group node. Note text xml
             // element is plain text in between tags, and we do not store any text
             // there.
             auto parent = node->getParentNode();
-            if (parent
-                && XMLString::compareString(parent->getNodeName(),
-                                            XStr("FCParamGroup").unicodeForm())
-                    == 0) {
+            if (parent && XMLString::compareString(parent->getNodeName(),
+                                                   XStr("FCParamGroup").unicodeForm()) == 0) {
                 return DOMNodeFilter::FILTER_REJECT;
             }
             return DOMNodeFilter::FILTER_ACCEPT;
@@ -2082,6 +2081,7 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
             return DOMNodeFilter::FILTER_ACCEPT;
         }
     }
+    // clang-format on
 }
 
 //**************************************************************************
