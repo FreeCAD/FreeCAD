@@ -57,6 +57,16 @@ TranslatedJointTypes = [
     translate("Assembly", "Belt"),
 ]
 
+TranslatedJointTypesNoExperimental = [
+    translate("Assembly", "Fixed"),
+    translate("Assembly", "Revolute"),
+    translate("Assembly", "Cylindrical"),
+    translate("Assembly", "Slider"),
+    translate("Assembly", "Ball"),
+    translate("Assembly", "Distance"),
+]
+
+
 JointTypes = [
     "Fixed",
     "Revolute",
@@ -1168,7 +1178,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if self.activeType == "Part":
             self.form.setWindowTitle("Match parts")
             self.form.jointType.hide()
-        self.form.jointType.addItems(TranslatedJointTypes)
+
+        if Preferences.preferences().GetBool("ExperimentalFeatures", True):
+            self.form.jointType.addItems(TranslatedJointTypes)
+        else:
+            self.form.jointType.addItems(TranslatedJointTypesNoExperimental)
+
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
