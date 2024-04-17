@@ -366,8 +366,13 @@ std::vector<App::DocumentObject*> DrawPage::getViews() const
     std::vector<App::DocumentObject*> views = Views.getValues();
     std::vector<App::DocumentObject*> allViews;
     for (auto& v : views) {
+        bool addChildren = false;
+
         if (v->isDerivedFrom<App::Link>()) {
+            // In the case of links, child object of the view need to be added since
+            // they are not in the page Views property.
             v = static_cast<App::Link*>(v)->getLinkedObject();
+            addChildren = true;
         }
         
         if (!v->isDerivedFrom<DrawView>()) {
@@ -375,6 +380,14 @@ std::vector<App::DocumentObject*> DrawPage::getViews() const
         }
 
         allViews.push_back(v);
+
+        if (addChildren) {
+            for (auto* dep : v->getInList()) {
+                if (dep && dep->isDerivedFrom<TechDraw::DrawView>()) {
+                    allViews.push_back(dep);
+                }
+            }
+        }
     }
     return allViews;
 }

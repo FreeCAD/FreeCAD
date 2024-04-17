@@ -385,16 +385,16 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
 {
     std::vector<DrawPage*> pages;
 
-   for (auto parent : getInList()) {
-       if (parent->isDerivedFrom<App::Link>()) {
-           for (auto& linkParent : parent->getInList()) {
-               if (linkParent->isDerivedFrom<DrawPage>()
-                   || linkParent->isDerivedFrom<DrawViewCollection>()) {
-                   parent = linkParent;
-                   break;
-               }
-           }
-       }
+    for (auto parent : getInList()) {
+        if (parent->isDerivedFrom<App::Link>()) {
+            for (auto& linkParent : parent->getInList()) {
+                if (linkParent->isDerivedFrom<DrawPage>()
+                    || linkParent->isDerivedFrom<DrawViewCollection>()) {
+                    parent = linkParent;
+                    break;
+                }
+            }
+        }
 
         if (parent->isDerivedFrom<DrawPage>()) {
             pages.emplace_back(static_cast<TechDraw::DrawPage*>(parent));
@@ -415,9 +415,8 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
 
 bool DrawView::isInClip()
 {
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->isDerivedFrom<DrawViewClip>()) {
+    for (auto* parent : getInList()) {
+        if (parent->isDerivedFrom<DrawViewClip>()) {
             return true;
         }
     }
@@ -440,14 +439,9 @@ DrawView *DrawView::claimParent() const
 
 DrawViewClip* DrawView::getClipGroup()
 {
-    std::vector<App::DocumentObject*> parent = getInList();
-    App::DocumentObject* obj = nullptr;
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->isDerivedFrom<DrawViewClip>()) {
-            obj = (*it);
-            DrawViewClip* result = dynamic_cast<DrawViewClip*>(obj);
-            return result;
-
+    for (auto* obj : getInList()) {
+        if (obj->isDerivedFrom<DrawViewClip>()) {
+            return dynamic_cast<DrawViewClip*>(obj);
         }
     }
     return nullptr;
@@ -455,14 +449,11 @@ DrawViewClip* DrawView::getClipGroup()
 
 DrawViewCollection *DrawView::getCollection() const
 {
-    std::vector<App::DocumentObject *> parents = getInList();
-    for (auto it = parents.begin(); it != parents.end(); ++it) {
-        auto parentCollection = dynamic_cast<DrawViewCollection *>(*it);
-        if (parentCollection) {
-            return parentCollection;
+    for (auto* obj : getInList()) {
+        if (obj->isDerivedFrom<DrawViewCollection>()) {
+            return dynamic_cast<DrawViewCollection*>(obj);
         }
     }
-
     return nullptr;
 }
 
