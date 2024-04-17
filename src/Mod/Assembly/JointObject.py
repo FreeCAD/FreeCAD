@@ -615,7 +615,7 @@ class Joint:
         return False
 
     def undoPreSolve(self, joint):
-        if self.partMovedByPresolved:
+        if hasattr(self, "partMovedByPresolved") and self.partMovedByPresolved:
             self.partMovedByPresolved.Placement = self.presolveBackupPlc
             self.partMovedByPresolved = None
 
@@ -625,9 +625,7 @@ class Joint:
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
         globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
 
-        zAxis1 = globalJcsPlc1.Rotation.multVec(App.Vector(0, 0, 1))
-        zAxis2 = globalJcsPlc2.Rotation.multVec(App.Vector(0, 0, 1))
-        return zAxis1.dot(zAxis2) > 0
+        return UtilsAssembly.arePlacementSameDir(globalJcsPlc1, globalJcsPlc2)
 
 
 class ViewProviderJoint:

@@ -844,6 +844,12 @@ def flipPlacement(plc):
     return applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
 
 
+def arePlacementSameDir(plc1, plc2):
+    zAxis1 = plc1.Rotation.multVec(App.Vector(0, 0, 1))
+    zAxis2 = plc2.Rotation.multVec(App.Vector(0, 0, 1))
+    return zAxis1.dot(zAxis2) > 0
+
+
 """
 So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
 - obj is usually a App::Link to a PartDesign::Body, or primitive, fasteners. But can also be directly the object.1
@@ -905,7 +911,7 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
 
         if curve.TypeId == "Part::GeomLine":
             isLine = True
-            plane_normal = curve.Direction
+            plane_normal = round_vector(curve.Direction)
             plane_origin = App.Vector(0, 0, 0)
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
@@ -959,7 +965,7 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     if elt_type == "Vertex":
         plc.Rotation = App.Rotation()
     elif isLine:
-        plane_normal = plc.Rotation.multVec(App.Vector(0, 0, 1))
+        plane_normal = round_vector(plc.Rotation.multVec(App.Vector(0, 0, 1)))
         plane_origin = App.Vector(0, 0, 0)
         plane = Part.Plane(plane_origin, plane_normal)
         plc.Rotation = App.Rotation(plane.Rotation)
@@ -972,6 +978,11 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     # plc = activeAssembly().Placement.inverse() * plc
 
     return plc
+
+
+def round_vector(v, decimals=10):
+    """Round each component of the vector to a specified number of decimal places."""
+    return App.Vector(round(v.x, decimals), round(v.y, decimals), round(v.z, decimals))
 
 
 def saveAssemblyPartsPlacements(assembly):

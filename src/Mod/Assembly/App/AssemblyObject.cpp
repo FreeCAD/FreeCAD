@@ -159,7 +159,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     }
 
     try {
-        mbdAssembly->solve();
+        mbdAssembly->runPreDrag();  // solve() is causing some issues with limits.
     }
     catch (...) {
         Base::Console().Error("Solve failed\n");
