@@ -66,6 +66,7 @@ class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
 class QGITile;
+class QGILeaderLine;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
 {
@@ -110,6 +111,7 @@ public:
     void createBalloon(QPointF origin, TechDraw::DrawView* parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
+    void addLeaderToParent(QGILeaderLine* leader, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
 
@@ -136,8 +138,11 @@ public:
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& temporaryFile, QString filename, QString pagename);
 
+    // scene parentage fixups
     void setDimensionGroups();
     void setBalloonGroups();
+    void setLeaderParentage();
+
 
 protected:
     QColor getBackgroundColor();
