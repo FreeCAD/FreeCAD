@@ -1,5 +1,37 @@
 #include "gtest/gtest.h"
+#include <boost/core/ignore_unused.hpp>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+
+class FakeObserver: public ParameterGrp::ObserverType
+{
+public:
+    void clearNotifications()
+    {
+        notify = 0;
+    }
+    int getCountNotifications() const
+    {
+        return notify;
+    }
+    void attachSelf(ParameterGrp::handle hGrp)
+    {
+        hGrp->Attach(this);
+    }
+    void detachSelf(ParameterGrp::handle hGrp)
+    {
+        hGrp->Detach(this);
+    }
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override
+    {
+        boost::ignore_unused(rCaller);
+        boost::ignore_unused(Reason);
+        notify++;
+    }
+
+private:
+    int notify {};
+};
 
 class ParameterTest: public ::testing::Test
 {
@@ -9,13 +41,22 @@ protected:
         ParameterManager::Init();
     }
 
+    ParameterTest()
+    {
+        fi.setFile(Base::FileInfo::getTempFileName() + ".cfg");
+    }
+
     void SetUp() override
     {
         config = ParameterManager::Create();
     }
 
     void TearDown() override
-    {}
+    {
+        if (fi.exists()) {
+            fi.deleteFile();
+        }
+    }
 
     Base::Reference<ParameterManager> getConfig() const
     {
@@ -28,7 +69,19 @@ protected:
         return config;
     }
 
+    std::string getFileName() const
+    {
+        return fi.filePath();
+    }
+
+    FakeObserver& getObserver()
+    {
+        return observer;
+    }
+
 private:
+    Base::FileInfo fi;
+    FakeObserver observer;
     Base::Reference<ParameterManager> config;
 };
 
@@ -68,6 +121,23 @@ TEST_F(ParameterTest, TestGroupName)
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
     EXPECT_STREQ(grp->GetGroupName(), "TopLevelGroup");
+}
+
+TEST_F(ParameterTest, TestEmptyGroupName)
+{
+    auto cfg = getCreateConfig();
+    EXPECT_THROW(cfg->GetGroup(nullptr), Base::ValueError);
+    EXPECT_THROW(cfg->GetGroup(""), Base::ValueError);
+    EXPECT_THROW(cfg->GetGroup("///////"), Base::ValueError);
+}
+
+TEST_F(ParameterTest, TestGroupNames)
+{
+    auto cfg = getCreateConfig();
+    auto grp1 = cfg->GetGroup("////Sub1/////Sub2/////");
+    auto grp2 = cfg->GetGroup("Sub1/Sub2");
+    EXPECT_STREQ(grp1->GetGroupName(), "Sub2");
+    EXPECT_STREQ(grp2->GetGroupName(), "Sub2");
 }
 
 TEST_F(ParameterTest, TestPath)
@@ -255,6 +325,121 @@ TEST_F(ParameterTest, TestRenameGroup)
     EXPECT_EQ(sub2->GetInt("Int", 0), 2);
     EXPECT_EQ(sub2->GetInt("Int", 1), 2);
     cfg->CheckDocument();
+}
+
+TEST_F(ParameterTest, TestSaveRestoreRef)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetFloat("Float", 1.0);
+    cfg->CheckDocument();
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    cfg->importFrom(fn.c_str());
+    auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    EXPECT_EQ(grp, grp2);
+
+    grp2->SetFloat("Float", 2.0);
+    cfg->exportTo(fn.c_str());
+}
+
+TEST_F(ParameterTest, TestSaveRestoreNoRef)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetFloat("Float", 1.0);
+    grp = nullptr;
+    cfg->CheckDocument();
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    cfg->importFrom(fn.c_str());
+    auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    EXPECT_NE(grp, grp2);
+
+    grp2->SetFloat("Float", 2.0);
+    cfg->exportTo(fn.c_str());
+}
+
+TEST_F(ParameterTest, TestGroupRef)
+{
+    auto cfg = getCreateConfig();
+    cfg->GetGroup("TopLevelGroup");
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    // keep reference to prevent the deletion of the group node
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    cfg->importFrom(fn.c_str());
+    auto top = cfg->GetGroup("TopLevelGroup");
+    EXPECT_TRUE(top->HasGroup("Sub1"));
+}
+
+TEST_F(ParameterTest, TestGroupNoRef)
+{
+    auto cfg = getCreateConfig();
+    cfg->GetGroup("TopLevelGroup");
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    // nullify reference to delete the group node
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp = nullptr;
+
+    cfg->importFrom(fn.c_str());
+    auto top = cfg->GetGroup("TopLevelGroup");
+    EXPECT_FALSE(top->HasGroup("Sub1"));
+}
+
+TEST_F(ParameterTest, TestObserverRef)
+{
+    auto cfg = getCreateConfig();
+    cfg->GetGroup("TopLevelGroup");
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+
+    auto& obs = getObserver();
+    obs.attachSelf(grp);
+
+    grp->SetFloat("Float", 1.0);
+
+    EXPECT_EQ(obs.getCountNotifications(), 1);
+    obs.clearNotifications();
+
+    cfg->importFrom(fn.c_str());
+
+    grp->SetFloat("Float", 2.0);
+    EXPECT_EQ(obs.getCountNotifications(), 3);
+    obs.detachSelf(grp);
+}
+
+TEST_F(ParameterTest, TestObserverNoRef)
+{
+    auto cfg = getCreateConfig();
+    cfg->GetGroup("TopLevelGroup");
+
+    std::string fn = getFileName();
+    cfg->exportTo(fn.c_str());
+
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+
+    auto& obs = getObserver();
+    obs.attachSelf(grp);
+    grp = nullptr;
+
+    cfg->importFrom(fn.c_str());
+
+    auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp2->SetFloat("Float", 2.0);
+    EXPECT_EQ(obs.getCountNotifications(), 1);
 }
 
 // NOLINTEND(cppcoreguidelines-*,readability-*)

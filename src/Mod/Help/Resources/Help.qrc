@@ -34,5 +34,6 @@
         <file>translations/Help_val-ES.qm</file>
         <file>translations/Help_id.qm</file>
         <file>translations/Help_gl.qm</file>
+        <file>translations/Help_da.qm</file>
     </qresource>
 </RCC>

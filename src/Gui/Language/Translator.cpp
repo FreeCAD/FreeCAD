@@ -176,6 +176,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish")] = "da";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");

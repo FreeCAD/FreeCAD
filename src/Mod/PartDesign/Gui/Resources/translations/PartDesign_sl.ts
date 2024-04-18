@@ -940,22 +940,22 @@ da se izogne samosečnosti.</translation>
       <translation>Premikaj predmet po drevesu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
       <source>Mirrored</source>
       <translation>Zrcaljeno</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
       <source>Make LinearPattern</source>
       <translation>Naredi Premočrtni vzorec</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>PolarPattern</source>
       <translation>Krožni vzorec</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
       <source>Scaled</source>
       <translation>Povečava</translation>
     </message>
@@ -2108,7 +2108,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Pojavitve</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
@@ -2722,7 +2722,7 @@ merjena vzdolž določene smeri</translation>
       <translation>Pogostosti</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
@@ -4907,47 +4907,41 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
       <translation>Napaka: ploskev mora biti ravninska</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
-      <source>Error: Could not build</source>
-      <translation>Napaka: ni mogoče narediti</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Napaka: dobljeno ni telo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="252"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Napaka: ni česa odvzeti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="276"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="306"/>
       <source>Error: Result has multiple solids</source>
       <translation>Napaka: dobljenih je več teles</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Adding the helix failed</source>
       <translation>Napaka: dodajanje vijačnice spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="289"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Napaka: presečišče z vijačnico spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Napaka: odvzemanje vijačnice spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Napaka: ni bilo mogoče ustvariti ploskve iz očrta</translation>
     </message>
@@ -5018,8 +5012,8 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Boolean operation failed</source>
       <translation>Logična operacija spodletela</translation>
     </message>
@@ -5427,22 +5421,22 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
       <translation>Nobenega na preoblikovano značilnost vezanega izvirnika ni.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="217"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Neveljavne podporne oblike ni mogoče preoblikovati</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="246"/>
       <source>Transformation failed</source>
       <translation>Preoblikovanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Oblika dodajne/odvzemne značilnosti je prazna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Preoblikovati je mogoče le dodajne in odvzemne značilnosti</translation>
     </message>

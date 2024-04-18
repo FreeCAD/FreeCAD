@@ -940,22 +940,22 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Pomjeri jedan objekt unutar stabla</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
       <source>Mirrored</source>
       <translation>Zrcaljeno</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
       <source>Make LinearPattern</source>
       <translation>Napravi pravocrtne uzorke</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>PolarPattern</source>
       <translation>Polarni uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
       <source>Scaled</source>
       <translation>Skalirano</translation>
     </message>
@@ -2104,7 +2104,7 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Ponavljanja</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -2722,7 +2722,7 @@ mjereno duž navedenog smjera</translation>
       <translation>Ponavljanja</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -2996,7 +2996,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="359"/>
       <source>Normal sketch axis</source>
-      <translation>Os normale skice</translation>
+      <translation type="unfinished">Normal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="360"/>
@@ -3033,7 +3033,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation>Odaberite referencu...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -4915,47 +4915,41 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Greška: Površina mora biti ravna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
-      <source>Error: Could not build</source>
-      <translation>Greška: nije moguće napraviti Heliks</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
       <translation>Greška: Rezultat nije volumensko tijelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="252"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Greška: nema ničega za oduzimanje</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="276"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="306"/>
       <source>Error: Result has multiple solids</source>
       <translation>Greška: Rezultat ima višestruka volumenska tijela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Adding the helix failed</source>
       <translation>Greška: Dodavanje heliksa nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="289"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Greška:  presjecanje sa heliksom nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Greška: Oduzimanje heliksa nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Greška:  nije moguće napraviti površinu iz skice</translation>
     </message>
@@ -5026,8 +5020,8 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Boolean operation failed</source>
       <translation>Booleanska operacija nije uspjela   
 </translation>
@@ -5437,22 +5431,22 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Transformirana značajka ne sadrži izvornike.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="217"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Transformacija neispravnog oblika potpore nije moguća.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="246"/>
       <source>Transformation failed</source>
       <translation>Transformacija nije uspjela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Oblik dodavajuće/ oduzimajuće značajke je prazan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Samo dodavajuće i oduzimajuće značajke mogu biti transformirane</translation>
     </message>

@@ -5,8 +5,8 @@
     <name>CmdPathArea</name>
     <message>
       <location filename="../../Command.cpp" line="46"/>
-      <source>Path</source>
-      <translation>Parcours</translation>
+      <source>CAM</source>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -23,8 +23,8 @@
     <name>CmdPathAreaWorkplane</name>
     <message>
       <location filename="../../Command.cpp" line="128"/>
-      <source>Path</source>
-      <translation>Parcours</translation>
+      <source>CAM</source>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
@@ -41,8 +41,8 @@
     <name>CmdPathCompound</name>
     <message>
       <location filename="../../Command.cpp" line="218"/>
-      <source>Path</source>
-      <translation>Parcours</translation>
+      <source>CAM</source>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -59,8 +59,8 @@
     <name>CmdPathShape</name>
     <message>
       <location filename="../../Command.cpp" line="270"/>
-      <source>Path</source>
-      <translation>Parcours</translation>
+      <source>CAM</source>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -878,7 +878,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation>Terminez le pas de descente</translation>
+      <translation>Terminer le pas de descente</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -888,12 +888,12 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max Diameter</source>
-      <translation>Diamètre maximal</translation>
+      <translation>Diamètre maximum</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation>Hauteur sécuritée</translation>
+      <translation>Hauteur de sécurité</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -1227,6 +1227,16 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
       <translation>Brise copeau</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
+      <source>Feed retract</source>
+      <translation type="unfinished">Feed retract</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="179"/>
+      <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
+      <translation type="unfinished">G85: Retract from the hole at the given feedrate instead of rapid move</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
       <source>Start at Vertex</source>
       <translation>Commencer au sommet</translation>
@@ -1325,7 +1335,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>Remove all currently enabled extensions - leaving the plain pocket operation</source>
-      <translation>Supprimer toutes les extensions actuellement activées. Cela laisse l'opération de la poche simple</translation>
+      <translation>Supprimer toutes les extensions actuellement activées, laissant l'opération de la poche simple</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="129"/>
@@ -1746,7 +1756,7 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Choose the path orientation with regard to the feature(s) selected</source>
-      <translation>Choisir l’orientation du chemin par rapport aux particularités sélectionnées</translation>
+      <translation>Choisir l’orientation du parcours par rapport à la (aux) fonction(s) sélectionnée(s)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -2167,7 +2177,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="14"/>
       <source>Property Bag</source>
-      <translation>Carte des propriétés</translation>
+      <translation>Conteneur d'attributs d'outil coupant</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
@@ -2455,11 +2465,6 @@ Voir la politique de sauvegarde des fichiers ci-dessous sur la façon de gérer 
       <translation>Post-processeur par défaut</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="315"/>
-      <source>DefaultPostProcessor</source>
-      <translation>Post-processeur par défaut</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="325"/>
       <source>Default Arguments</source>
       <translation>Arguments par défaut</translation>
@@ -2489,7 +2494,10 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
       <source>Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.</source>
-      <translation>Choisir comment traiter les conflits potentiels de noms de fichiers. Toujours ouvrir une boîte de dialogue, ouvrir une boîte de dialogue uniquement si le fichier de sortie existe déjà, écraser tout fichier existant ou ajouter un identifiant séquentiel unique (3 chiffres) au nom du fichier.</translation>
+      <translation>Choisir comment traiter les conflits potentiels de noms de fichiers :
+- Toujours ouvrir une boîte de dialogue
+- Ouvrir une boîte de dialogue uniquement si le fichier de sortie existe déjà
+- Écraser tout fichier existant ou ajouter un identifiant séquentiel unique (3 chiffres) au nom du fichier.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -2505,11 +2513,6 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
       <location filename="../preferences/PathJob.ui" line="312"/>
       <source>Select one of the post processors as the default.</source>
       <translation>Sélectionner l'un des post-processeurs par défaut.</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="318"/>
-      <source>Mod/CAM</source>
-      <translation>Mod/CAM</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
@@ -3356,7 +3359,7 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation>Tâche:</translation>
+      <translation>Tâche :</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -4997,55 +5000,61 @@ Par exemple :
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="105"/>
-      <location filename="../../../Path/Op/Drilling.py" line="129"/>
+      <location filename="../../../Path/Op/Drilling.py" line="137"/>
       <source>Use chipbreaking</source>
       <translation>Utiliser le broyeur de copeaux</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="117"/>
+      <location filename="../../../Path/Op/Drilling.py" line="114"/>
+      <location filename="../../../Path/Op/Drilling.py" line="194"/>
+      <source>Use G85 boring cycle with feed out</source>
+      <translation type="unfinished">Use G85 boring cycle with feed out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Drilling.py" line="125"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
       <translation>Profondeur de perçage incrémentielle avant retrait pour éliminer les copeaux</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="123"/>
+      <location filename="../../../Path/Op/Drilling.py" line="131"/>
       <source>Enable pecking</source>
       <translation>Activer le perçage par coupe interrompue</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="135"/>
+      <location filename="../../../Path/Op/Drilling.py" line="143"/>
       <source>The time to dwell between peck cycles</source>
       <translation>Temps de pause entre les cycles de perçage par coupe interrompue</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="141"/>
+      <location filename="../../../Path/Op/Drilling.py" line="149"/>
       <source>Enable dwell</source>
       <translation>Activer la temporisation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="150"/>
+      <location filename="../../../Path/Op/Drilling.py" line="158"/>
       <source>Calculate the tip length and subtract from final depth</source>
       <translation>Calculer la longueur de la pointe et la soustrait de la profondeur finale</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="158"/>
-      <location filename="../../../Path/Op/Drilling.py" line="222"/>
+      <location filename="../../../Path/Op/Drilling.py" line="166"/>
+      <location filename="../../../Path/Op/Drilling.py" line="236"/>
       <source>Controls tool retract height between holes in same op, Default=G98: safety height</source>
       <translation>Contrôle la hauteur de retrait de l'outil entre les trous au cours de la même opération, par défaut = G98 : hauteur de sécurité</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="167"/>
+      <location filename="../../../Path/Op/Drilling.py" line="175"/>
       <source>The height where cutting feed rate starts and retract height for peck operation</source>
       <translation>La hauteur où la vitesse de coupe commence et rétracte la hauteur pour l'opération de perçage par coupe interrompue</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="173"/>
+      <location filename="../../../Path/Op/Drilling.py" line="181"/>
       <source>How far the drilling depth is extended</source>
       <translation>L'extension de la profondeur de perçage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="180"/>
-      <location filename="../../../Path/Op/Drilling.py" line="212"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="134"/>
+      <location filename="../../../Path/Op/Drilling.py" line="188"/>
+      <location filename="../../../Path/Op/Drilling.py" line="226"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="148"/>
       <source>Apply G99 retraction: only retract to RetractHeight between holes in this operation</source>
       <translation>Appliquer la rétraction G99 : ne rétracter que jusqu'à la hauteur de rétraction entre les trous lors de cette opération</translation>
     </message>
@@ -6586,7 +6595,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="443"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation>Crée un objet qui peut être utilisé pour enregistrer des propriétés de référence.</translation>
+      <translation>Créer un objet qui peut être utilisé pour enregistrer des propriétés de référence.</translation>
     </message>
   </context>
   <context>
@@ -6965,7 +6974,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="57"/>
       <source>Job</source>
-      <translation>Tâche</translation>
+      <translation>Créer une tâche</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
@@ -6980,7 +6989,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="90"/>
       <source>Jobs</source>
-      <translation>Offres d'emploi</translation>
+      <translation>Tâches</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="358"/>
@@ -7077,7 +7086,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
       <source>Check the CAM job for common errors</source>
-      <translation>Vérifier la tâche CAM pour les erreurs courantes</translation>
+      <translation>Vérifier les erreurs courantes dans la tâche</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
@@ -7595,12 +7604,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <translation>2x Pointe de foret</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="189"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="209"/>
       <source>Drilling</source>
       <translation>Perçage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="193"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="213"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
       <translation>Créer un parcours d'outils de perçage à partir des fonctions d'un objet de base</translation>
     </message>

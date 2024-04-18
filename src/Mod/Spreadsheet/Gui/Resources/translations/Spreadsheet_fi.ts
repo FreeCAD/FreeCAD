@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Vie tiedosto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Näytä laskentataulukko</translation>
     </message>

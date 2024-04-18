@@ -695,7 +695,7 @@ créée si elle n'existe pas.</translation>
       <translation>Exporter le fichier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Montrer la feuille de calcul</translation>
     </message>

@@ -684,7 +684,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Εξαγωγή αρχείου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Εμφάνιση υπολογιστικού φύλλου</translation>
     </message>
