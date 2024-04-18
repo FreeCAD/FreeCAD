@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/StartWorkbench.svg</file>
+        <file>icons/StartCommandIcon.svg</file>
+        <file>icons/PartDesignWorkbench.svg</file>
     </qresource>
 </RCC>

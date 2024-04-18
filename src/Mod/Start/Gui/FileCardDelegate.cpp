@@ -55,7 +55,7 @@ void FileCardDelegate::paint(QPainter* painter,
                              const QModelIndex& index) const
 {
     auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 64));  // NOLINT
+        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
     auto cardWidth = thumbnailSize;
     auto baseName = index.data(static_cast<int>(DisplayedFilesModelRoles::baseName)).toString();
     auto size = index.data(static_cast<int>(DisplayedFilesModelRoles::size)).toString();
@@ -126,16 +126,14 @@ QPixmap pixmapToSizedQImage(const QImage& pixmap, int size)
 QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
 {
     auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 64));  // NOLINT
+        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
     if (path.endsWith(QLatin1String(".fcstd"), Qt::CaseSensitivity::CaseInsensitive)) {
         QImageReader reader(QLatin1String(":/icons/freecad-doc.svg"));
-        ;
         reader.setScaledSize({thumbnailSize, thumbnailSize});
         return QPixmap::fromImage(reader.read());
     }
     if (path.endsWith(QLatin1String(".fcmacro"), Qt::CaseSensitivity::CaseInsensitive)) {
         QImageReader reader(QLatin1String(":/icons/MacroEditor.svg"));
-        ;
         reader.setScaledSize({thumbnailSize, thumbnailSize});
         return QPixmap::fromImage(reader.read());
     }

@@ -62,7 +62,8 @@ SET(StartGui_SRCS
         )
 
 SET(StartGuiIcon_SVG
-        Resources/icons/StartWorkbench.svg
+        Resources/icons/StartCommandIcon.svg
+        Resources/icons/PartDesignWorkbench.svg
         )
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml

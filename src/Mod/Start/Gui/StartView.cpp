@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 #include <QCoreApplication>
+#include <QCheckBox>
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
@@ -112,12 +113,24 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     // New WB notice: temporary to explain why all your setting disappeared
     auto newStartWBNotice = gsl::owner<QLabel*>(
         new QLabel(tr("NOTE: The Start Workbench has been completely rewritten to remove all "
-                      "network access, and to remove "
-                      "its dependency on Chromium. This is still a work-in-progress, and not all "
-                      "settings from the previous "
-                      "version of Start have been migrated yet.")));
+                      "network access, and to remove its dependency on Chromium. This is still a "
+                      "work-in-progress, and not all settings from the previous version of Start "
+                      "have been migrated yet.")));
     newStartWBNotice->setWordWrap(true);
     layout->addWidget(newStartWBNotice);
+
+    // Launch start automatically?
+    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
+    auto launchAutomaticallyCheckbox =
+        gsl::owner<QCheckBox*>(new QCheckBox(tr("Show Start when starting %1").arg(application)));
+    bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
+    launchAutomaticallyCheckbox->setCheckState(showOnStartup ? Qt::CheckState::Checked
+                                                             : Qt::CheckState::Unchecked);
+    connect(launchAutomaticallyCheckbox,
+            &QCheckBox::toggled,
+            this,
+            &StartView::showOnStartupChanged);
+    layout->addWidget(launchAutomaticallyCheckbox);
 
     const QLatin1String h1Start("<h1>");
     const QLatin1String h1End("</h1>");
@@ -149,7 +162,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     setWindowTitle(title);
 
     configureExamplesListWidget(examplesListWidget);
-    configureRecentFilesListWidget(recentFilesListWidget);
+    configureRecentFilesListWidget(recentFilesListWidget, recentFilesLabel);
 }
 
 
@@ -174,6 +187,8 @@ void StartView::configureNewFileButtons(QGridLayout* layout) const
                                  tr("Create an architectural project"),
                                  QLatin1String(":/icons/ArchWorkbench.svg")});
 
+    // TODO: Ensure all of the required WBs are actually available
+    // TODO: Make this layout more flexible (e.g. use a single line if possible)
     layout->addWidget(partDesign, 0, 0);
     layout->addWidget(assembly, 0, 1);
     layout->addWidget(draft, 0, 2);
@@ -200,11 +215,24 @@ void StartView::configureFileCardWidget(QListView* fileCardWidget)
 }
 
 
-void StartView::configureRecentFilesListWidget(QListView* recentFilesListWidget)
+void StartView::configureRecentFilesListWidget(QListView* recentFilesListWidget,
+                                               QLabel* recentFilesLabel)
 {
     _recentFilesModel.loadRecentFiles();
     recentFilesListWidget->setModel(&_recentFilesModel);
     configureFileCardWidget(recentFilesListWidget);
+
+    auto recentFilesGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/RecentFiles");
+    auto numRecentFiles {recentFilesGroup->GetInt("RecentFiles", 0)};
+    if (numRecentFiles == 0) {
+        recentFilesListWidget->hide();
+        recentFilesLabel->hide();
+    }
+    else {
+        recentFilesListWidget->show();
+        recentFilesLabel->show();
+    }
 }
 
 
@@ -310,4 +338,11 @@ void StartView::fileCardSelected(const QModelIndex& index)
     catch (...) {
         Base::Console().Error("An unknown error occurred");
     }
+}
+
+void StartView::showOnStartupChanged(bool checked)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    hGrp->SetBool("ShowOnStartup", checked);
 }

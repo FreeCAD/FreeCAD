@@ -43,6 +43,7 @@
 #include <unordered_map>
 
 // Qt
+#include <QCheckBox>
 #include <QCoreApplication>
 #include <QFile>
 #include <QFileIconProvider>
@@ -56,7 +57,9 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSpacerItem>
+#include <QString>
 #include <QStyleOptionViewItem>
+#include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>

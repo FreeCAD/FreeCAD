@@ -21,6 +21,10 @@
 #  *                                                                          *
 #  ***************************************************************************/
 
+if( NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL" )
+        message( SEND_ERROR "The C++ Guidelines Support Library (GSL) submodule is not available. Please run git submodule update --init" )
+endif()
+
 add_subdirectory(App)
 
 set(Start_Scripts

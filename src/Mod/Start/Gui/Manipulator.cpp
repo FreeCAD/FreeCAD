@@ -49,7 +49,7 @@ CmdStart::CmdStart()
     sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
     sWhatsThis = "Start_Start";
     sStatusTip = sToolTipText;
-    sPixmap = "StartWorkbench";
+    sPixmap = "StartCommandIcon";
 }
 
 void CmdStart::activated(int iMsg)

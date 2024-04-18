@@ -33,6 +33,7 @@
 #include "../App/ExamplesModel.h"
 
 
+class QLabel;
 class QListView;
 class QGridLayout;
 class QScrollArea;
@@ -76,12 +77,14 @@ public:
 protected:
     void configureNewFileButtons(QGridLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
-    void configureRecentFilesListWidget(QListView* recentFilesListWidget);
+    void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
     void configureExamplesListWidget(QListView* examplesListWidget);
 
     void postStart(PostStartBehavior behavior) const;
 
     void fileCardSelected(const QModelIndex& index);
+
+    void showOnStartupChanged(bool checked);
 
 private:
     QScrollArea* _contents = nullptr;

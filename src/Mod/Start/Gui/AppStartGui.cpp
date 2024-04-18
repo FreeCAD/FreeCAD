@@ -22,13 +22,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QString>
+#include <QTimer>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/Command.h>
 
-#include <QString>
 
 #include <3rdParty/GSL/include/gsl/pointers>
 
@@ -60,6 +64,28 @@ public:
     }
 };
 
+class StartLauncher
+{
+public:
+    StartLauncher()
+    {
+        // QTimers don't fire until the event loop starts, which is our signal that the GUI is up
+        QTimer::singleShot(1000, [this] {
+            Launch();
+        });
+    }
+
+    void Launch()
+    {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Start");
+        bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
+        if (showOnStartup) {
+            Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
+        }
+    }
+};
+
 PyObject* initModule()
 {
     auto newModule = gsl::owner<Module*>(new Module);
@@ -71,6 +97,8 @@ PyObject* initModule()
 /* Python entry */
 PyMOD_INIT_FUNC(StartGui)
 {
+    static StartGui::StartLauncher* launcher = new StartGui::StartLauncher();
+
     Base::Console().Log("Loading GUI of Start module... ");
     PyObject* mod = StartGui::initModule();
     auto manipulator = std::make_shared<StartGui::Manipulator>();
