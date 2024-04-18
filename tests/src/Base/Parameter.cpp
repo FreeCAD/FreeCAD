@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include <boost/core/ignore_unused.hpp>
+#include <QLockFile>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
@@ -440,6 +441,25 @@ TEST_F(ParameterTest, TestObserverNoRef)
     auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
     grp2->SetFloat("Float", 2.0);
     EXPECT_EQ(obs.getCountNotifications(), 1);
+}
+
+TEST_F(ParameterTest, TestLockFile)
+{
+    std::string fn = getFileName();
+    fn.append(".lock");
+
+    QLockFile lockFile1(QString::fromStdString(fn));
+    EXPECT_TRUE(lockFile1.tryLock(100));
+    EXPECT_TRUE(lockFile1.isLocked());
+
+    QLockFile lockFile2(QString::fromStdString(fn));
+    EXPECT_FALSE(lockFile2.tryLock(100));
+    EXPECT_FALSE(lockFile2.isLocked());
+
+    lockFile1.unlock();
+    EXPECT_TRUE(lockFile2.lock());
+    EXPECT_FALSE(lockFile1.tryLock(500));
+    lockFile2.unlock();
 }
 
 // NOLINTEND(cppcoreguidelines-*,readability-*)

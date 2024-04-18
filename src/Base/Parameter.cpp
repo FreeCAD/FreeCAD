@@ -41,6 +41,10 @@
 #include <utility>
 #endif
 
+#include <QFileInfo>
+#include <QLockFile>
+#include <QDir>
+
 #ifdef FC_OS_LINUX
 #include <unistd.h>
 #endif
@@ -1719,6 +1723,17 @@ void ParameterManager::SaveDocument() const
     }
 }
 
+namespace
+{
+void waitForFileAccess(const Base::FileInfo& file)
+{
+    QFileInfo fi(QDir::tempPath(), QString::fromStdString(file.fileName() + ".lock"));
+    QLockFile lock(fi.absoluteFilePath());
+    const int waitOneSecond = 1000;
+    lock.tryLock(waitOneSecond);
+}
+}  // namespace
+
 //**************************************************************************
 // Document handling
 
@@ -1736,9 +1751,9 @@ bool ParameterManager::LoadOrCreateDocument(const char* sFileName)
 
 int ParameterManager::LoadDocument(const char* sFileName)
 {
-    Base::FileInfo file(sFileName);
-
     try {
+        Base::FileInfo file(sFileName);
+        waitForFileAccess(file);
 #if defined(FC_OS_WIN32)
         std::wstring name = file.toStdWString();
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -1828,9 +1843,9 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
 
 void ParameterManager::SaveDocument(const char* sFileName) const
 {
-    Base::FileInfo file(sFileName);
-
     try {
+        Base::FileInfo file(sFileName);
+        waitForFileAccess(file);
         //
         // Plug in a format target to receive the resultant
         // XML stream from the serializer.
