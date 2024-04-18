@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-
 #include <QDomDocument>
 #include <QFile>
 #include <QPainter>
@@ -125,6 +123,7 @@ void QGSPage::addChildrenToPage()
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
     setBalloonGroups();
+    setLeaderParentage();
 
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
@@ -184,7 +183,7 @@ QPointF QGSPage::getTemplateCenter()
     return QPointF(0.0, 0.0);
 }
 
-void QGSPage::matchSceneRectToTemplate(void)
+void QGSPage::matchSceneRectToTemplate()
 {
     //    Base::Console().Message("QGSP::matchSceneRectToTemplate()\n");
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
@@ -594,11 +593,34 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 
 QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 {
-    QGILeaderLine *leaderView = new QGILeaderLine;
-    leaderView->setViewFeature(leaderFeat);
+    QGILeaderLine *leaderItem = new QGILeaderLine;
+    addItem(leaderItem);
+    leaderItem->setViewFeature(leaderFeat);
 
-    addQView(leaderView);
-    return leaderView;
+    // Find if it belongs to a parent
+    QGIView* parent = nullptr;
+    parent = findParent(leaderItem);
+
+    if (parent) {
+        addLeaderToParent(leaderItem, parent);
+    }
+    return leaderItem;
+}
+
+// TODO: can this be generalized?  addViewToParent(childItem, parentItem, positionInParent)?
+void QGSPage::addLeaderToParent(QGILeaderLine* leader, QGIView* parent)
+{
+    // Base::Console().Message("QGSP::addLeaderToParent()\n");
+    assert(leader);
+    assert(parent);//blow up if we don't have Dimension or Parent
+    QPointF posRef(0., 0.);
+    QPointF parentOrigin = leader->mapToItem(parent, posRef);
+    QPointF leaderPositionInParent{ leader->getViewObject()->X.getValue(),
+                                    leader->getViewObject()->Y.getValue()};
+    QPointF moveToPosition = parentOrigin + leaderPositionInParent;
+    leader->moveBy(-moveToPosition.x(), -moveToPosition.y());
+    parent->addToGroup(leader);
+    leader->setZValue(ZVALUE::DIMENSION);
 }
 
 QGIView* QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
@@ -619,7 +641,7 @@ QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
     return weldView;
 }
 
-void QGSPage::setDimensionGroups(void)
+void QGSPage::setDimensionGroups()
 {
     const std::vector<QGIView*>& allItems = getViews();
     int dimItemType = QGraphicsItem::UserType + 106;
@@ -635,7 +657,7 @@ void QGSPage::setDimensionGroups(void)
     }
 }
 
-void QGSPage::setBalloonGroups(void)
+void QGSPage::setBalloonGroups()
 {
     const std::vector<QGIView*>& allItems = getViews();
     int balloonItemType = QGraphicsItem::UserType + 140;
@@ -646,6 +668,23 @@ void QGSPage::setBalloonGroups(void)
             if (parent) {
                 QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(item);
                 addBalloonToParent(balloon, parent);
+            }
+        }
+    }
+}
+
+//! ensure that all Leader QGItems are parented correctly
+void QGSPage::setLeaderParentage()
+{
+    const std::vector<QGIView*>& allItems = getViews();
+    int LeaderItemType = QGraphicsItem::UserType + 232;
+
+    for (auto& item : allItems) {
+        if (item->type() == LeaderItemType && !item->group()) {
+            QGIView* parent = findParent(item);
+            if (parent) {
+                QGILeaderLine* leader = dynamic_cast<QGILeaderLine*>(item);
+                addLeaderToParent(leader, parent);
             }
         }
     }
