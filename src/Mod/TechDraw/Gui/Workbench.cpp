@@ -28,6 +28,7 @@
 #endif
 
 #include "Workbench.h"
+#include <App/Application.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 
@@ -82,6 +83,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // dimensions
     Gui::MenuItem* dimensions = new Gui::MenuItem;
     dimensions->setCommand("Dimensions");
+    *dimensions << "TechDraw_Dimension";
     *dimensions << "TechDraw_LengthDimension";
     *dimensions << "TechDraw_HorizontalDimension";
     *dimensions << "TechDraw_VerticalDimension";
@@ -305,13 +307,28 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
+    bool separatedTools = hGrp->GetBool("SeparatedDimensioningTools", true);
+    if (hGrp->GetBool("SingleDimensioningTool", true)) {
+        if (separatedTools) {
+            *dims << "TechDraw_Dimension";
+        }
+        else {
+            *dims << "TechDraw_CompDimensionTools";
+        }
+    }
+    if (separatedTools) {
+        *dims << "TechDraw_LengthDimension";
+        *dims << "TechDraw_HorizontalDimension";
+        *dims << "TechDraw_VerticalDimension";
+        *dims << "TechDraw_RadiusDimension";
+        *dims << "TechDraw_DiameterDimension";
+        *dims << "TechDraw_AngleDimension";
+        *dims << "TechDraw_3PtAngleDimension";
+    }
+
     *dims << "TechDraw_ExtentGroup";
     // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
     // *dims << "TechDraw_LinkDimension";
@@ -347,7 +364,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
     *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
     *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
-    *extdimensions << "TechDraw_ExtensionCreateLengthArc";
+    if (separatedTools) {
+        *extdimensions << "TechDraw_ExtensionCreateLengthArc";
+    }
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 
@@ -406,6 +425,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
+    *dims << "TechDraw_Dimension";
     *dims << "TechDraw_LengthDimension";
     *dims << "TechDraw_HorizontalDimension";
     *dims << "TechDraw_VerticalDimension";

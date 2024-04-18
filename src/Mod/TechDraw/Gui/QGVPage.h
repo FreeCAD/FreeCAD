@@ -71,6 +71,7 @@ class QGILeaderLine;
 class QGIRichAnno;
 class QGITile;
 class QGVNavStyle;
+class TechDrawHandler;
 
 class TechDrawGuiExport QGVPage: public QGraphicsView
 {
@@ -100,6 +101,9 @@ public:
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) { m_showGrid = state; }
     void updateViewport() { viewport()->repaint(); }
+
+    void activateHandler(TechDrawHandler* newHandler);
+    void deactivateHandler();
 
     bool isBalloonPlacing() const { return balloonPlacing; }
     void setBalloonPlacing(bool isPlacing) { balloonPlacing = isPlacing; }
@@ -196,6 +200,8 @@ private:
 
     MDIViewPage* m_parentMDI;
     QContextMenuEvent* m_saveContextEvent;
+
+    std::unique_ptr<TechDrawHandler> toolHandler;
 };
 
 }// namespace TechDrawGui

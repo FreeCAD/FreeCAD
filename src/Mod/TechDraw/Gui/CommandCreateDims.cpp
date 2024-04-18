@@ -46,21 +46,30 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/LandmarkDimension.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "CommandExtensionDims.h"
 #include "DimensionValidators.h"
 #include "DrawGuiUtil.h"
+#include "QGIViewDimension.h"
+#include "QGVPage.h"
+#include "MDIViewPage.h"
 #include "TaskDimRepair.h"
 #include "TaskLinkDim.h"
+#include "TechDrawHandler.h"
+#include "ViewProviderDimension.h"
+#include "ViewProviderDrawingView.h"
+#include "ViewProviderDrawingView.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
-
+using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 
 //===========================================================================
 // utility routines
@@ -82,16 +91,881 @@ void execExtent(Gui::Command* cmd, int direction);
 
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d);
+DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
+                                  ReferenceVector references2d, ReferenceVector references3d);
 
 void positionDimText(DrawViewDimension* dim);
 
-//NOTE: this is not shown in toolbar and doesn't always work right in the menu.
-//      should be removed.
+void activateHandler(TechDrawHandler* newHandler)
+{
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* vp = mdi->getViewProviderPage();
+    if (!vp) {
+        return;
+    }
+
+    QGVPage* viewPage = vp->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+    viewPage->activateHandler(newHandler);
+}
+
 //===========================================================================
-// TechDraw_NewDimension
+// TechDraw_Dimension
 //===========================================================================
 
-// this is deprecated. use individual add dimension commands.
+class GeomSelectionSizes
+{
+public:
+    GeomSelectionSizes(size_t s_pts, size_t s_lns, size_t s_cir, size_t s_ell, size_t s_spl, size_t s_fcs) :
+        s_pts(s_pts), s_lns(s_lns), s_cir(s_cir), s_ell(s_ell), s_spl(s_spl), s_fcs(s_fcs) {}
+    ~GeomSelectionSizes() {}
+
+    bool hasPoints()        const { return s_pts > 0; }
+    bool hasLines()         const { return s_lns > 0; }
+    bool hasCirclesOrArcs() const { return s_cir > 0; }
+    bool hasEllipseAndCo()  const { return s_ell > 0; }
+    bool hasSplineAndCo()   const { return s_spl > 0; }
+    bool hasFaces()         const { return s_fcs > 0; }
+
+    bool has1Face()              const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 1; }
+
+    bool has1Point()             const { return s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has2Points()            const { return s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Point1Line()        const { return s_pts == 1 && s_lns == 1 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has3Points()            const { return s_pts == 3 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has4MorePoints()        const { return s_pts >= 4 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has2Points1Line()       const { return s_pts == 2 && s_lns == 1 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has3MorePoints1Line()   const { return s_pts >= 3 && s_lns == 1 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Point1Circle()      const { return s_pts == 1 && s_lns == 0 && s_cir == 1 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Point1Ellipse()     const { return s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 1 && s_spl == 0 && s_fcs == 0; }
+
+    bool has1Line()              const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has2Lines()             const { return s_pts == 0 && s_lns == 2 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has3MoreLines()         const { return s_pts == 0 && s_lns >= 3 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Line1Circle()       const { return s_pts == 0 && s_lns == 1 && s_cir == 1 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Line2Circles()      const { return s_pts == 0 && s_lns == 1 && s_cir == 2 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Line1Ellipse()      const { return s_pts == 0 && s_lns == 1 && s_cir == 0 && s_ell == 1 && s_spl == 0 && s_fcs == 0; }
+
+    bool has1Circle()            const { return s_pts == 0 && s_lns == 0 && s_cir == 1 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has2Circles()           const { return s_pts == 0 && s_lns == 0 && s_cir == 2 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has3MoreCircles()       const { return s_pts == 0 && s_lns == 0 && s_cir >= 3 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
+    bool has1Circle1Ellipse()    const { return s_pts == 0 && s_lns == 0 && s_cir == 1 && s_ell == 1 && s_spl == 0 && s_fcs == 0; }
+
+    bool has1Ellipse()           const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 1 && s_spl == 0 && s_fcs == 0; }
+    bool has2Ellipses()          const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 2 && s_spl == 0 && s_fcs == 0; }
+    bool has1Point1Spline1MoreEdge()   const { return s_pts == 1 && s_spl >= 1 && (s_lns + s_cir + s_ell + s_spl) == 2 && s_fcs == 0; }
+
+    size_t s_pts, s_lns, s_cir, s_ell, s_spl, s_fcs;
+};
+
+class TDHandlerDimension : public TechDrawHandler,
+                           public Gui::SelectionObserver
+{
+public:
+    explicit TDHandlerDimension(ReferenceVector refs, TechDraw::DrawViewPart* pFeat)
+        : SelectionObserver(true)
+        , specialDimension(SpecialDimension::None)
+        , availableDimension(AvailableDimension::FIRST)
+        , previousPos(QPoint(0, 0))
+        , selPoints({})
+        , selLine({})
+        , selCircleArc({})
+        , selEllipseArc({})
+        , selSplineAndCo({})
+        , selFaces({})
+        , addedRef(ReferenceEntry())
+        , removedRef(ReferenceEntry())
+        , initialSelection(std::move(refs))
+        , partFeat(pFeat)
+        , dim(nullptr)
+        , blockRemoveSel(false)
+    {
+    }
+    ~TDHandlerDimension()
+    {
+    }
+
+    enum class AvailableDimension {
+        FIRST,
+        SECOND,
+        THIRD,
+        FOURTH,
+        FIFTH,
+        RESET
+    };
+
+    enum class SpecialDimension {
+        LineOr2PointsDistance,
+        None
+    };
+
+
+    void activated()
+    {
+        Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Dimension"));
+        handleInitialSelection();
+    }
+
+    void deactivated()
+    {
+        Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
+        Gui::Command::abortCommand();
+    }
+
+    void keyPressEvent(QKeyEvent* event)
+    {
+        if (event->key() == Qt::Key_M) {
+            if (availableDimension == AvailableDimension::FIRST) {
+                availableDimension = AvailableDimension::SECOND;
+            }
+            else if (availableDimension == AvailableDimension::SECOND) {
+                availableDimension = AvailableDimension::THIRD;
+            }
+            else if (availableDimension == AvailableDimension::THIRD) {
+                availableDimension = AvailableDimension::FOURTH;
+            }
+            else if (availableDimension == AvailableDimension::FOURTH) {
+                availableDimension = AvailableDimension::FIFTH;
+            }
+            else if (availableDimension == AvailableDimension::FIFTH || availableDimension == AvailableDimension::RESET) {
+                availableDimension = AvailableDimension::FIRST;
+            }
+            makeAppropriateDimension(previousPos);
+            event->accept();
+        }
+        else if (event->key() == Qt::Key_Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
+            // User trying to cancel with Ctrl-Z
+            quit();
+            event->accept();
+        }
+    }
+    void keyReleaseEvent(QKeyEvent* event)
+    {
+        if (event->key() == Qt::Key_Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
+            // User trying to cancel with Ctrl-Z
+            quit();
+            event->accept();
+        }
+        else {
+            TechDrawHandler::keyReleaseEvent(event);
+        }
+    }
+
+    void mouseMoveEvent(QMouseEvent* event) override
+    {
+        previousPos = event->pos();
+
+        //Change distance dimension based on position of mouse.
+        if (specialDimension == SpecialDimension::LineOr2PointsDistance){
+            updateDistanceType(event->pos());
+        }
+
+        moveDimension(event->pos());
+    }
+
+    QGIDatumLabel* getDimLabel(DrawViewDimension* d)
+    {
+        auto* vp = dynamic_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+        if (!vp) {
+            return nullptr;
+        }
+        auto* qgivDimension(dynamic_cast<QGIViewDimension*>(vp->getQView()));
+        if (!qgivDimension) {
+            return nullptr;
+        }
+        return qgivDimension->getDatumLabel();
+    }
+    void moveDimension(QPoint& pos)
+    {
+        if (!dim) { return; }
+        auto label = getDimLabel(dim);
+        if (!label) { return; }
+
+        label->setPos(getDimPositionToBe(pos));
+    }
+    QPointF getDimPositionToBe(QPoint& pos)
+    {
+        auto* vpp = dynamic_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
+        if (!vpp) { return QPointF(); }
+
+        QPointF scenePos = viewPage->mapToScene(pos) - vpp->getQView()->pos();
+        return scenePos;
+    }
+    void finishDimensionMove()
+    {
+        auto label = getDimLabel(dim);
+        double x = Rez::appX(label->X()), y = Rez::appX(label->Y());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
+            dim->getNameInDocument(), x);
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
+            dim->getNameInDocument(), -y);
+    }
+
+    bool mousePressEvent(QMouseEvent* event) override
+    {
+        if (event->button() == Qt::RightButton && dim) {
+            Gui::Selection().clearSelection();
+            clearAndRestartCommand();
+            event->accept();
+            return true;
+        }
+        return TechDrawHandler::mousePressEvent(event);
+    }
+
+    bool mouseReleaseEvent(QMouseEvent* event) override
+    {
+        //Base::Console().Warning("mouseReleaseEvent TH\n");
+        bool finalize = true;
+
+        if (removedRef.hasGeometry()) {
+            finalize = false;
+            //Base::Console().Warning("RmvSelection \n");
+            // Remove the reference from the vector
+            ReferenceVector& selVector = getSelectionVector(removedRef);
+            selVector.erase(std::remove(selVector.begin(), selVector.end(), removedRef), selVector.end());
+
+            if (!selectionEmpty()) {
+                availableDimension = AvailableDimension::FIRST;
+                makeAppropriateDimension(event->pos());
+            }
+            else {
+                clearAndRestartCommand();
+            }
+            removedRef = ReferenceEntry();
+        }
+
+        if (addedRef.hasGeometry()) {
+            finalize = false;
+            //Base::Console().Warning("AddSelection\n");
+            //add the geometry to its type vector. Temporarily if not selAllowed
+            ReferenceVector& selVector = getSelectionVector(addedRef);
+            selVector.push_back(addedRef);
+
+            availableDimension = AvailableDimension::FIRST;
+            bool selAllowed = makeAppropriateDimension(event->pos());
+
+            if (!selAllowed) {
+                // remove from selection
+                blockRemoveSel = true;
+
+                Gui::Selection().rmvSelection(addedRef.getObject()->getDocument()->getName(), addedRef.getObject()->getNameInDocument(), addedRef.getSubName().c_str());
+                blockRemoveSel = false;
+
+                if (selVector == selFaces) {
+                    // if sel face and not allowed, then a dimension is being created
+                    // and user clicked on a face to drop it.
+                    // Better would be to disable face selectability when needed.
+                    finalize = true;
+                }
+            }
+            addedRef = ReferenceEntry();
+        }
+
+
+        // Finalize if click on empty space.
+        if (finalize && dim) {
+            finalizeCommand();
+        }
+        return true;
+    }
+
+    void onSelectionChanged(const Gui::SelectionChanges& msg)
+    {
+        //Base::Console().Warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
+
+        if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+            //clearAndRestartCommand();
+            return;
+        }
+
+        if (msg.pSubName[0] == '\0' || msg.Object.getObjectName().empty()
+            || msg.Object.getDocument() != getPage()->getDocument()) {
+            if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
+            }
+            return;
+        }
+
+        /*if (msg.Type == Gui::SelectionChanges::SetPreselect) {
+            Base::Console().Warning("SetPreselect\n");
+            std::string geomName = DrawUtil::getGeomTypeFromName(msg.pSubName);
+            edgeOrPointPreselected = geomName == "Edge" || geomName == "Vertex";
+            return;
+        }
+        else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
+            Base::Console().Warning("RmvPreselect\n");
+            edgeOrPointPreselected = false;
+            return;
+        }*/
+
+        App::DocumentObject* obj = msg.Object.getObject();
+        if (!obj) {
+            return;
+        }
+
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(obj);
+        if (!dvp) {
+            return;
+        }
+
+        if (partFeat && partFeat != dvp) {
+            // Dimensions can only be within one view.
+
+            if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
+            }
+            return;
+        }
+        else {
+            partFeat = dvp;
+        }
+
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            addedRef = ReferenceEntry(dvp, msg.pSubName);
+        }
+        else if (msg.Type == Gui::SelectionChanges::RmvSelection) {
+            if (!blockRemoveSel) {
+                removedRef = ReferenceEntry(dvp, msg.pSubName);
+            }
+        }
+    }
+
+private:
+    QString getCrosshairCursorSVGName() const override
+    {
+        return QString::fromLatin1("TechDraw_Dimension_Pointer");
+    }
+
+protected:
+    SpecialDimension specialDimension;
+    AvailableDimension availableDimension;
+
+    QPoint previousPos;
+
+    ReferenceVector selPoints;
+    ReferenceVector selLine;
+    ReferenceVector selCircleArc;
+    ReferenceVector selEllipseArc;
+    ReferenceVector selSplineAndCo;
+    ReferenceVector selFaces;
+
+    ReferenceEntry addedRef;
+    ReferenceEntry removedRef;
+
+    ReferenceVector initialSelection;
+
+    TechDraw::DrawViewPart* partFeat;
+
+    DrawViewDimension* dim;
+
+    bool blockRemoveSel;
+
+    void clearRefVectors()
+    {
+        selPoints.clear();
+        selLine.clear();
+        selCircleArc.clear();
+        selEllipseArc.clear();
+        selSplineAndCo.clear();
+        selFaces.clear();
+    }
+
+    void handleInitialSelection()
+    {
+        if (initialSelection.size() == 0) {
+            return;
+        }
+        
+        availableDimension = AvailableDimension::FIRST;
+
+        // Add the selected elements to their corresponding selection vectors
+        for (auto& ref : initialSelection) {
+            ReferenceVector& selVector = getSelectionVector(ref);
+            selVector.push_back(ref);
+        }
+
+        // See if the selection is valid
+        bool selAllowed = makeAppropriateDimension(QPoint());
+
+        if (!selAllowed) {
+            clearRefVectors();
+        }
+    } 
+
+    void finalizeCommand()
+    {
+        //Base::Console().Warning("finalizeCommand \n");
+
+        finishDimensionMove();
+
+        // Ask for the value of datum dimensions
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
+        
+        Gui::Command::commitCommand();
+
+        // Touch the parent feature so the dimension in tree view appears as a child
+        partFeat->touch(true);
+
+        // This code enables the continuous creation mode.
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+        if (continuousMode) {
+            Gui::Selection().clearSelection();
+            clearAndRestartCommand();
+        }
+        else {
+            viewPage->deactivateHandler(); // no code after this line, Handler get deleted in QGVPage
+        }
+    }
+
+    ReferenceVector& getSelectionVector(ReferenceEntry& ref)
+    {
+        static ReferenceVector emptyVector;
+
+        std::string subName = ref.getSubName();
+        auto* dvp = static_cast<TechDraw::DrawViewPart*>(ref.getObject());
+
+        std::string geomName = DrawUtil::getGeomTypeFromName(subName);
+        if (geomName == "Face") {
+            return selFaces;
+        }
+        else if (geomName == "Edge") {
+
+            int GeoId(TechDraw::DrawUtil::getIndexFromName(subName));
+            TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(GeoId);
+            if (!geom) {
+                return emptyVector;
+            }
+
+            if (geom->getGeomType() == TechDraw::GENERIC) {
+                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
+                if (gen1->points.size() < 2) {
+                    return emptyVector;
+                }
+                return selLine;
+                //Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
+            }
+            else if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+                return selCircleArc;
+            }
+            else if (geom->getGeomType() == TechDraw::ELLIPSE || geom->getGeomType() == TechDraw::ARCOFELLIPSE) {
+                return selEllipseArc;
+            }
+            else if (geom->getGeomType() == TechDraw::BSPLINE) {
+                //TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
+                //if (spline->isCircle()) {
+                //    return isBSplineCircle;
+                //}
+                //else {
+                //}
+                return selSplineAndCo;
+            }
+        }
+        else if (geomName == "Vertex") {
+            return selPoints;
+        }
+
+        return emptyVector;
+    }
+    
+    /*
+    bool notSelectedYet(const ReferenceEntry& elem)
+    {
+        auto contains = [&](const ReferenceVector& vec, const ReferenceEntry& elem) {
+            for (const auto& x : vec)
+            {
+                if (x == elem){
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        return !contains(selPoints, elem)
+            && !contains(selLine, elem)
+            && !contains(selCircleArc, elem)
+            && !contains(selEllipseArc, elem)
+            && !contains(selFaces, elem);
+    }*/
+
+    bool selectionEmpty()
+    {
+        return selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseArc.empty() && selFaces.empty();
+    }
+
+    bool makeAppropriateDimension(QPoint& pos) {
+        bool selAllowed = false;
+        //Base::Console().Warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
+
+        GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
+        if (selection.hasFaces()) {
+            makeCts_Faces(selAllowed, pos);
+        }
+        else if (selection.hasPoints()) {
+            if (selection.has1Point()) { selAllowed = true; }
+            else if (selection.has2Points()) { makeCts_2Point(selAllowed, pos); }
+            else if (selection.has3Points()) { makeCts_3Point(selAllowed, pos); }
+            else if (selection.has1Point1Line()) { makeCts_1Point1Line(selAllowed, pos); }
+            else if (selection.has1Point1Circle()) { makeCts_1Point1Circle(selAllowed, pos); }
+            else if (selection.has1Point1Ellipse()) { makeCts_1Point1Ellipse(selAllowed, pos); }
+        }
+        else if (selection.hasLines()) {
+            if (selection.has1Line()) { makeCts_1Line(selAllowed, pos); }
+            else if (selection.has2Lines()) { makeCts_2Line(selAllowed, pos); }
+            else if (selection.has1Line1Circle()) { makeCts_1Line1Circle(selAllowed, pos); }
+            else if (selection.has1Line1Ellipse()) { makeCts_1Line1Ellipse(selAllowed, pos); }
+        }
+        else if (selection.hasCirclesOrArcs()) {
+            if (selection.has1Circle()) { makeCts_1Circle(selAllowed, pos); }
+            else if (selection.has2Circles()) { makeCts_2Circle(selAllowed, pos); }
+        }
+        else if (selection.hasEllipseAndCo()) {
+            if (selection.has1Ellipse()) { makeCts_1Ellipse(selAllowed, pos); }
+            if (selection.has2Ellipses()) { makeCts_2Ellipses(selAllowed, pos); }
+        }
+        return selAllowed;
+    }
+
+    // TODO
+    void makeCts_Faces(bool& selAllowed, QPoint& pos)
+    {
+        //area
+        if (availableDimension == AvailableDimension::FIRST) {
+            /*restartCommand(QT_TRANSLATE_NOOP("Command", "Add Area dimension"));
+            createAreaDimension(pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;*/
+        }
+    }
+
+    void makeCts_2Point(bool& selAllowed, QPoint& pos)
+    {
+        //distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+            createDistanceDimension("Distance", selPoints[0], selPoints[1], pos);
+            specialDimension = SpecialDimension::LineOr2PointsDistance;
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_3Point(bool& selAllowed, QPoint& pos)
+    {
+        //angle
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
+            create3pAngleDimension(selPoints[0], selPoints[1], selPoints[2], pos);
+            selAllowed = true;
+        }
+        else if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
+            create3pAngleDimension(selPoints[1], selPoints[2], selPoints[0], pos);
+        }
+        else if (availableDimension == AvailableDimension::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
+            create3pAngleDimension(selPoints[2], selPoints[0], selPoints[1], pos);
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Point1Line(bool& selAllowed, QPoint& pos)
+    {
+        //distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance dimension"));
+            createDistanceDimension("Distance", selPoints[0], selLine[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Point1Circle(bool& selAllowed, QPoint& pos)
+    {
+        //Distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length dimension"));
+            createDistanceDimension("Distance", selPoints[0], selCircleArc[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Point1Ellipse(bool& selAllowed, QPoint& pos)
+    {
+        //Distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length dimension"));
+            createDistanceDimension("Distance", selPoints[0], selEllipseArc[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Line(bool& selAllowed, QPoint& pos)
+    {
+        //distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add length dimension"));
+            createDistanceDimension("Distance", selLine[0], ReferenceEntry(), pos);
+            specialDimension = SpecialDimension::LineOr2PointsDistance;
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_2Line(bool& selAllowed, QPoint& pos)
+    {
+        //angle (if parallel: Distance (see in createAngleDimension)).
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle dimension"));
+            createAngleDimension(selLine[0], selLine[1], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Line1Circle(bool& selAllowed, QPoint& pos)
+    {
+        //distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line Distance dimension"));
+            createDistanceDimension("Distance", selCircleArc[0], selLine[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Line1Ellipse(bool& selAllowed, QPoint& pos)
+    {
+        //distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to line Distance dimension"));
+            createDistanceDimension("Distance", selEllipseArc[0], selLine[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Circle(bool& selAllowed, QPoint& pos)
+    {
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
+            createRadiusDiameterDimension(selCircleArc[0], pos, true);
+            selAllowed = true;
+        }
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
+            createRadiusDiameterDimension(selCircleArc[0], pos, false);
+            if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
+                availableDimension = AvailableDimension::RESET;
+            }
+        }
+        if (availableDimension == AvailableDimension::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Arc Length dimension"));
+            createArcLengthDimension(selCircleArc[0], pos);
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_2Circle(bool& selAllowed, QPoint& pos)
+    {
+        //Distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle Distance dimension"));
+            createDistanceDimension("Distance", selCircleArc[0], selCircleArc[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Ellipse(bool& selAllowed, QPoint& pos)
+    {
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
+            createRadiusDiameterDimension(selEllipseArc[0], pos, true);
+            selAllowed = true;
+        }
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
+            createRadiusDiameterDimension(selEllipseArc[0], pos, false);
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_2Ellipses(bool& selAllowed, QPoint& pos)
+    {
+        //Distance
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to ellipse Distance dimension"));
+            createDistanceDimension("Distance", selEllipseArc[0], selEllipseArc[0], pos);
+            selAllowed = true;
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    //TODO
+    void createAreaDimension(QPoint& pos)
+    {
+        /*// see CmdTechDrawExtensionAreaAnnotation::activated
+        Base::Vector3d center;
+        double totalArea = 0.0;
+        for (auto& ref : selFaces) {
+            TechDraw::FacePtr face = partFeat->getFace(ref.getSubName());
+            if (!face) {
+                continue;
+            }
+
+            GProp_GProps faceProps;
+            BRepGProp::SurfaceProperties(face->toOccFace(), faceProps);
+
+            double faceArea = faceProps.Mass();
+            totalArea += faceArea;
+            center += faceArea * DrawUtil::toVector3d(faceProps.CentreOfMass());
+        }
+        if (totalArea > 0.0) {
+            center /= totalArea;
+        }
+
+        //function (and file) to create in CommandExtensionPack.h
+        auto* areaBalloon = createAreaBalloon(totalArea, center);*/
+    }
+
+    void createRadiusDiameterDimension(ReferenceEntry ref, QPoint& pos, bool firstCstr) {
+        bool isCircleGeom = true;
+
+        int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
+        TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
+        isCircleGeom = geom->getGeomType() == TechDraw::CIRCLE || TechDraw::ELLIPSE;
+
+        // Use same preference as in sketcher?
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
+        bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
+        bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+
+        if ((firstCstr && dimensioningRadius && !dimensioningDiameter) ||
+            (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
+            (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
+            (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom)) {
+            dim = dimMaker(partFeat, "Radius", { ref }, {});
+        }
+        else {
+            dim = dimMaker(partFeat, "Diameter", { ref }, {});
+        }
+
+        moveDimension(pos);
+    }
+
+    void createAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2, QPoint& pos) {
+        if (TechDraw::isValidMultiEdge({ ref1, ref2 }) != isAngle) {
+            //isValidMultiEdge check if lines are parallel.
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+            createDistanceDimension("Distance", ref1, ref2, pos);
+            return;
+        }
+
+        dim = dimMaker(partFeat, "Angle", {ref1, ref2}, {});
+
+        moveDimension(pos);
+    }
+
+    void create3pAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2, ReferenceEntry ref3, QPoint& pos)
+    {
+        dim = dimMaker(partFeat, "Angle3Pt", {ref1, ref2, ref3}, {});
+
+        moveDimension(pos);
+    }
+
+    void createArcLengthDimension(ReferenceEntry ref, QPoint& pos)
+    {
+        dim = makeArcLengthDimension(ref);
+
+        moveDimension(pos);
+    }
+
+    void createDistanceDimension(std::string type, ReferenceEntry ref1, ReferenceEntry ref2, QPoint& pos) {
+        ReferenceVector refs = { ref1 };
+        if (ref2.hasGeometry()) { // if valid
+            refs.push_back(ref2);
+        }
+
+        dim = dimMaker(partFeat, type, refs, {});
+
+        moveDimension(pos);
+    }
+
+    void updateDistanceType(QPoint& pos)
+    {
+        if (!dim) {
+            return;
+        }
+
+        auto type = static_cast<DimensionType>(dim->Type.getValue());
+        
+        TechDraw::pointPair pp = dim->getLinearPoints();
+        Base::Vector3d pnt1 = Rez::guiX(pp.first());
+        Base::Vector3d pnt2 = Rez::guiX(pp.second());
+
+        QPointF fpos = getDimPositionToBe(pos);
+
+        double minX, minY, maxX, maxY;
+        minX = min(pnt1.x, pnt2.x);
+        maxX = max(pnt1.x, pnt2.x);
+        minY = min(pnt1.y, pnt2.y);
+        maxY = max(pnt1.y, pnt2.y);
+
+        std::string newType = "Distance";
+        if (fpos.x() > minX && fpos.x() < maxX
+            && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX dimension"));
+            newType = "DistanceX";
+        }
+        else if (fpos.y() > minY && fpos.y() < maxY
+            && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY dimension"));
+            newType = "DistanceY";
+        }
+        else if ((((fpos.y() < minY || fpos.y() > maxY) && (fpos.x() < minX || fpos.x() > maxX))
+            || (fpos.y() > minY && fpos.y() < maxY && fpos.x() > minX && fpos.x() < maxX)) && type != DimensionType::Distance) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+        }
+        else {
+            return;
+        }
+        specialDimension = SpecialDimension::LineOr2PointsDistance;
+
+        if (selLine.size() == 1) {
+            createDistanceDimension(newType, selLine[0], ReferenceEntry(), pos);
+        }
+        else {
+            createDistanceDimension(newType, selPoints[0], selPoints[1], pos);
+        }
+    }
+
+    void restartCommand(const char* cstrName) {
+        specialDimension = SpecialDimension::None;
+        Gui::Command::abortCommand();
+        Gui::Command::openCommand(cstrName);
+
+        dim = nullptr;
+    }
+
+    void clearAndRestartCommand() {
+        Gui::Command::abortCommand();
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+        specialDimension = SpecialDimension::None;
+        previousPos = QPoint(0,0);
+        clearRefVectors();
+        partFeat = nullptr;
+        dim = nullptr;
+    }
+};
 
 DEF_STD_CMD_A(CmdTechDrawDimension)
 
@@ -101,7 +975,9 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert Dimension");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Dimension contextually based on your selection.\n"
+        "Depending on your selection you might have several dimensions available. You can cycle through them using the M key.\n"
+        "Left clicking on empty space will validate the current Dimensiont. Right clicking or pressing Esc will cancel.");
     sWhatsThis = "TechDraw_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
@@ -110,6 +986,13 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat =
+        TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    activateHandler(new TDHandlerDimension(references2d, partFeat));
 }
 
 bool CmdTechDrawDimension::isActive()
@@ -118,6 +1001,41 @@ bool CmdTechDrawDimension::isActive()
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
 }
+
+
+// Comp for dimension tools =============================================
+
+class CmdTechDrawCompDimensionTools : public Gui::GroupCommand
+{
+public:
+    CmdTechDrawCompDimensionTools()
+        : GroupCommand("TechDraw_CompDimensionTools")
+    {
+        sAppModule = "TechDraw";
+        sGroup = "TechDraw";
+        sMenuText = QT_TR_NOOP("Dimension");
+        sToolTipText = QT_TR_NOOP("Dimension tools.");
+        sWhatsThis = "TechDraw_CompDimensionTools";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("TechDraw_Dimension");
+        addCommand(); //separator
+        addCommand("TechDraw_LengthDimension");
+        addCommand("TechDraw_HorizontalDimension");
+        addCommand("TechDraw_VerticalDimension");
+        addCommand("TechDraw_RadiusDimension");
+        addCommand("TechDraw_DiameterDimension");
+        addCommand("TechDraw_AngleDimension");
+        addCommand("TechDraw_3PtAngleDimension");
+        addCommand("TechDraw_ExtensionCreateLengthArc");
+    }
+
+    const char* className() const override { return "CmdTechDrawCompDimensionTools"; }
+};
 
 //===========================================================================
 // TechDraw_RadiusDimension
@@ -1345,6 +2263,7 @@ void CreateTechDrawCommandsDims()
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLandmarkDimension());
     rcCmdMgr.addCommand(new CmdTechDrawDimensionRepair());
+    rcCmdMgr.addCommand(new CmdTechDrawCompDimensionTools());
 }
 
 //------------------------------------------------------------------------------
@@ -1353,10 +2272,26 @@ void CreateTechDrawCommandsDims()
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {
+    TechDraw::DrawViewDimension* dim = dimMaker(dvp, dimType, references2d, references3d);
+
+    Gui::Command::commitCommand();
+
+    // Touch the parent feature so the dimension in tree view appears as a child
+    dvp->touch(true);
+
+    // Select only the newly created dimension
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(dvp->getDocument()->getName(), dim->getNameInDocument());
+
+    return dim;
+}
+
+DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
+                            ReferenceVector references2d, ReferenceVector references3d)
+{
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension* dim = nullptr;
     std::string dimName = dvp->getDocument()->getUniqueObjectName("Dimension");
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
@@ -1374,7 +2309,7 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimTy
                             dimName.c_str(),
                             "Projected");
 
-    dim =
+    auto* dim =
         dynamic_cast<TechDraw::DrawViewDimension*>(dvp->getDocument()->getObject(dimName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
@@ -1389,16 +2324,9 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimTy
                             PageName.c_str(),
                             dimName.c_str());
 
-    Gui::Command::commitCommand();
-
-    // Touch the parent feature so the dimension in tree view appears as a child
-    dvp->touch(true);
-
-    // Select only the newly created dimension
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(dvp->getDocument()->getName(), dim->getNameInDocument());
 
     dim->recomputeFeature();
+
     return dim;
 }
 

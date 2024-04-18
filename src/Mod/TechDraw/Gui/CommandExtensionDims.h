@@ -1,6 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: WandererFan <wandererfan@gmail.com>                           *
+/***************************************************************************
+ *   Copyright (c) 2021 edi                                                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+#ifndef TECHDRAWGUI_CommandExtensionDims_H
+#define TECHDRAWGUI_CommandExtensionDims_H
 
-#include <memory>
-
-#include <Gui/PropertyPage.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+namespace TechDraw
+{
+    class ReferenceEntry;
+}
 
 namespace TechDrawGui {
-class Ui_DlgPrefsTechDrawDimensionsImp;
+    TechDraw::DrawViewDimension* makeArcLengthDimension(const TechDraw::ReferenceEntry& ref);
+}
 
-class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
-{
-    Q_OBJECT
-
-public:
-    explicit DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawDimensionsImp() override;
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-    void dimensioningModeChanged(int index);
-
-    int prefArrowStyle() const;
-
-private:
-    std::unique_ptr<Ui_DlgPrefsTechDrawDimensionsImp> ui;
-};
-
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+#endif  // TECHDRAWGUI_CommandExtensionDims_H

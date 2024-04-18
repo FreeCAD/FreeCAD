@@ -90,6 +90,7 @@
         <file>icons/TechDraw_CameraOrientation.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
+        <file>icons/TechDraw_Dimension_Pointer.svg</file>
         <file>icons/TechDraw_DimensionRepair.svg</file>
         <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
         <file>icons/TechDraw_ExtensionArcLengthAnnotation.svg</file>

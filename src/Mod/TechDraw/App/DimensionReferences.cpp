@@ -86,6 +86,12 @@ ReferenceEntry& ReferenceEntry::operator=(const ReferenceEntry& otherRef)
 }
 
 
+bool ReferenceEntry::operator==(const ReferenceEntry& otherRef) const
+{
+    return getObjectName() == otherRef.getObjectName() && getSubName() == otherRef.getSubName();
+}
+
+
 TopoDS_Shape ReferenceEntry::getGeometry() const
 {
     // Base::Console().Message("RE::getGeometry() - objectName: %s  sub: **%s**\n",
@@ -257,6 +263,19 @@ std::string ReferenceEntry::geomType() const
 {
     // Base::Console().Message("RE::geomType() - subName: **%s**\n", getSubName().c_str());
     return DrawUtil::getGeomTypeFromName(getSubName());
+}
+
+GeomType ReferenceEntry::geomEdgeType() const
+{
+    int geoId = TechDraw::DrawUtil::getIndexFromName(getSubName());
+    auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
+    BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
+
+    if (geomType() == "Edge" && geom) {
+        return geom->getGeomType();
+    }
+
+    return GeomType::NOTDEF;
 }
 
 bool ReferenceEntry::isWholeObject() const

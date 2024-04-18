@@ -127,6 +127,9 @@ protected:
     void onDeleteObject(const App::DocumentObject& obj);
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
+    void addSceneToTreeSel(QGraphicsItem* scene, std::vector<Gui::SelectionObject> treeSel);
+    void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
+    std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
 
