@@ -228,7 +228,7 @@ class PathSimulation:
             )
             self.cutMaterialIn.ViewObject.Proxy = 0
             self.cutMaterialIn.ViewObject.show()
-            self.cutMaterialIn.ViewObject.ShapeAppearance.DiffuseColor = (1.0, 0.85, 0.45, 0.0)
+            self.cutMaterialIn.ViewObject.ShapeColor = (1.0, 0.85, 0.45, 0.0)
         else:
             self.cutMaterial = FreeCAD.ActiveDocument.addObject(
                 "Part::FeaturePython", "CutMaterial"
@@ -236,7 +236,7 @@ class PathSimulation:
             self.cutMaterial.Shape = self.job.Stock.Shape
         self.cutMaterial.ViewObject.Proxy = 0
         self.cutMaterial.ViewObject.show()
-        self.cutMaterial.ViewObject.ShapeAppearance.DiffuseColor = (0.5, 0.25, 0.25, 0.0)
+        self.cutMaterial.ViewObject.ShapeColor = (0.5, 0.25, 0.25, 0.0)
 
         # Add cut path solid for debug
         if self.debug:
