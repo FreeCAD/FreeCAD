@@ -176,13 +176,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataSwitch = QtCore.Qt.ItemDataRole.UserRole + 2
 
     Direction = {
-        FeatureExtensions.Extension.DirectionNormal: translate("PathPocket", "Normal"),
-        FeatureExtensions.Extension.DirectionX: translate("PathPocket", "X"),
-        FeatureExtensions.Extension.DirectionY: translate("PathPocket", "Y"),
+        FeatureExtensions.Extension.DirectionNormal: translate("CAM_Pocket", "Normal"),
+        FeatureExtensions.Extension.DirectionX: translate("CAM_Pocket", "X"),
+        FeatureExtensions.Extension.DirectionY: translate("CAM_Pocket", "Y"),
     }
 
     def initPage(self, obj):
-        self.setTitle("Extensions")
+        self.setTitle(translate("CAM_Pocket", "Extensions"))
         self.OpIcon = ":/icons/view-axonometric.svg"
         self.setIcon(self.OpIcon)
         self.initialEdgeCount = -1

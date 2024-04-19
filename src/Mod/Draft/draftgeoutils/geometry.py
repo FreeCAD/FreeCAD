@@ -257,7 +257,11 @@ def get_shape_normal(shape):
     # - Tested Sketch with 1 edge return no Plane with no Axis
 
     shape_rot = shape.Placement.Rotation
-    if is_straight_line(shape):
+    plane = shape.findPlane()
+
+    if plane is None:
+        if not is_straight_line(shape):
+            return None
         start_edge = shape.Edges[0]
         x_vec = start_edge.tangentAt(start_edge.FirstParameter)  # Return vector is in global coordinate
         local_x_vec = shape_rot.inverted().multVec(x_vec)  #
@@ -265,8 +269,6 @@ def get_shape_normal(shape):
         # see https://blog.freecad.org/2023/01/16/the-rotation-api-in-freecad/ for App.Rotation(vecx, vecy, vecz, string)
         # discussion - https://forum.freecad.org/viewtopic.php?p=717738#p717738
         return shape_rot.multiply(local_rot).multVec(App.Vector(0, 0, 1))
-    else:
-        plane = shape.findPlane()
 
     normal = plane.Axis
     shape_normal = shape_rot.multVec(App.Vector(0, 0, 1))
@@ -409,7 +411,7 @@ def is_straight_line(shape, tol=-1):
                 # Shape with parallel edges but not colinear used to return True
                 # by this function, below line added fixes this bug.
                 # Further remark on the below fix :
-                # - get_normal() use this function, may had created problems 
+                # - get_normal() use this function, may had created problems
                 #   previously but not reported; on the other hand, this fix
                 #   seems have no 'regression' created as get_normal use
                 #   plane.Axis (with 3DView check).  See get_shape_normal()

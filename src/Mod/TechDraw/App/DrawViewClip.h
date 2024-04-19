@@ -49,9 +49,11 @@ public:
     App::PropertyBool ShowFrame;
     App::PropertyLinkList Views;
 
-    void addView(DrawView *view);
-    void removeView(DrawView *view);
+    void addView(App::DocumentObject* docObj);
+    void removeView(App::DocumentObject* docObj);
     short mustExecute() const override;
+
+    std::vector<App::DocumentObject*> getViews() const;
 
     /** @name methods override Feature */
     //@{

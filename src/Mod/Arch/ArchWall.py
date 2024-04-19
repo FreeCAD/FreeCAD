@@ -450,7 +450,11 @@ class _CommandWall:
             FreeCADGui.doCommand('base.Placement = wp.get_placement()')
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
-            FreeCADGui.doCommand('base=Draft.makeLine(trace)')
+            FreeCADGui.doCommand('base=Draft.make_line(trace)')
+            # The created line should not stay selected as this causes an issue in continue mode.
+            # Two walls would then be created based on the same line.
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
             FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = wp.axis')
@@ -544,9 +548,8 @@ class _CommandWall:
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
-            self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        self.continueCmd = params.get_param("ContinueMode")
+        value4.setChecked(self.continueCmd)
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
 
@@ -616,13 +619,12 @@ class _CommandWall:
         """
 
         self.continueCmd = bool(i)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.continueMode = bool(i)
+        params.set_param("ContinueMode", bool(i))
 
     def setUseSketch(self,i):
-        """Simple callback to set if walls should join their base sketches when possible."""
+        """Simple callback to set if walls should based on sketches."""
 
-        params.set_param_arch("joinWallSketches",bool(i))
+        params.set_param_arch("WallSketches",bool(i))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""

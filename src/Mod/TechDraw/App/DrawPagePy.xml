@@ -23,6 +23,11 @@
         <UserDocu>removeView(DrawView) - Remove a View to this Page</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getViews">
+      <Documentation>
+        <UserDocu>getViews() - returns a list of all the views on page excluding Views inside Collections</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getAllViews">
       <Documentation>
         <UserDocu>getAllViews() - returns a list of all the views on page including Views inside Collections</UserDocu>

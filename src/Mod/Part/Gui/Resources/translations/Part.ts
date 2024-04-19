@@ -2362,6 +2362,11 @@ of projection.</source>
         <source>Edit Mirror</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+        <source>Project on surface</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDatumParameters</name>
@@ -2629,7 +2634,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="1113"/>
+        <location filename="../../DlgFilletEdges.cpp" line="1109"/>
         <source>Chamfer Edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3862,7 +3867,7 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="2209"/>
+        <location filename="../../DlgPrimitives.cpp" line="2204"/>
         <source>&amp;Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3945,17 +3950,17 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgProjectionOnSurface.cpp" line="133"/>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
         <source>Projection Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgProjectionOnSurface.cpp" line="162"/>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="164"/>
         <source>Have no active document!!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
+        <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
         <source>Can not create a projection object!!!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5562,7 +5567,7 @@ by dragging a selection rectangle in the 3D view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSweep.cpp" line="484"/>
+        <location filename="../../TaskSweep.cpp" line="480"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
         <translation type="unfinished"></translation>
@@ -5632,21 +5637,21 @@ in the 3D view for the sweep path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="234"/>
+        <location filename="../../AppPartGui.cpp" line="237"/>
         <source>Part and Part Design workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="235"/>
-        <location filename="../../AppPartGui.cpp" line="236"/>
-        <location filename="../../AppPartGui.cpp" line="237"/>
         <location filename="../../AppPartGui.cpp" line="238"/>
+        <location filename="../../AppPartGui.cpp" line="239"/>
+        <location filename="../../AppPartGui.cpp" line="240"/>
+        <location filename="../../AppPartGui.cpp" line="241"/>
         <source>Part/Part Design</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="239"/>
-        <location filename="../../AppPartGui.cpp" line="240"/>
+        <location filename="../../AppPartGui.cpp" line="242"/>
+        <location filename="../../AppPartGui.cpp" line="243"/>
         <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6083,7 +6088,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
+        <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
         <source>Attachment editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6100,6 +6105,11 @@ Do you want to continue?</source>
     <message>
         <location filename="../../CommandSimple.cpp" line="173"/>
         <source>Enter distance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
+        <source>Edit projection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

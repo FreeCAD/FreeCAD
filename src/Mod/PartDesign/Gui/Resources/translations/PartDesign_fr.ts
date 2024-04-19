@@ -941,22 +941,22 @@ False = engrenage interne</translation>
       <translation>Déplacer un objet dans l'arborescence</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="268"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
       <source>Mirrored</source>
       <translation>Symétrie</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="307"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
       <source>Make LinearPattern</source>
       <translation>Répétition linéaire</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="352"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>PolarPattern</source>
       <translation>Répétition circulaire</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="390"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
       <source>Scaled</source>
       <translation>Mise à l'échelle</translation>
     </message>
@@ -2103,7 +2103,7 @@ click again to end selection</source>
       <translation>Occurrences</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="332"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -2257,7 +2257,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="71"/>
       <source>To last</source>
-      <translation>Au dernier</translation>
+      <translation>À la dernière</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
@@ -2715,7 +2715,7 @@ measured along the specified direction</source>
       <translation>Occurrences</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="330"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -2820,7 +2820,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
       <source>To last</source>
-      <translation>Au dernier</translation>
+      <translation>À la dernière</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="178"/>
@@ -2835,7 +2835,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Up to face</source>
-      <translation>Jusqu'à une face</translation>
+      <translation>Jusqu'à la face</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
@@ -3282,7 +3282,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="962"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>Voulez-vous que la dernière fonction soit la nouvelle fonction résultante?</translation>
+      <translation>Voulez-vous que la dernière fonction soit la nouvelle fonction résultante ?</translation>
     </message>
   </context>
   <context>
@@ -4112,7 +4112,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Profilé</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4149,7 +4149,7 @@ Notez que le calcul peut prendre un certain temps.</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
       <source>Customize thread clearance</source>
-      <translation>Spécifier le dégagement du filetage</translation>
+      <translation>Spécifier la déviation interne du diamètre du filetage</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
@@ -4289,7 +4289,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
       <source>Custom values</source>
-      <translation>Valeurs spécifiques</translation>
+      <translation>Valeurs personnalisées</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="539"/>
@@ -4305,7 +4305,7 @@ the screw's top below the surface</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="597"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Pointe de perçage&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Pointe du perçage&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="629"/>
@@ -4321,7 +4321,7 @@ the screw's top below the surface</source>
       <location filename="../../TaskHoleParameters.ui" line="680"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation>La taille de la pointe du foret sera prise en compte pour la profondeur des trous borgnes.</translation>
+      <translation>La taille de la pointe du perçage sera prise en compte pour la profondeur des trous borgnes.</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="684"/>
@@ -4887,119 +4887,113 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
-      <source>Error: Could not build</source>
-      <translation>Erreur : impossible de construire</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="303"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="339"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="369"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
-      <translation>Erreur : le résultat n'est pas un solide</translation>
+      <translation>Erreur : le résultat n'est pas un solide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="319"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="252"/>
       <source>Error: There is nothing to subtract</source>
       <translation>Erreur : il n'y a rien à soustraire</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="323"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="343"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="373"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="256"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="276"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="306"/>
       <source>Error: Result has multiple solids</source>
       <translation>Erreur : le résultat a plusieurs solides</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="333"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Adding the helix failed</source>
       <translation>Erreur : l'ajout de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="356"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="289"/>
       <source>Error: Intersecting the helix failed</source>
       <translation>Erreur : l'intersection de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="363"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <source>Error: Subtracting the helix failed</source>
       <translation>Erreur : la soustraction de l'hélice a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="385"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="318"/>
       <source>Error: Could not create face from sketch</source>
       <translation>Erreur : impossible de créer une face à partir de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1687"/>
       <source>Hole error: Creating a face from sketch failed</source>
-      <translation>Erreur de trou : la création d'une face à partir de l'esquisse a échoué</translation>
+      <translation>Erreur sur le trou : la création d'une face à partir de l'esquisse a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation>Erreur de trou : la spécification de la longueur n(est pas prise en charge</translation>
+      <translation>Erreur sur le trou : la spécification de la longueur n'est pas prise en charge.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
       <source>Hole error: Invalid hole depth</source>
-      <translation>Erreur de trou : la profondeur du trou est non valide</translation>
+      <translation>Erreur sur le trou : la profondeur du trou n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation>Erreur de trou : l'angle du cône est non valide</translation>
+      <translation>Erreur sur le trou : l'angle du cône n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
       <source>Hole error: Hole cut diameter too small</source>
-      <translation>Erreur de trou : le diamètre de découpe du trou est trop petit</translation>
+      <translation>Erreur sur le trou : le diamètre de découpe du trou est trop petit.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation>Erreur de trou : la profondeur de découpe du trou doit être inférieure à la profondeur du trou</translation>
+      <translation>Erreur sur le trou : la profondeur de découpe du trou doit être inférieure à la profondeur du trou.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation>Erreur de trou : la profondeur de découpe du trou doit être supérieure ou égale à zéro</translation>
+      <translation>Erreur sur le trou : la profondeur de découpe du trou doit être supérieure ou égale à zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
       <source>Hole error: Invalid countersink</source>
-      <translation>Erreur de trou : fraisage non valide</translation>
+      <translation>Erreur sur le trou : le fraisage n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1822"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation>Erreur de trou : l'angle de la pointe de perçage est non valide</translation>
+      <translation>Erreur sur le trou : l'angle de la pointe du perçage n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1832"/>
       <source>Hole error: Invalid drill point</source>
-      <translation>Erreur de trou : la pointe de perçage est non valide</translation>
+      <translation>Erreur sur le trou : la pointe du perçage n'est pas valide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1866"/>
       <source>Hole error: Could not revolve sketch</source>
-      <translation>Erreur de trou : impossible de faire tourner l'esquisse</translation>
+      <translation>Erreur sur le trou : impossible de faire tourner l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
       <source>Hole error: Resulting shape is empty</source>
-      <translation>Erreur de trou : la forme résultante est vide</translation>
+      <translation>Erreur sur le trou : la forme résultante est vide.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
       <source>Error: Adding the thread failed</source>
-      <translation>Erreur : l'ajout du filetage a échoué</translation>
+      <translation>Erreur : l'ajout du filetage a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
       <source>Boolean operation failed</source>
       <translation>L'opération booléenne a échoué</translation>
     </message>
@@ -5024,7 +5018,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2135"/>
       <source>Error: Thread could not be built</source>
-      <translation>Erreur : le filetage n'a pas pu être construit</translation>
+      <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="135"/>
@@ -5074,7 +5068,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="232"/>
       <source>Loft could not be built</source>
-      <translation>Le Lissage n'a pas pu être construit</translation>
+      <translation>Le lissage n'a pas pu être construit</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="265"/>
@@ -5136,7 +5130,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="172"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation>Tuyau: impossible d'obtenir la forme du profil</translation>
+      <translation>Balayage : impossible d'obtenir la forme du profil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
@@ -5151,42 +5145,42 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation>Tuyau : un seul point isolé est nécessaire si vous utilisez une esquisse avec des points isolés pour la section</translation>
+      <translation>Balayage : un seul point isolé est nécessaire si vous utilisez une esquisse avec des points isolés pour la section.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="217"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>Tuyau : au moins une section est nécessaire lorsque vous utilisez un seul point pour le profil</translation>
+      <translation>Balayage : au moins une section est nécessaire lorsque vous utilisez un seul point pour le profil.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="231"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation>Tuyau : toutes les sections doivent être des part features</translation>
+      <translation>Balayage : toutes les sections doivent appartenir à la pièce à éditer.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation>Tuyau : impossible d'obtenir la forme du profil</translation>
+      <translation>Balayage : impossible d'obtenir la forme du profil.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="246"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>Tuyau : seul le profil et la dernière section peuvent être des sommets</translation>
+      <translation>Balayage : seul le profil et la dernière section peuvent être des sommets.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation>Les multisections doivent avoir le même nombre de polylignes internes que la section de base</translation>
+      <translation>Les différentes sections doivent avoir le même nombre de polylignes internes que la section de base.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Path must not be a null shape</source>
-      <translation>Le chemin ne doit pas être une forme nulle</translation>
+      <translation>La trajectoire ne doit pas être une forme nulle</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="317"/>
       <source>Pipe could not be built</source>
-      <translation>Le tuyau n'a pas pu être construit</translation>
+      <translation>Le balayage n'a pas pu être construit.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="363"/>
@@ -5196,47 +5190,47 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="378"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation>Tuyau : il n'y a rien à soustraire</translation>
+      <translation>Balayage : il n'y a rien à soustraire.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="389"/>
       <source>Adding the pipe failed</source>
-      <translation>L'ajout du tuyau a échoué</translation>
+      <translation>L'ajout du balayage a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="409"/>
       <source>Subtracting the pipe failed</source>
-      <translation>La soustraction du tuyau a échoué</translation>
+      <translation>La soustraction du balayage a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation>Une erreur fatale s'est produite lors de la création du tuyau</translation>
+      <translation>Une erreur s'est produite lors de la création du balayage</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="556"/>
       <source>Invalid element in spine.</source>
-      <translation>Élément non valide dans une arête.</translation>
+      <translation>Élément non valide dans la trajectoire</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="559"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation>L'élément dans l'arête n'est ni un bord ni une polyligne.</translation>
+      <translation>L'élément dans la trajectoire n'est ni un bord ni une polyligne.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <source>Spine is not connected.</source>
-      <translation>L'arête n'est pas connectée.</translation>
+      <translation>La trajectoire n'est pas connectée.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="576"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation>L'arête n'est ni un bord ni une polyligne.</translation>
+      <translation>La trajectoire n'est ni un bord ni une polyligne.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="580"/>
       <source>Invalid spine.</source>
-      <translation>Arête non valide.</translation>
+      <translation>Trajectoire non valide</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="132"/>
@@ -5291,32 +5285,32 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="195"/>
       <source>Width of box too small</source>
-      <translation>La largeur de la boîte est trop petite</translation>
+      <translation>Largeur de la boîte trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
       <source>Height of box too small</source>
-      <translation>La hauteur de la boîte est trop petite</translation>
+      <translation>Hauteur de la boîte trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="243"/>
       <source>Radius of cylinder too small</source>
-      <translation>Le rayon du cylindre est trop petit</translation>
+      <translation>Rayon du cylindre trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="245"/>
       <source>Height of cylinder too small</source>
-      <translation>La hauteur du cylindre est trop petite</translation>
+      <translation>Hauteur du cylindre trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
       <source>Rotation angle of cylinder too small</source>
-      <translation>L'angle de rotation du cylindre est trop petit</translation>
+      <translation>Angle de rotation du cylindre trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="300"/>
       <source>Radius of sphere too small</source>
-      <translation>Le rayon de la sphère est trop petit</translation>
+      <translation>Rayon de la sphère trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="349"/>
@@ -5327,19 +5321,19 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
       <source>Height of cone too small</source>
-      <translation>La hauteur du cône est trop petite</translation>
+      <translation>Hauteur du cône trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="416"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
       <source>Radius of ellipsoid too small</source>
-      <translation>Le rayon de l'ellipsoïde est trop petit</translation>
+      <translation>Rayon de l'ellipsoïde trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="500"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
       <source>Radius of torus too small</source>
-      <translation>Le rayon du tore est trop petit</translation>
+      <translation>Rayon du tore trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="565"/>
@@ -5354,32 +5348,32 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
       <source>Height of prism is too small</source>
-      <translation>La hauteur du prisme est trop petite</translation>
+      <translation>Hauteur du prisme trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="650"/>
       <source>delta x of wedge too small</source>
-      <translation>delta x de la pyramide tronquée trop petit</translation>
+      <translation>delta X de la pyramide tronquée trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="653"/>
       <source>delta y of wedge too small</source>
-      <translation>delta y de la pyramide tronquée trop petit</translation>
+      <translation>delta Y de la pyramide tronquée trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="656"/>
       <source>delta z of wedge too small</source>
-      <translation>delta z de la pyramide tronquée trop petit</translation>
+      <translation>delta Z de la pyramide tronquée trop petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="659"/>
       <source>delta z2 of wedge is negative</source>
-      <translation>delta z2 de la pyramide tronquée est négatif</translation>
+      <translation>delta Z2 de la pyramide tronquée est négatif</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="662"/>
       <source>delta x2 of wedge is negative</source>
-      <translation>delta x2 de la pyramide tronquée est négatif</translation>
+      <translation>delta X2 de la pyramide tronquée est négatif</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="87"/>
@@ -5394,37 +5388,37 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="190"/>
       <source>Fusion with base feature failed</source>
-      <translation>La fusion avec la fonction de base échouée</translation>
+      <translation>La fusion avec la fonction de base a échoué</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="94"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation>La fonctionnalité de transformation de l'objet lié n'est pas un objet Part</translation>
+      <translation>L'objet (lié) associé à l'élément de forme de transformation n'est pas un objet Part.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="97"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation>Aucun original lié à la fonctionnalité transformée.</translation>
+      <translation>Aucun élément original n'est associé à l'élément de forme transformé.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="204"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="217"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Impossible de transformer une forme de support invalide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="233"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="246"/>
       <source>Transformation failed</source>
       <translation>La transformation a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="261"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation>La forme de la fonction additive/soustractive est vide</translation>
+      <translation>La forme de la fonction additive/soustractive est vide.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="269"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation>Seules les fonctionnalités additive et de soustractive peuvent être transformées</translation>
+      <translation>Seules les fonctions additives et soustractives peuvent être transformées.</translation>
     </message>
   </context>
   <context>

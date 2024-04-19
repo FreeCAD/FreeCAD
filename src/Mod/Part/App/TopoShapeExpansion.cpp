@@ -1400,7 +1400,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
     ShapeInfo vertexInfo(_Shape, TopAbs_VERTEX, _cache->getAncestry(TopAbs_VERTEX));
     ShapeInfo edgeInfo(_Shape, TopAbs_EDGE, _cache->getAncestry(TopAbs_EDGE));
     ShapeInfo faceInfo(_Shape, TopAbs_FACE, _cache->getAncestry(TopAbs_FACE));
-    mapSubElement(shapes, op);
+    mapSubElement(shapes);  // Intentionally leave the op off here
 
     std::array<ShapeInfo*, 3> infos = {&vertexInfo, &edgeInfo, &faceInfo};
 
@@ -1432,7 +1432,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             if (otherMap.count() == 0) {
                 continue;
             }
-
             for (int i = 1; i <= otherMap.count(); i++) {
                 const auto& otherElement = otherMap.find(incomingShape._Shape, i);
                 // Find all new objects that are a modification of the old object
@@ -1751,7 +1750,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             elementMap()
                 ->encodeElementName(element[0], first_name, ss, &sids, Tag, op, first_key.tag);
             elementMap()->setElementName(element, first_name, Tag, &sids);
-
             if (!delayed && first_key.shapetype < 3) {
                 newNames.erase(itName);
             }
@@ -1849,7 +1847,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
                     elementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
                     elementMap()->setElementName(indexedName, newName, Tag, &sids);
-                }
+               }
             }
         }
 

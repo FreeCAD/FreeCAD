@@ -44,6 +44,7 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void attach(App::DocumentObject *obj) override;
 
 private:
     std::vector<App::Color> originalLineColors;

@@ -122,15 +122,20 @@ private:
 
     static PieceLimitList getPieceLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction);
 
+    double getExpandGaps(double pointCoord,
+                         const BreakList& compressedBreakList,
+                         Base::Vector3d moveDirection,
+                         std::vector<size_t>& fullGaps,
+                         int& partialGapIndex) const;
+
     BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d direction, bool descend = false) const;
     BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d moveDirection, bool descend = false) const;
      static std::vector<TopoDS_Shape> getPieces(TopoDS_Shape brokenShape);
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);
 
-//    double pointToLimit(const Base::Vector3d& inPoint, const Base::Vector3d& direction) const;
     double shiftAmountShrink(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
-    double shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
+    // double shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
 
     void printBreakList(const std::string& text, const BreakList& inBreaks) const;
 

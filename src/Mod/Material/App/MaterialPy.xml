@@ -141,6 +141,11 @@
         <UserDocu>Check if the material implements the appearance property with the given name</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="hasLegacyProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns true of there are legacy properties</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Properties" ReadOnly="true">
       <Documentation>
         <UserDocu>deprecated -- Dictionary of all material properties.</UserDocu>
@@ -158,6 +163,12 @@
         <UserDocu>deprecated -- Dictionary of material appearance properties.</UserDocu>
       </Documentation>
       <Parameter Name="AppearanceProperties" Type="Dict"/>
+    </Attribute>
+    <Attribute Name="LegacyProperties" ReadOnly="true">
+      <Documentation>
+        <UserDocu>deprecated -- Dictionary of material legacy properties.</UserDocu>
+      </Documentation>
+      <Parameter Name="LegacyProperties" Type="Dict"/>
     </Attribute>
     <Methode Name="getPhysicalValue" ReadOnly="true">
       <Documentation>

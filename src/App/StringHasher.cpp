@@ -507,6 +507,7 @@ void StringHasher::SaveDocFile(Base::Writer& writer) const
 
 void StringHasher::saveStream(std::ostream& stream) const
 {
+    Base::TextOutputStream textStreamWrapper(stream);
     boost::io::ios_flags_saver ifs(stream);
     stream << std::hex;
 
@@ -594,8 +595,9 @@ void StringHasher::saveStream(std::ostream& stream) const
         }
         else {
             // Reaching here means the string may contain space and newlines
+            // We rely on OutputStream (i.e. textStreamWrapper) to save the string.
             stream << ' ';
-            stream << std::dec << d._data.constData() << std::hex;
+            textStreamWrapper << d._data.constData();
         }
     }
 }

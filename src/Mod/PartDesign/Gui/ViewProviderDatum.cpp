@@ -101,6 +101,10 @@ ViewProviderDatum::~ViewProviderDatum()
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
 {
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+
     ViewProviderGeometryObject::attach ( obj );
 
     // TODO remove this field (2015-09-08, Fat-Zer)

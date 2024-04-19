@@ -32,6 +32,7 @@
 #include "DimensionGeometry.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
+#include "DrawViewDetail.h"
 
 
 using namespace TechDraw;
@@ -72,6 +73,14 @@ void pointPair::scale(double factor)
 // project the points onto the dvp's paper plane.
 void pointPair::project(const DrawViewPart* dvp)
 {
+    auto detailView = dynamic_cast<const DrawViewDetail*>(dvp);
+    if (detailView) {
+        m_first = detailView->mapPoint3dToDetail(m_first) * detailView->getScale();
+        m_second = detailView->mapPoint3dToDetail(m_second) * detailView->getScale();
+        m_overrideFirst = detailView->mapPoint3dToDetail(m_overrideFirst) * detailView->getScale();
+        m_overrideSecond = detailView->mapPoint3dToDetail(m_overrideSecond) * detailView->getScale();
+        return;
+    }
     m_first = dvp->projectPoint(m_first) * dvp->getScale();
     m_second = dvp->projectPoint(m_second) * dvp->getScale();
     m_overrideFirst = dvp->projectPoint(m_overrideFirst) * dvp->getScale();

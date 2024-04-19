@@ -774,18 +774,10 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 //! TechDraw vertex names run from 0 to n-1
 TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
 {
-    const std::vector<TechDraw::VertexPtr> allVertex(DrawViewPart::getVertexGeometry());
-    size_t iTarget = DrawUtil::getIndexFromName(vertexName);
-    if (allVertex.empty()) {
-        //should not happen
-        throw Base::IndexError("DVP::getVertex - No vertices found.");
-    }
-    if (iTarget >= allVertex.size()) {
-        //should not happen
-        throw Base::IndexError("DVP::getVertex - Vertex not found.");
-    }
-
-    return allVertex.at(iTarget);
+    // Base::Console().Message("DVP::getVertex(%s)\n", vertexName.c_str());
+    auto vertexIndex = DrawUtil::getIndexFromName(vertexName);
+    auto vertex = getProjVertexByIndex(vertexIndex);
+    return vertex;
 }
 
 //! returns existing BaseGeom of 2D Edge
@@ -795,11 +787,11 @@ TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
     const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
     if (geoms.empty()) {
         //should not happen
-        throw Base::IndexError("DVP::getEdge - No edges found.");
+        return nullptr;
     }
     size_t iEdge = DrawUtil::getIndexFromName(edgeName);
     if ((unsigned)iEdge >= geoms.size()) {
-        throw Base::IndexError("DVP::getEdge - Edge not found.");
+        return nullptr;
     }
     return geoms.at(iEdge);
 }
@@ -812,11 +804,11 @@ TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
     const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
     if (faces.empty()) {
         //should not happen
-        throw Base::IndexError("DVP::getFace - No faces found.");
+        return nullptr;
     }
     size_t iFace = DrawUtil::getIndexFromName(faceName);
     if (iFace >= faces.size()) {
-        throw Base::IndexError("DVP::getFace - Face not found.");
+        return nullptr;
     }
     return faces.at(iFace);
 }
@@ -846,9 +838,7 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
     if (geoms.empty()) {
         return nullptr;
     }
-    if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Error("DVP::getGeomByIndex(%d) - invalid index - size: %d\n", idx,
-                              geoms.size());
+    if (idx >= (int)geoms.size()) {
         return nullptr;
     }
     return geoms.at(idx);
@@ -859,10 +849,9 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
     const std::vector<TechDraw::VertexPtr>& geoms = getVertexGeometry();
     if (geoms.empty()) {
-        return nullptr;
+       return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index - size: %d\n", idx);
         return nullptr;
     }
     return geoms.at(idx);
