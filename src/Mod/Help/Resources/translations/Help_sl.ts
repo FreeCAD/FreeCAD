@@ -65,8 +65,8 @@ to get French translation of the documentation.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation type="unfinished">The documentation pages will be fetched from the official
-FreeCADwiki at https://wiki.freecad.org</translation>
+      <translation>Strani z dokumentacijo se pridobiva z uradne
+FreeCADove vikistrani na https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -74,10 +74,10 @@ FreeCADwiki at https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation type="unfinished">The documentation pages will be fetched from an automatic Markdown conversion
-of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
-custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
-&apos;Pandoc&apos; Python module should be installed for optimal results.</translation>
+      <translation>Strani dokumentacije se pridobijo s samodejno Markdownovo pretvorbo FreeCADove vikistrani,
+ki gostuje na FreeCADovem GitHub računu. S spodnjimi slogovniki po meri se lahko
+složi iziris strani, da je lepši, kot na vikistrani. Za boljši učinek je treba namestiti
+pythonov modul "Markdown" ali "Pandoc".</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>

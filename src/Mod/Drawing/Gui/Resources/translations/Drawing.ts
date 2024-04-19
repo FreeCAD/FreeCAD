@@ -605,27 +605,27 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDialog.cpp" line="71"/>
+        <location filename="../../TaskDialog.cpp" line="70"/>
         <source>Project shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDialog.cpp" line="86"/>
+        <location filename="../../TaskDialog.cpp" line="85"/>
         <source>No active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDialog.cpp" line="87"/>
+        <location filename="../../TaskDialog.cpp" line="86"/>
         <source>There is currently no active document to complete the operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDialog.cpp" line="94"/>
+        <location filename="../../TaskDialog.cpp" line="93"/>
         <source>No active view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDialog.cpp" line="95"/>
+        <location filename="../../TaskDialog.cpp" line="94"/>
         <source>There is currently no active view to complete the operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -744,20 +744,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="46"/>
-        <location filename="../../TaskOrthoViews.cpp" line="1040"/>
-        <source>Make axonometric...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskOrthoViews.cpp" line="47"/>
         <location filename="../../TaskOrthoViews.cpp" line="1041"/>
-        <source>Edit axonometric settings...</source>
+        <source>Make axonometric...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="48"/>
         <location filename="../../TaskOrthoViews.cpp" line="1042"/>
+        <source>Edit axonometric settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskOrthoViews.cpp" line="49"/>
+        <location filename="../../TaskOrthoViews.cpp" line="1043"/>
         <source>Make orthographic</source>
         <translation type="unfinished"></translation>
     </message>

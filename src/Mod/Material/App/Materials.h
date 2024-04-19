@@ -294,10 +294,15 @@ public:
     void setPhysicalValue(const QString& name, const Base::Quantity& value);
     void setPhysicalValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
     void setPhysicalValue(const QString& name, const std::shared_ptr<QList<QVariant>>& value);
+    void setPhysicalValue(const QString& name, const QVariant& value);
 
     void setAppearanceValue(const QString& name, const QString& value);
     void setAppearanceValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
     void setAppearanceValue(const QString& name, const std::shared_ptr<QList<QVariant>>& value);
+    void setAppearanceValue(const QString& name, const QVariant& value);
+
+    void setValue(const QString& name, const QString& value);
+    void setValue(const QString& name, const QVariant& value);
 
     /*
      * Legacy values are thosed contained in old format files that don't fit in the new

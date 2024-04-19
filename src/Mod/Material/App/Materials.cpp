@@ -865,6 +865,15 @@ void Material::setPhysicalValue(const QString& name, const std::shared_ptr<QList
     }
 }
 
+void Material::setPhysicalValue(const QString& name, const QVariant& value)
+{
+    setPhysicalEditState(name);
+
+    if (hasPhysicalProperty(name)) {
+        _physical[name]->setValue(value);
+    }
+}
+
 void Material::setAppearanceValue(const QString& name, const QString& value)
 {
     setAppearanceEditState(name);
@@ -890,6 +899,38 @@ void Material::setAppearanceValue(const QString& name,
 
     if (hasAppearanceProperty(name)) {
         _appearance[name]->setList(*value);
+    }
+}
+
+void Material::setAppearanceValue(const QString& name, const QVariant& value)
+{
+    setAppearanceEditState(name);
+
+    if (hasAppearanceProperty(name)) {
+        _appearance[name]->setValue(value);
+    }
+}
+
+void Material::setValue(const QString& name, const QString& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
+    }
+}
+
+void Material::setValue(const QString& name, const QVariant& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
     }
 }
 

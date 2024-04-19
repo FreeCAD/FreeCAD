@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>导出文件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>显示电子表格</translation>
     </message>

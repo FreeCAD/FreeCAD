@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>MeshPart</source>
-      <translation>Obiect rețea 3D</translation>
+      <translation>Obiect de plasa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
-      <translation>Sectiune transversala...</translation>
+      <translation>Secțiune transversala...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
@@ -62,7 +62,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -572,7 +572,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Obiect rețea 3D</translation>
+      <translation>Obiect de plasa</translation>
     </message>
   </context>
   <context>
@@ -580,7 +580,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desfaceți plasă</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Desfaceți Fața</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

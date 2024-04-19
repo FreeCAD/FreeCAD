@@ -91,7 +91,7 @@ protected:
                     const QStyleOptionViewItem& option,
                     const QModelIndex& index) const;
 
-    bool newRow(const QAbstractItemModel* model, const QModelIndex& index) const;
+    virtual bool newRow(const QAbstractItemModel* model, const QModelIndex& index) const;
     QWidget* createWidget(QWidget* parent, const QVariant& item, const QModelIndex& index) const;
 };
 

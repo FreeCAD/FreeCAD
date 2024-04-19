@@ -694,7 +694,7 @@ cambiare dinamicamente la configurazione del progetto. La proprietà verrà crea
       <translation>Esporta file</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Visualizza il foglio di calcolo</translation>
     </message>

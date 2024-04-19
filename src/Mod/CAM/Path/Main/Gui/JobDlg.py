@@ -64,19 +64,19 @@ class JobCreate:
                     current_schema = FreeCAD.Units.listSchemas(idx)
                     if idx not in [2, 3, 6]:
                         msg = translate(
-                            "Path",
+                            "CAM_Job",
                             "The currently selected unit schema: \n     '{}' for this document\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
                         ).format(current_schema)
-                        header = translate("Path", "Warning")
+                        header = translate("CAM_Job", "Warning")
                         msgbox = QtGui.QMessageBox(
                             QtGui.QMessageBox.Warning, header, msg
                         )
 
                         msgbox.addButton(
-                            translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole
+                            translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole
                         )
                         msgbox.addButton(
-                            translate("Path", "Don't Show This Anymore"),
+                            translate("CAM_Job", "Don't Show This Anymore"),
                             QtGui.QMessageBox.ActionRole,
                         )
                         if msgbox.exec_() == 1:
@@ -187,7 +187,7 @@ class JobCreate:
 
         self.delegate = _ItemDelegate(self, self.dialog.modelTree)
         self.model = QtGui.QStandardItemModel(self.dialog)
-        self.model.setHorizontalHeaderLabels(["Model", "Count"])
+        self.model.setHorizontalHeaderLabels([translate("CAM_Job","Model"), translate("CAM_Job", "Count")])
 
         if self.itemsSolid.hasChildren():
             self.model.appendRow(self.itemsSolid)
@@ -269,7 +269,7 @@ class JobCreate:
             template[name] = tFile
         selectTemplate = Path.Preferences.defaultJobTemplate()
         index = 0
-        self.dialog.jobTemplate.addItem("<none>", "")
+        self.dialog.jobTemplate.addItem(translate("CAM_Job", "<none>"), "")
         for name in sorted(template):
             if template[name] == selectTemplate:
                 index = self.dialog.jobTemplate.count()

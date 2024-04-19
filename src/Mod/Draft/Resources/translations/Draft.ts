@@ -818,12 +818,17 @@ of the buttons above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="264"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="159"/>
+        <source>Grid color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="274"/>
         <source>Resets the working plane to its next position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="267"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="277"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
@@ -840,67 +845,67 @@ will be moved to the center of the view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="159"/>
         <location filename="../ui/TaskSelectPlane.ui" line="169"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="179"/>
         <source>The spacing between the smaller grid lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="162"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="172"/>
         <source>Grid spacing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="179"/>
         <location filename="../ui/TaskSelectPlane.ui" line="189"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="199"/>
         <source>The number of squares between each main line of the grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="182"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="192"/>
         <source>Main line every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="196"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="206"/>
         <source>Grid extension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="203"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="213"/>
         <source> lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="216"/>
-        <location filename="../ui/TaskSelectPlane.ui" line="228"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="238"/>
         <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="231"/>
         <source>Snapping radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="239"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="249"/>
         <source>Centers the view on the current working plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="242"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="252"/>
         <source>Center view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="251"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="261"/>
         <source>Resets the working plane to its previous position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="254"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="264"/>
         <source>Previous</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4701,58 +4706,67 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="311"/>
+        <location filename="../../draftobjects/patharray.py" line="322"/>
         <source>, path object doesn&apos;t have &apos;Edges&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="418"/>
-        <location filename="../../draftobjects/patharray.py" line="424"/>
-        <location filename="../../draftobjects/patharray.py" line="430"/>
-        <source>&apos;PathObj&apos; property will be migrated to &apos;PathObject&apos;</source>
+        <location filename="../../draftobjects/patharray.py" line="420"/>
+        <source>migrated &apos;PathObj&apos; property to &apos;PathObject&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="465"/>
+        <location filename="../../draftobjects/patharray.py" line="424"/>
+        <source>migrated &apos;PathSubs&apos; property to &apos;PathSubelements&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/patharray.py" line="428"/>
+        <source>migrated &apos;Xlate&apos; property to &apos;ExtraTranslation&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/patharray.py" line="431"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
+        <location filename="../../draftobjects/pointarray.py" line="145"/>
+        <source>added &apos;Fuse&apos; property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/patharray.py" line="466"/>
         <source>Start Offset too large for path length. Using zero instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="471"/>
+        <location filename="../../draftobjects/patharray.py" line="472"/>
         <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="533"/>
+        <location filename="../../draftobjects/patharray.py" line="534"/>
         <source>Length of tangent vector is zero. Copy not aligned.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="547"/>
-        <location filename="../../draftobjects/patharray.py" line="569"/>
+        <location filename="../../draftobjects/patharray.py" line="548"/>
+        <location filename="../../draftobjects/patharray.py" line="570"/>
         <source>Length of normal vector is zero. Using a default axis instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="553"/>
-        <location filename="../../draftobjects/patharray.py" line="575"/>
+        <location filename="../../draftobjects/patharray.py" line="554"/>
+        <location filename="../../draftobjects/patharray.py" line="576"/>
         <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="565"/>
+        <location filename="../../draftobjects/patharray.py" line="566"/>
         <source>Cannot calculate normal vector. Using the default normal instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="581"/>
+        <location filename="../../draftobjects/patharray.py" line="582"/>
         <source>AlignMode {} is not implemented</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/pointarray.py" line="140"/>
-        <location filename="../../draftobjects/pointarray.py" line="156"/>
-        <source>added property &apos;ExtraPlacement&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5386,7 +5400,7 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_selectplane.py" line="148"/>
+        <location filename="../../draftguitools/gui_selectplane.py" line="154"/>
         <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5394,6 +5408,16 @@ The final angle will be the base angle plus this amount.</source>
         <location filename="../../draftutils/params.py" line="182"/>
         <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/pointarray.py" line="139"/>
+        <source>added &apos;ExtraPlacement&apos; property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/pointarray.py" line="142"/>
+        <source>migrated &apos;PointList&apos; property to &apos;PointObject&apos;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5600,7 +5624,7 @@ from menu Tools -&gt; Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pointarray.py" line="219"/>
+        <location filename="../../draftobjects/pointarray.py" line="208"/>
         <source>Point object doesn&apos;t have a discrete point, it cannot be used for an array.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5768,12 +5792,12 @@ from menu Tools -&gt; Addon Manager</source>
 <context>
     <name>Draft_SelectPlane</name>
     <message>
-        <location filename="../../draftguitools/gui_selectplane.py" line="57"/>
+        <location filename="../../draftguitools/gui_selectplane.py" line="58"/>
         <source>Select plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_selectplane.py" line="60"/>
+        <location filename="../../draftguitools/gui_selectplane.py" line="61"/>
         <source>Select 3 vertices, one or more shapes or an object to define a working plane.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7087,31 +7111,31 @@ set True for fusion or False for compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="87"/>
         <source>The base object that will be duplicated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/patharray.py" line="185"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="94"/>
         <source>The object along which the copies will be distributed. It must contain &apos;Edges&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="100"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="112"/>
         <source>Number of copies to create.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
         <source>Rotation factor of the twisted array.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="335"/>
-        <location filename="../../draftobjects/patharray.py" line="216"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
-        <location filename="../../draftobjects/pointarray.py" line="100"/>
+        <location filename="../../draftobjects/patharray.py" line="227"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="126"/>
+        <location filename="../../draftobjects/pointarray.py" line="111"/>
         <source>Show the individual array elements (only for Link arrays)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7218,33 +7242,33 @@ Leave this property empty to create copies along the entire &apos;Path Object&ap
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="208"/>
+        <location filename="../../draftobjects/patharray.py" line="219"/>
         <source>Number of copies to create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="227"/>
+        <location filename="../../draftobjects/patharray.py" line="238"/>
         <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="235"/>
+        <location filename="../../draftobjects/patharray.py" line="246"/>
         <source>Alignment vector for &apos;Tangent&apos; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="243"/>
+        <location filename="../../draftobjects/patharray.py" line="254"/>
         <source>Force use of &apos;Vertical Vector&apos; as local Z direction when using &apos;Original&apos; or &apos;Tangent&apos; alignment mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="251"/>
+        <location filename="../../draftobjects/patharray.py" line="262"/>
         <source>Direction of the local Z axis when &apos;Force Vertical&apos; is true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="259"/>
+        <location filename="../../draftobjects/patharray.py" line="270"/>
         <source>Method to orient the copies along the path.
 - Original: X is curve tangent, Y is normal, and Z is the cross product.
 - Frenet: aligns the object following the local coordinate system along the path.
@@ -7254,17 +7278,17 @@ To get better results with &apos;Original&apos; or &apos;Tangent&apos; you may h
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="268"/>
+        <location filename="../../draftobjects/patharray.py" line="279"/>
         <source>Length from the start of the path to the first copy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="276"/>
+        <location filename="../../draftobjects/patharray.py" line="287"/>
         <source>Length from the end of the path to the last copy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="286"/>
+        <location filename="../../draftobjects/patharray.py" line="297"/>
         <source>Orient the copies along the path depending on the &apos;Align Mode&apos;.
 Otherwise the copies will have the same orientation as the original Base object.</source>
         <translation type="unfinished"></translation>
@@ -7279,6 +7303,9 @@ Otherwise the copies will have the same orientation as the original Base object.
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="124"/>
+        <location filename="../../draftobjects/patharray.py" line="211"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="102"/>
+        <location filename="../../draftobjects/pointarray.py" line="86"/>
         <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7382,14 +7409,13 @@ This property is read-only, as the number depends on the parameters of the array
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pointarray.py" line="83"/>
+        <location filename="../../draftobjects/pointarray.py" line="94"/>
         <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in &apos;Point Object&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pointarray.py" line="92"/>
-        <location filename="../../draftobjects/pointarray.py" line="135"/>
+        <location filename="../../draftobjects/pointarray.py" line="103"/>
         <source>Additional placement, shift and rotation, that will be applied to each copy</source>
         <translation type="unfinished"></translation>
     </message>

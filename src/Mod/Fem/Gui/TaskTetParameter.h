@@ -69,6 +69,7 @@ public:
 private Q_SLOTS:
     void SwitchMethod(int Value);
     void maxSizeValueChanged(double Value);
+    void minSizeValueChanged(double Value);
     void setQuadric(int s);
     void setGrowthRate(double v);
     void setSegsPerEdge(int v);
