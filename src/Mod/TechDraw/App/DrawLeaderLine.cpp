@@ -95,7 +95,7 @@ DrawLeaderLine::DrawLeaderLine()
 
     ADD_PROPERTY_TYPE(Scalable ,(false), group, App::Prop_None, "Scale line with LeaderParent");
     ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()), group, App::Prop_None, "Forces last line segment to be horizontal");
-    ADD_PROPERTY_TYPE(RotatesWithParent ,(false), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(RotatesWithParent ,(true), group, App::Prop_None,
                       "If true, leader rotates around parent.  If false, only first segment of leader changes with parent rotation.");
 
 
@@ -127,7 +127,7 @@ short DrawLeaderLine::mustExecute() const
     if (docObj && docObj->isTouched()) {
         return 1;  // Object property points to is touched
     }
-    
+
     if (WayPoints.isTouched()) {
         return 1;
     }
@@ -241,7 +241,7 @@ Base::Vector3d DrawLeaderLine::getTileOrigin() const
         Base::Vector3d second = wp.rbegin()[1];
         return (last + second) / 2.0;
     }
-    
+
     Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
     return Base::Vector3d();
 }
@@ -265,7 +265,7 @@ Base::Vector3d DrawLeaderLine::getTailPoint() const
     if (!wp.empty()) {
         return wp.rbegin()[0];  // Last
     }
-    
+
     Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
     return Base::Vector3d();
 }
