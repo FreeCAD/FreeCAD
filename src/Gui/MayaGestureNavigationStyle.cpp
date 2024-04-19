@@ -397,7 +397,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         //reset/start move detection machine
                         this->mousedownPos = pos;
                         this->mouseMoveThresholdBroken = false;
-                        pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
+                        setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
                         this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
@@ -480,11 +480,11 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (gesture->state == SoGestureEvent::SbGSStart
                     || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
                 if (type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
                     setViewingMode(NavigationStyle::PANNING);
                     processed = true;
                 } else if (type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
                     setRotationCenter(getFocalPoint());
                     setViewingMode(NavigationStyle::DRAGGING);
                     processed = true;

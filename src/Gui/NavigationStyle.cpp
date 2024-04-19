@@ -593,22 +593,23 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
     }
 }
 
-void NavigationStyle::pan(SoCamera* camera)
+void NavigationStyle::setupPanningPlane(const SoCamera* camera)
 {
     // The plane we're projecting the mouse coordinates to get 3D
     // coordinates should stay the same during the whole pan
     // operation, so we should calculate this value here.
-    if (!camera) { // can happen for empty scenegraph
+    if (!camera) {  // can happen for empty scenegraph
         this->panningplane = SbPlane(SbVec3f(0, 0, 1), 0);
     }
     else {
-        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-        float aspectratio = vp.getViewportAspectRatio();
+        const SbViewportRegion& vp = viewer->getViewportRegion();
+        const float aspectratio = vp.getViewportAspectRatio();
         SbViewVolume vv = camera->getViewVolume(aspectratio);
 
         // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
-        if(aspectratio < 1.0)
+        if (aspectratio < 1.0) {
             vv.scale(1.0 / aspectratio);
+        }
 
         this->panningplane = vv.getPlane(camera->focalDistance.getValue());
     }
@@ -1382,7 +1383,7 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
 
     case PANNING:
         animator->stop();
-        pan(viewer->getSoRenderManager()->getCamera());
+        setupPanningPlane(viewer->getSoRenderManager()->getCamera());
         this->interactiveCountInc();
         break;
 

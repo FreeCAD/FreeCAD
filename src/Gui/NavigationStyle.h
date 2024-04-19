@@ -205,7 +205,7 @@ protected:
                    const SbPlane & panplane,
                    const SbVec2f & previous,
                    const SbVec2f & current);
-    void pan(SoCamera* camera);
+    void setupPanningPlane(const SoCamera* camera);
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
     int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);

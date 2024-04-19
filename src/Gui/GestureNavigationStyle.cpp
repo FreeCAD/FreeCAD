@@ -538,7 +538,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> PanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~PanState() = default;
 
@@ -585,7 +585,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> StickyPanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~StickyPanState(){
         auto &ns = this->outermost_context().ns;
@@ -631,7 +631,7 @@ public:
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> TiltState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~TiltState() = default;
 
@@ -681,7 +681,7 @@ public:
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> GestureState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
