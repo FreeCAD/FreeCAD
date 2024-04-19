@@ -327,9 +327,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         *dims << "TechDraw_DiameterDimension";
         *dims << "TechDraw_AngleDimension";
         *dims << "TechDraw_3PtAngleDimension";
+        *dims << "TechDraw_ExtentGroup";
     }
 
-    *dims << "TechDraw_ExtentGroup";
     // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
     // *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
