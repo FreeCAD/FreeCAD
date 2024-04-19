@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>스프레드시트 표시</translation>
     </message>

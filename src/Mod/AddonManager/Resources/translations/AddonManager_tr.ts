@@ -48,7 +48,7 @@
     <message>
       <location filename="../../compact_view.py" line="93"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Güncelleme Mevcut</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
@@ -144,7 +144,7 @@ Eklenti Yöneticisinin bunları otomatik olarak kurmasını istiyor musunuz? Ekl
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Bu Eklentinin neler sağladığının açıklaması. Eklenti Yöneticisinde görüntülenir. Bunun için bunun bir FreeCAD Eklentisi olduğunu belirtmemize gerek yoktur.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -398,7 +398,7 @@ Eklenti Yöneticisinin bunları otomatik olarak kurmasını istiyor musunuz? Ekl
     <message>
       <location filename="../../expanded_view.py" line="134"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Güncelleme Mevcut</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
@@ -1157,7 +1157,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="352"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Şimdi yeniden başlat</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="353"/>
@@ -1195,7 +1195,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Güncellemeleri denetle</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
@@ -1205,7 +1205,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Geliştirici araçları....</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
@@ -1241,28 +1241,28 @@ installed addons will be checked for available updates
       <translation>Yazar</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="165"/>
+      <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
       <translation type="unfinished">New Python Version Detected</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="170"/>
+      <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="200"/>
+      <location filename="../../manage_python_dependencies.py" line="199"/>
       <source>Processing, please wait...</source>
       <translation type="unfinished">Processing, please wait...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="248"/>
+      <location filename="../../manage_python_dependencies.py" line="247"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Güncelle</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="343"/>
+      <location filename="../../manage_python_dependencies.py" line="342"/>
       <source>Updating...</source>
       <translation type="unfinished">Updating...</translation>
     </message>
@@ -1353,7 +1353,7 @@ installed addons will be checked for available updates
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Yüklendi</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="294"/>
@@ -2403,17 +2403,17 @@ installed addons will be checked for available updates
       <translation type="unfinished">some addons may have been updated</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="83"/>
+      <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
       <translation type="unfinished">Loading info for {} from the FreeCAD Macro Recipes wiki...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="91"/>
+      <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
       <translation type="unfinished">Loading page for {} from {}...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="109"/>
+      <location filename="../../addonmanager_readme_controller.py" line="108"/>
       <source>Failed to download data from {} -- received response code {}.</source>
       <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
     </message>

@@ -2713,7 +2713,13 @@ QWidget* PropertyPlacementItem::createEditor(QWidget* parent, const QObject* rec
 {
     auto pe = new PlacementEditor(this->propertyName(), parent);
     QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
-    pe->setDisabled(isReadOnly());
+
+    // The Placement dialog only works if property is part of a DocumentObject
+    bool readonly = isReadOnly();
+    if (auto prop = getFirstProperty()) {
+        readonly |= (!prop->getContainer()->isDerivedFrom<App::DocumentObject>());
+    }
+    pe->setDisabled(readonly);
     return pe;
 }
 

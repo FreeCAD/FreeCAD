@@ -499,6 +499,9 @@ Material::Material(const Material& other)
         MaterialProperty prop(it.second);
         _appearance[it.first] = std::make_shared<MaterialProperty>(prop);
     }
+    for (auto& it : other._legacy) {
+        _legacy[it.first] = it.second;
+    }
 }
 
 QString Material::getAuthorAndLicense() const
@@ -862,6 +865,15 @@ void Material::setPhysicalValue(const QString& name, const std::shared_ptr<QList
     }
 }
 
+void Material::setPhysicalValue(const QString& name, const QVariant& value)
+{
+    setPhysicalEditState(name);
+
+    if (hasPhysicalProperty(name)) {
+        _physical[name]->setValue(value);
+    }
+}
+
 void Material::setAppearanceValue(const QString& name, const QString& value)
 {
     setAppearanceEditState(name);
@@ -888,6 +900,45 @@ void Material::setAppearanceValue(const QString& name,
     if (hasAppearanceProperty(name)) {
         _appearance[name]->setList(*value);
     }
+}
+
+void Material::setAppearanceValue(const QString& name, const QVariant& value)
+{
+    setAppearanceEditState(name);
+
+    if (hasAppearanceProperty(name)) {
+        _appearance[name]->setValue(value);
+    }
+}
+
+void Material::setValue(const QString& name, const QString& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
+    }
+}
+
+void Material::setValue(const QString& name, const QVariant& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
+    }
+}
+
+void Material::setLegacyValue(const QString& name, const QString& value)
+{
+    setEditStateAlter();
+
+    _legacy[name] = value;
 }
 
 std::shared_ptr<MaterialProperty> Material::getPhysicalProperty(const QString& name)
@@ -1045,6 +1096,19 @@ bool Material::hasAppearanceProperty(const QString& name) const
         return false;
     }
     return true;
+}
+
+bool Material::hasNonLegacyProperty(const QString& name) const
+{
+    if (hasPhysicalProperty(name) || hasAppearanceProperty(name)) {
+        return true;
+    }
+    return false;
+}
+
+bool Material::hasLegacyProperties() const
+{
+    return !_legacy.empty();
 }
 
 bool Material::isInherited(const QString& uuid) const
@@ -1463,6 +1527,10 @@ Material& Material::operator=(const Material& other)
     for (auto& it : other._appearance) {
         MaterialProperty prop(it.second);
         _appearance[it.first] = std::make_shared<MaterialProperty>(prop);
+    }
+    _legacy.clear();
+    for (auto& it : other._legacy) {
+        _legacy[it.first] = it.second;
     }
 
     return *this;

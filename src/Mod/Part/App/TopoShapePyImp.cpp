@@ -122,7 +122,11 @@ static Py_hash_t _TopoShapeHash(PyObject* self)
                         "This reference is no longer valid!");
         return 0;
     }
+#if OCC_VERSION_HEX >= 0x070800
+    return std::hash<TopoDS_Shape> {}(static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape());
+#else
     return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
+#endif
 }
 
 struct TopoShapePyInit
@@ -2305,7 +2309,7 @@ PyObject* TopoShapePy::project(PyObject *args)
 
         algo.Compute3d(Standard_True);
         algo.SetLimit(Standard_True);
-        algo.SetParams(1.e-6, 1.e-6, GeomAbs_C1, 14, 16);
+        algo.SetParams(1.e-6, 1.e-6, GeomAbs_C1, 14, 10000);
         //algo.SetDefaultParams();
         algo.Build();
         return new TopoShapePy(new TopoShape(algo.Projection()));

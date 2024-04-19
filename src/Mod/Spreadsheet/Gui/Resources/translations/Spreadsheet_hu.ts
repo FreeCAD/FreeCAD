@@ -696,7 +696,7 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
       <translation>Fájl exportálása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Számolótábla mutatása</translation>
     </message>

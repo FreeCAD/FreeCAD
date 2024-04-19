@@ -550,17 +550,17 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons without a license</source>
-      <translation type="unfinished">Hide Addons without a license</translation>
+      <translation>Skrij dodatke brez dovoljenja</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
-      <translation type="unfinished">Hide Addons with non-FSF Free/Libre license</translation>
+      <translation>Skrij dodatke brez Libre dovoljenja organizacije FSF</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons with non-OSI-approved license</source>
-      <translation type="unfinished">Hide Addons with non-OSI-approved license</translation>
+      <translation>Skrij dodatke brez dovoljenja Odprtokodne pobude (OSI)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="144"/>
@@ -605,12 +605,12 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../AddonManagerOptions.ui" line="324"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>Vrednoten spletni naslov vira</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="343"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</translation>
+      <translation>Spletni naslov podatkov o točkovanju dodatka (več o oblikovanju in gostovanju si poglejte na vikistani Upravljalnik dodatkov - Addon Manager).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -1241,28 +1241,28 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>Ustvarjalec</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="165"/>
+      <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
       <translation>Zaznana je nova Pythonova različica</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="170"/>
+      <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>Kaže, da je tokrat ta različica Pythona prvič uporabljena z Upravljalnikom dodatkov (Addon Manager). Ali želite zanjo samodejno namestiti enako odvisnost?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="200"/>
+      <location filename="../../manage_python_dependencies.py" line="199"/>
       <source>Processing, please wait...</source>
       <translation>V obdelavi, prosimo, počakajte ...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="248"/>
+      <location filename="../../manage_python_dependencies.py" line="247"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Posodobi</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="343"/>
+      <location filename="../../manage_python_dependencies.py" line="342"/>
       <source>Updating...</source>
       <translation>Posodabljanje ...</translation>
     </message>
@@ -2129,7 +2129,7 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     <message>
       <location filename="../../addonmanager_macro.py" line="152"/>
       <source>Unable to open macro wiki page at {}</source>
-      <translation type="unfinished">Unable to open macro wiki page at {}</translation>
+      <translation>Ni mogoče odpreti vikistrani z makri na naslovu {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="165"/>
@@ -2403,17 +2403,17 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>nekateri dodatki so bili lahko posodobljeni</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="83"/>
+      <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
       <translation type="unfinished">Loading info for {} from the FreeCAD Macro Recipes wiki...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="91"/>
+      <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
       <translation type="unfinished">Loading page for {} from {}...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_readme_controller.py" line="109"/>
+      <location filename="../../addonmanager_readme_controller.py" line="108"/>
       <source>Failed to download data from {} -- received response code {}.</source>
       <translation type="unfinished">Failed to download data from {} -- received response code {}.</translation>
     </message>

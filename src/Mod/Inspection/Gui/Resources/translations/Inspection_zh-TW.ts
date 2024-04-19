@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Get distance information</source>
-      <translation type="unfinished">Get distance information</translation>
+      <translation>取得距離資訊</translation>
     </message>
   </context>
   <context>

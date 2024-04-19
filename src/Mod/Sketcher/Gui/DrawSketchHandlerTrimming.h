@@ -91,89 +91,100 @@ public:
     void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
-
-        int GeoId = getPreselectCurve();
-
-        if (GeoId > -1) {
-            auto sk = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
-            int GeoId1, GeoId2;
-            Base::Vector3d intersect1, intersect2;
-            if (sk->seekTrimPoints(GeoId,
-                                   Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
-                                   GeoId1,
-                                   intersect1,
-                                   GeoId2,
-                                   intersect2)) {
-
-                EditMarkers.resize(0);
-
-                if (GeoId1 != Sketcher::GeoEnum::GeoUndef) {
-                    EditMarkers.emplace_back(intersect1.x, intersect1.y);
-                }
-                else {
-                    auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
-                    EditMarkers.emplace_back(start.x, start.y);
-                }
-
-                if (GeoId2 != Sketcher::GeoEnum::GeoUndef) {
-                    EditMarkers.emplace_back(intersect2.x, intersect2.y);
-                }
-                else {
-                    auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
-                    EditMarkers.emplace_back(end.x, end.y);
-                }
-
-                drawEditMarkers(EditMarkers,
-                                2);  // maker augmented by two sizes (see supported marker sizes)
-            }
+        if (mousePressed) {
+            executeCommands(onSketchPos);
         }
         else {
-            EditMarkers.resize(0);
-            drawEditMarkers(EditMarkers, 2);
+            int GeoId = getPreselectCurve();
+
+            if (GeoId > -1) {
+                auto sk = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                int GeoId1, GeoId2;
+                Base::Vector3d intersect1, intersect2;
+                if (sk->seekTrimPoints(GeoId,
+                                       Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
+                                       GeoId1,
+                                       intersect1,
+                                       GeoId2,
+                                       intersect2)) {
+
+                    EditMarkers.resize(0);
+
+                    if (GeoId1 != Sketcher::GeoEnum::GeoUndef) {
+                        EditMarkers.emplace_back(intersect1.x, intersect1.y);
+                    }
+                    else {
+                        auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
+                        EditMarkers.emplace_back(start.x, start.y);
+                    }
+
+                    if (GeoId2 != Sketcher::GeoEnum::GeoUndef) {
+                        EditMarkers.emplace_back(intersect2.x, intersect2.y);
+                    }
+                    else {
+                        auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
+                        EditMarkers.emplace_back(end.x, end.y);
+                    }
+
+                    // maker augmented by two sizes (see supported marker sizes)
+                    drawEditMarkers(EditMarkers, 2);
+                }
+            }
+            else {
+                EditMarkers.resize(0);
+                drawEditMarkers(EditMarkers, 2);
+            }
         }
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+        mousePressed = true;
+
+        EditMarkers.resize(0);
+        drawEditMarkers(EditMarkers);
+
         return true;
     }
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        int GeoId = getPreselectCurve();
-        if (GeoId > -1) {
-            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->isDerivedFrom<Part::GeomTrimmedCurve>() || geom->is<Part::GeomCircle>()
-                || geom->is<Part::GeomEllipse>() || geom->is<Part::GeomBSplineCurve>()) {
-                try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                          "trim(%d,App.Vector(%f,%f,0))",
-                                          GeoId,
-                                          onSketchPos.x,
-                                          onSketchPos.y);
-                    Gui::Command::commitCommand();
-                    tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
-                }
-                catch (const Base::Exception&) {
-                    Gui::NotifyError(sketchgui,
-                                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                     QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge"));
+        mousePressed = false;
 
-                    Gui::Command::abortCommand();
-                }
-            }
-
-            EditMarkers.resize(0);
-            drawEditMarkers(EditMarkers);
-        }
-        else {  // exit the trimming tool if the user clicked on empty space
-            sketchgui
-                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
-        }
+        executeCommands(onSketchPos);
 
         return true;
+    }
+
+    void executeCommands(Base::Vector2d onSketchPos)
+    {
+        int GeoId = getPreselectCurve();
+        if (GeoId < 0) {
+            return;
+        }
+
+        const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(GeoId);
+        if (geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()
+            || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>()) {
+            try {
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "trim(%d,App.Vector(%f,%f,0))",
+                                      GeoId,
+                                      onSketchPos.x,
+                                      onSketchPos.y);
+                Gui::Command::commitCommand();
+                tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+            }
+            catch (const Base::Exception&) {
+                Gui::NotifyError(sketchgui,
+                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
+                                 QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge"));
+
+                Gui::Command::abortCommand();
+            }
+        }
     }
 
 private:
@@ -191,6 +202,7 @@ private:
 
 private:
     std::vector<Base::Vector2d> EditMarkers;
+    bool mousePressed = false;
 };
 
 

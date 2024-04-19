@@ -196,6 +196,17 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
         }
     }
 
+    // Older workbenches may try files outside the context of a library
+    {
+        QMutexLocker locker(&_mutex);
+
+        if (MaterialConfigLoader::isConfigStyle(path)) {
+            auto material = MaterialConfigLoader::getMaterialFromPath(nullptr, path);
+
+            return material;
+        }
+    }
+
     throw MaterialNotFound();
 }
 

@@ -43,7 +43,6 @@
 #include <Gui/PrefWidgets.h>
 #include <Gui/SpinBox.h>
 #include <Gui/WaitCursor.h>
-// #include <Gui/FileDialog.h>
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/ModelManager.h>
@@ -331,8 +330,9 @@ void BaseDelegate::setEditorData(QWidget* editor, const QModelIndex& index) cons
         return;
     }
     if (type == Materials::MaterialValue::Quantity) {
-        auto input = dynamic_cast<Gui::InputField*>(editor);
-        input->setQuantityString(item.toString());
+        auto input = dynamic_cast<Gui::QuantitySpinBox*>(editor);
+        // input->setQuantityString(item.toString());
+        input->setValue(item.value<Base::Quantity>());
         return;
     }
     if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::ImageList) {
@@ -354,10 +354,11 @@ void BaseDelegate::setModelData(QWidget* editor,
         value = chooser->fileName();
     }
     else if (type == Materials::MaterialValue::Quantity) {
-        auto input = dynamic_cast<Gui::InputField*>(editor);
+        auto input = dynamic_cast<Gui::QuantitySpinBox*>(editor);
         // value = input->text();
         // return;
-        auto quantity = Base::Quantity::parse(input->text());
+        // auto quantity = Base::Quantity::parse(input->text());
+        auto quantity = input->value();
         value = QVariant::fromValue(quantity);
     }
     else if (type == Materials::MaterialValue::Integer) {
@@ -383,6 +384,7 @@ void BaseDelegate::setModelData(QWidget* editor,
     }
 
     setValue(model, index, value);
+    // Q_EMIT model->dataChanged(index, index);
 }
 
 QWidget* BaseDelegate::createEditor(QWidget* parent,

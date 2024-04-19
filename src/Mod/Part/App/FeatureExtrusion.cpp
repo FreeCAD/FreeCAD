@@ -320,7 +320,7 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
         Base::SignalException se;
 #endif
         std::vector<TopoShape> drafts;
-        ExtrusionHelper::makeElementDraft(params, myShape, drafts);
+        ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
         if (drafts.empty()) {
             Standard_Failure::Raise("Drafting shape failed");
         }

@@ -49,6 +49,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
     this->groupLayout()->addWidget(proxy);
 
     ui->doubleSpinBox_MaxSize->setValue(pcObject->MaxSize.getValue());
+    ui->doubleSpinBox_MinSize->setValue(pcObject->MinSize.getValue());
     ui->comboBox_Fineness->setCurrentIndex(pcObject->Fineness.getValue());
     ui->checkBox_SecondOrder->setChecked(pcObject->SecondOrder.getValue());
     ui->doubleSpinBox_GrowthRate->setValue(pcObject->GrowthRate.getValue());
@@ -60,6 +61,10 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
                      qOverload<double>(&QDoubleSpinBox::valueChanged),
                      this,
                      &TaskTetParameter::maxSizeValueChanged);
+    QObject::connect(ui->doubleSpinBox_MinSize,
+                     qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this,
+                     &TaskTetParameter::minSizeValueChanged);
     QObject::connect(ui->comboBox_Fineness,
                      qOverload<int>(&QComboBox::activated),
                      this,
@@ -117,6 +122,12 @@ void TaskTetParameter::SwitchMethod(int Value)
 void TaskTetParameter::maxSizeValueChanged(double Value)
 {
     pcObject->MaxSize.setValue(Value);
+    touched = true;
+}
+
+void TaskTetParameter::minSizeValueChanged(double Value)
+{
+    pcObject->MinSize.setValue(Value);
     touched = true;
 }
 

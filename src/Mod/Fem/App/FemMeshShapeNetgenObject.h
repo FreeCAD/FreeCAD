@@ -39,6 +39,7 @@ public:
     ~FemMeshShapeNetgenObject() override;
 
     App::PropertyFloat MaxSize;
+    App::PropertyFloat MinSize;
     App::PropertyBool SecondOrder;
     App::PropertyEnumeration Fineness;
     App::PropertyFloat GrowthRate;

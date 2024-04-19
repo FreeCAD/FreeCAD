@@ -45,9 +45,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     FeatureProcessing ... Are the processing check boxes supported by the operation
     """
 
-    def initPage(self, obj):
-        self.setTitle("Profile - " + obj.Label)
-        self.updateVisibility()
+    # def initPage(self, obj):
+    #     self.setTitle("Profile - " + obj.Label)
+    #     self.updateVisibility()
 
     def profileFeatures(self):
         """profileFeatures() ... return which of the optional profile features are supported.
@@ -162,9 +162,9 @@ Command = PathOpGui.SetupOperation(
     PathProfile.Create,
     TaskPanelOpPage,
     "CAM_Profile",
-    QT_TRANSLATE_NOOP("CAM", "Profile"),
+    QT_TRANSLATE_NOOP("CAM_Profile", "Profile"),
     QT_TRANSLATE_NOOP(
-        "CAM", "Profile entire model, selected face(s) or selected edge(s)"
+        "CAM_Profile", "Profile entire model, selected face(s) or selected edge(s)"
     ),
     PathProfile.SetupProperties,
 )

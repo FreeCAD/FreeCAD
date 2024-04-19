@@ -120,7 +120,7 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
     std::stringstream ErrorMsg;
 
     if (boost::regex_search(begin, end, what, re, flags)) {
-        return what.str();//TODO: use std::stoi() in c++11
+        return what.str();
     } else {
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
@@ -1836,7 +1836,8 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
 bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto vertex = ownerView->getVertex(element);
+    auto vertexIndex = DrawUtil::getIndexFromName(element);
+    auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
     if (vertex) {
         return vertex->getCosmetic();
     }
