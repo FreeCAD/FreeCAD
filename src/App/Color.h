@@ -27,6 +27,7 @@
 #ifdef __GNUC__
 # include <cstdint>
 #endif
+#include <cmath>
 #include <string>
 
 #include <FCGlobal.h>
@@ -130,9 +131,9 @@ public:
     inline T asValue() const
     {
         // clang-format off
-        return(T(int(r * 255.0F + 0.5F),
-                 int(g * 255.0F + 0.5F),
-                 int(b * 255.0F + 0.5F)));
+        return(T(int(std::lround(r * 255.0F)),
+                 int(std::lround(g * 255.0F)),
+                 int(std::lround(b * 255.0F))));
         // clang-format on
     }
     /**
