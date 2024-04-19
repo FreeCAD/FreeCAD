@@ -5,6 +5,7 @@ target_sources(
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Branding.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Color.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ComplexGeoData.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Document.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Expression.cpp
