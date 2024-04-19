@@ -951,44 +951,17 @@ void NoneWorkbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
     Q_UNUSED(recipient);
     Q_UNUSED(item);
+    StdWorkbench::setupContextMenu(recipient, item);
 }
 
 MenuItem* NoneWorkbench::setupMenuBar() const
 {
-    // Setup the default menu bar
-    auto menuBar = new MenuItem;
-
-    // File
-    auto file = new MenuItem( menuBar );
-    file->setCommand("&File");
-    *file << "Std_Quit";
-
-    // Edit
-    auto edit = new MenuItem( menuBar );
-    edit->setCommand("&Edit");
-    *edit << "Std_DlgPreferences";
-
-    // View
-    auto view = new MenuItem( menuBar );
-    view->setCommand("&View");
-    *view << "Std_Workbench";
-
-    // Separator
-    auto sep = new MenuItem( menuBar );
-    sep->setCommand("Separator");
-
-    // Help
-    auto help = new MenuItem( menuBar );
-    help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_About";
-
-    return menuBar;
+    return StdWorkbench::setupMenuBar();
 }
 
 ToolBarItem* NoneWorkbench::setupToolBars() const
 {
-    auto root = new ToolBarItem;
-    return root;
+    return StdWorkbench::setupToolBars();
 }
 
 ToolBarItem* NoneWorkbench::setupCommandBars() const

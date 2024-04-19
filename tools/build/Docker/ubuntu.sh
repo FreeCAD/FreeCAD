@@ -13,4 +13,4 @@ apt-get install --no-install-recommends --yes build-essential cmake doxygen git 
     libzipios++-dev netgen netgen-headers pyside2-tools python3-dev \
     python3-matplotlib python3-pivy python3-ply python3-pyside2.qtsvg \
     python3-pyside2.qtuitools qtchooser qttools5-dev shiboken2 swig \
-    qtwebengine5-dev qtwayland5
+    qtwayland5
