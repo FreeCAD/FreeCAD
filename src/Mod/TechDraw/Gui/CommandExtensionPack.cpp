@@ -977,7 +977,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
         double circleRadius = (vertexPoints[1] - vertexPoints[0]).Length() / objFeat->getScale();
         auto center = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoints[0]);
         TechDraw::BaseGeomPtr baseGeo =
-            std::make_shared<TechDraw::Circle>(vertexPoints[0], circleRadius);
+            std::make_shared<TechDraw::Circle>(center, circleRadius);
         std::string circleTag = objFeat->addCosmeticEdge(baseGeo);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(circleTag);
         _setLineAttributes(circleEdge);
@@ -1242,10 +1242,15 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         }
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
         TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        // ends are scaled and rotated
         Base::Vector3d lineStart = lineGen->points.at(0);
+        lineStart = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineStart);
         Base::Vector3d lineEnd = lineGen->points.at(1);
+        lineEnd = CosmeticVertex::makeCanonicalPointInverted(objFeat, lineEnd);
         TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
         Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
+        vertexPoint = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoint);
+
         Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
         if (!isParallel) {
             float dummy = halfVector.x;
@@ -1254,9 +1259,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         }
         Base::Vector3d startPoint = vertexPoint + halfVector;
         Base::Vector3d endPoint = vertexPoint - halfVector;
-        // startPoint.y = -startPoint.y;
-        // endPoint.y = -endPoint.y;
-        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeCanonicalLine(objFeat, startPoint, endPoint);
+        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeLineFromCanonicalPoints(startPoint, endPoint);
         std::string lineTag = objFeat->addCosmeticEdge(cLine);
         TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
         _setLineAttributes(lineEdge);
