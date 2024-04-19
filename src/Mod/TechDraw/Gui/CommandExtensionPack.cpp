@@ -867,7 +867,6 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
 
-            // double scale = objFeat->getScale();
             std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
             for (auto pt : interPoints) {
                 // geometry points are inverted

@@ -621,7 +621,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
             TopExp_Explorer explorer(sectionShape, TopAbs_VERTEX);
             while (explorer.More()) {
                 Base::Vector3d pt(DrawUtil::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
-                interPoints.push_back(DrawUtil::invertY(pt));
+                interPoints.push_back(pt);
                 explorer.Next();
             }
         }
