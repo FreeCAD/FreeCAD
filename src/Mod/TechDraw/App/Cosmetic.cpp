@@ -132,8 +132,8 @@ CosmeticEdge::CosmeticEdge(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 {
 }
 
-CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) : 
-		CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
+CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
+        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
 {
 }
 
@@ -228,6 +228,15 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
     Base::Vector3d cEnd   = CosmeticVertex::makeCanonicalPoint(dvp, end);
     gp_Pnt gStart  = DU::togp_Pnt(cStart);
     gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
+    return TechDraw::BaseGeom::baseFactory(edge);
+}
+
+//! makes an unscaled, unrotated line from two canonical points.
+TechDraw::BaseGeomPtr CosmeticEdge::makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end)
+{
+    gp_Pnt gStart  = DU::togp_Pnt(start);
+    gp_Pnt gEnd    = DU::togp_Pnt(end);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
     return TechDraw::BaseGeom::baseFactory(edge);
 }
