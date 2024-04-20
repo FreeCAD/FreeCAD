@@ -60,12 +60,12 @@ class StartMigrator2024:
         FreeCAD.Console.PrintMessage("done.\n")
 
     # If the old Start workbench was set as the Autoload Module, reconfigure it so the Start command is run at startup,
-    # and set the Autoload module to "NoneWorkbench"
+    # and set the Autoload module to "PartDesignWorkbench"
     def _update_startup_flags(self):
         autoload_module = self.general_prefs.GetString("AutoloadModule", "")
         if autoload_module == "StartWorkbench":
             self.start_prefs.SetBool("ShowOnStartup", True)
-            self.general_prefs.SetString("AutoloadModule", "NoneWorkbench")
+            self.general_prefs.SetString("AutoloadModule", "PartDesignWorkbench")
         else:
             self.start_prefs.SetBool("ShowOnStartup", False)
 

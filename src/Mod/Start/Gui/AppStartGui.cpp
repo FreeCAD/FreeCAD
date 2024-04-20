@@ -32,11 +32,13 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 
 
 #include <3rdParty/GSL/include/gsl/pointers>
 
 #include "Manipulator.h"
+#include "StartView.h"
 
 void loadStartResource()
 {
@@ -70,7 +72,7 @@ public:
     StartLauncher()
     {
         // QTimers don't fire until the event loop starts, which is our signal that the GUI is up
-        QTimer::singleShot(1000, [this] {
+        QTimer::singleShot(100, [this] {
             Launch();
         });
     }
@@ -82,6 +84,21 @@ public:
         bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
         if (showOnStartup) {
             Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
+            QTimer::singleShot(100, [this] {
+                EnsureLaunched();
+            });
+        }
+    }
+
+    void EnsureLaunched()
+    {
+        // It's possible that "Start_Start" didn't result in the creation of an MDI window, if it
+        // was called to early. This polls the views to make sure the view was created, and if it
+        // was not, re-calls the command.
+        auto mw = Gui::getMainWindow();
+        auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+        if (!existingView) {
+            Launch();
         }
     }
 };

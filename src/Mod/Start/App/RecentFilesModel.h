@@ -26,7 +26,6 @@
 
 #include <QAbstractListModel>
 #include <Base/Parameter.h>
-#include <QtQml/QQmlTypeInfo>
 
 #include "DisplayedFilesModel.h"
 #include "../StartGlobal.h"

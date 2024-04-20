@@ -69,10 +69,12 @@ void FileCardDelegate::paint(QPainter* painter,
     auto pixmap = gsl::owner<QPixmap*>(new QPixmap());
     if (!image.isEmpty()) {
         pixmap->loadFromData(image);
-        auto scaled = pixmap->scaled(QSize(thumbnailSize, thumbnailSize),
-                                     Qt::AspectRatioMode::KeepAspectRatio,
-                                     Qt::TransformationMode::SmoothTransformation);
-        thumbnail->setPixmap(scaled);
+        if (!pixmap->isNull()) {
+            auto scaled = pixmap->scaled(QSize(thumbnailSize, thumbnailSize),
+                                         Qt::AspectRatioMode::KeepAspectRatio,
+                                         Qt::TransformationMode::SmoothTransformation);
+            thumbnail->setPixmap(scaled);
+        }
     }
     else {
         thumbnail->setPixmap(generateThumbnail(path));
@@ -141,7 +143,9 @@ QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
         // It is an image: it can be its own thumbnail
         QImageReader reader(path);
         auto image = reader.read();
-        return pixmapToSizedQImage(image, thumbnailSize);
+        if (!image.isNull()) {
+            return pixmapToSizedQImage(image, thumbnailSize);
+        }
     }
     QIcon icon = QFileIconProvider().icon(QFileInfo(path));
     if (!icon.isNull()) {
