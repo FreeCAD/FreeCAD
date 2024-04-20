@@ -91,9 +91,12 @@ macro(SetupShibokenAndPyside)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n")
         if(PYSIDE_MAJOR_VERSION LESS 6)
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
+            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QGraphicsSvgItem\n"
+                                                                       "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QSvgWidget\n")
         else()
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n"
                                                                              "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
+            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvgWidgets import *\n")
         endif()
     endif()
 
