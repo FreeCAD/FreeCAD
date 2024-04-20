@@ -28,6 +28,8 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QKeyEvent>
+#include <QMouseEvent>
 #endif//#ifndef _PreComp_
 
 #include <App/Document.h>
@@ -60,6 +62,7 @@
 #include "MDIViewPage.h"
 #include "TaskDimRepair.h"
 #include "TaskLinkDim.h"
+#include "TaskSelectLineAttributes.h"
 #include "TechDrawHandler.h"
 #include "ViewProviderDimension.h"
 #include "ViewProviderDrawingView.h"
@@ -94,7 +97,7 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimTy
 DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d);
 
-void positionDimText(DrawViewDimension* dim);
+void positionDimText(DrawViewDimension* dim, int indexOffset = 0);
 
 void activateHandler(TechDrawHandler* newHandler)
 {
@@ -185,7 +188,7 @@ public:
         , removedRef(ReferenceEntry())
         , initialSelection(std::move(refs))
         , partFeat(pFeat)
-        , dim(nullptr)
+        , dims({})
         , blockRemoveSel(false)
     {
     }
@@ -205,24 +208,26 @@ public:
     enum class SpecialDimension {
         LineOr2PointsDistance,
         ExtendDistance,
+        ChainDistance,
+        CoordDistance,
         None
     };
 
 
-    void activated()
+    void activated() override
     {
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Dimension"));
         handleInitialSelection();
     }
 
-    void deactivated()
+    void deactivated() override
     {
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
         Gui::Command::abortCommand();
     }
 
-    void keyPressEvent(QKeyEvent* event)
+    void keyPressEvent(QKeyEvent* event) override
     {
         if (event->key() == Qt::Key_M && !selectionEmpty()) {
             if (availableDimension == AvailableDimension::FIRST) {
@@ -249,7 +254,7 @@ public:
             event->accept();
         }
     }
-    void keyReleaseEvent(QKeyEvent* event)
+    void keyReleaseEvent(QKeyEvent* event) override
     {
         if (event->key() == Qt::Key_Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
             // User trying to cancel with Ctrl-Z
@@ -265,15 +270,41 @@ public:
     {
         previousPos = event->pos();
 
+        if (dims.empty()){
+            return;
+        }
+
+        bool textToMiddle = false;
+        Base::Vector3d dirMaster, delta;
         //Change distance dimension based on position of mouse.
         if (specialDimension == SpecialDimension::LineOr2PointsDistance){
             updateDistanceType(event->pos());
         }
-        if (specialDimension == SpecialDimension::ExtendDistance){
+        else if (specialDimension == SpecialDimension::ExtendDistance){
             updateExtentDistanceType(event->pos());
         }
+        else if (specialDimension == SpecialDimension::ChainDistance || specialDimension == SpecialDimension::CoordDistance){
+            updateChainDistanceType(event->pos());
+            textToMiddle = true;
+            pointPair pp = dims[0]->getLinearPoints();
+            dirMaster = pp.second() - pp.first();
+            //dirMaster.y = -dirMaster.y; // not needed because y is reversed between property X/Y and scenePositions
 
-        moveDimension(event->pos());
+            QPointF firstPos = getDimLabel(dims[0])->pos();
+            Base::Vector3d pMaster(firstPos.x(), firstPos.y(), 0.0);
+            Base::Vector3d ipDelta = DrawUtil::getTrianglePoint(pMaster, dirMaster, Base::Vector3d());
+            delta = ipDelta.Normalize() * Rez::guiX(activeDimAttributes.getCascadeSpacing());
+        }
+
+        int i = 0;
+        for (auto* dim : dims) {
+            auto dimType = static_cast<DimensionType>(dim->Type.getValue());
+            moveDimension(event->pos(), dim, textToMiddle, dirMaster, delta, dimType, i);
+
+            if (specialDimension == SpecialDimension::CoordDistance) {
+                i++;
+            }
+        }
     }
 
     QGIDatumLabel* getDimLabel(DrawViewDimension* d)
@@ -288,35 +319,71 @@ public:
         }
         return qgivDimension->getDatumLabel();
     }
-    void moveDimension(QPoint& pos)
+    void moveDimension(QPoint& pos, DrawViewDimension* dim, bool textToMiddle = false, Base::Vector3d dir = Base::Vector3d(),
+        Base::Vector3d delta = Base::Vector3d(), DimensionType type = DimensionType::Distance, int i = 0)
     {
         if (!dim) { return; }
         auto label = getDimLabel(dim);
         if (!label) { return; }
 
-        label->setPos(getDimPositionToBe(pos));
+        label->setPos(getDimPositionToBe(pos, label->pos(), textToMiddle, dir, delta, type, i));
     }
-    QPointF getDimPositionToBe(QPoint& pos)
+    QPointF getDimPositionToBe(QPoint& pos, QPointF curPos = QPointF(), bool textToMiddle = false, Base::Vector3d dir = Base::Vector3d(),
+        Base::Vector3d delta = Base::Vector3d(), DimensionType type = DimensionType::Distance, int i = 0)
     {
         auto* vpp = dynamic_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
         if (!vpp) { return QPointF(); }
 
+
         QPointF scenePos = viewPage->mapToScene(pos) - vpp->getQView()->pos();
+
+        if (textToMiddle) {
+            // delta is for coord distances. i = 0 when it's a chain so delta is ignored.
+            float dimDistance = Rez::guiX(activeDimAttributes.getCascadeSpacing());
+            if (type == DimensionType::Distance) {
+                Base::Vector3d pos3d(scenePos.x(), scenePos.y(), 0.0);
+                float xDim = curPos.x();
+                float yDim = curPos.y();
+                Base::Vector3d pDim(xDim, yDim, 0.0);
+                Base::Vector3d p3 = DrawUtil::getTrianglePoint(pos3d, dir, pDim);
+                p3 = p3 + delta * i;
+                scenePos = QPointF(p3.x, p3.y);
+            }
+            else if(type == DimensionType::DistanceX) {
+                pointPair pp = dims[0]->getLinearPoints();
+                if (Rez::guiX(pp.first().y) > scenePos.y())
+                    dimDistance = -dimDistance;
+
+                double y = scenePos.y() + i * dimDistance;
+                scenePos = QPointF(curPos.x(), y);
+            }
+            else if(type == DimensionType::DistanceY) {
+                pointPair pp = dims[0]->getLinearPoints();
+                if (Rez::guiX(pp.first().x) > scenePos.x())
+                    dimDistance = -dimDistance;
+
+                double x = scenePos.x() + i * dimDistance;
+                scenePos = QPointF(x, curPos.y());
+            }
+        }
+
         return scenePos;
     }
     void finishDimensionMove()
     {
-        auto label = getDimLabel(dim);
-        double x = Rez::appX(label->X()), y = Rez::appX(label->Y());
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
-            dim->getNameInDocument(), x);
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
-            dim->getNameInDocument(), -y);
+        for (auto* dim : dims) {
+            auto label = getDimLabel(dim);
+            double x = Rez::appX(label->X()), y = Rez::appX(label->Y());
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
+                dim->getNameInDocument(), x);
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
+                dim->getNameInDocument(), -y);
+        }
     }
 
     bool mousePressEvent(QMouseEvent* event) override
     {
-        if (event->button() == Qt::RightButton && dim) {
+        if (event->button() == Qt::RightButton && !dims.empty()) {
             Gui::Selection().clearSelection();
             clearAndRestartCommand();
             event->accept();
@@ -347,14 +414,13 @@ public:
             removedRef = ReferenceEntry();
         }
 
-        Base::Console().Warning("h1\n");
-        if (addedRef.getObject()) {
-            Base::Console().Warning("h2 -%s-\n", addedRef.getSubName());
+        if (addedRef.hasGeometry()) {
             finalize = false;
             //Base::Console().Warning("AddSelection\n");
             //add the geometry to its type vector. Temporarily if not selAllowed
             if (addedRef.getSubName() == "") {
-                Base::Console().Warning("h3\n");
+                // Behavior deactivated for now because I found it annoying.
+                // To reactivate replace addedRef.hasGeometry() by addedRef.getObject() above.
                 // This means user selected the view itself.
                 if (selectionEmpty()) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
@@ -389,7 +455,7 @@ public:
 
 
         // Finalize if click on empty space.
-        if (finalize && dim) {
+        if (finalize && !dims.empty()) {
             finalizeCommand();
         }
         return true;
@@ -489,7 +555,7 @@ protected:
 
     TechDraw::DrawViewPart* partFeat;
 
-    DrawViewDimension* dim;
+    std::vector<DrawViewDimension*> dims;
 
     bool blockRemoveSel;
 
@@ -498,7 +564,7 @@ protected:
         if (initialSelection.size() == 0) {
             return;
         }
-        
+
         availableDimension = AvailableDimension::FIRST;
 
         // Add the selected elements to their corresponding selection vectors
@@ -513,7 +579,7 @@ protected:
         if (!selAllowed) {
             clearRefVectors();
         }
-    } 
+    }
 
     void finalizeCommand()
     {
@@ -523,7 +589,7 @@ protected:
 
         // Ask for the value of datum dimensions
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
-        
+
         Gui::Command::commitCommand();
 
         // Touch the parent feature so the dimension in tree view appears as a child
@@ -591,7 +657,7 @@ protected:
 
         return emptyVector;
     }
-    
+
     /*
     bool notSelectedYet(const ReferenceEntry& elem)
     {
@@ -646,6 +712,7 @@ protected:
             if (selection.has1Point()) { selAllowed = true; }
             else if (selection.has2Points()) { makeCts_2Point(selAllowed, pos); }
             else if (selection.has3Points()) { makeCts_3Point(selAllowed, pos); }
+            else if (selection.has4MorePoints()) { makeCts_4MorePoints(selAllowed, pos); }
             else if (selection.has1Point1Line()) { makeCts_1Point1Line(selAllowed, pos); }
             else if (selection.has1Point1Circle()) { makeCts_1Point1Circle(selAllowed, pos); }
             else if (selection.has1Point1Ellipse()) { makeCts_1Point1Ellipse(selAllowed, pos); }
@@ -696,19 +763,42 @@ protected:
 
     void makeCts_3Point(bool& selAllowed, QPoint& pos)
     {
-        //angle
+        // chain distances, angle
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
-            create3pAngleDimension(selPoints[0], selPoints[1], selPoints[2], pos);
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal chain dimensions"));
+            createChainDimension("DistanceX", pos);
             selAllowed = true;
         }
-        else if (availableDimension == AvailableDimension::SECOND) {
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal coordinate dimensions"));
+            createCoordDimension("DistanceX", pos);
+        }
+        if (availableDimension == AvailableDimension::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
+            create3pAngleDimension(selPoints[0], selPoints[1], selPoints[2], pos);
+        }
+        else if (availableDimension == AvailableDimension::FOURTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
             create3pAngleDimension(selPoints[1], selPoints[2], selPoints[0], pos);
         }
-        else if (availableDimension == AvailableDimension::THIRD) {
+        else if (availableDimension == AvailableDimension::FIFTH) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add 3-points angle dimension"));
             create3pAngleDimension(selPoints[2], selPoints[0], selPoints[1], pos);
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_4MorePoints(bool& selAllowed, QPoint& pos)
+    {
+        // chain distances
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal chain dimension"));
+            createChainDimension("DistanceX", pos);
+            selAllowed = true;
+        }
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal coordinate dimensions"));
+            createCoordDimension("DistanceX", pos);
             availableDimension = AvailableDimension::RESET;
         }
     }
@@ -926,6 +1016,7 @@ protected:
         bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
         bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
 
+        DrawViewDimension* dim;
         if ((firstCstr && dimensioningRadius && !dimensioningDiameter) ||
             (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
             (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
@@ -936,7 +1027,8 @@ protected:
             dim = dimMaker(partFeat, "Diameter", { ref }, {});
         }
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void createAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2, QPoint& pos) {
@@ -947,23 +1039,26 @@ protected:
             return;
         }
 
-        dim = dimMaker(partFeat, "Angle", {ref1, ref2}, {});
+        DrawViewDimension* dim = dimMaker(partFeat, "Angle", {ref1, ref2}, {});
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void create3pAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2, ReferenceEntry ref3, QPoint& pos)
     {
-        dim = dimMaker(partFeat, "Angle3Pt", {ref1, ref2, ref3}, {});
+        DrawViewDimension* dim = dimMaker(partFeat, "Angle3Pt", {ref1, ref2, ref3}, {});
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void createArcLengthDimension(ReferenceEntry ref, QPoint& pos)
     {
-        dim = makeArcLengthDimension(ref);
+        DrawViewDimension* dim = makeArcLengthDimension(ref);
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void createDistanceDimension(std::string type, ReferenceEntry ref1, ReferenceEntry ref2, QPoint& pos) {
@@ -972,28 +1067,30 @@ protected:
             refs.push_back(ref2);
         }
 
-        dim = dimMaker(partFeat, type, refs, {});
+        DrawViewDimension* dim = dimMaker(partFeat, type, refs, {});
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void createExtentDistanceDimension(std::string type, QPoint& pos) {
         specialDimension = SpecialDimension::ExtendDistance;
 
-        dim = DrawDimHelper::makeExtentDim(partFeat, type, allRefs());
+        DrawViewDimension* dim = DrawDimHelper::makeExtentDim(partFeat, type, allRefs());
 
-        moveDimension(pos);
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void updateDistanceType(QPoint& pos)
     {
-        if (!dim) {
+        if (dims.empty()) {
             return;
         }
 
-        auto type = static_cast<DimensionType>(dim->Type.getValue());
-        
-        TechDraw::pointPair pp = dim->getLinearPoints();
+        auto type = static_cast<DimensionType>(dims[0]->Type.getValue());
+
+        TechDraw::pointPair pp = dims[0]->getLinearPoints();
         Base::Vector3d pnt1 = Rez::guiX(pp.first());
         Base::Vector3d pnt2 = Rez::guiX(pp.second());
 
@@ -1035,13 +1132,13 @@ protected:
 
     void updateExtentDistanceType(QPoint& pos)
     {
-        if (!dim) {
+        if (dims.empty()) {
             return;
         }
-        auto d =dim->References2D.getValues()[0];
-        auto type = static_cast<DimensionType>(dim->Type.getValue());
-        
-        TechDraw::pointPair pp = dim->getLinearPoints();
+
+        auto type = static_cast<DimensionType>(dims[0]->Type.getValue());
+
+        TechDraw::pointPair pp = dims[0]->getLinearPoints();
         Base::Vector3d pnt1 = Rez::guiX(pp.first());
         Base::Vector3d pnt2 = Rez::guiX(pp.second());
 
@@ -1056,24 +1153,112 @@ protected:
         if (fpos.x() > minX && fpos.x() < maxX
             && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX extent dimension"));
-            specialDimension = SpecialDimension::LineOr2PointsDistance;
             createExtentDistanceDimension("DistanceX", pos);
         }
         else if (fpos.y() > minY && fpos.y() < maxY
             && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY extent dimension"));
-            specialDimension = SpecialDimension::LineOr2PointsDistance;
             createExtentDistanceDimension("DistanceY", pos);
         }
     }
 
+    void updateChainDistanceType(QPoint& pos)
+    {
+        if (dims.empty()) {
+            return;
+        }
+
+        double minX = DBL_MAX;
+        double minY = DBL_MAX;
+        double maxX = -DBL_MAX;
+        double maxY = -DBL_MAX;
+        for (auto dim : dims) {
+            TechDraw::pointPair pp = dim->getLinearPoints();
+            Base::Vector3d pnt1 = Rez::guiX(pp.first());
+            Base::Vector3d pnt2 = Rez::guiX(pp.second());
+
+            minX = min(minX, min(pnt1.x, pnt2.x));
+            maxX = max(maxX, max(pnt1.x, pnt2.x));
+            minY = min(minY, min(pnt1.y, pnt2.y));
+            maxY = max(maxY, max(pnt1.y, pnt2.y));
+        }
+
+        QPointF fpos = getDimPositionToBe(pos);
+
+        auto type = static_cast<DimensionType>(dims[0]->Type.getValue());
+
+        if (fpos.x() > minX && fpos.x() < maxX
+            && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
+            if (specialDimension == SpecialDimension::ChainDistance) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal chain dimensions"));
+                createChainDimension("DistanceX", pos);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal coord dimensions"));
+                createCoordDimension("DistanceX", pos);
+            }
+        }
+        else if (fpos.y() > minY && fpos.y() < maxY
+            && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
+            if (specialDimension == SpecialDimension::ChainDistance) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add vertical chain dimensions"));
+                createChainDimension("DistanceY", pos);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add vertical coord dimensions"));
+                createCoordDimension("DistanceY", pos);
+            }
+        }
+        else if (((fpos.y() < minY || fpos.y() > maxY) && (fpos.x() < minX || fpos.x() > maxX)) && type != DimensionType::Distance) {
+            if (specialDimension == SpecialDimension::ChainDistance) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add oblique chain dimensions"));
+                createChainDimension("Distance", pos);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add oblique coord dimensions"));
+                createCoordDimension("Distance", pos);
+            }
+        }
+    }
+
+    void createChainDimension(std::string type, QPoint& pos)
+    {
+        specialDimension = SpecialDimension::ChainDistance;
+        if (type == "Distance") {
+            dims = makeObliqueChainDimension(selPoints);
+        }
+        else {
+            for (size_t i = 0; i < selPoints.size() - 1; ++i) {
+                DrawViewDimension* dim = dimMaker(partFeat, type, { selPoints[i], selPoints[i + 1] }, {});
+
+                dims.push_back(dim);
+                positionDimText(dim);
+            }
+        }
+    }
+
+    void createCoordDimension(std::string type, QPoint& pos)
+    {
+        specialDimension = SpecialDimension::CoordDistance;
+        if (type == "Distance") {
+            dims = makeObliqueCoordDimension(selPoints);
+        }
+        else {
+            for (size_t i = 0; i < selPoints.size() - 1; ++i) {
+                DrawViewDimension* dim = dimMaker(partFeat, type, { selPoints[0], selPoints[i + 1] }, {});
+
+                dims.push_back(dim);
+                positionDimText(dim, i);
+            }
+        }
+    }
 
     void restartCommand(const char* cstrName) {
         specialDimension = SpecialDimension::None;
         Gui::Command::abortCommand();
         Gui::Command::openCommand(cstrName);
 
-        dim = nullptr;
+        dims.clear();
     }
 
     void clearAndRestartCommand() {
@@ -1083,7 +1268,7 @@ protected:
         previousPos = QPoint(0,0);
         clearRefVectors();
         partFeat = nullptr;
-        dim = nullptr;
+        dims.clear();
     }
 
     void clearRefVectors()
@@ -1162,8 +1347,17 @@ public:
         addCommand("TechDraw_AngleDimension");
         addCommand("TechDraw_3PtAngleDimension");
         addCommand("TechDraw_ExtensionCreateLengthArc");
+        addCommand(); //separator
         addCommand("TechDraw_HorizontalExtentDimension");
         addCommand("TechDraw_VerticalExtentDimension");
+        addCommand(); //separator
+        addCommand("TechDraw_ExtensionCreateHorizChainDimension");
+        addCommand("TechDraw_ExtensionCreateVertChainDimension");
+        addCommand("TechDraw_ExtensionCreateObliqueChainDimension");
+        addCommand(); //separator
+        addCommand("TechDraw_ExtensionCreateHorizCoordDimension");
+        addCommand("TechDraw_ExtensionCreateVertCoordDimension");
+        addCommand("TechDraw_ExtensionCreateObliqueCoordDimension");
     }
 
     const char* className() const override { return "CmdTechDrawCompDimensionTools"; }
@@ -2392,6 +2586,8 @@ void CreateTechDrawCommandsDims()
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+
     TechDraw::DrawViewDimension* dim = dimMaker(dvp, dimType, references2d, references3d);
 
     Gui::Command::commitCommand();
@@ -2414,7 +2610,6 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
 
     std::string dimName = dvp->getDocument()->getUniqueObjectName("Dimension");
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')",
                             dimName.c_str());
@@ -2451,13 +2646,13 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
 }
 
 //position the Dimension text on the view
-void positionDimText(DrawViewDimension* dim)
+void positionDimText(DrawViewDimension* dim, int offsetIndex)
 {
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
     dim->X.setValue(mid.x);
     double fontSize = Preferences::dimFontSizeMM();
-    dim->Y.setValue(-mid.y + 0.5 * fontSize);
+    dim->Y.setValue(-mid.y + (offsetIndex * 1.5 + 0.5) * fontSize);
 }
 //===========================================================================
 // Selection Validation Helpers

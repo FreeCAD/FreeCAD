@@ -1405,7 +1405,37 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Oblique Chain Dim"));
-    const std::vector<std::string> subNames = selection[0].getSubNames();
+
+    std::vector<TechDraw::ReferenceEntry> refs;
+    for (auto& subName : selection[0].getSubNames()) {
+        refs.push_back(ReferenceEntry(objFeat, subName));
+    }
+
+    auto dims = makeObliqueChainDimension(refs);
+    if(dims.empty()){
+        Gui::Command::abortCommand();
+    }
+    else {
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
+        Gui::Command::commitCommand();
+    }
+}
+
+std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vector<TechDraw::ReferenceEntry> refs)
+{
+    if (refs.empty()) {
+        return {};
+    }
+
+    std::vector<std::string> subNames;
+    auto* objFeat = static_cast<DrawViewPart*>(refs[0].getObject());
+    for (auto& ref : refs) {
+        subNames.push_back(ref.getSubName());
+    }
+    std::vector<DrawViewDimension*> dims;
+
     std::vector<dimVertex> allVertexes, carrierVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
@@ -1449,12 +1479,11 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
             Base::Vector3d mid = (pp.first() + pp.second()) / 2.0 + delta;
             dim->X.setValue(mid.x);
             dim->Y.setValue(-mid.y + 0.5 * fontSize);
+            dims.push_back(dim);
         }
-        objFeat->refreshCEGeoms();
-        objFeat->requestPaint();
-        cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
     }
+
+    return dims;
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateObliqueChainDimension)
@@ -1761,7 +1790,37 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Oblique Coord Dim"));
-    const std::vector<std::string> subNames = selection[0].getSubNames();
+
+    std::vector<TechDraw::ReferenceEntry> refs;
+    for (auto& subName : selection[0].getSubNames()) {
+        refs.push_back(ReferenceEntry(objFeat, subName));
+    }
+
+    auto dims = makeObliqueCoordDimension(refs);
+    if (dims.empty()) {
+        Gui::Command::abortCommand();
+    }
+    else {
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
+        Gui::Command::commitCommand();
+    }
+}
+
+std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vector<TechDraw::ReferenceEntry> refs)
+{
+    if (refs.empty()) {
+        return {};
+    }
+
+    std::vector<std::string> subNames;
+    auto* objFeat = static_cast<DrawViewPart*>(refs[0].getObject());
+    for (auto& ref : refs) {
+        subNames.push_back(ref.getSubName());
+    }
+    std::vector<DrawViewDimension*> dims;
+
     std::vector<dimVertex> allVertexes, carrierVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
@@ -1810,12 +1869,11 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
             Base::Vector3d mid = (pp.first() + pp.second()) / 2.0 + delta * (n + 1);
             dim->X.setValue(mid.x);
             dim->Y.setValue(-mid.y + 0.5 * fontSize);
+            dims.push_back(dim);
         }
     }
-    objFeat->refreshCEGeoms();
-    objFeat->requestPaint();
-    cmd->getSelection().clearSelection();
-    Gui::Command::commitCommand();
+
+    return dims;
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateObliqueCoordDimension)

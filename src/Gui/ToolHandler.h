@@ -40,8 +40,8 @@ class View3DInventorViewer;
 class GuiExport ToolHandler
 {
 public:
-    ToolHandler();
-    virtual ~ToolHandler();
+    ToolHandler() = default;
+    virtual ~ToolHandler() = default;
 
     bool activate();
     virtual void deactivate();

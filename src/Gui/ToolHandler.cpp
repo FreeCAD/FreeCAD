@@ -45,11 +45,6 @@
 using namespace Gui;
 
 /**************************** ToolHandler *******************************************/
-ToolHandler::ToolHandler()
-{}
-
-ToolHandler::~ToolHandler()
-{}
 
 QString ToolHandler::getCrosshairCursorSVGName() const
 {

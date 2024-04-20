@@ -361,8 +361,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
-    *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
-    *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
+    if (separatedTools) {
+        *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
+        *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
+    }
     *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
     if (separatedTools) {
         *extdimensions << "TechDraw_ExtensionCreateLengthArc";

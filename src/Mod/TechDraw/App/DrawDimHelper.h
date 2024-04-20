@@ -52,7 +52,7 @@ class TechDrawExport DrawDimHelper {
     static DrawViewDimension* makeExtentDim(DrawViewPart* dvp,
                               std::vector<std::string> edgeNames,
                               int direction);
-    
+
     static void makeExtentDim3d(DrawViewPart* dvp,
                                 const std::string& dimType,
                                 ReferenceVector references2d);
