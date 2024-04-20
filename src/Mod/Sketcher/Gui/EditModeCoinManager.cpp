@@ -181,10 +181,6 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CreateCurveColor, param);
          }},
-        {"EditedVertexColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.VertexColor, param);
-         }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CurveColor, param);
@@ -208,10 +204,6 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"FullyConstraintInternalAlignmentColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.FullyConstraintInternalAlignmentColor, param);
-         }},
-        {"FullyConstraintConstructionPointColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.FullyConstraintConstructionPointColor, param);
          }},
         {"FullyConstraintElementColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {

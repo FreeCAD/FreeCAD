@@ -509,7 +509,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "Text" in pl:
-            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
+            vobj.addProperty("App::PropertyStringList",    "Text",        "Space",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data"))
             vobj.Text = ["$label","$area"]
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont",          "FontName",    "Space",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
@@ -656,6 +656,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                             t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
                             t = t.replace("$ceiling",vobj.Object.FinishCeiling)
+                        if hasattr(vobj.Object,"LongName"):
+                            t = t.replace("$longname",vobj.Object.LongName)
+                        if hasattr(vobj.Object,"Description"):
+                            t = t.replace("$description",vobj.Object.Description)
                         if first:
                             text1.append(t)
                         else:
@@ -723,7 +727,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         elif prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
-                self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))
+                self.fmat = vobj.ShapeColor.getValue()
 
         elif prop == "Transparency":
             if hasattr(vobj,"Transparency"):

@@ -127,9 +127,9 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     return true;
 }
 
-Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
+ExtrusionParameters Extrusion::computeFinalParameters()
 {
-    Extrusion::ExtrusionParameters result;
+    ExtrusionParameters result;
     Base::Vector3d dir;
     switch (this->DirMode.getValue()) {
     case dmCustom:
@@ -229,11 +229,10 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::ExtrusionParameters& params)
+void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params)
 {
-    TopoDS_Shape result;
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
-
+#ifndef FC_USE_TNP_FIX
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
         std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         //Tapered extrusion!
@@ -306,20 +305,72 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         result = mkPrism.Shape();
     }
 
-    if (result.IsNull())
+    if (result.isNull())
         throw NullShapeException("Result of extrusion is null shape.");
-    return TopoShape(result);
+//    return TopoShape(result);
+#else
+
+    // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+    TopoShape myShape(source.makeElementCopy());
+
+    if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
+        || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
+        // Tapered extrusion!
+#if defined(__GNUC__) && defined(FC_OS_LINUX)
+        Base::SignalException se;
+#endif
+        std::vector<TopoShape> drafts;
+        ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
+        if (drafts.empty()) {
+            Standard_Failure::Raise("Drafting shape failed");
+        }
+        else {
+            result.makeElementCompound(drafts,
+                                       0,
+                                       TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+        }
+    }
+    else {
+        // Regular (non-tapered) extrusion!
+        if (source.isNull()) {
+            Standard_Failure::Raise("Cannot extrude empty shape");
+        }
+
+        // apply reverse part of extrusion by shifting the source shape
+        if (fabs(params.lengthRev) > Precision::Confusion()) {
+            gp_Trsf mov;
+            mov.SetTranslation(gp_Vec(params.dir) * (-params.lengthRev));
+            myShape = myShape.makeElementTransform(mov);
+        }
+
+        // make faces from wires
+        if (params.solid) {
+            // test if we need to make faces from wires. If there are faces - we don't.
+            if (!myShape.hasSubShape(TopAbs_FACE)) {
+                if (!myShape.Hasher) {
+                    myShape.Hasher = result.Hasher;
+                }
+                myShape = myShape.makeElementFace(nullptr, params.faceMakerClass.c_str());
+            }
+        }
+
+        // extrude!
+        result.makeElementPrism(myShape, vec);
+    }
+#endif
 }
 
 App::DocumentObjectExecReturn* Extrusion::execute()
 {
     App::DocumentObject* link = Base.getValue();
-    if (!link)
+    if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
+    }
 
     try {
-        Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(Feature::getShape(link), params);
+        ExtrusionParameters params = computeFinalParameters();
+        TopoShape result(0);
+        extrudeShape(result, Feature::getTopoShape(link), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

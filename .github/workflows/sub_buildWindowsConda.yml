@@ -65,6 +65,8 @@ jobs:
         with:
           submodules: true
       - name: Setup Miniconda
+        env:
+          CONDA_VERBOSITY: 2
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
@@ -73,6 +75,8 @@ jobs:
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           conda config --add envs_dirs $PWD/.conda
           mamba-devenv -f conda/environment.devenv.yml
@@ -85,8 +89,9 @@ jobs:
           mkdir ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
       - name: Restore compiler cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-Windows-Conda-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |

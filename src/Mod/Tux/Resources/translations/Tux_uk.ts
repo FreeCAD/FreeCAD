@@ -59,42 +59,42 @@
       <translation>Стиль навігації не визначений.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="573"/>
+      <location filename="../../NavigationIndicatorGui.py" line="577"/>
       <source>Settings</source>
       <translation>Параметри</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <location filename="../../NavigationIndicatorGui.py" line="578"/>
       <source>Orbit style</source>
       <translation>Стиль орбіти</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="575"/>
+      <location filename="../../NavigationIndicatorGui.py" line="579"/>
       <source>Compact</source>
       <translation>Зменшити</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="576"/>
+      <location filename="../../NavigationIndicatorGui.py" line="580"/>
       <source>Tooltip</source>
       <translation>Підказка</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="577"/>
+      <location filename="../../NavigationIndicatorGui.py" line="581"/>
       <source>Turntable</source>
       <translation>Поворотна</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="578"/>
+      <location filename="../../NavigationIndicatorGui.py" line="582"/>
       <source>Free Turntable</source>
       <translation type="unfinished">Free Turntable</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="579"/>
+      <location filename="../../NavigationIndicatorGui.py" line="583"/>
       <source>Trackball</source>
       <translation>Трекбол</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="580"/>
+      <location filename="../../NavigationIndicatorGui.py" line="584"/>
       <source>Undefined</source>
       <translation>Невизначено</translation>
     </message>

@@ -22,12 +22,13 @@
 # ***************************************************************************
 
 """Contains the parser class for extracting metadata from a FreeCAD macro"""
+import datetime
 
 # pylint: disable=too-few-public-methods
 
 import io
 import re
-from typing import Any, Tuple
+from typing import Any, Tuple, Optional
 
 try:
     from PySide import QtCore

@@ -206,7 +206,7 @@ bool useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
 
-bool areColinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
+bool areCollinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
 
 int indexOfGeoId(const std::vector<int>& vec, int elem);
 

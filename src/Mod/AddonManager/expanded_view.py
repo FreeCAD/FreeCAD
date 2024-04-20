@@ -72,6 +72,11 @@ class Ui_ExpandedView(object):
 
         self.horizontalLayout.addWidget(self.labelTags)
 
+        self.labelSort = QLabel(ExpandedView)
+        self.labelSort.setObjectName("labelSort")
+
+        self.horizontalLayout.addWidget(self.labelSort)
+
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)

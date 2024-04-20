@@ -497,7 +497,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                     FreeCAD.Console.PrintLog("Auto-updating Height of "+child.Name+"\n")
                     self.touchChildren(child)
                     child.Proxy.execute(child)
-            elif Draft.getType(child) in ["Group","BuildingPart"]:
+            elif Draft.getType(child) in ["App::DocumentObjectGroup","Group","BuildingPart"]:
                 self.touchChildren(child)
 
 
@@ -607,7 +607,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
             vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
         if not "ChildrenShapeColor" in pl:
-            vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
+            vobj.addProperty("App::PropertyMaterial","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape appearance of child objects"))
             vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
@@ -883,7 +883,7 @@ class ViewProviderBuildingPart:
         return True
 
     def setEdit(self, vobj, mode):
-        # mode == 1 if Transform is selected in the Tree view contex menu.
+        # mode == 1 if Transform is selected in the Tree view context menu.
         # mode == 2 has been added for consistency.
         if mode == 1 or mode == 2:
             return None

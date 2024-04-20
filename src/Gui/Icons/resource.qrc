@@ -70,7 +70,9 @@
         <file>edit-paste.svg</file>
         <file>edit-select-all.svg</file>
         <file>edit-select-box.svg</file>
+        <file>edit-select-box-cross.svg</file>
         <file>edit-element-select-box.svg</file>
+        <file>edit-element-select-box-cross.svg</file>
         <file>edit-redo.svg</file>
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
@@ -123,6 +125,7 @@
         <file>view-top.svg</file>
         <file>zoom-all.svg</file>
         <file>zoom-border.svg</file>
+        <file>zoom-border-cross.svg</file>
         <file>zoom-fit-best.svg</file>
         <file>zoom-in.svg</file>
         <file>zoom-out.svg</file>
@@ -130,9 +133,12 @@
         <file>view-rotate-left.svg</file>
         <file>view-rotate-right.svg</file>
         <file>view-measurement.svg</file>
+        <file>view-measurement-cross.svg</file>
         <file>Tree_Annotation.svg</file>
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
+        <file>TreeItemVisible.svg</file>
+        <file>TreeItemInvisible.svg</file>
         <file>dagViewVisible.svg</file>
         <file>dagViewPass.svg</file>
         <file>dagViewFail.svg</file>
@@ -268,10 +274,13 @@
         <file>image-plane.svg</file>
         <file>image-scaling.svg</file>
         <file>VarSet.svg</file>
+        <file>Std_ToggleFreeze.svg</file>
+        <file>3dx_pivot.png</file>
+        <file>overlay_recompute.svg</file>
+        <file>overlay_error.svg</file>
+        <file>feature_suppressed.svg</file>
+        <file>forbidden.svg</file>
     </qresource>
-    <!-- Demonstrating support for an embedded icon theme -->
-    <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
-    <!-- See also https://bugreports.qt.io/browse/QTBUG-75039 -->
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>
     </qresource>

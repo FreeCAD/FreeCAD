@@ -135,7 +135,6 @@ public:
 
 private:
     GeomFillSurface* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace SurfaceGui

@@ -42,6 +42,7 @@ public:
     ~DlgTemplateField() override = default;
 
     void setFieldName(std::string name);
+    void setFieldLength(int length);
     void setFieldContent(std::string content);
     QString getFieldContent();
 

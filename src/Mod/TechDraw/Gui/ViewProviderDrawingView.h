@@ -99,8 +99,6 @@ public:
 
     const char* whoAmI() const;
 
-    void switchOwnerProperty(App::PropertyLink &prop);
-
 private:
     void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
     void singleParentPaint(const TechDraw::DrawView* dv);

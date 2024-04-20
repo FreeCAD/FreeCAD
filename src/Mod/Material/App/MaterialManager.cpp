@@ -27,12 +27,14 @@
 #include <QMutexLocker>
 
 #include <App/Application.h>
+#include <App/Material.h>
 
 #include "Exceptions.h"
 #include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
 #include "MaterialManager.h"
 #include "ModelManager.h"
+#include "ModelUuids.h"
 
 
 using namespace Materials;
@@ -108,6 +110,47 @@ bool MaterialManager::isMaterial(const QFileInfo& file) const
     return false;
 }
 
+std::shared_ptr<Material> MaterialManager::defaultMaterial()
+{
+    MaterialManager manager;
+
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool randomColor = hGrp->GetBool("RandomColor", false);
+    float r, g, b;
+
+    if (randomColor) {
+        auto fMax = (float)RAND_MAX;
+        r = (float)rand() / fMax;
+        g = (float)rand() / fMax;
+        b = (float)rand() / fMax;
+    }
+    else {
+        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
+        r = ((shcol >> 24) & 0xff) / 255.0;
+        g = ((shcol >> 16) & 0xff) / 255.0;
+        b = ((shcol >> 8) & 0xff) / 255.0;
+    }
+
+    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
+
+    auto material = manager.getMaterial(defaultMaterialUUID());
+    if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
+        material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
+            ->setColor(App::Color(r, g, b));
+        material->getAppearanceProperty(QString::fromLatin1("Transparency"))
+            ->setFloat((float)initialTransparency / 100.0f);
+    }
+
+    return material;
+}
+
+QString MaterialManager::defaultMaterialUUID()
+{
+    // Make this a preference
+    return QString::fromLatin1("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb");
+}
+
 std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) const
 {
     try {
@@ -118,6 +161,13 @@ std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) cons
     }
 }
 
+std::shared_ptr<Material> MaterialManager::getMaterial(const App::Material& material)
+{
+    MaterialManager manager;
+
+    return manager.getMaterial(QString::fromStdString(material.uuid));
+}
+
 std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path) const
 {
     QString cleanPath = QDir::cleanPath(path);
@@ -126,7 +176,9 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
         if (cleanPath.startsWith(library->getDirectory())) {
             try {
                 return library->getMaterialByPath(cleanPath);
-            } catch (const MaterialNotFound&) {}
+            }
+            catch (const MaterialNotFound&) {
+            }
 
             // See if it's a new file saved by the old editor
             {
@@ -141,6 +193,17 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
                     return material;
                 }
             }
+        }
+    }
+
+    // Older workbenches may try files outside the context of a library
+    {
+        QMutexLocker locker(&_mutex);
+
+        if (MaterialConfigLoader::isConfigStyle(path)) {
+            auto material = MaterialConfigLoader::getMaterialFromPath(nullptr, path);
+
+            return material;
         }
     }
 

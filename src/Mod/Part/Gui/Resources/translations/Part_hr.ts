@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Nije ugrađeno.</translation>
+      <translation>Križanje dva naličja.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -522,13 +522,13 @@
       <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Prenesi porijeklo</translation>
+      <translation>Prenesi ishodište</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Podrijetlo je poravnato sa krajnjom točkom linije. Orijentacija se kontrolira po položaju.</translation>
+      <translation>Ishodište je poravnano sa krajnjom točkom linije. Orijentacija se kontrolira po položaju.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="133"/>
@@ -638,7 +638,7 @@
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Poravnati sa ravninom na priljubni krug jednog ruba. Orginal je poravnat sa točkom zakrivljenosti. Opcionalno poveznica tjemene točke definira gdje.</translation>
+      <translation>Poravnati sa ravninom na priljubljeni krug jednog ruba. Ishodište je poravnato sa točkom zakrivljenosti. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="163"/>
@@ -719,13 +719,13 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Prenesi porijeklo</translation>
+      <translation>Prenesi ishodište</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podrijetlo je poravnato sa krajnjom točkom linije. Orijentacija se kontrolira po položaju.</translation>
+      <translation>Ishodište je poravnano sa krajnjom točkom linije. Orijentacija se kontrolira po položaju.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="58"/>
@@ -907,7 +907,7 @@
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Uskladi porijeklo s prvim vrhom. Poravnajte Z' i X' osi prema vrhu/ uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte Z' i X' osi prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="106"/>
@@ -919,7 +919,7 @@
       <location filename="../../AttacherTexts.cpp" line="107"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte Z' i Y' osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte Z' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="109"/>
@@ -932,7 +932,7 @@
       <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte X' i Y' osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte X' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
@@ -944,7 +944,7 @@
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte X ' i Z' osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte X ' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="115"/>
@@ -956,7 +956,7 @@
       <location filename="../../AttacherTexts.cpp" line="116"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte Y' i Z' osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte Y' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="118"/>
@@ -969,7 +969,7 @@
       <location filename="../../AttacherTexts.cpp" line="119"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte Y' i X' osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte Y' i X' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="178"/>
@@ -981,7 +981,7 @@
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte normalu i vodoravnu ravninu osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte normalu i vodoravnu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="181"/>
@@ -993,13 +993,13 @@
       <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Podudaranje s prvim vrhom. Poravnajte normalu i okomitu ravninu osi prema vrhu / uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte normalu i okomitu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Uskladi porijeklo s prvim vrhom. Poravnajte horizontalnu i vertikalnu ravninu osi prema vrhu/ uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte horizontalnu i vertikalnu ravninu osi prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="187"/>
@@ -1023,13 +1023,13 @@
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Uskladi porijeklo s prvim vrhom. Poravnajte vertikalnu ravninu osi i normale prema vrhu/ uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte vertikalnu ravninu osi i normale prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="194"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Uskladi porijeklo s prvim vrhom. Poravnajte vertikalnu i horizontalnu ravninu osi prema vrhu/ uzduž linije.</translation>
+      <translation>Uskladi ishodište s prvim vrhom. Poravnajte vertikalnu i horizontalnu ravninu osi prema vrhu/ uzduž linije.</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1440,13 @@ na njihove X, Y ,Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer...</source>
-      <translation>Zarubi...</translation>
+      <translation>Faseta...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Zarubi odabrane rubove, površine ili tijela</translation>
+      <translation>
+Zakosi odabrane rubove oblika</translation>
     </message>
   </context>
   <context>
@@ -2376,6 +2377,11 @@ projekcije.</translation>
       <source>Edit Mirror</source>
       <translation>Uredi zrcaljenje</translation>
     </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <source>Project on surface</source>
+      <translation type="unfinished">Project on surface</translation>
+    </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDatumParameters</name>
@@ -2649,9 +2655,9 @@ predmeta koji se pridružuje.</translation>
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1068"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1109"/>
       <source>Chamfer Edges</source>
-      <translation>Zarubi stranice</translation>
+      <translation>Zarubi Rubove</translation>
     </message>
   </context>
   <context>
@@ -3000,7 +3006,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="14"/>
       <source>Fillet Edges</source>
-      <translation>Zaobli rubove</translation>
+      <translation>Zaobli Rubove</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
@@ -3019,7 +3025,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Parametar zaobljenja</translation>
     </message>
@@ -3069,108 +3075,108 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Polumjer:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
-      <source>Chamfer Parameter</source>
-      <translation>Parametar žlijeba</translation>
-    </message>
-    <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer type</source>
-      <translation>Vrsta žlijeba</translation>
+      <source>Chamfer Parameter</source>
+      <translation>Parametar Fasete</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <source>Chamfer type</source>
+      <translation>Vrsta Fasete</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
       <translation>Duljina:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="274"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
-      <translation>Rubove za zarubljivanje</translation>
+      <translation>Rubovi u fasetu</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="867"/>
+      <location filename="../../DlgFilletEdges.cpp" line="912"/>
       <source>Start length</source>
       <translation>Početna dužina</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Ista udaljenost</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
       <translation>Dvije udaljenosti</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="275"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Size</source>
       <translation>Veličina</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size2</source>
       <translation>Veličina2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
-      <source>Fillet type</source>
-      <translation>Vrsta obruba</translation>
-    </message>
-    <message>
       <location filename="../../DlgFilletEdges.cpp" line="281"/>
-      <source>Edges to fillet</source>
-      <translation>Zaobli rubove</translation>
+      <source>Fillet type</source>
+      <translation>Vrsta zaobljenja</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="282"/>
-      <location filename="../../DlgFilletEdges.cpp" line="869"/>
+      <source>Edges to fillet</source>
+      <translation>Rubovi za zaobljavanje</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>Start radius</source>
       <translation>Početni radijus</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="284"/>
       <source>End radius</source>
       <translation>Krajnji radijus</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="716"/>
-      <location filename="../../DlgFilletEdges.cpp" line="776"/>
+      <location filename="../../DlgFilletEdges.cpp" line="761"/>
+      <location filename="../../DlgFilletEdges.cpp" line="821"/>
       <source>Edge%1</source>
       <translation>Rub%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="859"/>
+      <location filename="../../DlgFilletEdges.cpp" line="904"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="861"/>
+      <location filename="../../DlgFilletEdges.cpp" line="906"/>
       <source>Radius</source>
       <translation>Polumjer</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="915"/>
+      <location filename="../../DlgFilletEdges.cpp" line="960"/>
       <source>No shape selected</source>
       <translation>Nema odabranih oblika</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="916"/>
+      <location filename="../../DlgFilletEdges.cpp" line="961"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Nije odabran vanljan oblik. Molimo odaberite valjan oblik u padajućem okviru.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="967"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
       <source>No edge selected</source>
       <translation>Nema odabranih rubova</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="968"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>Nema rubova za zaobliti. Molimo prvo označite jedan ili više rubova.</translation>
+      <translation>Nema označenih rubova za zaobliti. Molimo prvo označite jedan ili više rubova.</translation>
     </message>
   </context>
   <context>
@@ -3897,7 +3903,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2209"/>
+      <location filename="../../DlgPrimitives.cpp" line="2204"/>
       <source>&amp;Create</source>
       <translation>&amp;Izradi</translation>
     </message>
@@ -3985,14 +3991,14 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <translation>Objekt projekcije</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="164"/>
       <source>Have no active document!!!</source>
       <translation>Nemate aktivan dokument!!!
 
 </translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="172"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
       <source>Can not create a projection object!!!</source>
       <translation>Ne mogu stvoriti projekcijski objekt!!!</translation>
     </message>
@@ -4996,31 +5002,31 @@ bit će vidljivi samo stvoreni rezovi</translation>
       <translation>U smjeru X:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Napomena: Položaj je izražen u lokalnom koordinatnom sustavu
 predmeta koji se pridružuje.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>U smjeru Y:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>U smjeru Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>Oko x-osi:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5029,12 +5035,12 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sustavu
 predmeta koji se pridružuje.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Oko y-osi:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5043,12 +5049,12 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sustavu
 predmeta koji se pridružuje.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Oko z-osi:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5057,14 +5063,14 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sustavu
 predmeta koji se pridružuje.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>Obrnuta strana pridruženja i pomak
 
 </translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Prebaci strane</translation>
     </message>
@@ -5396,6 +5402,11 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
+      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <source>Attachment</source>
+      <translation>Dodatak</translation>
+    </message>
+    <message>
       <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
       <translation>Dijalog polazišta: ulazne pogreške</translation>
@@ -5631,7 +5642,7 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="484"/>
+      <location filename="../../TaskSweep.cpp" line="480"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Odaberi jedan ili više profila i odaberi rub ili žicu
@@ -5692,74 +5703,31 @@ u 3D pogledu kao putanju za zamah.</translation>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>"Bull's-eye" dotjerivanje izgleda</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Podržava stvaranje ravani lica s rupama i otocima.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Jednostavno</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Napravi posebnu ravninu lica od svake žice samostalno. Nema podršku za rupe; žice mogu biti na različitim ravninama.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Sir, dotjerivanje izgleda</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Podržava stvaranje ravani lica s rupama i otocima, ali nema otoka unutar rupe.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Dio istisnuti, dotjerivanje izgleda</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Podržava stvaranje lica s rupama, ne podržava gniježđenje.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="234"/>
+      <location filename="../../AppPartGui.cpp" line="237"/>
       <source>Part and Part Design workbench</source>
       <translation>Radni stol Djelovi i Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="235"/>
-      <location filename="../../AppPartGui.cpp" line="236"/>
-      <location filename="../../AppPartGui.cpp" line="237"/>
       <location filename="../../AppPartGui.cpp" line="238"/>
+      <location filename="../../AppPartGui.cpp" line="239"/>
+      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Part/Part Design</source>
       <translation>Djelovi/Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="239"/>
-      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="242"/>
+      <location filename="../../AppPartGui.cpp" line="243"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -5831,20 +5799,20 @@ Do you want to continue?</source>
       <translation>Referenca još nije postavljena</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Rub</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Vrh</translation>
     </message>
@@ -6137,8 +6105,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1419"/>
-      <source>Selection </source>
-      <translation>Odabir </translation>
+      <source>Selection</source>
+      <translation>Izbor</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1503"/>
@@ -6161,7 +6129,7 @@ Do you want to continue?</source>
       <translation>Obrišite sve dimenzije</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Postavljanje boje ...</translation>
     </message>
@@ -6178,7 +6146,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="404"/>
       <source>Edit chamfer edges</source>
-      <translation>Prilagodi krajeve zaruba</translation>
+      <translation>Uredi rubove fasete</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="540"/>
@@ -6196,7 +6164,7 @@ Do you want to continue?</source>
       <translation>Pokaži kontrolne točke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
       <source>Attachment editor</source>
       <translation>Uređivač dodataka</translation>
     </message>
@@ -6214,6 +6182,11 @@ Do you want to continue?</source>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation>Unesite udaljenost:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
+      <source>Edit projection</source>
+      <translation type="unfinished">Edit projection</translation>
     </message>
   </context>
   <context>
@@ -6304,7 +6277,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Kliknite 'Nastavi' da biste ipak stvorili značajku ili 'Prekini' da biste odustali.
+      <translation>Kliknite 'Nastavi' da biste ipak stvorili funkciju ili 'Prekini' da biste odustali.
 
 </translation>
     </message>
@@ -6398,9 +6371,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Kliknite 'Nastavi' da biste ipak stvorili značajku ili 'Prekini' da biste odustali.
-
-</translation>
+      <translation>Kliknite 'Nastavi' da biste ipak stvorili funkciju ili 'Prekini' da biste odustali.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6475,7 +6446,7 @@ za koliziju ili filtriranje udaljenosti.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Kliknite 'Nastavi' da biste ipak stvorili značajku ili 'Prekini' da biste odustali.
+      <translation>Kliknite 'Nastavi' da biste ipak stvorili funkciju ili 'Prekini' da biste odustali.
 
 </translation>
     </message>
@@ -6759,7 +6730,7 @@ of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
       <translation>Stvorite objekt 'Boolean Fragments' od dva ili više odabranih objekata,
 ili iz oblika unutar složenog spoja.
-Ovo je boolean unija koja se zatim presijeca na raskrižjima
+Ovo je booleova unija koja se zatim presijeca na raskrižjima
 izvornih oblika.
 'Složeni filtar' može se koristiti za izdvajanje pojedinih kriški.</translation>
     </message>
@@ -6880,7 +6851,7 @@ To znači da će se ukloniti preklapajući volumeni oblika.
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokument '%1' ne postoji.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6974,6 +6945,74 @@ Skalira odabrani oblik</translation>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>Obrisani svi filteri odabira</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation>Oblik mora biti linija, rub ili složeni oblik. Dobavljeno je nešto drugo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Jednostavno</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Napravi posebnu ravninu lica od svake žice samostalno. Nema podršku za rupe; žice mogu biti na različitim ravninama.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>"Bull's-eye" dotjerivanje izgleda</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Podržava stvaranje ravani lica s rupama i otocima.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Sir, dotjerivanje izgleda</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Podržava stvaranje ravani lica s rupama i otocima, ali nema otoka unutar rupe.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="388"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Dio istisnuti, dotjerivanje izgleda</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="393"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Podržava stvaranje lica s rupama, ne podržava gniježđenje.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exception</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
+      <source>Wire is not closed.</source>
+      <translation>Žica nije zatvorena.</translation>
     </message>
   </context>
 </TS>

@@ -119,7 +119,6 @@ class WidgetViewSelector(QtWidgets.QWidget):
         self.composite_button.setIcon(
             QtGui.QIcon.fromTheme("composite_button", QtGui.QIcon(":/icons/composite_view.svg"))
         )
-        self.composite_button.hide()  # TODO: Implement this view
 
         self.horizontal_layout.addWidget(self.compact_button)
         self.horizontal_layout.addWidget(self.expanded_button)

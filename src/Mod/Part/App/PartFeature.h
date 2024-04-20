@@ -25,6 +25,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <TopoDS_Face.hxx>
@@ -34,6 +35,11 @@
 
 class gp_Dir;
 class BRepBuilderAPI_MakeShape;
+
+namespace Data
+{
+struct HistoryItem;
+}
 
 namespace Part
 {
@@ -52,6 +58,7 @@ public:
     ~Feature() override;
 
     PropertyPartShape Shape;
+    Materials::PropertyMaterial ShapeMaterial;
 
     /** @name methods override feature */
     //@{
@@ -64,10 +71,44 @@ public:
 
     PyObject* getPyObject() override;
 
+    std::pair<std::string,std::string> getElementName(
+            const char *name, ElementNameType type=Normal) const override;
+
+    static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
+                                                          const char *name, bool recursive=true, bool sameType=false);
+
+    static QVector<Data::MappedElement>
+    getRelatedElements(App::DocumentObject* obj,
+                       const char* name,
+                       HistoryTraceType sameType = HistoryTraceType::followTypeChange,
+                       bool withCache = true);
+
+    /** Obtain the element name from a feature based of the element name of its source feature
+     *
+     * @param obj: current feature
+     * @param subname: sub-object/element reference
+     * @param src: source feature
+     * @param srcSub: sub-object/element reference of the source
+     * @param single: if true, then return upon first match is found, or else
+     *                return all matches. Multiple matches are possible for
+     *                compound of multiple instances of the same source shape.
+     *
+     * @return Return a vector of pair of new style and old style element names.
+     */
+    static QVector<Data::MappedElement>
+    getElementFromSource(App::DocumentObject *obj,
+                         const char *subname,
+                         App::DocumentObject *src,
+                         const char *srcSub,
+                         bool single = false);
+
     TopLoc_Location getLocation() const;
 
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    App::Material getMaterialAppearance() const override;
+    void setMaterialAppearance(const App::Material& material) override;
 
     /** Convenience function to extract shape from fully qualified subname
      *
@@ -107,6 +148,11 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
+    static Feature*
+    create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
+
+    static bool isElementMappingDisabled(App::PropertyContainer *container);
+
 protected:
     /// recompute only this object
     App::DocumentObjectExecReturn *recompute() override;
@@ -134,8 +180,15 @@ public:
 
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
+    App::PropertyLinkSub   EdgeLinks;
 
     short mustExecute() const override;
+    void onUpdateElementReference(const App::Property *prop) override;
+
+protected:
+    void onDocumentRestored() override;
+    void onChanged(const App::Property *) override;
+    void syncEdgeLink();
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;
@@ -158,14 +211,24 @@ public:
  * Find all faces cut by a line through the centre of gravity of a given face
  * Useful for the "up to face" options to pocket or pad
  */
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 struct cutFaces {
     TopoDS_Face face;
     double distsq;
 };
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 PartExport
 std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
                                         const TopoDS_Shape& face, const gp_Dir& dir);
+struct cutTopoShapeFaces
+{
+    TopoShape face;
+    double distsq;
+};
+
+PartExport std::vector<cutTopoShapeFaces>
+findAllFacesCutBy(const TopoShape& shape, const TopoShape& face, const gp_Dir& dir);
 
 /**
   * Check for intersection between the two shapes. Only solids are guaranteed to work properly

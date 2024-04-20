@@ -431,7 +431,7 @@ void DlgRevolution::accept()
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
             QByteArray from = shape.toLatin1();
-            Gui::Command::copyVisual(to, "ShapeColor", from);
+            Gui::Command::copyVisual(to, "ShapeAppearance", from);
             Gui::Command::copyVisual(to, "LineColor", from);
             Gui::Command::copyVisual(to, "PointColor", from);
         }
@@ -570,11 +570,7 @@ void DlgRevolution::autoSolid()
 TaskRevolution::TaskRevolution()
 {
     widget = new DlgRevolution();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Revolve"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Revolve"), widget);
 }
 
 bool TaskRevolution::accept()

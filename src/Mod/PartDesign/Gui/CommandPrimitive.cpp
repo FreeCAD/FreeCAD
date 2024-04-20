@@ -128,7 +128,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 
     if(!base)
         base = pcActiveBody;
-    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "ShapeAppearance", base);
     copyVisual(prm, "LineColor", base);
     copyVisual(prm, "PointColor", base);
     copyVisual(prm, "Transparency", base);
@@ -279,7 +279,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     Gui::Command::updateActive();
 
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "ShapeAppearance", prevSolid);
     copyVisual(Feat, "LineColor", prevSolid);
     copyVisual(Feat, "PointColor", prevSolid);
     copyVisual(Feat, "Transparency", prevSolid);

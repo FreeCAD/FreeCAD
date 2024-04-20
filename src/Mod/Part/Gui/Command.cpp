@@ -925,7 +925,7 @@ void CmdPartSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.LineColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),BaseName.c_str());
+    doCommand(Gui,"Gui.activeDocument().%s.LineMaterial = Gui.activeDocument().%s.ShapeAppearance[0]",FeatName.c_str(),BaseName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1215,7 +1215,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
             try {
                 runCommand(Doc, str.toLatin1());
-                copyVisual(name.c_str(), "ShapeColor", it->getNameInDocument());
+                copyVisual(name.c_str(), "ShapeAppearance", it->getNameInDocument());
                 copyVisual(name.c_str(), "LineColor" , it->getNameInDocument());
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
@@ -1656,7 +1656,7 @@ void CmdPartOffset::activated(int iMsg)
 
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
 }
@@ -1712,7 +1712,7 @@ void CmdPartOffset2D::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
 }
@@ -1896,7 +1896,7 @@ void CmdPartThickness::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
     adjustCameraPosition();
 
-    copyVisual(thick.c_str(), "ShapeColor", obj->getNameInDocument());
+    copyVisual(thick.c_str(), "ShapeAppearance", obj->getNameInDocument());
     copyVisual(thick.c_str(), "LineColor" , obj->getNameInDocument());
     copyVisual(thick.c_str(), "PointColor", obj->getNameInDocument());
 }
@@ -2396,7 +2396,7 @@ CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+    auto dlg = new PartGui::TaskProjectOnSurface(getDocument(nullptr));
     Gui::Control().showDialog(dlg);
 }
 

@@ -317,7 +317,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 }
 
 //! Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
-TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
+TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Shape& inOutShape,
                                              Base::Vector3d centroid)
 {
 //    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
@@ -774,18 +774,10 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 //! TechDraw vertex names run from 0 to n-1
 TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
 {
-    const std::vector<TechDraw::VertexPtr> allVertex(DrawViewPart::getVertexGeometry());
-    size_t iTarget = DrawUtil::getIndexFromName(vertexName);
-    if (allVertex.empty()) {
-        //should not happen
-        throw Base::IndexError("DVP::getVertex - No vertices found.");
-    }
-    if (iTarget >= allVertex.size()) {
-        //should not happen
-        throw Base::IndexError("DVP::getVertex - Vertex not found.");
-    }
-
-    return allVertex.at(iTarget);
+    // Base::Console().Message("DVP::getVertex(%s)\n", vertexName.c_str());
+    auto vertexIndex = DrawUtil::getIndexFromName(vertexName);
+    auto vertex = getProjVertexByIndex(vertexIndex);
+    return vertex;
 }
 
 //! returns existing BaseGeom of 2D Edge
@@ -795,11 +787,11 @@ TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
     const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
     if (geoms.empty()) {
         //should not happen
-        throw Base::IndexError("DVP::getEdge - No edges found.");
+        return nullptr;
     }
     size_t iEdge = DrawUtil::getIndexFromName(edgeName);
     if ((unsigned)iEdge >= geoms.size()) {
-        throw Base::IndexError("DVP::getEdge - Edge not found.");
+        return nullptr;
     }
     return geoms.at(iEdge);
 }
@@ -812,11 +804,11 @@ TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
     const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
     if (faces.empty()) {
         //should not happen
-        throw Base::IndexError("DVP::getFace - No faces found.");
+        return nullptr;
     }
     size_t iFace = DrawUtil::getIndexFromName(faceName);
     if (iFace >= faces.size()) {
-        throw Base::IndexError("DVP::getFace - Face not found.");
+        return nullptr;
     }
     return faces.at(iFace);
 }
@@ -846,9 +838,7 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
     if (geoms.empty()) {
         return nullptr;
     }
-    if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Error("DVP::getGeomByIndex(%d) - invalid index - size: %d\n", idx,
-                              geoms.size());
+    if (idx >= (int)geoms.size()) {
         return nullptr;
     }
     return geoms.at(idx);
@@ -859,10 +849,9 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
     const std::vector<TechDraw::VertexPtr>& geoms = getVertexGeometry();
     if (geoms.empty()) {
-        return nullptr;
+       return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index\n", idx);
         return nullptr;
     }
     return geoms.at(idx);
@@ -1277,7 +1266,6 @@ Base::Vector3d DrawViewPart::getXDirection() const
 Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                         const bool flip) const
 {
-    //    Base::Console().Message("DVP::getLegacyX() - %s\n", Label.getValue());
     gp_Ax2 viewAxis = ShapeUtils::legacyViewAxis1(pt, axis, flip);
     gp_Dir gXDir = viewAxis.XDirection();
     return Base::Vector3d(gXDir.X(), gXDir.Y(), gXDir.Z());
@@ -1298,7 +1286,6 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 
 void DrawViewPart::addReferencesToGeom()
 {
-    //    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     gVerts.insert(gVerts.end(), m_referenceVerts.begin(), m_referenceVerts.end());
     getGeometryObject()->setVertexGeometry(gVerts);
@@ -1308,11 +1295,7 @@ void DrawViewPart::addReferencesToGeom()
 //ex. LandmarkDimension as a reference
 std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 {
-    //    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n",
-    //                            DrawUtil::formatVector(v).c_str(), getNameInDocument());
     std::string refTag;
-    //    Base::Vector3d scaledV = v * getScale();
-    //    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     Base::Vector3d scaledV = v;
     TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
     ref->isReference(true);

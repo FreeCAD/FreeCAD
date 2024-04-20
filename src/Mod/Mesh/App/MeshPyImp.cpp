@@ -66,6 +66,7 @@ struct MeshPropertyLock
 
 private:
     PropertyMeshKernel* prop;
+    FC_DISABLE_COPY_MOVE(MeshPropertyLock)
 };
 
 int MeshPy::PyInit(PyObject* args, PyObject*)
@@ -345,7 +346,7 @@ PyObject* MeshPy::write(PyObject* args, PyObject* kwds)
 
 PyObject* MeshPy::writeInventor(PyObject* args)
 {
-    float creaseangle = 0.0f;
+    float creaseangle = 0.0F;
     if (!PyArg_ParseTuple(args, "|f", &creaseangle)) {
         return nullptr;
     }
@@ -374,7 +375,9 @@ PyObject* MeshPy::offset(PyObject* args)
 
 PyObject* MeshPy::offsetSpecial(PyObject* args)
 {
-    float Float {}, zmin {}, zmax {};
+    float Float {};
+    float zmin {};
+    float zmax {};
     if (!PyArg_ParseTuple(args, "fff", &Float, &zmin, &zmax)) {
         return nullptr;
     }
@@ -392,7 +395,7 @@ PyObject* MeshPy::crossSections(PyObject* args)
 {
     PyObject* obj {};
     PyObject* poly = Py_False;
-    float min_eps = 1.0e-2f;
+    float min_eps = 1.0e-2F;
     if (!PyArg_ParseTuple(args, "O|fO!", &obj, &min_eps, &PyBool_Type, &poly)) {
         return nullptr;
     }
@@ -554,7 +557,7 @@ PyObject* MeshPy::section(PyObject* args, PyObject* kwds)
 {
     PyObject* pcObj {};
     PyObject* connectLines = Py_True;
-    float fMinDist = 0.0001f;
+    float fMinDist = 0.0001F;
 
     static const std::array<const char*, 4> keywords_section {"Mesh",
                                                               "ConnectLines",
@@ -601,7 +604,9 @@ PyObject* MeshPy::coarsen(PyObject* args)
 
 PyObject* MeshPy::translate(PyObject* args)
 {
-    float x {}, y {}, z {};
+    float x {};
+    float y {};
+    float z {};
     if (!PyArg_ParseTuple(args, "fff", &x, &y, &z)) {
         return nullptr;
     }
@@ -619,7 +624,9 @@ PyObject* MeshPy::translate(PyObject* args)
 
 PyObject* MeshPy::rotate(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     if (!PyArg_ParseTuple(args, "ddd", &x, &y, &z)) {
         return nullptr;
     }
@@ -677,7 +684,15 @@ PyObject* MeshPy::getEigenSystem(PyObject* args)
 
 PyObject* MeshPy::addFacet(PyObject* args)
 {
-    double x1 {}, y1 {}, z1 {}, x2 {}, y2 {}, z2 {}, x3 {}, y3 {}, z3 {};
+    double x1 {};
+    double y1 {};
+    double z1 {};
+    double x2 {};
+    double y2 {};
+    double z2 {};
+    double x3 {};
+    double y3 {};
+    double z3 {};
     if (PyArg_ParseTuple(args, "ddddddddd", &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3)) {
         getMeshObjectPtr()->addFacet(
             MeshCore::MeshGeomFacet(Base::Vector3f((float)x1, (float)y1, (float)z1),
@@ -687,7 +702,9 @@ PyObject* MeshPy::addFacet(PyObject* args)
     }
 
     PyErr_Clear();
-    PyObject *v1 {}, *v2 {}, *v3 {};
+    PyObject* v1 {};
+    PyObject* v2 {};
+    PyObject* v3 {};
     if (PyArg_ParseTuple(args,
                          "O!O!O!",
                          &(Base::VectorPy::Type),
@@ -908,7 +925,9 @@ PyObject* MeshPy::movePoint(PyObject* args)
     Base::Vector3d vec;
 
     do {
-        double x = 0.0, y = 0.0, z = 0.0;
+        double x = 0.0;
+        double y = 0.0;
+        double z = 0.0;
         if (PyArg_ParseTuple(args, "kddd", &index, &x, &y, &z)) {
             vec.Set(x, y, z);
             break;
@@ -961,7 +980,7 @@ PyObject* MeshPy::addSegment(PyObject* args)
     segment.reserve(list.size());
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         Py::Long value(*it);
-        Mesh::FacetIndex index = static_cast<unsigned long>(value);
+        Mesh::FacetIndex index = static_cast<Mesh::FacetIndex>(value);
         if (index < numFacets) {
             segment.push_back(index);
         }
@@ -1371,13 +1390,13 @@ PyObject* MeshPy::fillupHoles(PyObject* args)
 {
     unsigned long len {};
     int level = 0;
-    float max_area = 0.0f;
+    float max_area = 0.0F;
     if (!PyArg_ParseTuple(args, "k|if", &len, &level, &max_area)) {
         return nullptr;
     }
     try {
         std::unique_ptr<MeshCore::AbstractPolygonTriangulator> tria;
-        if (max_area > 0.0f) {
+        if (max_area > 0.0F) {
             tria = std::unique_ptr<MeshCore::AbstractPolygonTriangulator>(
                 new MeshCore::ConstraintDelaunayTriangulator(max_area));
         }
@@ -1415,8 +1434,8 @@ PyObject* MeshPy::fixIndices(PyObject* args)
 
 PyObject* MeshPy::fixCaps(PyObject* args)
 {
-    float fMaxAngle = Base::toRadians<float>(150.0f);
-    float fSplitFactor = 0.25f;
+    float fMaxAngle = Base::toRadians<float>(150.0F);
+    float fSplitFactor = 0.25F;
     if (!PyArg_ParseTuple(args, "|ff", &fMaxAngle, &fSplitFactor)) {
         return nullptr;
     }
@@ -1556,7 +1575,7 @@ PyObject* MeshPy::mergeFacets(PyObject* args)
 
 PyObject* MeshPy::optimizeTopology(PyObject* args)
 {
-    float fMaxAngle = -1.0f;
+    float fMaxAngle = -1.0F;
     if (!PyArg_ParseTuple(
             args,
             "|f; specify the maximum allowed angle between the normals of two adjacent facets",
@@ -1607,7 +1626,8 @@ PyObject* MeshPy::splitEdges(PyObject* args)
 
 PyObject* MeshPy::splitEdge(PyObject* args)
 {
-    unsigned long facet {}, neighbour {};
+    unsigned long facet {};
+    unsigned long neighbour {};
     PyObject* vertex {};
     if (!PyArg_ParseTuple(args, "kkO!", &facet, &neighbour, &Base::VectorPy::Type, &vertex)) {
         return nullptr;
@@ -1683,7 +1703,8 @@ PyObject* MeshPy::splitFacet(PyObject* args)
 
 PyObject* MeshPy::swapEdge(PyObject* args)
 {
-    unsigned long facet {}, neighbour {};
+    unsigned long facet {};
+    unsigned long neighbour {};
     if (!PyArg_ParseTuple(args, "kk", &facet, &neighbour)) {
         return nullptr;
     }
@@ -1716,7 +1737,8 @@ PyObject* MeshPy::swapEdge(PyObject* args)
 
 PyObject* MeshPy::collapseEdge(PyObject* args)
 {
-    unsigned long facet {}, neighbour {};
+    unsigned long facet {};
+    unsigned long neighbour {};
     if (!PyArg_ParseTuple(args, "kk", &facet, &neighbour)) {
         return nullptr;
     }
@@ -1960,7 +1982,8 @@ PyObject* MeshPy::trim(PyObject* args)
 
 PyObject* MeshPy::trimByPlane(PyObject* args)
 {
-    PyObject *base {}, *norm {};
+    PyObject* base {};
+    PyObject* norm {};
     if (!PyArg_ParseTuple(args,
                           "O!O!",
                           &Base::VectorPy::Type,
@@ -2044,7 +2067,8 @@ PyObject* MeshPy::smooth(PyObject* args, PyObject* kwds)
 
 PyObject* MeshPy::decimate(PyObject* args)
 {
-    float fTol {}, fRed {};
+    float fTol {};
+    float fRed {};
     if (PyArg_ParseTuple(args, "ff", &fTol, &fRed)) {
         PY_TRY
         {

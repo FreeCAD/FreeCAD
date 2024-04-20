@@ -25,6 +25,7 @@
 #include <cmath>
 
 #include <QPainterPath>
+#include <QKeyEvent>
 #include <qmath.h>
 #endif// #ifndef _PreComp_
 
@@ -33,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -43,6 +45,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -62,6 +65,7 @@
 #include "ViewProviderViewPart.h"
 #include "ZVALUE.h"
 #include "PathBuilder.h"
+#include "QGIBreakLine.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -83,6 +87,7 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
 
     showSection = false;
     m_pathBuilder = new PathBuilder(this);
@@ -106,6 +111,77 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
     }
     return QGIView::itemChange(change, value);
 }
+
+bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    // Base::Console().Message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
+    //                         event->type(), watched->type() - QGraphicsItem::UserType);
+    if (event->type() == QEvent::ShortcutOverride) {
+        // if we accept this event, we should get a regular keystroke event next
+        // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
+        // Std_Delete
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Delete)  {
+            bool success = removeSelectedCosmetic();
+            if (success) {
+                updateView(true);
+                event->accept();
+                return true;
+            }
+        }
+    }
+
+    return QGraphicsItem::sceneEventFilter(watched, event);
+}
+
+//! called when a DEL shortcut event is received.  If a cosmetic edge or vertex is
+//! selected, remove it from the view.
+bool QGIViewPart::removeSelectedCosmetic() const
+{
+    // Base::Console().Message("QGIVP::removeSelectedCosmetic()\n");
+    char* defaultDocument{nullptr};
+    std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx(
+        defaultDocument, TechDraw::DrawViewPart::getClassTypeId(), Gui::ResolveMode::NoResolve);
+    if (selectionAll.empty()) {
+        return false;
+    }
+    Gui::SelectionObject firstSelection = selectionAll.front();
+    App::DocumentObject* firstObject = selectionAll.front().getObject();
+    std::vector<std::string> subElements = selectionAll.front().getSubNames();
+    if (subElements.empty()) {
+        return false;
+    }
+    auto dvp = static_cast<TechDraw::DrawViewPart*>(firstObject);
+    auto subelement = subElements.front();
+    std::string geomName = DU::getGeomTypeFromName(subelement);
+    int index = DU::getIndexFromName(subelement);
+    if (geomName == "Edge") {
+        TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(index);
+        if (!base || base->getCosmeticTag().empty()) {
+            return false;
+        }
+        if (base->source() == COSMETICEDGE) {
+            dvp->removeCosmeticEdge(base->getCosmeticTag());
+            dvp->refreshCEGeoms();
+        } else if (base->source() == CENTERLINE) {
+            dvp->removeCenterLine(base->getCosmeticTag());
+            dvp->refreshCLGeoms();
+        } else {
+            Base::Console().Message("QGIVP::removeSelectedCosmetic - not a CE or a CL\n");
+            return false;
+        }
+    } else if (geomName == "Vertex") {
+        VertexPtr vert = dvp->getProjVertexByIndex(index);
+        if (!vert || vert->getCosmeticTag().empty() )  {
+            return false;
+        }
+        dvp->removeCosmeticVertex(vert->getCosmeticTag());
+        dvp->refreshCVGeoms();
+    }
+
+    return true;
+}
+
 
 //obs?
 void QGIViewPart::tidy()
@@ -133,7 +209,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
 
 void QGIViewPart::updateView(bool update)
 {
-    //    Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
+    // Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
@@ -166,6 +242,7 @@ void QGIViewPart::draw()
 
     drawViewPart();
     drawAllHighlights();
+    drawBreakLines();
     drawMatting();
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
@@ -305,6 +382,7 @@ void QGIViewPart::drawAllEdges()
         item = new QGIEdge(iEdge);
         addToGroup(item);      //item is created at scene(0, 0), not group(0, 0)
         item->setPath(drawPainterPath(*itGeom));
+        item->setSource((*itGeom)->source());
 
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         if ((*itGeom)->getCosmetic()) {
@@ -957,6 +1035,48 @@ void QGIViewPart::drawMatting()
     mat->show();
 }
 
+
+//! if this is a broken view, draw the break lines.
+void QGIViewPart::drawBreakLines()
+{
+    // Base::Console().Message("QGIVP::drawBreakLines()\n");
+
+    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
+    if (!dbv) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+
+    auto breaks = dbv->Breaks.getValues();
+    for (auto& breakObj : breaks) {
+        QGIBreakLine* breakLine = new QGIBreakLine();
+        addToGroup(breakLine);
+
+        Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
+        breakLine->setDirection(direction);
+        // the bounds describe two corners of the removed area in the view
+        std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
+        // the bounds are in 3d form, so we need to invert & rez them
+        Base::Vector3d topLeft     = Rez::guiX(DU::invertY(bounds.first));
+        Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
+        breakLine->setBounds(topLeft, bottomRight);
+        breakLine->setPos(0.0, 0.0);
+        breakLine->setLinePen(
+            m_dashedLineGenerator->getLinePen(1, vp->HiddenWidth.getValue()));
+        breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        breakLine->setZValue(ZVALUE::SECTIONLINE);
+        App::Color color = prefBreaklineColor();
+        breakLine->setBreakColor(color.asValue<QColor>());
+        breakLine->setRotation(-dbv->Rotation.getValue());
+        breakLine->draw();
+    }
+}
+
+
 void QGIViewPart::toggleCache(bool state)
 {
     QList<QGraphicsItem*> items = childItems();
@@ -1025,6 +1145,7 @@ QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geom
 }
 
 
+
 void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
@@ -1066,8 +1187,6 @@ void QGIViewPart::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
     QGIView::paint(painter, &myOption, widget);
 }
 
-
-
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView() {}
 
@@ -1082,6 +1201,11 @@ bool QGIViewPart::prefPrintCenters()
 {
     bool printCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
     return printCenters;
+}
+
+App::Color QGIViewPart::prefBreaklineColor()
+{
+    return  Preferences::getAccessibleColor(PreferencesGui::breaklineColor());
 }
 
 QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) const
@@ -1099,7 +1223,7 @@ QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) cons
             scanType = QGIFace::Type;
         }
     }
-    catch (Base::ValueError& e) {
+    catch (Base::ValueError&) {
         // No action
     }
     if (!scanType) {
@@ -1110,7 +1234,7 @@ QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) cons
     try {
         scanIndex = TechDraw::DrawUtil::getIndexFromName(subName);
     }
-    catch (Base::ValueError& e) {
+    catch (Base::ValueError&) {
         // No action
     }
     if (scanIndex < 0) {

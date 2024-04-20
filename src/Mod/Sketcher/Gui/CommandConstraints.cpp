@@ -844,7 +844,7 @@ int SketchSelection::setUp()
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[1].getObject() != SketchObj->Support.getValue()) {
+            if (selection[1].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
@@ -856,7 +856,7 @@ int SketchSelection::setUp()
         else if (selection[1].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
-            if (selection[0].getObject() != SketchObj->Support.getValue()) {
+            if (selection[0].getObject() != SketchObj->AttachmentSupport.getValue()) {
                 ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
@@ -1893,8 +1893,6 @@ protected:
     void makeCts_1Point1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selCircleArc[0].GeoId, selCircleArc[0].PosId, onSketchPos);
@@ -1986,8 +1984,6 @@ protected:
     void makeCts_1Line1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         //Distance
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-
         if (availableConstraint == AvailableConstraint::FIRST) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             createDistanceConstrain(selCircleArc[0].GeoId, selCircleArc[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); //Line second parameter
@@ -2739,7 +2735,7 @@ public:
         addCommand("Sketcher_ConstrainVertical");
     }
 
-    const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+    const char* className() const override { return "CmdSketcherCompHorizontalVertical"; }
 };
 
 // ============================================================================
@@ -4621,6 +4617,33 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
+        else if (isArcOfCircle(*geom)) {
+            auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+            double ActLength = arc->getAngle(false) * arc->getRadius();
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
+                GeoId1,
+                ActLength);
+
+            // it is a constraint on a external line, make it non-driving
+            if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt
+                || constraintCreationMode == Reference) {
+                const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                    "setDriving(%d,%s)",
+                    ConStr.size() - 1,
+                    "False");
+                finishDatumConstraint(this, Obj, false);
+            }
+            else {
+                finishDatumConstraint(this, Obj, true);
+            }
+
+            return;
+        }
     }
 
     Gui::TranslatedUserWarning(Obj,
@@ -6431,8 +6454,8 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain tangent");
-    sToolTipText = QT_TR_NOOP("Create a tangent constraint between two entities");
+    sMenuText = QT_TR_NOOP("Constrain tangent or collinear");
+    sToolTipText = QT_TR_NOOP("Create a tangent or collinear constraint between two entities");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";
@@ -9756,6 +9779,59 @@ bool CmdSketcherConstrainSnellsLaw::isActive()
 }
 
 // ======================================================================================
+DEF_STD_CMD_A(CmdSketcherChangeDimensionConstraint)
+
+CmdSketcherChangeDimensionConstraint::CmdSketcherChangeDimensionConstraint()
+    : Command("Sketcher_ChangeDimensionConstraint")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Change value");
+    sToolTipText = QT_TR_NOOP("Change the value of a dimensional constraint");
+    sWhatsThis = "Sketcher_ChangeDimensionConstraint";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherChangeDimensionConstraint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto getDimConstraint = []() {
+        std::vector<Gui::SelectionObject> selection{getSelection().getSelectionEx()};
+        if (selection.size() != 1 || selection[0].getSubNames().size() != 1) {
+            throw Base::RuntimeError();
+        }
+
+        if (auto sketch = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())) {
+            std::string subName = selection[0].getSubNames().at(0);
+            if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
+                return std::make_tuple(sketch, ConstrId);
+            }
+        }
+
+        throw Base::RuntimeError();
+    };
+
+    try {
+        auto value = getDimConstraint();
+        EditDatumDialog editDatumDialog(std::get<0>(value), std::get<1>(value));
+        editDatumDialog.exec(false);
+    }
+    catch (const Base::RuntimeError&) {
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select one dimensional constraint from the sketch."));
+    }
+}
+
+bool CmdSketcherChangeDimensionConstraint::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+// ======================================================================================
 /*** Creation Mode / Toggle to or from Reference ***/
 DEF_STD_CMD_AU(CmdSketcherToggleDrivingConstraint)
 
@@ -10030,6 +10106,7 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainPointOnObject());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
+    rcCmdMgr.addCommand(new CmdSketcherChangeDimensionConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
     rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());

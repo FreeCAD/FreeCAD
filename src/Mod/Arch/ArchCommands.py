@@ -98,7 +98,7 @@ def addComponents(objectsList,host):
     if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -112,8 +112,8 @@ def addComponents(objectsList,host):
                             g.append(host)
                             o.Hosts = g
                 elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
-                    if o.Support == host:
-                        o.Support = None
+                    if o.AttachmentSupport == host:
+                        o.AttachmentSupport = None
                     host.Tool = o
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
@@ -142,7 +142,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None

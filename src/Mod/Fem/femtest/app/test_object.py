@@ -328,7 +328,7 @@ class TestObjectType(unittest.TestCase):
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertEqual(
             "Fem::SolverCcxTools",
-            type_of_obj(ObjectsFem.makeSolverCalculixCcxTools(doc))
+            type_of_obj(ObjectsFem.makeSolverCalculiXCcxTools(doc))
         )
         self.assertEqual(
             "Fem::SolverCalculix",
@@ -574,7 +574,7 @@ class TestObjectType(unittest.TestCase):
         ))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_of_type(
-            ObjectsFem.makeSolverCalculixCcxTools(doc),
+            ObjectsFem.makeSolverCalculiXCcxTools(doc),
             "Fem::SolverCcxTools"
         ))
         self.assertTrue(is_of_type(
@@ -1285,7 +1285,7 @@ class TestObjectType(unittest.TestCase):
         ))
 
         # SolverCcxTools
-        solver_ccxtools = ObjectsFem.makeSolverCalculixCcxTools(doc)
+        solver_ccxtools = ObjectsFem.makeSolverCalculiXCcxTools(doc)
         self.assertTrue(is_derived_from(
             solver_ccxtools,
             "App::DocumentObject"
@@ -1745,7 +1745,7 @@ class TestObjectType(unittest.TestCase):
         )
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(
-            ObjectsFem.makeSolverCalculixCcxTools(
+            ObjectsFem.makeSolverCalculiXCcxTools(
                 doc
             ).isDerivedFrom("Fem::FemSolverObjectPython")
         )
@@ -1891,7 +1891,7 @@ def create_all_fem_objects_doc(
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
 
-    analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
+    analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
     analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
     analysis.addObject(ObjectsFem.makeSolverMystran(doc))

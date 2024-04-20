@@ -214,6 +214,28 @@ void DocumentObject::touch(bool noRecompute)
 }
 
 /**
+ * @brief Set this document object freezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::freeze()
+{
+    StatusBits.set(ObjectStatus::Freeze);
+    // use the signalTouchedObject to refresh the Gui
+    if (_pDoc)
+        _pDoc->signalTouchedObject(*this);
+}
+
+/**
+ * @brief Set this document object unfreezed.
+ * A freezed document object does not recompute ever.
+ */
+void DocumentObject::unfreeze(bool noRecompute)
+{
+    StatusBits.set(ObjectStatus::Freeze, false);
+    touch(noRecompute);
+}
+
+/**
  * @brief Check whether the document object is touched or not.
  * @return true if document object is touched, false if not.
  */
@@ -240,6 +262,9 @@ void DocumentObject::enforceRecompute()
  */
 bool DocumentObject::mustRecompute() const
 {
+    if (StatusBits.test(ObjectStatus::Freeze))
+        return false;
+
     if (StatusBits.test(ObjectStatus::Enforce))
         return true;
 
@@ -723,9 +748,33 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this,*prop);
 }
 
+void DocumentObject::onEarlyChange(const Property *prop)
+{
+    if(GetApplication().isClosingAll())
+        return;
+
+    if(!GetApplication().isRestoring() &&
+        !prop->testStatus(Property::PartialTrigger) &&
+        getDocument() &&
+        getDocument()->testStatus(Document::PartialDoc))
+    {
+        static App::Document *warnedDoc;
+        if(warnedDoc != getDocument()) {
+            warnedDoc = getDocument();
+            FC_WARN("Changes to partial loaded document will not be saved: "
+                    << getFullName() << '.' << prop->getName());
+        }
+    }
+
+    signalEarlyChanged(*this, *prop);
+}
+
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if (isFreezed())
+        return;
+
     if(GetApplication().isClosingAll())
         return;
 
@@ -1253,6 +1302,24 @@ bool DocumentObject::adjustRelativeLinks(
         }
     }
     return touched;
+}
+
+std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
+{
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if (!prop) {
+        return std::string();
+    }
+    return prop->getElementMapVersion(restored);
+}
+
+bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
+{
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if (!prop) {
+        return false;
+    }
+    return prop->checkElementMapVersion(ver);
 }
 
 const std::string &DocumentObject::hiddenMarker() {

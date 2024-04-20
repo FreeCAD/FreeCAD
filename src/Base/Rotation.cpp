@@ -1022,6 +1022,7 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
     quat[1] = values[2];
     quat[2] = values[3];
     quat[3] = values[0];
+    this->evaluateVector();
 }
 
 void Rotation::getEulerAngles(EulerSequence theOrder,

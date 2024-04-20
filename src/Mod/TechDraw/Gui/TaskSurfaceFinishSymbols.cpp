@@ -374,14 +374,6 @@ bool TaskSurfaceFinishSymbols::accept()
     surfaceSymbol->Rotation.setValue(ui->leAngle->text().toDouble());
 
     auto view = dynamic_cast<TechDraw::DrawView *>(owner);
-    auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
-    if (!page && view) {
-        page = view->findParentPage();
-    }
-    if (page) {
-        page->addView(surfaceSymbol);
-    }
-
     surfaceSymbol->Owner.setValue(view);
     surfaceSymbol->X.setValue(placement.x);
     surfaceSymbol->Y.setValue(placement.y);
@@ -389,6 +381,14 @@ bool TaskSurfaceFinishSymbols::accept()
     auto viewProvider = dynamic_cast<ViewProviderSymbol *>(QGIView::getViewProvider(surfaceSymbol));
     if (viewProvider) {
         viewProvider->StackOrder.setValue(ZVALUE::DIMENSION);
+    }
+
+    auto page = dynamic_cast<TechDraw::DrawPage *>(owner);
+    if (!page && view) {
+        page = view->findParentPage();
+    }
+    if (page) {
+        page->addView(surfaceSymbol);
     }
 
     Gui::Command::commitCommand();

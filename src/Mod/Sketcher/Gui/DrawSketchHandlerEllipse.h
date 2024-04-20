@@ -430,7 +430,8 @@ void DSHEllipseController::configureToolWidget()
 {
 
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Center"), QStringLiteral("Axis endpoints and radius")};
+        QStringList names = {QApplication::translate("Sketcher_CreateEllipse", "Center"),
+                             QApplication::translate("Sketcher_CreateEllipse", "Axis endpoints")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
@@ -558,7 +559,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (onViewParameters[OnViewParameter::Fifth]->isSet
                     && onViewParameters[OnViewParameter::Sixth]->isSet
-                    && areColinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
+                    && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                 }

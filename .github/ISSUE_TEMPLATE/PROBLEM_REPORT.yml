@@ -1,6 +1,5 @@
 name: Report a Problem
 description: Have you found something that does not work well, is too hard to do or is missing altogether? Please create a Problem Report.
-title: "[Problem] "
 labels: ["needs triage"]
 body:
   - type: checkboxes
@@ -35,16 +34,17 @@ body:
         - Addon Manager
         - Arch
         - Assembly
+        - CAM/Path
         - Core
         - Draft
         - Expressions
         - FEM
         - File formats
         - GCS
+        - Mesh
         - OpenSCAD
         - Part
         - PartDesign
-        - Path
         - Project Tools & Websites
         - Sketcher
         - Spreadsheet

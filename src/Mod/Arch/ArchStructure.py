@@ -325,6 +325,7 @@ class _CommandStructure:
             title=translate("Arch","First point of the beam")+":"
         else:
             title=translate("Arch","Base point of column")+":"
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
 
     def getPoint(self,point=None,obj=None):
@@ -334,16 +335,23 @@ class _CommandStructure:
         self.bmode = self.modeb.isChecked()
         if point is None:
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         if self.bmode and (self.bpoint is None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         horiz = True # determines the type of rotation to apply to the final object
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
+        if self.bmode:
+            self.Length = point.sub(self.bpoint).Length
+            params.set_param_arch("StructureHeight",self.Length)
         if self.Profile is not None:
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
@@ -495,9 +503,8 @@ class _CommandStructure:
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
-            self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        self.continueCmd = params.get_param("ContinueMode")
+        value4.setChecked(self.continueCmd)
         grid.addWidget(label4,8,0,1,1)
         grid.addWidget(value4,8,1,1,1)
 
@@ -585,8 +592,7 @@ class _CommandStructure:
     def setContinue(self,i):
 
         self.continueCmd = bool(i)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.continueMode = bool(i)
+        params.set_param("ContinueMode", bool(i))
 
     def setCategory(self,i):
 
@@ -644,17 +650,17 @@ class _CommandStructure:
 
     def rotateLH(self):
 
-        h = self.Height
-        l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(h,FreeCAD.Units.Length).UserString)
-        self.vHeight.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        l = self.vLength.text()
+        h = self.vHeight.text()
+        self.vLength.setText(h)
+        self.vHeight.setText(l)
 
     def rotateLW(self):
 
-        w = self.Width
-        l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(w,FreeCAD.Units.Length).UserString)
-        self.vWidth.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        l = self.vLength.text()
+        w = self.vWidth.text()
+        self.vLength.setText(w)
+        self.vWidth.setText(l)
 
 
 class _Structure(ArchComponent.Component):

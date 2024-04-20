@@ -304,7 +304,6 @@ def getDefaultIcon():
 
 
 def build_new_file_card(template):
-
     """builds an html <li> element representing a new file
     quick start button"""
 
@@ -320,6 +319,10 @@ def build_new_file_card(template):
         "parametric_part": [
             TranslationTexts.get("T_TEMPLATE_PARAMETRICPART_NAME"),
             TranslationTexts.get("T_TEMPLATE_PARAMETRICPART_DESC"),
+        ],
+        "assembly": [
+            TranslationTexts.get("T_TEMPLATE_ASSEMBLY_NAME"),
+            TranslationTexts.get("T_TEMPLATE_ASSEMBLY_DESC"),
         ],
         # "csg_part": [TranslationTexts.get("T_TEMPLATE_CSGPART_NAME"), TranslationTexts.get("T_TEMPLATE_CSGPART_DESC")],
         "2d_draft": [
@@ -354,7 +357,6 @@ def build_new_file_card(template):
 
 
 def buildCard(filename, method, arg=None):
-
     """builds an html <li> element representing a file.
     method is a script + a keyword, for ex. url.py?key="""
 
@@ -550,12 +552,13 @@ def handle():
 
     SECTION_NEW_FILE = "<h2>" + TranslationTexts.get("T_NEWFILE") + "</h2>"
     SECTION_NEW_FILE += "<ul>"
-    SECTION_NEW_FILE += build_new_file_card("empty_file")
-    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += build_new_file_card("parametric_part")
+    SECTION_NEW_FILE += build_new_file_card("assembly")
     # SECTION_NEW_FILE += build_new_file_card("csg_part")
     SECTION_NEW_FILE += build_new_file_card("2d_draft")
     SECTION_NEW_FILE += build_new_file_card("architecture")
+    SECTION_NEW_FILE += build_new_file_card("empty_file")
+    SECTION_NEW_FILE += build_new_file_card("open_file")
     SECTION_NEW_FILE += "</ul>"
     HTML = HTML.replace("SECTION_NEW_FILE", SECTION_NEW_FILE)
 

@@ -168,7 +168,7 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
                                    'plm.Base = ' + toString(ssBase),
                                    'plm.Rotation.Q = ' + qr,
                                    'ss.Placement = plm',
-                                   'ss.Support = ' + sup,
+                                   'ss.AttachmentSupport = ' + sup,
                                    'Draft.autogroup(ss)',
                                    'FreeCAD.ActiveDocument.recompute()'])
         except Exception:

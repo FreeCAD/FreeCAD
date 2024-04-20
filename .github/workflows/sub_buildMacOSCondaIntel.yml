@@ -72,6 +72,8 @@ jobs:
         with:
           submodules: true
       - name: Setup Miniconda
+        env:
+          CONDA_VERBOSITY: 2
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
@@ -80,6 +82,8 @@ jobs:
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           ./conda/setup-environment.sh
       - name: Set Environment Variables
@@ -101,8 +105,9 @@ jobs:
         with:
           compiler: ${{ env.CXX }}
       - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |

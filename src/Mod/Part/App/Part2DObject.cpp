@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Part2DObject::execute()
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    if (!Support.getValues().empty()) {
+    if (!AttachmentSupport.getValues().empty()) {
         //part->transformPlacement(transform);
         positionBySupport();
     } else {
@@ -252,33 +252,6 @@ void Part2DObject::acceptGeometry()
 void Part2DObject::Restore(Base::XMLReader &reader)
 {
     Part::Feature::Restore(reader);
-}
-
-void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
-                                             const char * TypeName,
-                                             App::Property * prop)
-{
-    //override generic restoration to convert Support property from PropertyLinkSub to PropertyLinkSubList
-    if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
-        //reading legacy Support - when the Support could only be a single flat face.
-        App::PropertyLinkSub tmp;
-        if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
-            tmp.setContainer(this);
-            tmp.Restore(reader);
-            static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
-        }
-        this->MapMode.setValue(Attacher::mmFlatFace);
-    }
-    else {
-        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
-    }
-}
-
-void Part2DObject::handleChangedPropertyName(Base::XMLReader &reader,
-                                             const char * TypeName,
-                                             const char *PropName)
-{
-    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }
 
 // Python Drawing feature ---------------------------------------------------------

@@ -349,6 +349,7 @@ class _CommandWall:
             import WorkingPlane
             self.wp = WorkingPlane.get_working_plane()
             self.tracker = DraftTrackers.boxTracker()
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,
                                         extradlg=self.taskbox(),
                                         title=translate("Arch","First point of wall")+":")
@@ -373,6 +374,8 @@ class _CommandWall:
                     self.existing.append(obj)
         if point is None:
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -390,6 +393,8 @@ class _CommandWall:
             l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
                                  self.wp.get_local_coords(self.points[1]))
             self.tracker.finalize()
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')
@@ -445,7 +450,11 @@ class _CommandWall:
             FreeCADGui.doCommand('base.Placement = wp.get_placement()')
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
-            FreeCADGui.doCommand('base=Draft.makeLine(trace)')
+            FreeCADGui.doCommand('base=Draft.make_line(trace)')
+            # The created line should not stay selected as this causes an issue in continue mode.
+            # Two walls would then be created based on the same line.
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
             FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = wp.axis')
@@ -539,9 +548,8 @@ class _CommandWall:
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
-            self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        self.continueCmd = params.get_param("ContinueMode")
+        value4.setChecked(self.continueCmd)
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
 
@@ -611,13 +619,12 @@ class _CommandWall:
         """
 
         self.continueCmd = bool(i)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.continueMode = bool(i)
+        params.set_param("ContinueMode", bool(i))
 
     def setUseSketch(self,i):
-        """Simple callback to set if walls should join their base sketches when possible."""
+        """Simple callback to set if walls should based on sketches."""
 
-        params.set_param_arch("joinWallSketches",bool(i))
+        params.set_param_arch("WallSketches",bool(i))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
@@ -870,16 +877,15 @@ class _Wall(ArchComponent.Component):
                                         offset = obj.OffsetFirst.Value
                                     else:
                                         offset = obj.OffsetSecond.Value
+
                                     # only 1 wire (first) is supported
-                                    if len(obj.Base.Shape.Edges) == 1:
-                                        # If there is a single edge, the wire was used
-                                        baseEdges = self.basewires[0].Edges
-                                    elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                                        # if obj.Base is Sketch, self.baseWires[0] returned is already a list of edge
-                                        baseEdges = self.basewires[0]
-                                    else:
-                                        # otherwise, it is wire
-                                        baseEdges = self.basewires[0].Edges
+                                    # TODO - Can support multiple wires?
+
+                                    # self.basewires was list of list of edges,
+                                    # no matter Base is DWire, Sketch or else
+                                    # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
+                                    baseEdges = self.basewires[0]
+
                                     for edge in baseEdges:
                                         while offset < (edge.Length-obj.Joint.Value):
                                             #print i," Edge ",edge," : ",edge.Length," - ",offset
@@ -1205,7 +1211,10 @@ class _Wall(ArchComponent.Component):
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
+            import DraftGeomUtils
+            normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
+            if normal == None:
+                normal = Vector(0,0,1)
         else:
             normal = Vector(obj.Normal)
         base = None
@@ -1268,12 +1277,6 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
-                    # If the object is a single edge, use that as the
-                    # basewires.
-                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
-                    elif len(obj.Base.Shape.Edges) == 1:
-                        self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
-
                     # Sort Sketch edges consistently with below procedures
                     # without using Sketch.Shape.Edges - found the latter order
                     # in some corner case != getSortedClusters()
@@ -1307,7 +1310,8 @@ class _Wall(ArchComponent.Component):
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
-                    else:
+                    else:  #For all objects except Sketch, single edge or more
+                        # See discussion - https://forum.freecad.org/viewtopic.php?t=86365
                         # See discussion - https://forum.freecad.org/viewtopic.php?t=82207&start=10
                         #self.basewires = obj.Base.Shape.Wires
                         #

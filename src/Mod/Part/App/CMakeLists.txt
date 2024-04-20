@@ -21,6 +21,7 @@ set(Part_LIBS
     ${OCC_LIBRARIES}
     ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
+    Materials
 )
 
 if(FREETYPE_FOUND)
@@ -176,6 +177,8 @@ SET(Features_SRCS
     FeaturePartSection.h
     FeaturePartSpline.cpp
     FeaturePartSpline.h
+    FeatureProjectOnSurface.cpp
+    FeatureProjectOnSurface.h
     FeatureChamfer.cpp
     FeatureChamfer.h
     FeatureCompound.cpp
@@ -500,6 +503,8 @@ SET(Part_SRCS
     Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BRepMesh.cpp
+    BRepMesh.h
     BRepOffsetAPI_MakeOffsetFix.cpp
     BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
@@ -552,6 +557,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    WireJoiner.cpp
+    WireJoiner.h
 )
 
 if(FREECAD_USE_PCH)
@@ -561,16 +568,15 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions
-if (EIGEN3_NO_DEPRECATED_COPY)
+if(EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(
         GeometryCurvePyImp.cpp
         GeometrySurfacePyImp.cpp
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif ()
+endif()
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
-
 
 SET_BIN_DIR(Part Part /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)

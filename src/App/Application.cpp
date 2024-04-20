@@ -106,6 +106,8 @@
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
+#include "SuppressibleExtension.h"
+#include "SuppressibleExtensionPy.h"
 #include "Part.h"
 #include "PartPy.h"
 #include "Placement.h"
@@ -237,7 +239,6 @@ init_image_module()
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig)
 {
-    //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
@@ -1138,7 +1139,7 @@ std::string Application::getResourceDir()
 #ifdef RESOURCEDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(RESOURCEDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1167,7 +1168,7 @@ std::string Application::getHelpDir()
 #ifdef DOCDIR
     // #6892: Conda may inject null characters => remove them
     std::string path = std::string(DOCDIR).c_str();
-    path.append("/");
+    path += PATHSEP;
     QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
@@ -1858,7 +1859,6 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        //throw Base::ZeroDivisionError("Division by zero!");
         Base::Console().Error("SEH exception (%u): Division by zero\n", code);
         return;
     }
@@ -2059,6 +2059,8 @@ void Application::initTypes()
     App::LinkBaseExtensionPython       ::init();
     App::LinkExtension                 ::init();
     App::LinkExtensionPython           ::init();
+    App::SuppressibleExtension         ::init();
+    App::SuppressibleExtensionPython   ::init();
 
     // Document classes
     App::TransactionalObject       ::init();
@@ -2186,7 +2188,6 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     descr << "Writes " << exe << ".log to the user directory.";
     boost::program_options::options_description config("Configuration");
     config.add_options()
-    //("write-log,l", value<string>(), "write a log file")
     ("write-log,l", descr.str().c_str())
     ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
@@ -2233,11 +2234,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlying libs.
-    //boost::program_options::options_description x11("X11 options");
-    //x11.add_options()
-    //    ("display",  boost::program_options::value< string >(), "set the X-Server")
-    //    ;
+   
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2383,9 +2380,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         int OpenFileCount=0;
         for (const auto & It : files) {
 
-            //cout << "Input files are: "
-            //     << vm["input-file"].as< vector<string> >() << "\n";
-
             std::ostringstream temp;
             temp << "OpenFile" << OpenFileCount;
             mConfig[temp.str()] = It;
@@ -2407,7 +2401,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("write-log")) {
         mConfig["LoggingFile"] = "1";
-        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
@@ -2435,7 +2428,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
-        //sScriptName = FreeCADTest;
     }
 
     if (vm.count("single-instance")) {
@@ -2631,7 +2623,7 @@ void Application::initConfig(int argc, char ** argv)
     std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
-        mConfig["AppTempPath"] = tmpPath + "/";
+        mConfig["AppTempPath"] = tmpPath + PATHSEP;
     }
 
 
@@ -3392,12 +3384,6 @@ std::string Application::FindHomePath(const char* sCall)
     homePath.assign(Call,0,pos);
     pos = homePath.find_last_of(PATHSEP);
     homePath.assign(homePath,0,pos+1);
-
-    // switch to posix style
-    for (std::wstring::iterator it = homePath.begin(); it != homePath.end(); ++it) {
-        if (*it == '\\')
-            *it = '/';
-    }
 
     // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
     std::wstring binPath = homePath;

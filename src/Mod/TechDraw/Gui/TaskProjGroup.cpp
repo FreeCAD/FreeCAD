@@ -38,6 +38,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskProjGroup.h"
 #include "ui_TaskProjGroup.h"
@@ -107,7 +108,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(ui->projection, qOverload<const QString&>(&QComboBox::currentIndexChanged), this, &TaskProjGroup::projectionTypeChanged);
 #else
-    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [=](int index) {
+    connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         projectionTypeChanged(ui->projection->itemText(index));
     });
 #endif
@@ -181,7 +182,7 @@ void TaskProjGroup::viewToggled(bool toggle)
     // Obtain name of checkbox
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
-    const char *viewNameCStr = viewChkIndexToCStr(index).c_str();
+    const char *viewNameCStr = viewChkIndexToCStr(index);
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.activeDocument().%s.addProjection('%s')",
@@ -198,6 +199,7 @@ void TaskProjGroup::viewToggled(bool toggle)
             double scale = multiView->getScale();
             setFractionalScale(scale);
         }
+        multiView->recomputeFeature();
     }
     wc.restoreCursor();
 }
@@ -247,6 +249,8 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
     ui->chkView7->setToolTip(getToolTipForBox(7));
     ui->chkView8->setToolTip(getToolTipForBox(8));
     ui->chkView9->setToolTip(getToolTipForBox(9));
+
+    multiView->recomputeFeature();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
@@ -303,81 +307,6 @@ void TaskProjGroup::spacingChanged()
     multiView->recomputeFeature();
 }
 
-std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const
-{
-/*
-** find rational approximation to given real number
-** David Eppstein / UC Irvine / 8 Aug 1993
-**
-** With corrections from Arno Formella, May 2008
-** and additional fiddles by WF 2017
-** usage: a.out r d
-**   r is real number to approx
-**   d is the maximum denominator allowed
-**
-** based on the theory of continued fractions
-** if x = a1 + 1/(a2 + 1/(a3 + 1/(a4 + ...)))
-** then best approximation is found by truncating this series
-** (with some adjustments in the last term).
-**
-** Note the fraction can be recovered as the first column of the matrix
-**  ( a1 1 ) ( a2 1 ) ( a3 1 ) ...
-**  ( 1  0 ) ( 1  0 ) ( 1  0 )
-** Instead of keeping the sequence of continued fraction terms,
-** we just keep the last partial product of these matrices.
-*/
-    std::pair<int, int> result;
-    long m[2][2];
-    long maxden = maxDenom;
-    long ai;
-    double x = val;
-    double startx = x;
-
-    /* initialize matrix */
-    m[0][0] = m[1][1] = 1;
-    m[0][1] = m[1][0] = 0;
-
-    /* loop finding terms until denom gets too big */
-    while (m[1][0] *  ( ai = (long)x ) + m[1][1] <= maxden) {
-        long t;
-        t = m[0][0] * ai + m[0][1];
-        m[0][1] = m[0][0];
-        m[0][0] = t;
-        t = m[1][0] * ai + m[1][1];
-        m[1][1] = m[1][0];
-        m[1][0] = t;
-        if(x == (double) ai)
-            break;     // AF: division by zero
-        x = 1/(x - (double) ai);
-        if(x > (double) std::numeric_limits<int>::max())
-            break;     // AF: representation failure
-    }
-
-    /* now remaining x is between 0 and 1/ai */
-    /* approx as either 0 or 1/m where m is max that will fit in maxden */
-    /* first try zero */
-    double error1 = startx - ((double) m[0][0] / (double) m[1][0]);
-    int n1 = m[0][0];
-    int d1 = m[1][0];
-
-    /* now try other possibility */
-    ai = (maxden - m[1][1]) / m[1][0];
-    m[0][0] = m[0][0] * ai + m[0][1];
-    m[1][0] = m[1][0] * ai + m[1][1];
-    double error2 = startx - ((double) m[0][0] / (double) m[1][0]);
-    int n2 = m[0][0];
-    int d2 = m[1][0];
-
-    if (std::fabs(error1) <= std::fabs(error2)) {
-        result.first  = n1;
-        result.second = d1;
-    } else {
-        result.first  = n2;
-        result.second = d2;
-    }
-    return result;
-}
-
 void TaskProjGroup::updateTask()
 {
     // Update the scale type
@@ -395,7 +324,7 @@ void TaskProjGroup::setFractionalScale(double newScale)
 {
     blockUpdate = true;
 
-    std::pair<int, int> fraction = nearestFraction(newScale);
+    std::pair<int, int> fraction = DrawUtil::nearestFraction(newScale);
 
     ui->sbScaleNum->setValue(fraction.first);
     ui->sbScaleDen->setValue(fraction.second);
@@ -428,7 +357,7 @@ void TaskProjGroup::changeEvent(QEvent *event)
     }
 }
 
-std::string TaskProjGroup::viewChkIndexToCStr(int index)
+const char * TaskProjGroup::viewChkIndexToCStr(int index)
 {
     //   Third Angle:  FTL  T  FTRight
     //                  L   F   Right   Rear
@@ -439,20 +368,20 @@ std::string TaskProjGroup::viewChkIndexToCStr(int index)
     //                 FTRight  T  FTL
     assert (multiView);
 
-    std::string boxName;
+    bool thirdAngle = multiView->usedProjectionType().isValue("Third Angle");
     switch(index) {
-        case 0: {boxName =  Base::Tools::toStdString(getToolTipForBox(0)); break;}
-        case 1: {boxName =  Base::Tools::toStdString(getToolTipForBox(1)); break;}
-        case 2: {boxName =  Base::Tools::toStdString(getToolTipForBox(2)); break;}
-        case 4: {boxName =  Base::Tools::toStdString(getToolTipForBox(3)); break;}
-        case 5: {boxName =  Base::Tools::toStdString(getToolTipForBox(4)); break;}
-        case 6: {boxName =  Base::Tools::toStdString(getToolTipForBox(5)); break;}
-        case 7: {boxName =  Base::Tools::toStdString(getToolTipForBox(6)); break;}
-        case 8: {boxName =  Base::Tools::toStdString(getToolTipForBox(7)); break;}
-        case 9: {boxName =  Base::Tools::toStdString(getToolTipForBox(8)); break;}
-        default: boxName =  "";
+        case 0: return (thirdAngle ? "FrontTopLeft" : "FrontBottomRight");
+        case 1: return (thirdAngle ? "Top" : "Bottom");
+        case 2: return (thirdAngle ? "FrontTopRight" : "FrontBottomLeft");
+        case 3: return (thirdAngle ? "Left" : "Right");
+        case 4: return (thirdAngle ? "Front" : "Front");
+        case 5: return (thirdAngle ? "Right" : "Left");
+        case 6: return (thirdAngle ? "Rear" : "Rear");
+        case 7: return (thirdAngle ? "FrontBottomLeft" : "FrontTopRight");
+        case 8: return (thirdAngle ? "Bottom" : "Top");
+        case 9: return (thirdAngle ? "FrontBottomRight" : "FrontTopLeft");
+        default: return nullptr;
     }
-    return boxName;
 }
 
 QString TaskProjGroup::getToolTipForBox(int boxNumber)
@@ -477,6 +406,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
     if (!multiView)
         return;
+
     // There must be a better way to construct this list...
     QCheckBox * viewCheckboxes[] = { ui->chkView0,
                                      ui->chkView1,
@@ -496,7 +426,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
             connect(box, &QCheckBox::toggled, this, &TaskProjGroup::viewToggled);
         }
 
-        const char *viewStr = viewChkIndexToCStr(i).c_str();
+        const char *viewStr = viewChkIndexToCStr(i);
         if (viewStr && multiView->hasProjection(viewStr)) {
             box->setCheckState(Qt::Checked);
             if (!multiView->canDelete(viewStr)) {

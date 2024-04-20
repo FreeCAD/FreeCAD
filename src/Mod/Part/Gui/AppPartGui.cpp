@@ -70,6 +70,7 @@
 #include "ViewProviderPlaneParametric.h"
 #include "ViewProviderPointParametric.h"
 #include "ViewProviderPrism.h"
+#include "ViewProviderProjectOnSurface.h"
 #include "ViewProviderRegularPolygon.h"
 #include "ViewProviderRuledSurface.h"
 #include "ViewProviderSphereParametric.h"
@@ -122,6 +123,7 @@ PyMOD_INIT_FUNC(PartGui)
     // load needed modules
     try {
         Base::Interpreter().runString("import Part");
+        Base::Interpreter().runString("import MatGui");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -209,6 +211,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderTorusParametric            ::init();
     PartGui::ViewProviderRuledSurface               ::init();
     PartGui::ViewProviderFace                       ::init();
+    PartGui::ViewProviderProjectOnSurface           ::init();
     PartGui::DimensionLinear                        ::initClass();
     PartGui::DimensionAngular                       ::initClass();
     PartGui::ArcEngine                              ::initClass();

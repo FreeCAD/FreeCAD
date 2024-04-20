@@ -378,7 +378,7 @@ Note that this can take a while!</string>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
           <property name="toolTip">
            <string>Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </string>
+turning the display faster, but making them less easily editable.</string>
           </property>
           <property name="text">
            <string>Group layers into blocks</string>

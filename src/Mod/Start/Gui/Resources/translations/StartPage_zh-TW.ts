@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>開始</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>歡迎來到FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
@@ -36,270 +36,280 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Link to the FreeCAD blog</source>
-      <translation type="unfinished">Link to the FreeCAD blog</translation>
+      <translation>連結到FreeCAD blog</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>New file</source>
-      <translation type="unfinished">New file</translation>
+      <translation>開新檔案</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>空白檔案</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>Create an empty FreeCAD file</source>
-      <translation type="unfinished">Create an empty FreeCAD file</translation>
+      <translation>建立空的FreeCAD檔案</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>開啟檔案</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>開啟已存在的 CAD檔或3D模型</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
-      <source>Standard Part</source>
-      <translation type="unfinished">Standard Part</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>Create a part with the Part Design workbench</source>
       <translation type="unfinished">Create a part with the Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
+      <source>Assembly</source>
+      <translation>程式集</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>2D Draft</source>
       <translation type="unfinished">2D Draft</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Create a 2D draft with the Draft workbench</source>
       <translation type="unfinished">Create a 2D draft with the Draft workbench</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>BIM/Architecture</source>
       <translation type="unfinished">BIM/Architecture</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Create an architecture project</source>
       <translation type="unfinished">Create an architecture project</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>最近開啟的檔案</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Tip</source>
       <translation>提示</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
       <translation>調整最近開啟的檔案數量，以在選單“編輯”-&gt;“偏好”-&gt;“一般”-&gt;“最近檔案清單的數量”中顯示在此處</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Examples</source>
       <translation>範例</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>General documentation</source>
       <translation>使用者文件</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>User hub</source>
       <translation>使用者中心</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
       <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Power users hub</source>
       <translation>超級使用者中心</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
       <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>Developers hub</source>
       <translation>開發人員中心</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
       <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
       <source>Manual</source>
       <translation>使用說明</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
       <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
       <source>Workbenches documentation</source>
       <translation>工作台文件</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
       <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>Getting help from the community</source>
       <translation>從社群取得協助</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
       <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
       <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
       <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="132"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
       <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
       <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Available addons</source>
       <translation>可以使用的附加元件</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>Parametric Part</source>
+      <translation>參數零件</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <source>Create an assembly with the Assembly workbench</source>
+      <translation type="unfinished">Create an assembly with the Assembly workbench</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
       <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
       <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
       <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
       <source>Recent commits</source>
       <translation>最近的提交</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="129"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
       <source>See all commits on github</source>
       <translation>查看 Github 上的所有提交</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
       <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="134"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="138"/>
       <source>version</source>
       <translation>版本</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="135"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="139"/>
       <source>build</source>
       <translation>建立</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="136"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="140"/>
       <source>Create new...</source>
       <translation>建立新的...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="141"/>
       <source>Unknown</source>
       <translation>未知</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="138"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
       <source>Forum</source>
       <translation>討論區</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="150"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
       <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="151"/>
       <source>Creation date</source>
       <translation>建立的日期</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>Last modification</source>
       <translation>最後修改</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
       <source>Size</source>
       <translation>尺寸</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="150"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="154"/>
       <source>Author</source>
       <translation>作者</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="151"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
       <source>License</source>
       <translation>版權</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="156"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>檔案路徑</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="157"/>
       <source>Notes</source>
       <translation>備註</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="159"/>
       <source>Open start page preferences</source>
       <translation>開啟開始頁的偏好設定</translation>
     </message>
@@ -307,7 +317,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="874"/>
+      <location filename="../../../StartPage/StartPage.py" line="877"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>開始頁面</translation>
@@ -383,7 +393,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>顯示提示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
@@ -408,12 +418,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>資料快取縮圖大小</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>顯示檔案縮圖</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -616,7 +626,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
       <location filename="../../AppStartGui.cpp" line="104"/>
       <location filename="../../AppStartGui.cpp" line="105"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>開始</translation>
     </message>
   </context>
 </TS>

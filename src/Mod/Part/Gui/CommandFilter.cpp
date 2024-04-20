@@ -124,33 +124,33 @@ void PartCmdSelectFilter::languageChange()
     Gui::Command* vertexSelection = rcCmdMgr.getCommandByName("Part_VertexSelection");
     if (vertexSelection) {
         QAction* cmd0 = act[0];
-        cmd0->setText(QApplication::translate("View_SelectionFilter", vertexSelection->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("View_SelectionFilter", vertexSelection->getToolTipText()));
-        cmd0->setStatusTip(QApplication::translate("View_SelectionFilter", vertexSelection->getStatusTip()));
+        cmd0->setText(QApplication::translate("PartCmdVertexSelection", vertexSelection->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("PartCmdVertexSelection", vertexSelection->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("PartCmdVertexSelection", vertexSelection->getStatusTip()));
     }
 
     Gui::Command* edgeSelection = rcCmdMgr.getCommandByName("Part_EdgeSelection");
     if (edgeSelection) {
         QAction* cmd1 = act[1];
-        cmd1->setText(QApplication::translate("View_SelectionFilter", edgeSelection->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", edgeSelection->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", edgeSelection->getStatusTip()));
+        cmd1->setText(QApplication::translate("PartCmdEdgeSelection", edgeSelection->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("PartCmdEdgeSelection", edgeSelection->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("PartCmdEdgeSelection", edgeSelection->getStatusTip()));
     }
 
     Gui::Command* faceSelection = rcCmdMgr.getCommandByName("Part_FaceSelection");
     if (faceSelection) {
         QAction* cmd1 = act[2];
-        cmd1->setText(QApplication::translate("View_SelectionFilter", faceSelection->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", faceSelection->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", faceSelection->getStatusTip()));
+        cmd1->setText(QApplication::translate("PartCmdFaceSelection", faceSelection->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("PartCmdFaceSelection", faceSelection->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("PartCmdFaceSelection", faceSelection->getStatusTip()));
     }
 
     Gui::Command* removeSelection = rcCmdMgr.getCommandByName("Part_RemoveSelectionGate");
     if (removeSelection) {
         QAction* cmd2 = act[3];
-        cmd2->setText(QApplication::translate("View_SelectionFilter", removeSelection->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("View_SelectionFilter", removeSelection->getToolTipText()));
-        cmd2->setStatusTip(QApplication::translate("View_SelectionFilter", removeSelection->getStatusTip()));
+        cmd2->setText(QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getStatusTip()));
     }
 }
 

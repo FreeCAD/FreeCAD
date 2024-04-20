@@ -27,9 +27,11 @@ from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
 
+from parttests.BRep_tests import BRepTests
 from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
+from parttests.TopoShapeTest import TopoShapeTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -170,7 +172,9 @@ class PartTestBSplineCurve(unittest.TestCase):
             box.getElement("InvalidName")
         with self.assertRaises(ValueError):
             box.getElement("Face6_abc")
-        with self.assertRaises(Part.OCCError):
+        # getSubTopoShape now catches this before it gets to OCC, so the error changes:
+        # with self.assertRaises(Part.OCCError):
+        with self.assertRaises(IndexError):
             box.getElement("Face7")
 
     def tearDown(self):
@@ -464,7 +468,7 @@ class PartTestRuledSurface(unittest.TestCase):
         self.assertEqual(len(same1), 2)
         self.assertEqual(len(same2), 2)
 
-    def testRuledSurfaceFromOneObjects(self):
+    def testRuledSurfaceFromOneObject(self):
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
         sketch.MapMode = "Deactivated"

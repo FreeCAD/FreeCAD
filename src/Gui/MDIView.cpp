@@ -448,4 +448,14 @@ void MDIView::setCurrentViewMode(ViewMode mode)
     }
 }
 
+QString MDIView::buildWindowTitle() const
+{
+    QString windowTitle;
+    if (auto document = getAppDocument()) {
+        windowTitle.append(QString::fromStdString(document->Label.getStrValue()));
+    }
+
+    return windowTitle;
+}
+
 #include "moc_MDIView.cpp"

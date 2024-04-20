@@ -56,6 +56,8 @@ public:
 
     bool canDelete(App::DocumentObject* obj) const override;
 
+    void dragObject(App::DocumentObject* docObj) override;
+    void dropObject(App::DocumentObject* docObj) override;
 };
 } // namespace TechDrawGui
 

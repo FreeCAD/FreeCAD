@@ -25,6 +25,9 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QOffscreenSurface>
+# include <QOpenGLContext>
+# include <QSurfaceFormat>
 #endif
 
 #include <App/Application.h>
@@ -40,42 +43,23 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
 
-bool DlgSettings3DViewImp::showMsg = true;
-
-/**
- *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'
- */
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     : PreferencePage( parent )
     , ui(new Ui_DlgSettings3DView)
 {
     ui->setupUi(this);
+    addAntiAliasing();
 }
 
-/**
- *  Destroys the object and frees any allocated resources
- */
 DlgSettings3DViewImp::~DlgSettings3DViewImp() = default;
 
 void DlgSettings3DViewImp::saveSettings()
 {
-    // must be done as very first because we create a new instance of NavigatorStyle
-    // where we set some attributes afterwards
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-
-    int index = ui->comboAliasing->currentIndex();
-    hGrp->SetInt("AntiAliasing", index);
-
-    index = ui->renderCache->currentIndex();
-    hGrp->SetInt("RenderCache", index);
+    saveAntiAliasing();
+    saveRenderCache();
+    saveMarkerSize();
 
     ui->comboTransparentRender->onSave();
-
-    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
-    hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
-
     ui->CheckBox_CornerCoordSystem->onSave();
     ui->SpinBox_CornerCoordSystemSize->onSave();
     ui->CheckBox_ShowAxisCross->onSave();
@@ -106,23 +90,139 @@ void DlgSettings3DViewImp::loadSettings()
     ui->sliderIntensity->onRestore();
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
+    ui->comboTransparentRender->onRestore();
 
+    loadAntiAliasing();
+    loadRenderCache();
+    loadMarkerSize();
+}
+
+namespace {
+class GLFormatCheck {
+public:
+    GLFormatCheck() {
+        context.setFormat(format);
+        context.create();
+        offscreen.setFormat(format);
+        offscreen.create();
+        context.makeCurrent(&offscreen);
+    }
+
+    bool testSamples(int num) {
+        QOpenGLFramebufferObjectFormat fboFormat;
+        fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+        fboFormat.setSamples(num);
+        QOpenGLFramebufferObject fbo(100, 100, fboFormat);  // NOLINT
+        return fbo.format().samples() == num;
+    }
+
+private:
+    QSurfaceFormat format;
+    QOpenGLContext context;
+    QOffscreenSurface offscreen;
+};
+}
+
+void DlgSettings3DViewImp::addAntiAliasing()
+{
+    QString none = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "None");
+    QString line = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "Line Smoothing");
+    QString msaa2x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 2x");
+    QString msaa4x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 4x");
+    QString msaa6x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 6x");
+    QString msaa8x = QCoreApplication::translate("Gui::Dialog::DlgSettings3DView", "MSAA 8x");
+    ui->comboAliasing->clear();
+    ui->comboAliasing->addItem(none, int(Gui::View3DInventorViewer::None));
+    ui->comboAliasing->addItem(line, int(Gui::View3DInventorViewer::Smoothing));
+
+    // Do the samples checks only once
+    static std::vector<std::pair<QString, int>> modes;
+    static bool formatCheck = true;
+    if (formatCheck) {
+        formatCheck = false;
+
+        GLFormatCheck check;
+        // NOLINTBEGIN
+        if (check.testSamples(2)) {
+            modes.emplace_back(msaa2x, int(Gui::View3DInventorViewer::MSAA2x));
+        }
+        if (check.testSamples(4)) {
+            modes.emplace_back(msaa4x, int(Gui::View3DInventorViewer::MSAA4x));
+        }
+        if (check.testSamples(6)) {
+            modes.emplace_back(msaa6x, int(Gui::View3DInventorViewer::MSAA6x));
+        }
+        if (check.testSamples(8)) {
+            modes.emplace_back(msaa8x, int(Gui::View3DInventorViewer::MSAA8x));
+        }
+        // NOLINTEND
+    }
+
+    for (const auto& it : modes) {
+        ui->comboAliasing->addItem(it.first, it.second);
+    }
+}
+
+void DlgSettings3DViewImp::saveAntiAliasing()
+{
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
 
-    int index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
-    index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
-    ui->comboAliasing->setCurrentIndex(index);
+    int index = ui->comboAliasing->currentIndex();
+    int aliasing = ui->comboAliasing->itemData(index).toInt();
+    hGrp->SetInt("AntiAliasing", aliasing);
+}
+
+void DlgSettings3DViewImp::loadAntiAliasing()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+
+    int aliasing = int(hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None)));
+    int index = ui->comboAliasing->findData(aliasing);
+    if (index != -1) {
+        ui->comboAliasing->setCurrentIndex(index);
+    }
+
     // connect after setting current item of the combo box
     connect(ui->comboAliasing, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgSettings3DViewImp::onAliasingChanged);
+}
 
-    index = hGrp->GetInt("RenderCache", 0);
-    ui->renderCache->setCurrentIndex(index);
+void DlgSettings3DViewImp::saveRenderCache()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
 
-    ui->comboTransparentRender->onRestore();
+    int cache = ui->renderCache->currentIndex();
+    hGrp->SetInt("RenderCache", cache);
+}
 
-    int const current = hGrp->GetInt("MarkerSize", 9L);
+void DlgSettings3DViewImp::loadRenderCache()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+
+    long cache = hGrp->GetInt("RenderCache", 0);
+    ui->renderCache->setCurrentIndex(int(cache));
+}
+
+void DlgSettings3DViewImp::saveMarkerSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+
+    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
+    hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
+}
+
+void DlgSettings3DViewImp::loadMarkerSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+
+    // NOLINTBEGIN
+    int marker = hGrp->GetInt("MarkerSize", 9L);
     ui->boxMarkerSize->addItem(tr("5px"), QVariant(5));
     ui->boxMarkerSize->addItem(tr("7px"), QVariant(7));
     ui->boxMarkerSize->addItem(tr("9px"), QVariant(9));
@@ -132,9 +232,12 @@ void DlgSettings3DViewImp::loadSettings()
     ui->boxMarkerSize->addItem(tr("20px"), QVariant(20));
     ui->boxMarkerSize->addItem(tr("25px"), QVariant(25));
     ui->boxMarkerSize->addItem(tr("30px"), QVariant(30));
-    index = ui->boxMarkerSize->findData(QVariant(current));
-    if (index < 0) index = 2;
-    ui->boxMarkerSize->setCurrentIndex(index);
+    marker = ui->boxMarkerSize->findData(QVariant(marker));
+    if (marker < 0) {
+        marker = 2;
+    }
+    ui->boxMarkerSize->setCurrentIndex(marker);
+    // NOLINTEND
 }
 
 void DlgSettings3DViewImp::resetSettingsToDefaults()
@@ -161,24 +264,29 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
         ui->comboAliasing->blockSignals(true);
         int aliasing = ui->comboAliasing->currentIndex();
         ui->retranslateUi(this);
+        addAntiAliasing();
         ui->comboAliasing->setCurrentIndex(aliasing);
         ui->comboAliasing->blockSignals(false);
     }
     else {
-        QWidget::changeEvent(e);
+        PreferencePage::changeEvent(e);
     }
 }
 
 void DlgSettings3DViewImp::onAliasingChanged(int index)
 {
-    if (index < 0 || !isVisible())
+    if (index < 0 || !isVisible()) {
         return;
+    }
+
     // Show this message only once per application session to reduce
     // annoyance when showing it too often.
+    static bool showMsg = true;
     if (showMsg) {
         showMsg = false;
         QMessageBox::information(this, tr("Anti-aliasing"),
-            tr("Open a new viewer or restart %1 to apply anti-aliasing changes.").arg(qApp->applicationName()));
+            tr("Open a new viewer or restart %1 to apply anti-aliasing changes.")
+            .arg(qApp->applicationName()));
     }
 }
 

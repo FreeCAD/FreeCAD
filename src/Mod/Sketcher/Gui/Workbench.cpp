@@ -42,6 +42,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
     qApp->translate("Workbench", "Sketcher B-spline tools");
+    qApp->translate("Workbench", "Sketcher visual");
     qApp->translate("Workbench", "Sketcher virtual space");
     qApp->translate("Workbench", "Sketcher edit tools");
 #endif
@@ -374,8 +375,8 @@ void SketcherAddWorkspaceFillets(T& geom);
 template<>
 inline void SketcherAddWorkspaceFillets<Gui::MenuItem>(Gui::MenuItem& geom)
 {
-    geom << "Sketcher_CreatePointFillet"
-         << "Sketcher_CreateFillet";
+    geom << "Sketcher_CreateFillet"
+         << "Sketcher_CreateChamfer";
 }
 
 template<>
@@ -438,9 +439,9 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
         cons << "Sketcher_ConstrainCoincident"
              << "Sketcher_ConstrainPointOnObject";
     }
-    cons << "Sketcher_ConstrainVertical"
+    cons << "Sketcher_ConstrainHorVer"
          << "Sketcher_ConstrainHorizontal"
-         << "Sketcher_ConstrainHorVer"
+         << "Sketcher_ConstrainVertical"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
@@ -449,14 +450,14 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainBlock"
          << "Separator"
          << "Sketcher_Dimension"
-         << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainDistanceX"
          << "Sketcher_ConstrainDistanceY"
          << "Sketcher_ConstrainDistance"
+         << "Sketcher_ConstrainRadiam"
          << "Sketcher_ConstrainRadius"
          << "Sketcher_ConstrainDiameter"
-         << "Sketcher_ConstrainRadiam"
          << "Sketcher_ConstrainAngle"
+         << "Sketcher_ConstrainLock"
          << "Sketcher_ConstrainSnellsLaw"
          << "Separator"
          << "Sketcher_ToggleDrivingConstraint"
@@ -480,8 +481,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
         cons << "Sketcher_CompHorVer";
     }
     else {
-        cons << "Sketcher_ConstrainVertical"
-             << "Sketcher_ConstrainHorizontal";
+        cons << "Sketcher_ConstrainHorizontal"
+             << "Sketcher_ConstrainVertical";
     }
     cons << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
@@ -503,12 +504,12 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
         }
     }
     if (hGrp->GetBool("SeparatedDimensioningTools", false)) {
-        cons << "Sketcher_ConstrainLock"
-             << "Sketcher_ConstrainDistanceX"
+        cons << "Sketcher_ConstrainDistanceX"
              << "Sketcher_ConstrainDistanceY"
              << "Sketcher_ConstrainDistance"
              << "Sketcher_CompConstrainRadDia"
-             << "Sketcher_ConstrainAngle";
+             << "Sketcher_ConstrainAngle"
+             << "Sketcher_ConstrainLock";
         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
     }
     cons << "Separator"
@@ -533,11 +534,11 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
               << "Sketcher_SelectHorizontalAxis"
               << "Sketcher_SelectVerticalAxis"
               << "Separator"
-              << "Sketcher_Offset"
+              << "Sketcher_Translate"
               << "Sketcher_Rotate"
               << "Sketcher_Scale"
+              << "Sketcher_Offset"
               << "Sketcher_Symmetry"
-              << "Sketcher_Translate"
               << "Sketcher_RemoveAxesAlignment"
               << "Separator"
               << "Sketcher_DeleteAllGeometry"
@@ -551,21 +552,15 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel  //<< "Sketcher_SelectElementsWithDoFs" //rarely used, it is usually accessed by
-               // solver
-               // message.
-        << "Sketcher_SelectConstraints"
-        << "Sketcher_SelectElementsAssociatedWithConstraints"
-        //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver
-        // message.
-        //<< "Sketcher_SelectConflictingConstraints"
-        << "Sketcher_RestoreInternalAlignmentGeometry"
-        << "Sketcher_Offset"
-        << "Sketcher_Rotate"
-        << "Sketcher_Scale"
-        << "Sketcher_Symmetry"
-        << "Sketcher_Translate"
-        << "Sketcher_RemoveAxesAlignment";
+    consaccel << "Sketcher_Translate"
+              << "Sketcher_Rotate"
+              << "Sketcher_Scale"
+              << "Sketcher_Offset"
+              << "Sketcher_Symmetry"
+              << "Sketcher_RemoveAxesAlignment"
+              << "Sketcher_SelectConstraints"
+              << "Sketcher_SelectElementsAssociatedWithConstraints"
+              << "Sketcher_RestoreInternalAlignmentGeometry";
 }
 
 template<typename T>

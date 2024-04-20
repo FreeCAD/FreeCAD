@@ -61,28 +61,6 @@ DrawViewSymbol::DrawViewSymbol()
 
 DrawViewSymbol::~DrawViewSymbol() {}
 
-void DrawViewSymbol::touchTreeOwner()
-{
-    auto owner = dynamic_cast<DrawView *>(Owner.getValue());
-    if (owner) {
-        owner->touch();
-    }
-    else { // If no owner is specified, touch all parent pages
-        for (auto page : findAllParentPages()) {
-            page->touch();
-        }
-    }
-}
-
-void DrawViewSymbol::onBeforeChange(const App::Property *prop)
-{
-    if (prop == &Owner && !isRestoring()) {
-        touchTreeOwner();
-    }
-
-    TechDraw::DrawView::onBeforeChange(prop);
-}
-
 void DrawViewSymbol::onChanged(const App::Property* prop)
 {
     if (prop == &Symbol) {
@@ -96,11 +74,6 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
         //which will change EditableTexts, but the loop stops after
         //1 cycle
         updateFieldsInSymbol();
-    }
-    else if (prop == &Owner) {
-        if (!isRestoring()) {
-            touchTreeOwner();
-        }
     }
 
     TechDraw::DrawView::onChanged(prop);
@@ -122,11 +95,6 @@ App::DocumentObjectExecReturn* DrawViewSymbol::execute()
     //nothing to do. DVS is just a container for properties.
     //the action takes place on the Gui side.
     return DrawView::execute();
-}
-
-DrawView *DrawViewSymbol::claimParent() const
-{
-    return dynamic_cast<DrawView *>(Owner.getValue());
 }
 
 QRectF DrawViewSymbol::getRect() const
@@ -157,7 +125,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
             QString editableValue = tspan.firstChild().nodeValue();
             editables.emplace_back(editableValue.toStdString());
@@ -186,7 +154,7 @@ void DrawViewSymbol::updateFieldsInSymbol()
         // has "freecad:editable" attribute
         query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                             "//text[@freecad:editable]/tspan"),
+                                             "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&symbolDocument, &editText, &count](QDomElement& tspanElement) -> bool {
 
             if (count >= editText.size()) {

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbTime.h>
@@ -1135,15 +1136,27 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragConstraint:
                     if (!drag.DragConstraintSet.empty()) {
-                        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         auto idset = drag.DragConstraintSet;
+                        // restore the old positions before opening the transaction and setting the new positions
                         for (int id : idset) {
-                            moveConstraint(id, Base::Vector2d(x, y));
-                            // updateColor();
+                            moveConstraint(id, Base::Vector2d(drag.xInit, drag.yInit));
                         }
+
+                        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
+                        std::vector<Sketcher::Constraint*> constraints = getConstraints();
+                        for (int id : idset) {
+                            Sketcher::Constraint* constr = constraints[id]->clone();
+                            moveConstraint(constr, id, Base::Vector2d(x, y));
+                            constraints[id] = constr;
+                        }
+
+                        Sketcher::SketchObject* obj = getSketchObject();
+                        obj->Constraints.setValues(std::move(constraints));
+
                         preselection.PreselectConstraintSet = drag.DragConstraintSet;
                         drag.DragConstraintSet.clear();
                         getDocument()->commitCommand();
+                        tryAutoRecomputeIfNotSolve(getSketchObject());
                     }
                     Mode = STATUS_NONE;
                     return true;
@@ -1195,6 +1208,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Mode = STATUS_SELECT_Constraint;
                     }
                 }
+                default:
+                    break;
             }
         }
         else if (!pressed) {
@@ -1593,6 +1608,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         case STATUS_SELECT_Constraint:
             Mode = STATUS_SKETCH_DragConstraint;
             drag.DragConstraintSet = preselection.PreselectConstraintSet;
+            drag.xInit = x;
+            drag.yInit = y;
             resetPreselectPoint();
             return true;
         case STATUS_SKETCH_DragPoint:
@@ -1656,8 +1673,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_DragConstraint:
             if (!drag.DragConstraintSet.empty()) {
                 auto idset = drag.DragConstraintSet;
-                for (int id : idset)
+                for (int id : idset) {
                     moveConstraint(id, Base::Vector2d(x, y));
+                }
             }
             return true;
         case STATUS_SKETCH_UseHandler:
@@ -1694,15 +1712,19 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
 void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos)
 {
+    if (auto constr = getConstraint(constNum)) {
+        moveConstraint(constr, constNum, toPos);
+    }
+}
+
+void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos)
+{
     // are we in edit?
     if (!isInEditMode())
         return;
 
-    Sketcher::SketchObject* obj = getSketchObject();
-    const std::vector<Sketcher::Constraint*>& constrlist = obj->Constraints.getValues();
-    Constraint* Constr = constrlist[constNum];
-
 #ifdef FC_DEBUG
+    Sketcher::SketchObject* obj = getSketchObject();
     int intGeoCount = obj->getHighestCurveIndex() + 1;
     int extGeoCount = obj->getExternalGeometryCount();
 #endif
@@ -1710,10 +1732,24 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
     // with memory allocation
     const std::vector<Part::Geometry*> geomlist = getSolvedSketch().extractGeometry(true, true);
 
+    // lambda to finalize the move
+    auto cleanAndDraw = [this, geomlist](){
+        // delete the cloned objects
+        for (Part::Geometry* geomPtr : geomlist) {
+            if (geomPtr) {
+                delete geomPtr;
+            }
+        }
+
+        draw(true, false);
+    };
+
 #ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
            || Constr->First != GeoEnum::GeoUndef);
+    boost::ignore_unused(intGeoCount);
+    boost::ignore_unused(extGeoCount);
 #endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY
@@ -1785,23 +1821,33 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
-                p1 = center;
+                double startangle, endangle;
+                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
-                double angle = Constr->LabelPosition;
-                if (angle == 10) {
-                    double startangle, endangle;
-                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-                    angle = (startangle + endangle) / 2;
+                if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
+                    //arc length
+                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
+                    Constr->LabelDistance = dir.Length();
+
+                    cleanAndDraw();
+                    return;
                 }
                 else {
-                    Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                    angle = atan2(tmpDir.y, tmpDir.x);
+                    // radius and diameter
+                    p1 = center;
+                    double angle = Constr->LabelPosition;
+                    if (angle == 10) {
+                        angle = (startangle + endangle) / 2;
+                    }
+                    else {
+                        Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
+                        angle = atan2(tmpDir.y, tmpDir.x);
+                    }
+                    if (Constr->Type == Sketcher::Diameter)
+                        p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+
+                    p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
-
-                if (Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
-
-                p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
             }
             else if (geo->is<Part::GeomCircle>()) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
@@ -1842,7 +1888,6 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
         else
             return;
-
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
@@ -1869,25 +1914,15 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
     }
     else if (Constr->Type == Angle) {
-        moveAngleConstraint(constNum, toPos);
+        moveAngleConstraint(Constr, constNum, toPos);
     }
 
-    // delete the cloned objects
-    for (Part::Geometry* geomPtr : geomlist) {
-        if (geomPtr) {
-            delete geomPtr;
-        }
-    }
-
-    draw(true, false);
+    cleanAndDraw();
 }
 
-void ViewProviderSketch::moveAngleConstraint(int constNum, const Base::Vector2d& toPos)
+void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
 {
     Sketcher::SketchObject* obj = getSketchObject();
-    const std::vector<Sketcher::Constraint*>& constrlist = obj->Constraints.getValues();
-    Constraint* constr = constrlist[constNum];
-
     Base::Vector3d p0(0., 0., 0.);
     double factor = 0.5;
     if (constr->Second != GeoEnum::GeoUndef) {// line to line angle
@@ -1943,7 +1978,7 @@ void ViewProviderSketch::moveAngleConstraint(int constNum, const Base::Vector2d&
             if (reverse) {
                 obj->reverseAngleConstraintToSupplementary(constr, constNum);
 
-                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                ap3 = intersection + dir1 - dir2; //- dir2 instead of std::swap(dir1, dir2) and dir1 = -dir1
                 sign1 = isLeftOfLine(p11, p12, ap3);
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
@@ -2955,7 +2990,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.Support if not "
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
                     "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
@@ -2994,7 +3029,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a
     // recompute if we just close the sketch without touching anything.
-    if (getSketchObject()->Support.getValue()) {
+    if (getSketchObject()->AttachmentSupport.getValue()) {
         if (!getSketchObject()->evaluateSupport())
             getSketchObject()->validateExternalLinks();
     }
@@ -3122,13 +3157,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
             QString::fromUtf8("conflicting_constraints"),
-            tr("Over-constrained: "),
+            tr("Over-constrained:") + QLatin1String(" "),
             QString::fromUtf8("#conflicting"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
         signalSetUp(QString::fromUtf8("malformed_constraints"),
-                    tr("Malformed constraints: "),
+                    tr("Malformed constraints:") + QLatin1String(" "),
                     QString::fromUtf8("#malformed"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
@@ -3136,13 +3171,13 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (hasRedundancies) {
         signalSetUp(
             QString::fromUtf8("redundant_constraints"),
-            tr("Redundant constraints:"),
+            tr("Redundant constraints:") + QLatin1String(" "),
             QString::fromUtf8("#redundant"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
-                    tr("Partially redundant:"),
+                    tr("Partially redundant:") + QLatin1String(" "),
                     QString::fromUtf8("#partiallyredundant"),
                     QString::fromUtf8("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
@@ -3155,7 +3190,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:"),
+                    tr("Under constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
@@ -3340,7 +3375,10 @@ void ViewProviderSketch::camSensCB(void* data, SoSensor*)
     auto vp = proxyVPrdr->vp;
     auto cam = proxyVPrdr->renderMgr->getCamera();
 
-    vp->onCameraChanged(cam);
+    if (cam == nullptr)
+        Base::Console().DeveloperWarning("ViewProviderSketch", "Camera is nullptr!\n");
+    else
+        vp->onCameraChanged(cam);
 }
 
 void ViewProviderSketch::onCameraChanged(SoCamera* cam)
@@ -3597,23 +3635,7 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
     QIcon mergedicon = orig;
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
-        QPixmap px;
-
-        static const char* const sketcher_notfullyconstrained_xpm[] = {"9 9 3 1",
-                                                                       ". c None",
-                                                                       "# c #dbaf00",
-                                                                       "a c #ffcc00",
-                                                                       "##.....##",
-                                                                       "#a#...#a#",
-                                                                       "#aa#.#aa#",
-                                                                       ".#a#.#a#.",
-                                                                       ".#a#.#a#.",
-                                                                       ".#a#.#a#.",
-                                                                       "#aa#.#aa#",
-                                                                       "#a#...#a#",
-                                                                       "##.....##"};
-        px = QPixmap(sketcher_notfullyconstrained_xpm);
-
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(
             mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
     }
@@ -3733,6 +3755,17 @@ bool ViewProviderSketch::setPreselect(const std::string& subNameSuffix, float x,
 const std::vector<Sketcher::Constraint*> ViewProviderSketch::getConstraints() const
 {
     return getSketchObject()->Constraints.getValues();
+}
+
+Sketcher::Constraint* ViewProviderSketch::getConstraint(int constid) const
+{
+    Sketcher::SketchObject* obj = getSketchObject();
+    const std::vector<Sketcher::Constraint*>& constrlist = obj->Constraints.getValues();
+    if (constid >= 0 || constid < int(constrlist.size())) {
+        return constrlist[constid];
+    }
+
+    return nullptr;
 }
 
 const GeoList ViewProviderSketch::getGeoList() const
@@ -4015,8 +4048,8 @@ void ViewProviderSketch::generateContextMenu()
             menu << "Sketcher_Dimension";
             if (selectedConics == 0) {
                 menu << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
 
                 if (selectedLines > 1) {
                     menu << "Sketcher_ConstrainParallel";
@@ -4036,7 +4069,8 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainEqual";
             }
             else if (selectedConics == 1 && selectedLines == 1) {
-                menu << "Sketcher_ConstrainTangent";
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
             }
         }
         else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
@@ -4044,14 +4078,15 @@ void ViewProviderSketch::generateContextMenu()
             if (selectedConics == 0 && selectedBsplines == 0) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
                 if (selectedPoints == 2) {
                     menu << "Sketcher_ConstrainSymmetric";
                 }
                 if (selectedPoints == 1) {
                     menu << "Sketcher_ConstrainPerpendicular"
-                         << "Sketcher_ConstrainTangent";
+                         << "Sketcher_ConstrainTangent"
+                         << "Sketcher_ConstrainSymmetric";
                 }
             }
             else {
@@ -4066,8 +4101,8 @@ void ViewProviderSketch::generateContextMenu()
             if (selectedPoints > 1) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
-                     << "Sketcher_ConstrainVertical"
-                     << "Sketcher_ConstrainHorizontal";
+                     << "Sketcher_ConstrainHorizontal"
+                     << "Sketcher_ConstrainVertical";
             }
             if (selectedPoints == 2) {
                 menu << "Sketcher_ConstrainPerpendicular"
@@ -4076,15 +4111,40 @@ void ViewProviderSketch::generateContextMenu()
                     menu << "Sketcher_JoinCurves";
                 }
             }
+            if (selectedPoints == 3) {
+                menu << "Sketcher_ConstrainSymmetric";
+            }
         }
         else if (selectedLines >= 1 && selectedPoints >= 1 && !onlyOrigin) {
-            menu << "Sketcher_Dimension"
-                 << "Sketcher_ConstrainHorVer"
-                 << "Sketcher_ConstrainVertical"
-                 << "Sketcher_ConstrainHorizontal";
+            menu << "Sketcher_Dimension";
+
+            if (selectedPoints == 1) {
+                menu << "Sketcher_ConstrainCoincidentUnified";
+            }
+
+            menu << "Sketcher_ConstrainHorVer"
+                 << "Sketcher_ConstrainHorizontal"
+                 << "Sketcher_ConstrainVertical";
+
+            if (selectedLines > 1) {
+                menu << "Sketcher_ConstrainParallel";
+            }
+
+            if (selectedLines == 2 && selectedPoints == 1) {
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
+            }
+
+            if (selectedLines == 1 && selectedPoints == 1) {
+                menu << "Sketcher_ConstrainSymmetric";
+            }
         }
+
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
+            if (selectedConstraints == 1) {
+                menu << "Sketcher_ChangeDimensionConstraint";
+            }
             menu << "Sketcher_ToggleDrivingConstraint"
                  << "Sketcher_ToggleActiveConstraint"
                  << "Sketcher_SelectElementsAssociatedWithConstraints"
@@ -4100,6 +4160,7 @@ void ViewProviderSketch::generateContextMenu()
                  << "Sketcher_Rotate"
                  << "Sketcher_Scale"
                  << "Sketcher_Offset"
+                 << "Sketcher_Symmetry"
                  << "Separator"
                  << "Sketcher_CompDimensionTools"
                  << "Sketcher_CompConstrainTools"
@@ -4129,7 +4190,8 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_ToggleConstruction"
              << "Separator"
-             << "Sketcher_CreatePointFillet"
+             << "Sketcher_CreateFillet"
+             << "Sketcher_CreateChamfer"
              << "Sketcher_Trimming"
              << "Sketcher_Extend"
              << "Separator"

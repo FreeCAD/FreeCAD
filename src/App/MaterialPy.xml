@@ -30,25 +30,25 @@ Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or
             <Documentation>
                 <UserDocu>Ambient color</UserDocu>
             </Documentation>
-            <Parameter Name="AmbientColor" Type="Tuple"/>
+            <Parameter Name="AmbientColor" Type="Object"/>
         </Attribute>
         <Attribute Name="DiffuseColor" ReadOnly="false">
             <Documentation>
                 <UserDocu>Diffuse color</UserDocu>
             </Documentation>
-            <Parameter Name="DiffuseColor" Type="Tuple"/>
+            <Parameter Name="DiffuseColor" Type="Object"/>
         </Attribute>
         <Attribute Name="EmissiveColor" ReadOnly="false">
             <Documentation>
                 <UserDocu>Emissive color</UserDocu>
             </Documentation>
-            <Parameter Name="EmissiveColor" Type="Tuple"/>
+            <Parameter Name="EmissiveColor" Type="Object"/>
         </Attribute>
         <Attribute Name="SpecularColor" ReadOnly="false">
             <Documentation>
                 <UserDocu>Specular color</UserDocu>
             </Documentation>
-            <Parameter Name="SpecularColor" Type="Tuple"/>
+            <Parameter Name="SpecularColor" Type="Object"/>
         </Attribute>
         <Attribute Name="Shininess" ReadOnly="false">
             <Documentation>
@@ -63,5 +63,8 @@ Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or
             <Parameter Name="Transparency" Type="Float"/>
         </Attribute>
         <CustomAttributes />
+        <ClassDeclarations>public:
+    static App::Color toColor(PyObject* value);
+        </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

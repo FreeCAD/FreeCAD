@@ -34,7 +34,7 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg3",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"]
     }
@@ -71,7 +71,7 @@ w  # should print 112.3 mm
 
 CalculiX FEM max deflection:
 - 112.2 mm
-- but the rotation seams 90 degree rotated (FIXME)
+- but the rotation seems 90 degree rotated (FIXME)
 
 """
 

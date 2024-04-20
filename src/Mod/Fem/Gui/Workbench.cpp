@@ -166,7 +166,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
     if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty()) {
-        *solve << "FEM_SolverCalculixCxxtools";
+        *solve << "FEM_SolverCalculiXCcxTools";
     }
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
         *solve << "FEM_SolverElmer";
@@ -317,13 +317,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
           << "Separator"
-          << "FEM_CreateNodesSet"
+          //          << "FEM_CreateNodesSet"
           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;
     root->insertItem(item, solve);
     solve->setCommand("&Solve");
-    *solve << "FEM_SolverCalculixCxxtools"
+    *solve << "FEM_SolverCalculiXCcxTools"
            << "FEM_SolverElmer"
            << "FEM_SolverMystran"
            << "FEM_SolverZ88"

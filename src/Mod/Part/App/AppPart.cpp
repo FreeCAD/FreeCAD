@@ -85,6 +85,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeaturePartSection.h"
 #include "FeaturePartSpline.h"
+#include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
@@ -199,6 +200,14 @@ PyObject* Part::PartExceptionOCCDimensionError;
 
 PyMOD_INIT_FUNC(Part)
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Materials");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
@@ -398,6 +407,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+    Part::PropertyShapeCache    ::init();
     Part::PropertyTopoShapeList ::init();
 
     Part::FaceMaker             ::init();
@@ -443,6 +453,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Extrusion             ::init();
     Part::Scale                 ::init();
     Part::Revolution            ::init();
+    Part::ProjectOnSurface      ::init();
     Part::Mirroring             ::init();
     Part::ImportStep            ::init();
     Part::ImportIges            ::init();

@@ -60,7 +60,6 @@ public:
                      QPushButton* btnApply);
 
     void updateTask();
-    std::pair<int, int> nearestFraction(double val, long int maxDenom = 999) const;
     // Sets the numerator and denominator widgets to match newScale
     void setFractionalScale(double newScale);
     void setCreateMode(bool mode) { m_createMode = mode;}
@@ -104,7 +103,7 @@ private:
 
     bool blockUpdate;
     /// Translate a view checkbox index into represented view string, depending on projection type
-    std::string viewChkIndexToCStr(int index);
+    const char *  viewChkIndexToCStr(int index);
     QString getToolTipForBox(int boxNumber);
 
     QPushButton* m_btnOK;

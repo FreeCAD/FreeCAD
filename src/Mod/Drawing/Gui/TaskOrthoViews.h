@@ -244,7 +244,6 @@ public:
 
 private:
     TaskOrthoViews* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 }  // namespace DrawingGui

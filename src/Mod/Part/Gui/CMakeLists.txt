@@ -15,6 +15,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(PartGui_LIBS
     Part
     FreeCADGui
+    MatGui
 )
 
 if(MSVC)
@@ -213,6 +214,8 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderProjectOnSurface.cpp
+    ViewProviderProjectOnSurface.h
     ViewProviderRuledSurface.cpp
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp

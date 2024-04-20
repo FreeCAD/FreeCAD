@@ -832,9 +832,9 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
 }
 
 
-bool SketcherGui::areColinear(const Base::Vector2d& p1,
-                              const Base::Vector2d& p2,
-                              const Base::Vector2d& p3)
+bool SketcherGui::areCollinear(const Base::Vector2d& p1,
+                               const Base::Vector2d& p2,
+                               const Base::Vector2d& p3)
 {
     Base::Vector2d u = p2 - p1;
     Base::Vector2d v = p3 - p2;

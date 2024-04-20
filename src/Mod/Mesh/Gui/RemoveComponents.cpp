@@ -244,9 +244,7 @@ void RemoveComponentsDialog::clicked(QAbstractButton* btn)
 TaskRemoveComponents::TaskRemoveComponents()
 {
     widget = new RemoveComponents();  // NOLINT
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false);
 }
 
 void TaskRemoveComponents::modifyStandardButtons(QDialogButtonBox* box)

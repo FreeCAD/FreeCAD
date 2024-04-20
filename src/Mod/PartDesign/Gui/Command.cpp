@@ -129,12 +129,12 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
                 Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
-                pcDatum->attacher().references.Paste(support);
+                pcDatum->attacher().setReferences(support);
                 SuggestResult sugr;
                 pcDatum->attacher().suggestMapModes(sugr);
                 if (sugr.message == Attacher::SuggestResult::srOK) {
-                    //fits some mode. Populate support property.
-                    FCMD_OBJ_CMD(Feat,"Support = " << support.getPyReprString());
+                    //fits some mode. Populate AttachmentSupport property.
+                    FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << support.getPyReprString());
                     FCMD_OBJ_CMD(Feat,"MapMode = '" << AttachEngine::getModeName(sugr.bestFitMode) << "'");
                 } else {
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
@@ -475,7 +475,7 @@ void CmdPartDesignClone::activated(int iMsg)
                           << "setEditorMode('Placement', 0)");
 
         updateActive();
-        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "ShapeAppearance", obj);
         copyVisual(cloneObj, "LineColor", obj);
         copyVisual(cloneObj, "PointColor", obj);
         copyVisual(cloneObj, "Transparency", obj);
@@ -556,7 +556,7 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeColor", obj);
+        cmd->copyVisual(Feat, "ShapeAppearance", obj);
         cmd->copyVisual(Feat, "LineColor", obj);
         cmd->copyVisual(Feat, "PointColor", obj);
         cmd->copyVisual(Feat, "Transparency", obj);

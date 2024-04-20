@@ -247,7 +247,7 @@ public:
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = appdocument->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat, "Support = " << supportString);
+        FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
         Gui::Command::updateActive();
         PartDesignGui::setEdit(Feat, activeBody);
@@ -619,9 +619,9 @@ private:
 
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = partDesignBody->getDocument()->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD(Feat,"Support = " << supportString);
+        FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(Feat,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
-        Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
+        Gui::Command::updateActive(); // Make sure the AttachmentSupport's Placement property is updated
         PartDesignGui::setEdit(Feat, partDesignBody);
     }
 

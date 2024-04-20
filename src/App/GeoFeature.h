@@ -26,7 +26,8 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-
+#include "MappedElement.h"
+#include "Material.h"
 
 namespace App
 {
@@ -120,6 +121,29 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+    /**
+     * @brief Virtual function to get an App::Material object describing the appearance
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtual function will return a
+     * App::Material object describing the appearance properties of the material.
+     *
+     * @return App::Material the appearance properties of the object material
+     */
+    virtual App::Material getMaterialAppearance() const;
+
+    /**
+     * @brief Virtual function to set the appearance with an App::Material object
+     *
+     * The appearance properties are described by the underlying features material. This cannot
+     * be accessed directly from within the Gui module. This virtual function will set the
+     * appearance from an App::Material object.
+     */
+    virtual void setMaterialAppearance(const App::Material& material);
+
+protected:
+    std::pair<std::string, std::string> _getElementName(const char* name,
+                                                        const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

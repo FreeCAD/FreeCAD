@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Align bottom</source>
-      <translation>Alinear inferior</translation>
+      <translation>Alinear abajo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="528"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Alinear inferior celdas seleccionadas</translation>
+      <translation>Alinear hacia abajo el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Align center</source>
-      <translation>Alinear centro</translation>
+      <translation>Alinear al centro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Alinear al centro celdas seleccionadas</translation>
+      <translation>Alinear al centro el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>Align left</source>
-      <translation>Alinear izquierda</translation>
+      <translation>Alinear a la izquierda</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Alinear izquierda celdas seleccionadas</translation>
+      <translation>Alinear a la izquierda el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Align right</source>
-      <translation>Alinear derecha</translation>
+      <translation>Alinear a la derecha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Alinear derecha celdas seleccionadas</translation>
+      <translation>Alinear a la derecha el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Align top</source>
-      <translation>Alineado superior</translation>
+      <translation>Alinear arriba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="471"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Alineado superior en celdas seleccionadas</translation>
+      <translation>Alinear hacia arriba el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Contenido alineado verticalmente centrado en celdas seleccionadas</translation>
+      <translation>Centrar verticalmente el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <source>Left-align cell</source>
-      <translation>Izquierda</translation>
+      <translation>Celda alineada a la izquierda</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
@@ -304,17 +304,17 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Right-align cell</source>
-      <translation>Derecha</translation>
+      <translation>Celda alineada a la derecha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Top-align cell</source>
-      <translation>Superior</translation>
+      <translation>Celda alineada arriba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="549"/>
       <source>Bottom-align cell</source>
-      <translation>Inferior</translation>
+      <translation>Celda alineada abajo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="606"/>
@@ -598,7 +598,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     <message>
       <location filename="../../PropertiesDialog.ui" line="80"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alineación</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
@@ -696,7 +696,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Exportar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
@@ -952,8 +952,18 @@ Por defecto: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Carácter delimitador: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Carácter delimitador:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Carácter de comilla:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Carácter de escape:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -966,19 +976,9 @@ Por defecto: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Carácter de comilla: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter utilizado para delimitar cadenas, normalmente es una comilla simple (') o una comilla doble (&amp;quot;). Debe ser un solo carácter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Carácter de Escape: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1154,7 +1154,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alineación</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>

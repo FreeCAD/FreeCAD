@@ -88,6 +88,7 @@
 #include "FaceMaker.h"
 #include "Geometry2d.h"
 #include "OCCError.h"
+#include "PartPyCXX.h"
 #include "Tools.h"
 
 
@@ -324,6 +325,9 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
         try {
+#ifdef FC_USE_TNP_FIX
+            getTopoShapePtr()->makeElementFace(getPyShapes(pcPyShapeOrList),0,className);
+#else
             std::unique_ptr<FaceMaker> fm = Part::FaceMaker::ConstructFromType(className);
 
             //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
@@ -355,6 +359,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             fm->Build();
 
             getTopoShapePtr()->setShape(fm->Face());
+#endif
             return 0;
         } catch (Base::Exception &e) {
             e.setPyException();
@@ -420,6 +425,10 @@ PyObject* TopoShapeFacePy::addWire(PyObject *args)
 
 PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
 {
+#ifdef FC_USE_TNP_FIX
+    Py::Dict dict;
+    return TopoShapePy::makeOffset2D(args, dict.ptr());
+#else
     double dist;
     if (!PyArg_ParseTuple(args, "d",&dist))
         return nullptr;
@@ -434,6 +443,7 @@ PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
     mkOffset.Perform(dist);
 
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
+#endif
 }
 
 /*
@@ -445,6 +455,9 @@ evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
 */
 PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
 {
+#ifdef FC_USE_TNP_FIX
+    return TopoShapePy::makeEvolved(args, kwds);
+#else
     PyObject* Profile;
     PyObject* AxeProf = Py_True;
     PyObject* Solid = Py_False;
@@ -496,6 +509,7 @@ PyObject* TopoShapeFacePy::makeEvolved(PyObject *args, PyObject *kwds)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+#endif
 }
 
 PyObject* TopoShapeFacePy::valueAt(PyObject *args)

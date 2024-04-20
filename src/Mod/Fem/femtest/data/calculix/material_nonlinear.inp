@@ -20004,7 +20004,7 @@ Evolumes
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP, NLGEOM
+*STEP, NLGEOM, INC=200
 *STATIC
 
 
@@ -20114,7 +20114,7 @@ S, E, PEEQ
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

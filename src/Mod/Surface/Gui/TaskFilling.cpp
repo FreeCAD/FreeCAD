@@ -164,7 +164,7 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
                             std::vector<App::Color> colors;
                             TopTools_IndexedMapOfShape fMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-                            colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
+                            colors.resize(fMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
 
                             for (const auto& jt : it.second) {
                                 std::size_t idx =
@@ -945,31 +945,17 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     // first task box
     widget1 = new FillingPanel(vp, obj);
     widget1->appendButtons(buttonGroup);
-    Gui::TaskView::TaskBox* taskbox1 =
-        new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Surface_Filling"),
-                                   widget1->windowTitle(),
-                                   true,
-                                   nullptr);
-    taskbox1->groupLayout()->addWidget(widget1);
-    Content.push_back(taskbox1);
+    addTaskBox(Gui::BitmapFactory().pixmap("Surface_Filling"), widget1);
 
     // second task box
     widget2 = new FillingEdgePanel(vp, obj);
     widget2->appendButtons(buttonGroup);
-    Gui::TaskView::TaskBox* taskbox2 =
-        new Gui::TaskView::TaskBox(QPixmap(), widget2->windowTitle(), true, nullptr);
-    taskbox2->groupLayout()->addWidget(widget2);
-    Content.push_back(taskbox2);
-    taskbox2->hideGroupBox();
+    dynamic_cast<Gui::TaskView::TaskBox*>(addTaskBox(widget2))->hideGroupBox();
 
     // third task box
     widget3 = new FillingVertexPanel(vp, obj);
     widget3->appendButtons(buttonGroup);
-    Gui::TaskView::TaskBox* taskbox3 =
-        new Gui::TaskView::TaskBox(QPixmap(), widget3->windowTitle(), true, nullptr);
-    taskbox3->groupLayout()->addWidget(widget3);
-    Content.push_back(taskbox3);
-    taskbox3->hideGroupBox();
+    dynamic_cast<Gui::TaskView::TaskBox*>(addTaskBox(widget3))->hideGroupBox();
 }
 
 void TaskFilling::setEditedObject(Surface::Filling* obj)

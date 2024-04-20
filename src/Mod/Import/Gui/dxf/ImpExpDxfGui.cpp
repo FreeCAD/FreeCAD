@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 #ifndef _PreComp_
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600
@@ -71,7 +72,7 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
     App::Color color = ObjectColor(m_entityAttributes.m_Color);
     view->LineColor.setValue(color);
     view->PointColor.setValue(color);
-    view->ShapeColor.setValue(color);
+    view->ShapeAppearance.setDiffuseColor(color);
     view->DrawStyle.setValue(GetDrawStyle());
     view->Transparency.setValue(0);
 }

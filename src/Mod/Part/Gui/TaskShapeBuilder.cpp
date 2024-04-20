@@ -599,11 +599,7 @@ void ShapeBuilderWidget::changeEvent(QEvent *e)
 TaskShapeBuilder::TaskShapeBuilder()
 {
     widget = new ShapeBuilderWidget();
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_Shapebuilder"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_Shapebuilder"), widget);
 }
 
 TaskShapeBuilder::~TaskShapeBuilder() = default;

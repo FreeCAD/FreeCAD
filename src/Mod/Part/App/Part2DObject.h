@@ -94,10 +94,6 @@ public:
     //@}
 
     void Restore(Base::XMLReader &reader) override;
-
-protected:
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 };
 
 using Part2DObjectPython = App::FeaturePythonT<Part2DObject>;

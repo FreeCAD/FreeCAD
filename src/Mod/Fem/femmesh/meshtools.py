@@ -116,8 +116,7 @@ def get_femnodes_by_refshape(
 ):
     nodes = []
     for refelement in ref[1]:
-        # the following method getElement(element) does not return Solid elements
-        r = geomtools.get_element(ref[0], refelement)
+        r = sub_shape_at_global_placement(ref[0], refelement)
         FreeCAD.Console.PrintMessage(
             "    "
             "ReferenceShape ... Type: {0}, "
@@ -574,7 +573,7 @@ def get_femelement_direction1D_set(
         # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
-        rotation_angle = beamrotation_objects[0]["Object"].Rotation
+        rotation_angle = beamrotation_objects[0]["Object"].Rotation.getValueAs("deg").Value
         for rot in rotations_ids:
             rot["beam_axis_m"] = get_beam_main_axis_m(rot["direction"], rotation_angle)
         beamrotation_objects[0]["FEMRotations1D"] = rotations_ids
@@ -620,87 +619,91 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
 
 
 # ************************************************************************************************
-def get_beam_main_axis_m(beam_direction, defined_angle):
+def get_beam_main_axis_m(beam_direction: FreeCAD.Vector, defined_angle: int) -> FreeCAD.Vector:
 
     # former name was get_beam_normal
     # see forum topic https://forum.freecad.org/viewtopic.php?f=18&t=24878
     # beam_direction ... FreeCAD vector
     # defined_angle ... degree
     # base for the rotation:
-    # a beam_direction = (1, 0, 0) and angle = 0, returns (-0, 1, 0)
-    # https://forum.freecad.org/viewtopic.php?f=18&t=24878&start=30#p195567
-    # https://forum.freecad.org/viewtopic.php?f=13&t=59239&start=140#p521999
-    # changing the angle, changes the normal accordingly, 360 would again return (0,1,0)
-
-    # CalxuliX uses negative z axis as base, if nothing is given in input file
+    # a beam_direction = (1, 0, 0) and angle = 0, returns (0, -1, 0)
+    # changing the angle, changes the normal accordingly, 360 would again return (0, -1, 0)
+    #
+    # original thread discussing this (kept for history):
+    #   https://forum.freecad.org/viewtopic.php?f=18&t=24878&start=30#p195567
+    #   https://forum.freecad.org/viewtopic.php?f=13&t=59239&start=140#p521999
+    # thread with updated analysis, that fixes a found bug:
+    #   https://forum.freecad.org/viewtopic.php?t=85951
+    #
+    # CalculiX uses negative z axis as base, if nothing is given in input file
     # see the standard direction of 1-direction in CalxuliX manual
-
     # here the local main axis is called beam_axis_m the minor axis will be beam_axis_n
-
     # eventually a better name might be get_beam_rotation
 
-    # FIXME: since we fix the base ange we would get this information out of the mesh edge too
+    # FIXME: since we fix the base angle we would get this information out of the mesh edge too
+    # upd: angle is not fixed anymore (?) (except for the vertical beam)
     print("beam_axis_m is retrieved from the geometry but we could get if from mesh edge too")
     # print("beam_direction: {}".format(beam_direction))
     # print("defined_angle: {}".format(defined_angle))
 
     import math
-    vector_a = beam_direction
-    angle_rad = (math.pi / 180) * defined_angle
-    nx = abs(math.cos(angle_rad))
-    ny = abs(math.sin(angle_rad))
-    if nx < 0.0000001:
-        nx = 0
-    if ny < 0.0000001:
-        ny = 0
-    # vector_n = [nx, ny]  # not used ATM
 
-    if vector_a[0] != 0:
-        temp_valx = -(vector_a[1] + vector_a[2]) / vector_a[0]
-    else:
-        temp_valx = 0
-    if vector_a[1] != 0:
-        temp_valy = -(vector_a[0] + vector_a[2]) / vector_a[1]
-    else:
-        temp_valy = 0
-    if vector_a[2] != 0:
-        temp_valz = -(vector_a[0] + vector_a[1]) / vector_a[2]
-    else:
-        temp_valz = 0
+    def normalize(vec: FreeCAD.Vector) -> FreeCAD.Vector:
+        return vec / vec.Length
 
-    # Dot_product_check
-    dot_x = None
-    dot_y = None
-    dot_z = None
-    dot_nt = None
-    if vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] == 0:
-        normal_n = [temp_valx, nx, ny]
-        dot_x = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    elif vector_a[0] == 0 and vector_a[1] != 0 and vector_a[2] == 0:
-        normal_n = [nx, temp_valy, ny]
-        dot_y = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    elif vector_a[0] == 0 and vector_a[1] == 0 and vector_a[2] != 0:
-        normal_n = [nx, ny, temp_valz]
-        dot_z = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    elif vector_a[0] == 0 and vector_a[1] != 0 and vector_a[2] != 0:
-        normal_n = [nx, temp_valy, ny]
-        dot_y = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    elif vector_a[0] != 0 and vector_a[1] == 0 and vector_a[2] != 0:
-        normal_n = [nx, ny, temp_valz]
-        dot_z = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    else:
-        normal_n = [temp_valx, nx, ny]
-        dot_nt = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
+    def get_normal(vec: FreeCAD.Vector) -> FreeCAD.Vector:
+        x, y, z = vec
 
-    dot = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    FreeCAD.Console.PrintLog("{}\n".format(dot))
-    FreeCAD.Console.PrintLog("{}\n".format(normal_n))
+        if z == 0:  # in xy plane
+            n = (0, 0, -1)  # default in CalculiX
+        elif z != 0 and x == y == 0:  # vertical beam
+            n = (-1, 0, 0)  # or (0, -1, 0)
+        else:
+            #             . (x, y, z)
+            #            / \
+            #       vec /   \ n
+            #          /     \
+            # (0,0,0) .-------. (x, y, ?)
+            #
+            # since `n` should be perpendicular to `vec`
+            # calculate the dot product to find `?`
+            n = (x, y, -(x**2 + y**2) / z)
+        # we want the normal to point downwards for `vec` with
+        # z < 0 as well
+        n = normalize((1 | -(z > 0)) * FreeCAD.Vector(n))
 
-    # dummy usage of the axis dot to get flake8 quiet
-    del dot_x, dot_y, dot_z, dot, dot_nt
+        # sanity check
+        dot = vec.dot(n)
+        if not math.isclose(dot, 0, abs_tol=1e-13):
+            FreeCAD.Console.PrintError(
+                f"Wrong calculation of normal vector for {vec = }! {n = }, {dot = }\n"
+                "Please consider submitting an issue\n"
+            )
 
-    # print("normal_n: {}".format(normal_n))
-    return normal_n
+        return n
+
+    def rotate_around_vector(axis: FreeCAD.Vector, angle: int) -> FreeCAD.Vector:
+        """
+        * - is the axis vector, which is looking at us
+        the rotation is done counter-clockwise around this vector
+
+        More info is available at:
+        https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+        """
+        angle = math.radians(angle)
+        axis = normalize(axis)
+        n = get_normal(axis)
+        # the mentioned formula rotates both the perpendicular and not parts of the vector
+        # but since we're rotating a normal (which is already perpendicular), one can
+        # simplify the formula a bit
+        rot = n * math.cos(angle) + axis.cross(n) * math.sin(angle)
+        # replace all the close-to-zero elements with 0 itself
+        # I was getting values of 1e-17 order, hence the threshold is of 1e-15 order
+        return FreeCAD.Vector([coord * (abs(coord) > 1e-15) for coord in rot])
+
+    # `+90` here is because the normal is calculated towards -z axis
+    # and we use 1,2-directions, that are rotated by `+90` degrees
+    return rotate_around_vector(beam_direction, defined_angle + 90)
 
 
 # ************************************************************************************************
@@ -1127,7 +1130,7 @@ def get_force_obj_face_nodeload_table(
     sum_node_load = 0  # for debugging
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
+            ref_face = sub_shape_at_global_placement(o, elem)
             FreeCAD.Console.PrintMessage(
                 "    "
                 "ReferenceShape ... Type: {0}, "
@@ -1142,7 +1145,7 @@ def get_force_obj_face_nodeload_table(
         force_per_sum_ref_face_area = force_quantity / sum_ref_face_area
     for o, elem_tup in frc_obj.References:
         for elem in elem_tup:
-            ref_face = o.Shape.getElement(elem)
+            ref_face = sub_shape_at_global_placement(o, elem)
 
             # face_table:
             #    { meshfaceID : ( nodeID, ... , nodeID ) }
@@ -1666,12 +1669,14 @@ def get_pressure_obj_faces(
                     # How to find the orientation of a FEM mesh face?
                     # https://forum.freecad.org/viewtopic.php?f=18&t=51898
         else:
-            FreeCAD.Console.PrintError(
-                "Pressure on shell mesh at the moment only "
-                "supported for meshes with appropriate group data.\n"
-            )
-    return pressure_faces
+            for obj, elems in femobj["Object"].References:
+                for e in elems:
+                    ref_face = sub_shape_at_global_placement(obj, e)
+                    meshfaces = femmesh.getFacesByFace(ref_face)
+                    for mf in meshfaces:
+                        pressure_faces.append([mf, -1])
 
+    return pressure_faces
 
 # ***** deprecated method for retrieving pressure faces *****************************************
 # for constraint pressure and finite solid element mesh
@@ -1994,21 +1999,13 @@ def get_reference_group_elements(
     else:
         key = obj.Name
     elements = []
-    stype = None
     for r in obj.References:
         parent = r[0]
         childs = r[1]
         # FreeCAD.Console.PrintMessage("{}\n".format(parent))
         # FreeCAD.Console.PrintMessage("{}\n".format(childs))
         for child in childs:
-            # the method getElement(element) does not return Solid elements
-            ref_shape = geomtools.get_element(parent, child)
-            if not stype:
-                stype = ref_shape.ShapeType
-            elif stype != ref_shape.ShapeType:
-                FreeCAD.Console.PrintError(
-                    "Error, two refshapes in References with different ShapeTypes.\n"
-                )
+            ref_shape = parent.getSubObject(child)
             FreeCAD.Console.PrintLog("{}\n".format(ref_shape))
             found_element = geomtools.find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
@@ -2508,4 +2505,93 @@ def compact_mesh(
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)
 
+# ************************************************************************************************
+def beam_reduced_integration(
+    fileName
+):
+    # replace B3x elements with B3xR elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("B32") != -1:
+            line = line.replace("B32", "B32R")
+        if line.find("B31") != -1:
+            line = line.replace("B31", "B31R")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+
+def plane_stress(
+    fileName
+):
+    # replace shell elements with plane stress elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CPS3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CPS6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CPS4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CPS8")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+def plane_strain(
+    fileName
+):
+    # replace shell elements with plane strain elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CPE3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CPE6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CPE4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CPE8")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+def axisymmetric(
+    fileName
+):
+    # replace shell elements with axisymmetric elements
+    f = open(fileName, "r+")
+    lines = f.readlines()
+    f.seek(0)
+    for line in lines:
+        if line.find("S3") != -1:
+            line = line.replace("S3", "CAX3")
+        if line.find("S6") != -1:
+            line = line.replace("S6", "CAX6")
+        if line.find("S4") != -1:
+            line = line.replace("S4", "CAX4")
+        if line.find("S8") != -1:
+            line = line.replace("S8", "CAX8")
+        f.write(line)
+    
+    f.truncate()
+    f.close()
+
+# ************************************************************************************************
+def sub_shape_at_global_placement(obj, sub_name):
+    sub_sh = obj.getSubObject(sub_name)
+    # get partner shape
+    partner = sub_sh.transformed(FreeCAD.Placement().Matrix)
+    partner.Placement = obj.getGlobalPlacement() \
+                        * obj.Placement.inverse() \
+                        * sub_sh.Placement
+
+    return partner
 ##  @}

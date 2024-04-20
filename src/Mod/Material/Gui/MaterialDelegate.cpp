@@ -62,6 +62,15 @@ MaterialDelegate::MaterialDelegate(QObject* parent)
     : BaseDelegate(parent)
 {}
 
+bool MaterialDelegate::newRow(const QAbstractItemModel* model, const QModelIndex& index) const
+{
+    Q_UNUSED(model)
+    Q_UNUSED(index)
+    
+    // New rows are for lists and arrays
+    return false;
+}
+
 Materials::MaterialValue::ValueType MaterialDelegate::getType(const QModelIndex& index) const
 {
     auto treeModel = dynamic_cast<const QStandardItemModel*>(index.model());
@@ -110,7 +119,8 @@ QVariant MaterialDelegate::getValue(const QModelIndex& index) const
     QVariant propertyValue;
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
+        // auto propertyName = group->child(row, 0)->text();
+        auto propertyName = group->child(row, 0)->data().toString();
         propertyValue = material->getProperty(propertyName)->getValue();
     }
     return propertyValue;
@@ -130,9 +140,11 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
     int row = index.row();
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
-        material->getProperty(propertyName)->setValue(value);
-        group->child(row, 1)->setText(value.toString());
+        auto propertyName = group->child(row, 0)->data().toString();
+        std::string _name = propertyName.toStdString();
+        auto property = material->getProperty(propertyName);
+        property->setValue(value);
+        group->child(row, 1)->setText(property->getString());
     }
 
     notifyChanged(model, index);
@@ -141,7 +153,6 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
 void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
                                      const QModelIndex& index) const
 {
-    Base::Console().Log("MaterialDelegate::notifyChanged()\n");
     auto treeModel = dynamic_cast<const QStandardItemModel*>(model);
     auto item = treeModel->itemFromIndex(index);
     auto group = item->parent();
@@ -152,13 +163,12 @@ void MaterialDelegate::notifyChanged(const QAbstractItemModel* model,
     int row = index.row();
     if (group->child(row, 1)) {
         auto material = group->child(row, 1)->data().value<std::shared_ptr<Materials::Material>>();
-        auto propertyName = group->child(row, 0)->text();
+        // auto propertyName = group->child(row, 0)->text();
+        auto propertyName = group->child(row, 0)->data().toString();
         auto propertyValue = material->getProperty(propertyName)->getValue();
         material->setEditStateAlter();
-        Base::Console().Log("MaterialDelegate::notifyChanged() - marked altered\n");
 
-        Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName,
-                                                                   propertyValue.toString());
+        Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName, propertyValue);
     }
 }
 
@@ -181,7 +191,8 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 
             int row = index.row();
 
-            QString propertyName = group->child(row, 0)->text();
+            // QString propertyName = group->child(row, 0)->text();
+            QString propertyName = group->child(row, 0)->data().toString();
 
             auto type = getType(index);
             if (type == Materials::MaterialValue::Color) {
@@ -263,7 +274,7 @@ void MaterialDelegate::showImageModal(const QString& propertyName, QStandardItem
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -277,7 +288,7 @@ void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem*
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -291,7 +302,7 @@ void MaterialDelegate::showMultiLineStringModal(const QString& propertyName, QSt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -306,7 +317,7 @@ void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardIt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -320,7 +331,7 @@ void MaterialDelegate::showArray3DModal(const QString& propertyName, QStandardIt
 
     dlg->adjustSize();
 
-    //connect(dlg, &QDialog::finished, this, [&](int result) {});
+    // connect(dlg, &QDialog::finished, this, [&](int result) {});
 
     dlg->exec();
 }
@@ -441,11 +452,12 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
         widget = combo;
     }
     else if (type == Materials::MaterialValue::Quantity) {
-        auto input = new Gui::InputField(parent);
+        // auto input = new Gui::InputField(parent);
+        auto input = new Gui::QuantitySpinBox(parent);
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(getUnits(index));
-        input->setPrecision(6);
+        // input->setPrecision(6);
         input->setValue(item.value<Base::Quantity>());
 
         widget = input;

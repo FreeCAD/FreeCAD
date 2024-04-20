@@ -146,8 +146,8 @@ private:
                     }
                 }
                 else {
-                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
-                        // If points are colinear then we can't calculate the center.
+                    if (areCollinear(firstPoint, secondPoint, onSketchPos)) {
+                        // If points are collinear then we can't calculate the center.
                         return;
                     }
                     centerPoint =
@@ -465,7 +465,8 @@ template<>
 void DSHArcController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        QStringList names = {QApplication::translate("Sketcher_CreateArc", "Center"),
+                             QApplication::translate("Sketcher_CreateArc", "3 rim points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {

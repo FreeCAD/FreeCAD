@@ -59,7 +59,6 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
 {
     ADD_PROPERTY(TextColor, (0.0f, 0.0f, 0.0f));
     ADD_PROPERTY(FaceColor, (1.0f, 0.0f, 0.2f));
-    ADD_PROPERTY(ShapeColor, (1.0f, 0.0f, 0.2f));
     ADD_PROPERTY(FontSize, (18));
     ADD_PROPERTY(DistFactor, (1.0));
     ADD_PROPERTY(Mirror, (false));
@@ -85,6 +84,8 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     wizardWidget = nullptr;
     wizardSubLayout = nullptr;
     constraintDialog = nullptr;
+
+    Gui::ViewProviderSuppressibleExtension::initExtension(this);
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()

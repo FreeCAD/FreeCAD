@@ -184,7 +184,7 @@
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Pont kerül az élére, MapPathParameter szabályozza hova kerül. Ezenkívül, végpont kapcsolható, egy vetület képzéshez.</translation>
+      <translation>Pont kerül az élére, MapPathParameter szabályozza hova kerül. Ezenkívül, végpont összeköthető, egy vetület képzéshez.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="286"/>
@@ -196,7 +196,7 @@
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Az élhez illesztett kör közepe. Választható végpont kapcsolat határozza meg hová.</translation>
+      <translation>Az élhez illesztett kör közepe. Választható végpont összekötés határozza meg hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="289"/>
@@ -374,7 +374,7 @@
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Vonal érintője egy élhez. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Vonal érintője egy élhez. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="232"/>
@@ -386,7 +386,7 @@
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszer N vektorához. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszer N vektorához. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="235"/>
@@ -398,7 +398,7 @@
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszer B vektorához. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszer B vektorához. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="238"/>
@@ -411,7 +411,7 @@
       <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Érintő felülethez, az U paraméter mentén. Végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Érintő felülethez, az U paraméter mentén. Végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="241"/>
@@ -439,9 +439,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
-      <source>Not implemented.</source>
+      <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Nem beágyazott.</translation>
+      <translation>Két felület metszéspontja.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -540,7 +540,7 @@
       <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Sík a csatolt objektum XY helyi síkjához igazított.</translation>
+      <translation>Sík az összekötött tárgy XY helyi síkjához igazított.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="136"/>
@@ -552,7 +552,7 @@
       <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Sík a csatolt objektum XZ helyi síkjához igazított.</translation>
+      <translation>Sík az összekötött tárgy XZ helyi síkjához igazított.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="139"/>
@@ -564,7 +564,7 @@
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Sík a csatolt objektum YZ helyi síkjához igazított.</translation>
+      <translation>Sík az összekötött tárgy YZ helyi síkjához igazított.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="142"/>
@@ -600,7 +600,7 @@
       <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Sík érintő egy élhez. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Sík érintő egy élhez. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="151"/>
@@ -614,7 +614,7 @@
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszerhez. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszerhez. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="154"/>
@@ -638,7 +638,7 @@
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Igazítás az élhez illesztett kör síkjához. Kezdőpont a görbület egy pontjához igazodik. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Igazítás az élhez illesztett kör síkjához. Kezdőpont a görbület egy pontjához igazodik. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="163"/>
@@ -650,7 +650,7 @@
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Sík merőleges az élre, és Y tengely egyezik az illesztett kör közepének tengelyével. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Sík merőleges az élre, és Y tengely egyezik az illesztett kör közepének tengelyével. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="166"/>
@@ -737,7 +737,7 @@
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Elhelyezés egyenlő a csatolt objektum elhelyezésével.</translation>
+      <translation>Elhelyezés egyenlő az összekötött tárgy elhelyezésével.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="61"/>
@@ -797,7 +797,7 @@
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Z' tengely is érintő éléhez igazodik. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Z' tengely is érintő éléhez igazodik. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="76"/>
@@ -811,7 +811,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszerhez. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Igazítás az íves él Frenet-Serret koordináta-rendszerhez. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -835,7 +835,7 @@
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>XY síkjának igazítása az élhez illesztett körhöz. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>XY síkjának igazítása az élhez illesztett körhöz. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="88"/>
@@ -847,7 +847,7 @@
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Y' tengely igazítása az élhez illesztett körhöz igazodva. Választható végpont kapcsolat határozza meg, hogy hová.</translation>
+      <translation>Y' tengely igazítása az élhez illesztett körhöz igazodva. Választható végpont összekötés határozza meg, hogy hová.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="91"/>
@@ -2372,6 +2372,11 @@ irányát.</translation>
       <source>Edit Mirror</source>
       <translation>Tükrözés szerkesztése</translation>
     </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <source>Project on surface</source>
+      <translation type="unfinished">Project on surface</translation>
+    </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDatumParameters</name>
@@ -2642,7 +2647,7 @@ Megjegyzés: A pozíciót a mellékelt tárgy helyi terében fejezzük ki.</tran
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1068"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1109"/>
       <source>Chamfer Edges</source>
       <translation>Élek letörése</translation>
     </message>
@@ -2956,14 +2961,14 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation>Érvénytelen kihúzási irány hivatkozás.
+      <translation>Érvénytelen az összekötés kihúzási iránya.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation>Irányba mód egy él használatához, de az él nem kapcsolódik.</translation>
+      <translation>Irányba mód egy él használatához, de az él nincs összekötve.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="681"/>
@@ -3009,7 +3014,7 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Lekerekítés paraméter</translation>
     </message>
@@ -3059,105 +3064,105 @@ Ha mindkét hossz nulla, akkor az irány magnitúdóértékét kell használni.<
       <translation>Sugár:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameter</source>
       <translation>Letörési paraméterek</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Chamfer type</source>
       <translation>Letörés típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
       <translation>Hossz:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="274"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
       <translation>Élek letörése</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="867"/>
+      <location filename="../../DlgFilletEdges.cpp" line="912"/>
       <source>Start length</source>
       <translation>Hossz kezdete</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Egyenlő távolság</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
       <translation>Két távolság</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="275"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Size</source>
       <translation>Méret</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size2</source>
       <translation>Méret2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
       <source>Fillet type</source>
       <translation>Lekerekítés típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>Edges to fillet</source>
       <translation>Lekerekítendő élek</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="282"/>
-      <location filename="../../DlgFilletEdges.cpp" line="869"/>
+      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>Start radius</source>
       <translation>Kezdeti sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="284"/>
       <source>End radius</source>
       <translation>Vég sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="716"/>
-      <location filename="../../DlgFilletEdges.cpp" line="776"/>
+      <location filename="../../DlgFilletEdges.cpp" line="761"/>
+      <location filename="../../DlgFilletEdges.cpp" line="821"/>
       <source>Edge%1</source>
       <translation>Él%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="859"/>
+      <location filename="../../DlgFilletEdges.cpp" line="904"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="861"/>
+      <location filename="../../DlgFilletEdges.cpp" line="906"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="915"/>
+      <location filename="../../DlgFilletEdges.cpp" line="960"/>
       <source>No shape selected</source>
       <translation>Nincs kijelölve alakzat</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="916"/>
+      <location filename="../../DlgFilletEdges.cpp" line="961"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Nem érvényes alakzat van kijelölve. Kérjük, először válasszon egy érvényes alakzatot a legördülő listában.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="967"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
       <source>No edge selected</source>
       <translation>Nincs kiválasztott él</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="968"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Egyetlen élet sem választott ki.
@@ -3317,7 +3322,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>A funkciók számának csökkentése egy hivatkozástáblával</translation>
+      <translation>A funkciók számának csökkentése egy Elrendezés összekötéstáblával</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
@@ -3888,7 +3893,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2209"/>
+      <location filename="../../DlgPrimitives.cpp" line="2204"/>
       <source>&amp;Create</source>
       <translation>Létrehozás</translation>
     </message>
@@ -3976,12 +3981,12 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <translation>Vetítési tárgy</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="164"/>
       <source>Have no active document!!!</source>
       <translation>Nincs aktív dokumentum!!!</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="172"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
       <source>Can not create a projection object!!!</source>
       <translation>Vetítési tárgyat nem lehet létrehozni!!!</translation>
     </message>
@@ -4048,7 +4053,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Szög:</translation>
+      <translation>Dőlésszög:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4087,7 +4092,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Kihúzás tengely kapcsolat érvénytelen.
+      <translation>A forgástengely összekötés érvénytelen.
 
 %1</translation>
     </message>
@@ -4980,31 +4985,31 @@ only created cuts will be visible</source>
       <translation>X irányban:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="158"/>
-      <location filename="../../TaskAttacher.ui" line="194"/>
-      <location filename="../../TaskAttacher.ui" line="230"/>
+      <location filename="../../TaskAttacher.ui" line="155"/>
+      <location filename="../../TaskAttacher.ui" line="191"/>
+      <location filename="../../TaskAttacher.ui" line="227"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="175"/>
+      <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In y-direction:</source>
       <translation>Y irányban:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="211"/>
+      <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In z-direction:</source>
       <translation>Z irányban:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="247"/>
+      <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around x-axis:</source>
       <translation>Az x tengely körül:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="260"/>
+      <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5013,12 +5018,12 @@ Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="287"/>
+      <location filename="../../TaskAttacher.ui" line="284"/>
       <source>Around y-axis:</source>
       <translation>Az y tengely körül:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="300"/>
+      <location filename="../../TaskAttacher.ui" line="297"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5027,12 +5032,12 @@ Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="327"/>
+      <location filename="../../TaskAttacher.ui" line="324"/>
       <source>Around z-axis:</source>
       <translation>Az z tengely körül:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="340"/>
+      <location filename="../../TaskAttacher.ui" line="337"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
@@ -5041,12 +5046,12 @@ Megjegyzés: Az elhelyezést a csatolt tárgy helyi koordináta
 rendszerében fejezzük ki.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
       <translation>A rögzítés és az eltolás oldalának átfordítása</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="367"/>
+      <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip sides</source>
       <translation>Oldalak megfordítása</translation>
     </message>
@@ -5375,6 +5380,11 @@ Egyedi logikai művelet ellenőrzés:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
+      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <source>Attachment</source>
+      <translation>Melléklet</translation>
+    </message>
+    <message>
       <location filename="../../TaskAttacher.cpp" line="1117"/>
       <source>Datum dialog: Input error</source>
       <translation>Referencia párbeszédpanel: bemenet hiba</translation>
@@ -5608,7 +5618,7 @@ kijelölési téglalap húzásával a 3D nézetben</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="484"/>
+      <location filename="../../TaskSweep.cpp" line="480"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Válassz egy vagy több profilt és válassza ki a szegélyt vagy hálót 3D nézetben a húzás irányához.</translation>
@@ -5668,74 +5678,31 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
-    <name>Part_FaceMaker</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
-      <source>Bull's-eye facemaker</source>
-      <translation>Céltábla közepe felületlétrehozás</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Támogatja a lyukkal rendelkező szigetek síkbeli felületeinek létrehozását.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
-      <source>Simple</source>
-      <translation>Egyszerű</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
-      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
-      <source>Cheese facemaker</source>
-      <translation>Sajtfelület létrehozás</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Támogatja a síkbeli felületek létrehozását, de nem a lyukkal rendelkező szigeteket.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
-      <source>Part Extrude facemaker</source>
-      <translation>Tárgy kihúzás felületlétrehozás</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
-      <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Lyukas felületek létrehozásának támogatása, nem támogatja a hálósítást.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="234"/>
+      <location filename="../../AppPartGui.cpp" line="237"/>
       <source>Part and Part Design workbench</source>
       <translation>Alkatrész és Alkatrész tervezési munkafelület</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="235"/>
-      <location filename="../../AppPartGui.cpp" line="236"/>
-      <location filename="../../AppPartGui.cpp" line="237"/>
       <location filename="../../AppPartGui.cpp" line="238"/>
+      <location filename="../../AppPartGui.cpp" line="239"/>
+      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Part/Part Design</source>
       <translation>Alaktrész/Alkatrész tervezés</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="239"/>
-      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="242"/>
+      <location filename="../../AppPartGui.cpp" line="243"/>
       <source>Import-Export</source>
       <translation>Importálás-Exportálás</translation>
     </message>
@@ -5807,20 +5774,20 @@ Do you want to continue?</source>
       <translation>Nincs kijelölt hivatkozás</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
     </message>
@@ -6113,8 +6080,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1419"/>
-      <source>Selection </source>
-      <translation>Kiválasztás </translation>
+      <source>Selection</source>
+      <translation>Kijelölés</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1503"/>
@@ -6137,7 +6104,7 @@ Do you want to continue?</source>
       <translation>Összes méret eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="853"/>
+      <location filename="../../ViewProviderExt.cpp" line="854"/>
       <source>Set colors...</source>
       <translation>Színek beállítása...</translation>
     </message>
@@ -6172,7 +6139,7 @@ Do you want to continue?</source>
       <translation>Ellenőrző pontok megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
       <source>Attachment editor</source>
       <translation>Csatolmány szerkesztő</translation>
     </message>
@@ -6190,6 +6157,11 @@ Do you want to continue?</source>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation>Távolság megadása:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
+      <source>Edit projection</source>
+      <translation type="unfinished">Edit projection</translation>
     </message>
   </context>
   <context>
@@ -6470,7 +6442,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Nem sikerült értelmezni a hivatkozást (több, mint egy kettőspont észlelt)</translation>
+      <translation>Nem sikerült értelmezni az összekötést (több, mint egy kettőspont észlelt)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
@@ -6537,7 +6509,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation>Nem sikerült feloldani a hivatkozásokat. {}</translation>
+      <translation>Nem sikerült feloldani a összekötéseket. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -6925,6 +6897,74 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
       <translation>Összes kiválasztási szűrő törölve</translation>
+    </message>
+  </context>
+  <context>
+    <name>FaceMaker</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
+      <translation>Az alakzatnak drótnak, élnek vagy összetettnek kell lennie. Valami mást szállítottak.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerSimple</name>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <source>Simple</source>
+      <translation>Egyszerű</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+      <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerBullseye</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <source>Bull's-eye facemaker</source>
+      <translation>Céltábla közepe felületlétrehozás</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
+      <source>Supports making planar faces with holes with islands.</source>
+      <translation>Támogatja a lyukkal rendelkező szigetek síkbeli felületeinek létrehozását.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerCheese</name>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
+      <source>Cheese facemaker</source>
+      <translation>Sajtfelület létrehozás</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
+      <source>Supports making planar faces with holes, but no islands inside holes.</source>
+      <translation>Támogatja a síkbeli felületek létrehozását, de nem a lyukkal rendelkező szigeteket.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerExtrusion</name>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="388"/>
+      <source>Part Extrude facemaker</source>
+      <translation>Tárgy kihúzás felületlétrehozás</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="393"/>
+      <source>Supports making faces with holes, does not support nesting.</source>
+      <translation>Lyukas felületek létrehozásának támogatása, nem támogatja a hálósítást.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exception</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
+      <source>Wire is not closed.</source>
+      <translation>Drótháló nem zárt.</translation>
     </message>
   </context>
 </TS>

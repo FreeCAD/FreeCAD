@@ -57,7 +57,8 @@ Boolean::Boolean()
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
     ADD_PROPERTY_TYPE(UsePlacement,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Apply the placement of the second ( tool ) object");
     this->UsePlacement.setValue(false);
-    initExtension(this);
+
+    App::GeoFeatureGroupExtension::initExtension(this);
 }
 
 short Boolean::mustExecute() const

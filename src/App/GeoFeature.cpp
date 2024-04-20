@@ -25,6 +25,7 @@
 
 #include <App/GeoFeaturePy.h>
 
+#include "ComplexGeoData.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "ElementNamingUtils.h"
@@ -78,9 +79,8 @@ PyObject* GeoFeature::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-
-std::pair<std::string,std::string> GeoFeature::getElementName(
-        const char *name, ElementNameType type) const
+std::pair<std::string,std::string>
+GeoFeature::getElementName(const char *name, ElementNameType type) const
 {
     (void)type;
 
@@ -88,7 +88,50 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     if(!name)
         return ret;
 
+#ifndef FC_USE_TNP_FIX
     ret.second = name;
+
+    return ret;
+#else
+    auto prop = getPropertyOfGeometry();
+    if (!prop) {
+        return std::make_pair("", name);
+    }
+
+    auto geo = prop->getComplexData();
+    if (!geo) {
+        return std::make_pair("", name);
+    }
+
+    return _getElementName(name, geo->getElementName(name));
+#endif
+}
+
+std::pair<std::string, std::string>
+GeoFeature::_getElementName(const char* name, const Data::MappedElement& mapped) const
+{
+    std::pair<std::string, std::string> ret;
+    if (mapped.index && mapped.name) {
+        std::ostringstream ss;
+        ss << Data::ComplexGeoData::elementMapPrefix() << mapped.name << '.' << mapped.index;
+        ret.first = ss.str();
+        mapped.index.appendToStringBuffer(ret.second);
+    }
+    else if (mapped.name) {
+        //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
+        ret.first = name;
+        const char* dot = strrchr(name, '.');
+        if (dot) {
+            // deliberately mangle the old style element name to signal a
+            // missing reference
+            ret.second = Data::MISSING_PREFIX;
+            ret.second += dot + 1;
+        }
+    }
+    else {
+        mapped.index.appendToStringBuffer(ret.second);
+    }
+
     return ret;
 }
 
@@ -137,3 +180,12 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return sobj;
 }
 
+App::Material GeoFeature::getMaterialAppearance() const
+{
+    return App::Material(App::Material::DEFAULT);
+}
+
+void GeoFeature::setMaterialAppearance(const App::Material& material)
+{
+    Q_UNUSED(material)
+}

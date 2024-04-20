@@ -208,12 +208,9 @@ StdCmdLinkMake::StdCmdLinkMake()
 {
     sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link");
-    static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("A Link is an object that references or links to another object in the same "
-        "document, or in another document.Unlike Clones, Links reference the original Shape directly, "
-        " making them more memory efficient which helps with the creation of complex assemblies.")
-        + "</p>";
-    sToolTipText = toolTip.c_str();
+    sToolTipText  = QT_TR_NOOP("A Link is an object that references or links to another object in the same document, "
+                               "or in another document. Unlike Clones, Links reference the original Shape directly, "
+                               "making them more memory-efficient, which helps with the creation of complex assemblies.");
     sWhatsThis    = "Std_LinkMake";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
@@ -884,6 +881,8 @@ public:
         sStatusTip    = QT_TR_NOOP("Actions that apply to link objects");
         eType         = AlterDoc;
         bCanLog       = false;
+
+        setCheckable(false);
 
         addCommand(new StdCmdLinkMake());
         addCommand(new StdCmdLinkMakeRelative());

@@ -98,6 +98,46 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     return Py::new_reference_to(pEdgeList);
 }
 
+PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Py::List pVertexList;
+    auto vertsAll = dvp->getVertexGeometry();
+    for (auto& vert: vertsAll) {
+        if (vert->getHlrVisible()) {
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            pVertexList.append(Py::asObject(pVertex));
+        }
+    }
+
+    return Py::new_reference_to(pVertexList);
+}
+
+PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Py::List pVertexList;
+    auto vertsAll = dvp->getVertexGeometry();
+    for (auto& vert: vertsAll) {
+        if (!vert->getHlrVisible()) {
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            pVertexList.append(Py::asObject(pVertex));
+        }
+    }
+
+    return Py::new_reference_to(pVertexList);
+}
+
+
+
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -109,6 +149,18 @@ PyObject* DrawViewPartPy::requestPaint(PyObject *args)
 
     Py_Return;
 }
+
+PyObject* DrawViewPartPy::getGeometricCenter(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d pointOut = dvp->getCurrentCentroid();
+    return new Base::VectorPy(new Base::Vector3d(pointOut));
+}
+
 
 // remove all cosmetics
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)

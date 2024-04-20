@@ -589,7 +589,7 @@ double toDouble(const boost::any &value)
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         Base::Vector3d base = _cPos.getPosition();
@@ -601,7 +601,7 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         setValue(plm);
     };
 
-    auto updateYawPitchRoll = [=](int index, double angle) {
+    auto updateYawPitchRoll = [this](int index, double angle) {
         Base::Vector3d base = _cPos.getPosition();
         Base::Rotation rot = _cPos.getRotation();
         double yaw, pitch, roll;
@@ -1076,7 +1076,7 @@ void PropertyRotation::getPaths(std::vector<ObjectIdentifier> &paths) const
 
 void PropertyRotation::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         _rot.getRawValue(axis, angle);
@@ -1243,6 +1243,40 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
 PropertyComplexGeoData::~PropertyComplexGeoData() = default;
+
+std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
+    auto data = getComplexData();
+    if(!data)
+        return std::string();
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher()==data->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << data->getElementMapVersion();
+    return ss.str();
+}
+
+bool PropertyComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    auto data = getComplexData();
+    if(!data)
+        return false;
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    const char *prefix;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher() == data->Hasher)
+        prefix = "1.";
+    else
+        prefix = "0.";
+    if (!boost::starts_with(ver, prefix))
+        return true;
+    return data->checkElementMapVersion(ver+2);
+}
+
 
 void PropertyComplexGeoData::afterRestore()
 {

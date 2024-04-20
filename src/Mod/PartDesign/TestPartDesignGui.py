@@ -100,7 +100,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         App.ActiveDocument.recompute()
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
-        self.Sketch.Support = (self.BoxObj, ('Face3',))
+        self.Sketch.AttachmentSupport = (self.BoxObj, ('Face3',))
         self.Sketch.MapMode = 'FlatFace'
         self.BodySource.addObject(self.Sketch)
 
@@ -154,7 +154,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.BodySource.addObject(self.Sketch)
-        self.Sketch.Support = (self.BodySource.Origin.OriginFeatures[3], [''])
+        self.Sketch.AttachmentSupport = (self.BodySource.Origin.OriginFeatures[3], [''])
         self.Sketch.MapMode = 'FlatFace'
 
 
@@ -198,8 +198,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         #assert dependencies of the Sketch
         self.Doc.recompute()
 
-        self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
-        self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
+        self.assertFalse(self.Sketch.AttachmentSupport[0][0] in self.BodySource.Origin.OriginFeatures)
+        self.assertTrue(self.Sketch.AttachmentSupport[0][0] in self.BodyTarget.Origin.OriginFeatures)
         self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Group), 2, "Target body feature count is wrong")
 
@@ -253,3 +253,87 @@ class PartDesignTransformed(unittest.TestCase):
 #   def tearDown(self):
 #       #closing doc
 #       FreeCAD.closeDocument("SketchGuiTest")
+
+class TestShapeBinder(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestShapeBinder")
+
+    def testDefaultColor(self):
+        """
+        A shape binder uses a different default color than a Part feature.
+        This color must still be set after its creation.
+        """
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+        binder = self.Doc.addObject('PartDesign::ShapeBinder','ShapeBinder')
+        binder.Support = [(self.Box, 'Face1')]
+
+        grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        packed_color = grp.GetUnsigned("DefaultDatumColor", 0xFFD70099)
+        r, g, b, a = binder.ViewObject.ShapeColor
+        color = int(r * 255.0 + 0.5) << 24 | int(g * 255.0 + 0.5) << 16 | int(b * 255.0 + 0.5) << 8 | int(a * 255.0 + 0.5)
+
+        self.assertEqual(packed_color, color)
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+
+class TestSubShapeBinder(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestSubShapeBinder")
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+    def testDefaultColor(self):
+        """
+        A sub-shape binder uses a different default color than a Part feature.
+        This color must still be set after its creation.
+        """
+        body = self.Doc.addObject('PartDesign::Body','Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+
+        self.Doc.recompute()
+        binder = body.newObject('PartDesign::SubShapeBinder','Binder')
+        binder.Support = [(box, ("Face1"))]
+
+        grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        packed_color = grp.GetUnsigned("DefaultDatumColor", 0xFFD70099)
+        r, g, b, a = binder.ViewObject.ShapeColor
+        color = int(r * 255.0 + 0.5) << 24 | int(g * 255.0 + 0.5) << 16 | int(b * 255.0 + 0.5) << 8 | int(a * 255.0 + 0.5)
+
+        self.assertEqual(packed_color, color)
+
+
+class TestDatumPlane(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestDatumPlane")
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+    def testDefaultColor(self):
+        """
+        A datum object uses a different default color than a Part feature.
+        This color must still be set after its creation.
+        """
+        body = self.Doc.addObject('PartDesign::Body','Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+
+        self.Doc.recompute()
+        datum = body.newObject('PartDesign::Plane','DatumPlane')
+        datum.AttachmentSupport = [(box, 'Face6')]
+        datum.MapMode = 'FlatFace'
+        self.Doc.recompute()
+
+        grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
+        packed_color = grp.GetUnsigned("DefaultDatumColor", 0xFFD70099)
+        r, g, b, a = datum.ViewObject.ShapeColor
+        color = int(r * 255.0 + 0.5) << 24 | int(g * 255.0 + 0.5) << 16 | int(b * 255.0 + 0.5) << 8 | int(a * 255.0 + 0.5)
+
+        self.assertEqual(packed_color, color)

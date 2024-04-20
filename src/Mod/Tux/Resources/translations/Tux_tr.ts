@@ -59,42 +59,42 @@
       <translation>Gezinme stili tanınmıyor.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="573"/>
+      <location filename="../../NavigationIndicatorGui.py" line="577"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <location filename="../../NavigationIndicatorGui.py" line="578"/>
       <source>Orbit style</source>
       <translation>Yörünge stili</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="575"/>
+      <location filename="../../NavigationIndicatorGui.py" line="579"/>
       <source>Compact</source>
       <translation>Kompakt</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="576"/>
+      <location filename="../../NavigationIndicatorGui.py" line="580"/>
       <source>Tooltip</source>
       <translation>Ipucu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="577"/>
+      <location filename="../../NavigationIndicatorGui.py" line="581"/>
       <source>Turntable</source>
       <translation>Döner tabla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="578"/>
+      <location filename="../../NavigationIndicatorGui.py" line="582"/>
       <source>Free Turntable</source>
       <translation>Döner Tabla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="579"/>
+      <location filename="../../NavigationIndicatorGui.py" line="583"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="580"/>
+      <location filename="../../NavigationIndicatorGui.py" line="584"/>
       <source>Undefined</source>
       <translation>Tanımlanmamış</translation>
     </message>

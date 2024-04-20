@@ -28,16 +28,19 @@ Model:
   Description: "Describes the norm or standards referenced by this material"
   DOI: ""
   KindOfMaterial:
+    DisplayName: "Kind Of Material"
     Type: 'String'
     Units: ''
     URL: ''
     Description: " "
   MaterialNumber:
+    DisplayName: "Material Number"
     Type: 'String'
     Units: ''
     URL: ''
     Description: " "
   StandardCode:
+    DisplayName: "Standard Code"
     Type: 'String'
     Units: ''
     URL: ''

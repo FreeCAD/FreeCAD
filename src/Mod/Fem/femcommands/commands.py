@@ -696,8 +696,6 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # set some property of the solver to nonlinear
         # (only if one solver is available and if this solver is a CalculiX solver):
         # nonlinear material
-        # nonlinear geometry --> it is triggered anyway
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
         for m in self.active_analysis.Group:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
@@ -715,11 +713,10 @@ class _MaterialMechanicalNonlinear(CommandManager):
             or is_of_type(solver_object, "Fem::SolverCalculix")
         ):
             FreeCAD.Console.PrintMessage(
-                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
+                "Set MaterialNonlinearity to nonlinear for {}\n"
                 .format(solver_object.Label)
             )
             solver_object.MaterialNonlinearity = "nonlinear"
-            solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
@@ -1048,19 +1045,19 @@ class _ResultsPurge(CommandManager):
         resulttools.purge_results(self.active_analysis)
 
 
-class _SolverCxxtools(CommandManager):
+class _SolverCcxTools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
 
     def __init__(self):
-        super(_SolverCxxtools, self).__init__()
+        super(_SolverCcxTools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Solver CalculiX Standard"
         )
         self.accel = "S, X"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Creates a standard FEM solver CalculiX with ccx tools"
         )
         self.is_active = "with_analysis"
@@ -1075,7 +1072,7 @@ class _SolverCxxtools(CommandManager):
         FreeCADGui.addModule("FemGui")
         if has_nonlinear_material_obj:
             FreeCADGui.doCommand(
-                "solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)"
+                "solver = ObjectsFem.makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument)"
             )
             FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
@@ -1083,7 +1080,7 @@ class _SolverCxxtools(CommandManager):
         else:
             FreeCADGui.doCommand(
                 "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-                "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
+                "makeSolverCalculiXCcxTools(FreeCAD.ActiveDocument))"
             )
         FreeCAD.ActiveDocument.commitTransaction()
         # expand analysis object in tree view
@@ -1369,8 +1366,8 @@ FreeCADGui.addCommand(
     _ResultsPurge()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculixCxxtools",
-    _SolverCxxtools()
+    "FEM_SolverCalculiXCcxTools",
+    _SolverCcxTools()
 )
 FreeCADGui.addCommand(
     "FEM_SolverCalculiX",

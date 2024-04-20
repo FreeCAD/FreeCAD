@@ -48,6 +48,6 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
     EXPECT_EQ(refined.countSubElements("Face"), 6);   // After refining it is one box
     EXPECT_EQ(refined.countSubElements("Edge"), 12);  // 12 edges in a box
     // TODO: Make sure we have an elementMap for the refine.
-    // Refine doesn't work on compounds, so we're going to need a binary operation or the
+    // TODO: Refine doesn't work on compounds, so we're going to need a binary operation or the
     // like, and those don't exist yet.  Once they do, this test can be expanded
 }

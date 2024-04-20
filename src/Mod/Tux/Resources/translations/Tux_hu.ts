@@ -59,42 +59,42 @@
       <translation>Navigációs stílus nem felismerhető.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="573"/>
+      <location filename="../../NavigationIndicatorGui.py" line="577"/>
       <source>Settings</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <location filename="../../NavigationIndicatorGui.py" line="578"/>
       <source>Orbit style</source>
       <translation>Orbit stílus</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="575"/>
+      <location filename="../../NavigationIndicatorGui.py" line="579"/>
       <source>Compact</source>
       <translation>Tömörített</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="576"/>
+      <location filename="../../NavigationIndicatorGui.py" line="580"/>
       <source>Tooltip</source>
       <translation>Buboréksúgó</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="577"/>
+      <location filename="../../NavigationIndicatorGui.py" line="581"/>
       <source>Turntable</source>
       <translation>Fordítótábla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="578"/>
+      <location filename="../../NavigationIndicatorGui.py" line="582"/>
       <source>Free Turntable</source>
       <translation>Forgóasztal</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="579"/>
+      <location filename="../../NavigationIndicatorGui.py" line="583"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="580"/>
+      <location filename="../../NavigationIndicatorGui.py" line="584"/>
       <source>Undefined</source>
       <translation>Nem definiált</translation>
     </message>

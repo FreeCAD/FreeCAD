@@ -61,7 +61,7 @@
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Pipe Area </string>
+                <string>Pipe Area</string>
                </property>
               </widget>
              </item>

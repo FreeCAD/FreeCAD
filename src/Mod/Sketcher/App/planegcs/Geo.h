@@ -27,6 +27,10 @@
 #include <boost/math/constants/constants.hpp>
 #include "../../SketcherGlobal.h"
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4251)
+#endif
+
 namespace GCS
 {
 class SketcherExport Point
@@ -239,6 +243,7 @@ public:
     double* startAngle;
     double* endAngle;
     // double *rad; //inherited
+    // start and end points are computed by an ArcRules constraint
     Point start;
     Point end;
     // Point center; //inherited
@@ -429,7 +434,7 @@ public:
     DeriVector2 CalculateNormal(const double* param,
                                 const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
-    // Returns value in homogenous coordinates (x*w, y*w, w) at given parameter u
+    // Returns value in homogeneous coordinates (x*w, y*w, w) at given parameter u
     void valueHomogenous(const double u,
                          double* xw,
                          double* yw,

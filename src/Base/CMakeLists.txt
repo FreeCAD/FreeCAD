@@ -242,7 +242,6 @@ SET(FreeCADBase_CPP_SRCS
     Interpreter.cpp
     Matrix.cpp
     MatrixPyImp.cpp
-    MemDebug.cpp
     Observer.cpp
     Parameter.xsd
     Parameter.cpp
@@ -265,7 +264,6 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     Swap.cpp
     ${SWIG_SRCS}
-    TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
@@ -312,7 +310,6 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
-    MemDebug.h
     Observer.h
     Parameter.h
     Persistence.h

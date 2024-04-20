@@ -131,8 +131,12 @@ Py::Object AttachEnginePy::getReferences() const
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        AttachEngine::verifyReferencesAreSafe(attacher.references);
-        return Py::Object(attacher.references.getPyObject(),true);
+        Py::List ret;
+        int i=0;
+        for(auto obj : attacher.getRefObjects())
+            ret.append(Py::TupleN(Py::asObject(obj->getPyObject()),
+                                  Py::String(attacher.subnames[i++])));
+        return ret;
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -140,7 +144,9 @@ void AttachEnginePy::setReferences(Py::Object arg)
 {
     try {
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        attacher.references.setPyObject(arg.ptr());
+        App::PropertyLinkSubList references;
+        references.setPyObject(arg.ptr());
+        attacher.setReferences(references);
     } ATTACHERPY_STDCATCH_ATTR;
 }
 
@@ -518,7 +524,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
         }
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         AttachEngine &attacher = *(this->getAttachEnginePtr());
-        attacher.setUp(feat->Support,
+        attacher.setUp(feat->AttachmentSupport,
                        eMapMode(feat->MapMode.getValue()),
                        feat->MapReversed.getValue(),
                        feat->MapPathParameter.getValue(),
@@ -542,8 +548,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
         }
         Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         const AttachEngine &attacher = *(this->getAttachEnginePtr());
-        AttachEngine::verifyReferencesAreSafe(attacher.references);
-        feat->Support.Paste(attacher.references);
+        feat->AttachmentSupport.setValues(attacher.getRefObjects(),attacher.getSubValues());
         feat->MapMode.setValue(attacher.mapMode);
         feat->MapReversed.setValue(attacher.mapReverse);
         feat->MapPathParameter.setValue(attacher.attachParameter);

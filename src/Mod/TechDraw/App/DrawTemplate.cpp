@@ -24,13 +24,19 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QCollator>
+# include <QDateTime>
 #endif
 
 #include <Base/Console.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
+
 #include "DrawTemplate.h"
 #include "DrawTemplatePy.h"
 #include "DrawPage.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;
@@ -92,6 +98,69 @@ DrawPage* DrawTemplate::getParentPage() const
         }
     }
     return page;
+}
+
+QString DrawTemplate::getAutofillValue(const QString &id) const
+{
+    // author
+    if (id.compare(QString::fromUtf8(Autofill::Author)) == 0) {
+        std::string value = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")
+                              ->GetGroup("Document")->GetASCII("prefAuthor");
+        if (!value.empty()) {
+            return QString::fromUtf8(value.c_str());
+        }
+    }
+    // date
+    else if (id.compare(QString::fromUtf8(Autofill::Date)) == 0) {
+        QDateTime date = QDateTime::currentDateTime();
+        return date.toString(QLocale().dateFormat(QLocale::ShortFormat));
+    }
+    // organization
+    else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0) {
+        std::string value = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")
+                              ->GetGroup("Document")->GetASCII("prefCompany");
+        if (!value.empty()) {
+            return QString::fromUtf8(value.c_str());
+        }
+    }
+    // scale
+    else if (id.compare(QString::fromUtf8(Autofill::Scale)) == 0) {
+        DrawPage *page = getParentPage();
+        if (page) {
+            std::pair<int, int> scale = DrawUtil::nearestFraction(page->Scale.getValue());
+            return QString::asprintf("%d : %d", scale.first, scale.second);
+        }
+    }
+    // sheet
+    else if (id.compare(QString::fromUtf8(Autofill::Sheet)) == 0) {
+        std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        std::vector<QString> pageNames;
+        for (auto page : pages) {
+            if (page->isAttachedToDocument() &&
+                !page->testStatus(App::ObjectStatus::Remove)) {
+                pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
+            }
+        }
+        QCollator collator;
+        std::sort(pageNames.begin(), pageNames.end(), collator);
+
+        int pos = 0;
+        DrawPage *page = getParentPage();
+        if (page) {
+            auto it = std::find(pageNames.begin(), pageNames.end(), QString::fromUtf8(page->Label.getValue()));
+            if (it != pageNames.end()) {
+                pos = it - pageNames.begin() + 1;
+            }
+        }
+
+        return QString::asprintf("%d / %d", pos, (int) pageNames.size());
+    }
+    // title
+    else if (id.compare(QString::fromUtf8(Autofill::Title)) == 0) {
+        return QString::fromUtf8(getDocument()->Label.getValue());
+    }
+
+    return QString();
 }
 
 // Python Template feature ---------------------------------------------------------

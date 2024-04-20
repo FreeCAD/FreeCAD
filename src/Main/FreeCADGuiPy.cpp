@@ -48,6 +48,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
+#include <Gui/StartupProcess.h>
 #include <Gui/SoFCDB.h>
 #include <Gui/Quarter/Quarter.h>
 #include <Inventor/SoDB.h>
@@ -286,7 +287,8 @@ QWidget* setupMainWindow()
             return nullptr;
         }
 
-        Gui::initGuiAppPreMainWindow(true);
+        Gui::StartupProcess process;
+        process.execute();
 
         Base::PyGILStateLocker lock;
         // It's sufficient to create the config key
@@ -301,9 +303,11 @@ QWidget* setupMainWindow()
         mw->setWindowIcon(qApp->windowIcon());
 
         try {
-            Gui::initGuiAppPostMainWindow(true, *qApp, *mw, nullptr);
+            Gui::StartupPostProcess postProcess(mw, *Gui::Application::Instance, qApp);
+            postProcess.setLoadFromPythonModule(true);
+            postProcess.execute();
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             return nullptr;
         }
 
@@ -321,7 +325,7 @@ PyMOD_INIT_FUNC(FreeCADGui)
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
-        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2023\n";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n";
         App::Application::Config()["LicenseInfo"] = "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n";
         App::Application::Config()["CreditsInfo"] = "FreeCAD wouldn't be possible without FreeCAD community.\n";
         // it's possible that the GUI is already initialized when the Gui version of the executable

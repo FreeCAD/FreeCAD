@@ -25,12 +25,89 @@
 
 // inclusion of the generated files (generated out of MaterialPy.xml)
 #include "MaterialPy.h"
+
 #include "MaterialPy.cpp"
+
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 using namespace App;
 
-PyObject *MaterialPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+Color MaterialPy::toColor(PyObject* value)
+{
+    Color cCol;
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
+        PyObject* item {};
+        item = PyTuple_GetItem(value, 0);
+        if (PyFloat_Check(item)) {
+            cCol.r = (float)PyFloat_AsDouble(item);
+            item = PyTuple_GetItem(value, 1);
+            if (PyFloat_Check(item)) {
+                cCol.g = (float)PyFloat_AsDouble(item);
+            }
+            else {
+                throw Base::TypeError("Type in tuple must be consistent (float)");
+            }
+            item = PyTuple_GetItem(value, 2);
+            if (PyFloat_Check(item)) {
+                cCol.b = (float)PyFloat_AsDouble(item);
+            }
+            else {
+                throw Base::TypeError("Type in tuple must be consistent (float)");
+            }
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (PyFloat_Check(item)) {
+                    cCol.a = (float)PyFloat_AsDouble(item);
+                }
+                else {
+                    throw Base::TypeError("Type in tuple must be consistent (float)");
+                }
+            }
+        }
+        else if (PyLong_Check(item)) {
+            cCol.r = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 1);
+            if (PyLong_Check(item)) {
+                cCol.g = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            }
+            else {
+                throw Base::TypeError("Type in tuple must be consistent (integer)");
+            }
+            item = PyTuple_GetItem(value, 2);
+            if (PyLong_Check(item)) {
+                cCol.b = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            }
+            else {
+                throw Base::TypeError("Type in tuple must be consistent (integer)");
+            }
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (PyLong_Check(item)) {
+                    cCol.a = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+                }
+                else {
+                    throw Base::TypeError("Type in tuple must be consistent (integer)");
+                }
+            }
+        }
+        else {
+            throw Base::TypeError("Type in tuple must be float or integer");
+        }
+    }
+    else if (PyLong_Check(value)) {
+        cCol.setPackedValue(PyLong_AsUnsignedLong(value));
+    }
+    else {
+        std::string error =
+            std::string("type must be integer or tuple of float or tuple integer, not ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+
+    return cCol;
+}
+
+PyObject* MaterialPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of MaterialPy and the Twin object
     return new MaterialPy(new Material);
@@ -45,28 +122,41 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* emissive = nullptr;
     PyObject* shininess = nullptr;
     PyObject* transparency = nullptr;
-    static const std::array<const char *, 7> kwds_colors{"DiffuseColor", "AmbientColor", "SpecularColor",
-                                                         "EmissiveColor", "Shininess", "Transparency", nullptr};
+    static const std::array<const char*, 7> kwds_colors {"DiffuseColor",
+                                                         "AmbientColor",
+                                                         "SpecularColor",
+                                                         "EmissiveColor",
+                                                         "Shininess",
+                                                         "Transparency",
+                                                         nullptr};
 
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|OOOOOO", kwds_colors,
-        &diffuse, &ambient, &specular, &emissive, &shininess, &transparency)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "|OOOOOO",
+                                             kwds_colors,
+                                             &diffuse,
+                                             &ambient,
+                                             &specular,
+                                             &emissive,
+                                             &shininess,
+                                             &transparency)) {
         return -1;
     }
 
     if (diffuse) {
-        setDiffuseColor(Py::Tuple(diffuse));
+        setDiffuseColor(Py::Object(diffuse));
     }
 
     if (ambient) {
-        setAmbientColor(Py::Tuple(ambient));
+        setAmbientColor(Py::Object(ambient));
     }
 
     if (specular) {
-        setSpecularColor(Py::Tuple(specular));
+        setSpecularColor(Py::Object(specular));
     }
 
     if (emissive) {
-        setEmissiveColor(Py::Tuple(emissive));
+        setEmissiveColor(Py::Object(emissive));
     }
 
     if (shininess) {
@@ -86,18 +176,19 @@ std::string MaterialPy::representation() const
     return {"<Material object>"};
 }
 
-PyObject* MaterialPy::set(PyObject * args)
+PyObject* MaterialPy::set(PyObject* args)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))
+    char* pstr {};
+    if (!PyArg_ParseTuple(args, "s", &pstr)) {
         return nullptr;
+    }
 
     getMaterialPtr()->set(pstr);
 
     Py_Return;
 }
 
-Py::Tuple MaterialPy::getAmbientColor() const
+Py::Object MaterialPy::getAmbientColor() const
 {
     Py::Tuple tuple(4);
     tuple.setItem(0, Py::Float(getMaterialPtr()->ambientColor.r));
@@ -107,18 +198,12 @@ Py::Tuple MaterialPy::getAmbientColor() const
     return tuple;
 }
 
-void MaterialPy::setAmbientColor(Py::Tuple arg)
+void MaterialPy::setAmbientColor(Py::Object arg)
 {
-    Color c;
-    c.r = Py::Float(arg.getItem(0));
-    c.g = Py::Float(arg.getItem(1));
-    c.b = Py::Float(arg.getItem(2));
-    if (arg.size() == 4)
-    c.a = Py::Float(arg.getItem(3));
-    getMaterialPtr()->ambientColor = c;
+    getMaterialPtr()->ambientColor = toColor(*arg);
 }
 
-Py::Tuple MaterialPy::getDiffuseColor() const
+Py::Object MaterialPy::getDiffuseColor() const
 {
     Py::Tuple tuple(4);
     tuple.setItem(0, Py::Float(getMaterialPtr()->diffuseColor.r));
@@ -128,18 +213,12 @@ Py::Tuple MaterialPy::getDiffuseColor() const
     return tuple;
 }
 
-void MaterialPy::setDiffuseColor(Py::Tuple arg)
+void MaterialPy::setDiffuseColor(Py::Object arg)
 {
-    Color c;
-    c.r = Py::Float(arg.getItem(0));
-    c.g = Py::Float(arg.getItem(1));
-    c.b = Py::Float(arg.getItem(2));
-    if (arg.size() == 4)
-    c.a = Py::Float(arg.getItem(3));
-    getMaterialPtr()->diffuseColor = c;
+    getMaterialPtr()->diffuseColor = toColor(*arg);
 }
 
-Py::Tuple MaterialPy::getEmissiveColor() const
+Py::Object MaterialPy::getEmissiveColor() const
 {
     Py::Tuple tuple(4);
     tuple.setItem(0, Py::Float(getMaterialPtr()->emissiveColor.r));
@@ -149,18 +228,12 @@ Py::Tuple MaterialPy::getEmissiveColor() const
     return tuple;
 }
 
-void MaterialPy::setEmissiveColor(Py::Tuple arg)
+void MaterialPy::setEmissiveColor(Py::Object arg)
 {
-    Color c;
-    c.r = Py::Float(arg.getItem(0));
-    c.g = Py::Float(arg.getItem(1));
-    c.b = Py::Float(arg.getItem(2));
-    if (arg.size() == 4)
-    c.a = Py::Float(arg.getItem(3));
-    getMaterialPtr()->emissiveColor = c;
+    getMaterialPtr()->emissiveColor = toColor(*arg);
 }
 
-Py::Tuple MaterialPy::getSpecularColor() const
+Py::Object MaterialPy::getSpecularColor() const
 {
     Py::Tuple tuple(4);
     tuple.setItem(0, Py::Float(getMaterialPtr()->specularColor.r));
@@ -170,15 +243,9 @@ Py::Tuple MaterialPy::getSpecularColor() const
     return tuple;
 }
 
-void MaterialPy::setSpecularColor(Py::Tuple arg)
+void MaterialPy::setSpecularColor(Py::Object arg)
 {
-    Color c;
-    c.r = Py::Float(arg.getItem(0));
-    c.g = Py::Float(arg.getItem(1));
-    c.b = Py::Float(arg.getItem(2));
-    if (arg.size() == 4)
-    c.a = Py::Float(arg.getItem(3));
-    getMaterialPtr()->specularColor = c;
+    getMaterialPtr()->specularColor = toColor(*arg);
 }
 
 Py::Float MaterialPy::getShininess() const
@@ -201,7 +268,7 @@ void MaterialPy::setTransparency(Py::Float arg)
     getMaterialPtr()->transparency = arg;
 }
 
-PyObject *MaterialPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* MaterialPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

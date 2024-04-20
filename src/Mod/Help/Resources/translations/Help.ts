@@ -14,17 +14,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../dlgPreferencesHelp.ui" line="46"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="89"/>
+        <source>Set this to a custom URL or the folder where the help files are located.
+You can easily download the documentation for offline use by using the Addon
+Manager and installing the &quot;offline-documentation&quot; addon. If this
+field is left blank, FreeCAD will automatically search for the help files at
+the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../dlgPreferencesHelp.ui" line="53"/>
         <source>Custom location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="109"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="112"/>
         <source>    Translation suffix:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="120"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="123"/>
         <source>FreeCAD Wiki (online)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -40,29 +50,19 @@ This is currently not available...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="46"/>
-        <location filename="../../dlgPreferencesHelp.ui" line="86"/>
-        <source>Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/Documentation).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../dlgPreferencesHelp.ui" line="72"/>
         <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="116"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="119"/>
         <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="136"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="139"/>
         <source>The documentation pages will be fetched from an automatic Markdown conversion
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
@@ -70,60 +70,60 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="142"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="145"/>
         <source>Markdown version (online)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="161"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="164"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="167"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="170"/>
         <source>The documentation will open in a new tab inside the FreeCAD interface.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="173"/>
         <source>In a FreeCAD tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="186"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="189"/>
         <source>The documentation will open in your default web browser.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="205"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="208"/>
         <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open whlle working in the 3D view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="240"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="243"/>
         <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="192"/>
         <source>In your default web browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="209"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="212"/>
         <source>In a separate, embeddable dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="225"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="228"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dlgPreferencesHelp.ui" line="233"/>
+        <location filename="../../dlgPreferencesHelp.ui" line="236"/>
         <source>      Custom stylesheet:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,7 +159,7 @@ Markdown version above.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Help.py" line="388"/>
+        <location filename="../../Help.py" line="394"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>

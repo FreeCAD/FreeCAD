@@ -248,7 +248,7 @@ class TestSketchFillet(unittest.TestCase):
             App.Vector(2, 2, 0).distanceToPoint(SketchFeature.getPoint(4, 3)), 1.0
         )
 
-    # Make sure colinearity doesn't get dropped
+    # Make sure collinearity doesn't get dropped
     def testTangent(self):
         SketchFeature = self.Doc.addObject("Sketcher::SketchObject", "Tangent")
 
@@ -284,7 +284,7 @@ class TestSketchFillet(unittest.TestCase):
         )
 
         # We expect the other end of the tangent line to be at 5,5, but I think 3,3 also satisfies
-        # the colinearity constraint
+        # the collinearity constraint
         try:
             self.assertAlmostEqual(
                 App.Vector(3, 3, 0).distanceToPoint(SketchFeature.getPoint(tangent_line, 2)),

@@ -126,6 +126,8 @@ public:
     static std::string currentElementDefFile();
 
     static int sectionLineConvention();
+
+    static bool useExactMatchOnDims();
 };
 
 

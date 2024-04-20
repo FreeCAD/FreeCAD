@@ -57,8 +57,18 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
+    void addAntiAliasing();
+    void saveAntiAliasing();
+    void loadAntiAliasing();
+    void saveRenderCache();
+    void loadRenderCache();
+    void saveMarkerSize();
+    void loadMarkerSize();
+
+private:
     std::unique_ptr<Ui_DlgSettings3DView> ui;
-    static bool showMsg;
+
+    Q_DISABLE_COPY_MOVE(DlgSettings3DViewImp)
 };
 
 } // namespace Dialog

@@ -685,7 +685,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Bestand exporteren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
       <source>Show spreadsheet</source>
       <translation>Rekenblad tonen</translation>
     </message>
@@ -941,8 +941,18 @@ waarbij:
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Scheidingsteken: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Scheidingsteken:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Aanhalingsteken:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Escape-teken:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -955,19 +965,9 @@ waarbij:
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Aanhalingsteken: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Teken dat wordt gebruikt om tekenreeksen te scheiden, meestal is het een enkele aanhalingsteken (') of een dubbel aanhalingsteken ("). Het moet een enkel teken zijn</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape-teken: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>

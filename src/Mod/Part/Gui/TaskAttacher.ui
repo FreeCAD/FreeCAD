@@ -135,9 +135,6 @@
         <property name="text">
          <string>In x-direction:</string>
         </property>
-        <property name="buddy">
-         <cstring>labelOffset</cstring>
-        </property>
        </widget>
       </item>
       <item row="1" column="1">

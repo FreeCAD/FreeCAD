@@ -25,6 +25,7 @@
 #define PARTDESIGN_Feature_H
 
 #include <App/PropertyStandard.h>
+#include <App/SuppressibleExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -44,7 +45,7 @@ class Body;
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class PartDesignExport Feature : public Part::Feature
+class PartDesignExport Feature : public Part::Feature, public App::SuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Feature);
 
@@ -54,8 +55,6 @@ public:
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
-
-    App::PropertyBool   Suppressed;
 
     App::DocumentObjectExecReturn* recompute() override;
 
@@ -95,14 +94,18 @@ protected:
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     static TopoDS_Shape getSolid(const TopoDS_Shape&);
-    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );
+    TopoShape getSolid(const TopoShape&);
+    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
     /// Make a shape from a base plane (convenience method)
     static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
+    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
+    static TopoShape makeTopoShapeFromPlane(const App::DocumentObject* obj);
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

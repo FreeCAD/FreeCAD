@@ -40,6 +40,12 @@ elif template_name == "parametric_part":
     FreeCADGui.activateWorkbench("PartDesignWorkbench")
     FreeCADGui.runCommand("PartDesign_Body")
     StartPage.postStart(False)
+elif template_name == "assembly":
+    FreeCADGui.runCommand("Std_New")
+    FreeCADGui.activateWorkbench("AssemblyWorkbench")
+    FreeCADGui.runCommand("Assembly_CreateAssembly")
+    FreeCADGui.runCommand("Std_Refresh")
+    StartPage.postStart(False)
 # elif template_name == "csg_part":
 #         FreeCADGui.runCommand('Std_New')
 #         FreeCADGui.activateWorkbench("PartWorkbench")
