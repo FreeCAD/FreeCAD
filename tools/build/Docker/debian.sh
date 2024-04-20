@@ -7,7 +7,7 @@ apt-get install --no-install-recommends --yes build-essential cmake doxygen \
     libkdtree++-dev libkml-dev libmedc-dev libocct-data-exchange-dev \
     libocct-draw-dev libocct-foundation-dev libocct-modeling-algorithms-dev \
     libocct-modeling-data-dev libocct-ocaf-dev libocct-visualization-dev \
-    libopencv-dev libproj-dev libpyside2-dev libqt5svg5-dev libqt5webkit5-dev \
+    libopencv-dev libproj-dev libpyside2-dev libqt5svg5-dev \
     libshiboken2-dev libvtk9-dev libvtk9-qt-dev \
     libvtk-dicom-dev libx11-dev libxerces-c-dev libxmu-dev libxmuu-dev \
     libzipios++-dev netgen netgen-headers pyside2-tools python3-dev \
