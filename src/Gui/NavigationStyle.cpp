@@ -629,14 +629,6 @@ void NavigationStyle::setupPanningPlane(const SoCamera* camera)
     }
 }
 
-void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpos)
-{
-    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    float ratio = vp.getViewportAspectRatio();
-    panCamera(viewer->getSoRenderManager()->getCamera(), ratio, pplane, SbVec2f(0.5,0.5), currpos);
-    this->rotationCenterFound = false;
-}
-
 /** Dependent on the camera type this will either shrink or expand the
  * height of the viewport (orthogonal camera) or move the camera
  * closer or further away from the focal point in the scene.
