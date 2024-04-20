@@ -197,7 +197,7 @@ protected:
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
-    SbBool lookAtPoint(const SbVec2s screenpos);
+    void lookAtPoint(const SbVec2s screenpos);
     void lookAtPoint(const SbVec3f& position);
 
     void panCamera(SoCamera * camera,

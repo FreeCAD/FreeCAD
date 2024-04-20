@@ -327,27 +327,41 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
     viewer->seekToPoint(scenepos);
 }
 
-SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
+void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam)
-        return false;
+    const SoCamera* camera = viewer->getCamera();
+    if (!camera) {
+        return;
+    }
 
-    SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
+    SoRayPickAction rpaction(viewer->getViewportRegion());
     rpaction.setPoint(screenpos);
     rpaction.setRadius(viewer->getPickRadius());
     rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
-    SoPickedPoint * picked = rpaction.getPickedPoint();
-    if (!picked) {
-        this->interactiveCountInc();
-        return false;
+    const SoPickedPoint* picked = rpaction.getPickedPoint();
+
+    // Point is either the hitpoint or the projected point on the panning plane
+    SbVec3f point;
+    if (picked) {
+        point = picked->getPoint();
+    }
+    else {
+        const SbViewportRegion& vp = viewer->getViewportRegion();
+        const float aspectratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(aspectratio);
+
+        // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
+        if (aspectratio < 1.0) {
+            vv.scale(1.0 / aspectratio);
+        }
+
+        SbLine line;
+        vv.projectPointToLine(normalizePixelPos(screenpos), line);
+        panningplane.intersect(line, point);
     }
 
-    SbVec3f hitpoint;
-    hitpoint = picked->getPoint();
-    lookAtPoint(hitpoint);
-    return true;
+    lookAtPoint(point);
 }
 
 void NavigationStyle::lookAtPoint(const SbVec3f& position)

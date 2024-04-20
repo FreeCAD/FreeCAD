@@ -135,10 +135,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a left click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    lookAtPoint(pos);
                     processed = true;
                 }
             }
@@ -197,10 +194,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    lookAtPoint(pos);
                     processed = true;
                 }
             }

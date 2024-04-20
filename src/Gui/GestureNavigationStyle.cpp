@@ -297,7 +297,8 @@ public:
         //MMB click
         if(ev.isPress(3) && ev.mbstate() == 0x010){
             ev.flags->processed = true;
-            ns.onSetRotationCenter(ev.inventor_event->getPosition());
+            ns.setupPanningPlane(ns.viewer->getCamera());
+            ns.lookAtPoint(ev.inventor_event->getPosition());
             return transit<NS::AwaitingReleaseState>();
         }
 
@@ -314,8 +315,10 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press)
-                        ns.onSetRotationCenter(kbev->getPosition());
+                    if (!press) {
+                        ns.setupPanningPlane(ns.viewer->getCamera());
+                        ns.lookAtPoint(kbev->getPosition());
+                    }
                 break;
                 case SoKeyboardEvent::PAGE_UP:
                     if(!press){

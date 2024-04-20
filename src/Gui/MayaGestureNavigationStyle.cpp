@@ -280,13 +280,9 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
             processed = true;
-            if(!press){
-                SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                if(!ret){
-                    this->interactiveCountDec();
-                    Base::Console().Log(
-                        "No object under cursor! Can't set new center of rotation.\n");
-                }
+            if (!press) {
+                setupPanningPlane(viewer->getCamera());
+                lookAtPoint(event->getPosition());
             }
             break;
         default:
@@ -431,12 +427,8 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     setViewingMode(NavigationStyle::PANNING);
                 } else if(press){
                     // if not PANNING then look at point
-                    SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                    if(!ret){
-                        this->interactiveCountDec();
-                        Base::Console().Log(
-                            "No object under cursor! Can't set new center of rotation.\n");
-                    }
+                    setupPanningPlane(viewer->getCamera());
+                    lookAtPoint(event->getPosition());
                 }
                 processed = true;
                 break;
