@@ -45,8 +45,7 @@ ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
     sPixmap = "FEM_ConstraintPressure";
     loadSymbol((resourceSymbolDir + "ConstraintPressure.iv").c_str());
-
-    ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
+    ShapeAppearance.setDiffuseColor(0.0f, 0.2f, 0.8f);
 }
 
 ViewProviderFemConstraintPressure::~ViewProviderFemConstraintPressure() = default;

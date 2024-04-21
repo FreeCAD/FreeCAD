@@ -45,7 +45,7 @@ ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {
     sPixmap = "FEM_ConstraintDisplacement";
     loadSymbol((resourceSymbolDir + "ConstraintDisplacement.iv").c_str());
-    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
+    ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 
     // do not rotate symbol according to boundary normal
     setRotateSymbol(false);
