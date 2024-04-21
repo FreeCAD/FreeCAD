@@ -42,7 +42,7 @@ ViewProviderFemConstraintSpring::ViewProviderFemConstraintSpring()
 {
     sPixmap = "FEM_ConstraintSpring";
     loadSymbol((resourceSymbolDir + "ConstraintSpring.iv").c_str());
-    ADD_PROPERTY(FaceColor, (0.0f, 0.2f, 0.8f));
+    ShapeAppearance.setDiffuseColor(0.0f, 0.2f, 0.8f);
 }
 
 ViewProviderFemConstraintSpring::~ViewProviderFemConstraintSpring() = default;
