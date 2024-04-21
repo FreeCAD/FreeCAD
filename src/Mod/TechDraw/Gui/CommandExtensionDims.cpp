@@ -2305,6 +2305,8 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     TechDraw::DrawViewDimension* dim = makeArcLengthDimension(ref);
 
     if (dim) {
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
         Gui::Command::commitCommand();
     }
     else {
@@ -2366,42 +2368,40 @@ DrawViewDimension* TechDrawGui::makeArcLengthDimension(const ReferenceEntry& ref
     int geoId = DrawUtil::getIndexFromName(ref.getSubName());
     BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
 
-    if (ref.geomEdgeType() == TechDraw::ARCOFCIRCLE) {
-        TechDraw::AOCPtr arcTag = std::static_pointer_cast<TechDraw::AOC>(geom);
-        float radius = arcTag->radius;
-        Base::Vector3d centerPt = arcTag->center;
-        centerPt.y = -centerPt.y;
-        Base::Vector3d startPt = arcTag->startPnt;
-        startPt.y = -startPt.y;
-        Base::Vector3d endPt = arcTag->endPnt;
-        endPt.y = -endPt.y;
-
-        std::stringstream startName, endName, formatSpec;
-        double scale = dvp->getScale();
-        Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(dvp, startPt);
-        std::string startVertTag = dvp->addCosmeticVertex(cvPoint);
-        int startVertNumber = dvp->add1CVToGV(startVertTag);
-        startName << "Vertex" << startVertNumber;
-        cvPoint = CosmeticVertex::makeCanonicalPoint(dvp, endPt);
-        std::string endVertTag = dvp->addCosmeticVertex(cvPoint);
-        int endVertNumber = dvp->add1CVToGV(endVertTag);
-        endName << "Vertex" << endVertNumber;
-
-        dim = _createLinDimension(dvp, startName.str(), endName.str(), "Distance");
-        TechDraw::pointPair pp = dim->getLinearPoints();
-        Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
-        dim->X.setValue(mid.x);
-        dim->Y.setValue(-mid.y);
-        Base::Vector3d radVec1 = startPt - centerPt;
-        Base::Vector3d radVec2 = endPt - centerPt;
-        float alpha = acos((radVec1 * radVec2) / (radVec1.Length() * radVec2.Length()));
-        float arcLength = alpha * radius / scale;
-        dim->Arbitrary.setValue(true);
-        formatSpec << "◠ " << arcLength;
-        dim->FormatSpec.setValue(formatSpec.str());
-        dvp->refreshCEGeoms();
-        dvp->requestPaint();
+    // Find the edge length.
+    TechDraw::BaseGeomPtr edge = dvp->getEdge(ref.getSubName());
+    if (!edge) {
+        return nullptr;
     }
+    GProp_GProps edgeProps;
+    BRepGProp::LinearProperties(edge->getOCCEdge(), edgeProps);
+    double length = edgeProps.Mass();
+
+    Base::Vector3d startPt = edge->getStartPoint();
+    Base::Vector3d endPt = edge->getEndPoint();
+    startPt.y = -startPt.y;
+    endPt.y = -endPt.y;
+
+    std::stringstream startName, endName, formatSpec;
+    double scale = dvp->getScale();
+    Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(dvp, startPt);
+    std::string startVertTag = dvp->addCosmeticVertex(cvPoint);
+    int startVertNumber = dvp->add1CVToGV(startVertTag);
+    startName << "Vertex" << startVertNumber;
+    cvPoint = CosmeticVertex::makeCanonicalPoint(dvp, endPt);
+    std::string endVertTag = dvp->addCosmeticVertex(cvPoint);
+    int endVertNumber = dvp->add1CVToGV(endVertTag);
+    endName << "Vertex" << endVertNumber;
+
+    dim = _createLinDimension(dvp, startName.str(), endName.str(), "Distance");
+    TechDraw::pointPair pp = dim->getLinearPoints();
+    Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
+    dim->X.setValue(mid.x);
+    dim->Y.setValue(-mid.y);
+
+    dim->Arbitrary.setValue(true);
+    formatSpec << "◠ " << length;
+    dim->FormatSpec.setValue(formatSpec.str());
 
     return dim;
 }

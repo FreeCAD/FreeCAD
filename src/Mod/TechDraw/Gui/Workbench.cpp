@@ -347,7 +347,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extattribs << "TechDraw_ExtensionPosChainDimensionGroup";
     *extattribs << "TechDraw_ExtensionCascadeDimensionGroup";
     *extattribs << "TechDraw_ExtensionAreaAnnotation";
-    *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
+    if (separatedTools) {
+        *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
+    }
     *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);

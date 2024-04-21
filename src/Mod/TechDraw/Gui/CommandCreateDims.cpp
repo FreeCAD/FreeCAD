@@ -163,7 +163,8 @@ public:
     bool has1Ellipse()           const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 1 && s_spl == 0 && s_fcs == 0; }
     bool has2Ellipses()          const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 2 && s_spl == 0 && s_fcs == 0; }
 
-    bool has1SplineAndMore()     const { return s_pts >= 0 && s_lns >= 0 && s_cir >= 0 && s_ell >= 0 && s_spl >= 1 && s_fcs == 0; }
+    bool has1Spline()            const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 1 && s_fcs == 0; }
+    bool has1SplineAndMore()     const { return s_spl >= 1 && s_fcs == 0; }
 
     size_t s_pts, s_lns, s_cir, s_ell, s_spl, s_fcs;
 };
@@ -732,6 +733,7 @@ protected:
             if (selection.has2Ellipses()) { makeCts_2Ellipses(selAllowed, pos); }
         }
         else if (selection.hasSplineAndCo()) {
+            if (selection.has1Spline()) { makeCts_1Spline(selAllowed, pos); }
             if (selection.has1SplineAndMore()) { makeCts_1SplineAndMore(selAllowed, pos); }
         }
         return selAllowed;
@@ -947,6 +949,13 @@ protected:
         if (availableDimension == AvailableDimension::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selEllipseArc[0], pos, false);
+            if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
+                availableDimension = AvailableDimension::RESET;
+            }
+        }
+        if (availableDimension == AvailableDimension::THIRD) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Arc Length dimension"));
+            createArcLengthDimension(selEllipseArc[0], pos);
             availableDimension = AvailableDimension::RESET;
         }
     }
@@ -962,6 +971,17 @@ protected:
         if (availableDimension == AvailableDimension::SECOND) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
             createExtentDistanceDimension("DistanceX", pos);
+            availableDimension = AvailableDimension::RESET;
+        }
+    }
+
+    void makeCts_1Spline(bool& selAllowed, QPoint& pos)
+    {
+        //Edge length
+        if (availableDimension == AvailableDimension::FIRST) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add edge length dimension"));
+            createArcLengthDimension(selSplineAndCo[0], pos);
+            selAllowed = true;
             availableDimension = AvailableDimension::RESET;
         }
     }
@@ -1379,6 +1399,8 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_RadiusDimension";
+    sAccel = "D";
+    eType = ForEdit;
 }
 
 void CmdTechDrawRadiusDimension::activated(int iMsg)
