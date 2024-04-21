@@ -293,117 +293,10 @@ These lines are thicker than normal grid lines.</string>
       <string>Snapping and modifier keys</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="3" column="0" colspan="3">
-       <widget class="Gui::PrefCheckBox" name="checkBox_alwaysSnap">
-        <property name="toolTip">
-         <string>If checked, snapping is activated without the need to press the Snap modifier key</string>
-        </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_snapStyle">
         <property name="text">
-         <string>Always snap</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>alwaysSnap</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_modalt">
-        <property name="toolTip">
-         <string>The Alt modifier key. The function of this key depends on the command.</string>
-        </property>
-        <property name="currentIndex">
-         <number>2</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>modalt</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-        <item>
-         <property name="text">
-          <string>Shift</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Ctrl</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Alt</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefColorButton" name="colorButton_snapcolor">
-        <property name="toolTip">
-         <string>The color for snap symbols</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>255</red>
-          <green>170</green>
-          <blue>255</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>snapcolor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_modsnap">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Snap modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_modconstrain">
-        <property name="text">
-         <string>Constrain modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_modalt">
-        <property name="text">
-         <string>Alt modifier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_snapcolor">
-        <property name="text">
-         <string>Snap symbol color</string>
+         <string>Snap symbol style</string>
         </property>
        </widget>
       </item>
@@ -430,14 +323,76 @@ These lines are thicker than normal grid lines.</string>
         </item>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_snapStyle">
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_snapcolor">
         <property name="text">
-         <string>Snap symbol style</string>
+         <string>Snap symbol color</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="1" column="1">
+       <widget class="Gui::PrefColorButton" name="colorButton_snapcolor">
+        <property name="toolTip">
+         <string>The color for snap symbols</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>255</red>
+          <green>170</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>snapcolor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_alwaysSnap">
+        <property name="toolTip">
+         <string>If checked, snapping is activated without the need to press the Snap modifier key</string>
+        </property>
+        <property name="text">
+         <string>Always snap</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>alwaysSnap</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_modsnap">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Snap modifier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
        <widget class="Gui::PrefComboBox" name="comboBox_modsnap">
         <property name="enabled">
          <bool>false</bool>
@@ -477,7 +432,14 @@ These lines are thicker than normal grid lines.</string>
         </item>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_modconstrain">
+        <property name="text">
+         <string>Constrain modifier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
        <widget class="Gui::PrefComboBox" name="comboBox_modconstrain">
         <property name="toolTip">
          <string>The Constrain modifier key</string>
@@ -505,36 +467,42 @@ These lines are thicker than normal grid lines.</string>
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_modalt">
         <property name="text">
-         <string>Mouse delay</string>
+         <string>Alt modifier</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="Gui::PrefSpinBox" name="spinBox">
+      <item row="5" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_modalt">
         <property name="toolTip">
-         <string>This is a delay during which the mouse is inactive, after entering
-numbers manually in any of the coordinate fields. Setting this
-to 0 disables the delay. If a delay of 1 is set, after entering a numeric
-value, the mouse will not update the field anymore during one
-second, to avoid moving the mouse accidentally and modifying the
-entered value. If you use a very large value, e.g. 3600, the mouse
-movement will be disabled until the command finishes.</string>
+         <string>The Alt modifier key. The function of this key depends on the command.</string>
         </property>
-        <property name="suffix">
-         <string> seconds</string>
-        </property>
-        <property name="value">
-         <number>1</number>
+        <property name="currentIndex">
+         <number>2</number>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>MouseDelay</cstring>
+         <cstring>modalt</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
         </property>
+        <item>
+         <property name="text">
+          <string>Shift</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ctrl</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alt</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
