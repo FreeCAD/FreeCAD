@@ -195,14 +195,7 @@ class Resize:
                         " Resize Vector").Vector = FreeCAD.Vector(vector)
         obj.Proxy = self
 
-    def onChanged(self, fp, prop):
-        if prop in ['Object','Vector']:
-            self.createGeometry(fp)
-
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def createGeometry(self, fp):
         import FreeCAD
         mat = FreeCAD.Matrix()
         mat.A11 = self.Vector[0]
@@ -294,15 +287,7 @@ class IncreaseTolerance:
         obj.Face = tolerance
         obj.Proxy = self
 
-    def onChanged(self, fp, prop):
-        # Tolerance property left for backward compatibility
-        if prop in ["Vertex", "Edge", "Face", "Tolerance"]:
-            self.createGeometry(fp)
-
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def createGeometry(self,fp):
         if fp.Base:
             sh=fp.Base.Shape.copy()
             # Check if property Tolerance exist and preserve support for backward compatibility
@@ -355,13 +340,6 @@ class Frustum:
         obj.Proxy = self
 
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def onChanged(self, fp, prop):
-        if prop in ["FacesNumber","Radius1","Radius2","Height"]:
-            self.createGeometry(fp)
-
-    def createGeometry(self,fp):
         if all((fp.Radius1,fp.Radius2,fp.FacesNumber,fp.Height)):
             import math
             import FreeCAD
@@ -407,13 +385,6 @@ class Twist:
         obj.Proxy = self
 
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def onChanged(self, fp, prop):
-        if prop in ["Angle","Height","Scale"]:
-            self.createGeometry(fp)
-
-    def createGeometry(self, fp):
         import FreeCAD
         import Part
         import math
@@ -480,13 +451,6 @@ class PrismaticToroid:
         obj.Proxy = self
 
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def onChanged(self, fp, prop):
-        if prop in ["Angle","Segments"]:
-            self.createGeometry(fp)
-
-    def createGeometry(self,fp):
         import FreeCAD
         import Part
         import math
@@ -561,13 +525,6 @@ class OffsetShape:
         obj.Proxy = self
 
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def onChanged(self, fp, prop):
-        if prop in ["Offset"]:
-            self.createGeometry(fp)
-
-    def createGeometry(self,fp):
         if fp.Base and fp.Offset:
             fp.Shape=fp.Base.Shape.makeOffsetShape(fp.Offset.Value,1e-6)
 

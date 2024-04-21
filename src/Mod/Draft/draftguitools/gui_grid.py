@@ -79,10 +79,10 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             if cmdactive:
                 grid.show_during_command = False
         elif cmdactive:
-            grid.on()
+            grid.set()  # set() required: the grid must be updated to match the current WP
             grid.show_during_command = True
         else:
-            grid.on()
+            grid.set()
             WorkingPlane.get_working_plane()
             grid.show_always = True
 
