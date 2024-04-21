@@ -27,6 +27,7 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <algorithm>
+#include <array>
 
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -68,22 +69,29 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->fixDegenerated->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
-    double tolerances[8] = {Precision::Confusion() / 100,
-                            Precision::Confusion() / 10,
-                            Precision::Confusion(),
-                            Precision::Confusion() * 10,
-                            Precision::Confusion() * 100,
-                            Precision::Confusion() * 1000,
-                            Precision::Confusion() * 10000,
-                            Precision::Confusion() * 100000};
+    std::array tolerances = {
+        // NOLINTBEGIN
+        Precision::Confusion() / 100.0,
+        Precision::Confusion() / 10.0,
+        Precision::Confusion(),
+        Precision::Confusion() * 10.0,
+        Precision::Confusion() * 100.0,
+        Precision::Confusion() * 1000.0,
+        Precision::Confusion() * 10000.0,
+        Precision::Confusion() * 100000.0
+        // NOLINTEND
+    };
 
     QLocale loc;
-    for (int i = 0; i < 8; i++) {
-        ui->comboBoxTolerance->addItem(loc.toString(tolerances[i]), QVariant(tolerances[i]));
+    for (double it : tolerances) {
+        ui->comboBoxTolerance->addItem(loc.toString(it), QVariant(it));
     }
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);
-    ui->comboBoxTolerance->setValidator(new QDoubleValidator(0, 10, 10, this));
+    const double bottom = 0.0;
+    const double top = 10.0;
+    const int decimals = 10;
+    ui->comboBoxTolerance->setValidator(new QDoubleValidator(bottom, top, decimals, this));
 }
 
 SketcherValidation::~SketcherValidation()
@@ -93,48 +101,32 @@ SketcherValidation::~SketcherValidation()
 
 void SketcherValidation::setupConnections()
 {
-    connect(ui->findButton, &QPushButton::clicked, this, &SketcherValidation::onFindButtonClicked);
-    connect(ui->fixButton, &QPushButton::clicked, this, &SketcherValidation::onFixButtonClicked);
-    connect(ui->highlightButton,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onHighlightButtonClicked);
-    connect(ui->findConstraint,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onFindConstraintClicked);
-    connect(ui->fixConstraint,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onFixConstraintClicked);
-    connect(ui->findReversed,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onFindReversedClicked);
-    connect(ui->swapReversed,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onSwapReversedClicked);
-    connect(ui->orientLockEnable,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onOrientLockEnableClicked);
-    connect(ui->orientLockDisable,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onOrientLockDisableClicked);
-    connect(ui->delConstrExtr,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onDelConstrExtrClicked);
-    connect(ui->findDegenerated,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onFindDegeneratedClicked);
-    connect(ui->fixDegenerated,
-            &QPushButton::clicked,
-            this,
-            &SketcherValidation::onFixDegeneratedClicked);
+    // clang-format off
+    connect(ui->findButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFindButtonClicked);
+    connect(ui->fixButton, &QPushButton::clicked,
+            this, &SketcherValidation::onFixButtonClicked);
+    connect(ui->highlightButton, &QPushButton::clicked,
+            this, &SketcherValidation::onHighlightButtonClicked);
+    connect(ui->findConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFindConstraintClicked);
+    connect(ui->fixConstraint, &QPushButton::clicked,
+            this, &SketcherValidation::onFixConstraintClicked);
+    connect(ui->findReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onFindReversedClicked);
+    connect(ui->swapReversed, &QPushButton::clicked,
+            this, &SketcherValidation::onSwapReversedClicked);
+    connect(ui->orientLockEnable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockEnableClicked);
+    connect(ui->orientLockDisable, &QPushButton::clicked,
+            this, &SketcherValidation::onOrientLockDisableClicked);
+    connect(ui->delConstrExtr, &QPushButton::clicked,
+            this, &SketcherValidation::onDelConstrExtrClicked);
+    connect(ui->findDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFindDegeneratedClicked);
+    connect(ui->fixDegenerated, &QPushButton::clicked,
+            this, &SketcherValidation::onFixDegeneratedClicked);
+    // clang-format on
 }
 
 void SketcherValidation::changeEvent(QEvent* e)
@@ -152,8 +144,8 @@ void SketcherValidation::onFindButtonClicked()
     }
 
     double prec = Precision::Confusion();
-    bool ok;
-    double conv;
+    bool ok {};
+    double conv {};
 
     conv = QLocale::system().toDouble(ui->comboBoxTolerance->currentText(), &ok);
 
@@ -208,7 +200,7 @@ void SketcherValidation::onFixButtonClicked()
 
     // undo command open
     App::Document* doc = sketch->getDocument();
-    doc->openTransaction("add coincident constraint");
+    doc->openTransaction("Add coincident constraint");
 
     sketchAnalyser.makeMissingPointOnPointCoincident();
 
@@ -277,15 +269,13 @@ void SketcherValidation::onFindReversedClicked()
 
     std::vector<Base::Vector3d> points;
     const std::vector<Part::Geometry*>& geom = sketch->getExternalGeometry();
-    for (std::size_t i = 0; i < geom.size(); i++) {
-        Part::Geometry* g = geom[i];
+    for (const auto geo : geom) {
         // only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be
         // nothing to repair from.
-        if (g->is<Part::GeomArcOfCircle>()) {
-            const Part::GeomArcOfCircle* segm = static_cast<const Part::GeomArcOfCircle*>(g);
+        if (const auto segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
             if (segm->isReversed()) {
-                points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
-                points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
+                points.push_back(segm->getStartPoint(/*emulateCCWXY=*/true));
+                points.push_back(segm->getEndPoint(/*emulateCCWXY=*/true));
             }
         }
     }
@@ -397,8 +387,7 @@ void SketcherValidation::onDelConstrExtrClicked()
         return;
     }
 
-    int reply;
-    reply = QMessageBox::question(
+    int reply = QMessageBox::question(
         this,
         tr("Delete constraints to external geom."),
         tr("You are about to delete ALL constraints that deal with external geometry. This is "
@@ -425,31 +414,30 @@ void SketcherValidation::onDelConstrExtrClicked()
 
 void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
 {
-    SoCoordinate3* coords = new SoCoordinate3();
-    SoDrawStyle* drawStyle = new SoDrawStyle();
+    auto coords = new SoCoordinate3();
+    auto drawStyle = new SoDrawStyle();
     drawStyle->pointSize = 6;
-    SoPointSet* pcPoints = new SoPointSet();
+    auto pcPoints = new SoPointSet();
 
     coincidenceRoot = new SoGroup();
 
     coincidenceRoot->addChild(drawStyle);
-    SoSeparator* pointsep = new SoSeparator();
-    SoBaseColor* basecol = new SoBaseColor();
-    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    auto pointsep = new SoSeparator();
+    auto basecol = new SoBaseColor();
+    basecol->rgb.setValue(1.0F, 0.5F, 0.0F);
     pointsep->addChild(basecol);
     pointsep->addChild(coords);
     pointsep->addChild(pcPoints);
     coincidenceRoot->addChild(pointsep);
 
     // Draw markers
-    SoBaseColor* markcol = new SoBaseColor();
-    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
-    SoMarkerSet* marker = new SoMarkerSet();
-    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
-        "PLUS",
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-            ->GetInt("MarkerSize", 9));
+    auto markcol = new SoBaseColor();
+    markcol->rgb.setValue(1.0F, 1.0F, 0.0F);
+    auto marker = new SoMarkerSet();
+    long markerSize = App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                          ->GetInt("MarkerSize", 9);
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", int(markerSize));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 
@@ -531,13 +519,11 @@ void SketcherValidation::onFixDegeneratedClicked()
 TaskSketcherValidation::TaskSketcherValidation(Sketcher::SketchObject* Obj)
 {
     QWidget* widget = new SketcherValidation(Obj);
-    Gui::TaskView::TaskBox* taskbox =
-        new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
+    auto taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
 
-TaskSketcherValidation::~TaskSketcherValidation()
-{}
+TaskSketcherValidation::~TaskSketcherValidation() = default;
 
 #include "moc_TaskSketcherValidation.cpp"
