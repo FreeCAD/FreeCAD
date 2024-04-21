@@ -38,6 +38,7 @@
 
 #include <App/Document.h>
 #include <Gui/Application.h>
+#include <Gui/CommandT.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Notifications.h>
 #include <Gui/TaskView/TaskView.h>
@@ -202,7 +203,7 @@ void SketcherValidation::onFixButtonClicked()
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Add coincident constraint");
 
-    sketchAnalyser.makeMissingPointOnPointCoincident();
+    Gui::cmdAppObjectArgs(sketch.get(), "makeMissingPointOnPointCoincident()");
 
     ui->fixButton->setEnabled(false);
     hidePoints();
@@ -257,7 +258,7 @@ void SketcherValidation::onFixConstraintClicked()
         return;
     }
 
-    sketch->validateConstraints();
+    Gui::cmdAppObjectArgs(sketch.get(), "validateConstraints()");
     ui->fixConstraint->setEnabled(false);
 }
 
@@ -402,7 +403,7 @@ void SketcherValidation::onDelConstrExtrClicked()
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("Delete constraints");
 
-    sketch->delConstraintsToExternal();
+    Gui::cmdAppObjectArgs(sketch.get(), "delConstraintsToExternal()");
 
     doc->commitTransaction();
 
@@ -503,7 +504,7 @@ void SketcherValidation::onFixDegeneratedClicked()
     doc->openTransaction("Remove degenerated geometry");
 
     double prec = Precision::Confusion();
-    sketchAnalyser.removeDegeneratedGeometries(prec);
+    Gui::cmdAppObjectArgs(sketch.get(), "removeDegeneratedGeometries(%.12f)", prec);
 
     ui->fixButton->setEnabled(false);
     hidePoints();
