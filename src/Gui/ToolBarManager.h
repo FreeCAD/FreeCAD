@@ -25,13 +25,21 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
+#include <boost_signals2.hpp>
+
 #include <QStringList>
+#include <QTimer>
+
 #include <FCGlobal.h>
+#include <Base/Parameter.h>
 
 class QAction;
+class QMouseEvent;
 class QToolBar;
 
 namespace Gui {
+
+class ToolBarArea;
 
 class GuiExport ToolBarItem
 {
@@ -83,8 +91,9 @@ private:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager
+class GuiExport ToolBarManager : public QObject
 {
+    Q_OBJECT
 public:
 
     enum class State {
@@ -116,6 +125,13 @@ protected:
 
     ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
 
+    bool addToolBarToArea(QObject *source, QMouseEvent *ev);
+    bool showContextMenu(QObject *source);
+    void onToggleStatusBarWidget(QWidget *widget, bool visible);
+    void onTimer();
+
+    bool eventFilter(QObject *source, QEvent *ev) override;
+
     /** Returns a list of all currently existing toolbars. */
     QList<QToolBar*> toolBars() const;
     QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
@@ -126,6 +142,18 @@ protected:
 private:
     QStringList toolbarNames;
     static ToolBarManager* _instance;
+
+    QTimer timer;
+    QTimer menuBarTimer;
+    boost::signals2::scoped_connection connParam;
+    ToolBarArea *statusBarArea = nullptr;
+    ToolBarArea *menuBarLeftArea = nullptr;
+    ToolBarArea *menuBarRightArea = nullptr;
+    ParameterGrp::handle hGeneral;
+    ParameterGrp::handle hPref;
+    ParameterGrp::handle hStatusBar;
+    ParameterGrp::handle hMenuBarLeft;
+    ParameterGrp::handle hMenuBarRight;
 };
 
 } // namespace Gui

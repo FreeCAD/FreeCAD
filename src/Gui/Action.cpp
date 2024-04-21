@@ -36,7 +36,6 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
-# include <QMenuBar>
 #endif
 
 #include <Base/Exception.h>
@@ -631,7 +630,7 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 
 void WorkbenchGroup::addTo(QWidget *widget)
 {
-    if (widget->inherits("QToolBar") || widget->inherits("QMenuBar")) {
+    if (widget->inherits("QToolBar")) {
         ParameterGrp::handle hGrp;
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
         QWidget* wbSel;
@@ -642,13 +641,7 @@ void WorkbenchGroup::addTo(QWidget *widget)
             wbSel = new WorkbenchTabWidget(this, widget);
         }
 
-        if (widget->inherits("QToolBar")) {
-            qobject_cast<QToolBar*>(widget)->addWidget(wbSel);
-        }
-        else {
-            bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
-            qobject_cast<QMenuBar*>(widget)->setCornerWidget(wbSel, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
-        }
+        static_cast<QToolBar*>(widget)->addWidget(wbSel);
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);
