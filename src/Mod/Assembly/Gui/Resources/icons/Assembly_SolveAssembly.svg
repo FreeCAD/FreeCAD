@@ -25,35 +25,6 @@
          style="stop-color:#729fcf;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       xlink:href="#linearGradient4383-3"
-       id="linearGradient4389-0"
-       x1="27.243532"
-       y1="54.588112"
-       x2="21.243532"
-       y2="30.588112"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-1.243533,-2.588112)" />
-    <linearGradient
-       xlink:href="#linearGradient4393-9"
-       id="linearGradient4399-7"
-       x1="48.714352"
-       y1="45.585785"
-       x2="40.714352"
-       y2="24.585787"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(1.2856487,1.4142136)" />
-    <linearGradient
-       id="linearGradient4393-9">
-      <stop
-         style="stop-color:#204a87;stop-opacity:1"
-         offset="0"
-         id="stop4395-8" />
-      <stop
-         style="stop-color:#3465a4;stop-opacity:1"
-         offset="1"
-         id="stop4397-1" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient3774">
       <stop
          style="stop-color:#4e9a06;stop-opacity:1"
@@ -202,41 +173,6 @@
        x2="26.605606"
        y2="33.634254" />
     <linearGradient
-       xlink:href="#linearGradient69056-7"
-       id="linearGradient949"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-1.2435,-2.5881)"
-       x1="27.243999"
-       y1="54.588001"
-       x2="22.243999"
-       y2="40.588001" />
-    <linearGradient
-       id="linearGradient69056-7"
-       x1="27.243999"
-       x2="22.243999"
-       y1="54.588001"
-       y2="40.588001"
-       gradientTransform="translate(-1.2435,-2.5881)"
-       gradientUnits="userSpaceOnUse">
-      <stop
-         stop-color="#c4a000"
-         offset="0"
-         id="stop14" />
-      <stop
-         stop-color="#fce94f"
-         offset="1"
-         id="stop16" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient4399-70"
-       id="linearGradient951"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(1.2856,1.4142)"
-       x1="48.714001"
-       y1="45.585999"
-       x2="44.714001"
-       y2="34.585999" />
-    <linearGradient
        id="linearGradient4399-70"
        x1="48.714001"
        x2="44.714001"
@@ -263,15 +199,6 @@
        gradientUnits="userSpaceOnUse"
        xlink:href="#linearGradient4383-3" />
     <linearGradient
-       id="linearGradient69717"
-       x1="50.714001"
-       x2="48.714001"
-       y1="25.586"
-       y2="20.586"
-       gradientTransform="translate(61.2256,1.0356)"
-       gradientUnits="userSpaceOnUse"
-       xlink:href="#linearGradient4383-3" />
-    <linearGradient
        id="linearGradient4389-9"
        x1="20.243999"
        x2="17.243999"
@@ -289,15 +216,6 @@
        gradientTransform="translate(-12.714,-17.586)"
        gradientUnits="userSpaceOnUse"
        xlink:href="#linearGradient3774" />
-    <linearGradient
-       xlink:href="#linearGradient69056-7"
-       id="linearGradient920"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-41.2435,-2.5881)"
-       x1="20.243999"
-       y1="37.588001"
-       x2="17.243999"
-       y2="27.587999" />
     <linearGradient
        xlink:href="#linearGradient4399-70"
        id="linearGradient922"
@@ -351,23 +269,23 @@
         <path
            d="M 9,49 V 35 l 28,10 v 14 z"
            id="path30"
-           style="fill:url(#linearGradient949);stroke:#302b00;stroke-linejoin:round" />
+           style="fill:#babdb6;stroke:#0b1e23;stroke-linejoin:round;stroke-opacity:1" />
         <path
            d="M 37,59 V 45 L 55,28 v 13 z"
            id="path32"
-           style="fill:url(#linearGradient951);stroke:#302b00;stroke-linejoin:round" />
+           style="fill:#babdb6;stroke:#0b1e23;stroke-linejoin:round;stroke-opacity:1" />
         <path
            d="M 11.008,47.606 11,37.9997 l 24,8 0.0081,10.185 z"
            id="path34"
-           style="fill:#edd400;stroke:#fce94f" />
+           style="fill:#888a85;stroke:#babdb6" />
         <path
            d="M 39.005,54.168 39,45.9998 l 14,-13 0.0021,7.1768 z"
            id="path36"
-           style="fill:#edd400;stroke:#fce94f" />
+           style="fill:#888a85;stroke:#babdb6" />
         <path
            d="M 23,40 42,23 55,28 37,45 Z"
            id="path38"
-           style="fill:#fce94f;stroke:#302b00;stroke-linejoin:round" />
+           style="fill:#d3d7cf;stroke:#0b1e23;stroke-linejoin:round;stroke-opacity:1" />
       </g>
       <g
          id="g943"
@@ -375,23 +293,23 @@
         <path
            d="m 91,33.5 -0.02739,-14.214 12.967,4.3352 v 14.5 z"
            id="path54"
-           style="fill:url(#linearGradient69709);stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
+           style="fill:url(#linearGradient69709);stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
         <path
            d="m 92.927,32.029 0.04731,-10.141 8.9272,3.29 0.0781,10.042 z"
            id="path56"
-           style="fill:#edd400;stroke:#fce94f;stroke-width:2" />
+           style="fill:#888a85;stroke:#babdb6;stroke-width:2" />
         <path
            d="m 103.94,38.121 v -14.5 l 11,-9 L 115,28 Z"
            id="path58"
-           style="fill:#edd400;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
+           style="fill:#edd400;stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
         <path
            d="m 105.94,33.621 v -9 l 7,-6 -0.0122,8.5816 z"
            id="path60"
-           style="fill:#edd400;stroke:#fce94f;stroke-width:2" />
+           style="fill:#888a85;stroke:#babdb6;stroke-width:2" />
         <path
            d="M 90.973,19.286 102,9.9998 l 12.94,4.6214 -11,9 z"
            id="path62"
-           style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
+           style="fill:#d3d7cf;stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1" />
       </g>
       <g
          id="g963"
@@ -414,31 +332,26 @@
              d="M 23,40 V 26 l 7.9726,-6.7138 0.02739,13.714 z" />
         </g>
         <path
-           style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:#888a85;fill-opacity:1;stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
            id="path912"
            d="M -31,35 V 21 l 14,5 v 14 z" />
         <path
-           style="fill:#fce94f;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:#d3d7cf;fill-opacity:1;stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
            id="path914"
            d="M -31,21 -11.415,5.209 2,10.0001 l -19,16 z" />
         <path
-           style="fill:url(#linearGradient922);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
+           style="fill:url(#linearGradient922);fill-opacity:1;stroke:#0b1e23;stroke-width:2;stroke-linejoin:round;stroke-opacity:1"
            id="path916"
            d="M -17,40 V 26 l 7.9726,-6.7138 0.02739,13.714 z" />
         <path
            d="m -15,36 v -9 l 4,-3.5 v 9 z"
            id="path50"
-           style="fill:#edd400;stroke:#fce94f;stroke-width:2;stroke-opacity:1" />
+           style="fill:#888a85;stroke:#babdb6;stroke-width:2;stroke-opacity:1" />
         <path
            d="m -29.049,33.746 0.08695,-9.9796 9.9568,3.5229 -0.02105,9.9613 z"
            id="path52"
-           style="fill:none;stroke:#fce94f;stroke-width:2;stroke-opacity:1" />
+           style="fill:none;stroke:#babdb6;stroke-width:2;stroke-opacity:1" />
       </g>
-      <path
-         style="display:inline;opacity:1;mix-blend-mode:saturation;fill:#888a85;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
-         d="M 6.7825401,19.824917 V 50.524433 L 37.482057,61.488546 57.21746,41.753143 57.151675,12.830909 28.255755,2.5114861 6.7825401,19.824917"
-         id="path1"
-         transform="matrix(0.91206648,0,0,0.91206648,12.063871,-55.311127)" />
     </g>
     <g
        id="g1230"
