@@ -39,6 +39,7 @@
 
 #include "Mod/Fem/App/FemMesh.h"
 #include <Base/PlacementPy.h>
+#include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/QuantityPy.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -856,20 +857,88 @@ PyObject* FemMeshPy::write(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemMeshPy::writeABAQUS(PyObject* args)
+namespace
+{
+
+std::map<std::string, ABAQUS_VolumeVariant> volVariantPyMap = {
+    {"standard", ABAQUS_VolumeVariant::Standard},
+    {"reduced", ABAQUS_VolumeVariant::Reduced},
+    {"incompatible", ABAQUS_VolumeVariant::Incompatible},
+    {"modified", ABAQUS_VolumeVariant::Modified},
+    {"fluid", ABAQUS_VolumeVariant::Fluid}};
+
+std::map<std::string, ABAQUS_FaceVariant> faceVariantPyMap = {
+    {"shell", ABAQUS_FaceVariant::Shell},
+    {"shell reduced", ABAQUS_FaceVariant::Shell_Reduced},
+    {"membrane", ABAQUS_FaceVariant::Membrane},
+    {"membrane reduced", ABAQUS_FaceVariant::Membrane_Reduced},
+    {"stress", ABAQUS_FaceVariant::Stress},
+    {"stress reduced", ABAQUS_FaceVariant::Stress_Reduced},
+    {"strain", ABAQUS_FaceVariant::Strain},
+    {"strain reduced", ABAQUS_FaceVariant::Strain_Reduced},
+    {"axisymmetric", ABAQUS_FaceVariant::Axisymmetric},
+    {"axisymmetric reduced", ABAQUS_FaceVariant::Axisymmetric_Reduced}};
+
+std::map<std::string, ABAQUS_EdgeVariant> edgeVariantPyMap = {
+    {"beam", ABAQUS_EdgeVariant::Beam},
+    {"beam reduced", ABAQUS_EdgeVariant::Beam_Reduced},
+    {"truss", ABAQUS_EdgeVariant::Truss},
+    {"network", ABAQUS_EdgeVariant::Network}};
+
+}  // namespace
+
+PyObject* FemMeshPy::writeABAQUS(PyObject* args, PyObject* kwd)
 {
     char* Name;
     int elemParam;
     PyObject* groupParam;
-    if (!PyArg_ParseTuple(args, "etiO!", "utf-8", &Name, &elemParam, &PyBool_Type, &groupParam)) {
+    const char* volVariant = "standard";
+    const char* faceVariant = "shell";
+    const char* edgeVariant = "beam";
+
+    const std::array<const char*, 7> kwlist {"fileName",
+                                             "elemParam",
+                                             "groupParam",
+                                             "volVariant",
+                                             "faceVariant",
+                                             "edgeVariant",
+                                             nullptr};
+
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "etiO!|sss",
+                                             kwlist,
+                                             "utf-8",
+                                             &Name,
+                                             &elemParam,
+                                             &PyBool_Type,
+                                             &groupParam,
+                                             &volVariant,
+                                             &faceVariant,
+                                             &edgeVariant)) {
         return nullptr;
     }
+
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     bool grpParam = Base::asBoolean(groupParam);
+    auto itVol = volVariantPyMap.find(volVariant);
+    auto itFace = faceVariantPyMap.find(faceVariant);
+    auto itEdge = edgeVariantPyMap.find(edgeVariant);
+
+    if (itVol == volVariantPyMap.end() || itFace == faceVariantPyMap.end()
+        || itEdge == edgeVariantPyMap.end()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid variant value");
+        return nullptr;
+    }
 
     try {
-        getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
+        getFemMeshPtr()->writeABAQUS(EncodedName.c_str(),
+                                     elemParam,
+                                     grpParam,
+                                     itVol->second,
+                                     itFace->second,
+                                     itEdge->second);
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());

@@ -1929,7 +1929,12 @@ void FemMesh::read(const char* FileName)
     }
 }
 
-void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool groupParam) const
+void FemMesh::writeABAQUS(const std::string& Filename,
+                          int elemParam,
+                          bool groupParam,
+                          ABAQUS_VolumeVariant volVariant,
+                          ABAQUS_FaceVariant faceVariant,
+                          ABAQUS_EdgeVariant edgeVariant) const
 {
     /*
      * elemParam:
@@ -1940,120 +1945,219 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
      * groupParam:
      * true = write group data
      * false = do not write group data
+
+     * volVariant, faceVariant, edgeVariant:
+     * Element type according to availability in CalculiX
      */
 
-    static std::map<std::string, std::vector<int>> elemOrderMap;
-    static std::map<int, std::string> edgeTypeMap;
-    static std::map<int, std::string> faceTypeMap;
-    static std::map<int, std::string> volTypeMap;
-    if (elemOrderMap.empty()) {
-        // node order fits with node order in importCcxFrdResults.py module to import
-        // CalculiX result meshes
+    std::map<std::string, std::string> variants;
 
-        // dimension 1
-        //
-        // seg2 FreeCAD --> CalculiX B31
-        // N1, N2
-        std::vector<int> b31 = boost::assign::list_of(0)(1);
-        //
-        // seg3 FreeCAD --> CalculiX B32
-        // N1, N3, N2
-        std::vector<int> b32 = boost::assign::list_of(0)(2)(1);
+    // volume elements
+    variants["Tetra4"] = "C3D4";
+    variants["Penta6"] = "C3D6";
+    variants["Hexa8"] = "C3D8";
+    variants["Tetra10"] = "C3D10";
+    variants["Penta15"] = "C3D15";
+    variants["Hexa20"] = "C3D20";
 
-        elemOrderMap.insert(std::make_pair("B31", b31));
-        edgeTypeMap.insert(std::make_pair(elemOrderMap["B31"].size(), "B31"));
-        elemOrderMap.insert(std::make_pair("B32", b32));
-        edgeTypeMap.insert(std::make_pair(elemOrderMap["B32"].size(), "B32"));
-
-        // dimension 2
-        //
-        // tria3 FreeCAD --> S3 CalculiX
-        // N1, N2, N3
-        std::vector<int> s3 = boost::assign::list_of(0)(1)(2);
-        //
-        // tria6 FreeCAD --> S6 CalculiX
-        // N1, N2, N3, N4, N5, N6
-        std::vector<int> s6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
-        //
-        // quad4 FreeCAD --> S4 CalculiX
-        // N1, N2, N3, N4
-        std::vector<int> s4 = boost::assign::list_of(0)(1)(2)(3);
-        //
-        // quad8 FreeCAD --> S8 CalculiX
-        // N1, N2, N3, N4, N5, N6, N7, N8
-        std::vector<int> s8 = boost::assign::list_of(0)(1)(2)(3)(4)(5)(6)(7);
-
-        elemOrderMap.insert(std::make_pair("S3", s3));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S3"].size(), "S3"));
-        elemOrderMap.insert(std::make_pair("S6", s6));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S6"].size(), "S6"));
-        elemOrderMap.insert(std::make_pair("S4", s4));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S4"].size(), "S4"));
-        elemOrderMap.insert(std::make_pair("S8", s8));
-        faceTypeMap.insert(std::make_pair(elemOrderMap["S8"].size(), "S8"));
-
-        // dimension 3
-        //
-        // tetras
-        // master 0.14 release
-        // changed to this in August 2013, committed by juergen (jriedel)
-        // https://github.com/FreeCAD/FreeCAD/commit/af56b324b9566b20f3b6e7880c29354c1dbe7a99
-        // std::vector<int> c3d4  = boost::assign::list_of(0)(3)(1)(2);
-        // std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
-
-        // since master 0.15
-        // added by werner (wmayer) March 2015,
-        // https://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
-        // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
-        // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
-        // tetra4 FreeCAD --> C3D4 CalculiX
-        // N2, N1, N3, N4
-        std::vector<int> c3d4 = boost::assign::list_of(1)(0)(2)(3);
-        // tetra10: FreeCAD --> C3D10 CalculiX
-        // N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
-        std::vector<int> c3d10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
-
-        // tetra node order for the system which is used for hexa8, hexa20, penta6 and penda15
-        // be careful with activating because of method getccxVolumesByFace())
-        // tetra4 FreeCAD --> C3D4 CalculiX
-        // N2, N3, N4, N1
-        // std::vector<int> c3d4  = boost::assign::list_of(1)(2)(3)(0);
-        //
-        // tetra10: FreeCAD --> C3D10 CalculiX
-        // N2, N3, N4, N1, N6, N10, N9, N5, N7, N8
-        // std::vector<int> c3d10 = boost::assign::list_of(1)(2)(3)(0)(5)(9)(8)(4)(6)(7);
-
-        // hexa8 FreeCAD --> C3D8 CalculiX
-        // N6, N7, N8, N5, N2, N3, N4, N1
-        std::vector<int> c3d8 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0);
-        //
-        // hexa20 FreeCAD --> C3D20 CalculiX
-        // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
-        std::vector<int> c3d20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(
-            10)(11)(8)(17)(18)(19)(16);
-        //
-        // penta6 FreeCAD --> C3D6 CalculiX
-        // N5, N6, N4, N2, N3, N1
-        std::vector<int> c3d6 = boost::assign::list_of(4)(5)(3)(1)(2)(0);
-        //
-        // penta15 FreeCAD --> C3D15 CalculiX
-        // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
-        std::vector<int> c3d15 =
-            boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
-
-        elemOrderMap.insert(std::make_pair("C3D4", c3d4));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D4"].size(), "C3D4"));
-        elemOrderMap.insert(std::make_pair("C3D10", c3d10));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D10"].size(), "C3D10"));
-        elemOrderMap.insert(std::make_pair("C3D8", c3d8));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D8"].size(), "C3D8"));
-        elemOrderMap.insert(std::make_pair("C3D20", c3d20));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D20"].size(), "C3D20"));
-        elemOrderMap.insert(std::make_pair("C3D6", c3d6));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D6"].size(), "C3D6"));
-        elemOrderMap.insert(std::make_pair("C3D15", c3d15));
-        volTypeMap.insert(std::make_pair(elemOrderMap["C3D15"].size(), "C3D15"));
+    switch (volVariant) {
+        case ABAQUS_VolumeVariant::Standard:
+            break;
+        case ABAQUS_VolumeVariant::Reduced:
+            variants["Hexa8"] = "C3D8R";
+            variants["Hexa20"] = "C3D20R";
+            break;
+        case ABAQUS_VolumeVariant::Incompatible:
+            variants["Hexa8"] = "C3D8I";
+            break;
+        case ABAQUS_VolumeVariant::Modified:
+            variants["Tetra10"] = "C3D10T";
+            break;
+        case ABAQUS_VolumeVariant::Fluid:
+            variants["Tetra4"] = "F3D4";
+            variants["Penta6"] = "F3D6";
+            variants["Hexa8"] = "F3D8";
+            break;
     }
+
+    // face elements
+    switch (faceVariant) {
+        case ABAQUS_FaceVariant::Shell:
+            variants["Tria3"] = "S3";
+            variants["Quad4"] = "S4";
+            variants["Tria6"] = "S6";
+            variants["Quad8"] = "S8";
+            break;
+        case ABAQUS_FaceVariant::Shell_Reduced:
+            variants["Tria3"] = "S3";
+            variants["Quad4"] = "S4R";
+            variants["Tria6"] = "S6";
+            variants["Quad8"] = "S8R";
+            break;
+        case ABAQUS_FaceVariant::Membrane:
+            variants["Tria3"] = "M3D3";
+            variants["Quad4"] = "M3D4";
+            variants["Tria6"] = "M3D6";
+            variants["Quad8"] = "M3D8";
+            break;
+        case ABAQUS_FaceVariant::Membrane_Reduced:
+            variants["Tria3"] = "M3D3";
+            variants["Quad4"] = "M3D4R";
+            variants["Tria6"] = "M3D6";
+            variants["Quad8"] = "M3D8R";
+            break;
+        case ABAQUS_FaceVariant::Stress:
+            variants["Tria3"] = "CPS3";
+            variants["Quad4"] = "CPS4";
+            variants["Tria6"] = "CPS6";
+            variants["Quad8"] = "CPS8";
+            break;
+        case ABAQUS_FaceVariant::Stress_Reduced:
+            variants["Tria3"] = "CPS3";
+            variants["Quad4"] = "CPS4R";
+            variants["Tria6"] = "CPS6";
+            variants["Quad8"] = "CPS8R";
+            break;
+        case ABAQUS_FaceVariant::Strain:
+            variants["Tria3"] = "CPE3";
+            variants["Quad4"] = "CPE4";
+            variants["Tria6"] = "CPE6";
+            variants["Quad8"] = "CPE8";
+            break;
+        case ABAQUS_FaceVariant::Strain_Reduced:
+            variants["Tria3"] = "CPE3";
+            variants["Quad4"] = "CPE4R";
+            variants["Tria6"] = "CPE6";
+            variants["Quad8"] = "CPE8R";
+            break;
+        case ABAQUS_FaceVariant::Axisymmetric:
+            variants["Tria3"] = "CAX3";
+            variants["Quad4"] = "CAX4";
+            variants["Tria6"] = "CAX6";
+            variants["Quad8"] = "CAX8";
+            break;
+        case ABAQUS_FaceVariant::Axisymmetric_Reduced:
+            variants["Tria3"] = "CAX3";
+            variants["Quad4"] = "CAX4R";
+            variants["Tria6"] = "CAX6";
+            variants["Quad8"] = "CAX8R";
+            break;
+    }
+
+    // edge elements
+    switch (edgeVariant) {
+        case ABAQUS_EdgeVariant::Beam:
+            variants["Seg2"] = "B31";
+            variants["Seg3"] = "B32";
+            break;
+        case ABAQUS_EdgeVariant::Beam_Reduced:
+            variants["Seg2"] = "B31R";
+            variants["Seg3"] = "B32R";
+            break;
+        case ABAQUS_EdgeVariant::Truss:
+            variants["Seg2"] = "T3D2";
+            variants["Seg3"] = "T3D3";
+            break;
+        case ABAQUS_EdgeVariant::Network:
+            variants["Seg2"] = "B31";
+            variants["Seg3"] = "D";
+            break;
+    }
+
+    std::map<std::string, std::vector<int>> elemOrderMap;
+    std::map<int, std::string> edgeTypeMap;
+    std::map<int, std::string> faceTypeMap;
+    std::map<int, std::string> volTypeMap;
+
+
+    // node order fits with node order in importCcxFrdResults.py module to import
+    // CalculiX result meshes
+
+    // dimension 1
+    //
+    // seg2 FreeCAD --> B31, B31R, T3D2 CalculiX
+    // N1, N2
+    std::vector<int> seg2 = boost::assign::list_of(0)(1);
+    //
+    // seg3 FreeCAD --> B32, B32R, T3D3 D CalculiX
+    // N1, N3, N2
+    std::vector<int> seg3 = boost::assign::list_of(0)(2)(1);
+
+    elemOrderMap.insert(std::make_pair(variants["Seg2"], seg2));
+    edgeTypeMap.insert(std::make_pair(seg2.size(), variants["Seg2"]));
+    elemOrderMap.insert(std::make_pair(variants["Seg3"], seg3));
+    edgeTypeMap.insert(std::make_pair(seg3.size(), variants["Seg3"]));
+
+    // dimension 2
+    //
+    // tria3 FreeCAD --> S3, M3D3, CPS3, CPE3, CAX3 CalculiX
+    // N1, N2, N3
+    std::vector<int> tria3 = boost::assign::list_of(0)(1)(2);
+    //
+    // tria6 FreeCAD --> S6 M3D6, CPS6, CPE6, CAX6 CalculiX
+    // N1, N2, N3, N4, N5, N6
+    std::vector<int> tria6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
+    //
+    // quad4 FreeCAD --> S4, S4R, M3D4, M3D4R, CPS4, CPS4R, CPE4, CPE4R, CAX4, CAX4R CalculiX
+    // N1, N2, N3, N4
+    std::vector<int> quad4 = boost::assign::list_of(0)(1)(2)(3);
+    //
+    // quad8 FreeCAD --> S8, S8R, M3D8, M3D8R, CPS8, CPS8R, CPE8, CPE8R, CAX8, CAX8R CalculiX
+    // N1, N2, N3, N4, N5, N6, N7, N8
+    std::vector<int> quad8 = boost::assign::list_of(0)(1)(2)(3)(4)(5)(6)(7);
+
+    elemOrderMap.insert(std::make_pair(variants["Tria3"], tria3));
+    faceTypeMap.insert(std::make_pair(tria3.size(), variants["Tria3"]));
+    elemOrderMap.insert(std::make_pair(variants["Tria6"], tria6));
+    faceTypeMap.insert(std::make_pair(tria6.size(), variants["Tria6"]));
+    elemOrderMap.insert(std::make_pair(variants["Quad4"], quad4));
+    faceTypeMap.insert(std::make_pair(quad4.size(), variants["Quad4"]));
+    elemOrderMap.insert(std::make_pair(variants["Quad8"], quad8));
+    faceTypeMap.insert(std::make_pair(quad8.size(), variants["Quad8"]));
+
+
+    // dimension 3
+    //
+    // tetra4 FreeCAD --> C3D4, F3D4 CalculiX
+    // N2, N1, N3, N4
+    std::vector<int> tetra4 = boost::assign::list_of(1)(0)(2)(3);
+    // tetra10: FreeCAD --> C3D10, C3D10T CalculiX
+    // N2, N1, N3, N4, N5, N7, N6, N9, N8, N10
+    std::vector<int> tetra10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
+
+    // tetra node order for the system which is used for hexa8, hexa20, penta6 and penta15
+    // be careful with activating because of method getccxVolumesByFace())
+    // hexa8 FreeCAD --> C3D8, C3D8R, C3D8I, F3D8 CalculiX
+    // N6, N7, N8, N5, N2, N3, N4, N1
+    std::vector<int> hexa8 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0);
+    //
+    // hexa20 FreeCAD --> C3D20, C3D20R CalculiX
+    // N6, N7, N8, N5, N2, N3, N4, N1, N14, N15, N16, N13, N10, N11, N12, N9, N18, N19, N20, N17
+    std::vector<int> hexa20 = boost::assign::list_of(5)(6)(7)(4)(1)(2)(3)(0)(13)(14)(15)(12)(9)(10)(
+        11)(8)(17)(18)(19)(16);
+    //
+    // penta6 FreeCAD --> C3D6, F3D6 CalculiX
+    // N5, N6, N4, N2, N3, N1
+    std::vector<int> penta6 = boost::assign::list_of(4)(5)(3)(1)(2)(0);
+    //
+    // penta15 FreeCAD --> C3D15 CalculiX
+    // N5, N6, N4, N2, N3, N1, N11, N12, N10, N8, N9, N7, N14, N15, N13
+    std::vector<int> penta15 =
+        boost::assign::list_of(4)(5)(3)(1)(2)(0)(10)(11)(9)(7)(8)(6)(13)(14)(12);
+
+    elemOrderMap.insert(std::make_pair(variants["Tetra4"], tetra4));
+    volTypeMap.insert(std::make_pair(tetra4.size(), variants["Tetra4"]));
+    elemOrderMap.insert(std::make_pair(variants["Tetra10"], tetra10));
+    volTypeMap.insert(std::make_pair(tetra10.size(), variants["Tetra10"]));
+    elemOrderMap.insert(std::make_pair(variants["Hexa8"], hexa8));
+    volTypeMap.insert(std::make_pair(hexa8.size(), variants["Hexa8"]));
+    elemOrderMap.insert(std::make_pair(variants["Hexa20"], hexa20));
+    volTypeMap.insert(std::make_pair(hexa20.size(), variants["Hexa20"]));
+    elemOrderMap.insert(std::make_pair(variants["Penta6"], penta6));
+    volTypeMap.insert(std::make_pair(penta6.size(), variants["Penta6"]));
+    elemOrderMap.insert(std::make_pair(variants["Penta15"], penta15));
+    volTypeMap.insert(std::make_pair(penta15.size(), variants["Penta15"]));
+
 
     // get all data --> Extract Nodes and Elements of the current SMESH datastructure
     using VertexMap = std::map<int, Base::Vector3d>;
