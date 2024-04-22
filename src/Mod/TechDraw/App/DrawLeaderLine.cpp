@@ -44,8 +44,6 @@
 using namespace TechDraw;
 using DU = DrawUtil;
 
-constexpr double DegreesHalfCircle{180.0};
-
 //===========================================================================
 // DrawLeaderLine - Base class for drawing leader based features
 //===========================================================================

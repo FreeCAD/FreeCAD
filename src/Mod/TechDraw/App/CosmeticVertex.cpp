@@ -44,8 +44,6 @@ using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
 
-constexpr double DegreesHalfCircle{180.0};
-
 TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
 
 CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()

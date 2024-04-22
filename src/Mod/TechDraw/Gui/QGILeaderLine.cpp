@@ -55,7 +55,6 @@ using namespace TechDraw;
 using DU = DrawUtil;
 using DGU = DrawGuiUtil;
 
-constexpr double DegreesHalfCircle{180.0};
 
 //**************************************************************
 QGILeaderLine::QGILeaderLine()
