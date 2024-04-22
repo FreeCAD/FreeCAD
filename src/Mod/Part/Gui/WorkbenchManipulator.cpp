@@ -34,13 +34,6 @@ void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar
     addSectionCut(menuBar);
 }
 
-void WorkbenchManipulator::modifyContextMenu(const char* recipient, Gui::MenuItem* menuBar)
-{
-    if (strcmp(recipient, "View") == 0) {
-        addSelectionFilter(menuBar);
-    }
-}
-
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 {
     addSelectionFilter(toolBar);
@@ -76,14 +69,5 @@ void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
         else {
             view->appendItem(add);
         }
-    }
-}
-
-void WorkbenchManipulator::addSelectionFilter(Gui::MenuItem* menuBar)
-{
-    if (auto measure = menuBar->findItem("Measure")) {
-        auto add = new Gui::MenuItem(); // NOLINT
-        add->setCommand("Part_SelectFilter");
-        menuBar->insertItem(measure, add);
     }
 }
