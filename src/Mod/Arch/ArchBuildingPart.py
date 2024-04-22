@@ -395,24 +395,23 @@ class BuildingPart(ArchIFC.IfcProduct):
                     #print "Rotation",deltar.Axis,deltar.Angle
                     if deltar.Angle < 0.0001:
                         deltar = None
-                    for child in obj.Group:
-                        if ((not hasattr(child,"MoveWithHost")) or child.MoveWithHost) and hasattr(child,"Placement"):
-                            #print "moving ",child.Label
-                            if deltar:
-                                #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
-                                # use shape methods to obtain a correct placement
-                                import Part
-                                import math
-                                shape = Part.Shape()
-                                shape.Placement = child.Placement
-                                #print("angle before rotation:",shape.Placement.Rotation.Angle)
-                                #print("rotation angle:",math.degrees(deltar.Angle))
-                                shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                                print("angle after rotation:",shape.Placement.Rotation.Angle)
-                                child.Placement = shape.Placement
-                            if deltap:
-                                print("moving child",child.Label)
-                                child.Placement.move(deltap)
+                    for child in self.getMovableChildren(obj):
+                        #print "moving ",child.Label
+                        if deltar:
+                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
+                            # use shape methods to obtain a correct placement
+                            import Part
+                            import math
+                            shape = Part.Shape()
+                            shape.Placement = child.Placement
+                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
+                            #print("rotation angle:",math.degrees(deltar.Angle))
+                            shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                            print("angle after rotation:",shape.Placement.Rotation.Angle)
+                            child.Placement = shape.Placement
+                        if deltap:
+                            print("moving child",child.Label)
+                            child.Placement.move(deltap)
 
     def execute(self,obj):
 
@@ -437,6 +436,18 @@ class BuildingPart(ArchIFC.IfcProduct):
         if obj.ViewObject:
             # update the autogroup box if needed
             obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
+
+    def getMovableChildren(self, obj):
+         "recursively get movable children"
+
+         result = []
+         for child in obj.Group:
+            if isinstance(child, "App::DocumentObjectGroup"):
+                result.extend(getMovableChildren(child)
+            if not hasattr(child,"MoveWithHost") or child.MoveWithHost:
+                if hasattr(child,"Placement"):
+                    result.append(child)
+        return result
 
     def getArea(self,obj):
 
