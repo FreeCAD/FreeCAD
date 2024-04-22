@@ -21,28 +21,26 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef FREECAD_START_FILECARDVIEW_H
+#define FREECAD_START_FILECARDVIEW_H
 
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
+#include <QListView>
 
+namespace StartGui
+{
 
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
-#endif
+class FileCardView: public QListView
+{
+    Q_OBJECT
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+public:
+    explicit FileCardView(QWidget* parent = nullptr);
 
-#endif  // LAUNCHER_GLOBAL_H
+    int heightForWidth(int width) const override;
+
+    QSize sizeHint() const override;
+};
+
+}  // namespace StartGui
+
+#endif  // FREECAD_START_FILECARDVIEW_H

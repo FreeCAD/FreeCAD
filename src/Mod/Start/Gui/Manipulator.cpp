@@ -21,28 +21,58 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
-
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
-
-
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QCoreApplication>
+#include <QCoreApplication>
+#include <QLayout>
 #endif
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+#include "Manipulator.h"
+#include "StartView.h"
 
-#endif  // LAUNCHER_GLOBAL_H
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MenuManager.h>
+
+#include <3rdParty/GSL/include/gsl/pointers>
+
+DEF_STD_CMD(CmdStart)
+
+CmdStart::CmdStart()
+    : Command("Start_Start")
+{
+    sAppModule = "Start";
+    sGroup = QT_TR_NOOP("Start");
+    sMenuText = QT_TR_NOOP("Start");
+    sToolTipText = QT_TR_NOOP("Displays the Start in an MDI view");
+    sWhatsThis = "Start_Start";
+    sStatusTip = sToolTipText;
+    sPixmap = "StartCommandIcon";
+}
+
+void CmdStart::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    auto mw = Gui::getMainWindow();
+    auto doc = Gui::Application::Instance->activeDocument();
+    auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+    if (!existingView) {
+        existingView = gsl::owner<StartGui::StartView*>(new StartGui::StartView(doc, mw));
+        mw->addWindow(existingView);  // Transfers ownership
+    }
+    Gui::getMainWindow()->setActiveWindow(existingView);
+    existingView->show();
+}
+
+void StartGui::Manipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
+    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    Gui::MenuItem* helpMenu = menuBar->findItem("&Help");
+    Gui::MenuItem* loadStart = new Gui::MenuItem();
+    loadStart->setCommand("Start_Start");
+    helpMenu->appendItem(loadStart);
+}

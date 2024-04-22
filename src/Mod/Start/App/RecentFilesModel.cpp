@@ -21,28 +21,32 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
-
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
-
-
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #endif
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+#include "RecentFilesModel.h"
+#include <App/Application.h>
+#include <App/ProjectFile.h>
 
-#endif  // LAUNCHER_GLOBAL_H
+using namespace Start;
+
+RecentFilesModel::RecentFilesModel(QObject* parent)
+    : DisplayedFilesModel(parent)
+{
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/RecentFiles");
+}
+
+void RecentFilesModel::loadRecentFiles()
+{
+    beginResetModel();
+    clear();
+    auto numRows {_parameterGroup->GetInt("RecentFiles", 0)};
+    for (int i = 0; i < numRows; ++i) {
+        auto entry = fmt::format("MRU{}", i);
+        auto path = _parameterGroup->GetASCII(entry.c_str(), "");
+        addFile(QString::fromStdString(path));
+    }
+    endResetModel();
+}

@@ -21,40 +21,79 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef FREECAD_STARTVIEW_H
+#define FREECAD_STARTVIEW_H
 
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
+#include <Mod/Start/StartGlobal.h>
+#include <Base/Type.h>
+#include <Gui/MDIView.h>
 
-#include <Base/PyObjectBase.h>
+#include "../App/DisplayedFilesModel.h"
+#include "../App/RecentFilesModel.h"
+#include "../App/ExamplesModel.h"
 
-#include <3rdParty/GSL/include/gsl/pointers>
 
-namespace Start
+class QLabel;
+class QListView;
+class QGridLayout;
+class QScrollArea;
+
+namespace Gui
 {
-class Module: public Py::ExtensionModule<Module>
+class Document;
+}
+
+namespace StartGui
 {
+
+class StartGuiExport StartView: public Gui::MDIView
+{
+    Q_OBJECT
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
+
 public:
-    Module()
-        : Py::ExtensionModule<Module>("Start")
+    StartView(Gui::Document* pcDocument, QWidget* parent);
+
+    const char* getName() const override
     {
-        initialize("This module is the Start module.");  // register with Python
+        return "StartView";
     }
-};
 
-PyObject* initModule()
-{
-    auto newModule = gsl::owner<Module*>(new Module);
-    return Base::Interpreter().addModule(newModule);  // Transfer ownership
-}
+    void newEmptyFile() const;
+    void newPartDesignFile() const;
+    void openExistingFile() const;
+    void newAssemblyFile() const;
+    void newDraftFile() const;
+    void newArchFile() const;
 
-}  // namespace Start
+public:
+    enum class PostStartBehavior
+    {
+        switchWorkbench,
+        doNotSwitchWorkbench
+    };
 
-/* Python entry */
-PyMOD_INIT_FUNC(Start)
-{
-    PyObject* mod = Start::initModule();
-    Base::Console().Log("Loading Start module... done\n");
-    PyMOD_Return(mod);
-}
+protected:
+    void configureNewFileButtons(QGridLayout* layout) const;
+    static void configureFileCardWidget(QListView* fileCardWidget);
+    void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
+    void configureExamplesListWidget(QListView* examplesListWidget);
+
+    void postStart(PostStartBehavior behavior) const;
+
+    void fileCardSelected(const QModelIndex& index);
+
+    void showOnStartupChanged(bool checked);
+
+private:
+    QScrollArea* _contents = nullptr;
+    Start::RecentFilesModel _recentFilesModel;
+    Start::ExamplesModel _examplesModel;
+
+
+};  // namespace StartGui
+
+}  // namespace StartGui
+
+#endif  // FREECAD_STARTVIEW_H

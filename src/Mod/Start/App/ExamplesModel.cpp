@@ -21,28 +21,37 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
-
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
-
-
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QDir>
 #endif
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+#include "ExamplesModel.h"
+#include <App/Application.h>
 
-#endif  // LAUNCHER_GLOBAL_H
+using namespace Start;
+
+FC_LOG_LEVEL_INIT(ExamplesModel)
+
+ExamplesModel::ExamplesModel(QObject* parent)
+    : DisplayedFilesModel(parent)
+{
+    auto examplesPath = QDir(QString::fromStdString(App::Application::getResourceDir()));
+    _examplesDirectory.setPath(examplesPath.filePath(QLatin1String("examples")));
+}
+
+void ExamplesModel::loadExamples()
+{
+    beginResetModel();
+    clear();
+    if (!_examplesDirectory.isReadable()) {
+        Base::Console().Warning("Cannot read %s",
+                                _examplesDirectory.absolutePath().toStdString().c_str());
+    }
+    auto entries = _examplesDirectory.entryList(QDir::Filter::Files | QDir::Filter::Readable,
+                                                QDir::SortFlag::Name);
+    for (const auto& entry : entries) {
+        addFile(_examplesDirectory.filePath(entry));
+    }
+    endResetModel();
+}

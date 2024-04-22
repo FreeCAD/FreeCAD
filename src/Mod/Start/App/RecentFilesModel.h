@@ -21,28 +21,32 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef FREECAD_START_RECENTFILESMODEL_H
+#define FREECAD_START_RECENTFILESMODEL_H
 
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
+#include <QAbstractListModel>
+#include <Base/Parameter.h>
 
+#include "DisplayedFilesModel.h"
+#include "../StartGlobal.h"
 
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
-#endif
+namespace Start
+{
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+/// A model for displaying a list of files including a thumbnail or icon, plus various file
+/// statistics.
+class StartExport RecentFilesModel: public DisplayedFilesModel
+{
+    Q_OBJECT
+public:
+    explicit RecentFilesModel(QObject* parent = nullptr);
 
-#endif  // LAUNCHER_GLOBAL_H
+    void loadRecentFiles();
+
+private:
+    Base::Reference<ParameterGrp> _parameterGroup;
+};
+
+}  // namespace Start
+
+#endif  // FREECAD_START_RECENTFILESMODEL_H

@@ -21,28 +21,32 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef FREECAD_START_FILECARDDELEGATE_H
+#define FREECAD_START_FILECARDDELEGATE_H
 
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
+#include <Base/Parameter.h>
+#include <QImage>
+
+#include <QAbstractItemDelegate>
+
+class FileCardDelegate: public QAbstractItemDelegate
+{
+
+public:
+    explicit FileCardDelegate(QObject* parent = nullptr);
+
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
+               const QModelIndex& index) const override;
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
+protected:
+    QPixmap generateThumbnail(const QString& path) const;
+
+private:
+    Base::Reference<ParameterGrp> _parameterGroup;
+};
 
 
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif  // LAUNCHER_GLOBAL_H
+#endif  // FREECAD_START_FILECARDDELEGATE_H

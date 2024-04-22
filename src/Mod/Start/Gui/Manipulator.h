@@ -21,28 +21,23 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef FREECAD_MANIPULATOR_H
+#define FREECAD_MANIPULATOR_H
 
-#ifndef LAUNCHER_GLOBAL_H
-#define LAUNCHER_GLOBAL_H
+#include <Gui/WorkbenchManipulator.h>
 
+namespace StartGui
+{
 
-// Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#define StartExport FREECAD_DECL_EXPORT
-#else
-#define StartExport FREECAD_DECL_IMPORT
-#endif
-#endif
+class Manipulator: public Gui::WorkbenchManipulator
+{
+protected:
+    /*!
+     * This manipulator injects the command to load the start page into the Help menu.
+     */
+    void modifyMenuBar(Gui::MenuItem* menuBar) override;
+};
 
-// StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#define StartGuiExport FREECAD_DECL_EXPORT
-#else
-#define StartGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+}  // namespace StartGui
 
-#endif  // LAUNCHER_GLOBAL_H
+#endif  // FREECAD_MANIPULATOR_H
