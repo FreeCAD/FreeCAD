@@ -109,6 +109,9 @@ public:
     void setScene(QGSPage* scene, QGVPage* view);
     void fixSceneDependencies();
 
+    void setDimensionsSelectability(bool val);
+    void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }
+
 public Q_SLOTS:
     void viewAll() override;
     void saveSVG();
@@ -147,6 +150,7 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
+    bool isContextualMenuEnabled;
     QPointer<QGSPage> m_scene;
 
     QString m_currentPath;

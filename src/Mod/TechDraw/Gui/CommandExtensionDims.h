@@ -23,9 +23,12 @@
 #ifndef TECHDRAWGUI_CommandExtensionDims_H
 #define TECHDRAWGUI_CommandExtensionDims_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 namespace TechDraw
 {
     class ReferenceEntry;
+    class DrawViewDimension;
 }
 
 namespace TechDrawGui {

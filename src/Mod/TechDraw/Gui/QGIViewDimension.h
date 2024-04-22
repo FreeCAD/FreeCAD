@@ -87,6 +87,7 @@ public:
     void setPrettyPre();
     void setPrettyNormal();
     void setColor(QColor color);
+    void setSelectability(bool val);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -232,7 +233,7 @@ protected:
     void draw() override;
 
     void resetArrows() const;
-    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped) const;
+    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped, bool forcePoint = false) const;
 
     void drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
                         double startPosition, double endPosition) const;
@@ -245,7 +246,7 @@ protected:
 
     void drawDimensionLine(QPainterPath &painterPath, const Base::Vector2d &targetPoint, double lineAngle,
                            double startPosition, double jointPosition, const Base::BoundBox2d &labelRectangle,
-                           int arrowCount, int standardStyle, bool flipArrows) const;
+                           int arrowCount, int standardStyle, bool flipArrows, bool forcePointStyle = false) const;
     void drawDimensionArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
                           double endAngle, double startRotation, double jointAngle,
                           const Base::BoundBox2d &labelRectangle, int arrowCount,

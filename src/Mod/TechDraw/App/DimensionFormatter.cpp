@@ -91,9 +91,6 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     QString qMultiValueStr;
     QString qBasicUnit = Base::Tools::fromStdString(Base::UnitsApi::getBasicLengthUnit());
-    if (areaMeasure) {
-        qBasicUnit = qBasicUnit + QString::fromUtf8("²");
-    }
 
     QString formattedValue;
     if (isMultiValueSchema() && partial == 0) {
@@ -138,6 +135,10 @@ std::string DimensionFormatter::formatValue(const qreal value,
         else {
             double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + qBasicUnit).getValue();
             userVal = asQuantity.getValue() / convertValue;
+            if (areaMeasure) {
+                userVal = userVal / convertValue; // divide again as area is length²
+                qBasicUnit = qBasicUnit + QString::fromUtf8("²");
+            }
         }
 
         if (isTooSmall(userVal, formatSpecifier)) {

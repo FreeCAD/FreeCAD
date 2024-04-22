@@ -104,6 +104,7 @@ public:
 
     void activateHandler(TechDrawHandler* newHandler);
     void deactivateHandler();
+    bool isHandlerActive() { return toolHandler != nullptr; }
 
     bool isBalloonPlacing() const { return balloonPlacing; }
     void setBalloonPlacing(bool isPlacing) { balloonPlacing = isPlacing; }

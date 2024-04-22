@@ -2377,7 +2377,7 @@ DrawViewDimension* TechDrawGui::makeArcLengthDimension(const ReferenceEntry& ref
     }
     GProp_GProps edgeProps;
     BRepGProp::LinearProperties(edge->getOCCEdge(), edgeProps);
-    double length = edgeProps.Mass();
+    double length = edgeProps.Mass() / dvp->getScale();
 
     Base::Vector3d startPt = edge->getStartPoint();
     Base::Vector3d endPt = edge->getEndPoint();
@@ -2385,7 +2385,6 @@ DrawViewDimension* TechDrawGui::makeArcLengthDimension(const ReferenceEntry& ref
     endPt.y = -endPt.y;
 
     std::stringstream startName, endName, formatSpec;
-    double scale = dvp->getScale();
     Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(dvp, startPt);
     std::string startVertTag = dvp->addCosmeticVertex(cvPoint);
     int startVertNumber = dvp->add1CVToGV(startVertTag);

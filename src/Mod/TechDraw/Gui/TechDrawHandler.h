@@ -39,12 +39,13 @@ public:
     virtual ~TechDrawHandler();
 
     void activate(QGVPage* vPage);
+    void deactivate() override;
 
     void quit() override;
 
     virtual void mouseMoveEvent(QMouseEvent* event) = 0;
-    virtual bool mousePressEvent(QMouseEvent* event);
-    virtual bool mouseReleaseEvent(QMouseEvent* event) = 0;
+    virtual void mousePressEvent(QMouseEvent* event) { Q_UNUSED(event) };
+    virtual void mouseReleaseEvent(QMouseEvent* event);
 
     virtual void keyPressEvent(QKeyEvent* event) = 0;
     virtual void keyReleaseEvent(QKeyEvent* event);

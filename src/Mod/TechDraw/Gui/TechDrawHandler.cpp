@@ -26,6 +26,9 @@
 
 #include <QGuiApplication>
 #include <QPainter>
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QTimer>
 
 #include <Inventor/events/SoKeyboardEvent.h>
 #endif  // #ifndef _PreComp_
@@ -55,11 +58,33 @@ TechDrawHandler::~TechDrawHandler()
 
 void TechDrawHandler::activate(QGVPage* vp)
 {
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+    mdi->enableContextualMenu(false);
+
     viewPage = vp;
 
     if (!Gui::ToolHandler::activate()) {
         viewPage->deactivateHandler();
     }
+}
+
+void TechDrawHandler::deactivate()
+{
+    Gui::ToolHandler::deactivate();
+
+    // The context menu event of MDIViewPage comes after the tool is deactivated.
+    // So to prevent the menu from appearing when the tool is cleared by right mouse click
+    // we set a small timer.
+    QTimer::singleShot(100, [this]() { // 100 milliseconds delay
+        auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+        if (!mdi) {
+            return;
+        }
+        mdi->enableContextualMenu(true);
+    });
 }
 
 void TechDrawHandler::keyReleaseEvent(QKeyEvent* event)
@@ -72,7 +97,7 @@ void TechDrawHandler::keyReleaseEvent(QKeyEvent* event)
     }
 }
 
-bool TechDrawHandler::mousePressEvent(QMouseEvent* event)
+void TechDrawHandler::mouseReleaseEvent(QMouseEvent* event)
 {
     // the default behaviour is to quit - specific handler categories may
     // override this behaviour, for example to implement a continuous mode
@@ -80,7 +105,6 @@ bool TechDrawHandler::mousePressEvent(QMouseEvent* event)
         quit();
         event->accept();
     }
-    return true;
 }
 
 void TechDrawHandler::quit()

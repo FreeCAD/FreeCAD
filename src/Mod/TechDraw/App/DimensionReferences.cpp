@@ -265,15 +265,7 @@ Part::TopoShape ReferenceEntry::asTopoShapeEdge(const TopoDS_Edge &edge)
 
 Part::TopoShape ReferenceEntry::asTopoShapeFace(const TopoDS_Face &face)
 {
-//    Base::Console().Message("RE::asTopoShapeFace()\n");
-    TopoDS_Face unscaledFace = face;
-    if (!is3d()) {
-        // 2d reference - projected and scaled. scale might have changed, so we need to unscale
-        auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
-        TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(face, 1.0 / dvp->getScale());
-        unscaledFace = TopoDS::Face(unscaledShape);
-    }
-    return { unscaledFace };
+    return { face };
 }
 
 std::string ReferenceEntry::geomType() const
