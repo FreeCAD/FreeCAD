@@ -70,7 +70,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_inProgressLock(false),
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
-    m_pbTrackerState(TRACKERPICK),
+    m_pbTrackerState(TrackerAction::PICK),
     m_savePoint(QPointF(0.0, 0.0))
 {
     //baseFeat and page existence checked in cosmetic vertex command (CommandAnnotate.cpp)
@@ -155,8 +155,8 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     removeTracker();
 
-    if (m_pbTrackerState == TRACKERCANCEL) {
-        m_pbTrackerState = TRACKERPICK;
+    if (m_pbTrackerState == TrackerAction::CANCEL) {
+        m_pbTrackerState = TrackerAction::PICK;
         ui->pbTracker->setText(tr("Pick Points"));
         enableTaskButtons(true);
 
@@ -176,7 +176,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     Gui::getMainWindow()->showMessage(msg, 3000);
     ui->pbTracker->setText(tr("Escape picking"));
     ui->pbTracker->setEnabled(true);
-    m_pbTrackerState = TRACKERCANCEL;
+    m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
 }
 
@@ -250,7 +250,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
     m_tracker->sleep(true);
     m_inProgressLock = false;
-    m_pbTrackerState = TRACKERPICK;
+    m_pbTrackerState = TrackerAction::PICK;
     ui->pbTracker->setText(tr("Pick Points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
