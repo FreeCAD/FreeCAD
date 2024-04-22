@@ -302,7 +302,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
     def applyColors(self, obj):
         if not hasattr(obj.ViewObject, "UseOriginalColors") or not obj.ViewObject.UseOriginalColors:
-            obj.ViewObject.DiffuseColor = [obj.ViewObject.ShapeAppeaarance.DiffuseColor]
+            obj.ViewObject.DiffuseColor = [obj.ViewObject.ShapeAppeaarance[0].DiffuseColor]
         else:
             post = obj.Post
             section = obj.Section
