@@ -511,139 +511,137 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</source>
+installed addons will be checked for available updates</source>
       <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+installed addons will be checked for available updates</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="25"/>
+      <location filename="../../AddonManagerOptions.ui" line="24"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Verificar automaticamente por atualizações ao iniciar (requer git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="41"/>
+      <location filename="../../AddonManagerOptions.ui" line="40"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Baixar metadados de macro (aproximadamente 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="56"/>
+      <location filename="../../AddonManagerOptions.ui" line="55"/>
       <source>Cache update frequency</source>
       <translation>Frequência de atualização do cache</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="76"/>
+      <location filename="../../AddonManagerOptions.ui" line="75"/>
       <source>Manual (no automatic updates)</source>
       <translation>Manual (sem atualizações automáticas)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="81"/>
+      <location filename="../../AddonManagerOptions.ui" line="80"/>
       <source>Daily</source>
       <translation>Diariamente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="86"/>
+      <location filename="../../AddonManagerOptions.ui" line="85"/>
       <source>Weekly</source>
       <translation>Semanalmente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="96"/>
+      <location filename="../../AddonManagerOptions.ui" line="95"/>
       <source>Hide Addons without a license</source>
       <translation type="unfinished">Hide Addons without a license</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <location filename="../../AddonManagerOptions.ui" line="111"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation type="unfinished">Hide Addons with non-FSF Free/Libre license</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <location filename="../../AddonManagerOptions.ui" line="127"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation type="unfinished">Hide Addons with non-OSI-approved license</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="144"/>
+      <location filename="../../AddonManagerOptions.ui" line="143"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Ocultar Complementos marcados apenas para Python 2</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="160"/>
+      <location filename="../../AddonManagerOptions.ui" line="159"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Ocultar Complementos marcados como obsoletos</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="176"/>
+      <location filename="../../AddonManagerOptions.ui" line="175"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Ocultar Complementos que requerem uma versão mais recente do FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="198"/>
+      <location filename="../../AddonManagerOptions.ui" line="197"/>
       <source>Custom repositories</source>
       <translation>Repositórios personalizados</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="252"/>
+      <location filename="../../AddonManagerOptions.ui" line="251"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="258"/>
+      <location filename="../../AddonManagerOptions.ui" line="257"/>
       <source>No proxy</source>
       <translation>Sem proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="274"/>
+      <location filename="../../AddonManagerOptions.ui" line="273"/>
       <source>User system proxy</source>
       <translation>Proxy do sistema do usuário</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="287"/>
+      <location filename="../../AddonManagerOptions.ui" line="286"/>
       <source>User-defined proxy:</source>
       <translation type="unfinished">User-defined proxy:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="324"/>
+      <location filename="../../AddonManagerOptions.ui" line="323"/>
       <source>Score source URL</source>
       <translation type="unfinished">Score source URL</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="343"/>
+      <location filename="../../AddonManagerOptions.ui" line="342"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation type="unfinished">The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="353"/>
       <source>Path to git executable (optional):</source>
       <translation type="unfinished">Path to git executable (optional):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="373"/>
+      <location filename="../../AddonManagerOptions.ui" line="372"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>O caminho para o git executável. Detectado automaticamente se necessário e não especificado.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="394"/>
+      <location filename="../../AddonManagerOptions.ui" line="393"/>
       <source>Advanced Options</source>
       <translation>Opções Avançadas</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="400"/>
+      <location filename="../../AddonManagerOptions.ui" line="399"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Exibir opção para alterar branches (requer git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="413"/>
+      <location filename="../../AddonManagerOptions.ui" line="412"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Desabilitar o git (voltar para downloads ZIP somente)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="426"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="429"/>
+      <location filename="../../AddonManagerOptions.ui" line="428"/>
       <source>Addon developer mode</source>
       <translation type="unfinished">Addon developer mode</translation>
     </message>
@@ -1262,7 +1260,7 @@ installed addons will be checked for available updates
       <translation>Atualizar</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="342"/>
+      <location filename="../../manage_python_dependencies.py" line="341"/>
       <source>Updating...</source>
       <translation>Atualizando...</translation>
     </message>

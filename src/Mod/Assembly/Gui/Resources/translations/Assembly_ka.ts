@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>აწყობის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation type="unfinished">Create a Fixed Joint</translation>
+      <translation>დამაგრებული სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation type="unfinished">Create Revolute Joint</translation>
+      <translation>მბრუნავი სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
@@ -50,7 +50,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation type="unfinished">Create Cylindrical Joint</translation>
+      <translation>ცილინდრული სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation type="unfinished">Create Slider Joint</translation>
+      <translation>ჩოჩია სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="183"/>
       <source>Create Ball Joint</source>
-      <translation type="unfinished">Create Ball Joint</translation>
+      <translation>ბურთი სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="190"/>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation type="unfinished">Create Distance Joint</translation>
+      <translation>მანძილის სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Toggle grounded</source>
-      <translation type="unfinished">Toggle grounded</translation>
+      <translation>დამაგრების გადართვა</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="257"/>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="47"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>ASMT ფაილის გატანა</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="52"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation type="unfinished">Export currently active assembly as a ASMT file.</translation>
+      <translation>ამჟამად აქტიური ანაწყობის გატანა ASMT ფაილში.</translation>
     </message>
   </context>
   <context>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>ბმულის ჩასმა</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="59"/>
@@ -138,12 +138,12 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="61"/>
       <source>Insert by left clicking items in the list.</source>
-      <translation type="unfinished">Insert by left clicking items in the list.</translation>
+      <translation>ჩასვით სიის ელემენტებზე მარცხენა წკაპით.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="65"/>
       <source>Remove by right clicking items in the list.</source>
-      <translation type="unfinished">Remove by right clicking items in the list.</translation>
+      <translation>წაშლა სიის ელემენტებზე მარჯვენა წკაპით.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="70"/>
@@ -156,12 +156,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="51"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>აწყობის ამოხსნა</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="58"/>
       <source>Solve the currently active assembly.</source>
-      <translation type="unfinished">Solve the currently active assembly.</translation>
+      <translation>ამჟამად აქტიური ანაწყობის ამოხსნა.</translation>
     </message>
   </context>
   <context>
@@ -182,12 +182,12 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>ანაწყობის სახსრები</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;აწყობა</translation>
     </message>
   </context>
   <context>
@@ -200,22 +200,22 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Revolute</source>
-      <translation type="unfinished">Revolute</translation>
+      <translation>მბრუნავი სახსარი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>ცილინდრული</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>ჩოჩია</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>ბურთი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
@@ -243,27 +243,27 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation type="unfinished">The type of the joint</translation>
+      <translation>სახსრის ტიპი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
       <source>The first object of the joint</source>
-      <translation type="unfinished">The first object of the joint</translation>
+      <translation>სახსრის პირველი ობიექტი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="133"/>
       <source>The first part of the joint</source>
-      <translation type="unfinished">The first part of the joint</translation>
+      <translation>სახსრის პირველი ნაწილი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="140"/>
       <source>The selected element of the first object</source>
-      <translation type="unfinished">The selected element of the first object</translation>
+      <translation>პირველი ობიექტის მონიშნული ელემენტი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="147"/>
       <source>The selected vertex of the first object</source>
-      <translation type="unfinished">The selected vertex of the first object</translation>
+      <translation>პირველი ობიექტის მონიშნული წვერო</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="157"/>
@@ -278,22 +278,22 @@
     <message>
       <location filename="../../../JointObject.py" line="175"/>
       <source>The second object of the joint</source>
-      <translation type="unfinished">The second object of the joint</translation>
+      <translation>სახსრის მეორე ობიექტი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation type="unfinished">The second part of the joint</translation>
+      <translation>სახსრის მეორე ნაწილი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
       <source>The selected element of the second object</source>
-      <translation type="unfinished">The selected element of the second object</translation>
+      <translation>მეორე ობიექტის მონიშნული ელემენტი</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="196"/>
       <source>The selected vertex of the second object</source>
-      <translation type="unfinished">The selected vertex of the second object</translation>
+      <translation>მეორე ობიექტის მონიშნული წვერო</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="206"/>
@@ -313,27 +313,27 @@
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation type="unfinished">This is the rotation of the joint.</translation>
+      <translation>ეს სახსრის შებრუნებაა.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
       <source>This is the offset vector of the joint.</source>
-      <translation type="unfinished">This is the offset vector of the joint.</translation>
+      <translation>ეს სახსრის წანაცვლების ვექტორია.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation type="unfinished">This indicates if the joint is active.</translation>
+      <translation>ეს მიუთითებს, აქტიურია თუ არა სახსარი.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>ობიექტი დამაგრებამდე</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
       <source>This is where the part is grounded.</source>
-      <translation type="unfinished">This is where the part is grounded.</translation>
+      <translation>ეს ის ადგილია, სადაც ნაწილია დამაგრებული.</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation type="unfinished">Create Joint</translation>
+      <translation>სახსრის შექმნა</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="104"/>
       <source>Reverse the direction of the joint.</source>
-      <translation type="unfinished">Reverse the direction of the joint.</translation>
+      <translation>სახსრის მიმართულების რევერსი.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="107"/>
@@ -374,17 +374,17 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>ბმულის ჩასმა</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>ნაწილების ძებნა...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>ვერ იპოვეთ თქვენი ნაწილი? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
@@ -399,7 +399,7 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
       <source>Insert as part</source>
-      <translation type="unfinished">Insert as part</translation>
+      <translation>ნაწილად ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -412,17 +412,17 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave edit mode when pressing Esc button</translation>
+      <translation>ჩასწორების რეჟიმიდან Esc ღილაკით გამოსვლის დაშვება</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leave edit mode</source>
-      <translation type="unfinished">Esc leave edit mode</translation>
+      <translation>Esc - ჩასწორების რეჟიმიდან გასვლა</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation type="unfinished">Ground first part:</translation>
+      <translation>პირველი ნაწილის დამაგრება</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
@@ -435,12 +435,12 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="136"/>
       <source>Delete associated joints</source>
-      <translation type="unfinished">Delete associated joints</translation>
+      <translation>ასოცირებული სახსრების წაშლა</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="148"/>
       <source>The object is associated to one or more joints.</source>
-      <translation type="unfinished">The object is associated to one or more joints.</translation>
+      <translation>ობიექტი ასოცირებულია ერთ ან მეტ სახსართან.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="150"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>ნაწილის გადატანა</translation>
     </message>
   </context>
 </TS>

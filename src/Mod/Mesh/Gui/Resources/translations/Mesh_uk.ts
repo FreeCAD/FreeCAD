@@ -782,34 +782,34 @@
       <translation>Видалити обране</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="959"/>
-      <location filename="../../ViewProvider.cpp" line="1020"/>
+      <location filename="../../ViewProvider.cpp" line="955"/>
+      <location filename="../../ViewProvider.cpp" line="1016"/>
       <source>Cut</source>
       <translation>Вирізати</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="969"/>
-      <location filename="../../ViewProvider.cpp" line="1090"/>
+      <location filename="../../ViewProvider.cpp" line="965"/>
+      <location filename="../../ViewProvider.cpp" line="1086"/>
       <source>Trim</source>
       <translation>Обрізати</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1177"/>
+      <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Split</source>
       <translation>Розділити</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1250"/>
+      <location filename="../../ViewProvider.cpp" line="1246"/>
       <source>Segment</source>
       <translation>Відрізок</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1852"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Delete</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1981"/>
+      <location filename="../../ViewProvider.cpp" line="1977"/>
       <source>Fill hole</source>
       <translation>Заповнити отвір</translation>
     </message>
@@ -2284,48 +2284,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[Точок: %1, Ребер: %2, Граней: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="805"/>
+      <location filename="../../ViewProvider.cpp" line="801"/>
       <source>Display components</source>
       <translation>Відобразити компоненти</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="813"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display segments</source>
       <translation>Показати відрізки</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="821"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1683"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Вийти з інформаційного режиму</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1750"/>
+      <location filename="../../ViewProvider.cpp" line="1746"/>
       <source>Index: %1</source>
       <translation>Індекс: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1776"/>
+      <location filename="../../ViewProvider.cpp" line="1772"/>
       <source>Leave hole-filling mode</source>
       <translation>Вийти з режиму заповнення отворів</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1822"/>
       <source>Leave removal mode</source>
       <translation>Вийти з режиму видалення</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1827"/>
+      <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete selected faces</source>
       <translation>Знищити обрані грані</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1828"/>
+      <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear selected faces</source>
       <translation>Очистити обрані грані</translation>
     </message>

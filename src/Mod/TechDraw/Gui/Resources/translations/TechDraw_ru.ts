@@ -1958,7 +1958,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>Создать разбитое представление</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1003"/>
@@ -2063,7 +2063,7 @@
       <translation>Перетащите размер</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Создать позиционную выноску</translation>
     </message>
@@ -2738,12 +2738,12 @@
     <message>
       <location filename="../../Command.cpp" line="479"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
-      <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
+      <translation>Выберите объекты для разрушения или базовый вид и объекты определения разрыва.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>В этом выделенном фрагменте не найдено объектов Break</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
@@ -8805,7 +8805,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Страница</translation>
     </message>
@@ -8813,7 +8813,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Шаблон</translation>
     </message>
@@ -8821,7 +8821,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Вид</translation>
     </message>
@@ -8829,7 +8829,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Вид</translation>
     </message>
@@ -8837,7 +8837,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Разделить</translation>
     </message>
@@ -8845,7 +8845,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Разделить</translation>
     </message>
@@ -8853,7 +8853,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Подробности</translation>
     </message>
@@ -8861,7 +8861,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Активный просмотр</translation>
     </message>
@@ -8869,7 +8869,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Заметка</translation>
     </message>
@@ -8877,7 +8877,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Изображение</translation>
     </message>
@@ -8885,7 +8885,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Знак</translation>
     </message>
@@ -8893,7 +8893,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Архитектурный</translation>
     </message>
@@ -8901,7 +8901,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Притяжка</translation>
     </message>
@@ -8909,7 +8909,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Линия-выноска</translation>
     </message>
@@ -8917,7 +8917,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Позиционная выноска</translation>
     </message>
@@ -8925,7 +8925,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
@@ -8933,7 +8933,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Расширение</translation>
     </message>
@@ -8941,7 +8941,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Штриховка</translation>
     </message>
@@ -8949,7 +8949,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>Геометрическая Штриховка</translation>
     </message>
@@ -9484,7 +9484,7 @@ there is an open task dialog.</source>
       <location filename="../../Command.cpp" line="440"/>
       <location filename="../../Command.cpp" line="441"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>Вставить сломанный вид</translation>
     </message>
   </context>
 </TS>

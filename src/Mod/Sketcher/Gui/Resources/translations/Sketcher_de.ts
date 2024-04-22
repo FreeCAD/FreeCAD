@@ -176,12 +176,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="470"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Kreisbogen im Skizzierer erstellen</translation>
+      <translation>Einen Kreisbogen im Skizzierer erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="554"/>
       <source>Center and endpoints</source>
-      <translation>Mittel- und Endpunkte</translation>
+      <translation>Mittelpunkt und Endpunkte</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="560"/>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1086"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>B-Spline in der Skizze erstellen</translation>
+      <translation>Eine B-Spline in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="774"/>
       <source>Create a conic in the sketch</source>
-      <translation>Erstellen eines Kegels in der Skizze</translation>
+      <translation>Erstellt einen Kegelschnitt in der Skizze</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="892"/>
@@ -380,7 +380,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3458"/>
       <source>Constrain block</source>
-      <translation>Block beschränken</translation>
+      <translation>Fixieren</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3459"/>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4927"/>
       <source>Constrain horizontal distance</source>
-      <translation>Horizontalen Abstand beschränken</translation>
+      <translation>Horizontalen Abstand festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4928"/>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5231"/>
       <source>Constrain vertical distance</source>
-      <translation>Vertikalen Abstand beschränken</translation>
+      <translation>Vertikalen Abstand festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5232"/>
@@ -499,7 +499,7 @@ für den ausgewählten Knoten</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5529"/>
       <source>Constrain parallel</source>
-      <translation>Parallel beschränken</translation>
+      <translation>Parallel festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5530"/>
@@ -645,12 +645,12 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="405"/>
       <source>Create arc by center</source>
-      <translation>Bogen durch Mittelpunkt erstellen</translation>
+      <translation>Kreisbogen um Mittelpunkt erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="406"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Erstellen eines Bogens durch seinen Mittelpunkt und seine Endpunkte</translation>
+      <translation>Erstellt einen Kreisbogen um den Mittelpunkt und durch die Endpunkte</translation>
     </message>
   </context>
   <context>
@@ -871,7 +871,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="374"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Einen Linienzug in der Skizze erstellen. Taste 'M' wechselt Verhalten durch</translation>
+      <translation>Erstellt einen Linienzug in der Skizze. Taste 'M' wechselt Verhalten durch</translation>
     </message>
   </context>
   <context>
@@ -918,12 +918,12 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1743"/>
       <source>Create slot</source>
-      <translation>Nut erzeugen</translation>
+      <translation>Nut erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1744"/>
       <source>Create a slot in the sketch</source>
-      <translation>Erzeugt eine Nut in der Skizze</translation>
+      <translation>Erstellt eine Nut in der Skizze</translation>
     </message>
   </context>
   <context>
@@ -988,7 +988,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2126"/>
       <source>Delete all constraints in the sketch</source>
-      <translation>Löscht alle Randbedingungen in der Skizze</translation>
+      <translation>Alle Beschränkungen in der Skizze löschen</translation>
     </message>
   </context>
   <context>
@@ -1040,7 +1040,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1633"/>
       <source>Create an edge linked to an external geometry</source>
-      <translation>Erstellen einer Kante verknüpft mit einer externen Geometrie</translation>
+      <translation>Erstellt eine mit einer externen Geometrie verknüpften Kante</translation>
     </message>
   </context>
   <context>
@@ -1113,7 +1113,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Skizze anheften...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1203,7 +1203,7 @@ als Spiegelreferenz verwendet werden.</translation>
     <message>
       <location filename="../../Command.cpp" line="156"/>
       <source>Create a new sketch.</source>
-      <translation>Neue Skizze erstellen.</translation>
+      <translation>Erstellt eine neue Skizze.</translation>
     </message>
   </context>
   <context>
@@ -1436,7 +1436,7 @@ Dies löscht den Inhalt der Eigenschaft 'AttachmentSupport', falls vorhanden.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="10001"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation>Aktiviert oder deaktiviert die ausgewählten Einschränkungen</translation>
+      <translation>Aktiviert oder deaktiviert die ausgewählten Randbedingungen</translation>
     </message>
   </context>
   <context>
@@ -1457,14 +1457,14 @@ Dies löscht den Inhalt der Eigenschaft 'AttachmentSupport', falls vorhanden.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="9843"/>
       <source>Toggle driving/reference constraint</source>
-      <translation>Einschränkung zwischen festlegend und anzeigend umschalten</translation>
+      <translation>Randbedingung zwischen festlegend und anzeigend umschalten</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9844"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation>Die Symbolleiste oder die ausgewählten Einschränkungen
-auf den festlegenden oder den anzeigenden Modus festlegen</translation>
+      <translation>Setzt die Symbolleiste oder die ausgewählten Randbedingungen
+auf den festlegenden oder den anzeigenden Modus</translation>
     </message>
   </context>
   <context>
@@ -1546,7 +1546,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandConstraints.cpp" line="3378"/>
       <source>Add fixed constraint</source>
-      <translation>Randbedingung Sperren hinzufügen</translation>
+      <translation>Gesperrte Beschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3549"/>
@@ -1556,7 +1556,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandConstraints.cpp" line="3598"/>
       <source>Add block constraint</source>
-      <translation>Randbedingung Fixieren hinzufügen</translation>
+      <translation>Fixier-Einschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3937"/>
@@ -1580,14 +1580,14 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="4382"/>
       <location filename="../../CommandConstraints.cpp" line="4709"/>
       <source>Add point to point distance constraint</source>
-      <translation>Randbedingung Punk-zu-Punkt-Abstand hinzufügen</translation>
+      <translation>Abstandsbeschränkung Punkt zu Punkt hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1799"/>
       <location filename="../../CommandConstraints.cpp" line="4425"/>
       <location filename="../../CommandConstraints.cpp" line="4797"/>
       <source>Add point to line Distance constraint</source>
-      <translation>Randbedingung Punkt-zu-Line-Abstand hinzufügen</translation>
+      <translation>Abstandsbeschränkung Punkt zu Linie hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4506"/>
@@ -1598,7 +1598,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandConstraints.cpp" line="4549"/>
       <source>Add circle to line distance constraint</source>
-      <translation>Randbedingung Kreis-zu-Line-Abstand hinzufügen</translation>
+      <translation>Abstandsbeschränkung Kreis zu Linie hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1897"/>
@@ -1609,7 +1609,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="4624"/>
       <location filename="../../CommandConstraints.cpp" line="4746"/>
       <source>Add length constraint</source>
-      <translation>Randbedingung Abstand hinzufügen</translation>
+      <translation>Längenbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1378"/>
@@ -1633,21 +1633,21 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="2414"/>
       <location filename="../../CommandConstraints.cpp" line="2612"/>
       <source>Add Distance constraint</source>
-      <translation>Randbedingung Abstand festlegen hinzufügen</translation>
+      <translation>Abstandsbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1785"/>
       <location filename="../../CommandConstraints.cpp" line="1814"/>
       <location filename="../../CommandConstraints.cpp" line="1848"/>
       <source>Add 'Horizontal' constraints</source>
-      <translation>Randbedingungen 'Horizontal festlegen' hinzufügen</translation>
+      <translation>'Horizontale' Beschränkungen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1789"/>
       <location filename="../../CommandConstraints.cpp" line="1821"/>
       <location filename="../../CommandConstraints.cpp" line="1855"/>
       <source>Add 'Vertical' constraints</source>
-      <translation>Randbedingungen 'Vertikal festlegen' hinzufügen</translation>
+      <translation>'Vertikale' Beschränkungen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1804"/>
@@ -1659,33 +1659,33 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="1827"/>
       <location filename="../../CommandConstraints.cpp" line="1999"/>
       <source>Add Symmetry constraints</source>
-      <translation>Randbedingungen Symmetrie festlegen hinzufügen</translation>
+      <translation>Symmetriebeschränkungen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1872"/>
       <location filename="../../CommandConstraints.cpp" line="1884"/>
       <source>Add Distance constraints</source>
-      <translation>Randbedingungen Abstand festlegen hinzufügen</translation>
+      <translation>Abstandsbeschränkungen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1930"/>
       <source>Add Horizontal constraint</source>
-      <translation>Randbedingung Horizontal festlegen hinzufügen</translation>
+      <translation>Horizontale Beschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1935"/>
       <source>Add Vertical constraint</source>
-      <translation>Randbedingung Vertikal festlegen hinzufügen</translation>
+      <translation>Vertikale Beschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1939"/>
       <source>Add Block constraint</source>
-      <translation>Randbedingung Fixieren hinzufügen</translation>
+      <translation>Blockbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1954"/>
       <source>Add Angle constraint</source>
-      <translation>Randbedingung Winkel festlegen hinzufügen</translation>
+      <translation>Winkelbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1964"/>
@@ -1693,19 +1693,19 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="2091"/>
       <location filename="../../CommandConstraints.cpp" line="2129"/>
       <source>Add Equality constraint</source>
-      <translation>Randbedingung Gleichheit festlegen hinzufügen</translation>
+      <translation>Gleichheitsbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1975"/>
       <source>Add Equality constraints</source>
-      <translation>Randbedingungen Gleichheit festlegen hinzufügen</translation>
+      <translation>Gleichheitsbeschränkungen hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2023"/>
       <location filename="../../CommandConstraints.cpp" line="2033"/>
       <location filename="../../CommandConstraints.cpp" line="2046"/>
       <source>Add Radius constraint</source>
-      <translation>Randbedingung Radius festlegen hinzufügen</translation>
+      <translation>Radiusbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2027"/>
@@ -1716,12 +1716,12 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../CommandConstraints.cpp" line="2071"/>
       <source>Add concentric and length constraint</source>
-      <translation>Randbedingung Konzentrisch und Länge festlegen hinzufügen</translation>
+      <translation>Konzentrische und Längenbeschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2590"/>
       <source>Add DistanceX constraint</source>
-      <translation>Randbedingung Länge X festlegen hinzufügen</translation>
+      <translation>AbstandX Beschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2601"/>
@@ -1893,7 +1893,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Create a new sketch</source>
-      <translation>Neue Skizze erstellen</translation>
+      <translation>Erstellt eine neue Skizze</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
@@ -1992,7 +1992,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Verrundung erstellen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Kante zuschneiden</translation>
     </message>
@@ -2232,59 +2232,59 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Fehler automatische Randbedingungen: unlösbare Skizze nach dem Anwenden von gleichheits Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Der Schnittpunkt der Kurven kann nicht ermittelt werden. Die Randbedingung Koinzidenz festlegen, angewendet auf die Endpunkte der Kurven, die verrundet werden sollen, kann hier helfen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Sie fordern keine Änderung in der Multiplizität der Knoten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten Sie, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ein Knoten kann nicht die Vielfachheit Null haben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Die Vielfachheit kann nicht höher als der Grad des B-Splines sein.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knoten kann nicht außerhalb des BSpline-Parameterbereichs eingefügt werden.</translation>
     </message>
@@ -3042,7 +3042,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Eine maßliche Randbedingung aus der Skizze auswählen.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9903"/>
@@ -3507,7 +3507,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Hide constraints</source>
-      <translation>Einschränkungen ausblenden</translation>
+      <translation>Beschränkungen ausblenden</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="586"/>
@@ -4132,7 +4132,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="212"/>
       <source>Dimension constraint</source>
-      <translation>Maßliche Randbedingung</translation>
+      <translation>Randbedingung zum Bemaßen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
@@ -4171,7 +4171,7 @@ Diese Einstellung ist nur für die Werkzeugleiste. Unabhängig von der Auswahl s
     <message>
       <location filename="../../SketcherSettings.ui" line="218"/>
       <source>Dimensioning constraints:</source>
-      <translation>Maßliche Randbedingungen:</translation>
+      <translation>Werkzeuge für Maßeintäge:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="236"/>
@@ -4710,7 +4710,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1813"/>
       <location filename="../../TaskSketcherElements.cpp" line="1819"/>
       <source>Construction</source>
-      <translation>Konstruktion</translation>
+      <translation>Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1162"/>
@@ -4847,7 +4847,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="147"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select the unconstrained elements.</source>
-      <translation>Die Skizze hat nicht bestimmte Elemente, die diese Freiheitsgrade ergeben. Hier klicken, um die nicht bestimmten Elemente auszuwählen.</translation>
+      <translation>Die Skizze enthält nicht bestimmte Elemente, die diese Freiheitsgrade ergeben. Hier klicken, um die nicht bestimmten Elemente auszuwählen.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="150"/>
@@ -5342,7 +5342,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="355"/>
       <source>Create a rounded rectangle</source>
-      <translation>Ein abgerundetes Rechteck erstellen</translation>
+      <translation>Erstellt ein abgerundetes Rechteck</translation>
     </message>
   </context>
   <context>
@@ -5374,7 +5374,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="343"/>
       <source>Create a rectangle</source>
-      <translation>Ein Rechteck erstellen</translation>
+      <translation>Erstellt ein Rechteck</translation>
     </message>
   </context>
   <context>
@@ -5382,7 +5382,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="349"/>
       <source>Create a centered rectangle</source>
-      <translation>Ein zentriertes Rechteck erstellen</translation>
+      <translation>Erstellt ein zentriertes Rechteck</translation>
     </message>
   </context>
   <context>
@@ -6030,17 +6030,17 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Die Skizze enthält fehlerhafte Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Die Skizze enthält teilweise redundante Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabeln wurden intern umstrukturiert. Solche Dateien lassen sich mit früheren Versionen von FreeCAD nicht mehr öffnen!!
@@ -6080,9 +6080,9 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
-      <translation>Fehlermeldungen</translation>
+      <translation>Fehler</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2092"/>
@@ -6264,7 +6264,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Kante hinzufügen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Trimmen der Kante fehlgeschlagen</translation>
     </message>
@@ -6479,7 +6479,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Bemaßung</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
@@ -6509,7 +6509,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Bemaßung</translation>
+      <translation>Abmessung</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
@@ -6722,7 +6722,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
       <source>Create two rectangles with a constant offset.</source>
-      <translation>Zwei Rechtecke mit einem konstanten Versatz erstellen.</translation>
+      <translation>Erstellt zwei Rechtecke mit konstantem Abstand.</translation>
     </message>
   </context>
   <context>
@@ -6829,7 +6829,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Darstellung</translation>
+      <translation>Erscheinungsbild</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -6876,12 +6876,12 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="152"/>
       <source>Constrained</source>
-      <translation>Beschränkt</translation>
+      <translation>Bestimmt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="165"/>
       <source>Unconstrained</source>
-      <translation>Unbeschränkt</translation>
+      <translation>Nicht bestimmt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="172"/>
@@ -6906,7 +6906,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained edge color in edit mode</source>
-      <translation>Farbe von vollständig bestimmten Kanten im Bearbeitungsmodus</translation>
+      <translation>Farbe der vollständig bestimmten Kanten im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
@@ -6916,7 +6916,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of edges being edited</source>
-      <translation>Farbe der bearbeiteten Kanten</translation>
+      <translation>Farbe der Kanten in Bearbeitung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
@@ -6936,12 +6936,12 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation>Farbe für vollständig bestimmte Hilfslinien im Bearbeitungsmodus</translation>
+      <translation>Farbe der vollständig bestimmten Hilfslinien im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="332"/>
       <source>Color of construction geometry in edit mode</source>
-      <translation>Farbe für Hilfslinien im Bearbeitungsmodus</translation>
+      <translation>Farbe der Hilfslinien im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="352"/>
@@ -6961,12 +6961,12 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation>Farbe von vollständig bestimmten internen Ausrichtungen im Bearbeitungsmodus</translation>
+      <translation>Farbe der vollständig bestimmten internen Ausrichtungen im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of edges of internal alignment geometry</source>
-      <translation>Farbe von Kanten mit innerer Ausrichtung</translation>
+      <translation>Farbe der Kanten für Geometrie zur inneren Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
@@ -6986,7 +6986,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="494"/>
       <source>Color of external geometry in edit mode</source>
-      <translation>Farbe von externer Geometrie im Bearbeitungsmodus</translation>
+      <translation>Farbe der externen Geometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="514"/>
@@ -7031,7 +7031,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="645"/>
       <source>Color of driving constraints in edit mode</source>
-      <translation>Farbe für festlegende Einschränkungen im Bearbeitungsmodus</translation>
+      <translation>Farbe der festlegenden Randbedingungen im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="665"/>
@@ -7041,12 +7041,12 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints</source>
-      <translation>Farbe für festlegende maßliche Randbedingungen</translation>
+      <translation>Farbe der festlegenden maßlichen Randbedingungen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="692"/>
       <source>Reference constraint</source>
-      <translation>Referenz Randbedingung</translation>
+      <translation>Referenz-Randbedingung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="699"/>
@@ -7081,7 +7081,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
       <source>Color of vertices</source>
-      <translation>Farbe der Eckpunkte</translation>
+      <translation>Farbe der Knoten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
@@ -7226,7 +7226,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
       <location filename="../../CommandCreateGeo.cpp" line="555"/>
       <location filename="../../CommandCreateGeo.cpp" line="557"/>
       <source>Create an arc by its center and by its endpoints</source>
-      <translation>Kreisbogen mit Mittelpunkt und durch die Endpunkte erstellen</translation>
+      <translation>Erstellt einen Kreisbogen um den Mittelpunkt und durch die Endpunkte</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="468"/>
@@ -7428,7 +7428,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Den Wert der maßlichen Randbedingung ändern</translation>
     </message>
   </context>
   <context>

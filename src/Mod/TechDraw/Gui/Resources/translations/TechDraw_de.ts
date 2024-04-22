@@ -1958,7 +1958,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>Erzeuge eine unterbrochene Ansicht</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1003"/>
@@ -2063,7 +2063,7 @@
       <translation>Maß ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Hinweisfeld erstellen</translation>
     </message>
@@ -2738,12 +2738,12 @@
     <message>
       <location filename="../../Command.cpp" line="479"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
-      <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
+      <translation>Bitte Objekte auswählen, die unterbrochen werden sollen, oder eine Basis-Ansicht und definierende Unterbrechungs-Objekte.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>Kein Unterbrechungs-Objekt in der Auswahl gefunden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
@@ -8794,7 +8794,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Seite</translation>
     </message>
@@ -8802,7 +8802,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Vorlage</translation>
     </message>
@@ -8810,7 +8810,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Ansicht</translation>
     </message>
@@ -8818,7 +8818,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Ansicht</translation>
     </message>
@@ -8826,7 +8826,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Schnitt</translation>
     </message>
@@ -8834,7 +8834,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Schnitt</translation>
     </message>
@@ -8842,7 +8842,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Detail</translation>
     </message>
@@ -8850,7 +8850,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Aktive Ansicht</translation>
     </message>
@@ -8858,7 +8858,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Anmerkung</translation>
     </message>
@@ -8866,7 +8866,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Grafik</translation>
     </message>
@@ -8874,7 +8874,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Schweißnahtsymbol</translation>
     </message>
@@ -8882,7 +8882,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Bogen</translation>
     </message>
@@ -8890,7 +8890,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Draft</translation>
     </message>
@@ -8898,7 +8898,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Hinweislinie</translation>
     </message>
@@ -8906,7 +8906,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Hinweisfeld</translation>
     </message>
@@ -8914,7 +8914,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Maß</translation>
     </message>
@@ -8922,7 +8922,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Umfang</translation>
     </message>
@@ -8930,7 +8930,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Schraffur</translation>
     </message>
@@ -8938,7 +8938,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>Geometrische Schraffur</translation>
     </message>
@@ -9473,7 +9473,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../Command.cpp" line="440"/>
       <location filename="../../Command.cpp" line="441"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>Unterbrochene Ansicht einfügen</translation>
     </message>
   </context>
 </TS>

@@ -553,8 +553,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Если флажок установлен, результирующие объекты в массиве будут сливаться, если они соприкасаются друг с другом.
-Это работает только в том случае, если «массив ссылок» отключен.</translation>
+      <translation>Если отмечено, то результирующие объекты в массиве будут слиты, если касаются друг друга.
+Это работает только в том случае, если "Связь массивов" отключена.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -565,13 +565,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Если флажок установлен, результирующий объект будет «массивом ссылок» вместо обычного массива.
-Массив Link более эффективен при создании нескольких копий, но его нельзя объединить вместе.</translation>
+      <translation>Если отмечено, результирующим объектом будет "Массив ссылок" вместо обычного массива.
+Массив ссылок более эффективен при создании нескольких копий, но к нему нельзя применить операцию слияния.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>Массив ссылок</translation>
+      <translation>Массив из связанных объектов</translation>
     </message>
   </context>
   <context>
@@ -650,25 +650,25 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Если отмечено, то результирующие объекты в массиве будут слиты, если касаются друг друга.
-Это работает только в том случае, если "Связь массивов" отключена.</translation>
+      <translation>Если флажок установлен, результирующие объекты в массиве будут сливаться, если они соприкасаются друг с другом.
+Это работает только в том случае, если «массив ссылок» отключен.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Объединение</translation>
+      <translation>Слияние</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Если отмечено, результирующим объектом будет "Массив ссылок" вместо обычного массива.
-Массив ссылок более эффективен при создании нескольких копий, но к нему нельзя применить операцию слияния.</translation>
+      <translation>Если флажок установлен, результирующий объект будет «массивом ссылок» вместо обычного массива.
+Массив Link более эффективен при создании нескольких копий, но его нельзя объединить вместе.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>Массив из связанных объектов</translation>
+      <translation>Массив ссылок</translation>
     </message>
   </context>
   <context>
@@ -1096,7 +1096,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="356"/>
       <source>Tick-2</source>
-      <translation>Зацепление-2</translation>
+      <translation>Засечка-2</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
@@ -1397,42 +1397,55 @@ Only for the splitFaces and makeShell options.</source>
       <translation>Сохранять имена лиц во время понижения/улучшения</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="256"/>
+      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <source>This is a delay during which the mouse is inactive, after entering numbers
+manually in any of the coordinate fields. Setting this to 0 disables the delay.
+If a delay of 1 is set, after entering a numeric value, the mouse will not
+update the field anymore during one second, to avoid moving the mouse
+accidentally and modifying the entered value.</source>
+      <translation type="unfinished">This is a delay during which the mouse is inactive, after entering numbers
+manually in any of the coordinate fields. Setting this to 0 disables the delay.
+If a delay of 1 is set, after entering a numeric value, the mouse will not
+update the field anymore during one second, to avoid moving the mouse
+accidentally and modifying the entered value.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="296"/>
       <source>Max. number of editable objects</source>
       <translation>Макс. количество редактируемых объектов</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="295"/>
+      <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
       <translation>Изменить радиус выбора узла</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="302"/>
+      <location filename="../ui/preferences-draft.ui" line="335"/>
       <source>The pick radius of edit nodes</source>
       <translation>Радиус выбора редактируемых узлов</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="324"/>
+      <location filename="../ui/preferences-draft.ui" line="357"/>
       <source>Label prefix for clones</source>
       <translation>Префикс метки для клонов</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="337"/>
+      <location filename="../ui/preferences-draft.ui" line="370"/>
       <source>The default prefix added to the label of new clones</source>
       <translation>Префикс по умолчанию добавляется к метке новых клонов</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="353"/>
+      <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction group label</source>
       <translation>Метка группы конструкции</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="366"/>
+      <location filename="../ui/preferences-draft.ui" line="399"/>
       <source>The default label for the construction geometry group</source>
       <translation>Метка по умолчанию для группы вспомогательной геометрии</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="389"/>
+      <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
       <translation>Цвет по умолчанию для объектов чертежа в режиме строительства</translation>
     </message>
@@ -1452,22 +1465,22 @@ Only for the splitFaces and makeShell options.</source>
       <translation>Выбор базовых объектов после копирования</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="369"/>
+      <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction</source>
       <translation>Конструктор</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="382"/>
+      <location filename="../ui/preferences-draft.ui" line="415"/>
       <source>Construction geometry color</source>
       <translation>Цвет вспомогательной геометрии</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="423"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="316"/>
       <source>Draft classic style</source>
       <translation>Классический стиль эскиза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="428"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="321"/>
       <source>Bitsnpieces style</source>
       <translation>Стиль мелочовка (Bitsnpieces)</translation>
     </message>
@@ -1654,7 +1667,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
       <translation>Ширина линии по умолчанию</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="305"/>
+      <location filename="../ui/preferences-draft.ui" line="338"/>
       <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <source> px</source>
       <translation> пикс.</translation>
@@ -1692,7 +1705,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="289"/>
       <source>Tick-2</source>
-      <translation>Засечка-2</translation>
+      <translation>Зацепление-2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="297"/>
@@ -2225,58 +2238,58 @@ This might fail for post DXF R12 templates.</source>
       <translation>Сетка и привязка</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="331"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="420"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="455"/>
       <location filename="../ui/preferences-draftsnap.ui" line="493"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="302"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>Always snap</source>
       <translation>Всегда привязка</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="385"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="391"/>
       <source>Snap modifier</source>
       <translation>Модификатор привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="452"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="407"/>
       <source>The Snap modifier key</source>
       <translation>Клавиша модификатор привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="336"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="470"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="460"/>
       <location filename="../ui/preferences-draftsnap.ui" line="498"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="341"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="475"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="430"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
       <location filename="../ui/preferences-draftsnap.ui" line="503"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="392"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
       <source>Constrain modifier</source>
       <translation>Модификатор ограничения</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="445"/>
       <source>The Constrain modifier key</source>
       <translation>Клавиша-модификатор ограничения</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="399"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="473"/>
       <source>Alt modifier</source>
       <translation>Альтернативный модификатор</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="318"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="480"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
       <translation>Ключ модификатора Alt. Функция ключа зависит от команды.</translation>
     </message>
@@ -2293,7 +2306,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
       <translation>Расстояние между линиями сетки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>The maximum number of objects Draft Edit is allowed to process at the same time</source>
       <translation>Максимальное количество объектов, которые Draft Edit может обрабатываться одновременно</translation>
     </message>
@@ -2415,54 +2428,37 @@ These lines are thicker than normal grid lines.</source>
       <translation>Клавиши привязки и модификации</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="436"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
       <source>Snap symbol style</source>
       <translation>Стиль символа привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="511"/>
+      <location filename="../ui/preferences-draft.ui" line="256"/>
       <source>Mouse delay</source>
       <translation>Задержка мыши</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="518"/>
-      <source>This is a delay during which the mouse is inactive, after entering
-numbers manually in any of the coordinate fields. Setting this
-to 0 disables the delay. If a delay of 1 is set, after entering a numeric
-value, the mouse will not update the field anymore during one
-second, to avoid moving the mouse accidentally and modifying the
-entered value. If you use a very large value, e.g. 3600, the mouse
-movement will be disabled until the command finishes.</source>
-      <translation>Это задержка, в течение которой мышь неактивна, после ввода
-числа вручную в любом из полей координат. Установка этого
-значение 0 отключает задержку. Если установлена задержка 1, после ввода числового
-значение, мышь больше не будет обновлять поле в течение одного
-во-вторых, чтобы избежать случайного перемещения мыши и изменения
-введенное значение. Если вы используете очень большое значение, например. 3600, мышь
-движение будет отключено до завершения команды.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="527"/>
+      <location filename="../ui/preferences-draft.ui" line="270"/>
       <source> seconds</source>
       <translation> секунд</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="413"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="306"/>
       <source>The style for snap symbols</source>
       <translation>Стиль символов привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="406"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="342"/>
       <source>Snap symbol color</source>
       <translation>Цвет символа привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="362"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="349"/>
       <source>The color for snap symbols</source>
       <translation>Цвет символов привязки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="369"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
       <translation>Если этот флажок установлен, привязка активируется без необходимости нажимать клавишу-модификатор привязки</translation>
     </message>
@@ -2947,8 +2943,8 @@ movement will be disabled until the command finishes.</source>
     <message>
       <location filename="../../DraftGui.py" line="492"/>
       <location filename="../../DraftGui.py" line="520"/>
-      <location filename="../../DraftGui.py" line="1461"/>
-      <location filename="../../DraftGui.py" line="1476"/>
+      <location filename="../../DraftGui.py" line="1464"/>
+      <location filename="../../DraftGui.py" line="1479"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3174,8 +3170,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     </message>
     <message>
       <location filename="../../DraftGui.py" line="612"/>
-      <location filename="../../DraftGui.py" line="1464"/>
-      <location filename="../../DraftGui.py" line="1479"/>
+      <location filename="../../DraftGui.py" line="1467"/>
+      <location filename="../../DraftGui.py" line="1482"/>
       <source>Autogroup off</source>
       <translation>Автогруппирование выключено</translation>
     </message>
@@ -3269,32 +3265,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Глобальный {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1475"/>
       <source>Autogroup:</source>
       <translation>Автогруппировка:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1611"/>
+      <location filename="../../DraftGui.py" line="1614"/>
       <source>Modify objects</source>
       <translation>Изменить объекты</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1760"/>
+      <location filename="../../DraftGui.py" line="1763"/>
       <source>Faces</source>
       <translation>Грани</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1761"/>
+      <location filename="../../DraftGui.py" line="1764"/>
       <source>Remove</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1765"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1766"/>
       <source>Facebinder elements</source>
       <translation>Элементы связывания фасок (граней)</translation>
     </message>
@@ -4797,24 +4793,24 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/patharray.py" line="420"/>
       <source>migrated 'PathObj' property to 'PathObject'</source>
-      <translation type="unfinished">migrated 'PathObj' property to 'PathObject'</translation>
+      <translation>перенесено свойство 'PathObj' в 'PathObject'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="424"/>
       <source>migrated 'PathSubs' property to 'PathSubelements'</source>
-      <translation type="unfinished">migrated 'PathSubs' property to 'PathSubelements'</translation>
+      <translation>свойство PathSubs перенесено в PathSubelements</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="428"/>
       <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation type="unfinished">migrated 'Xlate' property to 'ExtraTranslation'</translation>
+      <translation>перенесено свойство 'Xlate' в режим 'ExtraTranslation'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="431"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
       <location filename="../../draftobjects/pointarray.py" line="145"/>
       <source>added 'Fuse' property</source>
-      <translation type="unfinished">added 'Fuse' property</translation>
+      <translation>добавлено свойство «Предохранитель»</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
@@ -5498,12 +5494,12 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="139"/>
       <source>added 'ExtraPlacement' property</source>
-      <translation type="unfinished">added 'ExtraPlacement' property</translation>
+      <translation>добавлено свойство «Дополнительное размещение»</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
-      <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
+      <translation>свойство PointList перенесено в PointObject</translation>
     </message>
   </context>
   <context>
@@ -5691,7 +5687,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="158"/>
       <source>Copy</source>
-      <translation>Скопировать</translation>
+      <translation>Копировать</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="159"/>
@@ -5747,7 +5743,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="280"/>
       <source>Draw style</source>
-      <translation>Стиль рисования</translation>
+      <translation>Стиль представления</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="281"/>
@@ -5777,7 +5773,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftobjects/label.py" line="325"/>
       <source>Custom</source>
-      <translation>Произвольный</translation>
+      <translation>Дополнительно</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="327"/>
@@ -6245,7 +6241,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_move.py" line="60"/>
       <source>Move</source>
-      <translation>Перемещение</translation>
+      <translation>Переместить</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="63"/>
@@ -6330,7 +6326,7 @@ CTRL для привязки, SHIFT для ограничения.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="258"/>
       <source>Edit</source>
-      <translation>Редактировать</translation>
+      <translation>Правка</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
@@ -6551,7 +6547,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="57"/>
       <source>Polygon</source>
-      <translation>Многоугольник</translation>
+      <translation>Многоугольник, Полигон</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
@@ -8302,7 +8298,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Черновик</translation>
+      <translation>Притяжка</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

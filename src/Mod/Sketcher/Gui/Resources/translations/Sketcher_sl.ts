@@ -1113,7 +1113,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Pripni očrt ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1991,7 +1991,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Ustvari zaokrožitev</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Prireži rob</translation>
     </message>
@@ -2231,59 +2231,59 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt po uveljavitiv enakostnega omejila.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ni mogoče uganiti presečišča krivulj. Poskusite dodati omejilo sovpadanja med vozlišči krivulj, ki jih nameravate zaokrožiti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Kazalo geometrije B-zlepka (GeoID) je izven omejitev.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate spremembe večkratnosti vozla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Priskrbljeno kazalo geometrije (GeoId) ni krivulja B-zlepek.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Oznaka vozla je izven meja. Upoštevajte, da ima v skladu z OCC zapisom prvi vozel oznako 1 in ne nič.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Večkratnost ne more biti povečana preko stopnje B-zlepka.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Večkratnost ne more biti zmanjšana pod ničlo.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne more zmanjšati večkratnost znotraj največjega dopustnega odstopanja.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Večkratnost vozla ne more biti nič.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Večkratnost vozla ne more biti večja od stopnje B-zlepka.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Vozla ni mogoče vstaviti izven razpona določilke B-zlepka.</translation>
     </message>
@@ -3041,7 +3041,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Izberite na očrtu eno omejitev mere.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9903"/>
@@ -6033,17 +6033,17 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Očrt vsebuje narobe oblikovana omejila!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Očrt vsebuje deloma čezmerna omejila!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole so bile preseljene. Preseljenih datotek ne bo mogoče odpreti v prejšnjih FreeCADih!
@@ -6083,7 +6083,7 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
@@ -6267,7 +6267,7 @@ Medčrtna razdalja se spremeni, če postane manjša od tega števila slikovnih t
       <translation>Dodajanje roba spodletelo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Prirezovanje roba spodletelo</translation>
     </message>
@@ -7430,7 +7430,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Spremeni vrednost omejila mere</translation>
     </message>
   </context>
   <context>

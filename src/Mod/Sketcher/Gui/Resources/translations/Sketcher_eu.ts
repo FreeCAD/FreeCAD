@@ -1993,7 +1993,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <translation>Sortu biribiltzea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Muxarratu ertza</translation>
     </message>
@@ -2233,59 +2233,59 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa berdintasun-murrizketak aplikatu ondoren.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ezin izan da kurben ebakidura antzeman. Saiatu bat datorren murrizketa bat gehitzen biribildu nahi dituzun kurben erpinen artean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline geometria-indizea (GeoID) mugetatik kanpo dago.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Adabegi-aniztasunean aldaketarik ez egitea eskatzen ari zara.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Hornitutako geometria-indizea (GeoId) ez da Bspline kurba bat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Adabegi-indizea mugetatik kanpo dago. Kontuan izan, OCC notazioaren arabera, lehen adabegiaren indize-zenbakiak 1 izan behar duela, ez 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Aniztasuna ezin da handitu Bspline-aren gradutik gora.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Aniztasuna ezin da txikitu zerotik behera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-k ezin du aniztasuna txikitu tolerantzia maximoaren barruan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Adabegi-aniztasunak ezin du izan B-spline kurbaren graduak baino handiagoa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Adabegia ezin da txertatu B-spline parametro-barrutiaren kanpoaldean.</translation>
     </message>
@@ -6034,17 +6034,17 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Krokisak gaizki eratutako murrizketak ditu!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Krokisak partzialki erredundanteak diren murrizketak ditu!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
@@ -6083,7 +6083,7 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
@@ -6267,7 +6267,7 @@ Sareta-tartea aldatuko da pixel-zenbaki hau baino txikiagoa bihurtzen bada.</tra
       <translation>Huts egin du ertza gehitzeak</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Huts egin du ertza muxarratzeak</translation>
     </message>

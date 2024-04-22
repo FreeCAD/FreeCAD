@@ -635,14 +635,14 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../Gui/Array2D.cpp" line="166"/>
-        <location filename="../../Gui/ListEdit.cpp" line="139"/>
+        <location filename="../../Gui/ListEdit.cpp" line="142"/>
         <location filename="../../Gui/MaterialSave.cpp" line="561"/>
         <source>Confirm Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/Array2D.cpp" line="168"/>
-        <location filename="../../Gui/ListEdit.cpp" line="141"/>
+        <location filename="../../Gui/ListEdit.cpp" line="144"/>
         <source>Are you sure you want to delete the row?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -681,12 +681,12 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-        <location filename="../../Gui/MaterialDelegate.cpp" line="444"/>
+        <location filename="../../Gui/MaterialDelegate.cpp" line="449"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialDelegate.cpp" line="445"/>
+        <location filename="../../Gui/MaterialDelegate.cpp" line="450"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
@@ -709,6 +709,11 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Gui/ListEdit.ui" line="14"/>
         <source>List Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/ListEdit.ui" line="41"/>
+        <source>Delete Row</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -766,12 +771,12 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-        <location filename="../../Gui/BaseDelegate.cpp" line="439"/>
+        <location filename="../../Gui/BaseDelegate.cpp" line="441"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/BaseDelegate.cpp" line="440"/>
+        <location filename="../../Gui/BaseDelegate.cpp" line="442"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>

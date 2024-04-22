@@ -1179,7 +1179,7 @@ megjegyzések méretarány modulban beállított skálának. Ha a méretarány 1
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>Arrow size</source>
-      <translation>Nyíl méret</translation>
+      <translation>Nyíl mérete</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
@@ -1402,42 +1402,55 @@ Csak a felület szétválasztás és a zsebkészítés beállítások esetében.
       <translation>Tartsa meg az felület nevét a visszaállítás/frissítés során</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="256"/>
+      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <source>This is a delay during which the mouse is inactive, after entering numbers
+manually in any of the coordinate fields. Setting this to 0 disables the delay.
+If a delay of 1 is set, after entering a numeric value, the mouse will not
+update the field anymore during one second, to avoid moving the mouse
+accidentally and modifying the entered value.</source>
+      <translation type="unfinished">This is a delay during which the mouse is inactive, after entering numbers
+manually in any of the coordinate fields. Setting this to 0 disables the delay.
+If a delay of 1 is set, after entering a numeric value, the mouse will not
+update the field anymore during one second, to avoid moving the mouse
+accidentally and modifying the entered value.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="296"/>
       <source>Max. number of editable objects</source>
       <translation>Szerkeszthető tárgyak maximális száma</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="295"/>
+      <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
       <translation>Csomópontkiválasztó sugár szerkesztése</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="302"/>
+      <location filename="../ui/preferences-draft.ui" line="335"/>
       <source>The pick radius of edit nodes</source>
       <translation>A szerkesztési csomópontok kiválasztó sugara</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="324"/>
+      <location filename="../ui/preferences-draft.ui" line="357"/>
       <source>Label prefix for clones</source>
       <translation>Címke előtag a klónokhoz</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="337"/>
+      <location filename="../ui/preferences-draft.ui" line="370"/>
       <source>The default prefix added to the label of new clones</source>
       <translation>Az új klónok címkéjéhez hozzáadott alapértelmezett előtag</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="353"/>
+      <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction group label</source>
       <translation>Építési csoport címkéje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="366"/>
+      <location filename="../ui/preferences-draft.ui" line="399"/>
       <source>The default label for the construction geometry group</source>
       <translation>Az építési geometria csoport alapértelmezett címkéje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="389"/>
+      <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
       <translation>A tervrajz tárgyak alapértelmezett színe építési módban</translation>
     </message>
@@ -1457,22 +1470,22 @@ Csak a felület szétválasztás és a zsebkészítés beállítások esetében.
       <translation>Válassza ki a bázis objektumokat másolás után</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="369"/>
+      <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction</source>
       <translation>Építési</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="382"/>
+      <location filename="../ui/preferences-draft.ui" line="415"/>
       <source>Construction geometry color</source>
       <translation>Építési geometria színe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="423"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="316"/>
       <source>Draft classic style</source>
       <translation>Klasszikus stílusú tervrajz</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="428"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="321"/>
       <source>Bitsnpieces style</source>
       <translation>Bitekésdarabok stílus</translation>
     </message>
@@ -1659,7 +1672,7 @@ megjegyzések méretarány modulban beállított skálának. Ha a méretarány 1
       <translation>Alapértelmezett vonalszélesség</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="305"/>
+      <location filename="../ui/preferences-draft.ui" line="338"/>
       <location filename="../ui/preferences-drafttexts.ui" line="220"/>
       <source> px</source>
       <translation> px</translation>
@@ -1702,7 +1715,7 @@ megjegyzések méretarány modulban beállított skálának. Ha a méretarány 1
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="297"/>
       <source>Arrow size</source>
-      <translation>Nyíl mérete</translation>
+      <translation>Nyíl méret</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="304"/>
@@ -2234,58 +2247,58 @@ Ez sikertelen lehet a DXF R12 utáni sablonokon.</translation>
       <translation>Rács és illesztés</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="331"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="420"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="455"/>
       <location filename="../ui/preferences-draftsnap.ui" line="493"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="302"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>Always snap</source>
       <translation>Mindig illeszt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="385"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="391"/>
       <source>Snap modifier</source>
       <translation>Illesztés módosítók</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="452"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="407"/>
       <source>The Snap modifier key</source>
       <translation>Az illesztő módosító billentyű</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="336"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="470"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="460"/>
       <location filename="../ui/preferences-draftsnap.ui" line="498"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="341"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="475"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="430"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
       <location filename="../ui/preferences-draftsnap.ui" line="503"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="392"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
       <source>Constrain modifier</source>
       <translation>Kényszerítés módosító</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="445"/>
       <source>The Constrain modifier key</source>
       <translation>A kényszerítést módosító billentyű</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="399"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="473"/>
       <source>Alt modifier</source>
       <translation>Alt módosítók</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="318"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="480"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
       <translation>Az Alt módosító billentyű. Ennek a billentyűnek a funkciója a parancs függvénye.</translation>
     </message>
@@ -2302,7 +2315,7 @@ A tervrajz rácskapcsoló segítségével ezt az aktív nézetre vonatkozóan m�
       <translation>A rácsvonalak közötti távolság</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>The maximum number of objects Draft Edit is allowed to process at the same time</source>
       <translation>A tárgyak maximális száma, amelyet a tervrajz szerkesztő egyszerre feldolgozhat</translation>
     </message>
@@ -2423,54 +2436,37 @@ Ezek a vonalak vastagabbak, mint a normál rácsvonalak.</translation>
       <translation>Illesztő és módosító billentyűk</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="436"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
       <source>Snap symbol style</source>
       <translation>Illesztés szimbólumok stílusa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="511"/>
+      <location filename="../ui/preferences-draft.ui" line="256"/>
       <source>Mouse delay</source>
       <translation>Egér késleltetés</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="518"/>
-      <source>This is a delay during which the mouse is inactive, after entering
-numbers manually in any of the coordinate fields. Setting this
-to 0 disables the delay. If a delay of 1 is set, after entering a numeric
-value, the mouse will not update the field anymore during one
-second, to avoid moving the mouse accidentally and modifying the
-entered value. If you use a very large value, e.g. 3600, the mouse
-movement will be disabled until the command finishes.</source>
-      <translation>Ez egy olyan késleltetés, amely alatt az egér inaktív, miután belépett a
-számok kézzel történő beírása után a koordinátamezők bármelyikébe. Ennek
-0-ra állítása kikapcsolja a késleltetést. Ha 1 késleltetés van beállítva, akkor a numerikus érték beírása után, 
-az egér nem frissíti többé a mezőt egy
-másodpercig, hogy elkerüljük az egér véletlen mozgatását, és ne módosítsuk a
-beírt értéket. Ha nagyon nagy értéket használ, pl. 3600, az egér
-mozgását letiltja, amíg a parancs be nem fejeződik.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="527"/>
+      <location filename="../ui/preferences-draft.ui" line="270"/>
       <source> seconds</source>
       <translation> másodpercek</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="413"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="306"/>
       <source>The style for snap symbols</source>
       <translation>Az illesztés szimbólumok stílusa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="406"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="342"/>
       <source>Snap symbol color</source>
       <translation>Illesztés szimbólum színe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="362"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="349"/>
       <source>The color for snap symbols</source>
       <translation>Az illesztés szimbólumok színe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="369"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
       <translation>Ha ez bejelölt, az illesztéshez nincs szükség az illesztés módosítás gomb megnyomására</translation>
     </message>
@@ -2955,8 +2951,8 @@ mozgását letiltja, amíg a parancs be nem fejeződik.</translation>
     <message>
       <location filename="../../DraftGui.py" line="492"/>
       <location filename="../../DraftGui.py" line="520"/>
-      <location filename="../../DraftGui.py" line="1461"/>
-      <location filename="../../DraftGui.py" line="1476"/>
+      <location filename="../../DraftGui.py" line="1464"/>
+      <location filename="../../DraftGui.py" line="1479"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3183,8 +3179,8 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     </message>
     <message>
       <location filename="../../DraftGui.py" line="612"/>
-      <location filename="../../DraftGui.py" line="1464"/>
-      <location filename="../../DraftGui.py" line="1479"/>
+      <location filename="../../DraftGui.py" line="1467"/>
+      <location filename="../../DraftGui.py" line="1482"/>
       <source>Autogroup off</source>
       <translation>Autócsoportosítás kikapcsolása</translation>
     </message>
@@ -3278,32 +3274,32 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Globális {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1475"/>
       <source>Autogroup:</source>
       <translation>Autocsoport:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1611"/>
+      <location filename="../../DraftGui.py" line="1614"/>
       <source>Modify objects</source>
       <translation>Tárgyak módosítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1760"/>
+      <location filename="../../DraftGui.py" line="1763"/>
       <source>Faces</source>
       <translation>Felületek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1761"/>
+      <location filename="../../DraftGui.py" line="1764"/>
       <source>Remove</source>
       <translation>Eltávolítás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1765"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1766"/>
       <source>Facebinder elements</source>
       <translation>Felülettároló elemek</translation>
     </message>
@@ -4809,24 +4805,24 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="420"/>
       <source>migrated 'PathObj' property to 'PathObject'</source>
-      <translation type="unfinished">migrated 'PathObj' property to 'PathObject'</translation>
+      <translation>a 'PathObj' tulajdonság átkerült a 'PathObject' tulajdonságra</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="424"/>
       <source>migrated 'PathSubs' property to 'PathSubelements'</source>
-      <translation type="unfinished">migrated 'PathSubs' property to 'PathSubelements'</translation>
+      <translation>a 'PathSubs' tulajdonság átkerült a 'PathSubelements' tulajdonságra</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="428"/>
       <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation type="unfinished">migrated 'Xlate' property to 'ExtraTranslation'</translation>
+      <translation>az 'Xlate' tulajdonság a 'ExtraTranslation' tulajdonságra került</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="431"/>
       <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
       <location filename="../../draftobjects/pointarray.py" line="145"/>
       <source>added 'Fuse' property</source>
-      <translation type="unfinished">added 'Fuse' property</translation>
+      <translation>hozzáadta a 'Fuse' tulajdonságot</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
@@ -5509,12 +5505,12 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="139"/>
       <source>added 'ExtraPlacement' property</source>
-      <translation type="unfinished">added 'ExtraPlacement' property</translation>
+      <translation>hozzáadta a 'ExtraPlacement' tulajdonságot</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
-      <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
+      <translation>a 'PointList' tulajdonság átkerült a 'PointObject' tulajdonságra</translation>
     </message>
   </context>
   <context>
@@ -5937,7 +5933,7 @@ Az összekötött elrendezés több példány feldolgozásakor hatékonyabb, de 
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="63"/>
       <source>Label</source>
-      <translation>Felirat</translation>
+      <translation>Címke</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="66"/>
@@ -6848,7 +6844,7 @@ Ez zárt alakzatokhoz és szilárd testekhez készült, és nem befolyásolja a 
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>Méret</translation>
+      <translation>Dimenzió</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>

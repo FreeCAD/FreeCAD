@@ -784,34 +784,34 @@ Sınırlamala Bilgisi...</translation>
       <translation>Seçimi sil</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="959"/>
-      <location filename="../../ViewProvider.cpp" line="1020"/>
+      <location filename="../../ViewProvider.cpp" line="955"/>
+      <location filename="../../ViewProvider.cpp" line="1016"/>
       <source>Cut</source>
       <translation>Kes</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="969"/>
-      <location filename="../../ViewProvider.cpp" line="1090"/>
+      <location filename="../../ViewProvider.cpp" line="965"/>
+      <location filename="../../ViewProvider.cpp" line="1086"/>
       <source>Trim</source>
       <translation>Kırp</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1177"/>
+      <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Split</source>
       <translation>Ayır</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1250"/>
+      <location filename="../../ViewProvider.cpp" line="1246"/>
       <source>Segment</source>
       <translation>Bölüm</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1852"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1981"/>
+      <location filename="../../ViewProvider.cpp" line="1977"/>
       <source>Fill hole</source>
       <translation>Deliği doldur</translation>
     </message>
@@ -1959,7 +1959,7 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>seçim</translation>
+      <translation>Seçim</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -2282,48 +2282,48 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <translation>[Noktalar: %1, Kenarlar: %2, Yüzler: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="805"/>
+      <location filename="../../ViewProvider.cpp" line="801"/>
       <source>Display components</source>
       <translation>Ekran bileşenleri</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="813"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display segments</source>
       <translation>Parçaları görüntüle</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="821"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display colors</source>
       <translation>Ekran renkleri</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1683"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Bilgi modundan çık</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1750"/>
+      <location filename="../../ViewProvider.cpp" line="1746"/>
       <source>Index: %1</source>
       <translation>Dizin: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1776"/>
+      <location filename="../../ViewProvider.cpp" line="1772"/>
       <source>Leave hole-filling mode</source>
       <translation>Delik dolumu modundan çık</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1822"/>
       <source>Leave removal mode</source>
       <translation>Yaprak kaldırma modu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1827"/>
+      <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete selected faces</source>
       <translation>Seçilen yüzleri sil</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1828"/>
+      <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear selected faces</source>
       <translation>Seçili yüzleri temizle</translation>
     </message>

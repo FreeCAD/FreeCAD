@@ -1635,17 +1635,17 @@ X, Y és Z komponenseire.</translation>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="411"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="413"/>
       <source>Defeaturing</source>
       <translation>Alaksajátosság</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="414"/>
       <source>Remove feature from a shape</source>
       <translation>Tulajdonság eltávolítása egy alakzatról</translation>
     </message>
@@ -1653,17 +1653,17 @@ X, Y és Z komponenseire.</translation>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="323"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create shape element copy</source>
       <translation>Másolatot készíthet egy elem alakjáról</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
+      <location filename="../../CommandSimple.cpp" line="326"/>
       <source>Create a non-parametric copy of the selected shape element</source>
       <translation>A kijelölt alakzatelem nem paraméteres másolatának létrehozása</translation>
     </message>
@@ -1905,17 +1905,17 @@ X, Y és Z komponenseire.</translation>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="133"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
       <translation>Pont-tárgy létrehozása geometriából</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="135"/>
+      <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
       <translation>Választható pont-tárgy létrehozása kijelölt geometriai tárgyból</translation>
     </message>
@@ -1965,17 +1965,17 @@ irányát.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="351"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="353"/>
       <source>Refine shape</source>
       <translation>Alakzat finomítás</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
+      <location filename="../../CommandSimple.cpp" line="354"/>
       <source>Refine the copy of a shape</source>
       <translation>Alakzat másolatának finomítása</translation>
     </message>
@@ -2068,17 +2068,17 @@ irányát.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="104"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Create shape from mesh...</source>
       <translation>Alakzat létrehozása hálóból...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="106"/>
+      <location filename="../../CommandSimple.cpp" line="107"/>
       <source>Create shape from selected mesh object</source>
       <translation>Alakzat létrehozása a kijelölt háló objektumból</translation>
     </message>
@@ -2086,17 +2086,17 @@ irányát.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create simple copy</source>
       <translation>Készítsen egyszerű másolást</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
+      <location filename="../../CommandSimple.cpp" line="223"/>
       <source>Create a simple non-parametric copy</source>
       <translation>Hozzon létre egy egyszerű, nem parametrikus másolatot</translation>
     </message>
@@ -2104,17 +2104,17 @@ irányát.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="54"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create Cylinder...</source>
       <translation>Henger létrehozása...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="56"/>
+      <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
       <translation>Henger létrehozása</translation>
     </message>
@@ -2208,17 +2208,17 @@ irányát.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="295"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create transformed copy</source>
       <translation>Átalakított másolat létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
+      <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
       <translation>Nem paraméteres másolat létrehozása átalakított elhelyezéssel</translation>
     </message>
@@ -2297,22 +2297,22 @@ irányát.</translation>
       <translation>Zárható felület létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="69"/>
+      <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Part Cylinder</source>
       <translation>Alkatrész henger létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="180"/>
+      <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
       <translation>Pontok a geometriából</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="368"/>
+      <location filename="../../CommandSimple.cpp" line="369"/>
       <source>Refine shape</source>
       <translation>Alakzat finomítás</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="425"/>
+      <location filename="../../CommandSimple.cpp" line="426"/>
       <source>Defeaturing</source>
       <translation>Alaksajátosság</translation>
     </message>
@@ -2373,9 +2373,9 @@ irányát.</translation>
       <translation>Tükrözés szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>Felszínre vetít</translation>
     </message>
   </context>
   <context>
@@ -4053,7 +4053,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Dőlésszög:</translation>
+      <translation>Szög:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -6104,7 +6104,7 @@ Do you want to continue?</source>
       <translation>Összes méret eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="854"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set colors...</source>
       <translation>Színek beállítása...</translation>
     </message>
@@ -6139,7 +6139,7 @@ Do you want to continue?</source>
       <translation>Ellenőrző pontok megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="105"/>
       <source>Attachment editor</source>
       <translation>Csatolmány szerkesztő</translation>
     </message>
@@ -6149,19 +6149,19 @@ Do you want to continue?</source>
       <translation>Cső létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="172"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
       <translation>Távolság a paramétertérben</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
       <translation>Távolság megadása:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <translation>Kivetítés szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -6902,7 +6902,7 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>Az alakzatnak drótnak, élnek vagy összetettnek kell lennie. Valami mást szállítottak.</translation>
     </message>
@@ -6910,12 +6910,12 @@ A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</tran
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <location filename="../../../App/FaceMaker.cpp" line="281"/>
       <source>Simple</source>
       <translation>Egyszerű</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <location filename="../../../App/FaceMaker.cpp" line="286"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
     </message>

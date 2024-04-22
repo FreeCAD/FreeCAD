@@ -2063,7 +2063,7 @@
       <translation>Arrastrar Cota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Crear globo</translation>
     </message>
@@ -8806,7 +8806,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Página</translation>
     </message>
@@ -8814,7 +8814,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Plantilla</translation>
     </message>
@@ -8822,7 +8822,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Ver</translation>
     </message>
@@ -8830,7 +8830,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Ver</translation>
     </message>
@@ -8838,7 +8838,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Corte</translation>
     </message>
@@ -8846,7 +8846,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Corte</translation>
     </message>
@@ -8854,7 +8854,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Detalle</translation>
     </message>
@@ -8862,7 +8862,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Vista activa</translation>
     </message>
@@ -8870,7 +8870,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Anotación</translation>
     </message>
@@ -8878,7 +8878,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>
@@ -8886,7 +8886,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Símbolo</translation>
     </message>
@@ -8894,7 +8894,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Arquitectura</translation>
     </message>
@@ -8902,7 +8902,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Calado</translation>
     </message>
@@ -8910,7 +8910,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Línea de referencia</translation>
     </message>
@@ -8918,7 +8918,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Globo</translation>
     </message>
@@ -8926,7 +8926,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Cota</translation>
     </message>
@@ -8934,7 +8934,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Extensión</translation>
     </message>
@@ -8942,7 +8942,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Rayado</translation>
     </message>
@@ -8950,7 +8950,7 @@ hay un diálogo de tareas abiertas.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>RayadoGeométrico</translation>
     </message>

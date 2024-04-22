@@ -1668,13 +1668,13 @@ unitate cu care să lucreze la deschiderea fișierului.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
-      <location filename="../../ArchStructure.py" line="438"/>
+      <location filename="../../ArchStructure.py" line="441"/>
       <source>Beam</source>
       <translation>Grindă</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
-      <location filename="../../ArchStructure.py" line="439"/>
+      <location filename="../../ArchStructure.py" line="442"/>
       <source>Column</source>
       <translation>Coloana</translation>
     </message>
@@ -1726,26 +1726,26 @@ unitate cu care să lucreze la deschiderea fișierului.</translation>
       <translation>Următorul punct</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="433"/>
+      <location filename="../../ArchStructure.py" line="436"/>
       <source>Structure options</source>
       <translation>Opțiuni structură</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="437"/>
+      <location filename="../../ArchStructure.py" line="440"/>
       <source>Drawing mode</source>
       <translation>Mod desenare</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1628"/>
       <location filename="../../ArchProfile.py" line="153"/>
-      <location filename="../../ArchStructure.py" line="449"/>
+      <location filename="../../ArchStructure.py" line="452"/>
       <source>Category</source>
       <translation>Categorie</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="214"/>
       <location filename="../../ArchProfile.py" line="160"/>
-      <location filename="../../ArchStructure.py" line="456"/>
+      <location filename="../../ArchStructure.py" line="459"/>
       <location filename="../../ArchWindow.py" line="410"/>
       <source>Preset</source>
       <translation>Presetare</translation>
@@ -1754,170 +1754,170 @@ unitate cu care să lucreze la deschiderea fișierului.</translation>
       <location filename="../../ArchCommands.py" line="1011"/>
       <location filename="../../ArchPanel.py" line="224"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchStructure.py" line="465"/>
-      <location filename="../../ArchWall.py" line="516"/>
+      <location filename="../../ArchStructure.py" line="468"/>
+      <location filename="../../ArchWall.py" line="520"/>
       <source>Length</source>
       <translation>Lungime</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="231"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../ArchStructure.py" line="475"/>
-      <location filename="../../ArchWall.py" line="522"/>
+      <location filename="../../ArchStructure.py" line="478"/>
+      <location filename="../../ArchWall.py" line="526"/>
       <source>Width</source>
       <translation>Lăţime</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
-      <location filename="../../ArchStructure.py" line="482"/>
-      <location filename="../../ArchWall.py" line="528"/>
+      <location filename="../../ArchStructure.py" line="485"/>
+      <location filename="../../ArchWall.py" line="532"/>
       <source>Height</source>
       <translation>Înălţime</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="492"/>
+      <location filename="../../ArchStructure.py" line="495"/>
       <source>Switch L/H</source>
       <translation>Comutare L/H</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="494"/>
+      <location filename="../../ArchStructure.py" line="497"/>
       <source>Switch L/W</source>
       <translation>Comutare L/W</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="249"/>
-      <location filename="../../ArchStructure.py" line="498"/>
-      <location filename="../../ArchWall.py" line="542"/>
+      <location filename="../../ArchStructure.py" line="501"/>
+      <location filename="../../ArchWall.py" line="546"/>
       <source>Con&amp;tinue</source>
       <translation>Continuare</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="778"/>
+      <location filename="../../ArchStructure.py" line="779"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Eroare: Forma de bază nu a putut fi extrasă de-a lungul obiectului acestei unelte</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="804"/>
-      <location filename="../../ArchWall.py" line="967"/>
+      <location filename="../../ArchStructure.py" line="805"/>
+      <location filename="../../ArchWall.py" line="969"/>
       <source>This mesh is an invalid solid</source>
       <translation>Această plasă este un solid nevalid</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="524"/>
-      <location filename="../../ArchStructure.py" line="868"/>
+      <location filename="../../ArchPanel.py" line="522"/>
+      <location filename="../../ArchStructure.py" line="869"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker a returnat o eroare</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1183"/>
+      <location filename="../../ArchStructure.py" line="1184"/>
       <source>Node Tools</source>
       <translation>Unelte de modul</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1188"/>
+      <location filename="../../ArchStructure.py" line="1189"/>
       <source>Reset nodes</source>
       <translation>Réinitializare Noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchStructure.py" line="1196"/>
       <source>Edit nodes</source>
       <translation>Modul de editare</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1201"/>
+      <location filename="../../ArchStructure.py" line="1202"/>
       <source>Extend nodes</source>
       <translation>Extinde nodurile</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1202"/>
+      <location filename="../../ArchStructure.py" line="1203"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Extinde nodurile acestui element pentru a ajunge la nodurile altui element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1208"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <source>Connect nodes</source>
       <translation>Conectare Noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1209"/>
+      <location filename="../../ArchStructure.py" line="1210"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Conectează nodurile acestui element cu nodurile altui element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1215"/>
+      <location filename="../../ArchStructure.py" line="1216"/>
       <source>Toggle all nodes</source>
       <translation>Comută toate nodurile</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1216"/>
+      <location filename="../../ArchStructure.py" line="1217"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Activează/dezactivează toate nodurile structurale ale documentului pornit/oprit</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1221"/>
+      <location filename="../../ArchStructure.py" line="1222"/>
       <source>Extrusion Tools</source>
       <translation>Instrumente de extracție</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1226"/>
-      <location filename="../../ArchStructure.py" line="1360"/>
+      <location filename="../../ArchStructure.py" line="1227"/>
+      <location filename="../../ArchStructure.py" line="1361"/>
       <source>Select tool...</source>
       <translation>Selectează uneala...</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1227"/>
+      <location filename="../../ArchStructure.py" line="1228"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
       <translation>Selectați obiectul sau marginile pentru a fi folosite ca unealtă (cale de extrudare)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1250"/>
-      <location filename="../../ArchStructure.py" line="1282"/>
+      <location filename="../../ArchStructure.py" line="1251"/>
+      <location filename="../../ArchStructure.py" line="1283"/>
       <source>Choose another Structure object:</source>
       <translation>Alege alt obiect Structura:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1255"/>
-      <location filename="../../ArchStructure.py" line="1287"/>
+      <location filename="../../ArchStructure.py" line="1256"/>
+      <location filename="../../ArchStructure.py" line="1288"/>
       <source>The chosen object is not a Structure</source>
       <translation>Obiectul ales nu este o Structură</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1258"/>
-      <location filename="../../ArchStructure.py" line="1290"/>
+      <location filename="../../ArchStructure.py" line="1259"/>
+      <location filename="../../ArchStructure.py" line="1291"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Obiectul ales nu are noduri structurale</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1261"/>
-      <location filename="../../ArchStructure.py" line="1293"/>
+      <location filename="../../ArchStructure.py" line="1262"/>
+      <location filename="../../ArchStructure.py" line="1294"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Unul dintre aceste obiecte are mai mult de 2 noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1268"/>
-      <location filename="../../ArchStructure.py" line="1300"/>
+      <location filename="../../ArchStructure.py" line="1269"/>
+      <location filename="../../ArchStructure.py" line="1301"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Nu s-a putut găsi un punct potrivit de intersecție</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1271"/>
+      <location filename="../../ArchStructure.py" line="1272"/>
       <source>Intersection found.
 </source>
       <translation>S-a găsit intersecția.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1303"/>
+      <location filename="../../ArchStructure.py" line="1304"/>
       <source>Intersection found.</source>
       <translation>S-a găsit intersecția.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1339"/>
+      <location filename="../../ArchStructure.py" line="1340"/>
       <source>Done</source>
       <translation>Gata</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="756"/>
-      <location filename="../../ArchStructure.py" line="1444"/>
+      <location filename="../../ArchPanel.py" line="754"/>
+      <location filename="../../ArchStructure.py" line="1445"/>
       <source>Couldn't compute a shape</source>
       <translation>Nu s-a putut calcula o formă</translation>
     </message>
@@ -3039,32 +3039,32 @@ Dacă rulează = 0, atunci rularea este calculată astfel încât înălțimea s
       <translation>Rotire</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="334"/>
+      <location filename="../../ArchPanel.py" line="332"/>
       <source>Create Panel Cut</source>
       <translation>Creați tăierea panoului</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="360"/>
+      <location filename="../../ArchPanel.py" line="358"/>
       <source>Create Panel Sheet</source>
       <translation>Creați o foaie de panou</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="728"/>
+      <location filename="../../ArchPanel.py" line="726"/>
       <source>Error computing shape of</source>
       <translation>Eroare la calculul formei</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1382"/>
       <source>Tools</source>
       <translation>Instrumente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1388"/>
+      <location filename="../../ArchPanel.py" line="1386"/>
       <source>Edit views positions</source>
       <translation>Editează pozițiile vizualizărilor</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1478"/>
+      <location filename="../../ArchPanel.py" line="1476"/>
       <source>This object has no face</source>
       <translation>Acest obiect nu are nicio față</translation>
     </message>
@@ -3540,7 +3540,7 @@ Crearea etajelor a fost întreruptă.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1398"/>
-      <location filename="../../ArchWall.py" line="536"/>
+      <location filename="../../ArchWall.py" line="540"/>
       <source>Center</source>
       <translation>Centru</translation>
     </message>
@@ -3619,7 +3619,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchWall.py" line="325"/>
       <location filename="../../ArchWall.py" line="398"/>
-      <location filename="../../ArchWall.py" line="630"/>
+      <location filename="../../ArchWall.py" line="632"/>
       <source>Create Wall</source>
       <translation>Creează un perete</translation>
     </message>
@@ -3629,73 +3629,73 @@ Crearea de construcții a fost întreruptă.</translation>
       <translation>Primul punct al peretelui</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="497"/>
+      <location filename="../../ArchWall.py" line="501"/>
       <source>Wall options</source>
       <translation>Opțiuni perete</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="501"/>
+      <location filename="../../ArchWall.py" line="505"/>
       <source>Wall Presets...</source>
       <translation>Presetări perete...</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="502"/>
+      <location filename="../../ArchWall.py" line="506"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Această listă arată toate obiectele MultiMateriale ale acestui document. Creați unele pentru a defini tipurile de perete.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="534"/>
+      <location filename="../../ArchWall.py" line="538"/>
       <source>Alignment</source>
       <translation>Aliniament</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="536"/>
+      <location filename="../../ArchWall.py" line="540"/>
       <source>Left</source>
       <translation>Stanga</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="537"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>Right</source>
       <translation>Dreapta</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="553"/>
+      <location filename="../../ArchWall.py" line="556"/>
       <source>Use sketches</source>
       <translation>Utilizarea schite</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="687"/>
+      <location filename="../../ArchWall.py" line="689"/>
       <source>Merge Wall</source>
       <translation>Perete de Îmbinare</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="693"/>
+      <location filename="../../ArchWall.py" line="695"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Peretele selectat nu conține pereți secundari pentru îmbinare</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="696"/>
-      <location filename="../../ArchWall.py" line="700"/>
+      <location filename="../../ArchWall.py" line="698"/>
+      <location filename="../../ArchWall.py" line="702"/>
       <source>Please select only wall objects</source>
       <translation>Vă rugăm să selectaţi doar obiectele perete</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="702"/>
+      <location filename="../../ArchWall.py" line="704"/>
       <source>Merge Walls</source>
       <translation>Îmbinare pereți</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="958"/>
+      <location filename="../../ArchWall.py" line="960"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Nu se pot calcula blocurile pentru perete</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1069"/>
+      <location filename="../../ArchWall.py" line="1071"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Eroare: Nu se poate modifica obiectul de bază al acestui perete</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1754"/>
+      <location filename="../../ArchWall.py" line="1756"/>
       <source>Flip direction</source>
       <translation>Întoarce direcția</translation>
     </message>
@@ -3884,140 +3884,140 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchStructure.py" line="679"/>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="680"/>
+      <location filename="../../ArchStructure.py" line="1357"/>
       <source>An optional extrusion path for this element</source>
       <translation>O cale opțională de extrudare pentru acest element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="681"/>
+      <location filename="../../ArchStructure.py" line="682"/>
       <source>The computed length of the extrusion path</source>
       <translation>Lungimea calculată a traiectoriei de extrudare</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="683"/>
+      <location filename="../../ArchStructure.py" line="684"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Distanța de decalaj de-a lungul traseului de extrudare (pozitiv: extindere, negativ: trim)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="685"/>
+      <location filename="../../ArchStructure.py" line="686"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Distanța de compensare de-a lungul traseului de extrudare (pozitiv: extindere, negativ: trim)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="687"/>
+      <location filename="../../ArchStructure.py" line="688"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
       <translation>Aliniere automată a bazei structurii perpendiculare pe axa sculei</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="689"/>
+      <location filename="../../ArchStructure.py" line="690"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>X offset între originea de bază și axa sculei (utilizată numai dacă BasePerpendicularTool este adevărat)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="691"/>
+      <location filename="../../ArchStructure.py" line="692"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Decalaj Y între originea de bază și axa sculei (folosit numai dacă BasePerpendicularTool este adevărat)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="693"/>
+      <location filename="../../ArchStructure.py" line="694"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Oglindiți baza de-a lungul axei Y (folosită numai dacă BasePerpendicularTool este adevărat)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="695"/>
+      <location filename="../../ArchStructure.py" line="696"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Rotația de bază în jurul axei sculei (utilizată numai dacă BasePerpendicularTool este adevărat)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="392"/>
-      <location filename="../../ArchStructure.py" line="697"/>
+      <location filename="../../ArchPanel.py" line="390"/>
+      <location filename="../../ArchStructure.py" line="698"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Lungimea acestui element, dacă nu este bazat pe un profil</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="394"/>
-      <location filename="../../ArchStructure.py" line="699"/>
+      <location filename="../../ArchPanel.py" line="392"/>
+      <location filename="../../ArchStructure.py" line="700"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Lățimea acestui element, dacă nu este bazat pe un profil</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="701"/>
+      <location filename="../../ArchStructure.py" line="702"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Înălțimea sau adâncimea de extrudare a acestui element. Păstrați 0 pentru automat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="421"/>
-      <location filename="../../ArchStructure.py" line="703"/>
-      <location filename="../../ArchWall.py" line="762"/>
+      <location filename="../../ArchPanel.py" line="419"/>
+      <location filename="../../ArchStructure.py" line="704"/>
+      <location filename="../../ArchWall.py" line="764"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Direcția normală de extrudare a acestui obiect (păstrează (0,0,0) pentru normalizare automată)</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="70"/>
-      <location filename="../../ArchStructure.py" line="705"/>
+      <location filename="../../ArchStructure.py" line="706"/>
       <source>The structural nodes of this element</source>
       <translation>Nodurile structurale ale acestui element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="707"/>
+      <location filename="../../ArchStructure.py" line="708"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>O descriere a profilului standard pe care acest element se bazează</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="709"/>
+      <location filename="../../ArchStructure.py" line="710"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>Compensează distanța dintre linia centrală și linia de noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="418"/>
-      <location filename="../../ArchStructure.py" line="711"/>
+      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchStructure.py" line="712"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Tipul de facemaker folosit pentru a construi profilul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="714"/>
-      <location filename="../../ArchStructure.py" line="722"/>
+      <location filename="../../ArchStructure.py" line="715"/>
+      <location filename="../../ArchStructure.py" line="723"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
       <translation>marginile selectate (sau grupul de margini) ale ArchSchiței de bază; pentru a folosi in crearea formei acestei structuri Arch (în loc sa folosesti toate marginile formei de baza in mod implicit). Intrarea sunt numere de index ale marginilor sau grupurilor.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1047"/>
+      <location filename="../../ArchStructure.py" line="1048"/>
       <source>If the nodes are visible or not</source>
       <translation>Dacă nodurile sunt vizibile sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1049"/>
+      <location filename="../../ArchStructure.py" line="1050"/>
       <source>The width of the nodes line</source>
       <translation>Lăţimea liniei de noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1051"/>
+      <location filename="../../ArchStructure.py" line="1052"/>
       <source>The size of the node points</source>
       <translation>Mărimea nodului</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1054"/>
+      <location filename="../../ArchStructure.py" line="1055"/>
       <source>The color of the nodes line</source>
       <translation>Culoarea liniei de noduri</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1057"/>
+      <location filename="../../ArchStructure.py" line="1058"/>
       <source>The type of structural node</source>
       <translation>Tipul nodului structural</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1391"/>
+      <location filename="../../ArchStructure.py" line="1392"/>
       <source>Axes systems this structure is built on</source>
       <translation>Sisteme de axe pe care această structură este construită</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1392"/>
+      <location filename="../../ArchStructure.py" line="1393"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Numerele elementelor de exclus atunci când această structură este bazată pe axe</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1393"/>
+      <location filename="../../ArchStructure.py" line="1394"/>
       <source>If true the element are aligned with axes</source>
       <translation>Dacă este adevărat, elementul este aliniat cu axele</translation>
     </message>
@@ -5151,159 +5151,159 @@ Crearea de construcții a fost întreruptă.</translation>
       <translation>Adâncimea benzii pentru acest element</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="396"/>
+      <location filename="../../ArchPanel.py" line="394"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>Grosimea sau adâncimea de extrudare a acestui element</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="398"/>
+      <location filename="../../ArchPanel.py" line="396"/>
       <source>The number of sheets to use</source>
       <translation>Numărul de foi de utilizat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="401"/>
+      <location filename="../../ArchPanel.py" line="399"/>
       <source>The offset between this panel and its baseline</source>
       <translation>Decalajul dintre acest panou și valoarea sa de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="403"/>
+      <location filename="../../ArchPanel.py" line="401"/>
       <source>The length of waves for corrugated elements</source>
       <translation>Lungimea valurilor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="405"/>
+      <location filename="../../ArchPanel.py" line="403"/>
       <source>The height of waves for corrugated elements</source>
       <translation>Înălțimea valurilor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="407"/>
+      <location filename="../../ArchPanel.py" line="405"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>Decalajul orizontal al valurilor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="409"/>
+      <location filename="../../ArchPanel.py" line="407"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>Direcția valurilor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="411"/>
+      <location filename="../../ArchPanel.py" line="409"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Tipul de unde pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="414"/>
+      <location filename="../../ArchPanel.py" line="412"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>Dacă valul afectează, de asemenea, partea de jos sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchPanel.py" line="414"/>
       <source>The area of this panel</source>
       <translation>Zona acestui panou</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="823"/>
+      <location filename="../../ArchPanel.py" line="821"/>
       <source>The linked object</source>
       <translation>Obiectul legat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1108"/>
+      <location filename="../../ArchPanel.py" line="826"/>
+      <location filename="../../ArchPanel.py" line="1106"/>
       <source>The size of the tag text</source>
       <translation>Dimensiunea textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1115"/>
+      <location filename="../../ArchPanel.py" line="833"/>
+      <location filename="../../ArchPanel.py" line="1113"/>
       <source>The font of the tag text</source>
       <translation>Fontul textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="825"/>
+      <location filename="../../ArchPanel.py" line="823"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>Textul de afișat. Poate fi %tag%, %label% sau %description% pentru a afișa eticheta sau eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="829"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Poziția textului etichetei. Păstrați (0,0,0) pentru poziția centrului</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1113"/>
+      <location filename="../../ArchPanel.py" line="831"/>
+      <location filename="../../ArchPanel.py" line="1111"/>
       <source>The rotation of the tag text</source>
       <translation>Rotirea textului tag-ului</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="836"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Dacă este adevărat, obiectul este randat ca față, dacă este posibil.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="840"/>
+      <location filename="../../ArchPanel.py" line="838"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>Permis unghiurile acestui obiect poate fi rotit în cazul în care este plasat pe foi</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="843"/>
+      <location filename="../../ArchPanel.py" line="841"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>O valoare offset pentru a muta planul de tăiere din punctul de centru</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1014"/>
+      <location filename="../../ArchPanel.py" line="1277"/>
       <source>A margin inside the boundary</source>
       <translation>O margine în interiorul limitei</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1281"/>
+      <location filename="../../ArchPanel.py" line="1016"/>
+      <location filename="../../ArchPanel.py" line="1279"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Pornește afișarea marjei on/off</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1102"/>
       <source>The linked Panel cuts</source>
       <translation>Secţiunile panourilor conectate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1106"/>
+      <location filename="../../ArchPanel.py" line="1104"/>
       <source>The tag text to display</source>
       <translation>Textul etichetei de afișat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1118"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The width of the sheet</source>
       <translation>Lăţimea foii de parcurs</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1121"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The height of the sheet</source>
       <translation>Înălţimea plăcii</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1124"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The fill ratio of this sheet</source>
       <translation>Raportul de umplere al acestei foi</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1129"/>
+      <location filename="../../ArchPanel.py" line="1127"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Specifică un unghi pentru boabele de lemn (în sensul acelor de ceasornic, 0 este Nord)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1131"/>
+      <location filename="../../ArchPanel.py" line="1129"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Specifică scara aplicată fiecărei vizualizări a panoului.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1134"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>A list of possible rotations for the nester</source>
       <translation>O listă cu posibilele rotaţii ale cuibului</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1283"/>
+      <location filename="../../ArchPanel.py" line="1281"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Oprește afișarea texturii grânelor de lemn pornit/oprit</translation>
     </message>
@@ -5883,8 +5883,8 @@ Crearea de construcții a fost întreruptă.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
-      <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
-      <translation>Textul pentru afișare. Folosește $area, $label, $tag, $floor, $walls, $ceiling pentru a insera datele respective</translation>
+      <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
+      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -5922,87 +5922,87 @@ Crearea de construcții a fost întreruptă.</translation>
       <translation>Arată sufixul unității</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="742"/>
+      <location filename="../../ArchWall.py" line="744"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Lungimea acestui perete. Nu este folosită dacă acest perete este bazat pe un obiect de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="744"/>
+      <location filename="../../ArchWall.py" line="746"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Lățimea acestui perete. Nu este folosită dacă acest perete este bazat pe o față</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="748"/>
+      <location filename="../../ArchWall.py" line="750"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation>Acest atribut suprascrie Lățimea pentru a seta lățimea fiecărui segment de perete. Ignorat dacă obiectul de bază furnizează informații despre lățime, cu metoda getWidths(). (Prima valoare suprascrie atributul 'Lățime' pentru primul segment de perete; dacă o valoare este zero, prima valoare a 'Suprascriere Lățime' va fi urmată)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="751"/>
+      <location filename="../../ArchWall.py" line="753"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation>Acest lucru suprascrie atributul de Aliniere pentru a seta Alinierea la fiecare segment de perete. Ignorat dacă obiectul de bază furnizează informații aliniate, cu metoda getAligns(). (Prima valoare suprascrie atributul 'Aliniază' pentru primul segment al zidului; dacă o valoare nu este 'Stânga, dreapta, centrul', prima valoare a 'OverrideAlign' va fi urmată)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="754"/>
+      <location filename="../../ArchWall.py" line="756"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Înălțimea acestui perete. Păstrați 0 pentru automat. Nu se utilizează dacă acest perete se bazează pe un solid</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="756"/>
+      <location filename="../../ArchWall.py" line="758"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>Zona acestui perete ca un simplu calcul de înălțime * Lungime</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="759"/>
+      <location filename="../../ArchWall.py" line="761"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Alinierea acestui perete la obiectul său de bază, dacă este cazul</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="764"/>
+      <location filename="../../ArchWall.py" line="766"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Numărul feței obiectului de bază folosit pentru a construi acest perete</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="766"/>
+      <location filename="../../ArchWall.py" line="768"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Decalajul dintre acest perete și linia sa de bază (numai pentru alinieri stânga și dreapta)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="775"/>
+      <location filename="../../ArchWall.py" line="777"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Activează acest lucru pentru a face peretele să genereze blocuri</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="777"/>
+      <location filename="../../ArchWall.py" line="779"/>
       <source>The length of each block</source>
       <translation>Lungimea fiecărui bloc</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="779"/>
+      <location filename="../../ArchWall.py" line="781"/>
       <source>The height of each block</source>
       <translation>Înălţimea fiecărui bloc</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="781"/>
+      <location filename="../../ArchWall.py" line="783"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Decalajul orizontal al primei linii de blocuri</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="783"/>
+      <location filename="../../ArchWall.py" line="785"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Decalajul orizontal al celei de-a doua linii de blocuri</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="785"/>
+      <location filename="../../ArchWall.py" line="787"/>
       <source>The size of the joints between each block</source>
       <translation>Mărimea articulaţiilor dintre fiecare bloc</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="787"/>
+      <location filename="../../ArchWall.py" line="789"/>
       <source>The number of entire blocks</source>
       <translation>Numărul de blocuri întregi</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="790"/>
+      <location filename="../../ArchWall.py" line="792"/>
       <source>The number of broken blocks</source>
       <translation>Numărul de blocuri sparte</translation>
     </message>
@@ -6010,8 +6010,8 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1504"/>
-      <location filename="../../ArchStructure.py" line="1507"/>
+      <location filename="../../ArchStructure.py" line="1505"/>
+      <location filename="../../ArchStructure.py" line="1508"/>
       <source>Structure tools</source>
       <translation>Unelte de structură</translation>
     </message>
@@ -6462,12 +6462,12 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="323"/>
+      <location filename="../../ArchPanel.py" line="321"/>
       <source>Panel Cut</source>
       <translation>Panoul de tăiat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="327"/>
+      <location filename="../../ArchPanel.py" line="325"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Creează vizualizări 2D pentru panourile selectate</translation>
     </message>
@@ -6475,12 +6475,12 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="350"/>
+      <location filename="../../ArchPanel.py" line="348"/>
       <source>Panel Sheet</source>
       <translation>Panou de foaie</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="354"/>
+      <location filename="../../ArchPanel.py" line="352"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Creează o foaie 2D care poate conține tăieturi panou</translation>
     </message>
@@ -6488,12 +6488,12 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1405"/>
       <source>Nest</source>
       <translation>Cuib</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1411"/>
+      <location filename="../../ArchPanel.py" line="1409"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Cuiburi o serie de forme selectate într-un container</translation>
     </message>
@@ -6501,8 +6501,8 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1575"/>
-      <location filename="../../ArchPanel.py" line="1578"/>
+      <location filename="../../ArchPanel.py" line="1573"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
       <source>Panel tools</source>
       <translation>Instrumente panou</translation>
     </message>
@@ -6658,12 +6658,12 @@ Crearea de construcții a fost întreruptă.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="656"/>
+      <location filename="../../ArchWall.py" line="658"/>
       <source>Merge Walls</source>
       <translation>Îmbinare pereți</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="659"/>
+      <location filename="../../ArchWall.py" line="661"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Fuzionează pereții selectați, dacă este posibil</translation>
     </message>

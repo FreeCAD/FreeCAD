@@ -1683,13 +1683,13 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="125"/>
-      <location filename="../../ArchStructure.py" line="438"/>
+      <location filename="../../ArchStructure.py" line="441"/>
       <source>Beam</source>
       <translation>Zraka</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="128"/>
-      <location filename="../../ArchStructure.py" line="439"/>
+      <location filename="../../ArchStructure.py" line="442"/>
       <source>Column</source>
       <translation>Stupac</translation>
     </message>
@@ -1741,26 +1741,26 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
       <translation>Sljedeća točka</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="433"/>
+      <location filename="../../ArchStructure.py" line="436"/>
       <source>Structure options</source>
       <translation>Opcije Konstrukcije</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="437"/>
+      <location filename="../../ArchStructure.py" line="440"/>
       <source>Drawing mode</source>
       <translation>Način crtanja</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1628"/>
       <location filename="../../ArchProfile.py" line="153"/>
-      <location filename="../../ArchStructure.py" line="449"/>
+      <location filename="../../ArchStructure.py" line="452"/>
       <source>Category</source>
       <translation>Kategorija</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="214"/>
       <location filename="../../ArchProfile.py" line="160"/>
-      <location filename="../../ArchStructure.py" line="456"/>
+      <location filename="../../ArchStructure.py" line="459"/>
       <location filename="../../ArchWindow.py" line="410"/>
       <source>Preset</source>
       <translation>Unaprijed postavljene postavke</translation>
@@ -1769,16 +1769,16 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
       <location filename="../../ArchCommands.py" line="1011"/>
       <location filename="../../ArchPanel.py" line="224"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchStructure.py" line="465"/>
-      <location filename="../../ArchWall.py" line="516"/>
+      <location filename="../../ArchStructure.py" line="468"/>
+      <location filename="../../ArchWall.py" line="520"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="231"/>
       <location filename="../../ArchPrecast.py" line="1413"/>
-      <location filename="../../ArchStructure.py" line="475"/>
-      <location filename="../../ArchWall.py" line="522"/>
+      <location filename="../../ArchStructure.py" line="478"/>
+      <location filename="../../ArchWall.py" line="526"/>
       <source>Width</source>
       <translation>
 
@@ -1786,156 +1786,156 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1414"/>
-      <location filename="../../ArchStructure.py" line="482"/>
-      <location filename="../../ArchWall.py" line="528"/>
+      <location filename="../../ArchStructure.py" line="485"/>
+      <location filename="../../ArchWall.py" line="532"/>
       <source>Height</source>
       <translation>Visina</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="492"/>
+      <location filename="../../ArchStructure.py" line="495"/>
       <source>Switch L/H</source>
       <translation>Obrni D/V</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="494"/>
+      <location filename="../../ArchStructure.py" line="497"/>
       <source>Switch L/W</source>
       <translation>Obrni D/Š</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="249"/>
-      <location filename="../../ArchStructure.py" line="498"/>
-      <location filename="../../ArchWall.py" line="542"/>
+      <location filename="../../ArchStructure.py" line="501"/>
+      <location filename="../../ArchWall.py" line="546"/>
       <source>Con&amp;tinue</source>
       <translation>Nas&amp;tavi</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="778"/>
+      <location filename="../../ArchStructure.py" line="779"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Pogreška: Osnovni oblik nije mogao biti istisnut uzduž alatnog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="804"/>
-      <location filename="../../ArchWall.py" line="967"/>
+      <location filename="../../ArchStructure.py" line="805"/>
+      <location filename="../../ArchWall.py" line="969"/>
       <source>This mesh is an invalid solid</source>
       <translation>Ova mreža je nevažeće čvrsto tijelo</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="524"/>
-      <location filename="../../ArchStructure.py" line="868"/>
+      <location filename="../../ArchPanel.py" line="522"/>
+      <location filename="../../ArchStructure.py" line="869"/>
       <source>Facemaker returned an error</source>
       <translation>Graditelj lica je vratio pogrešku</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1183"/>
+      <location filename="../../ArchStructure.py" line="1184"/>
       <source>Node Tools</source>
       <translation>Alati Čvora</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1188"/>
+      <location filename="../../ArchStructure.py" line="1189"/>
       <source>Reset nodes</source>
       <translation>Resetiraj čvorove</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchStructure.py" line="1196"/>
       <source>Edit nodes</source>
       <translation>Uređivanje čvorova</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1201"/>
+      <location filename="../../ArchStructure.py" line="1202"/>
       <source>Extend nodes</source>
       <translation>Proširi čvorove</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1202"/>
+      <location filename="../../ArchStructure.py" line="1203"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Produžuje čvorove ovog elementa da dohvate čvorove drugog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1208"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <source>Connect nodes</source>
       <translation>Povezivanje čvorova</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1209"/>
+      <location filename="../../ArchStructure.py" line="1210"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Povezuje čvorove ovog elementa sa čvorovima drugog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1215"/>
+      <location filename="../../ArchStructure.py" line="1216"/>
       <source>Toggle all nodes</source>
       <translation>Uključi/isključi sve čvorove</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1216"/>
+      <location filename="../../ArchStructure.py" line="1217"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Uključuje/isključuje sve strukturne čvorove dokumenta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1221"/>
+      <location filename="../../ArchStructure.py" line="1222"/>
       <source>Extrusion Tools</source>
       <translation>Alati istiskivanja</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1226"/>
-      <location filename="../../ArchStructure.py" line="1360"/>
+      <location filename="../../ArchStructure.py" line="1227"/>
+      <location filename="../../ArchStructure.py" line="1361"/>
       <source>Select tool...</source>
       <translation>Odabir alata...</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1227"/>
+      <location filename="../../ArchStructure.py" line="1228"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
       <translation>Odaberite objekt ili rubove koji će se koristiti kao Alat (put istiskivanja)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1250"/>
-      <location filename="../../ArchStructure.py" line="1282"/>
+      <location filename="../../ArchStructure.py" line="1251"/>
+      <location filename="../../ArchStructure.py" line="1283"/>
       <source>Choose another Structure object:</source>
       <translation>Odaberite drugi strukturni objekt:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1255"/>
-      <location filename="../../ArchStructure.py" line="1287"/>
+      <location filename="../../ArchStructure.py" line="1256"/>
+      <location filename="../../ArchStructure.py" line="1288"/>
       <source>The chosen object is not a Structure</source>
       <translation>Odabrani objekt nije struktura</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1258"/>
-      <location filename="../../ArchStructure.py" line="1290"/>
+      <location filename="../../ArchStructure.py" line="1259"/>
+      <location filename="../../ArchStructure.py" line="1291"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Odabrani objekt nema strukturna čvorišta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1261"/>
-      <location filename="../../ArchStructure.py" line="1293"/>
+      <location filename="../../ArchStructure.py" line="1262"/>
+      <location filename="../../ArchStructure.py" line="1294"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Jedan od tih objekata ima više od 2 čvorišta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1268"/>
-      <location filename="../../ArchStructure.py" line="1300"/>
+      <location filename="../../ArchStructure.py" line="1269"/>
+      <location filename="../../ArchStructure.py" line="1301"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Nije moguće pronaći prikladno sjecište</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1271"/>
+      <location filename="../../ArchStructure.py" line="1272"/>
       <source>Intersection found.
 </source>
       <translation>Sjecište našao.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1303"/>
+      <location filename="../../ArchStructure.py" line="1304"/>
       <source>Intersection found.</source>
       <translation>Sjecište našao.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1339"/>
+      <location filename="../../ArchStructure.py" line="1340"/>
       <source>Done</source>
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="756"/>
-      <location filename="../../ArchStructure.py" line="1444"/>
+      <location filename="../../ArchPanel.py" line="754"/>
+      <location filename="../../ArchStructure.py" line="1445"/>
       <source>Couldn't compute a shape</source>
       <translation>Oblik se nije mogao izračunati</translation>
     </message>
@@ -3070,32 +3070,32 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <translation>Rotiraj</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="334"/>
+      <location filename="../../ArchPanel.py" line="332"/>
       <source>Create Panel Cut</source>
       <translation>Izradi rez panela</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="360"/>
+      <location filename="../../ArchPanel.py" line="358"/>
       <source>Create Panel Sheet</source>
       <translation>Izradi dijelove izreza panela</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="728"/>
+      <location filename="../../ArchPanel.py" line="726"/>
       <source>Error computing shape of</source>
       <translation>Pogreška u računanju oblika</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1382"/>
       <source>Tools</source>
       <translation>Alati</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1388"/>
+      <location filename="../../ArchPanel.py" line="1386"/>
       <source>Edit views positions</source>
       <translation>Uređivanje položaja pogleda </translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1478"/>
+      <location filename="../../ArchPanel.py" line="1476"/>
       <source>This object has no face</source>
       <translation>Ovaj objekt nema lice</translation>
     </message>
@@ -3573,7 +3573,7 @@ Stvaranje etaže prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1398"/>
-      <location filename="../../ArchWall.py" line="536"/>
+      <location filename="../../ArchWall.py" line="540"/>
       <source>Center</source>
       <translation>Središte</translation>
     </message>
@@ -3652,7 +3652,7 @@ Stvaranje zgrade prekinuto.</translation>
     <message>
       <location filename="../../ArchWall.py" line="325"/>
       <location filename="../../ArchWall.py" line="398"/>
-      <location filename="../../ArchWall.py" line="630"/>
+      <location filename="../../ArchWall.py" line="632"/>
       <source>Create Wall</source>
       <translation>Izgradi Zid</translation>
     </message>
@@ -3662,73 +3662,73 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Prva točka zida</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="497"/>
+      <location filename="../../ArchWall.py" line="501"/>
       <source>Wall options</source>
       <translation>Opcije zida</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="501"/>
+      <location filename="../../ArchWall.py" line="505"/>
       <source>Wall Presets...</source>
       <translation>Zid predlošci...</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="502"/>
+      <location filename="../../ArchWall.py" line="506"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Ova lista prikazuje sve višeslojne objekte ovoga dokumenta. Stvorite ovakve za definiranje tipova zidova.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="534"/>
+      <location filename="../../ArchWall.py" line="538"/>
       <source>Alignment</source>
       <translation>Poravnanje</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="536"/>
+      <location filename="../../ArchWall.py" line="540"/>
       <source>Left</source>
       <translation>Lijevo</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="537"/>
+      <location filename="../../ArchWall.py" line="541"/>
       <source>Right</source>
       <translation>Desno</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="553"/>
+      <location filename="../../ArchWall.py" line="556"/>
       <source>Use sketches</source>
       <translation>Koristite skice</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="687"/>
+      <location filename="../../ArchWall.py" line="689"/>
       <source>Merge Wall</source>
       <translation>Spajanje zida</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="693"/>
+      <location filename="../../ArchWall.py" line="695"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Odabrani zid ne sadrži pomoćni za spajanje</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="696"/>
-      <location filename="../../ArchWall.py" line="700"/>
+      <location filename="../../ArchWall.py" line="698"/>
+      <location filename="../../ArchWall.py" line="702"/>
       <source>Please select only wall objects</source>
       <translation>Odaberite samo objekte zidova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="702"/>
+      <location filename="../../ArchWall.py" line="704"/>
       <source>Merge Walls</source>
       <translation>Spajanje zidova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="958"/>
+      <location filename="../../ArchWall.py" line="960"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Ne može izračunati blokove za zid</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1069"/>
+      <location filename="../../ArchWall.py" line="1071"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Pogreška: Nije moguće izmijeniti osnovni objekt ovog zida</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1754"/>
+      <location filename="../../ArchWall.py" line="1756"/>
       <source>Flip direction</source>
       <translation>Preokreni smjer</translation>
     </message>
@@ -3917,144 +3917,144 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchStructure.py" line="679"/>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="680"/>
+      <location filename="../../ArchStructure.py" line="1357"/>
       <source>An optional extrusion path for this element</source>
       <translation>Opcionalni put istiskivanje (extrusion) za ovaj element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="681"/>
+      <location filename="../../ArchStructure.py" line="682"/>
       <source>The computed length of the extrusion path</source>
       <translation>Izračunana duljina puta istiskivanja</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="683"/>
+      <location filename="../../ArchStructure.py" line="684"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Početni pomak duž puta istiskivanja (pozitivan: produži, negativan: skrati)
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="685"/>
+      <location filename="../../ArchStructure.py" line="686"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
       <translation>Udaljenost krajnjeg pomaka duž puta istiskivanja (pozitivno: produži, negativno: skrati)
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="687"/>
+      <location filename="../../ArchStructure.py" line="688"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
       <translation>Automatski poravnajte osnovu konstrukcije okomito na os alata</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="689"/>
+      <location filename="../../ArchStructure.py" line="690"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>X pomak između ishodišta osnove i osi alata (koristi se samo ako je OsnovaOkomitoNaAlat Istina) </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="691"/>
+      <location filename="../../ArchStructure.py" line="692"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Y pomak između ishodišta osnove i osi alata (koristi se samo ako je OsnovaOkomitoNaAlat Istina) </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="693"/>
+      <location filename="../../ArchStructure.py" line="694"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Zrcali osnovu duž njene Y osi (koristi se samo ako je OsnovaOkomitoNaAlat Istina)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="695"/>
+      <location filename="../../ArchStructure.py" line="696"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
       <translation>Rotacija osnove oko osi alata  (koristi se samo ako je OsnovaOkomitoNaAlat Istina)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="392"/>
-      <location filename="../../ArchStructure.py" line="697"/>
+      <location filename="../../ArchPanel.py" line="390"/>
+      <location filename="../../ArchStructure.py" line="698"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Dužina ovog elementa, ako se ne temelji na profilu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="394"/>
-      <location filename="../../ArchStructure.py" line="699"/>
+      <location filename="../../ArchPanel.py" line="392"/>
+      <location filename="../../ArchStructure.py" line="700"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Širina ovog elementa, ako se ne temelji na profilu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="701"/>
+      <location filename="../../ArchStructure.py" line="702"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>Visine ili dubina istiskivanja ovog elementa. Držite 0 za automatsko</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="421"/>
-      <location filename="../../ArchStructure.py" line="703"/>
-      <location filename="../../ArchWall.py" line="762"/>
+      <location filename="../../ArchPanel.py" line="419"/>
+      <location filename="../../ArchStructure.py" line="704"/>
+      <location filename="../../ArchWall.py" line="764"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Smjer normalnog istiskivanja objekta (zadrži (0,0,0) za automatsko normalno)</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="70"/>
-      <location filename="../../ArchStructure.py" line="705"/>
+      <location filename="../../ArchStructure.py" line="706"/>
       <source>The structural nodes of this element</source>
       <translation>Strukturni čvorovi ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="707"/>
+      <location filename="../../ArchStructure.py" line="708"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Opis standardnog profila ovog elementa temelji se na</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="709"/>
+      <location filename="../../ArchStructure.py" line="710"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>Udaljenost od centralne linije i čvora</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="418"/>
-      <location filename="../../ArchStructure.py" line="711"/>
+      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchStructure.py" line="712"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Vrsta dotjeravanja izgleda, koristi se za izgradnju profila ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="714"/>
-      <location filename="../../ArchStructure.py" line="722"/>
+      <location filename="../../ArchStructure.py" line="715"/>
+      <location filename="../../ArchStructure.py" line="723"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
       <translation>Odabrani rubovi (ili grupa rubova) osnovnog ArchSketch-a za korištenje u stvaranju oblika ove strukture luka (umjesto korištenja svih rubova osnovnog oblika prema zadanim postavkama). Ulaz su indeksni brojevi rubova ili grupa.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1047"/>
+      <location filename="../../ArchStructure.py" line="1048"/>
       <source>If the nodes are visible or not</source>
       <translation>Da li su čvorovi vidljivi ili nisu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1049"/>
+      <location filename="../../ArchStructure.py" line="1050"/>
       <source>The width of the nodes line</source>
       <translation>Širina linije čvorova</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1051"/>
+      <location filename="../../ArchStructure.py" line="1052"/>
       <source>The size of the node points</source>
       <translation>Veličina točke čvora</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1054"/>
+      <location filename="../../ArchStructure.py" line="1055"/>
       <source>The color of the nodes line</source>
       <translation>Boja linije čvorova</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1057"/>
+      <location filename="../../ArchStructure.py" line="1058"/>
       <source>The type of structural node</source>
       <translation>Vrsta strukturnog čvora</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1391"/>
+      <location filename="../../ArchStructure.py" line="1392"/>
       <source>Axes systems this structure is built on</source>
       <translation>Sustavi osi na kojima se gradi ova struktura</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1392"/>
+      <location filename="../../ArchStructure.py" line="1393"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Broj elementa koje treba isključiti kada se ova konstrukcija temelji na osima</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1393"/>
+      <location filename="../../ArchStructure.py" line="1394"/>
       <source>If true the element are aligned with axes</source>
       <translation>Ako je "istina", element je poravnat sa osi</translation>
     </message>
@@ -5209,159 +5209,159 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Dubina profila ovoga elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="396"/>
+      <location filename="../../ArchPanel.py" line="394"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>Debljina ili dubina istiskivanja ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="398"/>
+      <location filename="../../ArchPanel.py" line="396"/>
       <source>The number of sheets to use</source>
       <translation>Broj listova za korištenje</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="401"/>
+      <location filename="../../ArchPanel.py" line="399"/>
       <source>The offset between this panel and its baseline</source>
       <translation>Pomak između ove ploče i osnovice</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="403"/>
+      <location filename="../../ArchPanel.py" line="401"/>
       <source>The length of waves for corrugated elements</source>
       <translation>Dužina valova za valovite elemente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="405"/>
+      <location filename="../../ArchPanel.py" line="403"/>
       <source>The height of waves for corrugated elements</source>
       <translation>Visina valova za valovite elemente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="407"/>
+      <location filename="../../ArchPanel.py" line="405"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>Horizontalni pomak valova odabranih elemenata</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="409"/>
+      <location filename="../../ArchPanel.py" line="407"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>Smjer valova za valovite elemente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="411"/>
+      <location filename="../../ArchPanel.py" line="409"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Vrsta valova za valovite elemente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="414"/>
+      <location filename="../../ArchPanel.py" line="412"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>Da li val također utječe na donju stranu ili ne</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchPanel.py" line="414"/>
       <source>The area of this panel</source>
       <translation>Područje ove ploče</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="823"/>
+      <location filename="../../ArchPanel.py" line="821"/>
       <source>The linked object</source>
       <translation>Povezani objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="828"/>
-      <location filename="../../ArchPanel.py" line="1108"/>
+      <location filename="../../ArchPanel.py" line="826"/>
+      <location filename="../../ArchPanel.py" line="1106"/>
       <source>The size of the tag text</source>
       <translation>Veličina teksta oznake</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="835"/>
-      <location filename="../../ArchPanel.py" line="1115"/>
+      <location filename="../../ArchPanel.py" line="833"/>
+      <location filename="../../ArchPanel.py" line="1113"/>
       <source>The font of the tag text</source>
       <translation>Pismo teksta oznake</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="825"/>
+      <location filename="../../ArchPanel.py" line="823"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>Tekst za prikaz. Može biti %tag%, %label% ili %description% za prikaz oznake panela ili natpisa</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="831"/>
-      <location filename="../../ArchPanel.py" line="1111"/>
+      <location filename="../../ArchPanel.py" line="829"/>
+      <location filename="../../ArchPanel.py" line="1109"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Položaj oznake teksta. Zadržati (0,0,0) za automatsko središnji položaj</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="833"/>
-      <location filename="../../ArchPanel.py" line="1113"/>
+      <location filename="../../ArchPanel.py" line="831"/>
+      <location filename="../../ArchPanel.py" line="1111"/>
       <source>The rotation of the tag text</source>
       <translation>Zakretanje teksta oznake</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="838"/>
-      <location filename="../../ArchPanel.py" line="1127"/>
+      <location filename="../../ArchPanel.py" line="836"/>
+      <location filename="../../ArchPanel.py" line="1125"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Ako je istina, objekt će biti iscrtan kao lice, ako je moguće.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="840"/>
+      <location filename="../../ArchPanel.py" line="838"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>Dopušteni kutovi na koje se ovaj objekt može rotirati kada se postavi na listove</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="843"/>
+      <location filename="../../ArchPanel.py" line="841"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>Vrijednost pomaka za pomicanje ravnine rezanja od središnje točke</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1016"/>
-      <location filename="../../ArchPanel.py" line="1279"/>
+      <location filename="../../ArchPanel.py" line="1014"/>
+      <location filename="../../ArchPanel.py" line="1277"/>
       <source>A margin inside the boundary</source>
       <translation>Ivica unutar granice</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1018"/>
-      <location filename="../../ArchPanel.py" line="1281"/>
+      <location filename="../../ArchPanel.py" line="1016"/>
+      <location filename="../../ArchPanel.py" line="1279"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Prebacuje prikazivanje ivica na uključeno/isključeno</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1104"/>
+      <location filename="../../ArchPanel.py" line="1102"/>
       <source>The linked Panel cuts</source>
       <translation>Povezani izrezi panela (Panel cuts)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1106"/>
+      <location filename="../../ArchPanel.py" line="1104"/>
       <source>The tag text to display</source>
       <translation>Tekst oznake za prikaz</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1118"/>
+      <location filename="../../ArchPanel.py" line="1116"/>
       <source>The width of the sheet</source>
       <translation>Širina lista</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1121"/>
+      <location filename="../../ArchPanel.py" line="1119"/>
       <source>The height of the sheet</source>
       <translation>Visina lista</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1124"/>
+      <location filename="../../ArchPanel.py" line="1122"/>
       <source>The fill ratio of this sheet</source>
       <translation>Omjer popunjavanja ovog lista</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1129"/>
+      <location filename="../../ArchPanel.py" line="1127"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Određuje kut za god drveta (u smjeru kazaljke, 0 je sjever)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1131"/>
+      <location filename="../../ArchPanel.py" line="1129"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Određuje mjerilo primijenjeno na svaki prikaz ploče.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1134"/>
+      <location filename="../../ArchPanel.py" line="1132"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Popis mogućih rotacija za umetnute oblike</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1283"/>
+      <location filename="../../ArchPanel.py" line="1281"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Prebacuje prikazivanje tekstura zrna drva na uključeno/isključeno</translation>
     </message>
@@ -5947,8 +5947,8 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
-      <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
-      <translation>Tekst za prikaz. Koristi $area, $label, $tag, $floor, $walls, $ceiling za umetanje odgovarajućih podataka</translation>
+      <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
+      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -5986,89 +5986,89 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Pokaži dodatak mjerne jedinice (unit suffix)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="742"/>
+      <location filename="../../ArchWall.py" line="744"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Dužina ovog zida. Ne koristiti ako se zid temelji na podlozi objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="744"/>
+      <location filename="../../ArchWall.py" line="746"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Širina zida. Ne koristiti ako se zid temelji na licu</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="748"/>
+      <location filename="../../ArchWall.py" line="750"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation>Ovo nadjačava atribut Širina kako bi se postavila širina svakog segmenta zida. Zanemareno je ako Osnovni objekt pruža informacije o širini, pomoću metode getWidths (). (1. vrijednost nadjačava atribut 'Širina' za 1. segment zida; ako je vrijednost nula, slijedi se prva vrijednost 'OverrideWidth')</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="751"/>
+      <location filename="../../ArchWall.py" line="753"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation>Ovo nadjačava atribut Poravnaj za postavljanje poravnanja svakog segmenta zida. Zanemareno ako Osnovni objekt pruža informacije o poravnavanju, pomoću metode getAligns (). (1. vrijednost nadjačava atribut 'Poravnaj' za 1. segment zida; ako vrijednost nije 'Lijevo, Desno, Središte', slijedi se prva vrijednost 'OverrideAlign')
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="754"/>
+      <location filename="../../ArchWall.py" line="756"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Visina ovog zida. Držite 0 za automatsko. Ne koristiti ako se zid temelji na krutom tijelu</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="756"/>
+      <location filename="../../ArchWall.py" line="758"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation>Područje ovog zida kao jednostavan izračun Visina * Duljina
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="759"/>
+      <location filename="../../ArchWall.py" line="761"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Poravnavanje ovih zidova na njihov osnovni pravac, ako je primjenljivo</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="764"/>
+      <location filename="../../ArchWall.py" line="766"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Broj naličja osnovnog objekta korišten za izgradnju zida</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="766"/>
+      <location filename="../../ArchWall.py" line="768"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Odmak ozmeđu zida i osnovne linije (samo za lijevo i desno poravnanje)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="775"/>
+      <location filename="../../ArchWall.py" line="777"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Omogućiti ovo da se od zida generiraju blokovi</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="777"/>
+      <location filename="../../ArchWall.py" line="779"/>
       <source>The length of each block</source>
       <translation>Dužina svakog bloka</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="779"/>
+      <location filename="../../ArchWall.py" line="781"/>
       <source>The height of each block</source>
       <translation>Visina svakog bloka</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="781"/>
+      <location filename="../../ArchWall.py" line="783"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Horizontalni pomak prvog reda blokova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="783"/>
+      <location filename="../../ArchWall.py" line="785"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Horizontalni pomak drugog reda blokova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="785"/>
+      <location filename="../../ArchWall.py" line="787"/>
       <source>The size of the joints between each block</source>
       <translation>Veličina pukotina između svakog bloka</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="787"/>
+      <location filename="../../ArchWall.py" line="789"/>
       <source>The number of entire blocks</source>
       <translation>Konačni broj blokova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="790"/>
+      <location filename="../../ArchWall.py" line="792"/>
       <source>The number of broken blocks</source>
       <translation>Broj šatiranih blokova</translation>
     </message>
@@ -6076,8 +6076,8 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1504"/>
-      <location filename="../../ArchStructure.py" line="1507"/>
+      <location filename="../../ArchStructure.py" line="1505"/>
+      <location filename="../../ArchStructure.py" line="1508"/>
       <source>Structure tools</source>
       <translation>Alati Konstrukcije</translation>
     </message>
@@ -6528,12 +6528,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="323"/>
+      <location filename="../../ArchPanel.py" line="321"/>
       <source>Panel Cut</source>
       <translation>Rez Ploče</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="327"/>
+      <location filename="../../ArchPanel.py" line="325"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Kreira 2D prikaz odabranih ploča</translation>
     </message>
@@ -6541,12 +6541,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="350"/>
+      <location filename="../../ArchPanel.py" line="348"/>
       <source>Panel Sheet</source>
       <translation>Lista Ploča</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="354"/>
+      <location filename="../../ArchPanel.py" line="352"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Kreira 2D list koji može sadržavati rezove ploča</translation>
     </message>
@@ -6554,12 +6554,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1407"/>
+      <location filename="../../ArchPanel.py" line="1405"/>
       <source>Nest</source>
       <translation>Uklopiti</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1411"/>
+      <location filename="../../ArchPanel.py" line="1409"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Uklapanje niza odabranih oblika u kontejner</translation>
     </message>
@@ -6567,8 +6567,8 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1575"/>
-      <location filename="../../ArchPanel.py" line="1578"/>
+      <location filename="../../ArchPanel.py" line="1573"/>
+      <location filename="../../ArchPanel.py" line="1576"/>
       <source>Panel tools</source>
       <translation>Alati Ploče</translation>
     </message>
@@ -6726,12 +6726,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="656"/>
+      <location filename="../../ArchWall.py" line="658"/>
       <source>Merge Walls</source>
       <translation>Spajanje zidova</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="659"/>
+      <location filename="../../ArchWall.py" line="661"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Spoji odabrane zidove ako je moguće</translation>
     </message>

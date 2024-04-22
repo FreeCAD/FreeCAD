@@ -1776,7 +1776,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="61"/>
       <source>Valid</source>
-      <translation>Верно</translation>
+      <translation>Действительный</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="62"/>
@@ -1871,7 +1871,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>Действительный</translation>
+      <translation>Верно</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
@@ -1918,7 +1918,7 @@ click again to end selection</source>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Выберите ссылку...</translation>
+      <translation>Выбрать ориентир...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2153,7 +2153,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Обновить вид</translation>
+      <translation>Обновить</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
@@ -2176,7 +2176,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="180"/>
       <source>Error</source>
-      <translation>Ошибки</translation>
+      <translation>Ошибка</translation>
     </message>
   </context>
   <context>
@@ -2399,7 +2399,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="134"/>
       <source>Reversed</source>
-      <translation>Реверсивный</translation>
+      <translation>В обратную сторону</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="316"/>
@@ -2669,7 +2669,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
       <source>Up to face</source>
-      <translation>До грани</translation>
+      <translation>Поднять до грани</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="75"/>
@@ -2717,7 +2717,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
       <source>Occurrences</source>
-      <translation>Вхождений</translation>
+      <translation>События</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
@@ -2863,7 +2863,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="48"/>
       <source>Occurrences</source>
-      <translation>События</translation>
+      <translation>Вхождений</translation>
     </message>
   </context>
   <context>
@@ -2990,7 +2990,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="104"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="359"/>
@@ -3032,7 +3032,7 @@ click again to end selection</source>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation>Выбрать ориентир...</translation>
+      <translation>Выберите ссылку...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -3081,22 +3081,22 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::ViewProviderDatum</name>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="111"/>
+      <location filename="../../ViewProviderDatum.cpp" line="115"/>
       <source>Datum Plane parameters</source>
       <translation>Параметры Опорной Плоскости</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="116"/>
+      <location filename="../../ViewProviderDatum.cpp" line="120"/>
       <source>Datum Line parameters</source>
       <translation>Параметры Опорной Линии</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="121"/>
+      <location filename="../../ViewProviderDatum.cpp" line="125"/>
       <source>Datum Point parameters</source>
       <translation>Параметры Опорной Точки</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="126"/>
+      <location filename="../../ViewProviderDatum.cpp" line="130"/>
       <source>Local Coordinate System parameters</source>
       <translation>Параметры локальной Системы Координат</translation>
     </message>
@@ -3309,7 +3309,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="149"/>
       <location filename="../../Command.cpp" line="151"/>
       <source>Error</source>
-      <translation>Ошибка</translation>
+      <translation>Ошибки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="146"/>
@@ -3367,7 +3367,7 @@ click again to end selection</source>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderHole.cpp" line="77"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
@@ -3380,7 +3380,7 @@ click again to end selection</source>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="97"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderHole.cpp" line="78"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3714,7 +3714,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProvider.cpp" line="63"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="209"/>
       <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
@@ -3730,30 +3730,30 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Редактировать параметры булевой операции</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="110"/>
-      <location filename="../../ViewProviderDatum.cpp" line="204"/>
+      <location filename="../../ViewProviderDatum.cpp" line="114"/>
+      <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Plane</source>
       <translation>Плоскость</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="115"/>
-      <location filename="../../ViewProviderDatum.cpp" line="200"/>
+      <location filename="../../ViewProviderDatum.cpp" line="119"/>
+      <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Line</source>
       <translation>Линия</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="120"/>
-      <location filename="../../ViewProviderDatum.cpp" line="208"/>
+      <location filename="../../ViewProviderDatum.cpp" line="124"/>
+      <location filename="../../ViewProviderDatum.cpp" line="212"/>
       <source>Point</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="125"/>
+      <location filename="../../ViewProviderDatum.cpp" line="129"/>
       <source>Coordinate System</source>
       <translation>Система Координат</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="225"/>
+      <location filename="../../ViewProviderDatum.cpp" line="229"/>
       <source>Edit datum</source>
       <translation>Редактировать привязку</translation>
     </message>
@@ -3809,17 +3809,17 @@ This feature is broken and can't be edited.</source>
       <translation>Изменить вращение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="196"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <source>Edit shape binder</source>
       <translation>Редактировать связующую форму</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="305"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="316"/>
       <source>Synchronize</source>
       <translation>Синхронизировать</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="307"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="318"/>
       <source>Select bound object</source>
       <translation>Выберите связанный объект</translation>
     </message>
@@ -4156,7 +4156,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation>Обновить</translation>
+      <translation>Обновить вид</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
@@ -4210,7 +4210,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
-      <translation>Стандартно</translation>
+      <translation>Стандарт</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
@@ -4372,7 +4372,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="745"/>
       <source>Reversed</source>
-      <translation>В обратную сторону</translation>
+      <translation>Реверсивный</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="629"/>
@@ -4573,7 +4573,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Fixed</source>
-      <translation>Зафиксировано</translation>
+      <translation>Исправлено</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
@@ -4715,16 +4715,18 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="717"/>
       <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
-      <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePad.cpp" line="236"/>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="150"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="166"/>
       <source>Resulting shape is not a solid</source>
       <translation>Результат не является твердотельным</translation>
     </message>
@@ -4747,14 +4749,14 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
-      <location filename="../../../App/FeaturePad.cpp" line="233"/>
-      <location filename="../../../App/FeaturePad.cpp" line="242"/>
+      <location filename="../../../App/FeaturePad.cpp" line="240"/>
+      <location filename="../../../App/FeaturePad.cpp" line="249"/>
       <location filename="../../../App/FeaturePipe.cpp" line="398"/>
       <location filename="../../../App/FeaturePipe.cpp" line="418"/>
       <location filename="../../../App/FeaturePocket.cpp" line="191"/>
       <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="170"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Результат состоит из нескольких тел: это в настоящее время это не поддерживается.</translation>
     </message>
@@ -4829,10 +4831,46 @@ over 90: larger hole radius at the bottom</source>
   - выбранный эскиз не принадлежит активному телу.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="442"/>
+      <source>Length too small</source>
+      <translation type="unfinished">Length too small</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <source>Second length too small</source>
+      <translation type="unfinished">Second length too small</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="483"/>
+      <source>Failed to obtain profile shape</source>
+      <translation type="unfinished">Failed to obtain profile shape</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="535"/>
+      <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
+      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="554"/>
       <location filename="../../../App/FeatureGroove.cpp" line="130"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <source>Creating a face from sketch failed</source>
       <translation>Не удалось создать грань из эскиза</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="616"/>
+      <source>Up to face: Could not get SubShape!</source>
+      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="658"/>
+      <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
+      <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="669"/>
+      <source>Padding with draft angle failed</source>
+      <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
@@ -5008,8 +5046,8 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="296"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="311"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="304"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="319"/>
       <source>Boolean operation failed</source>
       <translation>Не удалось выполнить булеву операцию</translation>
     </message>
@@ -5112,32 +5150,33 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Операция по сечениям: Создание привело к фатальной ошибке</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="98"/>
+      <location filename="../../../App/FeaturePad.cpp" line="105"/>
       <source>Pad: Can't pad up to shape without base shape.</source>
       <translation>Вытягивание: невозможно придать форму без базовой формы.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="130"/>
+      <location filename="../../../App/FeaturePad.cpp" line="137"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Выдавливание: создание не удалось, поскольку направление перпендикулярно нормали эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="141"/>
+      <location filename="../../../App/FeaturePad.cpp" line="148"/>
       <source>Pad: Creating a face from sketch failed</source>
       <translation>Выдавливание: не удалось создать грань из эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="212"/>
+      <location filename="../../../App/FeaturePad.cpp" line="219"/>
       <source>Pad: Resulting shape is empty</source>
       <translation>Выдавливание: Результирующая форма пуста</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="223"/>
+      <location filename="../../../App/FeaturePad.cpp" line="230"/>
       <source>Pad: Fusion with base feature failed</source>
       <translation>Выдавливание: не удалось слияние с базовым элементом</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="255"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeaturePad.cpp" line="262"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Не удалось создать грань из эскиза.
@@ -5279,115 +5318,125 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Карман: не удалось вырезать базовый элемент</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="89"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="105"/>
       <source>Cannot subtract primitive feature without base feature</source>
       <translation>Невозможно вычесть примитивный элемент без базового элемента</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="98"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
+      <source>Unknown operation type</source>
+      <translation type="unfinished">Unknown operation type</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <source>Failed to perform boolean operation</source>
+      <translation type="unfinished">Failed to perform boolean operation</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="145"/>
       <source>Adding the primitive failed</source>
       <translation>Добавление примитива не удалось</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="118"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="161"/>
       <source>Subtracting the primitive failed</source>
       <translation>Вычитание примитива не удалось</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="193"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="234"/>
       <source>Length of box too small</source>
       <translation>Размер габаритов слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="195"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="236"/>
       <source>Width of box too small</source>
       <translation>Ширина габаритов слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="197"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
       <source>Height of box too small</source>
       <translation>Высота габаритов слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="243"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="284"/>
       <source>Radius of cylinder too small</source>
       <translation>Радиус цилиндра мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="245"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="286"/>
       <source>Height of cylinder too small</source>
       <translation>Высота цилиндра мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="247"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="288"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>Угол поворота цилиндра слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="300"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="341"/>
       <source>Radius of sphere too small</source>
       <translation>Радиус сферы слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="349"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="351"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="390"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="392"/>
       <source>Radius of cone cannot be negative</source>
       <translation>Радиус конуса не может быть отрицательным</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="353"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="394"/>
       <source>Height of cone too small</source>
       <translation>Высота конуса слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="416"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="418"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="457"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="459"/>
       <source>Radius of ellipsoid too small</source>
       <translation>Радиус эллипсоида слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="500"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="502"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="541"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="543"/>
       <source>Radius of torus too small</source>
       <translation>Радиус торса слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="565"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="606"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>Многоугольник призмы неправилен, должен иметь 3 или более сторон</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="567"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="608"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>Радиус окружности многоугольника призмы слишком мал</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="569"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="610"/>
       <source>Height of prism is too small</source>
       <translation>Высота призмы слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="650"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="691"/>
       <source>delta x of wedge too small</source>
       <translation>дельта x клина слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="653"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="694"/>
       <source>delta y of wedge too small</source>
       <translation>дельта Y клина слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="656"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="697"/>
       <source>delta z of wedge too small</source>
       <translation>дельта z клина слишком мала</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="659"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="700"/>
       <source>delta z2 of wedge is negative</source>
       <translation>дельта z2 клина отрицательно</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="662"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="703"/>
       <source>delta x2 of wedge is negative</source>
       <translation>дельта x2 клина отрицательно</translation>
     </message>
@@ -5402,6 +5451,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Угол поворота слишком мал</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="710"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="190"/>
       <source>Fusion with base feature failed</source>
       <translation>Сбой слияния с базовой функцией</translation>
@@ -5432,7 +5482,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Не выбрана часть для вычитания/слияния</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="282"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="290"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Только добавляемые и вычитаемые признаки могут быть преобразованы</translation>
     </message>

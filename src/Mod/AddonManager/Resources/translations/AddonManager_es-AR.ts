@@ -511,139 +511,137 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</source>
-      <translation>Si esta opción está seleccionada, al iniciar el Administrador de Complementos,
-los complementos instalados serán revisados por actualizaciones disponibles
-(esto requiere que el paquete GitPython esté instalado en su sistema)</translation>
+installed addons will be checked for available updates</source>
+      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
+installed addons will be checked for available updates</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="25"/>
+      <location filename="../../AddonManagerOptions.ui" line="24"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Comprobar actualizaciones automáticamente al inicio (requiere git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="41"/>
+      <location filename="../../AddonManagerOptions.ui" line="40"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Descargar metadatos de macros (aproximadamente 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="56"/>
+      <location filename="../../AddonManagerOptions.ui" line="55"/>
       <source>Cache update frequency</source>
       <translation>Frecuencia de actualización del caché</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="76"/>
+      <location filename="../../AddonManagerOptions.ui" line="75"/>
       <source>Manual (no automatic updates)</source>
       <translation>Manual (sin actualizaciones automáticas)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="81"/>
+      <location filename="../../AddonManagerOptions.ui" line="80"/>
       <source>Daily</source>
       <translation>Diariamente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="86"/>
+      <location filename="../../AddonManagerOptions.ui" line="85"/>
       <source>Weekly</source>
       <translation>Semanalmente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="96"/>
+      <location filename="../../AddonManagerOptions.ui" line="95"/>
       <source>Hide Addons without a license</source>
       <translation>Ocultar complementos sin licencia</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <location filename="../../AddonManagerOptions.ui" line="111"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Ocultar complementos con licencia libre sin FSF</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <location filename="../../AddonManagerOptions.ui" line="127"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Ocultar complementos con licencia no aprobada OSI</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="144"/>
+      <location filename="../../AddonManagerOptions.ui" line="143"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Ocultar complementos marcados Python 2 solamente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="160"/>
+      <location filename="../../AddonManagerOptions.ui" line="159"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Ocultar complementos marcados como obsoletos</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="176"/>
+      <location filename="../../AddonManagerOptions.ui" line="175"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Ocultar complementos que requieren una versión más reciente de FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="198"/>
+      <location filename="../../AddonManagerOptions.ui" line="197"/>
       <source>Custom repositories</source>
       <translation>Repositorios personalizados</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="252"/>
+      <location filename="../../AddonManagerOptions.ui" line="251"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="258"/>
+      <location filename="../../AddonManagerOptions.ui" line="257"/>
       <source>No proxy</source>
       <translation>Sin proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="274"/>
+      <location filename="../../AddonManagerOptions.ui" line="273"/>
       <source>User system proxy</source>
       <translation>Proxy del sistema de usuario</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="287"/>
+      <location filename="../../AddonManagerOptions.ui" line="286"/>
       <source>User-defined proxy:</source>
       <translation>Proxy definido por el usuario:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="324"/>
+      <location filename="../../AddonManagerOptions.ui" line="323"/>
       <source>Score source URL</source>
       <translation>URL de la fuente de puntuación</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="343"/>
+      <location filename="../../AddonManagerOptions.ui" line="342"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>La URL para los datos de la puntuación del complemento (ver página de la WIki del Administrador de Complementos para el formato y los detalles del alojamiento).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="353"/>
       <source>Path to git executable (optional):</source>
       <translation>Ruta al ejecutable de git (opcional):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="373"/>
+      <location filename="../../AddonManagerOptions.ui" line="372"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>La ruta al ejecutable de git. Detectado automáticamente si es necesario y no especificado.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="394"/>
+      <location filename="../../AddonManagerOptions.ui" line="393"/>
       <source>Advanced Options</source>
       <translation>Opciones avanzadas</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="400"/>
+      <location filename="../../AddonManagerOptions.ui" line="399"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Mostrar opción para cambiar ramas (requiere git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="413"/>
+      <location filename="../../AddonManagerOptions.ui" line="412"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Desactivar git (solo para descargas ZIP)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="426"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Activar opciones del Administrador de Complementos destinadas a los desarrolladores de nuevos complementos.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="429"/>
+      <location filename="../../AddonManagerOptions.ui" line="428"/>
       <source>Addon developer mode</source>
       <translation>Modo de desarrollador de complemento</translation>
     </message>
@@ -1260,7 +1258,7 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <translation>Actualizar</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="342"/>
+      <location filename="../../manage_python_dependencies.py" line="341"/>
       <source>Updating...</source>
       <translation>Actualizando...</translation>
     </message>

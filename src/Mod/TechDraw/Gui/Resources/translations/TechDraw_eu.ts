@@ -2063,7 +2063,7 @@
       <translation>Arrastatu kota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Sortu bunbuiloa</translation>
     </message>
@@ -8809,7 +8809,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Orrialdea</translation>
     </message>
@@ -8817,7 +8817,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Txantiloia</translation>
     </message>
@@ -8825,7 +8825,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Bista</translation>
     </message>
@@ -8833,7 +8833,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Bista</translation>
     </message>
@@ -8841,7 +8841,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Sekzioa</translation>
     </message>
@@ -8849,7 +8849,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Sekzioa</translation>
     </message>
@@ -8857,7 +8857,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Xehetasuna</translation>
     </message>
@@ -8865,7 +8865,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Bista aktiboa</translation>
     </message>
@@ -8873,7 +8873,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Oharpena</translation>
     </message>
@@ -8881,7 +8881,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Irudia</translation>
     </message>
@@ -8889,7 +8889,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Ikurra</translation>
     </message>
@@ -8897,7 +8897,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Arkitektura</translation>
     </message>
@@ -8905,7 +8905,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Zirriborroa</translation>
     </message>
@@ -8913,7 +8913,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Gida-marra</translation>
     </message>
@@ -8921,7 +8921,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Bunbuiloa</translation>
     </message>
@@ -8929,7 +8929,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Kota</translation>
     </message>
@@ -8937,7 +8937,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Hedadura</translation>
     </message>
@@ -8945,7 +8945,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Itzaleztadura</translation>
     </message>
@@ -8953,7 +8953,7 @@ elkarrizketa-koadroa irekita dagoelako.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>Itzaleztadura geometrikoa</translation>
     </message>

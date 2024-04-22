@@ -225,7 +225,7 @@
     <message>
       <location filename="../../../Preferences.py" line="47"/>
       <source>Ask</source>
-      <translation type="unfinished">Ask</translation>
+      <translation>询问</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="48"/>
@@ -243,7 +243,7 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation type="unfinished">The type of the joint</translation>
+      <translation>接头类型</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
@@ -356,7 +356,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="76"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>旋转</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="104"/>
@@ -379,17 +379,17 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>搜索零件...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>找不到您的零件？ </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>打开文件</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="48"/>

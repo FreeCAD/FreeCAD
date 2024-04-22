@@ -1995,7 +1995,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Buat fillet</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Trim tepi</translation>
     </message>
@@ -2235,59 +2235,59 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Bspline GeoId berada di luar batas.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks simpul berada di luar batas. Perhatikan bahwa sesuai dengan notasi OCC, simpul pertama memiliki indeks 1 dan bukan nol.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multiplisitas tidak dapat ditingkatkan melampaui tingkat b-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC tidak dapat mengurangi multiplisitas dalam toleransi maksimum.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -6029,17 +6029,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation type="unfinished">The Sketch has malformed constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation type="unfinished">The Sketch has partially redundant constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
@@ -6079,7 +6079,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Kesalahan</translation>
     </message>
@@ -6263,7 +6263,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation type="unfinished">Failed to add edge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation type="unfinished">Failed to trim edge</translation>
     </message>

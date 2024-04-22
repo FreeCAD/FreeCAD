@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation>МКЭ (метод конечных элементов)</translation>
+      <translation>Мкэ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Fem</source>
-      <translation>Мкэ (метод конечных элементов)</translation>
+      <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="2004"/>
       <source>Fem</source>
-      <translation>МКЭ (метод конечных элементов)</translation>
+      <translation>Мкэ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2005"/>
@@ -513,7 +513,7 @@
       <location filename="../../Command.cpp" line="2043"/>
       <location filename="../../Command.cpp" line="2052"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2044"/>
@@ -2089,7 +2089,7 @@ Specify another file please.</source>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="677"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="684"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
@@ -2175,7 +2175,7 @@ Specify another file please.</source>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
@@ -3569,7 +3569,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
-      <translation>МКЭ</translation>
+      <translation>Метод конечных элементов</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="182"/>
@@ -4000,7 +4000,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../SphereWidget.ui" line="26"/>
       <source>x</source>
-      <translation>⨯</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="49"/>
@@ -4069,7 +4069,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Куб</translation>
+      <translation>Коробка</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4288,7 +4288,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="74"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
@@ -4553,7 +4553,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
       <source>Reverse direction</source>
-      <translation>В обратном направлении</translation>
+      <translation>Развернуть направление</translation>
     </message>
   </context>
   <context>
@@ -4576,7 +4576,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="51"/>
       <source>Remove</source>
-      <translation>Убрать</translation>
+      <translation>Удалить</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="68"/>
@@ -4832,7 +4832,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>⨯</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="103"/>
@@ -5025,7 +5025,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>Каркасная сетка</translation>
+      <translation>Каркас</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
@@ -5084,77 +5084,82 @@ used for the Elmer solver</source>
       <translation>Макс. размер:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="44"/>
+      <location filename="../../TaskTetParameter.ui" line="46"/>
+      <source>Min. Size:</source>
+      <translation type="unfinished">Min. Size:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="62"/>
       <source>Second order</source>
       <translation>Второй порядок</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="53"/>
+      <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness:</source>
       <translation>Точность:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="64"/>
+      <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
       <translation>Приблизительно</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="69"/>
+      <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
       <translation>Грубо</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="74"/>
+      <location filename="../../TaskTetParameter.ui" line="92"/>
       <source>Moderate</source>
       <translation>Приемлемо</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="79"/>
+      <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
       <translation>Точно</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="84"/>
+      <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
       <translation>Высокоточно</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="89"/>
+      <location filename="../../TaskTetParameter.ui" line="107"/>
       <source>UserDefined</source>
       <translation>Заданная пользователем</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="97"/>
+      <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth Rate:</source>
       <translation>Темп роста:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="111"/>
+      <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Nbr. Segs per Edge:</source>
       <translation>Количество сегментов на грань:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="128"/>
+      <location filename="../../TaskTetParameter.ui" line="146"/>
       <source>Nbr. Segs per Radius:</source>
       <translation>Количество сегментов на радиус:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="144"/>
+      <location filename="../../TaskTetParameter.ui" line="162"/>
       <source>Optimize</source>
       <translation>Оптимизировать</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="166"/>
+      <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count:</source>
       <translation>Счетчик узлов:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="180"/>
+      <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count:</source>
       <translation>Количество треугольников:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="194"/>
+      <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count:</source>
       <translation>Количество тетраэдров:</translation>
     </message>
@@ -5164,7 +5169,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>FEM</source>
-      <translation>Метод конечных элементов</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5284,7 +5289,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation>Полигональная сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -6012,7 +6017,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
       <source>Nodes</source>
-      <translation>Узлы</translation>
+      <translation>Узлов</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
@@ -6046,7 +6051,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
       <source>Fem</source>
-      <translation>Мкэ (метод конечных элементов)</translation>
+      <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1204"/>

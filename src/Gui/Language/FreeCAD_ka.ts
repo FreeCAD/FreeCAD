@@ -59,7 +59,7 @@
       <translation>მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2756"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2762"/>
       <source>Enum</source>
       <translation>სია</translation>
     </message>
@@ -117,7 +117,7 @@
       <translation>ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="651"/>
+      <location filename="../Application.cpp" line="660"/>
       <source>Import</source>
       <translation>შემოტანა</translation>
     </message>
@@ -231,12 +231,12 @@
       <translation>გამოსახულების ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="119"/>
+      <location filename="../CommandFeat.cpp" line="122"/>
       <source>Set Random Color</source>
       <translation>შემთხვევითი ფერის დაყენება</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="165"/>
+      <location filename="../CommandFeat.cpp" line="168"/>
       <source>Toggle freeze</source>
       <translation>გაყინვის გადართვა</translation>
     </message>
@@ -426,42 +426,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>ნაგულისხმევი</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="256"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>ობიექტი ჩასწორდება რეჟიმით, რომელიც შიგნით ამ ობიექტის ტიპისთვის ყველაზე შესაფერისია</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="261"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>ობიექტს Std TransformManip ბრძანებით ჩასწორებადი მდებარეობა ექნება</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="266"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>ეს ჩასწორების რეჟიმი განხორციელებულია, როგორც ხელმისაწვდომი, მაგრამ ამჟამად, როგორც ჩანს, არც ერთი ობიექტის მიერ არ გამოიყენება</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>ფერი</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="271"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>ობიექტს თითოეული ზედაპირის Part FaceColors ბრძანებით ჩასწორებადი ფერი ექნება</translation>
     </message>
@@ -597,12 +597,12 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>დააწექით მარცხენა თაგუნას ღილაკს</translation>
+      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>დააწექით შუა თაგუნას ღილაკს</translation>
+      <translation>დააჭირეთ თაგუნის შუა ღილაკს</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1178,7 +1178,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgActions.ui" line="215"/>
       <source>Remove</source>
-      <translation>წაშლა</translation>
+      <translation>მოცილება</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="222"/>
@@ -1706,7 +1706,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="261"/>
       <source>Rename</source>
-      <translation>გადარქმევა</translation>
+      <translation>სახელის გადარქმევა</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="271"/>
@@ -2266,7 +2266,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferences.ui" line="158"/>
       <source>Reset</source>
-      <translation>დაბრუნება</translation>
+      <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
     </message>
     <message>
       <location filename="../DlgPreferences.ui" line="198"/>
@@ -2562,7 +2562,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="106"/>
       <source>Reset</source>
-      <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
+      <translation>დაბრუნება</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
@@ -2613,7 +2613,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>ტექსტური ჭდე</translation>
+      <translation>ტექსტური წარწერა</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -4637,9 +4637,9 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="987"/>
+      <location filename="../Placement.cpp" line="990"/>
       <source>Placement</source>
-      <translation>მდებარეობა</translation>
+      <translation>განლაგება</translation>
     </message>
   </context>
   <context>
@@ -5102,7 +5102,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="14"/>
       <source>Placement</source>
-      <translation>განლაგება</translation>
+      <translation>მდებარეობა</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="20"/>
@@ -5160,7 +5160,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation:</source>
-      <translation>შემობრუნება:</translation>
+      <translation>ბრუნვა:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
@@ -5996,7 +5996,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
-      <translation>დაატრიალეთ შუა თაგუნას ღილაკი</translation>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -6119,7 +6119,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="168"/>
-      <location filename="../MainWindow.cpp" line="2363"/>
+      <location filename="../MainWindow.cpp" line="2364"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
@@ -6129,62 +6129,62 @@ Do you want to save your changes?</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1003"/>
       <source>Help addon needed!</source>
       <translation>საჭიროა დამატების დახმარება!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1004"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>%1-ის დახმარების სისტემა ახლა "Help" დამატების მიერაა მხარდაჭერილი. მისი დაყენება ადვილად შეგიძლიათ დამატების მმართველიდან</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1005"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Open Addon Manager</source>
       <translation>დამატებების მმართველის გახსნა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1200"/>
+      <location filename="../MainWindow.cpp" line="1201"/>
       <source>Close All</source>
       <translation>ყველას დახურვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1412"/>
       <location filename="../MainWindow.cpp" line="1413"/>
       <location filename="../MainWindow.cpp" line="1414"/>
+      <location filename="../MainWindow.cpp" line="1415"/>
       <source>Toggles this toolbar</source>
       <translation>ამ ზოლის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1431"/>
       <location filename="../MainWindow.cpp" line="1432"/>
       <location filename="../MainWindow.cpp" line="1433"/>
+      <location filename="../MainWindow.cpp" line="1434"/>
       <source>Toggles this dockable window</source>
       <translation>მიმაგრებადი ფანჯრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1949"/>
+      <location filename="../MainWindow.cpp" line="1950"/>
       <source>WARNING: This is a development version.</source>
       <translation>გაფრთხილება: ეს სატესტო ვერსიაა.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1950"/>
+      <location filename="../MainWindow.cpp" line="1951"/>
       <source>Please do not use it in a production environment.</source>
       <translation>არ გამოიყენოთ ის საწარმოო გარემოში.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2154"/>
-      <location filename="../MainWindow.cpp" line="2246"/>
+      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2247"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2156"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>გატანილი ობიექტი შეიცავს გარე ბმულს. გთხოვთ გატანამდე დოკუმენტი ერთხელ მაინც შეინახოთ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2247"/>
+      <location filename="../MainWindow.cpp" line="2248"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც. 
@@ -6458,7 +6458,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4270"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4276"/>
       <source>Change the linked object</source>
       <translation>მიბმული ობიექტის შეცვლა</translation>
     </message>
@@ -6466,12 +6466,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Object not found</source>
       <translation>ობიექტი ნაპოვნი არაა</translation>
     </message>
@@ -6872,7 +6872,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>მდებარეობა</translation>
     </message>
   </context>
   <context>
@@ -6903,7 +6903,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>ტექსტური წარწერა</translation>
+      <translation>ტექსტური ჭდე</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -6918,7 +6918,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="54"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
@@ -7053,7 +7053,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>დააჭირეთ თაგუნის შუა ღილაკს</translation>
+      <translation>დააწექით შუა თაგუნას ღილაკს</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7063,7 +7063,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll middle mouse button</source>
-      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
+      <translation>დაატრიალეთ შუა თაგუნას ღილაკი</translation>
     </message>
   </context>
   <context>
@@ -7071,7 +7071,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
+      <translation>დააწექით მარცხენა თაგუნას ღილაკს</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7302,6 +7302,11 @@ Do you want to specify another directory?</source>
       <translation>ვიეტნამური</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="179"/>
+      <source>Danish</source>
+      <translation type="unfinished">Danish</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation>ქართული</translation>
@@ -7312,7 +7317,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="3535"/>
       <source>Tree view</source>
-      <translation>ხის ხედი</translation>
+      <translation>ელემენტების ხე</translation>
     </message>
   </context>
   <context>
@@ -7409,7 +7414,7 @@ Do you want to specify another directory?</source>
       <location filename="../Tree.cpp" line="3170"/>
       <location filename="../Tree.cpp" line="5370"/>
       <source>Rename</source>
-      <translation>სახელის გადარქმევა</translation>
+      <translation>გადარქმევა</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3171"/>
@@ -7716,7 +7721,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="674"/>
       <source>Tree view</source>
-      <translation>ელემენტების ხე</translation>
+      <translation>ხის ხედი</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="596"/>
@@ -7794,35 +7799,35 @@ Do you want to specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="616"/>
-      <location filename="../Application.cpp" line="710"/>
-      <location filename="../Application.cpp" line="783"/>
+      <location filename="../Application.cpp" line="625"/>
+      <location filename="../Application.cpp" line="719"/>
+      <location filename="../Application.cpp" line="792"/>
       <source>Unknown filetype</source>
       <translation>ფაილის უცნობი ტიპი</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="617"/>
-      <location filename="../Application.cpp" line="711"/>
+      <location filename="../Application.cpp" line="626"/>
+      <location filename="../Application.cpp" line="720"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>ფაილის უცნობი ტიპი: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="776"/>
+      <location filename="../Application.cpp" line="785"/>
       <source>Export failed</source>
       <translation>გატანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="784"/>
+      <location filename="../Application.cpp" line="793"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>უცნობ ფაილის ტიპში ჩაწერის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1497"/>
+      <location filename="../Application.cpp" line="1506"/>
       <source>Workbench failure</source>
       <translation>სამუშაო მაგიდის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1498"/>
+      <location filename="../Application.cpp" line="1507"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7884,7 +7889,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
-      <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../MainWindow.cpp" line="834"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
@@ -8470,32 +8475,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>ნამდვილად გსურთ ამ ფანჯრის დახურვა?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="835"/>
+      <location filename="../MainWindow.cpp" line="836"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>გსურთ შეინახოთ ცვლილებები %1 -ში მის დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="838"/>
+      <location filename="../MainWindow.cpp" line="839"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>გსურთ შეინახოთ დოკუმენტის ცვლილებები მის დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="840"/>
+      <location filename="../MainWindow.cpp" line="841"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>თუ არ შეინახავთ, ყველა თქვენი ცვლილება დაიკარგება.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="846"/>
       <source>Apply answer to all</source>
       <translation>პასუხის ყველაზე გადატარება</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="935"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 დოკუმენტი არ იქნა შენახული</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="936"/>
+      <location filename="../MainWindow.cpp" line="937"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>ზოგიერთი დოკუმენტის შენახვა შეუძლებელია. გნებავთ დახურვის გაუქმება?</translation>
     </message>
@@ -8515,12 +8520,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>საწყისი</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="169"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="174"/>
       <source>Delete group content?</source>
       <translation>წავშალო ჯგუფის შემცველობა?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="170"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="175"/>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 ცარიელი არაა. წავშალო მისი შემცველობაც?</translation>
     </message>
@@ -8537,7 +8542,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="941"/>
       <source>Rotation:</source>
-      <translation>ბრუნვა:</translation>
+      <translation>შემობრუნება:</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="76"/>
@@ -9900,7 +9905,7 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="391"/>
-      <location filename="../MainWindow.cpp" line="2351"/>
+      <location filename="../MainWindow.cpp" line="2352"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>
@@ -10295,13 +10300,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="202"/>
+      <location filename="../CommandFeat.cpp" line="205"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Python-ის კონსოლზე გაგზავნა</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="203"/>
-      <location filename="../CommandFeat.cpp" line="205"/>
+      <location filename="../CommandFeat.cpp" line="206"/>
+      <location filename="../CommandFeat.cpp" line="208"/>
       <source>Sends the selected object to the Python console</source>
       <translation>მონიშნული ობიექტის Python-ის ობიექტზე გაგზავნა</translation>
     </message>
@@ -10983,7 +10988,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1493"/>
       <source>Trimetric</source>
-      <translation>ტრიმეტრული</translation>
+      <translation>ტრიმეტრიული</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1494"/>
@@ -11067,7 +11072,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1719"/>
       <source>Fullscreen</source>
-      <translation>მთელ ეკრანზე</translation>
+      <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1720"/>
@@ -11313,7 +11318,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1751"/>
       <source>Fullscreen</source>
-      <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
+      <translation>მთელ ეკრანზე</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1752"/>
@@ -11890,7 +11895,7 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector type:</source>
-      <translation type="unfinished">Workbench selector type:</translation>
+      <translation>სამუშაო მაგიდის ამრჩევის ტიპი:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
@@ -11918,12 +11923,12 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="167"/>
       <source>Workbench selector items style:</source>
-      <translation type="unfinished">Workbench selector items style:</translation>
+      <translation>სამუშაო მაგიდის ამრჩევის სტილი:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="174"/>
       <source>Customize how the items are displayed.</source>
-      <translation type="unfinished">Customize how the items are displayed.</translation>
+      <translation>ელემენტების ჩვენების მორგება.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="183"/>
@@ -12069,7 +12074,7 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
       <source>Apply</source>
-      <translation>გადატარება</translation>
+      <translation>დადება</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="270"/>
@@ -12150,17 +12155,17 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="543"/>
       <source>ComboBox</source>
-      <translation type="unfinished">ComboBox</translation>
+      <translation>ჩამოსაშლელი სია</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="544"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>ჩანართების პანელი</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="550"/>
       <source>Icon &amp; Text</source>
-      <translation type="unfinished">Icon &amp; Text</translation>
+      <translation>ხატულა &amp; ტექსტი</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="551"/>
@@ -12794,7 +12799,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="569"/>
       <source>Apply</source>
-      <translation>დადება</translation>
+      <translation>გადატარება</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="570"/>
@@ -13535,14 +13540,14 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="150"/>
+      <location filename="../CommandFeat.cpp" line="153"/>
       <source>Toggle freeze</source>
       <translation>გაყინვის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="152"/>
-      <source>Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.</source>
-      <translation>გადართავს მონიშნული ობიექტების გაყინვის მდგომარეობას. გაყინული ობიექტი არ გადაითვლება, როცა მისი მშობლები იცვლება.</translation>
+      <location filename="../CommandFeat.cpp" line="155"/>
+      <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
     </message>
   </context>
   <context>
@@ -13565,7 +13570,7 @@ the region are non-opaque.</source>
       <location filename="../WorkbenchSelector.cpp" line="197"/>
       <location filename="../WorkbenchSelector.cpp" line="203"/>
       <source>More</source>
-      <translation type="unfinished">More</translation>
+      <translation>ვრცლად</translation>
     </message>
     <message>
       <location filename="../WorkbenchSelector.cpp" line="240"/>

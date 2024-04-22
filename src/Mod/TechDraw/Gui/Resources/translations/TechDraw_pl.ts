@@ -2013,7 +2013,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>Utwórz widok z przerwaniem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1003"/>
@@ -2118,7 +2118,7 @@
       <translation>Przeciągnij wymiar</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Utwórz balonik dymka</translation>
     </message>
@@ -2793,12 +2793,12 @@
     <message>
       <location filename="../../Command.cpp" line="479"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
-      <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
+      <translation>Wybierz obiekty do rozbicia lub widok podstawowy i obiekty definicji rozbicia.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>Nie znaleziono obiektów "Przerwa" w tym zaznaczeniu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
@@ -3979,12 +3979,12 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation>Nie możesz usunąć tego widoku, ponieważ ma on widok sekcji, który zostałby uszkodzony.</translation>
+      <translation>Nie możesz usunąć tego widoku, ponieważ ma on widok przekroju, który zostałby uszkodzony.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
-      <translation>Nie możesz usunąć tego widoku, ponieważ ma on "widok części", który zostałby uszkodzony.</translation>
+      <translation>Nie możesz usunąć tego widoku, ponieważ ma on widok szczegółu, który zostałby uszkodzony.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
@@ -8868,7 +8868,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Strona</translation>
     </message>
@@ -8876,7 +8876,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Szablon</translation>
     </message>
@@ -8884,7 +8884,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Widok</translation>
     </message>
@@ -8892,7 +8892,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Widok</translation>
     </message>
@@ -8900,7 +8900,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Przekrój</translation>
     </message>
@@ -8908,7 +8908,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Przekrój</translation>
     </message>
@@ -8916,7 +8916,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Szczegół</translation>
     </message>
@@ -8924,7 +8924,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Aktywny widok</translation>
     </message>
@@ -8932,7 +8932,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Adnotacja</translation>
     </message>
@@ -8940,7 +8940,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Obraz</translation>
     </message>
@@ -8948,7 +8948,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Symbol</translation>
     </message>
@@ -8956,7 +8956,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Architektura</translation>
     </message>
@@ -8964,7 +8964,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Pochylenie ścian</translation>
     </message>
@@ -8972,7 +8972,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Linia odniesienia</translation>
     </message>
@@ -8980,7 +8980,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Dymek</translation>
     </message>
@@ -8988,7 +8988,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Wymiar</translation>
     </message>
@@ -8996,7 +8996,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Przedłuż</translation>
     </message>
@@ -9004,7 +9004,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Kreskowanie</translation>
     </message>
@@ -9012,7 +9012,7 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>Kreskowanie geometryczne</translation>
     </message>
@@ -9551,7 +9551,7 @@ ponieważ jest otwarte okno dialogowe zadania.</translation>
       <location filename="../../Command.cpp" line="440"/>
       <location filename="../../Command.cpp" line="441"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>Wstaw widok z przerwaniem</translation>
     </message>
   </context>
 </TS>

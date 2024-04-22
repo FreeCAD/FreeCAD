@@ -1991,7 +1991,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Maak afronding</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Inkorten van rand</translation>
     </message>
@@ -2231,59 +2231,59 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Niet in staat om het snijpunt van de bochten te raden. Probeer een samenvallende beperking toe te voegen tussen de vertexen van de curven die u wilt afronden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometrie Index (GeoID) buiten bereik.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>U vraagt geen verandering in de knoop multipliciteit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>De Geometrie Index (Geold) aangeleverd is geen B-spline lijn.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>De knoop-index is buiten de grenzen. Merk op dat volgens de OCC-notatie de eerste knoop index 1 heeft en niet nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>De multipliciteit mag niet groter zijn dan het aantal graden van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>De multipliciteit kan niet lager zijn dan nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC is niet in staat om de multipliciteit binnen de maximale tolerantie te verlagen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knooppunt kan geen multipliciteit van nul hebben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Knooppunt multipliciteit kan niet hoger zijn dan de graad van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knooppunt kan niet worden toegevoegd buiten de parameters van de B-spline.</translation>
     </message>
@@ -6033,17 +6033,17 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>De schets heeft ongeldige beperkingen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>De schets heeft deels overbodige beperkingen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolen zijn geconverteerd. Geconverteerde bestanden kunnen niet in vorige versies van FreeCAD worden geopend!!
@@ -6083,7 +6083,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
@@ -6267,7 +6267,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation>Kon de rand niet toevoegen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Kon de rand niet inkorten</translation>
     </message>
@@ -6731,7 +6731,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../TaskSketcherTool.cpp" line="48"/>
       <source>Tool parameters</source>
-      <translation>Gereedschap parameters</translation>
+      <translation type="unfinished">Tool parameters</translation>
     </message>
   </context>
   <context>
@@ -6830,7 +6830,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Vormgeving</translation>
+      <translation>Uiterlijk</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>

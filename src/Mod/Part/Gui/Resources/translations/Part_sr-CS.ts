@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Teme</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -1633,17 +1633,17 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="411"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="413"/>
       <source>Defeaturing</source>
       <translation>Odstrani tipske oblike</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="414"/>
       <source>Remove feature from a shape</source>
       <translation>Ukloni izabrane tipske oblike</translation>
     </message>
@@ -1651,17 +1651,17 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="323"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create shape element copy</source>
       <translation>Napravi kopiju elemenata oblika</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
+      <location filename="../../CommandSimple.cpp" line="326"/>
       <source>Create a non-parametric copy of the selected shape element</source>
       <translation>Napravi neparametarsku kopiju podelemenata oblika kao što su tačka, ivica ili stranica</translation>
     </message>
@@ -1903,17 +1903,17 @@ t. j. X, Y i Z komponente direktnih kota.</translation>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="133"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
       <translation>Napravi tačkasti objekat na osnovu geometrije</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="135"/>
+      <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
       <translation>Napravi objekat tačaka (koje se mogu birati) od izabranog geometrijskog objekta</translation>
     </message>
@@ -1963,17 +1963,17 @@ projekcije.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="351"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="353"/>
       <source>Refine shape</source>
       <translation>Prečisti oblik</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
+      <location filename="../../CommandSimple.cpp" line="354"/>
       <source>Refine the copy of a shape</source>
       <translation>Prečisti kopiju oblika</translation>
     </message>
@@ -2066,17 +2066,17 @@ projekcije.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="104"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Create shape from mesh...</source>
       <translation>Napravi oblik od mreže...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="106"/>
+      <location filename="../../CommandSimple.cpp" line="107"/>
       <source>Create shape from selected mesh object</source>
       <translation>Napravi oblik od izabranog mrežnog objekta</translation>
     </message>
@@ -2084,17 +2084,17 @@ projekcije.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create simple copy</source>
       <translation>Napravi jednostavnu kopiju</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
+      <location filename="../../CommandSimple.cpp" line="223"/>
       <source>Create a simple non-parametric copy</source>
       <translation>Napravi jednostavnu neparametarsku kopiju</translation>
     </message>
@@ -2102,17 +2102,17 @@ projekcije.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="54"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create Cylinder...</source>
       <translation>Napravi valjak...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="56"/>
+      <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
       <translation>Napravi valjak</translation>
     </message>
@@ -2206,17 +2206,17 @@ projekcije.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="295"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create transformed copy</source>
       <translation>Napravi pomerenu kopiju</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
+      <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
       <translation>Napravi neparametarsku kopiju sa promenjenim položajem</translation>
     </message>
@@ -2295,22 +2295,22 @@ projekcije.</translation>
       <translation>Ravna površina</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="69"/>
+      <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Part Cylinder</source>
       <translation>Napravi valjak</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="180"/>
+      <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
       <translation>Tačke na osnovu geometrije</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="368"/>
+      <location filename="../../CommandSimple.cpp" line="369"/>
       <source>Refine shape</source>
       <translation>Prečisti oblik</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="425"/>
+      <location filename="../../CommandSimple.cpp" line="426"/>
       <source>Defeaturing</source>
       <translation>Odstrani tipske oblike</translation>
     </message>
@@ -2371,7 +2371,7 @@ projekcije.</translation>
       <translation>Uredi simetriju</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
       <translation type="unfinished">Project on surface</translation>
     </message>
@@ -3073,7 +3073,7 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Dužina:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -3646,7 +3646,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length:</source>
-      <translation>Dužina:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
@@ -5675,7 +5675,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="253"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
   </context>
   <context>
@@ -5791,7 +5791,7 @@ Da li želiš da nastaviš?</translation>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Teme</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6106,7 +6106,7 @@ Da li želiš da nastaviš?</translation>
       <translation>Obriši sve kote</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="854"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set colors...</source>
       <translation>Ofarbaj stranice</translation>
     </message>
@@ -6141,7 +6141,7 @@ Da li želiš da nastaviš?</translation>
       <translation>Prikaži kontrolne tačke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="105"/>
       <source>Attachment editor</source>
       <translation>Uređivač pridruživanja</translation>
     </message>
@@ -6151,12 +6151,12 @@ Da li želiš da nastaviš?</translation>
       <translation>Napravi cev</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="172"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
       <translation>Rastojanje u parametarskom prostoru</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
       <translation>Unesi rastojanje:</translation>
     </message>
@@ -6906,7 +6906,7 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>Oblik mora da bude žica, ivica ili sastavljeni objekat. Nešto drugo je obezbeđeno.</translation>
     </message>
@@ -6914,12 +6914,12 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <location filename="../../../App/FaceMaker.cpp" line="281"/>
       <source>Simple</source>
       <translation>Jednostavno</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <location filename="../../../App/FaceMaker.cpp" line="286"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Pravi posebnu ravnu stranicu od svake žice nezavisno. Ne podržava rupe; žice mogu biti na različitim ravnima.</translation>
     </message>

@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation>유한 요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Fem</source>
-      <translation>유한 요소 방법</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="448"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation>유한 요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Fem</source>
-      <translation>유한 요소 방법</translation>
+      <translation>유한요소 방법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="554"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Fem</source>
-      <translation>유한요소 방법</translation>
+      <translation>유한요소법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Fem</source>
-      <translation>유한요소법</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="712"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>유한요소법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="713"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Fem</source>
-      <translation>유한요소법</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="824"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1800"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>유한요소법</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="2004"/>
       <source>Fem</source>
-      <translation>유한요소법</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2005"/>
@@ -5088,77 +5088,82 @@ used for the Elmer solver</translation>
       <translation>최대 크기:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="44"/>
+      <location filename="../../TaskTetParameter.ui" line="46"/>
+      <source>Min. Size:</source>
+      <translation type="unfinished">Min. Size:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="62"/>
       <source>Second order</source>
       <translation type="unfinished">Second order</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="53"/>
+      <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness:</source>
       <translation>세밀도:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="64"/>
+      <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
       <translation>매우 거친</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="69"/>
+      <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
       <translation>거친</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="74"/>
+      <location filename="../../TaskTetParameter.ui" line="92"/>
       <source>Moderate</source>
       <translation>보통</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="79"/>
+      <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
       <translation>세밀한</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="84"/>
+      <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
       <translation>매우 세밀한</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="89"/>
+      <location filename="../../TaskTetParameter.ui" line="107"/>
       <source>UserDefined</source>
       <translation>사용자 정의</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="97"/>
+      <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth Rate:</source>
       <translation type="unfinished">Growth Rate:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="111"/>
+      <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Nbr. Segs per Edge:</source>
       <translation type="unfinished">Nbr. Segs per Edge:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="128"/>
+      <location filename="../../TaskTetParameter.ui" line="146"/>
       <source>Nbr. Segs per Radius:</source>
       <translation type="unfinished">Nbr. Segs per Radius:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="144"/>
+      <location filename="../../TaskTetParameter.ui" line="162"/>
       <source>Optimize</source>
       <translation>최적화</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="166"/>
+      <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count:</source>
       <translation type="unfinished">Node count:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="180"/>
+      <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count:</source>
       <translation type="unfinished">Triangle count:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="194"/>
+      <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count:</source>
       <translation>사면체 갯수:</translation>
     </message>

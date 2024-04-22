@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../Command.cpp" line="2064"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2065"/>
@@ -1632,17 +1632,17 @@ dimension directe sera décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="411"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="413"/>
       <source>Defeaturing</source>
       <translation>Supprimer la fonction</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="414"/>
       <source>Remove feature from a shape</source>
       <translation>Supprimer la fonction d’une forme</translation>
     </message>
@@ -1650,17 +1650,17 @@ dimension directe sera décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="323"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create shape element copy</source>
       <translation>Copie de l'élément de forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
+      <location filename="../../CommandSimple.cpp" line="326"/>
       <source>Create a non-parametric copy of the selected shape element</source>
       <translation>Copie non paramétrique de l'élément de forme sélectionné</translation>
     </message>
@@ -1902,17 +1902,17 @@ dimension directe sera décomposée en ses composantes X, Y et Z.</translation>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="133"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
       <translation>Créer un objet points à partir d'une géométrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="135"/>
+      <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
       <translation>Créer un objet points sélectionnables à partir de l'objet géométrie sélectionné</translation>
     </message>
@@ -1960,17 +1960,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="351"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="353"/>
       <source>Refine shape</source>
       <translation>Affiner la forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
+      <location filename="../../CommandSimple.cpp" line="354"/>
       <source>Refine the copy of a shape</source>
       <translation>Affiner la copie d'une forme</translation>
     </message>
@@ -2063,17 +2063,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="104"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Create shape from mesh...</source>
       <translation>Créer une forme à partir d'un maillage...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="106"/>
+      <location filename="../../CommandSimple.cpp" line="107"/>
       <source>Create shape from selected mesh object</source>
       <translation>Créer une forme à partir du maillage sélectionné</translation>
     </message>
@@ -2081,17 +2081,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="220"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="222"/>
       <source>Create simple copy</source>
       <translation>Copie simple</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
+      <location filename="../../CommandSimple.cpp" line="223"/>
       <source>Create a simple non-parametric copy</source>
       <translation>Créer une copie simple non-paramétrique</translation>
     </message>
@@ -2099,17 +2099,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="54"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Create Cylinder...</source>
       <translation>Créer un cylindre...</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="56"/>
+      <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Create a Cylinder</source>
       <translation>Créer un cylindre</translation>
     </message>
@@ -2203,17 +2203,17 @@ La vue caméra détermine la direction de la projection.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="295"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Pièce</translation>
+      <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create transformed copy</source>
       <translation>Copie transformée</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
+      <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
       <translation>Créer une copie non paramétrique avec une position transformée</translation>
     </message>
@@ -2292,22 +2292,22 @@ La vue caméra détermine la direction de la projection.</translation>
       <translation>Créer une surface réglée</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="69"/>
+      <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Part Cylinder</source>
       <translation>Créer un cylindre</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="180"/>
+      <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
       <translation>Points à partir de la géométrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="368"/>
+      <location filename="../../CommandSimple.cpp" line="369"/>
       <source>Refine shape</source>
       <translation>Affiner la forme</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="425"/>
+      <location filename="../../CommandSimple.cpp" line="426"/>
       <source>Defeaturing</source>
       <translation>Supprimer la fonction</translation>
     </message>
@@ -2368,9 +2368,9 @@ La vue caméra détermine la direction de la projection.</translation>
       <translation>Éditer le miroir</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>Projeter sur une surface</translation>
     </message>
   </context>
   <context>
@@ -3068,7 +3068,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -3386,7 +3386,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -3439,7 +3439,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
@@ -3469,12 +3469,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -3634,13 +3634,13 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>Paramètres</translation>
+      <translation>Paramètre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
@@ -3664,7 +3664,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="485"/>
@@ -3953,17 +3953,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="186"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="213"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
@@ -4043,7 +4043,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4772,7 +4772,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4885,7 +4885,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection incorrecte</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5449,7 +5449,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Créer un solide</translation>
+      <translation>Créer le solide</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5468,7 +5468,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5524,7 +5524,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Faces </translation>
+      <translation>Faces</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5611,7 +5611,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Créer le solide</translation>
+      <translation>Créer un solide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5635,7 +5635,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
       <source>Parameter</source>
-      <translation>Paramètre</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
@@ -5650,7 +5650,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -5796,7 +5796,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Composé</translation>
+      <translation>Composés</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -6106,7 +6106,7 @@ Voulez-vous continuer ?</translation>
       <translation>Effacer toutes les dimensions</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="854"/>
+      <location filename="../../ViewProviderExt.cpp" line="886"/>
       <source>Set colors...</source>
       <translation>Définir les couleurs...</translation>
     </message>
@@ -6141,7 +6141,7 @@ Voulez-vous continuer ?</translation>
       <translation>Afficher les points de contrôle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="104"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="105"/>
       <source>Attachment editor</source>
       <translation>Éditeur de l'ancrage</translation>
     </message>
@@ -6151,19 +6151,19 @@ Voulez-vous continuer ?</translation>
       <translation>Tube</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="172"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
       <translation>Distance dans l'espace des paramètres</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
       <translation>Entrer une distance :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <translation>Modifier la projection</translation>
     </message>
   </context>
   <context>
@@ -6216,7 +6216,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Composés</translation>
+      <translation>Composé</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6226,7 +6226,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Mesure</translation>
+      <translation>Mesures</translation>
     </message>
   </context>
   <context>
@@ -6347,7 +6347,7 @@ Voulez-vous continuer ?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6430,7 +6430,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation>Sélection non valide</translation>
+      <translation>Mauvaise sélection</translation>
     </message>
   </context>
   <context>
@@ -6459,7 +6459,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
       <source>Attachment</source>
-      <translation>Accrochage</translation>
+      <translation>Ancrage</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
@@ -6576,7 +6576,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
       <source>Faces</source>
-      <translation>Faces</translation>
+      <translation>Faces </translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
@@ -6901,7 +6901,7 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="72"/>
+      <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>La forme doit être une polyligne, une arête ou un composé. Un autre élément a été fourni.</translation>
     </message>
@@ -6909,12 +6909,12 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="262"/>
+      <location filename="../../../App/FaceMaker.cpp" line="281"/>
       <source>Simple</source>
       <translation>Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="267"/>
+      <location filename="../../../App/FaceMaker.cpp" line="286"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Construit des faces planes séparées à partir de chaque polyligne indépendamment. Les trous ne sont pas pris en charge. Les polylignes peuvent être sur différents plans.</translation>
     </message>

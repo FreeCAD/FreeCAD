@@ -511,139 +511,137 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</source>
-      <translation>Se questa opzione è selezionata, quando si avvia Addon Manager,
-gli addons installati verranno controllati per gli aggiornamenti disponibili
-(questo richiede che il pacchetto GitPython sia installato sul sistema)</translation>
+installed addons will be checked for available updates</source>
+      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
+installed addons will be checked for available updates</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="25"/>
+      <location filename="../../AddonManagerOptions.ui" line="24"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Controlla automaticamente gli aggiornamenti all'inizio (richiede git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="41"/>
+      <location filename="../../AddonManagerOptions.ui" line="40"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Scarica Macro metadati (circa 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="56"/>
+      <location filename="../../AddonManagerOptions.ui" line="55"/>
       <source>Cache update frequency</source>
       <translation>Frequenza aggiornamento cache</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="76"/>
+      <location filename="../../AddonManagerOptions.ui" line="75"/>
       <source>Manual (no automatic updates)</source>
       <translation>Manuale (nessun aggiornamento automatico)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="81"/>
+      <location filename="../../AddonManagerOptions.ui" line="80"/>
       <source>Daily</source>
       <translation>Giornaliero</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="86"/>
+      <location filename="../../AddonManagerOptions.ui" line="85"/>
       <source>Weekly</source>
       <translation>Settimanale</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="96"/>
+      <location filename="../../AddonManagerOptions.ui" line="95"/>
       <source>Hide Addons without a license</source>
-      <translation type="unfinished">Hide Addons without a license</translation>
+      <translation>Nascondi Addons senza licenza</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <location filename="../../AddonManagerOptions.ui" line="111"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
-      <translation type="unfinished">Hide Addons with non-FSF Free/Libre license</translation>
+      <translation>Nascondi Addons con licenza non-FSF Free/Libre</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <location filename="../../AddonManagerOptions.ui" line="127"/>
       <source>Hide Addons with non-OSI-approved license</source>
-      <translation type="unfinished">Hide Addons with non-OSI-approved license</translation>
+      <translation>Nascondi Addons con licenza non-OSI-approved</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="144"/>
+      <location filename="../../AddonManagerOptions.ui" line="143"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Nascondi Addons contrassegnati con Solo Python 2</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="160"/>
+      <location filename="../../AddonManagerOptions.ui" line="159"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Nascondi gli Addons contrassegnati obsoleti</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="176"/>
+      <location filename="../../AddonManagerOptions.ui" line="175"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Nascondi Addons che richiedono una nuova versione di FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="198"/>
+      <location filename="../../AddonManagerOptions.ui" line="197"/>
       <source>Custom repositories</source>
       <translation>Repository personalizzati</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="252"/>
+      <location filename="../../AddonManagerOptions.ui" line="251"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="258"/>
+      <location filename="../../AddonManagerOptions.ui" line="257"/>
       <source>No proxy</source>
       <translation>No proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="274"/>
+      <location filename="../../AddonManagerOptions.ui" line="273"/>
       <source>User system proxy</source>
       <translation>Proxy di sistema utente</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="287"/>
+      <location filename="../../AddonManagerOptions.ui" line="286"/>
       <source>User-defined proxy:</source>
       <translation>Proxy definito dall'utente:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="324"/>
+      <location filename="../../AddonManagerOptions.ui" line="323"/>
       <source>Score source URL</source>
       <translation>Punteggio sorgente URL</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="343"/>
+      <location filename="../../AddonManagerOptions.ui" line="342"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</translation>
+      <translation>L'URL per i dati di Addon Score (vedi la pagina wiki di Addon Manager per la formattazione e i dettagli di hosting).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="353"/>
       <source>Path to git executable (optional):</source>
       <translation>Percorso dell' eseguibile git (opzionale):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="373"/>
+      <location filename="../../AddonManagerOptions.ui" line="372"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Il percorso del git eseguibile. Rilevato automaticamente se necessario e non specificato.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="394"/>
+      <location filename="../../AddonManagerOptions.ui" line="393"/>
       <source>Advanced Options</source>
       <translation>Opzioni Avanzate</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="400"/>
+      <location filename="../../AddonManagerOptions.ui" line="399"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Mostra opzione per cambiare i rami (richiede git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="413"/>
+      <location filename="../../AddonManagerOptions.ui" line="412"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Disabilita git (torna solo agli scaricamenti ZIP)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="426"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Attiva le opzioni Addon Manager destinate agli sviluppatori di nuovi Addons.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="429"/>
+      <location filename="../../AddonManagerOptions.ui" line="428"/>
       <source>Addon developer mode</source>
       <translation>Modalità sviluppatore Addon</translation>
     </message>
@@ -1190,22 +1188,22 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="96"/>
       <source>Update all addons</source>
-      <translation type="unfinished">Update all addons</translation>
+      <translation>Aggiorna tutti gli addons</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Controlla aggiornamenti</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Dipendenze Python...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Strumenti per sviluppatori...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
@@ -1262,7 +1260,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Aggiorna</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="342"/>
+      <location filename="../../manage_python_dependencies.py" line="341"/>
       <source>Updating...</source>
       <translation>In aggiornamento...</translation>
     </message>
@@ -1403,7 +1401,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="314"/>
       <source>This is the latest version available</source>
-      <translation type="unfinished">This is the latest version available</translation>
+      <translation>Questa è l'ultima versione disponibile</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="336"/>
@@ -1413,12 +1411,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="338"/>
       <source>WARNING: This addon is Python 2 only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 only</translation>
+      <translation>ATTENZIONE: Questo addon è solo Python 2</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="339"/>
       <source>WARNING: This addon requires FreeCAD {}</source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD {}</translation>
+      <translation>ATTENZIONE: Questo addon richiede FreeCAD {}</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
@@ -1471,7 +1469,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <location filename="../../addonmanager_package_details_controller.py" line="125"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Check for update</source>
-      <translation type="unfinished">Check for update</translation>
+      <translation>Verifica aggiornamenti</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -2000,7 +1998,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>
       <source>Filter by...</source>
-      <translation type="unfinished">Filter by...</translation>
+      <translation>Filtra per...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
@@ -2026,7 +2024,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
       <source>Installation Status</source>
-      <translation type="unfinished">Installation Status</translation>
+      <translation>Stato Dell'Installazione</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
@@ -2205,7 +2203,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="248"/>
       <source>Error while trying to remove macro file {}:</source>
-      <translation type="unfinished">Error while trying to remove macro file {}:</translation>
+      <translation>Errore durante il tentativo di rimuovere il file macro {}:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="122"/>
@@ -2410,7 +2408,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
-      <translation type="unfinished">Loading page for {} from {}...</translation>
+      <translation>Caricamento pagina per {} da {}...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="108"/>
@@ -2420,17 +2418,17 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
       <source>Composite view</source>
-      <translation type="unfinished">Composite view</translation>
+      <translation>Vista composita</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
       <source>Expanded view</source>
-      <translation type="unfinished">Expanded view</translation>
+      <translation>Vista espansa</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
       <source>Compact view</source>
-      <translation type="unfinished">Compact view</translation>
+      <translation>Vista compatta</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>

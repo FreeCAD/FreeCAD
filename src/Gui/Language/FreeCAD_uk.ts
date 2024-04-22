@@ -59,7 +59,7 @@
       <translation>Позиція</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2756"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2762"/>
       <source>Enum</source>
       <translation>Перелік</translation>
     </message>
@@ -117,7 +117,7 @@
       <translation>Правка</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="651"/>
+      <location filename="../Application.cpp" line="660"/>
       <source>Import</source>
       <translation>Імпортувати</translation>
     </message>
@@ -231,12 +231,12 @@
       <translation>Редагувати зображення</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="119"/>
+      <location filename="../CommandFeat.cpp" line="122"/>
       <source>Set Random Color</source>
       <translation type="unfinished">Set Random Color</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="165"/>
+      <location filename="../CommandFeat.cpp" line="168"/>
       <source>Toggle freeze</source>
       <translation type="unfinished">Toggle freeze</translation>
     </message>
@@ -426,42 +426,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>За замовчуванням</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="256"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Об'єкт буде відредаговано з використанням внутрішньо визначеним режимом який найбільш відповідає типу об'єкта</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>Перетворити</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="261"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>Переріз</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="266"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>Колір</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="271"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceColors command</translation>
     </message>
@@ -4640,7 +4640,7 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="987"/>
+      <location filename="../Placement.cpp" line="990"/>
       <source>Placement</source>
       <translation>Розташувати</translation>
     </message>
@@ -6122,7 +6122,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="168"/>
-      <location filename="../MainWindow.cpp" line="2363"/>
+      <location filename="../MainWindow.cpp" line="2364"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
@@ -6132,62 +6132,62 @@ Do you want to save your changes?</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1003"/>
       <source>Help addon needed!</source>
       <translation>Потрібен Додаток Допомога!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1004"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>Система Допомоги %1 тепер обробляється додатком "Допомога". Її можна легко встановити через Менеджер доповнень</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1005"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Open Addon Manager</source>
       <translation>Відкрити менеджер додатків</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1200"/>
+      <location filename="../MainWindow.cpp" line="1201"/>
       <source>Close All</source>
       <translation>Закрити все</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1412"/>
       <location filename="../MainWindow.cpp" line="1413"/>
       <location filename="../MainWindow.cpp" line="1414"/>
+      <location filename="../MainWindow.cpp" line="1415"/>
       <source>Toggles this toolbar</source>
       <translation>Переключення цієї панелі</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1431"/>
       <location filename="../MainWindow.cpp" line="1432"/>
       <location filename="../MainWindow.cpp" line="1433"/>
+      <location filename="../MainWindow.cpp" line="1434"/>
       <source>Toggles this dockable window</source>
       <translation>Переключення цього закріплюваного вікна</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1949"/>
+      <location filename="../MainWindow.cpp" line="1950"/>
       <source>WARNING: This is a development version.</source>
       <translation type="unfinished">WARNING: This is a development version.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1950"/>
+      <location filename="../MainWindow.cpp" line="1951"/>
       <source>Please do not use it in a production environment.</source>
       <translation type="unfinished">Please do not use it in a production environment.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2154"/>
-      <location filename="../MainWindow.cpp" line="2246"/>
+      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2247"/>
       <source>Unsaved document</source>
       <translation>Незбережений документ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2156"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Експортований обʼєкт містить зовнішні посилання. Збережіть документ хоча б раз перед експортом.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2247"/>
+      <location filename="../MainWindow.cpp" line="2248"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Щоб привʼязати зовнішні обʼєкти, документ повинен бути збережений хоча б один раз.
@@ -6458,7 +6458,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4270"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4276"/>
       <source>Change the linked object</source>
       <translation>Заміна звʼязаного обʼєкта</translation>
     </message>
@@ -6466,12 +6466,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Object not found</source>
       <translation>Обʼєкт не знайдено</translation>
     </message>
@@ -7302,6 +7302,11 @@ Do you want to specify another directory?</source>
       <translation>В’єтнамська</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="179"/>
+      <source>Danish</source>
+      <translation type="unfinished">Danish</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation>Грузинська</translation>
@@ -7794,35 +7799,35 @@ Do you want to specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="616"/>
-      <location filename="../Application.cpp" line="710"/>
-      <location filename="../Application.cpp" line="783"/>
+      <location filename="../Application.cpp" line="625"/>
+      <location filename="../Application.cpp" line="719"/>
+      <location filename="../Application.cpp" line="792"/>
       <source>Unknown filetype</source>
       <translation>Невідомий тип файлу</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="617"/>
-      <location filename="../Application.cpp" line="711"/>
+      <location filename="../Application.cpp" line="626"/>
+      <location filename="../Application.cpp" line="720"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Не вдається відкрити невідомий тип файлу: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="776"/>
+      <location filename="../Application.cpp" line="785"/>
       <source>Export failed</source>
       <translation>Експорт не вдався</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="784"/>
+      <location filename="../Application.cpp" line="793"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Не вдається зберегти в невідомий тип файлу: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1497"/>
+      <location filename="../Application.cpp" line="1506"/>
       <source>Workbench failure</source>
       <translation>Помилка робочого середовища</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1498"/>
+      <location filename="../Application.cpp" line="1507"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7884,7 +7889,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
-      <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../MainWindow.cpp" line="834"/>
       <source>Unsaved document</source>
       <translation>Незбережений документ</translation>
     </message>
@@ -8470,32 +8475,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="835"/>
+      <location filename="../MainWindow.cpp" line="836"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Бажаєте зберегти внесені зміни в документ '%1' перед його закриттям?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="838"/>
+      <location filename="../MainWindow.cpp" line="839"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Бажаєте зберегти зміни, які були внесені до документа перед його закриттям?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="840"/>
+      <location filename="../MainWindow.cpp" line="841"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Якщо ви не збережете, зміни будуть втрачено.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="846"/>
       <source>Apply answer to all</source>
       <translation>Застосувати відповідь до наступних питань</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="935"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Документ(и/ів) не збережено</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="936"/>
+      <location filename="../MainWindow.cpp" line="937"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Деякі документи не вдалося зберегти. Бажаєте скасувати закриття?</translation>
     </message>
@@ -8515,12 +8520,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Початок координат</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="169"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="174"/>
       <source>Delete group content?</source>
       <translation>Видалити вміст групи?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="170"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="175"/>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 не порожній, також видалити його вміст?</translation>
     </message>
@@ -9902,7 +9907,7 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="391"/>
-      <location filename="../MainWindow.cpp" line="2351"/>
+      <location filename="../MainWindow.cpp" line="2352"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -10297,13 +10302,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="202"/>
+      <location filename="../CommandFeat.cpp" line="205"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Надіслати в консоль Python</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="203"/>
-      <location filename="../CommandFeat.cpp" line="205"/>
+      <location filename="../CommandFeat.cpp" line="206"/>
+      <location filename="../CommandFeat.cpp" line="208"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Надсилає виділений обʼєкт в консоль Python</translation>
     </message>
@@ -13542,14 +13547,14 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="150"/>
+      <location filename="../CommandFeat.cpp" line="153"/>
       <source>Toggle freeze</source>
       <translation type="unfinished">Toggle freeze</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="152"/>
-      <source>Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.</translation>
+      <location filename="../CommandFeat.cpp" line="155"/>
+      <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
     </message>
   </context>
   <context>
