@@ -59,7 +59,7 @@
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2756"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2762"/>
       <source>Enum</source>
       <translation>列举</translation>
     </message>
@@ -117,7 +117,7 @@
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="651"/>
+      <location filename="../Application.cpp" line="660"/>
       <source>Import</source>
       <translation>导入</translation>
     </message>
@@ -231,12 +231,12 @@
       <translation>编辑图像</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="119"/>
+      <location filename="../CommandFeat.cpp" line="122"/>
       <source>Set Random Color</source>
       <translation type="unfinished">Set Random Color</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="165"/>
+      <location filename="../CommandFeat.cpp" line="168"/>
       <source>Toggle freeze</source>
       <translation type="unfinished">Toggle freeze</translation>
     </message>
@@ -426,42 +426,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>默认</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="256"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>对象将使用内部定义的模式（以最适合对象的类型）进行编辑</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>变换</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="261"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>该对象将可以通过 Std TransformManip 命令进行放置编辑</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>锯切</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="266"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>此编辑模式是可用的，但当前似乎没有用于任何对象</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>颜色</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="271"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>该对象的各个面的颜色将使用 FaceColors 命令进行编辑</translation>
     </message>
@@ -4625,7 +4625,7 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="987"/>
+      <location filename="../Placement.cpp" line="990"/>
       <source>Placement</source>
       <translation>定位</translation>
     </message>
@@ -6105,7 +6105,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="168"/>
-      <location filename="../MainWindow.cpp" line="2363"/>
+      <location filename="../MainWindow.cpp" line="2364"/>
       <source>Dimension</source>
       <translation>尺寸标注</translation>
     </message>
@@ -6115,62 +6115,62 @@ Do you want to save your changes?</source>
       <translation>就绪</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1003"/>
       <source>Help addon needed!</source>
       <translation>需要添加帮助！</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1004"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>帮助系统“1”现在由“帮助”插件处理。 它可以通过 附件管理器轻松安装</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1005"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Open Addon Manager</source>
       <translation>打开插件管理器</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1200"/>
+      <location filename="../MainWindow.cpp" line="1201"/>
       <source>Close All</source>
       <translation>全部关闭</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1412"/>
       <location filename="../MainWindow.cpp" line="1413"/>
       <location filename="../MainWindow.cpp" line="1414"/>
+      <location filename="../MainWindow.cpp" line="1415"/>
       <source>Toggles this toolbar</source>
       <translation>切换此工具栏</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1431"/>
       <location filename="../MainWindow.cpp" line="1432"/>
       <location filename="../MainWindow.cpp" line="1433"/>
+      <location filename="../MainWindow.cpp" line="1434"/>
       <source>Toggles this dockable window</source>
       <translation>切换此可停靠的窗口</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1949"/>
+      <location filename="../MainWindow.cpp" line="1950"/>
       <source>WARNING: This is a development version.</source>
       <translation>警告：这是一个开发版本。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1950"/>
+      <location filename="../MainWindow.cpp" line="1951"/>
       <source>Please do not use it in a production environment.</source>
       <translation>请不要在生产环境中使用它。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2154"/>
-      <location filename="../MainWindow.cpp" line="2246"/>
+      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2247"/>
       <source>Unsaved document</source>
       <translation>未保存的文件</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2155"/>
+      <location filename="../MainWindow.cpp" line="2156"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>导出的对象包含外部链接。请在导出前至少保存一次文档。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2247"/>
+      <location filename="../MainWindow.cpp" line="2248"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>要連結到外部物件，文件必須至少儲存一次。
@@ -6441,7 +6441,7 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4270"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4276"/>
       <source>Change the linked object</source>
       <translation>更改链接的对象</translation>
     </message>
@@ -6449,12 +6449,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4239"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4245"/>
       <source>Object not found</source>
       <translation>未发现物件</translation>
     </message>
@@ -7283,6 +7283,11 @@ Do you want to specify another directory?</source>
       <translation>越南语</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="179"/>
+      <source>Danish</source>
+      <translation type="unfinished">Danish</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation>格鲁吉亚语</translation>
@@ -7775,35 +7780,35 @@ Do you want to specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="616"/>
-      <location filename="../Application.cpp" line="710"/>
-      <location filename="../Application.cpp" line="783"/>
+      <location filename="../Application.cpp" line="625"/>
+      <location filename="../Application.cpp" line="719"/>
+      <location filename="../Application.cpp" line="792"/>
       <source>Unknown filetype</source>
       <translation>未知文件类型</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="617"/>
-      <location filename="../Application.cpp" line="711"/>
+      <location filename="../Application.cpp" line="626"/>
+      <location filename="../Application.cpp" line="720"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>无法打开未知文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="776"/>
+      <location filename="../Application.cpp" line="785"/>
       <source>Export failed</source>
       <translation>导出失败</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="784"/>
+      <location filename="../Application.cpp" line="793"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>无法保存为未知的文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1497"/>
+      <location filename="../Application.cpp" line="1506"/>
       <source>Workbench failure</source>
       <translation>工作台故障</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1498"/>
+      <location filename="../Application.cpp" line="1507"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7865,7 +7870,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
-      <location filename="../MainWindow.cpp" line="833"/>
+      <location filename="../MainWindow.cpp" line="834"/>
       <source>Unsaved document</source>
       <translation>未保存的文件</translation>
     </message>
@@ -8448,32 +8453,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>您要关闭此对话框吗?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="835"/>
+      <location filename="../MainWindow.cpp" line="836"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>在关闭前要储存「%1」文档嘛?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="838"/>
+      <location filename="../MainWindow.cpp" line="839"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>您想要在关闭前将更改保存到文档吗？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="840"/>
+      <location filename="../MainWindow.cpp" line="841"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>如果您现在退出的话，您的更改将会丢失。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="846"/>
       <source>Apply answer to all</source>
       <translation>将选择应用于所有</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="935"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 文档未保存</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="936"/>
+      <location filename="../MainWindow.cpp" line="937"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>一些文档无法保存。您想要取消关闭吗？</translation>
     </message>
@@ -8493,12 +8498,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>原点</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="169"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="174"/>
       <source>Delete group content?</source>
       <translation>删除群组内容？</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="170"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="175"/>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 不是空的，一并删除其相关内容吗？</translation>
     </message>
@@ -9875,7 +9880,7 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="391"/>
-      <location filename="../MainWindow.cpp" line="2351"/>
+      <location filename="../MainWindow.cpp" line="2352"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
@@ -10270,13 +10275,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="202"/>
+      <location filename="../CommandFeat.cpp" line="205"/>
       <source>&amp;Send to Python Console</source>
       <translation>发送到 Python 控制台(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="203"/>
-      <location filename="../CommandFeat.cpp" line="205"/>
+      <location filename="../CommandFeat.cpp" line="206"/>
+      <location filename="../CommandFeat.cpp" line="208"/>
       <source>Sends the selected object to the Python console</source>
       <translation>所选择的对象发送到 Python 控制台</translation>
     </message>
@@ -13504,14 +13509,14 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="150"/>
+      <location filename="../CommandFeat.cpp" line="153"/>
       <source>Toggle freeze</source>
       <translation type="unfinished">Toggle freeze</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="152"/>
-      <source>Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.</translation>
+      <location filename="../CommandFeat.cpp" line="155"/>
+      <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
+      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
     </message>
   </context>
   <context>
@@ -13534,7 +13539,7 @@ the region are non-opaque.</source>
       <location filename="../WorkbenchSelector.cpp" line="197"/>
       <location filename="../WorkbenchSelector.cpp" line="203"/>
       <source>More</source>
-      <translation type="unfinished">More</translation>
+      <translation>更多</translation>
     </message>
     <message>
       <location filename="../WorkbenchSelector.cpp" line="240"/>

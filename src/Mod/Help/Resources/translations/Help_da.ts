@@ -21,11 +21,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Sæt dette til en brugerdefineret URL ller en mappe hvor hjælpefilerne findes.
+Du kan nemt downloade dokumentationen til offline brug ved hjælp af Addon
+Manager og installere &quot;offline dokumentation&quot; tilføjelsen. Hvis dette
+felt er tomt, vil FreeCAD automatisk søge efter hjælpefilerne på
+standardplacringen ($USERAPPDATADIR/Mod/Documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>

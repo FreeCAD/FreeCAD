@@ -782,34 +782,34 @@
       <translation>Ta bort val</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="959"/>
-      <location filename="../../ViewProvider.cpp" line="1020"/>
+      <location filename="../../ViewProvider.cpp" line="955"/>
+      <location filename="../../ViewProvider.cpp" line="1016"/>
       <source>Cut</source>
       <translation>Klipp</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="969"/>
-      <location filename="../../ViewProvider.cpp" line="1090"/>
+      <location filename="../../ViewProvider.cpp" line="965"/>
+      <location filename="../../ViewProvider.cpp" line="1086"/>
       <source>Trim</source>
       <translation>Trimma</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1177"/>
+      <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Split</source>
       <translation>Dela</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1250"/>
+      <location filename="../../ViewProvider.cpp" line="1246"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1852"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Delete</source>
       <translation>Radera</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1981"/>
+      <location filename="../../ViewProvider.cpp" line="1977"/>
       <source>Fill hole</source>
       <translation>Fyll hål</translation>
     </message>
@@ -1625,7 +1625,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
-      <translation>Gör klart</translation>
+      <translation>Slutför</translation>
     </message>
   </context>
   <context>
@@ -2286,48 +2286,48 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <translation>[Punkter: %1, Kanter: %2, Ytor: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="805"/>
+      <location filename="../../ViewProvider.cpp" line="801"/>
       <source>Display components</source>
       <translation>Visa komponenter</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="813"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display segments</source>
       <translation>Visa segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="821"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display colors</source>
       <translation>Visa färger</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1683"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Lämna info läge</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1750"/>
+      <location filename="../../ViewProvider.cpp" line="1746"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1776"/>
+      <location filename="../../ViewProvider.cpp" line="1772"/>
       <source>Leave hole-filling mode</source>
       <translation>Lämna hålfyllningsläge</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1826"/>
+      <location filename="../../ViewProvider.cpp" line="1822"/>
       <source>Leave removal mode</source>
       <translation>Lämna borttagningsläge</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1827"/>
+      <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete selected faces</source>
       <translation>Ta bort markerade ytor</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1828"/>
+      <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear selected faces</source>
       <translation>Rensa valda ytor</translation>
     </message>

@@ -217,12 +217,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1364"/>
       <source>Center and rim point</source>
-      <translation>Cercle par son centre et un point du bord</translation>
+      <translation>Cercle par son centre et un point de la circonférence</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1370"/>
       <source>3 rim points</source>
-      <translation>Cercle par 3 points du bord</translation>
+      <translation>Cercle par 3 points de la circonférence</translation>
     </message>
   </context>
   <context>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="892"/>
       <source>Ellipse by center, radius, rim point</source>
-      <translation>Ellipse par son centre, un de ses rayons, un point du bord</translation>
+      <translation>Ellipse par son centre, un de ses rayons, un point de la courbe</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Ellipse by axis endpoints, rim point</source>
-      <translation>Ellipse par les extrémités de ses axes, un point du bord</translation>
+      <translation>Ellipse par les extrémités de ses axes, un point de la courbe</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="910"/>
@@ -721,12 +721,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="652"/>
       <source>Create ellipse by 3 points</source>
-      <translation>Créer une ellipse via 3 points</translation>
+      <translation>Créer une ellipse par 3 points</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Créer une ellipse via 3 points dans l'esquisse</translation>
+      <translation>Créer une ellipse par 3 points dans l'esquisse</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1111,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Attacher une esquisse...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1168,7 +1168,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="844"/>
       <source>Wrong selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>Sélection incorrecte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
@@ -1988,7 +1988,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Créer un congé</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Ajuster une arête</translation>
     </message>
@@ -2228,59 +2228,59 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Erreur de contrainte automatique : esquisse insoluble après l'application des contraintes d'égalité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>L'intersection des courbes n'a pas pu être trouvée. Essayez d’ajouter une contrainte de coïncidence entre les sommets des courbes sur lesquels vous souhaitez appliquer un congé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'index de la géométrie de la B-spline (GeoID) est est en dehors des limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vous ne demandez aucun changement dans la multiplicité du nœud.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L’Index de la géométrie (GeoID) fourni n’est pas une courbe B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L’index du nœud est hors limites. Notez que, conformément à la notation OCC, le premier nœud a un indice de 1 et non pas de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicité ne peut pas être augmentée au-delà du degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicité ne peut pas être diminuée au-delà de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne parvient pas à diminuer la multiplicité selon la tolérance maximale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Le nœud ne peut pas avoir une multiplicité nulle.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicité des nœuds ne peut être supérieure au degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Le nœud ne peut pas être inséré en dehors de la plage de paramètres de la B-spline.</translation>
     </message>
@@ -2508,7 +2508,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="168"/>
@@ -3038,7 +3038,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Sélectionner une contrainte dimensionnelle de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9903"/>
@@ -3882,7 +3882,7 @@ Voir la documentation pour plus de détails.</translation>
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
-      <translation>Référence</translation>
+      <translation>Contraintes pilotées</translation>
     </message>
   </context>
   <context>
@@ -4697,7 +4697,7 @@ la liste ci-dessous)</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
       <source>Settings</source>
-      <translation>Réglages</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1757"/>
@@ -4711,7 +4711,7 @@ la liste ci-dessous)</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1813"/>
       <location filename="../../TaskSketcherElements.cpp" line="1819"/>
       <source>Construction</source>
-      <translation>Construction</translation>
+      <translation>Géométrie de construction </translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1162"/>
@@ -5284,7 +5284,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <location filename="../../CommandCreateGeo.cpp" line="1372"/>
       <location filename="../../CommandCreateGeo.cpp" line="1374"/>
       <source>Create a circle by 3 rim points</source>
-      <translation>Créer un cercle par 3 points</translation>
+      <translation>Créer un cercle par 3 points de la circonférence</translation>
     </message>
   </context>
   <context>
@@ -5292,7 +5292,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1199"/>
       <source>B-spline by control points</source>
-      <translation>B-spline par points de contrôle</translation>
+      <translation>B-spline par les points de contrôle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1201"/>
@@ -5307,7 +5307,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <location filename="../../CommandCreateGeo.cpp" line="1365"/>
       <location filename="../../CommandCreateGeo.cpp" line="1367"/>
       <source>Create a circle by its center and by a rim point</source>
-      <translation>Créer un cercle par son centre et par un point sur le périmètre</translation>
+      <translation>Créer un cercle par son centre et par un point de la circonférence</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="366"/>
@@ -5317,7 +5317,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="367"/>
       <source>3 rim points</source>
-      <translation>Cercle par 3 points du bord</translation>
+      <translation>Cercle par 3 points de la circonférence</translation>
     </message>
   </context>
   <context>
@@ -6030,17 +6030,17 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>L'esquisse a des contraintes défectueuses !</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>L'esquisse a des contraintes partiellement redondantes !</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Les paraboles ont été migrées. Les fichiers migrés ne pourront pas être ouverts par les versions précédentes de FreeCAD !!
@@ -6080,7 +6080,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -6264,7 +6264,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
       <translation>Impossible d'ajouter une arête</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Impossible d'ajuster une arête</translation>
     </message>
@@ -6341,13 +6341,13 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1215"/>
       <source>B-spline by knots</source>
-      <translation>B-spline par des noeuds</translation>
+      <translation>B-spline par des nœuds</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1216"/>
       <location filename="../../CommandCreateGeo.cpp" line="1218"/>
       <source>Create a B-spline by knots</source>
-      <translation>Créer une B-spline par des noeuds</translation>
+      <translation>Créer une B-spline par des nœuds</translation>
     </message>
   </context>
   <context>
@@ -6479,7 +6479,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Contrainte de dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
@@ -6511,7 +6511,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Contrainte de dimension</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
@@ -7239,7 +7239,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="469"/>
       <source>3 rim points</source>
-      <translation>Cercle par 3 points du bord</translation>
+      <translation>Cercle par 3 points de la circonférence</translation>
     </message>
   </context>
   <context>
@@ -7257,7 +7257,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="894"/>
       <location filename="../../CommandCreateGeo.cpp" line="897"/>
       <source>Create an ellipse by its center, one of its radii and a rim point</source>
-      <translation>Créer une ellipse par son centre, un de ses rayons et un point du bord</translation>
+      <translation>Créer une ellipse par son centre, un de ses rayons et un point de la courbe</translation>
     </message>
   </context>
   <context>
@@ -7266,7 +7266,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="903"/>
       <location filename="../../CommandCreateGeo.cpp" line="906"/>
       <source>Create an ellipse by the endpoints of one of its axes and a rim point</source>
-      <translation>Créer une ellipse par les extrémités d'un de ses axes et un point du bord</translation>
+      <translation>Créer une ellipse par les extrémités d'un de ses axes et un point de la courbe</translation>
     </message>
   </context>
   <context>
@@ -7426,12 +7426,12 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9789"/>
       <source>Change value</source>
-      <translation>Changer la valeur</translation>
+      <translation>Modifier la valeur</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Changer la valeur d'une contrainte dimensionnelle</translation>
     </message>
   </context>
   <context>

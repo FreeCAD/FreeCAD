@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Insert Clip Group</source>
-      <translation>Gruppo di clip</translation>
+      <translation>Inserisci Gruppo di ritagli</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1259"/>
       <source>Add View to Clip Group</source>
-      <translation>Aggiungi una vista al gruppo clip</translation>
+      <translation>Aggiungi una Vista al Gruppo di ritagli</translation>
     </message>
   </context>
   <context>
@@ -1625,7 +1625,7 @@
     <message>
       <location filename="../../Command.cpp" line="920"/>
       <source>Insert Projection Group</source>
-      <translation>Gruppo di proiezioni</translation>
+      <translation>Inserisci Gruppo di proiezioni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -1744,7 +1744,7 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Insert Spreadsheet View</source>
-      <translation>Inserisci Vista Foglio di calcolo</translation>
+      <translation>Inserisci Vista di un Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
@@ -1960,7 +1960,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>Crea vista interrotta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1003"/>
@@ -1970,17 +1970,17 @@
     <message>
       <location filename="../../Command.cpp" line="1239"/>
       <source>Create Clip</source>
-      <translation>Crea clip</translation>
+      <translation>Crea Ritaglio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1311"/>
       <source>ClipGroupAdd</source>
-      <translation>Aggiungi clip di gruppo</translation>
+      <translation>Aggiungi Gruppo di ritagli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>ClipGroupRemove</source>
-      <translation>Rimuovi clip di gruppo</translation>
+      <translation>Rimuovi Gruppo di ritagli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -2000,7 +2000,7 @@
     <message>
       <location filename="../../Command.cpp" line="1629"/>
       <source>Create spreadsheet view</source>
-      <translation>Crea vista foglio di calcolo</translation>
+      <translation>Crea Vista di un foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1751"/>
@@ -2065,7 +2065,7 @@
       <translation>Trascina quota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation>Crea pallinatura</translation>
     </message>
@@ -2740,12 +2740,12 @@
     <message>
       <location filename="../../Command.cpp" line="479"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
-      <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
+      <translation>Si prega di selezionare gli oggetti da interrompere o una vista di base e interrompere gli oggetti di definizione.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>Nessun oggetto di Interruzione trovato in questa selezione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
@@ -2826,7 +2826,7 @@
     <message>
       <location filename="../../Command.cpp" line="1272"/>
       <source>Select one Clip group and one View.</source>
-      <translation>Selezionare un gruppo Clip e una Vista.</translation>
+      <translation>Selezionare un gruppo di Ritagli e una Vista.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1289"/>
@@ -2836,12 +2836,12 @@
     <message>
       <location filename="../../Command.cpp" line="1294"/>
       <source>Select exactly one Clip group.</source>
-      <translation>Selezionare esattamente un gruppo di Clip.</translation>
+      <translation>Selezionare esattamente un Gruppo di ritagli.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>Clip and View must be from same Page.</source>
-      <translation>Clip e Vista deve essere dalla stessa Pagina.</translation>
+      <translation>Ritaglio e Vista deve essere dalla stessa Pagina.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1356"/>
@@ -2851,7 +2851,7 @@
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>View does not belong to a Clip</source>
-      <translation>La Vista non appartiene a una Clip</translation>
+      <translation>La Vista non appartiene a un Ritaglio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1434"/>
@@ -3768,13 +3768,13 @@
       <location filename="../../TaskDimension.cpp" line="146"/>
       <location filename="../../TaskDimension.cpp" line="161"/>
       <source>Missing Dimension</source>
-      <translation type="unfinished">Missing Dimension</translation>
+      <translation>Quota Mancante</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found.  Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found.  Was it deleted? Can not continue.</translation>
+      <translation>Quota non trovata. È stata eliminata? Non è possibile continuare.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -3886,7 +3886,7 @@ thick: %4</source>
     <message>
       <location filename="../../PagePrinter.cpp" line="325"/>
       <source>Document Name:</source>
-      <translation type="unfinished">Document Name:</translation>
+      <translation>Nome del documento:</translation>
     </message>
   </context>
   <context>
@@ -8407,7 +8407,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Clipped Views</source>
-      <translation type="unfinished">Clipped Views</translation>
+      <translation>Viste Ritagliate</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -8417,7 +8417,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>Symbols</source>
-      <translation type="unfinished">Symbols</translation>
+      <translation>Simboli</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
@@ -8806,7 +8806,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Pagina</translation>
     </message>
@@ -8814,7 +8814,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Modello</translation>
     </message>
@@ -8822,7 +8822,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Vista</translation>
     </message>
@@ -8830,7 +8830,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Vista</translation>
     </message>
@@ -8838,7 +8838,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Seziona</translation>
     </message>
@@ -8846,7 +8846,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Seziona</translation>
     </message>
@@ -8854,7 +8854,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation>Dettaglio</translation>
     </message>
@@ -8862,7 +8862,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation>Vista attiva</translation>
     </message>
@@ -8870,7 +8870,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Annotazione</translation>
     </message>
@@ -8878,7 +8878,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Immagine</translation>
     </message>
@@ -8886,7 +8886,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation>Simbolo</translation>
     </message>
@@ -8894,7 +8894,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Arch</translation>
     </message>
@@ -8902,7 +8902,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Sformo</translation>
     </message>
@@ -8910,7 +8910,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation>Freccia</translation>
     </message>
@@ -8918,7 +8918,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation>Bolla</translation>
     </message>
@@ -8926,7 +8926,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Dimensione</translation>
     </message>
@@ -8934,7 +8934,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
       <translation>Estensione</translation>
     </message>
@@ -8942,7 +8942,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation>Tratteggio</translation>
     </message>
@@ -8950,7 +8950,7 @@ c'è una finestra di dialogo per le attività aperte.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation>Trama geometrica</translation>
     </message>
@@ -9465,8 +9465,8 @@ c'è una finestra di dialogo per le attività aperte.</translation>
       <location filename="../../ViewProviderDimension.cpp" line="299"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
-      <translation type="unfinished">You cannot delete this dimension now because
-there is an open task dialog.</translation>
+      <translation>Non puoi eliminare questa quota adesso perché
+c'è una finestra di dialogo azioni aperte.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDimension.cpp" line="302"/>
@@ -9485,7 +9485,7 @@ there is an open task dialog.</translation>
       <location filename="../../Command.cpp" line="440"/>
       <location filename="../../Command.cpp" line="441"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>Inserisci Vista Interrotta</translation>
     </message>
   </context>
 </TS>

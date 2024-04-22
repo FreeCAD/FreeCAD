@@ -164,7 +164,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1604"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Tworzy prostą kopię geometrii przyjmującej jako odniesienie ostatni wybrany punkt</translation>
+      <translation>Tworzy klon geometrii przyjmując za punkt odniesienia ostatni wybrany punkt</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1370"/>
       <source>3 rim points</source>
-      <translation>Przez trzy punkty na obwodzie</translation>
+      <translation>Trzy punkty na obwodzie</translation>
     </message>
   </context>
   <context>
@@ -251,7 +251,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="910"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
-      <translation>Utwórz łuk elipsy przez środek, promień, punkty końcowe</translation>
+      <translation>Łuk elipsy przez środek, promień, punkty końcowe</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="920"/>
@@ -269,7 +269,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="243"/>
       <source>Create rectangle</source>
-      <translation>Tworzy prostokąt</translation>
+      <translation>Utwórz prostokąt</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="244"/>
@@ -881,7 +881,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="144"/>
       <source>Create rectangle</source>
-      <translation>Tworzy prostokąt</translation>
+      <translation>Utwórz prostokąt</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="145"/>
@@ -1063,7 +1063,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
       <source>Increase knot multiplicity</source>
-      <translation>Zwiększ liczebność węzłów</translation>
+      <translation>Zwiększ liczbę węzłów</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="351"/>
@@ -1115,7 +1115,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Dołącz szkic ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1995,7 +1995,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Utwórz zaokrąglenie</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Przytnij krawędź</translation>
     </message>
@@ -2037,7 +2037,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="388"/>
       <source>Increase knot multiplicity</source>
-      <translation>Zwiększ liczbę węzłów</translation>
+      <translation>Zwiększ liczebność węzłów</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="536"/>
@@ -2235,59 +2235,59 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <translation>Błąd wiązań automatycznych: Nierozwiązywalny szkic przy stosowaniu wiązania równości.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić punktu przecięcia się krzywych. Spróbuj dodać wiązanie zbieżne pomiędzy wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza wiązaniem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -2515,7 +2515,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Nieprawidłowy wybór</translation>
+      <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="168"/>
@@ -3048,7 +3048,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Wybierz jedno wiązanie wymiarowe ze szkicu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9903"/>
@@ -3192,7 +3192,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2077"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
-      <translation>Czy na pewno chcesz usunąć całą geometrię i wiązania?</translation>
+      <translation>Czy na pewno chcesz usunąć wszystkie geometrie i wiązania?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2140"/>
@@ -4720,7 +4720,7 @@ Nie znaleziono jednak żadnych powiązań z punktami końcowymi.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="1813"/>
       <location filename="../../TaskSketcherElements.cpp" line="1819"/>
       <source>Construction</source>
-      <translation>Konstrukcja</translation>
+      <translation>Konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1162"/>
@@ -5233,7 +5233,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="1677"/>
       <location filename="../../CommandSketcherTools.cpp" line="1680"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Tworzy klon geometrii przyjmując za punkt odniesienia ostatni wybrany punkt</translation>
+      <translation>Tworzy prostą kopię geometrii przyjmującej jako odniesienie ostatni wybrany punkt</translation>
     </message>
   </context>
   <context>
@@ -5296,7 +5296,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1372"/>
       <location filename="../../CommandCreateGeo.cpp" line="1374"/>
       <source>Create a circle by 3 rim points</source>
-      <translation>Tworzy koło w oparciu o 3 punkty na obręczy</translation>
+      <translation>Tworzy okrąg przez trzy punkty na obwodzie</translation>
     </message>
   </context>
   <context>
@@ -5324,12 +5324,12 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="366"/>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Wyśrodkowany</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="367"/>
       <source>3 rim points</source>
-      <translation>Przez trzy punkty na obwodzie</translation>
+      <translation>Trzy punkty na obwodzie</translation>
     </message>
   </context>
   <context>
@@ -5876,7 +5876,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher visual</source>
-      <translation>Wizualizacja szkicu</translation>
+      <translation>Widok szkicu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -6044,17 +6044,17 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Szkic zawiera zniekształcone wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Szkic zawiera częściowo zbędne wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>
@@ -6093,7 +6093,7 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
@@ -6277,7 +6277,7 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
       <translation>Nie udało się dodać krawędzi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Nie udało się przyciąć krawędzi</translation>
     </message>
@@ -6482,7 +6482,7 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1049"/>
       <source>Create periodic B-spline by knots</source>
-      <translation>Tworzy okresową krzywą złożoną przez węzły</translation>
+      <translation>Utwórz okresową krzywą złożoną przez węzły</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1051"/>
@@ -6495,7 +6495,7 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
     <message>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <source>Dimension</source>
-      <translation>Wiązanie odległości</translation>
+      <translation>Wiązania wymiarów</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
@@ -6526,7 +6526,7 @@ Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Wiązania wymiarów</translation>
+      <translation>Wymiar</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
@@ -6713,7 +6713,7 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
       <source>3 corners</source>
-      <translation>trzy wierzchołki</translation>
+      <translation>Trzy wierzchołki</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
@@ -7113,7 +7113,7 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="499"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation>Kopiuj (+'U'/ -'J')</translation>
+      <translation>Kopiuj (+ U / - J)</translation>
     </message>
   </context>
   <context>
@@ -7253,12 +7253,12 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="468"/>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Wyśrodkowany</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="469"/>
       <source>3 rim points</source>
-      <translation>Przez trzy punkty na obwodzie</translation>
+      <translation>Trzy punkty na obwodzie</translation>
     </message>
   </context>
   <context>
@@ -7359,7 +7359,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="433"/>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Wyśrodkowany</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
@@ -7395,7 +7395,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>2 points</source>
-      <translation>dwa punkty</translation>
+      <translation>Dwa punkty</translation>
     </message>
   </context>
   <context>
@@ -7445,12 +7445,12 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9789"/>
       <source>Change value</source>
-      <translation>Zmień wartość elementu</translation>
+      <translation>Zmień wartość</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Zmień wartość wiązania wymiarowego</translation>
     </message>
   </context>
   <context>
@@ -7464,7 +7464,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <location filename="../../CommandCreateGeo.cpp" line="1228"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation>Tworzy okresową krzywą złożoną przez węzły</translation>
+      <translation>Utwórz okresową krzywą złożoną przez węzły</translation>
     </message>
   </context>
 </TS>
