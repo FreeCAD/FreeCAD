@@ -26,12 +26,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoTranslation.h>
 #endif
 
 #include "Mod/Fem/App/FemConstraintTemperature.h"
@@ -48,7 +42,9 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature,
 ViewProviderFemConstraintTemperature::ViewProviderFemConstraintTemperature()
 {
     sPixmap = "FEM_ConstraintTemperature";
-    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
+    loadSymbol((resourceSymbolDir + "ConstraintTemperature.iv").c_str());
+
+    FaceColor.setValue(1.0f, 0.0f, 0.0f);
 }
 
 ViewProviderFemConstraintTemperature::~ViewProviderFemConstraintTemperature() = default;
@@ -94,92 +90,7 @@ bool ViewProviderFemConstraintTemperature::setEdit(int ModNum)
     }
 }
 
-#define HEIGHT (1.5)
-#define RADIUS (0.3)
-// #define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing -
-// so disable
-
 void ViewProviderFemConstraintTemperature::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    Fem::ConstraintTemperature* pcConstraint =
-        static_cast<Fem::ConstraintTemperature*>(this->getObject());
-    float scaledradius =
-        RADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
-    float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
-    // float temperature = pcConstraint->temperature.getValue();
-
-    if (prop == &pcConstraint->Points) {
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size()) {
-            return;
-        }
-        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
-
-        // Note: Points and Normals are always updated together
-        Gui::coinRemoveAllChildren(pShapeSep);
-
-        for (const auto& point : points) {
-            // Define base and normal directions
-            SbVec3f base(point.x, point.y, point.z);
-            SbVec3f dir(n->x, n->y, n->z);  // normal
-
-            /// Temperature indication
-            // define separator
-            SoSeparator* sep = new SoSeparator();
-
-            /// draw a temp gauge,with sphere and a cylinder
-            // first move to correct position
-            SoTranslation* trans = new SoTranslation();
-            SbVec3f newPos = base + scaledradius * dir * 0.7f;
-            trans->translation.setValue(newPos);
-            sep->addChild(trans);
-
-            // adjust orientation
-            SoRotation* rot = new SoRotation();
-            rot->rotation.setValue(SbRotation(SbVec3f(0, 1, 0), dir));
-            sep->addChild(rot);
-
-            // define color of shape
-            SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0, SbColor(1, 0, 0));  // RGB
-            // myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides
-            // separately
-            sep->addChild(myMaterial);
-
-            // draw a sphere
-            SoSphere* sph = new SoSphere();
-            sph->radius.setValue(scaledradius * 0.75);
-            sep->addChild(sph);
-            // translate position
-            SoTranslation* trans2 = new SoTranslation();
-            trans2->translation.setValue(SbVec3f(0, scaledheight * 0.375, 0));
-            sep->addChild(trans2);
-            // draw a cylinder
-            SoCylinder* cyl = new SoCylinder();
-            cyl->height.setValue(scaledheight * 0.5);
-            cyl->radius.setValue(scaledradius * 0.375);
-            sep->addChild(cyl);
-            // translate position
-            SoTranslation* trans3 = new SoTranslation();
-            trans3->translation.setValue(SbVec3f(0, scaledheight * 0.375, 0));
-            sep->addChild(trans3);
-            // define color of shape
-            SoMaterial* myMaterial2 = new SoMaterial;
-            myMaterial2->diffuseColor.set1Value(0, SbColor(1, 1, 1));  // RGB
-            sep->addChild(myMaterial2);
-            // draw a cylinder
-            SoCylinder* cyl2 = new SoCylinder();
-            cyl2->height.setValue(scaledheight * 0.25);
-            cyl2->radius.setValue(scaledradius * 0.375);
-            sep->addChild(cyl2);
-
-            pShapeSep->addChild(sep);
-
-            n++;
-        }
-    }
-    // Gets called whenever a property of the attached object changes
     ViewProviderFemConstraint::updateData(prop);
 }
