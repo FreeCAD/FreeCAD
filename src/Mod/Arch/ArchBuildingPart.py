@@ -438,12 +438,12 @@ class BuildingPart(ArchIFC.IfcProduct):
             obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
 
     def getMovableChildren(self, obj):
-         "recursively get movable children"
+        "recursively get movable children"
 
-         result = []
-         for child in obj.Group:
+        result = []
+        for child in obj.Group:
             if isinstance(child, "App::DocumentObjectGroup"):
-                result.extend(getMovableChildren(child)
+                result.extend(getMovableChildren(child))
             if not hasattr(child,"MoveWithHost") or child.MoveWithHost:
                 if hasattr(child,"Placement"):
                     result.append(child)
