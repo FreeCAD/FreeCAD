@@ -21,6 +21,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <random>
 #endif
 
 #include <QDirIterator>
@@ -116,30 +117,52 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
 
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+        uint32_t packed = color.getPackedRGB();
+        packed = hGrp->GetUnsigned(parameter, packed);
+        color.setPackedRGB(packed);
+    };
+    auto intRandom = [] (int min, int max) -> int {
+        static std::mt19937 generator;
+        std::uniform_int_distribution<int> distribution(min, max);
+        return distribution(generator);
+    };
+
+    App::Material mat(App::Material::DEFAULT);
     bool randomColor = hGrp->GetBool("RandomColor", false);
-    float r, g, b;
 
     if (randomColor) {
-        auto fMax = (float)RAND_MAX;
-        r = (float)rand() / fMax;
-        g = (float)rand() / fMax;
-        b = (float)rand() / fMax;
+        float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        mat.diffuseColor = App::Color(red, green, blue);
     }
     else {
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
-        r = ((shcol >> 24) & 0xff) / 255.0;
-        g = ((shcol >> 16) & 0xff) / 255.0;
-        b = ((shcol >> 8) & 0xff) / 255.0;
+        getColor("DefaultShapeColor", mat.diffuseColor);
     }
 
-    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
+    getColor("DefaultAmbientColor", mat.ambientColor);
+    getColor("DefaultEmissiveColor", mat.emissiveColor);
+    getColor("DefaultSpecularColor", mat.specularColor);
+
+    long initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
+    long initialShininess = hGrp->GetInt("DefaultShapeShininess", 90);
 
     auto material = manager.getMaterial(defaultMaterialUUID());
     if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
         material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
-            ->setColor(App::Color(r, g, b));
+            ->setColor(mat.diffuseColor);
+        material->getAppearanceProperty(QString::fromLatin1("AmbientColor"))
+            ->setColor(mat.ambientColor);
+        material->getAppearanceProperty(QString::fromLatin1("EmissiveColor"))
+            ->setColor(mat.emissiveColor);
+        material->getAppearanceProperty(QString::fromLatin1("SpecularColor"))
+            ->setColor(mat.specularColor);
         material->getAppearanceProperty(QString::fromLatin1("Transparency"))
-            ->setFloat((float)initialTransparency / 100.0f);
+            ->setFloat((float)initialTransparency / 100.0F);
+        material->getAppearanceProperty(QString::fromLatin1("Shininess"))
+            ->setFloat((float)initialShininess / 100.0F);
     }
 
     return material;
