@@ -1299,6 +1299,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     } else {
         option = enable?OverlayOption::Enable:OverlayOption::Disable;
     }
+    setProperty("transparent", option != OverlayOption::Disable);
 
     proxyWidget->setStyleSheet(stylesheet);
     this->setStyleSheet(stylesheet);
