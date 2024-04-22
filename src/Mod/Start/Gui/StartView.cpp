@@ -37,6 +37,7 @@
 #include "StartView.h"
 #include "FileCardDelegate.h"
 #include "FileCardView.h"
+#include "FirstStartWidget.h"
 #include "FlowLayout.h"
 #include "Gui/Workbench.h"
 #include <Gui/Document.h>
@@ -99,6 +100,11 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     : Gui::MDIView(pcDocument, parent)
     , _contents(new QScrollArea(parent))
+    , _newFileLabel {nullptr}
+    , _examplesLabel {nullptr}
+    , _recentFilesLabel {nullptr}
+    , _showOnStartupCheckBox {nullptr}
+    , _rewriteLabel {nullptr}
 {
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -114,44 +120,42 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     layout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
 
     // New WB notice: temporary to explain why all your setting disappeared
-    auto newStartWBNotice = gsl::owner<QLabel*>(
-        new QLabel(tr("NOTE: The Start Workbench has been completely rewritten to remove all "
-                      "network access, and to remove its dependency on Chromium. This is still a "
-                      "work-in-progress, and not all settings from the previous version of Start "
-                      "have been migrated yet.")));
-    newStartWBNotice->setWordWrap(true);
-    layout->addWidget(newStartWBNotice);
+    _rewriteLabel = gsl::owner<QLabel*>(new QLabel());
+    _rewriteLabel->setWordWrap(true);
+    layout->addWidget(_rewriteLabel);
 
     // Launch start automatically?
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    auto launchAutomaticallyCheckbox =
-        gsl::owner<QCheckBox*>(new QCheckBox(tr("Show Start when starting %1").arg(application)));
+    _showOnStartupCheckBox = gsl::owner<QCheckBox*>(new QCheckBox());
     bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
-    launchAutomaticallyCheckbox->setCheckState(showOnStartup ? Qt::CheckState::Checked
-                                                             : Qt::CheckState::Unchecked);
-    connect(launchAutomaticallyCheckbox,
-            &QCheckBox::toggled,
-            this,
-            &StartView::showOnStartupChanged);
-    layout->addWidget(launchAutomaticallyCheckbox);
+    _showOnStartupCheckBox->setCheckState(showOnStartup ? Qt::CheckState::Checked
+                                                        : Qt::CheckState::Unchecked);
+    connect(_showOnStartupCheckBox, &QCheckBox::toggled, this, &StartView::showOnStartupChanged);
+    layout->addWidget(_showOnStartupCheckBox);
 
-    const QLatin1String h1Start("<h1>");
-    const QLatin1String h1End("</h1>");
+    auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
+    if (firstStart) {
+        auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
+        firstStartRegion->addStretch();
+        auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
+        firstStartRegion->addWidget(firstStartWidget);
+        firstStartRegion->addStretch();
+        layout->addLayout(firstStartRegion);
+    }
 
-    auto newFileLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("New File") + h1End));
-    layout->addWidget(newFileLabel);
+    _newFileLabel = gsl::owner<QLabel*>(new QLabel());
+    layout->addWidget(_newFileLabel);
     auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
     layout->addLayout(flowLayout);
     configureNewFileButtons(flowLayout);
 
-    auto recentFilesLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("Recent Files") + h1End));
-    layout->addWidget(recentFilesLabel);
+    _recentFilesLabel = gsl::owner<QLabel*>(new QLabel());
+    layout->addWidget(_recentFilesLabel);
     auto recentFilesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
     connect(recentFilesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
     layout->addWidget(recentFilesListWidget);
 
-    auto examplesLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("Examples") + h1End));
-    layout->addWidget(examplesLabel);
+    _examplesLabel = gsl::owner<QLabel*>(new QLabel());
+    layout->addWidget(_examplesLabel);
     auto examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
     connect(examplesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
     layout->addWidget(examplesListWidget);
@@ -161,11 +165,10 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
 
     setCentralWidget(_contents);
 
-    QString title = QCoreApplication::translate("Workbench", "Start");
-    setWindowTitle(title);
-
     configureExamplesListWidget(examplesListWidget);
-    configureRecentFilesListWidget(recentFilesListWidget, recentFilesLabel);
+    configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
+
+    retranslateUi();
 }
 
 void StartView::configureNewFileButtons(QLayout* layout) const
@@ -202,7 +205,6 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     }
 
     // TODO: Ensure all of the required WBs are actually available
-    // TODO: Make this layout more flexible (e.g. use a single line if possible)
     layout->addWidget(partDesign);
     layout->addWidget(assembly);
     layout->addWidget(draft);
@@ -405,4 +407,34 @@ void StartView::showOnStartupChanged(bool checked)
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
     hGrp->SetBool("ShowOnStartup", checked);
+}
+
+void StartView::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        this->retranslateUi();
+    }
+    Gui::MDIView::changeEvent(event);
+}
+
+void StartView::retranslateUi()
+{
+    QString title = QCoreApplication::translate("Workbench", "Start");
+    setWindowTitle(title);
+
+    const QLatin1String h1Start("<h1>");
+    const QLatin1String h1End("</h1>");
+
+    _newFileLabel->setText(h1Start + tr("New File") + h1End);
+    _examplesLabel->setText(h1Start + tr("Examples") + h1End);
+    _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
+
+    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
+    _showOnStartupCheckBox->setText(tr("Show this view when starting %1").arg(application));
+
+    _rewriteLabel->setText(
+        tr("NOTE: The Start Workbench has been completely rewritten to remove all "
+           "network access, and to remove its dependency on Chromium. This is still a "
+           "work-in-progress, and not all settings from the previous version of Start "
+           "have been migrated yet."));
 }
