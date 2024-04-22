@@ -260,9 +260,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9999999"
-     inkscape:cx="11"
-     inkscape:cy="27.4375"
-     inkscape:current-layer="layer2"
+     inkscape:cx="26.625"
+     inkscape:cy="28.8125"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
@@ -422,12 +422,17 @@
        id="path15674"
        d="M 16,6 V 56"
        style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.204678" />
+    <path
+       id="rect1"
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:none;paint-order:stroke fill markers"
+       d="M 11,6 H 53 V 56 H 11 Z" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="new 1"
-     style="display:inline">
+     inkscape:label="style"
+     style="display:inline"
+     inkscape:highlight-color="#809bf4">
     <g
        id="layer1-9"
        transform="matrix(0.74165421,0,0,0.74239318,-6.5351186,-3.0830091)"
