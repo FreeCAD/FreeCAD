@@ -1183,7 +1183,7 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 void MbD::ASMTAssembly::outputFile(std::string filename)
 {
 	std::ofstream os(filename);
-	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	//	try {
 	os << "OndselSolver" << std::endl;
 	storeOnLevel(os, 0);
@@ -1227,6 +1227,13 @@ void MbD::ASMTAssembly::solve()
 
 void MbD::ASMTAssembly::runPreDrag()
 {
+	debug = true;	//Comment out in release build.
+	if (debug) {
+		outputFile("runPreDrag.asmt");
+		std::ofstream os("dragging.log");
+		os << "runPreDrag" << std::endl;
+		os.close();
+	}
 	mbdSystem = std::make_shared<System>();
 	mbdSystem->externalSystem->asmtAssembly = this;
 	try {
@@ -1239,8 +1246,21 @@ void MbD::ASMTAssembly::runPreDrag()
 
 void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts) const
 {
+	if (debug) {
+		std::ofstream os("dragging.log", std::ios_base::app);
+		os << "runDragStep" << std::endl;
+		os.close();
+	}
 	auto dragMbDParts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	for (auto& dragPart : *dragParts) {
+		if (debug) {
+			std::ofstream os("dragging.log", std::ios_base::app);
+			os << std::setprecision(std::numeric_limits<double>::max_digits10);
+			dragPart->storeOnLevelName(os, 1);
+			dragPart->storeOnLevelPositionRaw(os, 1);
+			dragPart->storeOnLevelRotationMatrixRaw(os, 1);
+			os.close();
+		}
 		auto dragMbDPart = std::static_pointer_cast<Part>(dragPart->mbdObject);
 		dragMbDParts->push_back(dragMbDPart);
 	}
@@ -1249,7 +1269,21 @@ void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<
 
 void MbD::ASMTAssembly::runPostDrag()
 {
-	runPreDrag();
+	if (debug) {
+		//outputFile("runPostDrag.asmt");
+		std::ofstream os("dragging.log", std::ios_base::app);
+		os << "runPostDrag" << std::endl;
+		os.close();
+	}
+	debug = false;
+	mbdSystem = std::make_shared<System>();
+	mbdSystem->externalSystem->asmtAssembly = this;
+	try {
+		mbdSystem->runPreDrag(mbdSystem);
+	}
+	catch (SimulationStoppingError ex) {
+
+	}
 }
 
 void MbD::ASMTAssembly::runKINEMATIC()

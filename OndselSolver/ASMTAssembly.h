@@ -144,6 +144,8 @@ namespace MbD {
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
 		std::shared_ptr<System> mbdSystem;
 		MBDynSystem* mbdynItem = nullptr;
+		bool debug = false;
+
 	};
 }
 

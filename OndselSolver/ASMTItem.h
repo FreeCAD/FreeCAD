@@ -58,8 +58,8 @@ namespace MbD {
 		virtual void storeOnLevelBool(std::ofstream& os, size_t level, bool value);
 		//template<typename T>
 		//void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<T> array);
-		void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<double> array);
-		void storeOnLevelName(std::ofstream& os, size_t level);
+		virtual void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<double> array);
+		virtual void storeOnLevelName(std::ofstream& os, size_t level);
 		virtual void storeOnTimeSeries(std::ofstream& os);
 		void logString(std::string& str);
 		void logString(const char* chars);

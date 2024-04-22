@@ -153,7 +153,7 @@ void MbD::MBDynSystem::outputFiles()
     //auto& asmtJoints = asmtAsm->joints;
     //auto& asmtMotions = asmtAsm->motions;
 	std::ofstream os(movFile);
-	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	for (size_t i = 1; i < asmtTimes->size(); i++)
 	{
 		for (auto& node : *nodes) {
