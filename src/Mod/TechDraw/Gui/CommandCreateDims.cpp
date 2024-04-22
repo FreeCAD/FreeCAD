@@ -89,6 +89,7 @@ void execAngle(Gui::Command* cmd);
 void execAngle3Pt(Gui::Command* cmd);
 void execRadius(Gui::Command* cmd);
 void execDiameter(Gui::Command* cmd);
+void execArea(Gui::Command* cmd);
 
 void execExtent(Gui::Command* cmd, const std::string& dimType);
 
@@ -395,7 +396,7 @@ public:
 
     bool mouseReleaseEvent(QMouseEvent* event) override
     {
-        //Base::Console().Warning("mouseReleaseEvent TH\n");
+        // Base::Console().Warning("mouseReleaseEvent TH\n");
         bool finalize = true;
 
         if (removedRef.hasGeometry()) {
@@ -429,7 +430,6 @@ public:
                 }
             }
             else {
-                Base::Console().Warning("h4\n");
                 ReferenceVector& selVector = getSelectionVector(addedRef);
                 selVector.push_back(addedRef);
 
@@ -464,7 +464,7 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg)
     {
-        Base::Console().Warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
+        //Base::Console().Warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
 
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             //clearAndRestartCommand();
@@ -567,6 +567,9 @@ protected:
         }
 
         availableDimension = AvailableDimension::FIRST;
+
+        partFeat = dynamic_cast<TechDraw::DrawViewPart*>(initialSelection[0].getObject());
+        if (!partFeat) { return; }
 
         // Add the selected elements to their corresponding selection vectors
         for (auto& ref : initialSelection) {
@@ -707,7 +710,8 @@ protected:
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
-            makeCts_Faces(selAllowed, pos);
+            if (selection.has1Face()) { makeCts_Faces(selAllowed, pos); }
+            else { return false; }  // nothing else with face works
         }
         else if (selection.hasPoints()) {
             if (selection.has1Point()) { selAllowed = true; }
@@ -739,15 +743,14 @@ protected:
         return selAllowed;
     }
 
-    // TODO
     void makeCts_Faces(bool& selAllowed, QPoint& pos)
     {
         //area
         if (availableDimension == AvailableDimension::FIRST) {
-            /*restartCommand(QT_TRANSLATE_NOOP("Command", "Add Area dimension"));
-            createAreaDimension(pos);
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Area dimension"));
+            createAreaDimension(selFaces[0], pos);
             selAllowed = true;
-            availableDimension = AvailableDimension::RESET;*/
+            availableDimension = AvailableDimension::RESET;
         }
     }
 
@@ -997,31 +1000,12 @@ protected:
         }
     }
 
-    //TODO
-    void createAreaDimension(QPoint& pos)
+    void createAreaDimension(ReferenceEntry ref, QPoint& pos)
     {
-        /*// see CmdTechDrawExtensionAreaAnnotation::activated
-        Base::Vector3d center;
-        double totalArea = 0.0;
-        for (auto& ref : selFaces) {
-            TechDraw::FacePtr face = partFeat->getFace(ref.getSubName());
-            if (!face) {
-                continue;
-            }
+        DrawViewDimension* dim = dimMaker(partFeat, "Area", { ref }, {});
 
-            GProp_GProps faceProps;
-            BRepGProp::SurfaceProperties(face->toOccFace(), faceProps);
-
-            double faceArea = faceProps.Mass();
-            totalArea += faceArea;
-            center += faceArea * DrawUtil::toVector3d(faceProps.CentreOfMass());
-        }
-        if (totalArea > 0.0) {
-            center /= totalArea;
-        }
-
-        //function (and file) to create in CommandExtensionPack.h
-        auto* areaBalloon = createAreaBalloon(totalArea, center);*/
+        dims.push_back(dim);
+        moveDimension(pos, dim);
     }
 
     void createRadiusDiameterDimension(ReferenceEntry ref, QPoint& pos, bool firstCstr) {
@@ -1366,6 +1350,7 @@ public:
         addCommand("TechDraw_DiameterDimension");
         addCommand("TechDraw_AngleDimension");
         addCommand("TechDraw_3PtAngleDimension");
+        addCommand("TechDraw_AreaDimension");
         addCommand("TechDraw_ExtensionCreateLengthArc");
         addCommand(); //separator
         addCommand("TechDraw_HorizontalExtentDimension");
@@ -2095,6 +2080,95 @@ void execAngle3Pt(Gui::Command* cmd)
     positionDimText(dim);
 }
 
+//===========================================================================
+// TechDraw_AreaDimension
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawAreaDimension)
+
+CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
+    : Command("TechDraw_AreaDimension")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Insert Area Dimension");
+    sToolTipText = sMenuText;
+    sWhatsThis = "TechDraw_AreaDimension";
+    sStatusTip = sToolTipText;
+    sPixmap = "TechDraw_AreaDimension";
+}
+
+void CmdTechDrawAreaDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Task In Progress"),
+                             QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    execArea(this);
+}
+
+bool CmdTechDrawAreaDimension::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+void execArea(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection."));
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat =
+        TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry({"Face"});
+    std::vector<int> minimumCounts({1});
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isFace});
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(
+        references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
+    if (geometryRefs2d == TechDraw::isInvalid) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d angle dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                references3d,
+                                                acceptableGeometry,
+                                                minimumCounts,
+                                                acceptableDimensionGeometrys);
+        if (geometryRefs3d == TechDraw::isInvalid) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d angle dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    dimensionMaker(partFeat, "Area", references2d, references3d);
+}
+
 
 // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
 //! link 3D geometry to Dimension(s) on a Page
@@ -2593,6 +2667,7 @@ void CreateTechDrawCommandsDims()
     rcCmdMgr.addCommand(new CmdTechDrawVerticalDimension());
     rcCmdMgr.addCommand(new CmdTechDrawAngleDimension());
     rcCmdMgr.addCommand(new CmdTechDraw3PtAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawAreaDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
     rcCmdMgr.addCommand(new CmdTechDrawVerticalExtentDimension());
     rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
@@ -2646,8 +2721,7 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                             dimName.c_str(),
                             "Projected");
 
-    auto* dim =
-        dynamic_cast<TechDraw::DrawViewDimension*>(dvp->getDocument()->getObject(dimName.c_str()));
+    auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(dvp->getDocument()->getObject(dimName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
     }

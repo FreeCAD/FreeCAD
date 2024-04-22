@@ -101,6 +101,7 @@ public:
         twoVertex,
         vertexEdge,
         threeVertex,
+        oneFace,
         extent
     };
 
@@ -178,6 +179,10 @@ public:
     {
         return m_anglePoints;
     }
+    areaPoint getAreaPoint()
+    {
+        return m_areaPoint;
+    }
 
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
@@ -228,6 +233,8 @@ protected:
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
+    virtual areaPoint getAreaParameters(ReferenceVector references);
+
     Measure::Measurement* measurement;
     double
     dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::Vector3d s2, Base::Vector3d e2) const;
@@ -236,6 +243,7 @@ protected:
     void resetLinear();
     void resetAngular();
     void resetArc();
+    void resetArea();
 
     bool okToProceed();
     void updateSavedGeometry();
@@ -252,6 +260,7 @@ private:
     pointPair m_arrowPositions;
     arcPoints m_arcPoints;
     anglePoints m_anglePoints;
+    areaPoint m_areaPoint;
     bool m_hasGeometry;
 
     friend class DimensionFormatter;

@@ -261,10 +261,14 @@ protected:
                              double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
+    void drawAreaExecutive(const Base::Vector2d &centerPoint, double area, const Base::BoundBox2d &labelRectangle,
+                             double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
+
     void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawArea(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
 
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;

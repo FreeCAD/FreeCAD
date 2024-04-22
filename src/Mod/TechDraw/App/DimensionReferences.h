@@ -90,6 +90,7 @@ private:
 
     static Part::TopoShape asTopoShapeVertex(const TopoDS_Vertex &vert);
     static Part::TopoShape asTopoShapeEdge(const TopoDS_Edge& edge);
+    static Part::TopoShape asTopoShapeFace(const TopoDS_Face& edge);
 
     App::DocumentObject* m_object{nullptr};
     std::string m_subName;

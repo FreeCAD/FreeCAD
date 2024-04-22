@@ -63,16 +63,19 @@ std::string DimensionFormatter::formatValue(const qreal value,
 {
 //    Base::Console().Message("DF::formatValue() - %s isRestoring: %d\n",
 //                            m_dimension->getNameInDocument(), m_dimension->isRestoring());
-    bool angularMeasure = false;
+    bool angularMeasure = m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
+    bool areaMeasure = m_dimension->Type.isValue("Area");
     QLocale loc;
 
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
-    if ( (m_dimension->Type.isValue("Angle")) ||
-         (m_dimension->Type.isValue("Angle3Pt")) ) {
-        angularMeasure = true;
+    if (angularMeasure) {
         asQuantity.setUnit(Base::Unit::Angle);
-    } else {
+    }
+    else if (areaMeasure) {
+        asQuantity.setUnit(Base::Unit::Area);
+    }
+    else {
         asQuantity.setUnit(Base::Unit::Length);
     }
 
@@ -88,6 +91,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     QString qMultiValueStr;
     QString qBasicUnit = Base::Tools::fromStdString(Base::UnitsApi::getBasicLengthUnit());
+    if (areaMeasure) {
+        qBasicUnit = qBasicUnit + QString::fromUtf8("²");
+    }
 
     QString formattedValue;
     if (isMultiValueSchema() && partial == 0) {
@@ -128,7 +134,8 @@ std::string DimensionFormatter::formatValue(const qreal value,
         if (angularMeasure) {
             userVal = asQuantity.getValue();
             qBasicUnit = QString::fromUtf8("°");
-        } else {
+        }
+        else {
             double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + qBasicUnit).getValue();
             userVal = asQuantity.getValue() / convertValue;
         }
@@ -153,37 +160,44 @@ std::string DimensionFormatter::formatValue(const qreal value,
         return Base::Tools::toStdString(formatPrefix) +
                Base::Tools::toStdString(qUserString) +
                Base::Tools::toStdString(formatSuffix);
-    } else if (partial == 1)  {            // prefix number[unit] suffix
+    }
+    else if (partial == 1)  {            // prefix number[unit] suffix
         if (angularMeasure) {
             //always insert unit after value
             return Base::Tools::toStdString(formatPrefix) +
                      formattedValueString + "°" +
                      Base::Tools::toStdString(formatSuffix);
-        } else if (m_dimension->showUnits()){
+        }
+        else if (m_dimension->showUnits() || areaMeasure){
             if (isDim && m_dimension->haveTolerance()) {
                 //unit will be included in tolerance so don't repeat it here
                 return Base::Tools::toStdString(formatPrefix) +
                          formattedValueString +
                          Base::Tools::toStdString(formatSuffix);
-            } else {
+            }
+            else {
                 //no tolerance, so we need to include unit
                 return Base::Tools::toStdString(formatPrefix) +
                          formattedValueString + " " +
                          Base::Tools::toStdString(qBasicUnit) +
                          Base::Tools::toStdString(formatSuffix);
             }
-        } else {
+        }
+        else {
             //showUnits is false
             return Base::Tools::toStdString(formatPrefix) +
                      formattedValueString +
                      Base::Tools::toStdString(formatSuffix);
         }
-    } else if (partial == 2) {             // just the unit
+    }
+    else if (partial == 2) {             // just the unit
         if (angularMeasure) {
             return Base::Tools::toStdString(qBasicUnit);
-        } else if (m_dimension->showUnits()) {
+        }
+        else if (m_dimension->showUnits() || areaMeasure) {
             return Base::Tools::toStdString(qBasicUnit);
-        } else {
+        }
+        else {
             return "";
         }
     }

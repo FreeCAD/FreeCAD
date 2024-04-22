@@ -717,9 +717,9 @@ void QGIViewDimension::draw()
         return;
     }
 
-    TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject());
+    auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject());
     if (!dim ||//nothing to draw, don't try
-        !dim->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())
+        !dim->isDerivedFrom<TechDraw::DrawViewDimension>()
         || !dim->has2DReferences()) {
         datumLabel->hide();
         hide();
@@ -766,6 +766,9 @@ void QGIViewDimension::draw()
         }
         else if (strcmp(dimType, "Angle") == 0 || strcmp(dimType, "Angle3Pt") == 0) {
             drawAngle(dim, vp);
+        }
+        else if (strcmp(dimType, "Area") == 0) {
+            drawArea(dim, vp);
         }
         else {
             Base::Console().Error("QGIVD::draw - this DimensionType is unknown: %s\n", dimType);
@@ -2085,6 +2088,75 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
     dimLines->setPath(radiusPath);
 }
 
+void QGIViewDimension::drawAreaExecutive(const Base::Vector2d& centerPoint, double area,
+                                           const Base::BoundBox2d& labelRectangle,
+                                           double centerOverhang, int standardStyle,
+                                           int renderExtent, bool flipArrow) const
+{
+    QPainterPath areaPath;
+
+    Base::Vector2d labelCenter(labelRectangle.GetCenter());
+    double labelAngle = 0.0;
+
+    if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING
+        || standardStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING) {
+        // The dimensional value text must stay horizontal
+
+        bool left = labelCenter.x < centerPoint.x;
+
+        Base::Vector2d jointDirection;
+        if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING) {
+            jointDirection = getIsoRefJointPoint(labelRectangle, left) - centerPoint;
+        }
+        else {
+            jointDirection = getAsmeRefJointPoint(labelRectangle, left) - centerPoint;
+        }
+
+        double lineAngles = jointDirection.Angle();
+        double jointPositions = jointDirection.Length();
+
+        drawDimensionLine(areaPath, centerPoint, lineAngles, 0.0,
+                          jointPositions, labelRectangle, 1, standardStyle, flipArrow);
+
+        Base::Vector2d outsetPoint(standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING
+                                       ? getIsoRefOutsetPoint(labelRectangle, left)
+                                       : getAsmeRefOutsetPoint(labelRectangle, left));
+
+        areaPath.moveTo(toQtGui(outsetPoint));
+        areaPath.lineTo(toQtGui(centerPoint + jointDirection));
+    }
+    else if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
+        // We may rotate the label so no reference line is needed
+        double lineAngle;
+        double devAngle = computeLineAndLabelAngles(centerPoint, labelCenter,
+                                            labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing(),
+                                            lineAngle, labelAngle);
+
+        lineAngle = lineAngle - M_PI;
+        double labelPosition = -cos(devAngle) * ((labelCenter - centerPoint).Length());
+
+        drawDimensionLine(areaPath, centerPoint, lineAngle, 0.0, labelPosition, labelRectangle, 1, standardStyle, flipArrow);
+    }
+    else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
+        // Text must remain horizontal, but it may split the leader line
+        Base::Vector2d labelDirection(labelCenter - centerPoint);
+        double lineAngle = labelDirection.Angle();
+        double labelPosition = labelDirection.Length();
+
+        drawDimensionLine(areaPath, centerPoint, lineAngle, 0.0, labelPosition, labelRectangle, 1, standardStyle, flipArrow);
+    }
+    else {
+        Base::Console().Error(
+            "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: %d\n",
+            standardStyle);
+    }
+
+    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
+    datumLabel->setRotation(toQtDeg(labelAngle));
+
+    dimLines->setPath(areaPath);
+}
+
 void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
                                     ViewProviderDimension* viewProvider) const
 {
@@ -2508,6 +2580,21 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(anglePath);
+}
+
+void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
+    ViewProviderDimension* viewProvider) const
+{
+    Base::BoundBox2d labelRectangle(
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
+    areaPoint areaPoint = dimension->getAreaPoint();
+
+    double endAngle;
+    double startRotation;
+
+    drawAreaExecutive(
+        fromQtApp(areaPoint.center), areaPoint.area, labelRectangle, 0.0, viewProvider->StandardAndStyle.getValue(),
+        viewProvider->RenderingExtent.getValue(), viewProvider->FlipArrowheads.getValue());
 }
 
 QColor QGIViewDimension::prefNormalColor()

@@ -25,6 +25,8 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <sstream>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
 #endif
 
 # include <App/Document.h>
